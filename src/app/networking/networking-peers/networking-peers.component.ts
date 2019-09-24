@@ -14,6 +14,7 @@ import { takeUntil } from 'rxjs/operators'
 export class NetworkingPeersComponent implements OnInit {
 
   public networkingPeersList
+  public networkingPeersMetrics
   public tableDataSource
   public onDestroy$ = new Subject()
 
@@ -31,6 +32,9 @@ export class NetworkingPeersComponent implements OnInit {
       .subscribe(data => {
 
         this.networkingPeersList = data.ids.map(id => ({ id, ...data.entities[id] }))
+        
+        this.networkingPeersMetrics = data.metrics;
+        
         this.tableDataSource = new MatTableDataSource<any>(this.networkingPeersList);
 
         this.tableDataSource.paginator = this.paginator;

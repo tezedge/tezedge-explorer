@@ -1,11 +1,11 @@
 <div class="dashboard">
     <mat-card>
 
-        <!-- <mat-card-header>
+        <mat-card-header>
             <h2 class="mat-h1 reset">
-                Peer list
+               {{ networkingPeersMetrics?.totalAvgSpeed }} kB/s
             </h2>
-        </mat-card-header> -->
+        </mat-card-header>
 
         <mat-card-content>
 
@@ -46,7 +46,7 @@
 
             </table>
 
-            <mat-paginator [pageSizeOptions]="[10, 20]" ></mat-paginator>
+            <mat-paginator [pageSizeOptions]="[5, 10, 20]"></mat-paginator>
 
         </mat-card-content>
     </mat-card>

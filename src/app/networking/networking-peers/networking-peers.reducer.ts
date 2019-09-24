@@ -1,6 +1,7 @@
 const initialState: any = {
     ids: [],
     entities: {},
+    metrics: {},
 }
 
 export function reducer(state = initialState, action) {
@@ -22,6 +23,12 @@ export function reducer(state = initialState, action) {
                         ...peer
                     }
                 }), {}),
+                metrics: {
+                    totalAvgSpeed:
+                        action.payload.reduce((accumulator, peer) =>
+                            Math.floor(accumulator + peer.averageTransferSpeed), 0) / 1000
+
+                }
             }
         }
 

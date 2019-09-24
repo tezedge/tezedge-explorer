@@ -10,7 +10,10 @@ export function reducer(state = initialState, action) {
         case 'peersMetrics': {
             return {
                 ids: [
-                    ...action.payload.map(peer => peer.identifier)
+                    ...action.payload
+                        // sort rows according to average speed   
+                        .slice().sort((a, b) => b.averageTransferSpeed - a.averageTransferSpeed)
+                        .map(peer => peer.identifier)
                 ],
                 entities: action.payload.reduce((accumulator, peer) => ({
                     ...accumulator,

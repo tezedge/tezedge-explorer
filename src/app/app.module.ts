@@ -7,8 +7,16 @@ import { AppRouting } from './app.routing'
 
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { StoreModule } from '@ngrx/store';
+import { EffectsModule } from '@ngrx/effects';
+import { StoreDevtoolsModule } from '@ngrx/store-devtools';
+
 import { reducers, metaReducers } from './reducers';
+
+import { AppEffects } from './app.effects'
+
 import { NetworkingComponent } from './networking/networking.component';
+
+import { environment } from '../environments/environment';
 
 
 const routes: Routes = [];
@@ -36,7 +44,15 @@ const routes: Routes = [];
         strictStateImmutability: true,
         strictActionImmutability: true
       }
-    })
+    }),
+
+    // load effect module
+    EffectsModule.forRoot([
+      AppEffects,
+    ]),
+
+    // https://github.com/zalmoxisus/redux-devtools-extension
+    !environment.production ? StoreDevtoolsModule.instrument({ maxAge: 25 }) : [],
 
   ],
   providers: [],

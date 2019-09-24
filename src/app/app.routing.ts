@@ -11,7 +11,7 @@ export const AppRouting: Routes = [
 
   { path: 'networking', component: NetworkingComponent },
 
-  { path: '', redirectTo: '/', pathMatch: 'full' },
+  { path: '', redirectTo: '/networking', pathMatch: 'full' },
   // { path: '**', component: PageNotFoundComponent }
 
 ];

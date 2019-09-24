@@ -18,14 +18,15 @@ export class AppEffects {
 
         // connect to ws
         switchMap(() => webSocket(environment.api.ws).pipe(
-            tap(data => console.log('[METRICS_SUBSCRIBE][ws] payload: ', data)),
+            // tap(data => console.log('[METRICS_SUBSCRIBE][ws] payload: ', data)),
         )),
 
         // TODO: handle errors
+        // TODO: map ws to redux actions
         // dispatch action from ws 
         map((data) => ({ ...data })),
 
-        tap(() => console.log('[MetricsSubscribeEffect]')),
+        // tap(() => console.log('[MetricsSubscribeEffect]')),
 
         catchError((error, caught) => {
             console.error(error)
@@ -35,6 +36,7 @@ export class AppEffects {
             });
             return caught;
         })
+
     )
 
 

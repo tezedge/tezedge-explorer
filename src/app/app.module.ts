@@ -6,6 +6,8 @@ import { AppComponent } from './app.component';
 import { AppRouting } from './app.routing'
 
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { NgxChartsModule } from '@swimlane/ngx-charts';
+
 import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
@@ -13,7 +15,7 @@ import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { reducers, metaReducers } from './app.reducers';
 import { environment } from '../environments/environment';
 
-import { AppEffects } from './app.effects'
+import { AppEffects } from './app.effects';
 
 import { NetworkingComponent } from './networking/networking.component';
 import { NetworkingPeersComponent } from './networking/networking-peers/networking-peers.component';
@@ -51,19 +53,23 @@ import {
   // MatSortModule,
   // MatStepperModule,
 } from '@angular/material';
+import { NetworkingStatsComponent } from './networking/networking-stats/networking-stats.component';
+import { NetworkingHistoryComponent } from './networking/networking-history/networking-history.component';
 
 
 @NgModule({
   declarations: [
     AppComponent,
     NetworkingComponent,
-    NetworkingPeersComponent
+    NetworkingPeersComponent,
+    NetworkingStatsComponent,
+    NetworkingHistoryComponent
   ],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
 
-    // loading routing  
+    // loading routing
     RouterModule.forRoot(AppRouting, {
       // useHash:true
       // preload all modules
@@ -117,6 +123,8 @@ import {
     MatTabsModule,
     MatToolbarModule,
     MatTooltipModule,
+
+    NgxChartsModule,
 
   ],
   providers: [],

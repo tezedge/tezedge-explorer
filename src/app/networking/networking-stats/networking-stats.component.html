@@ -1,0 +1,30 @@
+<mat-card>
+
+    <!--  <mat-card-header>
+        <h2 class="mat-h1 reset">
+            stats
+        </h2>
+    </mat-card-header>   -->
+
+    <mat-card-content>
+        <ngx-charts-line-chart
+            [view]="view"
+            [scheme]="colorScheme"
+            [results]="single"
+            [gradient]="gradient"
+            [xAxis]="showXAxis"
+            [yAxis]="showYAxis"
+            [showXAxisLabel]="showXAxisLabel"
+            [showYAxisLabel]="showYAxisLabel"
+            [xAxisLabel]="xAxisLabel"
+            [yAxisLabel]="yAxisLabel"
+            [curve]="curve"
+            autoScale="true"
+            tooltipDisabled="true"
+            timeline="true"
+            animations="true"
+            (select)="onSelect($event)">
+        </ngx-charts-line-chart>
+    </mat-card-content>
+
+</mat-card>

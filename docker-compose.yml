@@ -1,0 +1,10 @@
+version: '3'
+
+services:
+
+  tezos-rs-node:
+    image: simplestakingcom/tezos-rs-node
+    build: .
+    # hostname: tezos-rs-node
+    ports:
+    - "4927:4927"

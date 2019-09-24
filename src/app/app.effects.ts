@@ -1,30 +1,53 @@
 import { Injectable, NgZone } from '@angular/core';
 import { Effect, Actions, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
-import { of, defer, } from 'rxjs';
-import { tap, withLatestFrom } from 'rxjs/operators';
+import { Observable, of } from 'rxjs';
+import { tap, map, switchMap, catchError } from 'rxjs/operators';
+import { webSocket } from "rxjs/webSocket";
+
 import { environment } from '../environments/environment';
 
 @Injectable()
 export class AppEffects {
 
-    // trigger app init 
-    // @Effect()
-    // Init$ = defer(() => {
-    //     return of({ type: 'APP_INIT' })
-    // });
+    // effect to handle subscription to metrics WS
+    @Effect()
+    MetriscsSubscirbeEffect$ = this.actions$.pipe(
+        // ofType('METRICS_SUBSCRIBE'),
+        ofType('@ngrx/effects/init'),
 
-    // effect to debug falling outside of zone
-    @Effect({ dispatch: false })
-    ZoneDebugEffects$ = this.actions$
-        .pipe(
-            withLatestFrom(this.store, (action: any, state) => ({ action, state })),
-            tap(({ action, state }) => {
-                if (NgZone.isInAngularZone() === false) {
-                    console.error('[zone][debug]', NgZone.isInAngularZone(), action)
-                }
-            })
-        )
+        // connect to ws
+        switchMap(() => webSocket(environment.api.ws).pipe(
+            tap(data => console.log('[METRICS_SUBSCRIBE][ws] payload:  ', data)),
+        )),
+
+        // TODO: handle errors
+        // dispatch action from ws 
+        map((data) => ({...data})),
+
+        tap(() => console.log('[MetricsSubscribeEffect]')),
+
+        catchError((error, caught) => {
+            console.error(error)
+            this.store.dispatch({
+                type: 'METRICS_SUBSCRIBE_ERROR',
+                payload: error,
+            });
+            return caught;
+        })
+    )
+
+
+    // @Effect({ dispatch: false })
+    // ZoneDebugEffects$ = this.actions$
+    //     .pipe(
+    //         withLatestFrom(this.store, (action: any, state) => ({ action, state })),
+    //         tap(({ action, state }) => {
+    //             if (NgZone.isInAngularZone() === false) {
+    //                 console.error('[zone][debug]', NgZone.isInAngularZone(), action)
+    //             }
+    //         })
+    //     )
 
     constructor(
         private actions$: Actions,

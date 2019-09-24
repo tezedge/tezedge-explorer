@@ -17,6 +17,7 @@ import { AppEffects } from './app.effects'
 import { NetworkingComponent } from './networking/networking.component';
 
 import { environment } from '../environments/environment';
+import { NetworkingPeersComponent } from './networking/networking-peers/networking-peers.component';
 
 
 const routes: Routes = [];
@@ -24,7 +25,8 @@ const routes: Routes = [];
 @NgModule({
   declarations: [
     AppComponent,
-    NetworkingComponent
+    NetworkingComponent,
+    NetworkingPeersComponent
   ],
   imports: [
     BrowserModule,

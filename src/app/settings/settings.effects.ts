@@ -23,7 +23,7 @@ export class SettingsEffects {
             )
         }),
 
-        tap((payload) => console.log("[SETTINGS_INIT_SUSCCESS]", payload)),
+        // tap((payload) => console.log("[SETTINGS_INIT_SUSCCESS]", payload)),
 
         // dispatch action
         map((payload) => ({ type: 'SETTINGS_INIT_SUSCCESS', payload: payload })),
@@ -52,7 +52,7 @@ export class SettingsEffects {
             )
         }),
 
-        tap((payload) => console.log("[SETTINGS_ENDPOINT_SAVE_SUSCCESS]", payload)),
+        // tap((payload) => console.log("[SETTINGS_ENDPOINT_SAVE_SUSCCESS]", payload)),
 
         // dispatch action
         map((payload) => ({ type: 'SETTINGS_ENDPOINT_SAVE_SUSCCESS', payload: payload })),

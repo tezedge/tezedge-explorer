@@ -55,6 +55,7 @@ import {
 } from '@angular/material';
 import { NetworkingStatsComponent } from './networking/networking-stats/networking-stats.component';
 import { NetworkingHistoryComponent } from './networking/networking-history/networking-history.component';
+import { SettingsComponent } from './settings/settings.component';
 
 
 @NgModule({
@@ -63,7 +64,8 @@ import { NetworkingHistoryComponent } from './networking/networking-history/netw
     NetworkingComponent,
     NetworkingPeersComponent,
     NetworkingStatsComponent,
-    NetworkingHistoryComponent
+    NetworkingHistoryComponent,
+    SettingsComponent
   ],
   imports: [
     BrowserModule,

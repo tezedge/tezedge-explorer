@@ -1,0 +1,23 @@
+.mat-cell.cdk-column-identifier.mat-column-identifier  {
+    width: 20vw;
+}
+
+.mat-cell.cdk-column-transferredBytes.mat-column-transferredBytes {
+    width: 20vw;
+}
+
+th.mat-header-cell.cdk-column-averageTransferSpeed.mat-column-averageTransferSpeed {
+    text-align: right;
+}
+.mat-cell.cdk-column-averageTransferSpeed.mat-column-averageTransferSpeed {
+    width: 20vw;
+    text-align: right;
+}
+
+th.mat-header-cell.cdk-column-currentTransferSpeed.mat-column-currentTransferSpeed {
+    text-align: right;
+}
+.mat-cell.cdk-column-currentTransferSpeed.mat-column-currentTransferSpeed {
+    width: 20vw;
+    text-align: right;
+}

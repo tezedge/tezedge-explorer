@@ -56,6 +56,7 @@ import {
 import { NetworkingStatsComponent } from './networking/networking-stats/networking-stats.component';
 import { NetworkingHistoryComponent } from './networking/networking-history/networking-history.component';
 import { SettingsComponent } from './settings/settings.component';
+import { SettingsEndpointComponent } from './settings/settings-endpoint/settings-endpoint.component';
 
 
 @NgModule({
@@ -65,7 +66,8 @@ import { SettingsComponent } from './settings/settings.component';
     NetworkingPeersComponent,
     NetworkingStatsComponent,
     NetworkingHistoryComponent,
-    SettingsComponent
+    SettingsComponent,
+    SettingsEndpointComponent
   ],
   imports: [
     BrowserModule,

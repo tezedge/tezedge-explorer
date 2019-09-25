@@ -10,11 +10,18 @@ import { environment } from '../environments/environment';
 @Injectable()
 export class AppEffects {
 
+    // initialize app
+    @Effect()
+    AppInitEffect$ = this.actions$.pipe(
+        ofType('@ngrx/effects/init'),
+        map(() => ({ type: 'SETTINGS_INIT' }))
+    )
+
     // effect to handle subscription to metrics WS
     @Effect()
     MetriscsSubscirbeEffect$ = this.actions$.pipe(
-        // ofType('METRICS_SUBSCRIBE'),
-        ofType('@ngrx/effects/init'),
+        ofType('METRICS_SUBSCRIBE'),
+        // ofType('@ngrx/effects/init'),
 
         // connect to ws
         switchMap(() => webSocket(environment.api.ws).pipe(
@@ -36,9 +43,7 @@ export class AppEffects {
             });
             return caught;
         })
-
     )
-
 
     // @Effect({ dispatch: false })
     // ZoneDebugEffects$ = this.actions$

@@ -1,21 +1,14 @@
 import { Injectable, NgZone } from '@angular/core';
 import { Effect, Actions, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
-import { Observable, of } from 'rxjs';
-import { tap, map, switchMap, catchError } from 'rxjs/operators';
+import { Observable, of, defer } from 'rxjs';
+import { tap, map, switchMap, catchError, withLatestFrom } from 'rxjs/operators';
 import { webSocket } from "rxjs/webSocket";
 
 import { environment } from '../environments/environment';
 
 @Injectable()
 export class AppEffects {
-
-    // initialize app
-    @Effect()
-    AppInitEffect$ = this.actions$.pipe(
-        ofType('@ngrx/effects/init'),
-        map(() => ({ type: 'SETTINGS_INIT' }))
-    )
 
     // effect to handle subscription to metrics WS
     @Effect()
@@ -45,16 +38,22 @@ export class AppEffects {
         })
     )
 
-    // @Effect({ dispatch: false })
-    // ZoneDebugEffects$ = this.actions$
-    //     .pipe(
-    //         withLatestFrom(this.store, (action: any, state) => ({ action, state })),
-    //         tap(({ action, state }) => {
-    //             if (NgZone.isInAngularZone() === false) {
-    //                 console.error('[zone][debug]', NgZone.isInAngularZone(), action)
-    //             }
-    //         })
-    //     )
+    @Effect({ dispatch: false })
+    ZoneDebugEffects$ = this.actions$
+        .pipe(
+            withLatestFrom(this.store, (action: any, state) => ({ action, state })),
+            tap(({ action, state }) => {
+                if (NgZone.isInAngularZone() === false) {
+                    console.error('[zone][debug]', NgZone.isInAngularZone(), action)
+                }
+            })
+        )
+
+    // initialize app
+    @Effect()
+    AppInitEffect$$ = defer(() => {
+        return of({ type: 'SETTINGS_INIT' })
+    });
 
     constructor(
         private actions$: Actions,

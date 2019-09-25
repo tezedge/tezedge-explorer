@@ -1,7 +1,16 @@
 <style>
-    .settings-endpoint {
+    .settings-endpoint-content {
+        display: flex;
+        flex-direction: column;
+    }
+    .settings-endpoint-input {
         width: 70vw;
     }
+
+    .settings-endpoint-button {
+        align-self: flex-end;
+    }
+
 </style>
 <mat-card>
 
@@ -11,13 +20,18 @@
         </h2>
     </mat-card-header>
 
-    <mat-card-content>
+    <mat-card-content class="settings-endpoint-content">
 
-        <mat-form-field class="settings-endpoint" appearance="outline">
+        <mat-form-field class="settings-endpoint-input" appearance="outline">
             <mat-label>Remote endpoint</mat-label>
             <input matInput>
             <mat-hint>Tezos node websocket endpoint</mat-hint>
         </mat-form-field>
+
+        <br />
+        <br />
+
+        <button class="settings-endpoint-button" mat-flat-button color="primary">Save Settings</button>
 
     </mat-card-content>
 

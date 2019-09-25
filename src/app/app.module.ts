@@ -16,6 +16,7 @@ import { reducers, metaReducers } from './app.reducers';
 import { environment } from '../environments/environment';
 
 import { AppEffects } from './app.effects';
+import { SettingsEffects } from './settings/settings.effects';
 
 import { NetworkingComponent } from './networking/networking.component';
 import { NetworkingPeersComponent } from './networking/networking-peers/networking-peers.component';
@@ -93,6 +94,7 @@ import { NetworkingEndpointComponent } from './networking/networking-endpoint/ne
 
     // load effect module
     EffectsModule.forRoot([
+      SettingsEffects,
       AppEffects,
     ]),
 

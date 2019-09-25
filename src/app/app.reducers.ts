@@ -16,11 +16,13 @@ import { RouterStateUrl } from './app.routing';
 //   const logrocketMiddleware = createNgrxMiddleware(LogRocket);
 
 import * as fromApp from './app.reducer';
+import * as fromSettings from './settings/settings.reducer';
 import * as fromNetworkingPeers from './networking/networking-peers/networking-peers.reducer';
 
 // state interface
 export interface State {
     app: any;
+    settings: any,
     networkingPeers: any;
     routerReducer: fromRouter.RouterReducerState<RouterStateUrl>;
 }
@@ -28,6 +30,7 @@ export interface State {
 // state 
 export const reducers: ActionReducerMap<State> = {
     app: fromApp.reducer,
+    settings: fromSettings.reducer,
     networkingPeers: fromNetworkingPeers.reducer,
     routerReducer: fromRouter.routerReducer,
 };

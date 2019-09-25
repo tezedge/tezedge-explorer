@@ -14,17 +14,19 @@ export class SettingsEffects {
     SettingsInitEffect$ = this.actions$.pipe(
         ofType('SETTINGS_INIT'),
 
-        // connect to ws
-        // switchMap(() => webSocket(environment.api.ws).pipe(
-        //     // tap(data => console.log('[METRICS_SUBSCRIBE][ws] payload: ', data)),
-        // )),
+        switchMap(() => {
+            // localStorage.setItem('endpoint', 'ws://127.0.0.1:4927/');
+            // get data from localStorage ( sync call) 
+            let endpoint = localStorage.getItem('endpoint') ? localStorage.getItem('endpoint') : environment.api.ws;
+            return of([]).pipe(
+                map(() => ({ endpoint: endpoint }))
+            )
+        }),
 
-        // // TODO: handle errors
-        // // TODO: map ws to redux actions
-        // // dispatch action from ws 
-        // map((data) => ({ ...data })),
-
-        // tap(() => console.log('[MetricsSubscribeEffect]')),
+        tap((payload) => console.log("[SETTINGS_INIT_SUSCCESS]", payload)),
+        
+        // dispatch action
+        map((payload) => ({ type: 'SETTINGS_INIT_SUSCCESS', payload: payload })),
 
         catchError((error, caught) => {
             console.error(error)

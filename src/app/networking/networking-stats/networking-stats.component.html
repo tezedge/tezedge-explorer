@@ -8,7 +8,6 @@
 
     <mat-card-content>
         <ngx-charts-line-chart
-            [view]="view"
             [scheme]="colorScheme"
             [results]="single"
             [gradient]="gradient"
@@ -22,8 +21,7 @@
             autoScale="true"
             tooltipDisabled="true"
             timeline="true"
-            animations="true"
-            (select)="onSelect($event)">
+            animations="true">
         </ngx-charts-line-chart>
     </mat-card-content>
 

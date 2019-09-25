@@ -60,6 +60,9 @@ import { SettingsComponent } from './settings/settings.component';
 import { SettingsEndpointComponent } from './settings/settings-endpoint/settings-endpoint.component';
 import { NetworkingEndpointComponent } from './networking/networking-endpoint/networking-endpoint.component';
 
+// TODO: replace woth reactive forms
+import { FormsModule } from '@angular/forms'
+
 
 @NgModule({
   declarations: [
@@ -133,6 +136,8 @@ import { NetworkingEndpointComponent } from './networking/networking-endpoint/ne
     MatTooltipModule,
 
     NgxChartsModule,
+
+    FormsModule,
 
   ],
   providers: [],

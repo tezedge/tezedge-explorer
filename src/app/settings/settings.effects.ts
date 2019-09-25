@@ -24,7 +24,7 @@ export class SettingsEffects {
         }),
 
         tap((payload) => console.log("[SETTINGS_INIT_SUSCCESS]", payload)),
-        
+
         // dispatch action
         map((payload) => ({ type: 'SETTINGS_INIT_SUSCCESS', payload: payload })),
 
@@ -38,6 +38,38 @@ export class SettingsEffects {
         })
 
     )
+
+    @Effect()
+    SettingsEndpointSaveEffect$ = this.actions$.pipe(
+        ofType('SETTINGS_ENDPOINT_SAVE'),
+
+        switchMap((action: any) => {
+
+            // save endpoint to localStorage
+            localStorage.setItem('endpoint', action.payload.endpoint);
+            return of([]).pipe(
+                map(() => ({ endpoint: action.payload.endpoint }))
+            )
+        }),
+
+        tap((payload) => console.log("[SETTINGS_ENDPOINT_SAVE_SUSCCESS]", payload)),
+
+        // dispatch action
+        map((payload) => ({ type: 'SETTINGS_ENDPOINT_SAVE_SUSCCESS', payload: payload })),
+
+        catchError((error, caught) => {
+            console.error(error)
+            this.store.dispatch({
+                type: 'SETTINGS_ENDPOINT_SAVE_ERROR',
+                payload: error,
+            });
+            return caught;
+        })
+
+    )
+
+
+
 
     constructor(
         private actions$: Actions,

@@ -8,31 +8,18 @@
 
     <mat-card-content>
 
-        Head: {{networkingStats.currentBlockCount}}
-        <br/>
-        Remaining blocks: {{networkingStats.currentBlockCount - networkingStats.downloadedBlocks}}
-        <br/>
-        Rate: {{networkingStats.downloadRate}} / blocks per sec
-        <br/>
-        Eta: {{networkingStats.eta}} / secs
-        <br/>
+        <b>Competed: </b> {{ (networkingStats.downloadedBlocks/(networkingStats.currentBlockCount*0.01)) | number:'1.2-2'}} %
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+        <b>Head:</b> {{networkingStats.currentBlockCount}} &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <b>Rate:</b> {{networkingStats.downloadRate}} / blocks per sec &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <b>Eta:</b> {{networkingStats.eta}} / secs &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+        <ngx-charts-line-chart [scheme]="colorScheme" [results]="single" [gradient]="gradient" [xAxis]="showXAxis"
+            [yAxis]="showYAxis" [showXAxisLabel]="showXAxisLabel" [showYAxisLabel]="showYAxisLabel"
+            [xAxisLabel]="xAxisLabel" [yAxisLabel]="yAxisLabel" [curve]="curve" autoScale="true" tooltipDisabled="true"
+            timeline="true" animations="true">
+        </ngx-charts-line-chart> 
         
-        <ngx-charts-line-chart
-            [scheme]="colorScheme"
-            [results]="single"
-            [gradient]="gradient"
-            [xAxis]="showXAxis"
-            [yAxis]="showYAxis"
-            [showXAxisLabel]="showXAxisLabel"
-            [showYAxisLabel]="showYAxisLabel"
-            [xAxisLabel]="xAxisLabel"
-            [yAxisLabel]="yAxisLabel"
-            [curve]="curve"
-            autoScale="true"
-            tooltipDisabled="true"
-            timeline="true"
-            animations="true">
-        </ngx-charts-line-chart>
     </mat-card-content>
 
 </mat-card>

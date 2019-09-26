@@ -19,6 +19,7 @@ import * as fromApp from './app.reducer';
 import * as fromSettings from './settings/settings.reducer';
 import * as fromNetworkingPeers from './networking/networking-peers/networking-peers.reducer';
 import * as fromNetworkingStats from './networking/networking-stats/networking-stats.reducer';
+import * as fromNetworkingHistory from './networking/networking-history/networking-history.reducer';
 
 // state interface
 export interface State {
@@ -26,6 +27,7 @@ export interface State {
     settings: any,
     networkingPeers: any;
     networkingStats: any;
+    networkingHistory: any;
     routerReducer: fromRouter.RouterReducerState<RouterStateUrl>;
 }
 
@@ -35,6 +37,7 @@ export const reducers: ActionReducerMap<State> = {
     settings: fromSettings.reducer,
     networkingPeers: fromNetworkingPeers.reducer,
     networkingStats: fromNetworkingStats.reducer,
+    networkingHistory: fromNetworkingHistory.reducer,
     routerReducer: fromRouter.routerReducer,
 };
 

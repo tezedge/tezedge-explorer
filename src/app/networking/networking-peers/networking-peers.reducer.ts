@@ -26,7 +26,7 @@ export function reducer(state = initialState, action) {
                 metrics: {
                     totalAvgSpeed:
                         (action.payload.reduce((accumulator, peer) =>
-                            Math.floor(accumulator + peer.averageTransferSpeed), 0) / 1024).toFixed(3),
+                            Math.floor(accumulator + peer.currentTransferSpeed), 0) / 1024).toFixed(3),
                     totalPeers: action.payload.length,
                 }
             }

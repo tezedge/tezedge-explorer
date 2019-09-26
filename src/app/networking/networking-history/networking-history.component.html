@@ -1,20 +1,23 @@
 <mat-card>
 
-    <!-- 
-        <mat-card-header>
-        <h2 class="mat-h1 reset">
-            history
-        </h2>
-    </mat-card-header> 
- -->
+    <mat-card-header>
+        <!-- <h2 class="mat-h1 reset">
+            {{ this.networkingHistoryOpacity }}
+        </h2> -->
+    </mat-card-header>
 
     <mat-card-content>
         <!-- https://www.d3-graph-gallery.com/intro_d3js.html -->
 
-        <svg id="svg">
-            <rect id="rec_1" x="0" y="0" width="15" height="15"></rect>
+
+        <svg id="networkingHistoryPanel" style="width:800px;">
+            <g>
+
+            </g>
         </svg>
-    
+
+        <!--{{ networkingHistory.entities | json }}  -->
+
     </mat-card-content>
 
 </mat-card>

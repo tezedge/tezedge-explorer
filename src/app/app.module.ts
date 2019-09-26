@@ -102,7 +102,7 @@ import { FormsModule } from '@angular/forms'
     ]),
 
     // https://github.com/zalmoxisus/redux-devtools-extension
-    !environment.production ? StoreDevtoolsModule.instrument({ maxAge: 25 }) : [],
+    !environment.production ? StoreDevtoolsModule.instrument({ maxAge: 10 }) : [],
 
     MatAutocompleteModule,
     MatButtonModule,

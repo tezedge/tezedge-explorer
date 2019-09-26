@@ -20,13 +20,17 @@ import * as d3 from 'd3';
 export class NetworkingHistoryComponent implements OnInit {
 
   public networkingHistory
-  public networkingHistoryOpacity
+  public networkingStats
+
   public onDestroy$ = new Subject()
 
   constructor(
     private cd: ChangeDetectorRef,
     public store: Store<any>
-  ) { }
+  ) {
+
+
+  }
 
   ngOnInit() {
 
@@ -34,16 +38,41 @@ export class NetworkingHistoryComponent implements OnInit {
     // https://stackoverflow.com/questions/22295644/d3-js-appending-svg-dom-element-not-working
     var svg = d3.select("#networkingHistoryPanel g")
 
-    // svg.append("rect")
-    //   .attr("opacity", 1)
-    //   .attr("x", 0)
-    //   .attr("y", 0)
-    //   .attr("rx", 2)
-    //   .attr("ry", 2)
-    //   .attr("width", 15)
-    //   .attr("height", 15);
+    // this.networkingStats.currentBlockCount
+    let cycles = Math.round(687903 / 4096)
 
-    // svg.style("fill", "green")
+    for (let id = 0; id < cycles; id++) {
+
+      const x = (
+        (
+          (id % 32) + (Math.floor((id % 32) / 8))
+        )
+        * 20) + 2
+      const y = (Math.floor(id / 32) * 20) + 2;
+
+      svg.append("rect")
+        .attr("opacity", 1)
+        .attr("x", x)
+        .attr("y", y)
+        .attr("rx", 2)
+        .attr("ry", 2)
+        .attr("width", 16)
+        .attr("height", 16)
+        .attr("stroke", "grey")
+        .attr("stroke-width", 1)
+        .attr("fill", "whitesmoke")
+
+    }
+
+    // wait for data changes from redux    
+    this.store.select('networkingStats')
+      .pipe(takeUntil(this.onDestroy$))
+      .subscribe(data => {
+
+        this.networkingStats = data;
+
+      })
+
 
     // wait for data changes from redux    
     this.store.select('networkingHistory')
@@ -57,8 +86,8 @@ export class NetworkingHistoryComponent implements OnInit {
 
         this.networkingHistory.ids.map(id => {
 
-          const x = ((this.networkingHistory.entities[id].group % 32) * 20)
-          const y = (Math.round(this.networkingHistory.entities[id].group / 32) * 20);
+          const x = (((this.networkingHistory.entities[id].group % 32) + Math.floor((this.networkingHistory.entities[id].group % 32) / 8)) * 20) + 2
+          const y = (Math.floor(this.networkingHistory.entities[id].group / 32) * 20) + 2;
 
           // TODO: !!!!!!! refactor to support update 
           // https://stackoverflow.com/questions/14471923/d3-pattern-to-add-an-element-if-missing/14511399#14511399
@@ -73,7 +102,9 @@ export class NetworkingHistoryComponent implements OnInit {
               .attr("x", x)
               .attr("y", y)
               .attr("width", 16)
-              .attr("height", 4)
+              .attr("height", 6)
+              .attr("rx", 2)
+              .attr("ry", 2)
               .attr("fill", "black");
 
           } else {
@@ -83,19 +114,20 @@ export class NetworkingHistoryComponent implements OnInit {
 
           }
 
-
           let block_operations = d3.select("#block_operations_" + id)
 
           if (block_operations.empty()) {
 
             svg.append("rect")
-            .attr("id", "block_operations_" + id)
-            .attr("opacity", 0)
-            .attr("x", x)
-            .attr("y", y + 4)
-            .attr("width", 16)
-            .attr("height", 8)
-            .attr("fill", "black");
+              .attr("id", "block_operations_" + id)
+              .attr("opacity", 0)
+              .attr("x", x)
+              .attr("y", y + 4)
+              .attr("width", 16)
+              .attr("height", 12)
+              .attr("rx", 2)
+              .attr("ry", 2)
+              .attr("fill", "black");
 
 
           } else {

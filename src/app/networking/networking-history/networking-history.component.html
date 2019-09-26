@@ -10,14 +10,14 @@
         <!-- https://www.d3-graph-gallery.com/intro_d3js.html -->
 
 
-        <svg id="networkingHistoryPanel" style="width:700px;">
+        <svg id="networkingHistoryPanel" style="width:700px;height:500px;">
             <g>
 
             </g>
         </svg>
 
         <!--{{ networkingHistory.entities | json }}  -->
-
+        {{ networkingStats?.currentBlockCount | json }}
     </mat-card-content>
 
 </mat-card>

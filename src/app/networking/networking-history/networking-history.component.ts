@@ -63,7 +63,7 @@ export class NetworkingHistoryComponent implements OnInit {
         if (this.networkingHistory.ids.length === 0) {
           
           // remove all elements
-          svg.selectAll("*").remove();
+          this.networkingHistoryPanel.selectAll("*").remove();
 
           // create blocks panel
           this.initBlockPanel();

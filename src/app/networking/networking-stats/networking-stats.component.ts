@@ -1,4 +1,9 @@
 import { Component, OnInit } from '@angular/core';
+
+import { Store } from '@ngrx/store'
+import { Subject } from 'rxjs'
+import { takeUntil } from 'rxjs/operators'
+
 import { NgxChartsModule } from '@swimlane/ngx-charts';
 import * as shape from 'd3-shape';
 
@@ -54,9 +59,24 @@ export class NetworkingStatsComponent implements OnInit {
     domain: ['#000000', '#A10A28', '#C7B42C', '#AAAAAA']
   };
 
-  constructor() { }
+  public networkingStats
+  public onDestroy$ = new Subject()
+
+  constructor(
+    public store: Store<any>,
+  ) { }
 
   ngOnInit() {
+
+    // wait for data changes from redux    
+    this.store.select('networkingStats')
+      .pipe(takeUntil(this.onDestroy$))
+      .subscribe(data => {
+
+        this.networkingStats = data;
+
+      })
+
   }
 
 }

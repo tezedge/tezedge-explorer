@@ -1,9 +1,8 @@
-import { Component, OnInit, OnDestroy, ViewChild} from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatPaginator, MatTableDataSource } from '@angular/material';
-import { PageEvent } from '@angular/material/paginator';
 
 import { Store } from '@ngrx/store'
-import { of, Subject } from 'rxjs'
+import { Subject } from 'rxjs'
 import { takeUntil } from 'rxjs/operators'
 
 @Component({
@@ -18,7 +17,7 @@ export class NetworkingPeersComponent implements OnInit {
   public tableDataSource
   public onDestroy$ = new Subject()
 
-  @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
+  @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
 
   constructor(
     public store: Store<any>,
@@ -32,9 +31,9 @@ export class NetworkingPeersComponent implements OnInit {
       .subscribe(data => {
 
         this.networkingPeersList = data.ids.map(id => ({ id, ...data.entities[id] }))
-        
+
         this.networkingPeersMetrics = data.metrics;
-        
+
         this.tableDataSource = new MatTableDataSource<any>(this.networkingPeersList);
 
         this.tableDataSource.paginator = this.paginator;

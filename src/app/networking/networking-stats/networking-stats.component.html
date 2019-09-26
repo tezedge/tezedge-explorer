@@ -7,6 +7,16 @@
     </mat-card-header>   -->
 
     <mat-card-content>
+
+        Head: {{networkingStats.currentBlockCount}}
+        <br/>
+        Remaining blocks: {{networkingStats.currentBlockCount - networkingStats.downloadedBlocks}}
+        <br/>
+        Rate: {{networkingStats.downloadRate}} / blocks per sec
+        <br/>
+        Eta: {{networkingStats.eta}} / secs
+        <br/>
+        
         <ngx-charts-line-chart
             [scheme]="colorScheme"
             [results]="single"

@@ -1,5 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 
+import { Store } from '@ngrx/store'
+import { Subject } from 'rxjs'
+import { takeUntil } from 'rxjs/operators'
+
 @Component({
   selector: 'app-networking-endpoint',
   templateUrl: './networking-endpoint.component.html',
@@ -7,9 +11,33 @@ import { Component, OnInit } from '@angular/core';
 })
 export class NetworkingEndpointComponent implements OnInit {
 
-  constructor() { }
+  public networkingEndpoint
+  public onDestroy$ = new Subject()
+
+  constructor(
+    public store: Store<any>,
+  ) { }
+
 
   ngOnInit() {
+
+    // wait for data changes from redux    
+    this.store.select('networkingEndpoint')
+      .pipe(takeUntil(this.onDestroy$))
+      .subscribe(data => {
+
+        this.networkingEndpoint = data;
+
+      })
+
+  }
+
+  ngOnDestroy() {
+
+    // close all observables
+    this.onDestroy$.next();
+    this.onDestroy$.complete();
+
   }
 
 }

@@ -7,7 +7,7 @@
     </mat-card-header> -->
 
     <mat-card-content>
-        <b>Status:</b> {{ networkingEndpoint | json }}  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <b>Status:</b> {{ networkingEndpoint?.status }}  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
         
         <b>Endpoint:</b> {{ settings.endpoint }}
         <a routerLink="/settings">edit</a>

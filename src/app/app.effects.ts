@@ -2,7 +2,7 @@ import { Injectable, NgZone } from '@angular/core';
 import { Effect, Actions, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { Observable, of, defer } from 'rxjs';
-import { tap, map, switchMap, catchError, withLatestFrom } from 'rxjs/operators';
+import { tap, map, switchMap, catchError, withLatestFrom, delay } from 'rxjs/operators';
 import { webSocket } from "rxjs/webSocket";
 
 import { environment } from '../environments/environment';
@@ -13,10 +13,9 @@ export class AppEffects {
     // effect to handle subscription to metrics WS
     @Effect()
     MetriscsSubscirbeEffect$ = this.actions$.pipe(
-        ofType('SETTINGS_INIT_SUSCCESS'),
-        // ofType('@ngrx/effects/init'),
+        ofType('METRICS_SUBSCRIBE'),
 
-        // ,erge state
+        // merge state
         withLatestFrom(this.store, (action: any, state) => ({ action, state })),
 
         // connect to ws
@@ -44,22 +43,30 @@ export class AppEffects {
         })
     )
 
-    @Effect({ dispatch: false })
-    ZoneDebugEffects$ = this.actions$
-        .pipe(
-            withLatestFrom(this.store, (action: any, state) => ({ action, state })),
-            tap(({ action, state }) => {
-                if (NgZone.isInAngularZone() === false) {
-                    console.error('[zone][debug]', NgZone.isInAngularZone(), action)
-                }
-            })
-        )
+    // trigger subscription to webservice
+    @Effect()
+    MetriscsSubscirbeErrorReconnectEffect$ = this.actions$.pipe(
+        ofType('METRICS_SUBSCRIBE_ERROR'),
+        // try to reconnect 
+        delay(1000),
+        map(() => ({ type: "METRICS_SUBSCRIBE" }))
+    );
+
+    // trigger subscription to webservice
+    @Effect()
+    SettingsInitSuccessEffect$ = this.actions$.pipe(
+        ofType('SETTINGS_INIT_SUSCCESS'),
+        map(() => ({ type: "METRICS_SUBSCRIBE" }))
+    );
+
 
     // initialize app
     @Effect()
     AppInitEffect$$ = defer(() => {
         return of({ type: 'SETTINGS_INIT' })
     });
+
+
 
     constructor(
         private actions$: Actions,

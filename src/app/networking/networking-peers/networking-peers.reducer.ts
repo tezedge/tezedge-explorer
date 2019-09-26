@@ -32,6 +32,9 @@ export function reducer(state = initialState, action) {
             }
         }
 
+        case 'METRICS_SUBSCRIBE_ERROR':
+                return initialState
+    
         default:
             return state;
     }

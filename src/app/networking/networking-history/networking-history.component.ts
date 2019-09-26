@@ -20,6 +20,7 @@ import * as d3 from 'd3';
 export class NetworkingHistoryComponent implements OnInit {
 
   public networkingHistory
+  public networkingHistoryPanel
   public networkingStats
 
   public onDestroy$ = new Subject()
@@ -32,37 +33,14 @@ export class NetworkingHistoryComponent implements OnInit {
 
   }
 
+
   ngOnInit() {
 
     // https://medium.com/netscape/visualizing-data-with-angular-and-d3-209dde784aeb
     // https://stackoverflow.com/questions/22295644/d3-js-appending-svg-dom-element-not-working
-    var svg = d3.select("#networkingHistoryPanel g")
+    this.networkingHistoryPanel = d3.select("#networkingHistoryPanel g")
 
-    // this.networkingStats.currentBlockCount
-    let cycles = Math.round(687903 / 4096)
-
-    for (let id = 0; id < cycles; id++) {
-
-      const x = (
-        (
-          (id % 32) + (Math.floor((id % 32) / 8))
-        )
-        * 20) + 2
-      const y = (Math.floor(id / 32) * 20) + 2;
-
-      svg.append("rect")
-        .attr("opacity", 1)
-        .attr("x", x)
-        .attr("y", y)
-        .attr("rx", 2)
-        .attr("ry", 2)
-        .attr("width", 16)
-        .attr("height", 16)
-        .attr("stroke", "grey")
-        .attr("stroke-width", 1)
-        .attr("fill", "whitesmoke")
-
-    }
+    this.initBlockPanel();
 
     // wait for data changes from redux    
     this.store.select('networkingStats')
@@ -81,8 +59,15 @@ export class NetworkingHistoryComponent implements OnInit {
 
         this.networkingHistory = data
 
-        // TODO: remove 
-        // svg.selectAll("*").remove();
+        // clean block pannel 
+        if (this.networkingHistory.ids.length === 0) {
+          
+          // remove all elements
+          svg.selectAll("*").remove();
+
+          // create blocks panel
+          this.initBlockPanel();
+        }
 
         this.networkingHistory.ids.map(id => {
 
@@ -96,7 +81,7 @@ export class NetworkingHistoryComponent implements OnInit {
 
           if (block_header.empty()) {
 
-            svg.append("rect")
+            this.networkingHistoryPanel.append("rect")
               .attr("id", "block_header_" + id)
               .attr("opacity", 0)
               .attr("x", x)
@@ -118,7 +103,7 @@ export class NetworkingHistoryComponent implements OnInit {
 
           if (block_operations.empty()) {
 
-            svg.append("rect")
+            this.networkingHistoryPanel.append("rect")
               .attr("id", "block_operations_" + id)
               .attr("opacity", 0)
               .attr("x", x)
@@ -152,6 +137,38 @@ export class NetworkingHistoryComponent implements OnInit {
     // close all observables
     this.onDestroy$.next();
     this.onDestroy$.complete();
+
+  }
+
+  // initialize block panel
+  initBlockPanel() {
+
+    // TODO: completly refactor
+    // this.networkingStats.currentBlockCount
+    let cycles = Math.round(687903 / 4096)
+
+    for (let id = 0; id < cycles; id++) {
+
+      const x = (
+        (
+          (id % 32) + (Math.floor((id % 32) / 8))
+        )
+        * 20) + 2
+      const y = (Math.floor(id / 32) * 20) + 2;
+
+      this.networkingHistoryPanel.append("rect")
+        .attr("opacity", 1)
+        .attr("x", x)
+        .attr("y", y)
+        .attr("rx", 2)
+        .attr("ry", 2)
+        .attr("width", 16)
+        .attr("height", 16)
+        .attr("stroke", "grey")
+        .attr("stroke-width", 1)
+        .attr("fill", "whitesmoke")
+
+    }
 
   }
 

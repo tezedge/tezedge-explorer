@@ -1,6 +1,6 @@
 const initialState: any = {
     connected: false,
-    status: '',
+    status: 'disconnected',
 }
 
 export function reducer(state = initialState, action) {
@@ -8,8 +8,9 @@ export function reducer(state = initialState, action) {
 
         case 'METRICS_SUBSCRIBE_ERROR': {
             return {
+                ...state,
                 connected: false,
-                status: action.payload,
+                status: 'disconnected',
             }
         }
 

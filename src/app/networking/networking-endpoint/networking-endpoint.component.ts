@@ -12,6 +12,7 @@ import { takeUntil } from 'rxjs/operators'
 export class NetworkingEndpointComponent implements OnInit {
 
   public networkingEndpoint
+  public settings
   public onDestroy$ = new Subject()
 
   constructor(
@@ -29,6 +30,15 @@ export class NetworkingEndpointComponent implements OnInit {
         this.networkingEndpoint = data;
 
       })
+
+
+    // wait for data changes from redux    
+    this.store.select('settings')
+      .pipe(takeUntil(this.onDestroy$))
+      .subscribe(data => {
+        this.settings = data;
+      })
+
 
   }
 

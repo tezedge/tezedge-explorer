@@ -7,8 +7,10 @@
     </mat-card-header> -->
 
     <mat-card-content>
-        connection
-        {{ networkingEndpoint | json }}
+        <b>Status:</b> {{ networkingEndpoint | json }}  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        
+        <b>Endpoint:</b> {{ settings.endpoint }}
+        <a routerLink="/settings">edit</a>
     </mat-card-content>
 
 </mat-card>

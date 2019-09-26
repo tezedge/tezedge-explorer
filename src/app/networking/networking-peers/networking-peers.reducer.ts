@@ -14,12 +14,12 @@ export function reducer(state = initialState, action) {
                     ...action.payload
                         // sort rows according to average speed   
                         .slice().sort((a, b) => b.averageTransferSpeed - a.averageTransferSpeed)
-                        .map(peer => peer.identifier)
+                        .map(peer => peer.id)
                 ],
                 entities: action.payload.reduce((accumulator, peer) => ({
                     ...accumulator,
-                    [peer.identifier]: {
-                        ...state.entities[peer.identifier],
+                    [peer.id]: {
+                        ...state.entities[peer.id],
                         ...peer
                     }
                 }), {}),

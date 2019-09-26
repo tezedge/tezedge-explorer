@@ -11,10 +11,10 @@
 
         <table mat-table [dataSource]="tableDataSource">
 
-            <ng-container matColumnDef="identifier">
+            <ng-container matColumnDef="id">
                 <th mat-header-cell *matHeaderCellDef> Id </th>
                 <td mat-cell *matCellDef="let element">
-                    {{element.identifier}}
+                    {{element.id}}
                 </td>
             </ng-container>
 
@@ -38,10 +38,10 @@
             </ng-container>
 
             <tr mat-header-row
-                *matHeaderRowDef="['identifier','transferredBytes','averageTransferSpeed','currentTransferSpeed']">
+                *matHeaderRowDef="['id','transferredBytes','averageTransferSpeed','currentTransferSpeed']">
             </tr>
             <tr mat-row
-                *matRowDef="let row; columns: ['identifier','transferredBytes','averageTransferSpeed','currentTransferSpeed'];">
+                *matRowDef="let row; columns: ['id','transferredBytes','averageTransferSpeed','currentTransferSpeed'];">
             </tr>
 
         </table>

@@ -13,13 +13,19 @@ export class AppEffects {
     // effect to handle subscription to metrics WS
     @Effect()
     MetriscsSubscirbeEffect$ = this.actions$.pipe(
-        ofType('METRICS_SUBSCRIBE'),
+        ofType('SETTINGS_INIT_SUSCCESS'),
         // ofType('@ngrx/effects/init'),
 
+        // ,erge state
+        withLatestFrom(this.store, (action: any, state) => ({ action, state })),
+
         // connect to ws
-        switchMap(() => webSocket(environment.api.ws).pipe(
-            // tap(data => console.log('[METRICS_SUBSCRIBE][ws] payload: ', data)),
-        )),
+        switchMap(({ action, state }) => {
+            console.log('[SETTINGS_INIT_SUSCCESS]', state);
+            return webSocket(state.settings.endpoint).pipe(
+                // tap(data => console.log('[METRICS_SUBSCRIBE][ws] payload: ', data, state.settings.endpoint)),
+            )
+        }),
 
         // TODO: handle errors
         // TODO: map ws to redux actions

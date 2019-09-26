@@ -67,17 +67,19 @@ export class NetworkingHistoryComponent implements OnInit {
 
           if (block_header.empty()) {
 
-            svg.append("rect").attr("id", "block_header_" + id)
-
-          } else {
-
-            block_header
-              .attr("opacity", (this.networkingHistory.entities[id].numbersOfBlocks / 4096).toFixed(2))
+            svg.append("rect")
+              .attr("id", "block_header_" + id)
+              .attr("opacity", 0)
               .attr("x", x)
               .attr("y", y)
               .attr("width", 16)
               .attr("height", 4)
               .attr("fill", "black");
+
+          } else {
+
+            block_header
+              .attr("opacity", (this.networkingHistory.entities[id].numbersOfBlocks / 4096).toFixed(2))
 
           }
 
@@ -86,17 +88,20 @@ export class NetworkingHistoryComponent implements OnInit {
 
           if (block_operations.empty()) {
 
-            svg.append("rect").attr("id", "block_operations_" + id)
+            svg.append("rect")
+            .attr("id", "block_operations_" + id)
+            .attr("opacity", 0)
+            .attr("x", x)
+            .attr("y", y + 4)
+            .attr("width", 16)
+            .attr("height", 8)
+            .attr("fill", "black");
+
 
           } else {
 
             block_operations
               .attr("opacity", (this.networkingHistory.entities[id].finishedBlocks / 4096).toFixed(2))
-              .attr("x", x)
-              .attr("y", y + 4 )
-              .attr("width", 16)
-              .attr("height", 8)
-              .attr("fill", "black");
 
           }
 

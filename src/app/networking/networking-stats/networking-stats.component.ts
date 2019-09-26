@@ -60,6 +60,8 @@ export class NetworkingStatsComponent implements OnInit {
   };
 
   public networkingStats
+  public networkingPeersMetrics
+
   public onDestroy$ = new Subject()
 
   constructor(
@@ -72,11 +74,16 @@ export class NetworkingStatsComponent implements OnInit {
     this.store.select('networkingStats')
       .pipe(takeUntil(this.onDestroy$))
       .subscribe(data => {
-
         this.networkingStats = data;
-
       })
 
+    // wait for data changes from redux    
+    this.store.select('networkingPeers')
+      .pipe(takeUntil(this.onDestroy$))
+      .subscribe(data => {
+        this.networkingPeersMetrics = data.metrics;
+
+      })
   }
 
 }

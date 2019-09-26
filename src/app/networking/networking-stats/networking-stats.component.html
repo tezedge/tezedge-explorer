@@ -8,11 +8,12 @@
 
     <mat-card-content>
 
-        <b>Competed: </b> {{ (networkingStats.downloadedBlocks/(networkingStats.currentBlockCount*0.01)) | number:'1.2-2'}} %
+        <b>Competed: </b> {{ (networkingStats?.downloadedBlocks/(networkingStats?.currentBlockCount*0.01)) | number:'1.2-2'}} %
         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
-        <b>Head:</b> {{networkingStats.currentBlockCount}} &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-        <b>Rate:</b> {{networkingStats.downloadRate}} / blocks per sec &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-        <b>Eta:</b> {{networkingStats.eta}} / secs &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <b>Head:</b> {{networkingStats?.currentBlockCount}} &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <b>Rate:</b> {{networkingStats?.downloadRate}} / blocks per sec &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <b>Eta:</b> {{networkingStats?.eta}} / secs &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <b>Speed:</b> {{networkingPeersMetrics?.totalAvgSpeed}} kB/s 
 
         <ngx-charts-line-chart [scheme]="colorScheme" [results]="single" [gradient]="gradient" [xAxis]="showXAxis"
             [yAxis]="showYAxis" [showXAxisLabel]="showXAxisLabel" [showYAxisLabel]="showYAxisLabel"

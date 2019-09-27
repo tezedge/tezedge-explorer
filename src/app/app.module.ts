@@ -61,7 +61,8 @@ import { SettingsEndpointComponent } from './settings/settings-endpoint/settings
 import { NetworkingEndpointComponent } from './networking/networking-endpoint/networking-endpoint.component';
 
 // TODO: replace woth reactive forms
-import { FormsModule } from '@angular/forms'
+import { FormsModule } from '@angular/forms';
+import { BandwidthPipe } from './shared/bandwidth.pipe'
 
 
 @NgModule({
@@ -73,7 +74,8 @@ import { FormsModule } from '@angular/forms'
     NetworkingHistoryComponent,
     SettingsComponent,
     SettingsEndpointComponent,
-    NetworkingEndpointComponent
+    NetworkingEndpointComponent,
+    BandwidthPipe
   ],
   imports: [
     BrowserModule,

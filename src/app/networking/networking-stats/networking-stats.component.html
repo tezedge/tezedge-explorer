@@ -15,10 +15,10 @@
         <b>Speed:</b> {{networkingPeersMetrics?.totalAvgSpeed}} kB/s 
 
         <br/>
-        <ngx-charts-line-chart [view]="view" [scheme]="colorScheme" [results]="single" [gradient]="gradient" [xAxis]="showXAxis"
+        <ngx-charts-line-chart [scheme]="colorScheme" [results]="single" [gradient]="gradient" [xAxis]="showXAxis"
             [yAxis]="showYAxis" [showXAxisLabel]="showXAxisLabel" [showYAxisLabel]="showYAxisLabel"
             [xAxisLabel]="xAxisLabel" [yAxisLabel]="yAxisLabel" [curve]="curve" autoScale="true" tooltipDisabled="true"
-            animations="false">
+            animations="true">
         </ngx-charts-line-chart> 
     
 

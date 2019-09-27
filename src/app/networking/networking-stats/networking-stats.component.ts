@@ -21,7 +21,7 @@ export class NetworkingStatsComponent implements OnInit {
     }
   ];
 
-  view: any[] = [700, 150];
+  // view: any[] = [700, 150];
 
   // options
   showXAxis = false;

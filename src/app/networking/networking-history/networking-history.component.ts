@@ -42,6 +42,19 @@ export class NetworkingHistoryComponent implements OnInit {
 
     this.initBlockPanel();
 
+    // TODO: remove testing block
+    // this.networkingHistoryPanel.append("rect")
+    //   .attr("id", "block_apply_" + "asd")
+    //   .attr("opacity", 1)
+    //   .attr("x", 2)
+    //   .attr("y", 100 + 2)
+    //   .attr("width", 16)
+    //   .attr("height", 16)
+    //   .attr("rx", 2)
+    //   .attr("ry", 2)
+    //   .attr("fill", "#183165");
+
+
     // wait for data changes from redux    
     this.store.select('networkingStats')
       .pipe(takeUntil(this.onDestroy$))
@@ -61,7 +74,7 @@ export class NetworkingHistoryComponent implements OnInit {
 
         // clean block pannel 
         if (this.networkingHistory.ids.length === 0) {
-          
+
           // remove all elements
           this.networkingHistoryPanel.selectAll("*").remove();
 
@@ -114,11 +127,33 @@ export class NetworkingHistoryComponent implements OnInit {
               .attr("ry", 2)
               .attr("fill", "black");
 
-
           } else {
 
             block_operations
               .attr("opacity", (this.networkingHistory.entities[id].finishedBlocks / 4096).toFixed(2))
+
+          }
+          
+          // block apply
+          let block_apply = d3.select("#block_apply_" + id)
+
+          if (block_apply.empty()) {
+
+            this.networkingHistoryPanel.append("rect")
+              .attr("id", "block_apply_" + id)
+              .attr("opacity", 0)
+              .attr("x", x)
+              .attr("y", y)
+              .attr("width", 16)
+              .attr("height", 16)
+              .attr("rx", 2)
+              .attr("ry", 2)
+              .attr("fill", "#183165");
+
+          } else {
+
+            block_apply
+              .attr("opacity", (this.networkingHistory.entities[id].appliedBlocks / 4096).toFixed(2))
 
           }
 

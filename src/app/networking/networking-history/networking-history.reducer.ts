@@ -1,6 +1,7 @@
 const initialState: any = {
     ids: [],
     entities: {},
+    downloadDurationSeries: []
 }
 
 export function reducer(state = initialState, action) {
@@ -19,6 +20,12 @@ export function reducer(state = initialState, action) {
                         ...cycle
                     }
                 }), {}),
+                downloadDurationSeries: action.payload
+                    .filter(cycle => cycle.downloadDuration)
+                    .map((cycle) => ({
+                        name: cycle.group,
+                        value: cycle.downloadDuration
+                    }), {})
             }
         }
 

@@ -1,8 +1,7 @@
 th.mat-header-cell.cdk-column-id.mat-column-id {
     text-overflow: ellipsis;
     overflow: hidden; 
-    width: 15vw; 
-    height: 1.2em; 
+    width: 20vw; 
     white-space: nowrap;
 }
 .mat-cell.cdk-column-id.mat-column-id  {
@@ -10,7 +9,7 @@ th.mat-header-cell.cdk-column-id.mat-column-id {
     padding: 20px;
     text-overflow: ellipsis;
     overflow: hidden; 
-    width: 15vw; 
+    width: 20vw; 
     white-space: nowrap;
 }
 

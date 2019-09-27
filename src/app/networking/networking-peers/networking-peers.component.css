@@ -1,5 +1,17 @@
+th.mat-header-cell.cdk-column-id.mat-column-id {
+    text-overflow: ellipsis;
+    overflow: hidden; 
+    width: 160px; 
+    height: 1.2em; 
+    white-space: nowrap;
+}
 .mat-cell.cdk-column-id.mat-column-id  {
-    /* width: 20vw; */
+    display: block;
+    padding: 20px;
+    text-overflow: ellipsis;
+    overflow: hidden; 
+    width: 20vw; 
+    white-space: nowrap;
 }
 
 th.mat-header-cell.cdk-column-transferredBytes.mat-column-transferredBytes {

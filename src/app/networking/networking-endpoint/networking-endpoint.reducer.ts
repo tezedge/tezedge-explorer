@@ -6,6 +6,14 @@ const initialState: any = {
 export function reducer(state = initialState, action) {
     switch (action.type) {
 
+        case 'METRICS_SUBSCRIBE': {
+            return {
+                ...state,
+                connected: false,
+                status: 'reconnecting ',
+            }
+        }
+
         case 'METRICS_SUBSCRIBE_ERROR': {
             return {
                 ...state,

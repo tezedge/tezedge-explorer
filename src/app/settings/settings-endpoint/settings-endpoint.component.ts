@@ -1,9 +1,11 @@
 import { Component, OnInit, NgModule } from '@angular/core';
+import { Router } from '@angular/router'
 
 import { Store } from '@ngrx/store'
 import { of, Subject } from 'rxjs'
 
 import { takeUntil, take } from 'rxjs/operators'
+
 
 @Component({
   selector: 'app-settings-endpoint',
@@ -17,6 +19,7 @@ export class SettingsEndpointComponent implements OnInit {
 
   constructor(
     public store: Store<any>,
+    private router: Router
   ) {
 
     // set default value
@@ -51,13 +54,16 @@ export class SettingsEndpointComponent implements OnInit {
   }
 
   save_endpoint() {
-    
+
     // save and reload ws endpoint
     this.store.dispatch({
       type: 'SETTINGS_ENDPOINT_SAVE', payload: {
         endpoint: this.settingsEndpointInput
       }
     })
+
+    // redirect back to networking
+    this.router.navigate(['/networking']);
 
   }
 

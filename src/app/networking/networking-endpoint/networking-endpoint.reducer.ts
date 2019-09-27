@@ -14,6 +14,15 @@ export function reducer(state = initialState, action) {
             }
         }
 
+        // TODO: refactor create action for succesfull websocket connect
+        case 'incomingTransfer': {
+            return {
+                ...state,
+                connected: true,
+                status: 'connected',
+            }
+        }
+
         default:
             return state;
     }

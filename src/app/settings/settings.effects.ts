@@ -68,7 +68,12 @@ export class SettingsEffects {
 
     )
 
-
+    // reconnect trigger metrics subscire 
+    @Effect()
+    SettingsEndpointSaveSuccesEffect$ = this.actions$.pipe(
+        ofType('SETTINGS_ENDPOINT_SAVE'),
+        map(() => ({ type: "METRICS_SUBSCRIBE" }))
+    )
 
 
     constructor(

@@ -25,15 +25,15 @@ export class NetworkingStatsComponent implements OnInit {
 
   // options
   showXAxis = false;
-  showYAxis = true;
+  showYAxis = false;
   gradient = false;
   showLegend = false;
   showXAxisLabel = false;
   xAxisLabel = 'Bandwidth';
   showYAxisLabel = false;
   yAxisLabel = 'Time';
-  // curve = shape.curveBasis; // shape.curveLinear;
-  curve = shape.curveLinear;
+  curve = shape.curveBasis; // shape.curveLinear;
+  // curve = shape.curveLinear;
 
   colorScheme = {
     domain: ['#000000', '#A10A28', '#C7B42C', '#AAAAAA']

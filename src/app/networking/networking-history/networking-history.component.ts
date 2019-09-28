@@ -22,6 +22,9 @@ export class NetworkingHistoryComponent implements OnInit {
   public networkingHistory
   public networkingHistoryPanel
   public networkingStats
+  public networkingHistoryConfig = {
+    row_length: 32
+  }
 
   public onDestroy$ = new Subject()
 
@@ -83,9 +86,9 @@ export class NetworkingHistoryComponent implements OnInit {
         }
 
         this.networkingHistory.ids.map(id => {
-
-          const x = (((this.networkingHistory.entities[id].group % 32) + Math.floor((this.networkingHistory.entities[id].group % 32) / 8)) * 20) + 2
-          const y = (Math.floor(this.networkingHistory.entities[id].group / 32) * 20) + 2;
+          const row_length = 8;
+          const x = (((this.networkingHistory.entities[id].group % this.networkingHistoryConfig.row_length) + Math.floor((this.networkingHistory.entities[id].group % this.networkingHistoryConfig.row_length) / 8)) * 20) + 2
+          const y = (Math.floor(this.networkingHistory.entities[id].group / this.networkingHistoryConfig.row_length) * 20) + 2;
 
           // TODO: !!!!!!! refactor to support update 
           // https://stackoverflow.com/questions/14471923/d3-pattern-to-add-an-element-if-missing/14511399#14511399
@@ -133,7 +136,7 @@ export class NetworkingHistoryComponent implements OnInit {
               .attr("opacity", (this.networkingHistory.entities[id].finishedBlocks / 4096).toFixed(2))
 
           }
-          
+
           // block apply
           let block_apply = d3.select("#block_apply_" + id)
 
@@ -186,10 +189,10 @@ export class NetworkingHistoryComponent implements OnInit {
 
       const x = (
         (
-          (id % 32) + (Math.floor((id % 32) / 8))
+          (id % this.networkingHistoryConfig.row_length) + (Math.floor((id % this.networkingHistoryConfig.row_length) / 8))
         )
         * 20) + 2
-      const y = (Math.floor(id / 32) * 20) + 2;
+      const y = (Math.floor(id / this.networkingHistoryConfig.row_length) * 20) + 2;
 
       this.networkingHistoryPanel.append("rect")
         .attr("opacity", 1)

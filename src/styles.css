@@ -22,3 +22,56 @@ mat-card-header {
     align-items: center;
     justify-content: center;
 }
+
+.networking {
+    margin: 25px;
+}
+
+.networking {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.networking mat-card-header {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.networking 
+.networking .mat-h1 {
+    font: 300 24px/32px Roboto,"Helvetica Neue",sans-serif;
+}
+
+.networking-stats mat-card-content {
+    height: 200px;
+}
+
+.networking-stats ngx-charts-line-chart {
+    padding: 20px;
+}
+
+
+.settings {
+    margin: 25px;
+}
+
+.settings {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.settings mat-card-header {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.settings 
+.settings .mat-h1 {
+    font: 300 24px/32px Roboto,"Helvetica Neue",sans-serif;
+}

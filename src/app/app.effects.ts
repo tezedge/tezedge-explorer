@@ -44,13 +44,13 @@ export class AppEffects {
     )
 
     // trigger subscription to webservice
-    @Effect()
-    MetriscsSubscirbeErrorReconnectEffect$ = this.actions$.pipe(
-        ofType('METRICS_SUBSCRIBE_ERROR'),
-        // try to reconnect 
-        delay(1000),
-        map(() => ({ type: "METRICS_SUBSCRIBE" }))
-    );
+    // @Effect()
+    // MetriscsSubscirbeErrorReconnectEffect$ = this.actions$.pipe(
+    //     ofType('METRICS_SUBSCRIBE_ERROR'),
+    //     // try to reconnect 
+    //     delay(1000),
+    //     map(() => ({ type: "METRICS_SUBSCRIBE" }))
+    // );
 
     // trigger subscription to webservice
     @Effect()

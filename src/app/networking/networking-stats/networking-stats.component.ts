@@ -24,8 +24,8 @@ export class NetworkingStatsComponent implements OnInit {
   // view: any[] = [700, 150];
 
   // options
-  showXAxis = true;
-  showYAxis = false;
+  showXAxis = false;
+  showYAxis = true;
   gradient = false;
   showLegend = false;
   showXAxisLabel = false;

@@ -4,16 +4,11 @@ html,
 body {
     height: 100%;
     font-family: Roboto, "Helvetica Neue", sans-serif;
+    margin: 0px !important;
 }
 
 table {
     width: 100%;
-}
-
-mat-card-header {
-    display: flex;
-    align-items: center;
-    justify-content: center;
 }
 
 .networking {
@@ -23,19 +18,14 @@ mat-card-header {
     flex-direction: column;
 }
 
-.networking mat-card-header {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
 
 .networking .networking .mat-h1 {
     font: 300 24px/32px Roboto, "Helvetica Neue", sans-serif;
 }
 
-.networking-stats mat-card-content {
-    height: 250px;
-    padding: 20px;
+
+.networking-stats {
+    height: 20vw;
 }
 
 .networking-stats ngx-charts-line-chart {
@@ -64,8 +54,25 @@ mat-card-header {
     font: 300 24px/32px Roboto, "Helvetica Neue", sans-serif;
 }
 
+.networking-endpoint {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: row;
+    background: whitesmoke;
+    height: 5vh;
+    width: 100%
+}
+
+.networking-endpoint-content {
+    width: 50vw;
+    justify-content: space-between;
+    padding: 0px 20px 0px 20px;
+}
+
+
 .settings-endpoint {
-    margin-top: 25px;
+    width: 50vw;
 }
 
 .settings-endpoint-content {
@@ -74,7 +81,7 @@ mat-card-header {
 }
 
 .settings-endpoint-input {
-    width: 70vw;
+    width: 50vw;
 }
 
 .settings-endpoint-button {
@@ -101,10 +108,14 @@ mat-card-header {
 
 @media (max-width: 600px) {
     body {
-        margin: 0px;
+        margin: 0px !important;
     }
 
     .networking {
+        width: 100vw;
+    }
+
+    .networking-endpoint-content {
         width: 100vw;
     }
 
@@ -117,7 +128,7 @@ mat-card-header {
     }
 
     .networking-endpoint {
-        width: 90vw;
+        width: 100vw;
     }
 
     .networking-history {

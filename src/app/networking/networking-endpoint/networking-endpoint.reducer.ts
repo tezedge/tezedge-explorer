@@ -1,6 +1,6 @@
 const initialState: any = {
     connected: false,
-    status: 'disconnected',
+    status: 'Disconnected',
 }
 
 export function reducer(state = initialState, action) {
@@ -10,7 +10,7 @@ export function reducer(state = initialState, action) {
             return {
                 ...state,
                 connected: false,
-                status: 'reconnecting ',
+                status: 'Reconnecting ',
             }
         }
 
@@ -18,7 +18,7 @@ export function reducer(state = initialState, action) {
             return {
                 ...state,
                 connected: false,
-                status: 'disconnected',
+                status: 'Disconnected',
             }
         }
 
@@ -27,7 +27,7 @@ export function reducer(state = initialState, action) {
             return {
                 ...state,
                 connected: true,
-                status: 'connected',
+                status: 'Connected',
             }
         }
 

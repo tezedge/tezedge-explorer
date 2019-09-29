@@ -1,8 +1,9 @@
 <div class="networking-endpoint">
 
-    <b>STATUS</b> {{ networkingEndpoint?.status }} &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    <div class="networking-endpoint-content" style="display:flex;flex-direction:row;">
 
-    <b>ENDPOINT</b> {{ settings.endpoint }}
-    <a routerLink="/settings">edit</a>
-
+        <span style="align-items:flex-start"> {{ networkingEndpoint?.status }} </span>
+        <span style="align-items:flex-end"> {{ settings.endpoint }}&nbsp;<a routerLink="/settings">edit</a></span>
+        
+    </div>
 </div>

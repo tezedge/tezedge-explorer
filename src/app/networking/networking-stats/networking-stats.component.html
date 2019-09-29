@@ -1,20 +1,89 @@
+<style>
+    .networking-stats-panel {
+        display: flex;
+        justify-content: space-between;
+        padding: 20px 0px 0px 0px;
+    }
+
+    .networking-stats-left {
+        align-self: flex-start;
+    }
+
+    .networking-stats-right {
+        display: flex;
+        align-self: center;
+        align-items: flex-end;
+        justify-content: center;
+        flex-direction: column;
+    }
+
+    .networking-stats-completed {
+        font-size: 4vw;
+    }
+
+    .networking-stats-eta {
+        font-size: 1.7vw;
+    }
+
+    .networking-stats-speed {
+        font-size: 1.7vw;
+    }
+
+    .networking-stats-rate {
+        font-size: 1.7vw;
+    }
+
+    @media (max-width: 600px) {
+        .networking-stats-panel {
+            padding: 20px 20px 0px 20px;
+        }
+
+        .networking-stats-completed {
+            font-size: 14vw;
+        }
+
+        .networking-stats-eta {
+            font-size: 5vw;
+        }
+
+        .networking-stats-speed {
+            font-size: 5vw;
+        }
+
+        .networking-stats-rate {
+            font-size: 5vw;
+        }
+    }
+</style>
 <div class="networking-stats">
 
-    <b>COMPETED </b>
-    {{ (networkingStats?.downloadedBlocks/(networkingStats?.currentBlockCount*0.01)) | number:'1.2-2'}} %
-    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-    <br />
-    <b>ETA</b> {{networkingStats?.eta}} &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-    <!-- <b>HEAD</b> {{networkingStats?.currentBlockCount}} &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -->
-    <br />
-    <b>SPEED</b> {{networkingPeersMetrics?.totalAvgSpeed}} kB/s &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-    <b>RATE</b> {{networkingStats?.downloadRate}} blocks/s
+    <div class="networking-stats-panel">
+        <div class="networking-stats-left">
+            <span class="networking-stats-completed">
+                {{ (networkingStats?.downloadedBlocks/(networkingStats?.currentBlockCount*0.01)) | number:'1.2-2'}} %
+            </span>
+            <br />
+
+        </div>
+
+        <!--
+        <span class="networking-stats-speed"> {{networkingPeersMetrics?.totalAvgSpeed | bandwidth:'s' }} </span>
+        <br /> 
+    -->
+        <div class="networking-stats-right">
+     
+            <span class="networking-stats-eta">{{networkingStats?.eta}}</span>
+            <span class="networking-stats-rate">{{networkingStats?.downloadRate}} blocks/s </span>
+
+        </div>
+    </div>
+
 
     <div class="networking-stats-chart">
-        <ngx-charts-line-chart [scheme]="colorScheme" [results]="single"
-            [gradient]="gradient" [xAxis]="showXAxis" [yAxis]="showYAxis" [showXAxisLabel]="showXAxisLabel"
-            [showYAxisLabel]="showYAxisLabel" [xAxisLabel]="xAxisLabel" [yAxisLabel]="yAxisLabel" [curve]="curve"
-            autoScale="false" tooltipDisabled="true" animations="false" roundDomains="false">
+        <ngx-charts-line-chart [scheme]="colorScheme" [results]="single" [gradient]="gradient" [xAxis]="showXAxis"
+            [yAxis]="showYAxis" [showXAxisLabel]="showXAxisLabel" [showYAxisLabel]="showYAxisLabel"
+            [xAxisLabel]="xAxisLabel" [yAxisLabel]="yAxisLabel" [curve]="curve" autoScale="false" tooltipDisabled="true"
+            animations="false" roundDomains="false">
         </ngx-charts-line-chart>
     </div>
 

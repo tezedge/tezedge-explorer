@@ -6,7 +6,7 @@ export function reducer(state = initialState, action) {
 
         case 'incomingTransfer': {
             return {
-                eta: Math.floor(action.payload.eta / 60) + " min " + Math.floor(action.payload.eta % 60) + " sec",
+                eta: Math.floor(action.payload.eta / 60) + "min " + Math.floor(action.payload.eta % 60) + "sec",
                 currentBlockCount: action.payload.currentBlockCount,
                 downloadedBlocks: action.payload.downloadedBlocks,
                 downloadRate: Math.floor(action.payload.downloadRate),

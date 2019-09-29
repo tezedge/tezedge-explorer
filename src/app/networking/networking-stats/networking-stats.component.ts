@@ -73,10 +73,10 @@ export class NetworkingStatsComponent implements OnInit {
         this.networkingHistoryDurationSeries = [
           ...data.downloadDurationSeries,
           //add actual download rate
-          // {
-          //   'value': this.networkingStats.downloadRate ? this.networkingStats.downloadRate : '',
-          //   'name': (data.downloadDurationSeries.length + 1)
-          // }
+          {
+            'value': this.networkingStats.downloadRate ? this.networkingStats.downloadRate : '',
+            'name': (data.downloadDurationSeries.length + 1)
+          }
         ]
 
         this.single = [

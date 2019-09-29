@@ -64,18 +64,37 @@ mat-card-header {
     font: 300 24px/32px Roboto, "Helvetica Neue", sans-serif;
 }
 
-.networking {
-    
+.settings-endpoint {
+    margin-top: 25px;
 }
+
+.settings-endpoint-content {
+    display: flex;
+    flex-direction: column;
+}
+
+.settings-endpoint-input {
+    width: 70vw;
+}
+
+.settings-endpoint-button {
+    align-self: flex-end;
+}
+
+.networking {}
+
 .networking-stats {
     width: 50vw;
 }
+
 .networking-stats-chart {
-    height:20vh
+    height: 20vh
 }
+
 .networking-peers {
     width: 50vw;
 }
+
 .networking-history {
     width: 50vw;
 }
@@ -84,47 +103,60 @@ mat-card-header {
     body {
         margin: 0px;
     }
+
     .networking {
         width: 100vw;
     }
+
     .networking-stats {
         width: 100vw;
     }
+
     .networking-stats-chart {
-        height:15vh
+        height: 15vh
     }
+
     .networking-endpoint {
         width: 90vw;
     }
+
     .networking-history {
         width: 90vw;
     }
+
     .networking-peers {
         width: 100vw;
     }
+
     .networking-peers th.mat-header-cell.cdk-column-id.mat-column-id {
-        width: 45vw; 
+        width: 45vw;
     }
-    .networking-peers .mat-cell.cdk-column-id.mat-column-id.ng-star-inserted  {
+
+    .networking-peers .mat-cell.cdk-column-id.mat-column-id.ng-star-inserted {
         display: block;
-        width: 45vw; 
+        width: 45vw;
     }
 
     .networking-peers th.mat-header-cell.cdk-column-averageTransferSpeed.mat-column-averageTransferSpeed {
-        display:none
+        display: none
     }
+
     .networking-peers .mat-cell.cdk-column-averageTransferSpeed.mat-column-averageTransferSpeed {
-        display:none
+        display: none
     }
 
     .networking-peers .mat-cell.cdk-column-transferredBytes.mat-column-transferredBytes {
         width: 30vw;
     }
-    
+
     .networking-peers .mat-cell.cdk-column-currentTransferSpeed.mat-column-currentTransferSpeed {
         width: 30vw;
     }
-       
 
-    
+
+
+    .settings-endpoint-input {
+        width: 90vw;
+    }
+
 }

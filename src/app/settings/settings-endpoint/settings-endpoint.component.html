@@ -1,38 +1,20 @@
-<style>
-    .settings-endpoint-content {
-        display: flex;
-        flex-direction: column;
-    }
-    .settings-endpoint-input {
-        width: 70vw;
-    }
+<div class="settings-endpoint">
 
-    .settings-endpoint-button {
-        align-self: flex-end;
-    }
-
-</style>
-<mat-card>
-
-    <!-- <mat-card-header>
-        <h2 class="mat-h1 reset">
-            Settings
-        </h2>
-    </mat-card-header> -->
-
-    <mat-card-content class="settings-endpoint-content">
+    <div class="settings-endpoint-content">
 
         <mat-form-field class="settings-endpoint-input" appearance="outline">
             <mat-label>Remote endpoint</mat-label>
-            <input matInput [(ngModel)]="settingsEndpointInput" (ngModelChange)="valueChange($event)"> 
-            <mat-hint>Tezos node websocket endpoint</mat-hint>
+            <input matInput [(ngModel)]="settingsEndpointInput" (ngModelChange)="valueChange($event)">
+            <mat-hint>Tezos node endpoint (websocket)</mat-hint>
         </mat-form-field>
 
         <br />
         <br />
 
-        <button class="settings-endpoint-button" mat-flat-button color="primary" (click)="save_endpoint()" >Save Settings</button>
+        <button class="settings-endpoint-button" mat-flat-button color="primary" (click)="save_endpoint()">Save
+            Settings</button>
 
-    </mat-card-content>
 
-</mat-card>
+    </div>
+
+</div>

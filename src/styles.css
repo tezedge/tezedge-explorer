@@ -165,7 +165,9 @@ table {
     }
 
 
-
+    .settings-endpoint {
+        width: 90vw;
+    }
     .settings-endpoint-input {
         width: 90vw;
     }

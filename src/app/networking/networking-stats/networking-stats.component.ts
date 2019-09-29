@@ -56,7 +56,7 @@ export class NetworkingStatsComponent implements OnInit {
 
   // options
   showXAxis = false;
-  showYAxis = false;
+  showYAxis = true;
   gradient = false;
   showLegend = false;
   showXAxisLabel = false;
@@ -101,20 +101,26 @@ export class NetworkingStatsComponent implements OnInit {
     this.store.select('networkingHistory')
       .pipe(takeUntil(this.onDestroy$))
       .subscribe(data => {
-
-        this.networkingHistoryDurationSeries = data.downloadDurationSeries;
+        this.networkingHistoryDurationSeries = [
+          ...data.downloadDurationSeries,
+          //add actual download rate
+          {
+            'value': this.networkingStats.downloadRate ? this.networkingStats.downloadRate : '',
+            'name': (data.downloadDurationSeries.length + 1)
+          }
+        ]
 
         this.single = [
           {
             "name": "History",
             "series": this.networkingHistoryDurationSeries,
           },
-          // add empty space to graph
+          // add empty space to chart and set scale (average value)
           {
             "name": "History",
             "series": [
               {
-                'value': '',
+                'value': Math.round(data.downloadDurationSeries.reduce((avg, item) => ((avg + item.value) / 2), 0) / 50) * 50,
                 'name': this.networkingStats.currentBlockCount ?
                   Math.floor(this.networkingStats.currentBlockCount / 4096) : ''
               }

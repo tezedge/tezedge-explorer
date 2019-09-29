@@ -1,13 +1,13 @@
 <mat-card>
 
     <mat-card-content>
-        <b>Completed: </b>
+        <b>COMPETED </b>
         {{ (networkingStats?.downloadedBlocks/(networkingStats?.currentBlockCount*0.01)) | number:'1.2-2'}} %
         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-        <b>Eta:</b> {{networkingStats?.eta}}/s &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-        <b>Head:</b> {{networkingStats?.currentBlockCount}} &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-        <b>Rate:</b> {{networkingStats?.downloadRate}} blocks/s &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-        <b>Speed:</b> {{networkingPeersMetrics?.totalAvgSpeed}} kB/s
+        <b>ETA</b> {{networkingStats?.eta}} &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <b>HEAD</b> {{networkingStats?.currentBlockCount}} &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <b>SPEED</b> {{networkingPeersMetrics?.totalAvgSpeed}} kB/s &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <b>RATE</b> {{networkingStats?.downloadRate}} blocks/s
     </mat-card-content>
 
 </mat-card>
@@ -16,7 +16,7 @@
     <ngx-charts-line-chart class="networking-stats-chart" [scheme]="colorScheme" [results]="single"
         [gradient]="gradient" [xAxis]="showXAxis" [yAxis]="showYAxis" [showXAxisLabel]="showXAxisLabel"
         [showYAxisLabel]="showYAxisLabel" [xAxisLabel]="xAxisLabel" [yAxisLabel]="yAxisLabel" [curve]="curve"
-        autoScale="true" tooltipDisabled="true" animations="true">
+        autoScale="false" tooltipDisabled="true" animations="false">
     </ngx-charts-line-chart>
 </div>
 

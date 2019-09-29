@@ -63,7 +63,7 @@ export class NetworkingStatsComponent implements OnInit {
   xAxisLabel = 'Bandwidth';
   showYAxisLabel = false;
   yAxisLabel = 'Time';
-  curve = shape.curveBasis; // shape.curveLinear;
+  curve = shape.curveBasis // shape.curveLinear;
   // curve = shape.curveLinear;
 
   colorScheme = {
@@ -104,10 +104,10 @@ export class NetworkingStatsComponent implements OnInit {
         this.networkingHistoryDurationSeries = [
           ...data.downloadDurationSeries,
           //add actual download rate
-          {
-            'value': this.networkingStats.downloadRate ? this.networkingStats.downloadRate : '',
-            'name': (data.downloadDurationSeries.length + 1)
-          }
+          // {
+          //   'value': this.networkingStats.downloadRate ? this.networkingStats.downloadRate : '',
+          //   'name': (data.downloadDurationSeries.length + 1)
+          // }
         ]
 
         this.single = [

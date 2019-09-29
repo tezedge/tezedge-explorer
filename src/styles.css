@@ -3,21 +3,11 @@
 html,
 body {
     height: 100%;
-    background: grey;
-}
-
-body {
     font-family: Roboto, "Helvetica Neue", sans-serif;
 }
 
-mat-card {
-    margin: 10px;
-    width: 70vw;
-
-    @media screen and (min-width: 300px) {
-        margin: 0px 10px 0px 10px;
-    }
-
+table {
+    width: 100%;
 }
 
 mat-card-header {
@@ -74,4 +64,67 @@ mat-card-header {
     font: 300 24px/32px Roboto, "Helvetica Neue", sans-serif;
 }
 
+.networking {
+    
+}
+.networking-stats {
+    width: 50vw;
+}
+.networking-stats-chart {
+    height:20vh
+}
+.networking-peers {
+    width: 50vw;
+}
+.networking-history {
+    width: 50vw;
+}
 
+@media (max-width: 600px) {
+    body {
+        margin: 0px;
+    }
+    .networking {
+        width: 100vw;
+    }
+    .networking-stats {
+        width: 100vw;
+    }
+    .networking-stats-chart {
+        height:15vh
+    }
+    .networking-endpoint {
+        width: 90vw;
+    }
+    .networking-history {
+        width: 90vw;
+    }
+    .networking-peers {
+        width: 100vw;
+    }
+    .networking-peers th.mat-header-cell.cdk-column-id.mat-column-id {
+        width: 45vw; 
+    }
+    .networking-peers .mat-cell.cdk-column-id.mat-column-id.ng-star-inserted  {
+        display: block;
+        width: 45vw; 
+    }
+
+    .networking-peers th.mat-header-cell.cdk-column-averageTransferSpeed.mat-column-averageTransferSpeed {
+        display:none
+    }
+    .networking-peers .mat-cell.cdk-column-averageTransferSpeed.mat-column-averageTransferSpeed {
+        display:none
+    }
+
+    .networking-peers .mat-cell.cdk-column-transferredBytes.mat-column-transferredBytes {
+        width: 30vw;
+    }
+    
+    .networking-peers .mat-cell.cdk-column-currentTransferSpeed.mat-column-currentTransferSpeed {
+        width: 30vw;
+    }
+       
+
+    
+}

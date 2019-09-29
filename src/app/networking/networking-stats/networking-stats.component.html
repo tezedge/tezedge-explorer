@@ -1,26 +1,21 @@
-<mat-card>
-
-    <mat-card-content>
-        <b>COMPETED </b>
-        {{ (networkingStats?.downloadedBlocks/(networkingStats?.currentBlockCount*0.01)) | number:'1.2-2'}} %
-        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-        <b>ETA</b> {{networkingStats?.eta}} &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-        <b>HEAD</b> {{networkingStats?.currentBlockCount}} &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-        <b>SPEED</b> {{networkingPeersMetrics?.totalAvgSpeed}} kB/s &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-        <b>RATE</b> {{networkingStats?.downloadRate}} blocks/s
-    </mat-card-content>
-
-</mat-card>
-
-<div style="height:15vh">
-    <ngx-charts-line-chart class="networking-stats-chart" [scheme]="colorScheme" [results]="single"
-        [gradient]="gradient" [xAxis]="showXAxis" [yAxis]="showYAxis" [showXAxisLabel]="showXAxisLabel"
-        [showYAxisLabel]="showYAxisLabel" [xAxisLabel]="xAxisLabel" [yAxisLabel]="yAxisLabel" [curve]="curve"
-        autoScale="false" tooltipDisabled="true" animations="false" roundDomains="false">
-    </ngx-charts-line-chart>
-</div>
-
-
 <div class="networking-stats">
+
+    <b>COMPETED </b>
+    {{ (networkingStats?.downloadedBlocks/(networkingStats?.currentBlockCount*0.01)) | number:'1.2-2'}} %
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    <br />
+    <b>ETA</b> {{networkingStats?.eta}} &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    <!-- <b>HEAD</b> {{networkingStats?.currentBlockCount}} &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -->
+    <br />
+    <b>SPEED</b> {{networkingPeersMetrics?.totalAvgSpeed}} kB/s &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    <b>RATE</b> {{networkingStats?.downloadRate}} blocks/s
+
+    <div class="networking-stats-chart">
+        <ngx-charts-line-chart [scheme]="colorScheme" [results]="single"
+            [gradient]="gradient" [xAxis]="showXAxis" [yAxis]="showYAxis" [showXAxisLabel]="showXAxisLabel"
+            [showYAxisLabel]="showYAxisLabel" [xAxisLabel]="xAxisLabel" [yAxisLabel]="yAxisLabel" [curve]="curve"
+            autoScale="false" tooltipDisabled="true" animations="false" roundDomains="false">
+        </ngx-charts-line-chart>
+    </div>
 
 </div>

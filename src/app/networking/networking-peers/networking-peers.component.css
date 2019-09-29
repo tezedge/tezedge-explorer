@@ -1,15 +1,13 @@
 .networking-peers th.mat-header-cell.cdk-column-id.mat-column-id {
     text-overflow: ellipsis;
     overflow: hidden; 
-    width: 20vw; 
     white-space: nowrap;
+    width: 20vw; 
 }
 .networking-peers .mat-cell.cdk-column-id.mat-column-id  {
-    display: block;
     padding: 20px;
     text-overflow: ellipsis;
     overflow: hidden; 
-    width: 20vw; 
     white-space: nowrap;
 }
 

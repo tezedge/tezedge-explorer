@@ -1,16 +1,8 @@
-<mat-card>
+<div class="networking-endpoint">
 
-    <!-- <mat-card-header>
-        <h2 class="mat-h1 reset">
-            endpoint
-        </h2>
-    </mat-card-header> -->
+    <b>STATUS</b> {{ networkingEndpoint?.status }} &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 
-    <mat-card-content>
-        <b>STATUS</b> {{ networkingEndpoint?.status }}  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-        
-        <b>ENDPOINT</b> {{ settings.endpoint }}
-        <a routerLink="/settings">edit</a>
-    </mat-card-content>
+    <b>ENDPOINT</b> {{ settings.endpoint }}
+    <a routerLink="/settings">edit</a>
 
-</mat-card>
+</div>

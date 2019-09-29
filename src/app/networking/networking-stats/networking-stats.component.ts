@@ -56,7 +56,7 @@ export class NetworkingStatsComponent implements OnInit {
 
   // options
   showXAxis = false;
-  showYAxis = true;
+  showYAxis = false;
   gradient = false;
   showLegend = false;
   showXAxisLabel = false;

@@ -12,17 +12,21 @@ export function reducer(state = initialState, action) {
             return {
                 ids: [
                     ...action.payload
+                        // remove peers without id
+                        .filter(peer => peer.id !== null)
                         // sort rows according to average speed   
                         .slice().sort((a, b) => b.averageTransferSpeed - a.averageTransferSpeed)
                         .map(peer => peer.id)
                 ],
-                entities: action.payload.reduce((accumulator, peer) => ({
-                    ...accumulator,
-                    [peer.id]: {
-                        ...state.entities[peer.id],
-                        ...peer
-                    }
-                }), {}),
+                entities: action.payload
+                    .filter(peer => peer.id !== null)
+                    .reduce((accumulator, peer) => ({
+                        ...accumulator,
+                        [peer.id]: {
+                            ...state.entities[peer.id],
+                            ...peer
+                        }
+                    }), {}),
                 metrics: {
                     totalAvgSpeed:
                         (action.payload.reduce((accumulator, peer) =>
@@ -34,7 +38,7 @@ export function reducer(state = initialState, action) {
 
         // case 'METRICS_SUBSCRIBE_ERROR':
         //         return initialState
-    
+
         default:
             return state;
     }

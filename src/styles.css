@@ -7,7 +7,6 @@ body {
 }
 
 body {
-    margin: 0;
     font-family: Roboto, "Helvetica Neue", sans-serif;
 }
 
@@ -15,16 +14,16 @@ mat-card {
     margin: 10px;
     width: 70vw;
 
+    @media screen and (min-width: 300px) {
+        margin: 0px 10px 0px 10px;
+    }
+
 }
 
 mat-card-header {
     display: flex;
     align-items: center;
     justify-content: center;
-}
-
-.networking {
-    margin: 25px;
 }
 
 .networking {
@@ -40,13 +39,13 @@ mat-card-header {
     justify-content: center;
 }
 
-.networking 
-.networking .mat-h1 {
-    font: 300 24px/32px Roboto,"Helvetica Neue",sans-serif;
+.networking .networking .mat-h1 {
+    font: 300 24px/32px Roboto, "Helvetica Neue", sans-serif;
 }
 
 .networking-stats mat-card-content {
-    height: 200px;
+    height: 250px;
+    padding: 20px;
 }
 
 .networking-stats ngx-charts-line-chart {
@@ -71,7 +70,8 @@ mat-card-header {
     justify-content: center;
 }
 
-.settings 
-.settings .mat-h1 {
-    font: 300 24px/32px Roboto,"Helvetica Neue",sans-serif;
+.settings .settings .mat-h1 {
+    font: 300 24px/32px Roboto, "Helvetica Neue", sans-serif;
 }
+
+

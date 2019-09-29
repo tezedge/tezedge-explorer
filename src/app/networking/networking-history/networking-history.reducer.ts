@@ -24,7 +24,7 @@ export function reducer(state = initialState, action) {
                     .filter(cycle => cycle.downloadDuration)
                     .map((cycle) => ({
                         name: cycle.group,
-                        value: cycle.downloadDuration
+                        value: Math.floor(4096/cycle.downloadDuration)
                     }), {})
             }
         }

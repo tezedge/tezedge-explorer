@@ -16,12 +16,43 @@ export class NetworkingStatsComponent implements OnInit {
 
   single = [
     {
-      "name": "History",
-      "series": [],
+      'name': 'Saint Pierre and Miquelon',
+      'series': [
+        {
+          'value': 6182,
+          'name': '2016-09-22T13:44:43.081Z'
+        },
+        {
+          'value': 4938,
+          'name': '2016-09-23T00:29:51.341Z'
+        },
+        {
+          'value': 5137,
+          'name': '2016-09-17T02:59:36.606Z'
+        },
+        {
+          'value': 2841,
+          'name': '2016-09-21T11:01:36.508Z'
+        },
+        {
+          'value': 6347,
+          'name': '2016-09-19T21:28:14.801Z'
+        },
+      ],
+    },
+    // A null value would have occurred here
+    {
+      'name': 'Saint Pierre and Miquelon',
+      'series': [
+        {
+          'value': '',
+          'name': '2016-10-19T11:28:14.801Z'
+        }
+      ]
     }
   ];
 
-  view: any[] = [700, 150];
+  // view: any[] = [700, 150];
 
   // options
   showXAxis = false;
@@ -77,6 +108,17 @@ export class NetworkingStatsComponent implements OnInit {
           {
             "name": "History",
             "series": this.networkingHistoryDurationSeries,
+          },
+          // add empty space to graph
+          {
+            "name": "History",
+            "series": [
+              {
+                'value': '',
+                'name': this.networkingStats.currentBlockCount ?
+                  Math.floor(this.networkingStats.currentBlockCount / 4096) : ''
+              }
+            ]
           }
         ];
 

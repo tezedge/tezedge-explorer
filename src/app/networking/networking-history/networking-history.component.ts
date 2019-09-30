@@ -32,7 +32,7 @@ export class NetworkingHistoryComponent implements OnInit {
     //   border: "#f2f2f2",
     // }
     color: {
-      finishedBlocks: "#1e1e1e",
+      finishedBlocks: "#000000",
       appliedBlocks: "#00dbc6",
       empty: "#f2f2f2",
       border: "lightgrey",

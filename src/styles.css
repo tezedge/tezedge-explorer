@@ -1,4 +1,37 @@
 /* You can add global styles to this file, and also import other style files */
+/*
+body {
+    background: #1e1e1e !important;
+    color: whitesmoke !important;
+}
+
+.networking-endpoint {
+    background-color: #12121240 !important;
+    color: #5a5a5a !important;
+}
+
+.mat-table {
+    background: #1e1e1e !important;
+    color: #5a5a5a !important;
+}
+
+th.mat-header-cell {
+    color: #5a5a5a !important;
+}
+
+.mat-cell {
+    color: #5a5a5a !important;
+}
+
+.mat-paginator {
+    background: #1e1e1e !important;
+    color: #5a5a5a !important; 
+}
+
+.mat-paginator-icon {
+    color: #5a5a5a !important;  
+}
+*/
 
 html,
 body {
@@ -44,11 +77,6 @@ table {
     flex-direction: column;
 }
 
-.settings mat-card-header {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
 
 .settings .settings .mat-h1 {
     font: 300 24px/32px Roboto, "Helvetica Neue", sans-serif;
@@ -103,6 +131,7 @@ table {
 }
 
 .networking-history {
+    margin: 2vh;
     width: 50vw;
 }
 
@@ -168,6 +197,7 @@ table {
     .settings-endpoint {
         width: 90vw;
     }
+
     .settings-endpoint-input {
         width: 90vw;
     }

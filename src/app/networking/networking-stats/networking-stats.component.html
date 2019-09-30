@@ -59,7 +59,7 @@
 
     <div class="networking-stats-panel">
         <div class="networking-stats-left">
-            <span class="networking-stats-completed">
+            <span class="networking-stats-completed" *ngIf="networkingStats?.downloadedBlocks">
                 {{ (networkingStats?.downloadedBlocks/(networkingStats?.currentBlockCount*0.01)) | number:'1.1-1'}}%
             </span>
             <br />
@@ -70,7 +70,7 @@
         <span class="networking-stats-speed"> {{networkingPeersMetrics?.totalAvgSpeed | bandwidth:'s' }} </span>
         <br /> 
     -->
-        <div class="networking-stats-right">
+        <div class="networking-stats-right" *ngIf="networkingStats?.downloadRate">
      
             <span class="networking-stats-eta">{{networkingStats?.eta}}</span>
             <span class="networking-stats-rate">{{networkingStats?.downloadRate}} blocks/s </span>
@@ -82,7 +82,7 @@
     <div class="networking-stats-chart">
         <ngx-charts-line-chart [scheme]="colorScheme" [results]="single" [gradient]="gradient" [xAxis]="showXAxis"
             [yAxis]="showYAxis" [showXAxisLabel]="showXAxisLabel" [showYAxisLabel]="showYAxisLabel"
-            [xAxisLabel]="xAxisLabel" [yAxisLabel]="yAxisLabel" [curve]="curve" autoScale="false" tooltipDisabled="true"
+            [xAxisLabel]="xAxisLabel" [yAxisLabel]="yAxisLabel" [curve]="curve" autoScale="true" tooltipDisabled="false"
             animations="false" roundDomains="false">
         </ngx-charts-line-chart>
     </div>

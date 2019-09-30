@@ -23,7 +23,20 @@ export class NetworkingHistoryComponent implements OnInit {
   public networkingHistoryPanel
   public networkingStats
   public networkingHistoryConfig = {
-    row_length: 32
+    row_length: 32,
+    row_height: 20,
+    // color: {
+    //   finishedBlocks: "#00dbc6",
+    //   appliedBlocks: "#000000",
+    //   empty: "#f2f2f2",
+    //   border: "#f2f2f2",
+    // }
+    color: {
+      finishedBlocks: "#1e1e1e",
+      appliedBlocks: "#00dbc6",
+      empty: "#f2f2f2",
+      border: "lightgrey",
+    }
   }
 
   public onDestroy$ = new Subject()
@@ -88,7 +101,7 @@ export class NetworkingHistoryComponent implements OnInit {
         this.networkingHistory.ids.map(id => {
           const row_length = 8;
           const x = (((this.networkingHistory.entities[id].group % this.networkingHistoryConfig.row_length) + Math.floor((this.networkingHistory.entities[id].group % this.networkingHistoryConfig.row_length) / 8)) * 20) + 2
-          const y = (Math.floor(this.networkingHistory.entities[id].group / this.networkingHistoryConfig.row_length) * 20) + 2;
+          const y = (Math.floor(this.networkingHistory.entities[id].group / this.networkingHistoryConfig.row_length) * this.networkingHistoryConfig.row_height) + 2;
 
           // TODO: !!!!!!! refactor to support update 
           // https://stackoverflow.com/questions/14471923/d3-pattern-to-add-an-element-if-missing/14511399#14511399
@@ -106,7 +119,7 @@ export class NetworkingHistoryComponent implements OnInit {
               .attr("height", 6)
               .attr("rx", 2)
               .attr("ry", 2)
-              .attr("fill", "black");
+              .attr("fill", this.networkingHistoryConfig.color.finishedBlocks);
 
           } else {
 
@@ -128,7 +141,7 @@ export class NetworkingHistoryComponent implements OnInit {
               .attr("height", 12)
               .attr("rx", 2)
               .attr("ry", 2)
-              .attr("fill", "black");
+              .attr("fill", this.networkingHistoryConfig.color.finishedBlocks);
 
           } else {
 
@@ -151,7 +164,7 @@ export class NetworkingHistoryComponent implements OnInit {
               .attr("height", 16)
               .attr("rx", 2)
               .attr("ry", 2)
-              .attr("fill", "#183165");
+              .attr("fill", this.networkingHistoryConfig.color.appliedBlocks);
 
           } else {
 
@@ -192,7 +205,7 @@ export class NetworkingHistoryComponent implements OnInit {
           (id % this.networkingHistoryConfig.row_length) + (Math.floor((id % this.networkingHistoryConfig.row_length) / 8))
         )
         * 20) + 2
-      const y = (Math.floor(id / this.networkingHistoryConfig.row_length) * 20) + 2;
+      const y = (Math.floor(id / this.networkingHistoryConfig.row_length) * this.networkingHistoryConfig.row_height) + 2;
 
       this.networkingHistoryPanel.append("rect")
         .attr("opacity", 1)
@@ -202,9 +215,9 @@ export class NetworkingHistoryComponent implements OnInit {
         .attr("ry", 2)
         .attr("width", 16)
         .attr("height", 16)
-        .attr("stroke", "grey")
+        .attr("stroke", this.networkingHistoryConfig.color.border)
         .attr("stroke-width", 1)
-        .attr("fill", "whitesmoke")
+        .attr("fill", this.networkingHistoryConfig.color.empty)
 
     }
 

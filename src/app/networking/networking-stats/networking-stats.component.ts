@@ -24,20 +24,29 @@ export class NetworkingStatsComponent implements OnInit {
   // view: any[] = [700, 150];
 
   // options
-  showXAxis = false;
-  showYAxis = true;
-  gradient = false;
-  showLegend = false;
-  showXAxisLabel = false;
-  xAxisLabel = 'Bandwidth';
-  showYAxisLabel = false;
-  yAxisLabel = 'Time';
-  curve = shape.curveBasis // shape.curveLinear;
-  // curve = shape.curveLinear;
+  public showXAxis = false;
+  public showYAxis = true;
+  public gradient = false;
+  public showLegend = false;
+  public showXAxisLabel = false;
+  public xAxisLabel = 'Bandwidth';
+  public showYAxisLabel = false;
+  public yAxisLabel = 'Time';
+  public curve = shape.curveBasis // shape.curveLinear;
+  // public curve = shape.curveLinear;
 
-  colorScheme = {
-    domain: ['#000000', '#A10A28', '#C7B42C', '#AAAAAA']
-  };
+  public colorScheme =
+    {
+      name: 'vivid',
+      selectable: true,
+      group: 'Ordinal',
+      domain: [
+        '#000000', '#3f51b5', '#2196f3', '#00b862', '#afdf0a', '#a7b61a', '#f3e562', '#ff9800', '#ff5722', '#ff4514'
+      ]
+    }
+
+
+
 
   public networkingStats
   public networkingPeersMetrics

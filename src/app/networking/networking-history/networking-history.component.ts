@@ -21,6 +21,7 @@ export class NetworkingHistoryComponent implements OnInit {
 
   public networkingHistory
   public networkingHistoryPanel
+  public networkingHistoryPanelShow = false
   public networkingStats
   public networkingHistoryConfig = {
     row_length: 32,
@@ -96,7 +97,8 @@ export class NetworkingHistoryComponent implements OnInit {
 
           // create blocks panel
           this.initBlockPanel();
-        }
+
+        } 
 
         this.networkingHistory.ids.map(id => {
           const row_length = 8;

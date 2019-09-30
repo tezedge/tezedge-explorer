@@ -13,6 +13,7 @@ import { takeUntil } from 'rxjs/operators'
 export class NetworkingPeersComponent implements OnInit {
 
   public networkingPeersList
+  public networkingPeersShow
   public networkingPeersMetrics
   public tableDataSource
   public onDestroy$ = new Subject()
@@ -31,6 +32,8 @@ export class NetworkingPeersComponent implements OnInit {
       .subscribe(data => {
 
         this.networkingPeersList = data.ids.map(id => ({ id, ...data.entities[id] }))
+
+        this.networkingPeersShow = data.ids.length > 0 ? true : false;
 
         this.networkingPeersMetrics = data.metrics;
 

@@ -149,8 +149,16 @@ export class NetworkingHistoryComponent implements OnInit {
 
             block_operations
               .attr("opacity", (this.networkingHistory.entities[id].finishedBlocks / 4096).toFixed(2))
+          }
+
+          // we have all headers and operations in cycle ready for application
+          if (this.networkingHistory.entities[id].finishedBlocks === 4096 ){
+            // set yellow collor
+            block_header.attr("fill","#FFFFFF")
+            block_operations.attr("fill","#FFFFFF")
 
           }
+
 
           // block apply
           let block_apply = d3.select("#block_apply_" + id)

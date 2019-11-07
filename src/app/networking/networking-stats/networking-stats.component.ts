@@ -25,7 +25,7 @@ export class NetworkingStatsComponent implements OnInit {
 
   // options
   public showXAxis = false;
-  public showYAxis = false;
+  public showYAxis = true;
   public gradient = false;
   public showLegend = false;
   public showXAxisLabel = false;
@@ -82,10 +82,10 @@ export class NetworkingStatsComponent implements OnInit {
         this.networkingHistoryDurationSeries = [
           ...data.downloadDurationSeries,
           //add actual download rate
-          {
-            'value': this.networkingStats.downloadRate ? this.networkingStats.downloadRate : '',
-            'name': (data.downloadDurationSeries.length + 1)
-          }
+          // {
+          //   'value': this.networkingStats.downloadRate ? this.networkingStats.downloadRate : '',
+          //   'name': (data.downloadDurationSeries.length + 1)
+          // }
         ]
 
         this.single = [
@@ -98,10 +98,16 @@ export class NetworkingStatsComponent implements OnInit {
             "name": "History",
             "series": [
               {
-                'value': Math.round(data.downloadDurationSeries.reduce((avg, item) => ((avg + item.value) / 2), 0) / 50) * 50,
+                'value':Math.round(data.downloadDurationSeries.reduce((avg, item) => ((avg + item.value) / 2), 0) / 50) * 50,
                 'name': this.networkingStats.currentBlockCount ?
                   Math.floor(this.networkingStats.currentBlockCount / 4096) : ''
-              }
+              },
+              // {
+              //   'value': 100,
+              //   'name': this.networkingStats.currentBlockCount ?
+              //     Math.floor(this.networkingStats.currentBlockCount / 4096) : '' 
+              // }
+
             ]
           }
         ];

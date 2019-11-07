@@ -63,7 +63,8 @@
                 {{ (networkingStats?.downloadedBlocks/(networkingStats?.currentBlockCount*0.01)) | number:'1.1-1'}}%
             </span>
             <br />
-
+            {{ networkingStats?.downloadedBlocks}}
+            {{ networkingStats?.currentBlockCount}}
         </div>
 
         <!--
@@ -71,7 +72,7 @@
         <br /> 
     -->
         <div class="networking-stats-right" *ngIf="networkingStats?.downloadRate">
-     
+
             <span class="networking-stats-eta">{{networkingStats?.eta}}</span>
             <span class="networking-stats-rate">{{networkingStats?.downloadRate}} blocks/s </span>
 

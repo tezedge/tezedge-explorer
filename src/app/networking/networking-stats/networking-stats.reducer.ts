@@ -13,6 +13,16 @@ export function reducer(state = initialState, action) {
             }
         }
 
+        case 'blockApplicationStatus': {
+            return {
+                ...state,
+                currentApplicationSpeed: action.payload.currentApplicationSpeed,
+                averageApplicationSpeed: action.payload.averageApplicationSpeed,
+                lastAppliedBlock: action.payload.lastAppliedBlock
+            }
+
+        }
+
         case 'METRICS_SUBSCRIBE_ERROR':
             return initialState
 

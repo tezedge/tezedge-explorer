@@ -98,7 +98,7 @@ export class NetworkingHistoryComponent implements OnInit {
           // create blocks panel
           this.initBlockPanel();
 
-        } 
+        }
 
         this.networkingHistory.ids.map(id => {
           const row_length = 8;
@@ -152,10 +152,10 @@ export class NetworkingHistoryComponent implements OnInit {
           }
 
           // we have all headers and operations in cycle ready for application
-          if (this.networkingHistory.entities[id].finishedBlocks === 4096 ){
+          if (this.networkingHistory.entities[id].finishedBlocks === 4096) {
             // set yellow collor
-            block_header.attr("fill","#FFFFFF")
-            block_operations.attr("fill","#FFFFFF")
+            block_header.attr("fill", "#FFFFFF")
+            block_operations.attr("fill", "#FFFFFF")
 
           }
 
@@ -204,9 +204,11 @@ export class NetworkingHistoryComponent implements OnInit {
   // initialize block panel
   initBlockPanel() {
 
+    console.log('[initBlockPanel]', this.networkingHistory);
+
     // TODO: completly refactor
     // this.networkingStats.currentBlockCount
-    let cycles = Math.round(687903 / 4096)
+    let cycles = Math.round(690903 / 4096)
 
     for (let id = 0; id < cycles; id++) {
 

@@ -102,8 +102,8 @@ export class NetworkingHistoryComponent implements OnInit {
 
         this.networkingHistory.ids.map(id => {
           const row_length = 8;
-          const x = (((this.networkingHistory.entities[id].group % this.networkingHistoryConfig.row_length) + Math.floor((this.networkingHistory.entities[id].group % this.networkingHistoryConfig.row_length) / 8)) * 20) + 2
-          const y = (Math.floor(this.networkingHistory.entities[id].group / this.networkingHistoryConfig.row_length) * this.networkingHistoryConfig.row_height) + 2;
+          const x = (((this.networkingHistory.entities[id].id % this.networkingHistoryConfig.row_length) + Math.floor((this.networkingHistory.entities[id].id % this.networkingHistoryConfig.row_length) / 8)) * 20) + 2
+          const y = (Math.floor(this.networkingHistory.entities[id].id / this.networkingHistoryConfig.row_length) * this.networkingHistoryConfig.row_height) + 2;
 
           // TODO: !!!!!!! refactor to support update 
           // https://stackoverflow.com/questions/14471923/d3-pattern-to-add-an-element-if-missing/14511399#14511399
@@ -126,7 +126,7 @@ export class NetworkingHistoryComponent implements OnInit {
           } else {
 
             block_header
-              .attr("opacity", (this.networkingHistory.entities[id].numbersOfBlocks / 4096).toFixed(2))
+              .attr("opacity", (this.networkingHistory.entities[id].headers / 4096).toFixed(2))
 
           }
 
@@ -148,7 +148,7 @@ export class NetworkingHistoryComponent implements OnInit {
           } else {
 
             block_operations
-              .attr("opacity", (this.networkingHistory.entities[id].finishedBlocks / 4096).toFixed(2))
+              .attr("opacity", (this.networkingHistory.entities[id].operations / 4096).toFixed(2))
           }
 
           // we have all headers and operations in cycle ready for application
@@ -179,7 +179,7 @@ export class NetworkingHistoryComponent implements OnInit {
           } else {
 
             block_apply
-              .attr("opacity", (this.networkingHistory.entities[id].appliedBlocks / 4096).toFixed(2))
+              .attr("opacity", (this.networkingHistory.entities[id].applications / 4096).toFixed(2))
 
           }
 

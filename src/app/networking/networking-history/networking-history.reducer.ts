@@ -1,3 +1,5 @@
+import { debug } from 'util'
+
 const initialState: any = {
     ids: [],
     entities: {},
@@ -7,27 +9,48 @@ const initialState: any = {
 export function reducer(state = initialState, action) {
     switch (action.type) {
 
-        case 'blockStatus': {
+        case 'chainStatus': {
             return {
-
                 ids: [
-                    ...action.payload.map(cycle => cycle.group)
+                    ...action.payload.chain.map(cycle => cycle.id)
                 ],
-                entities: action.payload.reduce((accumulator, cycle) => ({
+                entities: action.payload.chain.reduce((accumulator, cycle) => ({
                     ...accumulator,
-                    [cycle.group]: {
-                        ...state.entities[cycle.group],
+                    [cycle.id]: {
+                        ...state.entities[cycle.id],
                         ...cycle
                     }
                 }), {}),
-                downloadDurationSeries: action.payload
-                    .filter(cycle => cycle.downloadDuration)
+                downloadDurationSeries: action.payload.chain
+                    .filter(cycle => cycle.duration)
                     .map((cycle) => ({
-                        name: cycle.group,
-                        value: Math.floor(4096/cycle.downloadDuration)
+                        name: cycle.id,
+                        value: Math.floor(action.payload.blocksPerCycle/cycle.duration)
                     }), {})
             }
         }
+
+        // case 'blockStatus': {
+        //     return {
+
+                // ids: [
+                //     ...action.payload.map(cycle => cycle.group)
+                // ],
+                // entities: action.payload.reduce((accumulator, cycle) => ({
+                //     ...accumulator,
+                //     [cycle.group]: {
+                //         ...state.entities[cycle.group],
+                //         ...cycle
+                //     }
+                // }), {}),
+                // downloadDurationSeries: action.payload
+                //     .filter(cycle => cycle.downloadDuration)
+                //     .map((cycle) => ({
+                //         name: cycle.group,
+                //         value: Math.floor(4096/cycle.downloadDuration)
+                //     }), {})
+        //     }
+        // }
 
         case 'METRICS_SUBSCRIBE_ERROR':
             return initialState

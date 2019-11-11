@@ -47,7 +47,7 @@ export class NetworkingHistoryComponent implements OnInit {
     public store: Store<any>
   ) {
 
-
+  
   }
 
 
@@ -152,7 +152,7 @@ export class NetworkingHistoryComponent implements OnInit {
           }
 
           // we have all headers and operations in cycle ready for application
-          if (this.networkingHistory.entities[id].finishedBlocks === 4096) {
+          if (this.networkingHistory.entities[id].operations === 4096) {
             // set yellow collor
             block_header.attr("fill", "#FFFFFF")
             block_operations.attr("fill", "#FFFFFF")
@@ -208,7 +208,7 @@ export class NetworkingHistoryComponent implements OnInit {
 
     // TODO: completly refactor
     // this.networkingStats.currentBlockCount
-    let cycles = Math.round(690903 / 4096)
+    let cycles = Math.round(655000 / 4096)
 
     for (let id = 0; id < cycles; id++) {
 

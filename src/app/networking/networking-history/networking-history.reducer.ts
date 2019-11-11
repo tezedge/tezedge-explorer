@@ -11,6 +11,7 @@ export function reducer(state = initialState, action) {
 
         case 'chainStatus': {
             return {
+                ...state,
                 ids: [
                     ...action.payload.chain.map(cycle => cycle.id)
                 ],
@@ -21,36 +22,26 @@ export function reducer(state = initialState, action) {
                         ...cycle
                     }
                 }), {}),
-                downloadDurationSeries: action.payload.chain
-                    .filter(cycle => cycle.duration)
-                    .map((cycle) => ({
-                        name: cycle.id,
-                        value: Math.floor(action.payload.blocksPerCycle/cycle.duration)
-                    }), {})
+                // downloadDurationSeries: action.payload.chain
+                //     .filter(cycle => cycle.duration)
+                //     .map((cycle) => ({
+                //         name: cycle.id,
+                //         value: Math.floor(action.payload.blocksPerCycle/cycle.duration)
+                //     }), {})
             }
         }
 
-        // case 'blockStatus': {
-        //     return {
-
-                // ids: [
-                //     ...action.payload.map(cycle => cycle.group)
-                // ],
-                // entities: action.payload.reduce((accumulator, cycle) => ({
-                //     ...accumulator,
-                //     [cycle.group]: {
-                //         ...state.entities[cycle.group],
-                //         ...cycle
-                //     }
-                // }), {}),
-                // downloadDurationSeries: action.payload
-                //     .filter(cycle => cycle.downloadDuration)
-                //     .map((cycle) => ({
-                //         name: cycle.group,
-                //         value: Math.floor(4096/cycle.downloadDuration)
-                //     }), {})
-        //     }
-        // }
+        case 'blockStatus': {
+             return {
+                ...state,
+                downloadDurationSeries: action.payload
+                    .filter(cycle => cycle.downloadDuration)
+                    .map((cycle) => ({
+                        name: cycle.group,
+                        value: Math.floor(4096/cycle.downloadDuration)
+                    }), {})
+             }
+        }
 
         case 'METRICS_SUBSCRIBE_ERROR':
             return initialState

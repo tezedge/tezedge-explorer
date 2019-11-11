@@ -53,13 +53,16 @@
         .networking-stats-rate {
             font-size: 5vw;
         }
+
+        .networking-stats-bootstrap {
+            font-size: 5vw;
+        }
     }
 
     .networking-stats-bootstrap {
-        padding: 20px 0px 20px 0px;
-        font-size: 1.2vw;
+        padding: 5px 0px 20px 0px;
+        font-size: 1.3vw;
     }
-
 </style>
 <div class="networking-stats">
 
@@ -75,20 +78,20 @@
         <span class="networking-stats-speed"> {{networkingPeersMetrics?.totalAvgSpeed | bandwidth:'s' }} </span>
         <br /> 
     -->
-        <div class="networking-stats-right" *ngIf="networkingStats?.downloadRate">
+        <div class="networking-stats-right">
 
             <span class="networking-stats-eta">{{networkingStats?.eta}}</span>
             <span class="networking-stats-rate">{{networkingStats?.downloadRate}} blocks/s </span>
 
+
+            <div class="networking-stats-bootstrap">
+                {{ networkingStats?.downloadedBlocks}} |
+                {{ networkingStats?.currentBlockCount}} |
+                {{ networkingStats?.lastAppliedBlock?.level}}
+            </div>
         </div>
     </div>
 
-    <div class="networking-stats-bootstrap">
-        downloadedBlocks: {{ networkingStats?.downloadedBlocks}} |
-        currentBlockCount: {{ networkingStats?.currentBlockCount}} |
-        lastAppliedBlock: {{ networkingStats?.lastAppliedBlock?.level}} 
-
-    </div>
 
 
     <div class="networking-stats-chart">

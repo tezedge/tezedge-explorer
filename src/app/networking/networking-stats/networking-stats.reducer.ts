@@ -1,4 +1,11 @@
 const initialState: any = {
+    eta: '',
+    currentBlockCount: 0,
+    downloadedBlocks: 0,
+    downloadRate: 0,
+    currentApplicationSpeed: 0,
+    averageApplicationSpeed: 0,
+    lastAppliedBlock: 0
 }
 
 export function reducer(state = initialState, action) {
@@ -6,6 +13,7 @@ export function reducer(state = initialState, action) {
 
         case 'incomingTransfer': {
             return {
+                ...state,
                 eta: Math.floor(action.payload.eta / 60) + "min " + Math.floor(action.payload.eta % 60) + "sec",
                 currentBlockCount: action.payload.currentBlockCount,
                 downloadedBlocks: action.payload.downloadedBlocks,

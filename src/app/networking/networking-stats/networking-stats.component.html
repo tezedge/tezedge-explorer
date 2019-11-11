@@ -32,6 +32,11 @@
     .networking-stats-rate {
         font-size: 1.7vw;
     }
+    
+    .networking-stats-bootstrap {
+        padding: 5px 0px 20px 0px;
+        font-size: 1.3vw;
+    }
 
     @media (max-width: 600px) {
         .networking-stats-panel {
@@ -55,14 +60,11 @@
         }
 
         .networking-stats-bootstrap {
-            font-size: 5vw;
+            font-size: 3vw;
         }
     }
 
-    .networking-stats-bootstrap {
-        padding: 5px 0px 20px 0px;
-        font-size: 1.3vw;
-    }
+
 </style>
 <div class="networking-stats">
 
@@ -85,9 +87,12 @@
 
 
             <div class="networking-stats-bootstrap">
+
+                {{ networkingStats?.lastAppliedBlock?.level}} |
+                {{ networkingStats.currentApplicationSpeed / 60 | number:'1.1-1' }} |
                 {{ networkingStats?.downloadedBlocks}} |
-                {{ networkingStats?.currentBlockCount}} |
-                {{ networkingStats?.lastAppliedBlock?.level}}
+                {{ networkingStats?.currentBlockCount}} 
+            
             </div>
         </div>
     </div>

@@ -18,7 +18,7 @@ export function reducer(state = initialState, action) {
                 ...state,
                 currentApplicationSpeed: action.payload.currentApplicationSpeed,
                 averageApplicationSpeed: action.payload.averageApplicationSpeed,
-                lastAppliedBlock: action.payload.lastAppliedBlock
+                lastAppliedBlock: action.payload.lastAppliedBlock ? action.payload.lastAppliedBlock : state.lastAppliedBlock
             }
 
         }

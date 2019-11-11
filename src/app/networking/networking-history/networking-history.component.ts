@@ -227,8 +227,8 @@ export class NetworkingHistoryComponent implements OnInit {
         .attr("ry", 2)
         .attr("width", 16)
         .attr("height", 16)
-        .attr("stroke", this.networkingHistoryConfig.color.border)
-        .attr("stroke-width", 1)
+        // .attr("stroke", this.networkingHistoryConfig.color.border)
+        // .attr("stroke-width", 1)
         .attr("fill", this.networkingHistoryConfig.color.empty)
 
     }

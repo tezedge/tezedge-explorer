@@ -1,8 +1,91 @@
+<style>
+    .history-cycle-panel {}
+
+    .history-voting-period-row {
+        display: flex;
+        flex-direction: row;
+        width: 500px;
+    }
+
+    .history-voting-period {
+        flex-direction: row;
+        /* width: 248px; */
+        /* height: 58px;
+         */
+        margin: 4px;
+        padding: 4px 4px 4px 4px;
+
+        /* border: 1.1px solid #00DBC6; */
+        border: 1.1px solid #f0f0f0;
+        box-sizing: border-box;
+        border-radius: 4px;
+
+    }
+
+    .history-voting-period-label {
+        flex-direction: row;
+        font-family: Roboto;
+        font-style: normal;
+        font-weight: normal;
+        margin: 2px;
+        font-size: 12px;
+        line-height: 12px;
+        color: rgba(0, 0, 0, 0.4)
+    }
+    
+    .history-voting-period-panel {
+        display:flex;
+        flex-direction: row;
+    }
+
+    .history-cycle {
+        background-color: #00DBC6;
+        margin: 2px;
+        border-radius: 2px;
+        height: 20px;
+        width: 20px;
+    }
+
+    .history-cycle-number {
+        height: 20px;
+        width: 600px;
+    }
+</style>
+
 <div class="networking-history">
 
-    <svg id="networkingHistoryPanel" viewBox="0 0 700 140" preserveAspectRatio="xMidYMid meet">
+    <!-- <svg id="networkingHistoryPanel" viewBox="0 0 700 140" preserveAspectRatio="xMidYMid meet">
         <g>
         </g>
-    </svg>
+    </svg> -->
 
-</div>
+    <div class="history-cycle-panel">
+        <span class="history-voting-period-row" *ngFor="let votingPeriodRow of networkingHistoryFormated">
+            <span class="history-voting-period" *ngFor="let votingPeriod of votingPeriodRow">
+
+                <div class="history-voting-period-label">Proposal</div>
+
+                <span class="history-voting-period-panel">
+                    <div class="history-cycle" *ngFor="let cycle of votingPeriod">
+                        <!-- {{ cycle.id }}  -->
+                        <!-- {{ cycle.applications/4096 |  number:'1.0' }} -->
+                        <!-- [style.opacity]="0.2+cycle.applications/4096" -->
+                    </div>
+                </span>
+
+            </span>
+
+        </span>
+    </div>
+
+    <!-- <div class="history-cycle-panel" *ngFor="let cycle of networkingHistory">
+        <div class="history-cycle-number">
+            {{ cycle.id }}
+            {{ cycle.headers }}
+            {{ cycle.operations }}
+            {{ cycle.applications }}
+            {{ cycle.duration }}
+        </div>
+    </div> -->
+
+    <button mat-button (click)="render()">render</button>

@@ -57,9 +57,6 @@ table {
 }
 
 
-.networking-stats {
-    height: 20vw;
-}
 
 .networking-stats ngx-charts-line-chart {
     padding: 20px;
@@ -126,7 +123,6 @@ table {
 .networking {}
 
 .networking-stats {
-    width: 50vw;
 }
 
 .networking-stats-chart {
@@ -137,10 +133,6 @@ table {
     width: 50vw;
 }
 
-.networking-history {
-    margin: 1vh;
-    width: 50vw;
-}
 
 @media (max-width: 600px) {
     body {
@@ -168,7 +160,6 @@ table {
     }
 
     .networking-history {
-        width: 90vw;
     }
 
     .networking-peers {

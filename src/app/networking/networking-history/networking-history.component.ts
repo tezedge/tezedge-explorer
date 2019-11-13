@@ -80,6 +80,8 @@ export class NetworkingHistoryComponent implements OnInit {
       .subscribe(data => {
 
         this.networkingHistory = data.ids.map(id => data.entities[id])
+        
+        // this.networkingHistory = this.networkingHistory.concat(this.networkingHistory);
 
         const cyclesPerVotingPeriod = 8;
         const votingPeriodPerRow = 2;
@@ -112,7 +114,7 @@ export class NetworkingHistoryComponent implements OnInit {
 
         }
 
-        // this.cd.markForCheck();
+        this.cd.markForCheck();
 
         // // clean block pannel 
         // if (this.networkingHistory.ids.length === 0) {

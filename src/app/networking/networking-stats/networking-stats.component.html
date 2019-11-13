@@ -1,6 +1,5 @@
 <style>
-    .networking-stats {
-    }
+    .networking-stats {}
 
     .networking-stats-panel {
         display: flex;
@@ -20,58 +19,11 @@
         flex-direction: column;
     }
 
-    .networking-stats-completed {
-        font-size: 4vw;
-    }
-
-    .networking-stats-eta {
-        font-size: 1.7vw;
-    }
-
-    .networking-stats-speed {
-        font-size: 1.7vw;
-    }
-
-    .networking-stats-rate {
-        font-size: 1.7vw;
-    }
-
-    .networking-stats-bootstrap {
-        padding: 5px 0px 20px 0px;
-        font-size: 1.3vw;
-    }
-
-    @media (max-width: 600px) {
-        .networking-stats-panel {
-            padding: 20px 20px 0px 20px;
-        }
-
-        .networking-stats-completed {
-            font-size: 14vw;
-        }
-
-        .networking-stats-eta {
-            font-size: 5vw;
-        }
-
-        .networking-stats-speed {
-            font-size: 5vw;
-        }
-
-        .networking-stats-rate {
-            font-size: 5vw;
-        }
-
-        .networking-stats-bootstrap {
-            font-size: 3vw;
-        }
-    }
-
     .networking-stats-card {
         border: 1px solid rgba(0, 0, 0, 0.1);
         box-sizing: border-box;
         border-radius: 4px;
-        width: 320px;
+        width: 340px;
 
         margin: 10px;
     }
@@ -128,18 +80,33 @@
         flex-direction: row;
         /* height: 300px; */
     }
+
+    @media (max-width: 600px) {
+
+        .networking-stats-row {
+            display: block !important;
+        }
+
+        .networking-stats-card {
+            width: initial !important;
+            margin: 15px;
+        }
+
+
+    }
+    
 </style>
 
 <div class="networking-stats">
-    
+
     <div class="networking-stats-row">
-        <div class="networking-stats-chart">
+        <!-- <div class="networking-stats-chart">
             <ngx-charts-line-chart [scheme]="colorScheme" [results]="single" [gradient]="gradient" [xAxis]="showXAxis"
                 [yAxis]="showYAxis" [showXAxisLabel]="showXAxisLabel" [showYAxisLabel]="showYAxisLabel"
                 [xAxisLabel]="xAxisLabel" [yAxisLabel]="yAxisLabel" [curve]="curve" autoScale="true"
                 tooltipDisabled="false" animations="false" roundDomains="false">
             </ngx-charts-line-chart>
-        </div>
+        </div> -->
     </div>
 
     <div class="networking-stats-row">

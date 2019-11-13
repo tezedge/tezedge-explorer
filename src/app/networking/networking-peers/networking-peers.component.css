@@ -2,7 +2,7 @@
     text-overflow: ellipsis;
     overflow: hidden; 
     white-space: nowrap;
-    width: 20vw; 
+    /* width: 20vw;  */
 }
 .networking-peers .mat-cell.cdk-column-id.mat-column-id  {
     padding: 20px;

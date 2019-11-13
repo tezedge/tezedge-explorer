@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, ChangeDetectionStrategy } from '@angular/core';
 import { MatPaginator, MatTableDataSource } from '@angular/material';
 
 import { Store } from '@ngrx/store'
@@ -8,7 +8,8 @@ import { takeUntil } from 'rxjs/operators'
 @Component({
   selector: 'app-networking-peers',
   templateUrl: './networking-peers.component.html',
-  styleUrls: ['./networking-peers.component.css']
+  styleUrls: ['./networking-peers.component.css'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class NetworkingPeersComponent implements OnInit {
 

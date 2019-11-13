@@ -1,21 +1,25 @@
 <style>
     .networking-history {
+        display: flex;
     }
 
-    .history-cycle-panel {}
+    .history-cycle-panel {
+        display: flex;
+        flex-wrap: wrap;
+        width: 720px;
+        padding-top: 20px;
+    }
 
     .history-voting-period-row {
         display: flex;
         flex-direction: row;
-        width: 500px;
+        /* align-self: flex-start; */
+
     }
 
     .history-voting-period {
         flex-direction: row;
-        /* width: 248px; */
-        /* height: 58px;
-         */
-        margin: 4px;
+        margin: 4px 10px 4px 7px;
         padding: 4px 4px 4px 4px;
 
         /* border: 1.1px solid #00DBC6; */
@@ -45,29 +49,43 @@
         /* background-color: #00DBC6; */
         margin: 2px;
         border-radius: 2px;
-        height: 24px;
-        width: 24px;
+        height: 15px;
+        width: 15px;
     }
 
     .history-cycle-headers {
-        background-color: #000000;
+        background-color: #00DBC6;
         border-top-left-radius: 2px;
         border-top-right-radius: 2px;
-        height: 9px;
-        width: 22px;
+        height: 5px;
+        width: 15px;
     }
 
     .history-cycle-operations {
-        background-color: #000000;
+        background-color: #00DBC6;
         border-bottom-left-radius: 2px;
         border-bottom-right-radius: 2px;
-        height: 13px;
-        width: 22px;
+        height: 10px;
+        width: 15px;
     }
 
     .history-cycle-number {
         height: 20px;
         width: 600px;
+    }
+
+    .networking-history {
+        display: flex;
+    }
+
+    @media (max-width: 600px) {
+        .history-cycle-panel {
+            width: initial;
+        }
+
+        .history-voting-period {
+            margin: 0px 6px 8px 14px;
+        }
     }
 </style>
 
@@ -86,8 +104,7 @@
                 <div class="history-voting-period-label">Proposal</div>
 
                 <span class="history-voting-period-panel">
-                    <div class="history-cycle" *ngFor="let cycle of votingPeriod"
-                       >
+                    <div class="history-cycle" *ngFor="let cycle of votingPeriod">
                         <div class="history-cycle-headers" [style.opacity]="cycle.headers/4096">
                         </div>
                         <div class="history-cycle-operations" [style.opacity]="cycle.operations/4096">
@@ -110,5 +127,8 @@
             {{ cycle.duration }}
         </div>
     </div> -->
+</div>
 
+<!-- <div style="display:box;">
     <button mat-button (click)="render()">render</button>
+</div> -->

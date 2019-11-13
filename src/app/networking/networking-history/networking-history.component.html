@@ -54,7 +54,8 @@
     }
 
     .history-cycle-headers {
-        background-color: #00DBC6;
+        background-color: rgba(0, 0, 0, 0.9);
+        ;
         border-top-left-radius: 2px;
         border-top-right-radius: 2px;
         height: 5px;
@@ -62,7 +63,8 @@
     }
 
     .history-cycle-operations {
-        background-color: #00DBC6;
+        background-color: rgba(0, 0, 0, 0.9);
+        ;
         border-bottom-left-radius: 2px;
         border-bottom-right-radius: 2px;
         height: 10px;
@@ -104,12 +106,15 @@
                 <div class="history-voting-period-label">Proposal</div>
 
                 <span class="history-voting-period-panel">
-                    <div class="history-cycle" *ngFor="let cycle of votingPeriod">
-                        <div class="history-cycle-headers" [style.opacity]="cycle.headers/4096">
-                        </div>
-                        <div class="history-cycle-operations" [style.opacity]="cycle.operations/4096">
-                        </div>
-                        <!-- [style.opacity]="0.05+cycle.applications/4096"  -->
+                    <div class="history-cycle" 
+                        *ngFor="let cycle of votingPeriod">
+                        <!-- <span *ngIf="cycle.operations<4094"> -->
+                            <div class="history-cycle-headers" [style.opacity]="cycle.headers/4096">
+                            </div>
+                            <div class="history-cycle-operations" [style.opacity]="cycle.operations/4096">
+                            </div>
+                        <!-- </span> -->
+                        <!-- [style.opacity]="0.1+cycle.applications/4096" -->
                     </div>
                 </span>
 

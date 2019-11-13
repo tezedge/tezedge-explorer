@@ -5,7 +5,9 @@ const initialState: any = {
     downloadRate: 0,
     currentApplicationSpeed: 0,
     averageApplicationSpeed: 0,
-    lastAppliedBlock: 0
+    lastAppliedBlock: {
+        level: 0
+    }
 }
 
 export function reducer(state = initialState, action) {
@@ -14,7 +16,7 @@ export function reducer(state = initialState, action) {
         case 'incomingTransfer': {
             return {
                 ...state,
-                eta: Math.floor(action.payload.eta / 60) + "min " + Math.floor(action.payload.eta % 60) + "sec",
+                eta: Math.floor(action.payload.eta / 60) + " m " + Math.floor(action.payload.eta % 60) + " s",
                 currentBlockCount: action.payload.currentBlockCount,
                 downloadedBlocks: action.payload.downloadedBlocks,
                 downloadRate: Math.floor(action.payload.downloadRate),
@@ -26,9 +28,10 @@ export function reducer(state = initialState, action) {
                 ...state,
                 currentApplicationSpeed: action.payload.currentApplicationSpeed,
                 averageApplicationSpeed: action.payload.averageApplicationSpeed,
-                lastAppliedBlock: action.payload.lastAppliedBlock ? action.payload.lastAppliedBlock : state.lastAppliedBlock
+                lastAppliedBlock: action.payload.lastAppliedBlock ? action.payload.lastAppliedBlock : state.lastAppliedBlock,
+                etaApplications: Math.floor((state.currentBlockCount - state.lastAppliedBlock.level) / action.payload.currentApplicationSpeed) + " m ",
             }
-
+            // action.payload.currentApplicationSpeed 
         }
 
         case 'METRICS_SUBSCRIBE_ERROR':

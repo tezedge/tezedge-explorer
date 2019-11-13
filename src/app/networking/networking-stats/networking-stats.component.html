@@ -32,7 +32,7 @@
     .networking-stats-rate {
         font-size: 1.7vw;
     }
-    
+
     .networking-stats-bootstrap {
         padding: 5px 0px 20px 0px;
         font-size: 1.3vw;
@@ -64,11 +64,140 @@
         }
     }
 
+    .networking-stats-card {
+        border: 1px solid rgba(0, 0, 0, 0.1);
+        box-sizing: border-box;
+        border-radius: 4px;
+        width: 320px;
 
+        margin-top: 20px;
+    }
+
+    .networking-stats-card-title {
+        font-family: Roboto;
+
+        font-size: 14px;
+        line-height: 24px;
+        /* identical to box height, or 171% */
+        color: rgba(0, 0, 0, 0.6);
+        mix-blend-mode: normal;
+
+        padding: 7px 0px 7px 15px;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    }
+
+    .networking-stats-card-content {
+        display: flex;
+        justify-content: space-between;
+        padding: 15px 15px;
+    }
+
+    .networking-stats-card-left {
+        align-self: flex-start;
+    }
+
+    .networking-stats-card-number {
+        font-size: 50px;
+        font-family: Roboto;
+        font-style: normal;
+        font-weight: 300;
+    }
+
+    .networking-stats-card-right {
+        display: flex;
+        align-self: center;
+        /* align-items: flex-end; */
+        justify-content: center;
+        flex-direction: column;
+    }
+
+    .networking-stats-card-right-content {
+        font-family: Roboto;
+        font-style: normal;
+        font-weight: normal;
+        font-size: 12px;
+        color: #000000;
+    }
+
+    .networking-stats-row {
+        display: flex;
+        justify-content: space-between;
+        flex-direction: row;
+    }
 </style>
 <div class="networking-stats">
 
-    <div class="networking-stats-panel">
+    <div class="networking-stats-row">
+
+        <div class="networking-stats-card">
+            <div class="networking-stats-card-title">
+                Syncing headers and operations
+            </div>
+            <div class="networking-stats-card-content">
+
+                <div class="networking-stats-card-left">
+                    <span class="networking-stats-card-number" *ngIf="networkingStats?.downloadedBlocks">
+                        {{ (networkingStats?.downloadedBlocks/(networkingStats?.currentBlockCount*0.01)) | number:'1.1-1'}}%
+                    </span>
+                </div>
+
+                <div class="networking-stats-card-right">
+
+                    <span class="networking-stats-card-right-content" style="font-weight:500;">{{networkingStats?.eta}}
+                        remaining</span>
+                    <span class="networking-stats-card-right-content">{{ networkingStats?.downloadedBlocks}}
+                        level</span>
+                    <span class="networking-stats-card-right-content">{{networkingStats?.downloadRate}} blocks/s </span>
+
+                </div>
+
+            </div>
+        </div>
+
+        <div class="networking-stats-card">
+            <div class="networking-stats-card-title">
+                Applying operations
+            </div>
+            <div class="networking-stats-card-content">
+
+                <div class="networking-stats-card-left">
+                    <span class="networking-stats-card-number" style="color: #00DBC6;"
+                        *ngIf="networkingStats?.downloadedBlocks">
+                        {{ (networkingStats?.lastAppliedBlock?.level/(networkingStats?.currentBlockCount*0.01)) | number:'1.1-1'}}%
+                    </span>
+                </div>
+
+                <div class="networking-stats-card-right">
+
+                    <span class="networking-stats-card-right-content" style="font-weight:500;">{{networkingStats?.etaApplications}}
+                        remaining</span>
+                    <span class="networking-stats-card-right-content"> {{ networkingStats?.lastAppliedBlock?.level}}
+                        level</span>
+                    <span class="networking-stats-card-right-content">
+                        {{ networkingStats.currentApplicationSpeed / 60 | number:'1.1-1' }} blocks/s </span>
+                    <!-- <span
+                        class="networking-stats-card-right-content">{{networkingPeersMetrics?.totalAvgSpeed | bandwidth:'s' }}
+                    </span> -->
+
+
+                    <!-- <div class="networking-stats-card-third">
+    
+                        {{ networkingStats?.lastAppliedBlock?.level}} |
+                        {{ networkingStats.currentApplicationSpeed / 60 | number:'1.1-1' }} |
+                        {{ networkingStats?.downloadedBlocks}} |
+                        {{ networkingStats?.currentBlockCount}}
+    
+                    </div> -->
+
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+
+    <!-- <div class="networking-stats-panel">
+
         <div class="networking-stats-left">
             <span class="networking-stats-completed" *ngIf="networkingStats?.downloadedBlocks">
                 {{ (networkingStats?.downloadedBlocks/(networkingStats?.currentBlockCount*0.01)) | number:'1.1-1'}}%
@@ -76,10 +205,6 @@
             <br />
         </div>
 
-        <!--
-        <span class="networking-stats-speed"> {{networkingPeersMetrics?.totalAvgSpeed | bandwidth:'s' }} </span>
-        <br /> 
-    -->
         <div class="networking-stats-right">
 
             <span class="networking-stats-eta">{{networkingStats?.eta}}</span>
@@ -87,18 +212,18 @@
 
 
             <div class="networking-stats-bootstrap">
-
+                {{ networkingPeersMetrics?.totalAvgSpeed | bandwidth:'s' }} |
                 {{ networkingStats?.lastAppliedBlock?.level}} |
                 {{ networkingStats.currentApplicationSpeed / 60 | number:'1.1-1' }} |
                 {{ networkingStats?.downloadedBlocks}} |
-                {{ networkingStats?.currentBlockCount}} 
-            
+                {{ networkingStats?.currentBlockCount}}
+
             </div>
         </div>
     </div>
 
 
-
+ -->
     <div class="networking-stats-chart">
         <ngx-charts-line-chart [scheme]="colorScheme" [results]="single" [gradient]="gradient" [xAxis]="showXAxis"
             [yAxis]="showYAxis" [showXAxisLabel]="showXAxisLabel" [showYAxisLabel]="showYAxisLabel"

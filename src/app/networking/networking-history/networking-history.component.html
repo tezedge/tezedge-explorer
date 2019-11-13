@@ -1,4 +1,7 @@
 <style>
+    .networking-history {
+    }
+
     .history-cycle-panel {}
 
     .history-voting-period-row {
@@ -32,17 +35,33 @@
         line-height: 12px;
         color: rgba(0, 0, 0, 0.4)
     }
-    
+
     .history-voting-period-panel {
-        display:flex;
+        display: flex;
         flex-direction: row;
     }
 
     .history-cycle {
-        background-color: #00DBC6;
+        /* background-color: #00DBC6; */
         margin: 2px;
         border-radius: 2px;
-        height: 22px;
+        height: 24px;
+        width: 24px;
+    }
+
+    .history-cycle-headers {
+        background-color: #000000;
+        border-top-left-radius: 2px;
+        border-top-right-radius: 2px;
+        height: 9px;
+        width: 22px;
+    }
+
+    .history-cycle-operations {
+        background-color: #000000;
+        border-bottom-left-radius: 2px;
+        border-bottom-right-radius: 2px;
+        height: 13px;
         width: 22px;
     }
 
@@ -67,10 +86,13 @@
                 <div class="history-voting-period-label">Proposal</div>
 
                 <span class="history-voting-period-panel">
-                    <div class="history-cycle" *ngFor="let cycle of votingPeriod">
-                        <!-- {{ cycle.id }}  -->
-                        <!-- {{ cycle.applications/4096 |  number:'1.0' }} -->
-                        <!-- [style.opacity]="0.2+cycle.applications/4096" -->
+                    <div class="history-cycle" *ngFor="let cycle of votingPeriod"
+                       >
+                        <div class="history-cycle-headers" [style.opacity]="cycle.headers/4096">
+                        </div>
+                        <div class="history-cycle-operations" [style.opacity]="cycle.operations/4096">
+                        </div>
+                        <!-- [style.opacity]="0.05+cycle.applications/4096"  -->
                     </div>
                 </span>
 

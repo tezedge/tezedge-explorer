@@ -1,4 +1,8 @@
 <style>
+    .networking-stats {
+        height: 300px;
+    }
+    
     .networking-stats-panel {
         display: flex;
         justify-content: space-between;
@@ -125,7 +129,18 @@
         flex-direction: row;
     }
 </style>
+
 <div class="networking-stats">
+    
+    <div class="networking-stats-row">
+        <div class="networking-stats-chart">
+            <ngx-charts-line-chart [scheme]="colorScheme" [results]="single" [gradient]="gradient" [xAxis]="showXAxis"
+                [yAxis]="showYAxis" [showXAxisLabel]="showXAxisLabel" [showYAxisLabel]="showYAxisLabel"
+                [xAxisLabel]="xAxisLabel" [yAxisLabel]="yAxisLabel" [curve]="curve" autoScale="true"
+                tooltipDisabled="false" animations="false" roundDomains="false">
+            </ngx-charts-line-chart>
+        </div>
+    </div>
 
     <div class="networking-stats-row">
 
@@ -169,7 +184,8 @@
 
                 <div class="networking-stats-card-right">
 
-                    <span class="networking-stats-card-right-content" style="font-weight:500;">{{networkingStats?.etaApplications}}
+                    <span class="networking-stats-card-right-content"
+                        style="font-weight:500;">{{networkingStats?.etaApplications}}
                         remaining</span>
                     <span class="networking-stats-card-right-content"> {{ networkingStats?.lastAppliedBlock?.level}}
                         level</span>
@@ -224,12 +240,5 @@
 
 
  -->
-    <div class="networking-stats-chart">
-        <ngx-charts-line-chart [scheme]="colorScheme" [results]="single" [gradient]="gradient" [xAxis]="showXAxis"
-            [yAxis]="showYAxis" [showXAxisLabel]="showXAxisLabel" [showYAxisLabel]="showYAxisLabel"
-            [xAxisLabel]="xAxisLabel" [yAxisLabel]="yAxisLabel" [curve]="curve" autoScale="true" tooltipDisabled="false"
-            animations="false" roundDomains="false">
-        </ngx-charts-line-chart>
-    </div>
 
 </div>

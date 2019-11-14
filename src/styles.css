@@ -124,6 +124,7 @@ table {
 .networking-stats {}
 
 .networking-stats-chart {
+    display: none;
     width: 697px;
     margin: 15px 0px 5px 10px;
     height: 14vh;
@@ -189,6 +190,7 @@ mat-row, td.mat-cell {
     }
 
     .networking-stats-chart {
+        display: block;
         width: 340px;
         margin-left: 15px;
         height: 12vh;
@@ -242,4 +244,7 @@ mat-row, td.mat-cell {
         width: 90vw;
     }
 
+    .networking-stats-row {
+        padding-top: 0 !important;
+    }
 }

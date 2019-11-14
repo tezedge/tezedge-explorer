@@ -59,7 +59,6 @@ table {
 
 
 .networking-stats ngx-charts-line-chart {
-    padding: 20px;
 }
 
 
@@ -125,7 +124,9 @@ table {
 .networking-stats {}
 
 .networking-stats-chart {
-    height: 20vh
+    width: 700px;
+    height: 12vh;
+    border: 1px solid #E0E0E0;
 }
 
 .networking-peers {
@@ -182,7 +183,8 @@ mat-row, td.mat-cell {
     }
 
     .networking-stats-chart {
-        height: 15vh
+        width: 350px;
+        height: 10vh;
     }
 
     .networking-endpoint {

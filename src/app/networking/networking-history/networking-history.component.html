@@ -110,7 +110,7 @@
 
                 <span class="history-voting-period-panel">
                     <span *ngFor="let cycle of votingPeriod">
-                        <div *ngIf="cycle.operations>4094" class="history-cycle" [style.opacity]="0.15+cycle.applications/4096">
+                        <div *ngIf="cycle.operations>=4094" class="history-cycle" [style.opacity]="0.15+cycle.applications/4096">
                         </div>
                         <span *ngIf="cycle.operations<4094">
                             <div class="history-cycle-headers" [style.opacity]="cycle.headers/4096">

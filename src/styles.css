@@ -124,10 +124,15 @@ table {
 .networking-stats {}
 
 .networking-stats-chart {
-    width: 700px;
-    height: 12vh;
-    border: 1px solid #E0E0E0;
-    border-radius: 4px;
+    width: 697px;
+    margin: 15px 0px 5px 10px;
+    height: 14vh;
+    border-bottom: 1px solid #E0E0E0;
+    border-left: 1px solid #E0E0E0;
+    border-bottom-left-radius: 4px;
+    
+    /*border: 1px solid #E0E0E0;
+    border-radius: 4px;*/
 }
 
 .networking-peers {
@@ -184,8 +189,9 @@ mat-row, td.mat-cell {
     }
 
     .networking-stats-chart {
-        width: 350px;
-        height: 10vh;
+        width: 340px;
+        margin-left: 15px;
+        height: 14vh;
     }
 
     .networking-endpoint {

@@ -127,6 +127,7 @@ table {
     width: 700px;
     height: 12vh;
     border: 1px solid #E0E0E0;
+    border-radius: 4px;
 }
 
 .networking-peers {

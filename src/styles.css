@@ -129,8 +129,8 @@ table {
     height: 14vh;
     border-bottom: 1px solid #E0E0E0;
     border-left: 1px solid #E0E0E0;
-    border-bottom-left-radius: 4px;
-    
+    border-bottom-left-radius: 4px; 
+
     /*border: 1px solid #E0E0E0;
     border-radius: 4px;*/
 }
@@ -191,7 +191,7 @@ mat-row, td.mat-cell {
     .networking-stats-chart {
         width: 340px;
         margin-left: 15px;
-        height: 14vh;
+        height: 12vh;
     }
 
     .networking-endpoint {

@@ -196,7 +196,7 @@ mat-row, td.mat-cell {
         margin-bottom: 30px;
     }
     td.mat-cell:last-of-type {
-        padding-right: 16px !important;
+        padding-right: 14px !important;
     }
 
     th.mat-header-cell.cdk-column-id.mat-column-id {

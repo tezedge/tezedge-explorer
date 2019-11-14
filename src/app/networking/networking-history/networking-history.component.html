@@ -53,24 +53,24 @@
         height: 16px;
         width: 16px;
     }
-    
+
     /* #163940 */
     .history-cycle-headers {
-        background-color: #537880; 
-        ;
+        background-color: #537880;
+        margin: 2px 2px 0px 2px;
         border-top-left-radius: 2px;
         border-top-right-radius: 2px;
-        height: 5px;
-        width: 15px;
+        height: 6px;
+        width: 16px;
     }
 
     .history-cycle-operations {
         background-color: #537880;
-        ;
+        margin: 0px 2px 2px 2px;
         border-bottom-left-radius: 2px;
         border-bottom-right-radius: 2px;
         height: 10px;
-        width: 15px;
+        width: 16px;
     }
 
     .history-cycle-number {
@@ -109,16 +109,17 @@
                 <div class="history-voting-period-label">Proposal</div>
 
                 <span class="history-voting-period-panel">
-                    <div class="history-cycle" 
-                        *ngFor="let cycle of votingPeriod">
-                        <!-- <span *ngIf="cycle.operations<4094"> -->
-                            <!-- <div class="history-cycle-headers" [style.opacity]="cycle.headers/4096">
+                    <span *ngFor="let cycle of votingPeriod">
+                        <div *ngIf="cycle.operations>4094"lass="history-cycle" [style.opacity]="cycle.applications/4096">
+                        </div>
+                        <span *ngIf="cycle.operations<4094">
+                            <div class="history-cycle-headers" [style.opacity]="cycle.headers/4096">
                             </div>
                             <div class="history-cycle-operations" [style.opacity]="cycle.operations/4096">
-                            </div> -->
-                        <!-- </span> -->
+                            </div>
+                        </span>
                         <!-- [style.opacity]="0.1+cycle.applications/4096" -->
-                    </div>
+                    </span>
                 </span>
 
             </span>
@@ -135,8 +136,8 @@
             {{ cycle.duration }}
         </div>
     </div> -->
-</div>
+    </div>
 
-<!-- <div style="display:box;">
+    <!-- <div style="display:box;">
     <button mat-button (click)="render()">render</button>
 </div> -->

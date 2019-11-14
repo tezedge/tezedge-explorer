@@ -3,7 +3,7 @@ import { MatPaginator, MatTableDataSource } from '@angular/material';
 
 import { Store } from '@ngrx/store'
 import { Subject } from 'rxjs'
-import { takeUntil } from 'rxjs/operators'
+import { takeUntil, take } from 'rxjs/operators'
 
 @Component({
   selector: 'app-networking-peers',
@@ -29,7 +29,7 @@ export class NetworkingPeersComponent implements OnInit {
 
     // wait for data changes from redux    
     this.store.select('networkingPeers')
-      .pipe(takeUntil(this.onDestroy$))
+      .pipe(takeUntil(this.onDestroy$),take(1))
       .subscribe(data => {
 
         this.networkingPeersList = data.ids.map(id => ({ id, ...data.entities[id] }))

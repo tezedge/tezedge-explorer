@@ -122,15 +122,33 @@ table {
 
 .networking {}
 
-.networking-stats {
-}
+.networking-stats {}
 
 .networking-stats-chart {
     height: 20vh
 }
 
 .networking-peers {
-    width: 50vw;
+    margin-top: 30px;
+    width: 700px;
+    border: 1px solid #E0E0E0 ;
+    border-radius: 4px;
+}
+
+.mat-table {
+    background: initial ;
+}
+
+.mat-paginator {
+    background: initial;
+}
+
+tr.mat-header-row {
+    height: 46px !important;
+}
+
+.mat-paginator-container {
+    min-height: 46px !important;
 }
 
 
@@ -159,11 +177,10 @@ table {
         width: 100vw;
     }
 
-    .networking-history {
-    }
+    .networking-history {}
 
     .networking-peers {
-        width: 100vw;
+        width: 92vw;
     }
 
     .networking-peers th.mat-header-cell.cdk-column-id.mat-column-id {

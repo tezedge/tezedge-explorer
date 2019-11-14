@@ -216,7 +216,7 @@ mat-row, td.mat-cell {
 
     .mat-cell.cdk-column-id.mat-column-id.ng-star-inserted {
         display: block;
-        width: 20vw;
+        width: 25vw;
     }
 
     .networking-peers th.mat-header-cell.cdk-column-averageTransferSpeed.mat-column-averageTransferSpeed {
@@ -244,7 +244,5 @@ mat-row, td.mat-cell {
         width: 90vw;
     }
 
-    .networking-stats-row {
-        padding-top: 0 !important;
-    }
+
 }

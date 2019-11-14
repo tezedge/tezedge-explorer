@@ -14,12 +14,13 @@
         display: flex;
         flex-direction: row;
         /* align-self: flex-start; */
+        margin: 0px 8px 0px 6px;
 
     }
 
     .history-voting-period {
         flex-direction: row;
-        margin: 4px 10px 4px 7px;
+        margin: 2px 2px 2px 2px;
         padding: 4px 4px 4px 4px;
 
         /* border: 1.1px solid #00DBC6; */
@@ -46,11 +47,11 @@
     }
 
     .history-cycle {
-        /* background-color: #00DBC6; */
+        background-color: #00DBC6;
         margin: 2px;
         border-radius: 2px;
-        height: 15px;
-        width: 15px;
+        height: 16px;
+        width: 16px;
     }
     
     /* #163940 */
@@ -87,7 +88,8 @@
         }
 
         .history-voting-period {
-            margin: 0px 6px 8px 14px;
+            margin: 6px -2px 6px 12px;
+            padding: 4px;
         }
     }
 </style>
@@ -110,10 +112,10 @@
                     <div class="history-cycle" 
                         *ngFor="let cycle of votingPeriod">
                         <!-- <span *ngIf="cycle.operations<4094"> -->
-                            <div class="history-cycle-headers" [style.opacity]="cycle.headers/4096">
+                            <!-- <div class="history-cycle-headers" [style.opacity]="cycle.headers/4096">
                             </div>
                             <div class="history-cycle-operations" [style.opacity]="cycle.operations/4096">
-                            </div>
+                            </div> -->
                         <!-- </span> -->
                         <!-- [style.opacity]="0.1+cycle.applications/4096" -->
                     </div>

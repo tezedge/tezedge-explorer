@@ -29,7 +29,7 @@ export class NetworkingPeersComponent implements OnInit {
 
     // wait for data changes from redux    
     this.store.select('networkingPeers')
-      .pipe(takeUntil(this.onDestroy$),take(5))
+      .pipe(takeUntil(this.onDestroy$))
       .subscribe(data => {
 
         this.networkingPeersList = data.ids.map(id => ({ id, ...data.entities[id] }))

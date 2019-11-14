@@ -156,7 +156,7 @@ tr.mat-footer-row, tr.mat-row {
 }
 
 .mat-cell.cdk-column-id.mat-column-id {
-    padding: 16px !important;
+    padding: 14px !important;
 }
 
 mat-row, td.mat-cell {
@@ -193,15 +193,19 @@ mat-row, td.mat-cell {
 
     .networking-peers {
         width: 92vw;
+        margin-bottom: 30px;
+    }
+    td.mat-cell:last-of-type {
+        padding-right: 16px !important;
     }
 
-    .networking-peers th.mat-header-cell.cdk-column-id.mat-column-id {
-        width: 45vw;
+    th.mat-header-cell.cdk-column-id.mat-column-id {
+        width: 25vw !important;
     }
 
-    .networking-peers .mat-cell.cdk-column-id.mat-column-id.ng-star-inserted {
+    .mat-cell.cdk-column-id.mat-column-id.ng-star-inserted {
         display: block;
-        width: 45vw;
+        width: 20vw;
     }
 
     .networking-peers th.mat-header-cell.cdk-column-averageTransferSpeed.mat-column-averageTransferSpeed {
@@ -217,7 +221,7 @@ mat-row, td.mat-cell {
     }
 
     .networking-peers .mat-cell.cdk-column-currentTransferSpeed.mat-column-currentTransferSpeed {
-        width: 30vw;
+        width: 35vw;
     }
 
 

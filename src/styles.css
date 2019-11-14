@@ -151,6 +151,18 @@ tr.mat-header-row {
     min-height: 46px !important;
 }
 
+tr.mat-footer-row, tr.mat-row {
+    height: 36px !important; 
+}
+
+.mat-cell.cdk-column-id.mat-column-id {
+    padding: 16px !important;
+}
+
+mat-row, td.mat-cell {
+    border-bottom-color: white !important;
+}
+
 
 @media (max-width: 600px) {
     body {

@@ -1,6 +1,7 @@
 import { getMatAutocompleteMissingPanelError } from '@angular/material';
 
 const initialState: any = {
+    ids: [],
 }
 
 export function reducer(state = initialState, action) {
@@ -8,14 +9,14 @@ export function reducer(state = initialState, action) {
        
         case 'STORAGE_BLOCK_LOAD': {
             return {
-                state,
+                ...state,
             }
         }
 
         case 'STORAGE_BLOCK_LOAD_SUCCESS': {
             return {
                 ...state,
-                ...action.payload,
+                ids: action.payload,
             }
         }
 

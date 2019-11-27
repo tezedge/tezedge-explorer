@@ -1,3 +1,8 @@
 <p>storage-block</p>
 
-{{ storageBlock | json }}
+<!-- {{ storageBlock | json }} -->
+
+<li *ngFor="let block of storageBlock.ids">
+    {{ block.header.timestamp }} | {{ block.header.level }} | {{ block.hash }}
+    <!-- {{ block | json }} -->
+</li>

@@ -62,7 +62,10 @@ import { NetworkingEndpointComponent } from './networking/networking-endpoint/ne
 
 // TODO: replace woth reactive forms
 import { FormsModule } from '@angular/forms';
-import { BandwidthPipe } from './shared/bandwidth.pipe'
+import { BandwidthPipe } from './shared/bandwidth.pipe';
+import { StorageComponent } from './storage/storage.component';
+import { StorageBlockComponent } from './storage/storage-block/storage-block.component';
+import { StorageActionComponent } from './storage/storage-action/storage-action.component'
 
 
 @NgModule({
@@ -75,7 +78,10 @@ import { BandwidthPipe } from './shared/bandwidth.pipe'
     SettingsComponent,
     SettingsEndpointComponent,
     NetworkingEndpointComponent,
-    BandwidthPipe
+    BandwidthPipe,
+    StorageComponent,
+    StorageBlockComponent,
+    StorageActionComponent
   ],
   imports: [
     BrowserModule,

@@ -2,6 +2,8 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule, PreloadAllModules } from '@angular/router';
 
+import { HttpClientModule } from '@angular/common/http';
+
 import { AppComponent } from './app.component';
 import { AppRouting } from './app.routing'
 
@@ -16,6 +18,7 @@ import { reducers, metaReducers } from './app.reducers';
 import { environment } from '../environments/environment';
 
 import { AppEffects } from './app.effects';
+import { StorageBlockEffects } from './storage/storage-block/storage-block.effects';
 import { SettingsEffects } from './settings/settings.effects';
 
 import { NetworkingComponent } from './networking/networking.component';
@@ -86,6 +89,7 @@ import { StorageActionComponent } from './storage/storage-action/storage-action.
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
+    HttpClientModule,
 
     // loading routing
     RouterModule.forRoot(AppRouting, {
@@ -105,8 +109,9 @@ import { StorageActionComponent } from './storage/storage-action/storage-action.
 
     // load effect module
     EffectsModule.forRoot([
-      SettingsEffects,
       AppEffects,
+      StorageBlockEffects,
+      SettingsEffects,
     ]),
 
     // https://github.com/zalmoxisus/redux-devtools-extension

@@ -4,6 +4,7 @@ import { RouterStateSerializer } from '@ngrx/router-store';
 
 import { NetworkingComponent } from './networking/networking.component';
 import { StorageComponent } from './storage/storage.component';
+import { StorageActionComponent } from './storage/storage-action/storage-action.component';
 import { SettingsComponent } from './settings/settings.component';
 
 export const AppRouting: Routes = [
@@ -13,6 +14,8 @@ export const AppRouting: Routes = [
 
   { path: 'networking', component: NetworkingComponent },
   { path: 'storage', component: StorageComponent },
+  { path: 'storage/:blockId', component: StorageActionComponent },
+
   { path: 'settings', component: SettingsComponent },
 
   { path: '', redirectTo: '/storage', pathMatch: 'full' },

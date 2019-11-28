@@ -19,6 +19,7 @@ import { environment } from '../environments/environment';
 
 import { AppEffects } from './app.effects';
 import { StorageBlockEffects } from './storage/storage-block/storage-block.effects';
+import { StorageActionEffects } from './storage/storage-action/storage-action.effects';
 import { SettingsEffects } from './settings/settings.effects';
 
 import { NetworkingComponent } from './networking/networking.component';
@@ -93,7 +94,7 @@ import { StorageActionComponent } from './storage/storage-action/storage-action.
 
     // loading routing
     RouterModule.forRoot(AppRouting, {
-      // useHash:true
+      useHash: true,
       // preload all modules
       preloadingStrategy: PreloadAllModules
     }),
@@ -111,6 +112,7 @@ import { StorageActionComponent } from './storage/storage-action/storage-action.
     EffectsModule.forRoot([
       AppEffects,
       StorageBlockEffects,
+      StorageActionEffects,
       SettingsEffects,
     ]),
 

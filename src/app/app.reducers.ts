@@ -23,6 +23,7 @@ import * as fromNetworkingHistory from './networking/networking-history/networki
 import * as fromNetworkingEndpoint from './networking/networking-endpoint/networking-endpoint.reducer';
 
 import * as fromStorageBlock from './storage/storage-block/storage-block.reducer';
+import * as fromStorageAction from './storage/storage-action/storage-action.reducer';
 
 // state interface
 export interface State {
@@ -33,6 +34,7 @@ export interface State {
     networkingHistory: any;
     networkingEndpoint: any;
     storageBlock: any;
+    storageAction: any;
     routerReducer: fromRouter.RouterReducerState<RouterStateUrl>;
 }
 
@@ -45,6 +47,7 @@ export const reducers: ActionReducerMap<State> = {
     networkingHistory: fromNetworkingHistory.reducer,
     networkingEndpoint: fromNetworkingEndpoint.reducer,
     storageBlock: fromStorageBlock.reducer,
+    storageAction: fromStorageAction.reducer,
     routerReducer: fromRouter.routerReducer,
 };
 

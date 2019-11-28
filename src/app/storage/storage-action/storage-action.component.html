@@ -1,1 +1,7 @@
-<p>storage-action works!</p>
+<p>storage-action</p>
+
+<!-- {{ storageAction.ids | json }} -->
+<li *ngFor="let action of storageAction.ids">
+    {{action.Set.key}} -  {{action.Set.value}} 
+   <!-- | <br/> {{ action | json }} -->
+</li>

@@ -11,23 +11,21 @@ export class StorageActionEffects {
 
     @Effect()
     StorageActionBlock$ = this.actions$.pipe(
-        ofType('STORAGE_BLOCK_ACTION_LOAD'),
+        ofType('STORAGE_ACTION_LOAD'),
 
         // merge state
         withLatestFrom(this.store, (action: any, state) => ({ action, state })),
 
         switchMap(({ action, state }) => {
-            return this.http.get('http://localhost:18732/dev/chains/main/blocks/BLockGenesisGenesisGenesisGenesisGenesisd1f7bcGMoXy/actions')
+            return this.http.get('http://localhost:18732/dev/chains/main/blocks/' + action.payload.blockId + '/actions')
         }),
 
-        tap((payload) => console.log("[STORAGE_BLOCK_LOAD_ACTION_SUCCESS]", payload)),
-
         // dispatch action
-        map((payload) => ({ type: 'STORAGE_BLOCK_ACTION_LOAD_SUCCESS', payload: payload })),
+        map((payload) => ({ type: 'STORAGE_ACTION_LOAD_SUCCESS', payload: payload })),
         catchError((error, caught) => {
             console.error(error)
             this.store.dispatch({
-                type: 'STORAGE_BLOCK_ACTION_LOAD_ERROR',
+                type: 'STORAGE_ACTION_LOAD_ERROR',
                 payload: error,
             });
             return caught;

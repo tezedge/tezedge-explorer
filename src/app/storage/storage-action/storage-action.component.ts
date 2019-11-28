@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-
+import { ActivatedRoute } from '@angular/router';
 import { Store } from '@ngrx/store'
 import { Subject } from 'rxjs'
 import { takeUntil } from 'rxjs/operators'
@@ -13,11 +13,12 @@ import { takeUntil } from 'rxjs/operators'
 export class StorageActionComponent implements OnInit {
 
   public storageAction
-
+  private router
   public onDestroy$ = new Subject()
 
   constructor(
     public store: Store<any>,
+    private route: ActivatedRoute,
   ) { }
 
   ngOnInit() {
@@ -31,10 +32,19 @@ export class StorageActionComponent implements OnInit {
 
       })
 
-    // triger action and get blocks data
-    this.store.dispatch({
-      type: 'STORAGE_BLOCK_ACTION_LOAD',
+    // get url params  
+    this.router = this.route.params.subscribe(params => {
+
+      // triger action and get blocks data
+      this.store.dispatch({
+        type: 'STORAGE_ACTION_LOAD',
+        payload: {
+          blockId: params['blockId']
+        }
+      });
+
     });
+
 
   }
 

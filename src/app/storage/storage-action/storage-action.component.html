@@ -1,9 +1,9 @@
 <p>storage-action</p>
 
 <!-- {{ storageAction.ids | json }} -->
-<li *ngFor="let action of storageAction.ids">
+<li *ngFor="let action of storageAction.entities">
     <span *ngIf="action?.Set">
-        <b>set</b>: {{action.Set?.key}} - <b> {{action.Set?.value}} </b>
+        <b>set</b>: {{action.Set?.key}} - <b> {{action.Set?.value}} </b> | {{action.Set?.text}} | {{action.Set?.hex}}
     </span>
     <span *ngIf="action?.Delete">
         del:<i>{{action.Delete?.key}}</i>
@@ -11,5 +11,5 @@
     <span *ngIf="action?.RemoveRecord">
         rem: <i>{{action.RemoveRecord?.key}} </i>
     </span>
-    <!-- | <br/> {{ action | json }} -->
+    <!-- | <br/> {{ action | json }} --> 
 </li>

@@ -69,7 +69,8 @@ import { FormsModule } from '@angular/forms';
 import { BandwidthPipe } from './shared/bandwidth.pipe';
 import { StorageComponent } from './storage/storage.component';
 import { StorageBlockComponent } from './storage/storage-block/storage-block.component';
-import { StorageActionComponent } from './storage/storage-action/storage-action.component'
+import { StorageActionComponent } from './storage/storage-action/storage-action.component';
+import { StorageSearchComponent } from './storage/storage-search/storage-search.component'
 
 
 @NgModule({
@@ -85,7 +86,8 @@ import { StorageActionComponent } from './storage/storage-action/storage-action.
     BandwidthPipe,
     StorageComponent,
     StorageBlockComponent,
-    StorageActionComponent
+    StorageActionComponent,
+    StorageSearchComponent
   ],
   imports: [
     BrowserModule,

@@ -1,4 +1,5 @@
-<p>storage-action</p>
+<app-storage-search>
+</app-storage-search>
 
 <!-- {{ storageAction.ids | json }} -->
 <li *ngFor="let action of storageAction.entities">
@@ -11,5 +12,5 @@
     <span *ngIf="action?.RemoveRecord">
         rem: <i>{{action.RemoveRecord?.key}} </i>
     </span>
-    <!-- | <br/> {{ action | json }} --> 
+    <!-- | <br/> {{ action | json }} -->
 </li>

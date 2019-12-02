@@ -1,9 +1,10 @@
-<p>storage-block</p>
+<app-storage-search>
+</app-storage-search>
 
 <!-- {{ storageBlock | json }} -->
 
 <li *ngFor="let block of storageBlock.ids">
-    {{ block.header.timestamp }} | {{ block.header.level }} | <a href="#/storage/{{ block.hash }}"> {{ block.hash }} </a>  
+    {{ block.header.timestamp }} | {{ block.header.level }} | <a href="#/storage/{{ block.hash }}"> {{ block.hash }}
+    </a>
     <!-- {{ block | json }} -->
 </li>
-

@@ -46,9 +46,11 @@ table {
     align-items: center;
     justify-content: center;
     flex-direction: row;
-    background: whitesmoke;
-    height: 5vh;
-    width: 100%
+    background: white;
+    height: 50px;
+    width: 100%;
+
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
 }
 
 .networking-endpoint-content {
@@ -210,17 +212,14 @@ mat-row, td.mat-cell {
 
 }
 
-/* turn on menu on mobile devices  */
-.app-menu-toggle {
-    display: none;
-}
-
-@media (max-width: 480px) {
-    .app-menu-toggle {
-      display: show;
-    }
-}
-
 .networking {
     background-color: white;
+}
+
+
+
+@media screen and (max-width: 40em) {	
+	.mat-sidenav {
+		display:none;
+	}
 }

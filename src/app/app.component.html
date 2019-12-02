@@ -1,3 +1,22 @@
+<style>
+    .app-menu-toolbar {
+        display: flex;
+        align-items: center;
+        justify-content: right;
+
+        height: 50px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .app-menu-toolbar-logo {
+        padding-left: 18px;
+    }
+
+    .mat-list-base {
+        padding-top: 0px;
+    }
+</style>
+
 <div class="sidenav-area">
 
     <!-- <button mat-icon-button style="position:fixed;top:10px;left:10px;">
@@ -21,18 +40,22 @@
 
     <!-- Sidebar -->
     <mat-sidenav-container>
-        <mat-sidenav #start mode="side" style="padding:10px;width:200px;"
-            [style.background-color]="app.sidenav.backgroundColor" [style.color]="app.sidenav.color"
-            [opened]="app.sidenav.isVisible" [fixedInViewport]="true" [fixedTopGap]="0" [fixedBottomGap]="0">
+        <mat-sidenav #start mode="side" style="width:200px;" [style.background-color]="app.sidenav.backgroundColor"
+            [style.color]="app.sidenav.color" [opened]="app.sidenav.isVisible" [fixedInViewport]="true"
+            [fixedTopGap]="0" [fixedBottomGap]="0">
+
             <mat-nav-list>
 
-                <br />
-                
-                <button mat-icon-button class="app-menu-toggle" *ngIf="app.sidenav.toggleButton.isVisible">
-                    <mat-icon (click)="start.toggle()">menu</mat-icon>
-                </button>
+                <div class="app-menu-toolbar">
+                    <!-- <div class="app-menu-toolbar-logo">
+                        TezEdge
+                    </div> -->
+                    <button mat-icon-button class="app-menu-toggle" *ngIf="app.sidenav.toggleButton.isVisible">
+                        <mat-icon (click)="start.toggle()">menu</mat-icon>
+                    </button>
+                </div>
 
-                <br />
+
                 <br />
                 <br />
 

@@ -39,6 +39,16 @@ const initialState = {
 export function reducer(state = initialState, action) {
 
     switch (action.type) {
+        
+        case 'APP_WINDOW': {
+            return {
+                ...state,
+                sidenav: {
+                    ...state.sidenav,
+                    isVisible: action.payload.width > 450 ? true : false,
+                }
+            }
+        }
 
         default:
             return state;

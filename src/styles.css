@@ -223,3 +223,16 @@ mat-row, td.mat-cell {
 		display:none;
 	}
 }
+
+.storage {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.storage-block {
+    margin-top: 30px;
+    width: 700px;
+    border: 1px solid #E0E0E0 ;
+    border-radius: 4px;
+}

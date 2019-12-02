@@ -20,7 +20,7 @@ export class StorageBlockEffects {
             return this.http.get('http://localhost:18732/dev/chains/main/blocks')
         }),
 
-        tap((payload) => console.log("[STORAGE_BLOCK_LOAD_SUCCESS]", payload)),
+        // tap((payload) => console.log("[STORAGE_BLOCK_LOAD_SUCCESS]", payload)),
 
         // dispatch action
         map((payload) => ({ type: 'STORAGE_BLOCK_LOAD_SUCCESS', payload: payload })),

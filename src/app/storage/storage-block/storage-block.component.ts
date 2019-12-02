@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ChangeDetectionStrategy } from '@angular/core';
+import { MatPaginator, MatTableDataSource } from '@angular/material';
 
 import { Store } from '@ngrx/store'
 import { Subject } from 'rxjs'
@@ -13,8 +14,12 @@ import { takeUntil } from 'rxjs/operators'
 export class StorageBlockComponent implements OnInit {
 
   public storageBlock
-
+  public storageBlockList
+  public storageBlockShow
+  public tableDataSource
   public onDestroy$ = new Subject()
+
+  @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
 
   constructor(
     public store: Store<any>,
@@ -28,9 +33,15 @@ export class StorageBlockComponent implements OnInit {
       .subscribe(data => {
 
         this.storageBlock = data
+        this.storageBlockShow = data.ids.length > 0 ? true : false;
+        this.storageBlockList = data.ids.map(id => ({ id, ...data.entities[id] }))
+
+        this.tableDataSource = new MatTableDataSource<any>(this.storageBlockList);
+        this.tableDataSource.paginator = this.paginator;
 
       })
-    
+
+
     // triger action and get blocks data
     this.store.dispatch({
       type: 'STORAGE_BLOCK_LOAD',

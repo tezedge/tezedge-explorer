@@ -12,51 +12,37 @@
         padding-left: 18px;
     }
 
+    .app-menu-toggle {
+        position: fixed;
+        top: 5px;
+        left: 5px;
+    }
+
     .mat-list-base {
         padding-top: 0px;
     }
 </style>
 
+
 <div class="sidenav-area">
-
-    <!-- <button mat-icon-button style="position:fixed;top:10px;left:10px;">
-        <mat-icon (click)="start.toggle()">menu</mat-icon>
-    </button> -->
-
-    <!-- Header -->
-    <!-- <div class="toolbar">
-        <mat-toolbar *ngIf="app.toolbar.isVisible" [style.background-color]="app.toolbar.backgroundColor" [style.color]="app.toolbar.color">
-            <button mat-icon-button *ngIf="app.sidenav.toggleButton.isVisible">
-                <mat-icon (click)="start.toggle()">menu</mat-icon>
-            </button>
-            <span *ngIf="app.logo.isVisible"
-                style="margin: 40px 0px 0px 10px; font-weight: 300;font-size: 18px;display: flex;align-items: center;justify-content: center;">
-            </span>
-            <mat-spinner [diameter]="20" [strokeWidth]="1" style="top:20px;left:10px;" *loadingSpinner></mat-spinner>
-            <span class="filler-content"></span>
-        </mat-toolbar>
-    </div> -->
-
 
     <!-- Sidebar -->
     <mat-sidenav-container>
-        <mat-sidenav #start mode="side" style="width:200px;" [style.background-color]="app.sidenav.backgroundColor"
-            [style.color]="app.sidenav.color" [opened]="app.sidenav.isVisible" [fixedInViewport]="true"
-            [fixedTopGap]="0" [fixedBottomGap]="0">
+        <mat-sidenav #start [mode]="app.sidenav.mode" style="width:200px;"
+            [style.background-color]="app.sidenav.backgroundColor" [style.color]="app.sidenav.color"
+            [opened]="app.sidenav.isVisible" [fixedInViewport]="true" [fixedTopGap]="0" [fixedBottomGap]="0">
 
             <mat-nav-list>
 
                 <div class="app-menu-toolbar">
-                    <!-- <div class="app-menu-toolbar-logo">
+                    <div class="app-menu-toolbar-logo">
                         TezEdge
-                    </div> -->
+                    </div>
                     <button mat-icon-button class="app-menu-toggle" *ngIf="app.sidenav.toggleButton.isVisible">
                         <mat-icon (click)="start.toggle()">menu</mat-icon>
                     </button>
                 </div>
 
-
-                <br />
                 <br />
 
                 <a mat-list-item routerLink="/networking" [style.color]="app.sidenav.color">
@@ -74,6 +60,9 @@
         <!-- Content -->
         <mat-sidenav-content>
             <div class="sidenav-content">
+                <button mat-icon-button class="app-menu-toggle">
+                    <mat-icon (click)="start.toggle()">menu</mat-icon>
+                </button>
                 <router-outlet></router-outlet>
             </div>
         </mat-sidenav-content>

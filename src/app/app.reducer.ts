@@ -12,6 +12,7 @@ const initialState = {
 
     sidenav: {
         isVisible: true,
+        mode: 'side',
         backgroundColor: '#242424',
         color: '#bfbfbf',
         toggleButton: {
@@ -23,7 +24,6 @@ const initialState = {
         backgroundColor: 'white',
         color: 'white',
     },
-    
     logo: {
         isVisible: true,
     },
@@ -39,13 +39,18 @@ const initialState = {
 export function reducer(state = initialState, action) {
 
     switch (action.type) {
-        
+
         case 'APP_WINDOW': {
+            const MOBILE_WIDTH = 450;
             return {
                 ...state,
                 sidenav: {
                     ...state.sidenav,
-                    isVisible: action.payload.width > 450 ? true : false,
+                    isVisible: action.payload.width > MOBILE_WIDTH ? true : false,
+                    mode: action.payload.width > MOBILE_WIDTH ? 'side' : 'over',
+                    toggleButton: {
+                        isVisible: action.payload.width < MOBILE_WIDTH ? true : false,
+                    }
                 }
             }
         }

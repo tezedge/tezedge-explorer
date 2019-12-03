@@ -224,7 +224,7 @@ mat-row, td.mat-cell {
 	}
 }
 
-.storage {
+.storage-block-container {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -235,4 +235,9 @@ mat-row, td.mat-cell {
     width: 700px;
     border: 1px solid #E0E0E0 ;
     border-radius: 4px;
+}
+
+ 
+.mat-drawer-container {
+    background-color: white;
 }

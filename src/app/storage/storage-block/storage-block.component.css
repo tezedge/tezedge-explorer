@@ -12,14 +12,15 @@
 }
 
 .storage-block th.mat-header-cell.cdk-column-hash.mat-column-hash {
-    text-align: left;
+    /* text-align: left; */
 }
 .storage-block .mat-cell.cdk-column-hash.mat-column-hash {
     width: 20vw;
-    text-align: left;
+    /* text-align: left; */
+    transform: scale(1,1);
 }
 
 
 .mat-cell.cdk-column-level.mat-column-level {
-    padding: 10px 20px 10px 20px !important;
+    padding: 10px 0px 10px 0px !important;
 }

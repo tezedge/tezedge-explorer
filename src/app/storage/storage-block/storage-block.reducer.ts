@@ -1,3 +1,5 @@
+import * as moment from 'moment/moment';
+
 const initialState: any = {
     ids: [],
     entities: {}
@@ -24,7 +26,9 @@ export function reducer(state = initialState, action) {
                         ...accumulator,
                         [block.hash]: {
                             ...state.entities[block.hash],
-                            ...block
+                            ...block,
+                            datetime: moment(block.header.timestamp).format('HH:mm:ss, DD MMM YY'),
+
                         }
                     }), {}),
             }

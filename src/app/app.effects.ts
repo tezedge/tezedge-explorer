@@ -2,7 +2,7 @@ import { Injectable, NgZone } from '@angular/core';
 import { Effect, Actions, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { Observable, of, defer } from 'rxjs';
-import { tap, map, switchMap, catchError, withLatestFrom, delay, takeUntil } from 'rxjs/operators';
+import { tap, map, switchMap, catchError, withLatestFrom, delay, filter } from 'rxjs/operators';
 import { webSocket } from 'rxjs/webSocket';
 
 import { environment } from '../environments/environment';
@@ -22,6 +22,10 @@ export class AppEffects {
         switchMap(({ action, state }) => {
             // console.log('[SETTINGS_INIT_SUSCCESS]', action, state);
             return webSocket(state.settings.endpoint).pipe(
+                filter((ws: any) => {
+                    // console.log('[ws]', ws);
+                    return ws.type === '' ? true : false;
+                })
                 // tap(data => console.log('[METRICS_SUBSCRIBE][ws] payload: ', data, state.settings.endpoint)),
             );
         }),
@@ -34,14 +38,14 @@ export class AppEffects {
         // tap(() => console.log('[MetricsSubscribeEffect]')),
 
         catchError((error, caught) => {
-            console.error(error)
+            console.error(error);
             this.store.dispatch({
                 type: 'METRICS_SUBSCRIBE_ERROR',
                 payload: error,
             });
             return caught;
         })
-    )
+    );
 
     // trigger subscription to webservice
     @Effect()
@@ -67,12 +71,12 @@ export class AppEffects {
     // });
 
 
-   // trigger subscription to webservice
-   @Effect()
-   AppEffectInit$ = this.actions$.pipe(
-       ofType('@ngrx/effects/init'),
-       map(() => ({ type: 'SETTINGS_INIT' }))
-   );
+    // trigger subscription to webservice
+    @Effect()
+    AppEffectInit$ = this.actions$.pipe(
+        ofType('@ngrx/effects/init'),
+        map(() => ({ type: 'SETTINGS_INIT' }))
+    );
 
 
     constructor(

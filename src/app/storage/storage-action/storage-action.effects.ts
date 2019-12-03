@@ -17,7 +17,7 @@ export class StorageActionEffects {
         withLatestFrom(this.store, (action: any, state) => ({ action, state })),
 
         switchMap(({ action, state }) => {
-            return this.http.get('http://babylon.tezedge.com:18732/dev/chains/main/blocks/' + action.payload.blockId + '/actions')
+            return this.http.get('http://195.201.111.145:18732/dev/chains/main/blocks/' + action.payload.blockId + '/actions')
         }),
 
         // dispatch action

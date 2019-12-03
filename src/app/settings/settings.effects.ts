@@ -15,9 +15,10 @@ export class SettingsEffects {
         ofType('SETTINGS_INIT'),
 
         switchMap(() => {
-            // localStorage.setItem('endpoint', 'ws://127.0.0.1:4927/');
-            // get data from localStorage ( sync call) 
-            let endpoint = localStorage.getItem('endpoint') ? localStorage.getItem('endpoint') : environment.api.ws;
+            // localStorage.setItem('endpoint', 'wss://babylon.tezedge.com/');
+            // get data from localStorage ( sync call)
+            const endpoint: any = localStorage.getItem('endpoint') ? localStorage.getItem('endpoint') : environment.api.ws;
+            console.log('[SETTINGS_INIT]', endpoint);
             return of([]).pipe(
                 map(() => ({ endpoint: endpoint }))
             )
@@ -58,7 +59,7 @@ export class SettingsEffects {
         map((payload) => ({ type: 'SETTINGS_ENDPOINT_SAVE_SUSCCESS', payload: payload })),
 
         catchError((error, caught) => {
-            console.error(error)
+            console.error(error);
             this.store.dispatch({
                 type: 'SETTINGS_ENDPOINT_SAVE_ERROR',
                 payload: error,
@@ -72,7 +73,7 @@ export class SettingsEffects {
     @Effect()
     SettingsEndpointSaveSuccesEffect$ = this.actions$.pipe(
         ofType('SETTINGS_ENDPOINT_SAVE'),
-        map(() => ({ type: "METRICS_SUBSCRIBE" }))
+        map(() => ({ type: 'METRICS_SUBSCRIBE' }))
     )
 
 

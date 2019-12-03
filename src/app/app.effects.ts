@@ -3,7 +3,7 @@ import { Effect, Actions, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { Observable, of, defer } from 'rxjs';
 import { tap, map, switchMap, catchError, withLatestFrom, delay, takeUntil } from 'rxjs/operators';
-import { webSocket } from "rxjs/webSocket";
+import { webSocket } from 'rxjs/webSocket';
 
 import { environment } from '../environments/environment';
 
@@ -23,12 +23,12 @@ export class AppEffects {
             // console.log('[SETTINGS_INIT_SUSCCESS]', action, state);
             return webSocket(state.settings.endpoint).pipe(
                 // tap(data => console.log('[METRICS_SUBSCRIBE][ws] payload: ', data, state.settings.endpoint)),
-            )
+            );
         }),
 
         // TODO: handle errors
         // TODO: map ws to redux actions
-        // dispatch action from ws 
+        // dispatch action from ws
         map((data) => ({ ...data })),
 
         // tap(() => console.log('[MetricsSubscribeEffect]')),
@@ -47,25 +47,32 @@ export class AppEffects {
     @Effect()
     MetriscsSubscirbeErrorReconnectEffect$ = this.actions$.pipe(
         ofType('METRICS_SUBSCRIBE_ERROR'),
-        // try to reconnect 
+        // try to reconnect
         delay(1000),
-        map(() => ({ type: "METRICS_SUBSCRIBE" }))
+        map(() => ({ type: 'METRICS_SUBSCRIBE' }))
     );
 
     // trigger subscription to webservice
     @Effect()
     SettingsInitSuccessEffect$ = this.actions$.pipe(
         ofType('SETTINGS_INIT_SUSCCESS'),
-        map(() => ({ type: "METRICS_SUBSCRIBE" }))
+        map(() => ({ type: 'METRICS_SUBSCRIBE' }))
     );
 
 
     // initialize app
-    @Effect()
-    AppInitEffect$$ = defer(() => {
-        return of({ type: 'SETTINGS_INIT' })
-    });
+    // @Effect()
+    // AppInitEffect$$ = defer(() => {
+    //     return of({ type: 'SETTINGS_INIT' });
+    // });
 
+
+   // trigger subscription to webservice
+   @Effect()
+   AppEffectInit$ = this.actions$.pipe(
+       ofType('@ngrx/effects/init'),
+       map(() => ({ type: 'SETTINGS_INIT' }))
+   );
 
 
     constructor(

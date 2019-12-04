@@ -3,9 +3,7 @@
         display: flex;
         align-items: center;
         justify-content: right;
-
         height: 50px;
-        border-bottom: 1px solid  #e0e0e0;
     }
 
     .app-menu-toolbar-logo {
@@ -21,6 +19,24 @@
     .mat-list-base {
         padding-top: 0px;
     }
+
+    .app-submenu {
+        color: #0000008a;
+        font-size: 10px;
+        padding: 36px 0px 16px 0px;
+        border-top: 1px solid #e0e0e0;
+    }
+
+    .app-submenu span {
+        display: block;
+        padding-left: 20px;
+        padding-bottom: 8px;
+    }
+
+    .app-submenu a {
+        padding-left: 20px;
+        font-weight: 300;
+    }
 </style>
 
 
@@ -33,9 +49,8 @@
             [opened]="app.sidenav.isVisible" [fixedInViewport]="true" [fixedTopGap]="0" [fixedBottomGap]="0">
 
             <mat-nav-list>
-
                 <div class="app-menu-toolbar">
-                    <div class="app-menu-toolbar-logo" [style.color]="app.sidenav.color">
+                    <div class="app-menu-toolbar-logo" style="color:black">
                         TezEdge
                     </div>
                     <!-- <button mat-icon-button class="app-menu-toggle" *ngIf="app.sidenav.toggleButton.isVisible">
@@ -43,15 +58,31 @@
                     </button> -->
                 </div>
 
-                <br />
+                <div class="app-submenu">
+                    <span>
+                        NETWORKING
+                    </span>
 
-                <a mat-list-item routerLink="/networking" [style.color]="app.sidenav.color">
-                    Networking
-                </a>
+                    <a mat-list-item routerLink="/networking" [style.color]="app.sidenav.color">
+                        Synchronization
+                    </a>
+                    <a mat-list-item routerLink="/networking" [style.color]="app.sidenav.color">
+                        Peers
+                    </a>
+                </div>
 
-                <a mat-list-item routerLink="/storage" [style.color]="app.sidenav.color">
-                    Storage
-                </a>
+
+
+                <div class="app-submenu">
+                    <span>
+                        STORAGE
+                    </span>
+
+                    <a mat-list-item routerLink="/storage" [style.color]="app.sidenav.color">
+                        Explorer
+                    </a>
+                </div>
+
 
             </mat-nav-list>
 

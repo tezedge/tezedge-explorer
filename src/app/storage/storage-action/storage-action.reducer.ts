@@ -2,6 +2,7 @@ import { ACTIONS_SUBJECT_PROVIDERS } from '@ngrx/store/src/actions_subject';
 
 const initialState: any = {
     ids: [],
+    entities: []
 }
 
 

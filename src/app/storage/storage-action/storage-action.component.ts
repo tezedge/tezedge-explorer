@@ -1,4 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ChangeDetectionStrategy } from '@angular/core';
+import { MatPaginator, MatTableDataSource } from '@angular/material';
+
 import { ActivatedRoute } from '@angular/router';
 import { Store } from '@ngrx/store'
 import { Subject } from 'rxjs'
@@ -13,8 +15,13 @@ import { takeUntil } from 'rxjs/operators'
 export class StorageActionComponent implements OnInit {
 
   public storageAction
-  private router
+  public storageActionList
+  public storageActionShow
+  public tableDataSource
+  public router
   public onDestroy$ = new Subject()
+
+  @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
 
   constructor(
     public store: Store<any>,
@@ -23,16 +30,21 @@ export class StorageActionComponent implements OnInit {
 
   ngOnInit() {
 
-    // wait for data changes from redux    
+    // wait for data changes from redux
     this.store.select('storageAction')
       .pipe(takeUntil(this.onDestroy$))
       .subscribe(data => {
 
         this.storageAction = data
+        this.storageActionShow = data.entities.length > 0 ? true : false;
+        this.storageActionList = data.entities.map(id => ({ id, ...data.entities[id] }))
 
-      })
+        this.tableDataSource = new MatTableDataSource<any>(this.storageActionList);
+        this.tableDataSource.paginator = this.paginator;
+      });
 
-    // get url params  
+    // get url params
+    // TODO: unsubscribe after destroy
     this.router = this.route.params.subscribe(params => {
 
       // triger action and get blocks data

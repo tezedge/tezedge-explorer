@@ -1,8 +1,54 @@
 <app-storage-search>
 </app-storage-search>
 
+<div class="storage-action-container">
+
+    <div class="storage-action">
+
+        <table mat-table [dataSource]="tableDataSource">
+
+            <ng-container matColumnDef="path">
+                <th mat-header-cell *matHeaderCellDef>Path</th>
+                <td mat-cell *matCellDef="let action">
+                    <span *ngIf="action?.id?.Set">
+                        <b>Set</b> {{action.id.Set?.key}}
+                    </span>
+                    <span *ngIf="action?.id?.Delete">
+                        Del<i>{{action.id.Delete?.key}}</i>
+                    </span>
+                    <span *ngIf="action?.id?.RemoveRecord">
+                        Rem <i>{{action.id.RemoveRecord?.key}} </i>
+                    </span>
+                    <br />
+
+                    <span *ngIf="action?.id?.Set">
+                        0x{{action.id?.Set?.hex}} | [{{action.id?.Set?.value}}] | {{action.id?.Set?.text}}
+                    </span>
+                </td>
+            </ng-container>
+
+            <ng-container matColumnDef="value">
+                <th mat-header-cell *matHeaderCellDef>Value</th>
+                <td mat-cell *matCellDef="let action">
+
+                </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="['path']">
+            </tr>
+            <tr mat-row *matRowDef="let row; columns: ['path'];">
+            </tr>
+
+        </table>
+
+        <mat-paginator [pageSizeOptions]="[100]"></mat-paginator>
+    </div>
+
+</div>
+
+
 <!-- {{ storageAction.ids | json }} -->
-<li *ngFor="let action of storageAction.entities">
+<!-- <li *ngFor="let action of storageAction.entities">
     <span *ngIf="action?.Set">
         <b>set</b>: {{action.Set?.key}} - <b> {{action.Set?.value}} </b> | {{action.Set?.text}} | {{action.Set?.hex}}
     </span>
@@ -12,5 +58,4 @@
     <span *ngIf="action?.RemoveRecord">
         rem: <i>{{action.RemoveRecord?.key}} </i>
     </span>
-    <!-- | <br/> {{ action | json }} -->
-</li>
+</li> -->

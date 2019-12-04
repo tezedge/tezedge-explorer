@@ -1,0 +1,27 @@
+.storage-action th.mat-header-cell.cdk-column-path.mat-column-path{
+    text-overflow: ellipsis;
+    overflow: hidden; 
+    white-space: nowrap;
+    /* width: 20vw;  */
+}
+.storage-action.mat-cell.cdk-column-lpath.mat-column-path  {
+    padding: 20px;
+    text-overflow: ellipsis;
+    overflow: hidden; 
+    white-space: nowrap;
+    width: 70px;
+}
+
+.storage-action th.mat-header-cell.cdk-column-value.mat-column-value {
+    /* text-align: left; */
+}
+.storage-action .mat-cell.cdk-column-value.mat-column-value {
+    width: 20vw;
+    /* text-align: left; */
+    transform: scale(1,1);
+}
+
+
+.mat-cell.cdk-column-path.mat-column-path {
+    padding: 10px 0px 0px 24px !important;
+}

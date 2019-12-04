@@ -27,7 +27,7 @@ export function reducer(state = initialState, action) {
                         [block.hash]: {
                             ...state.entities[block.hash],
                             ...block,
-                            datetime: moment(block.header.timestamp).format('HH:mm:ss, DD MMM YY'),
+                            datetime: moment(block.header.timestamp).format('HH:mm:ss,  DD MMM YYYY'),
 
                         }
                     }), {}),

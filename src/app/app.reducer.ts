@@ -13,8 +13,10 @@ const initialState = {
     sidenav: {
         isVisible: true,
         mode: 'side',
-        backgroundColor: '#242424',
-        color: '#bfbfbf',
+        // backgroundColor: '#242424',
+        // color: '#bfbfbf',
+        backgroundColor: 'whitesmoke',
+        color: 'black',
         toggleButton: {
             isVisible: true,
         },
@@ -22,7 +24,7 @@ const initialState = {
     toolbar: {
         isVisible: true,
         backgroundColor: 'white',
-        color: 'white',
+        color: 'black',
     },
     logo: {
         isVisible: true,

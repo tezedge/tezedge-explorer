@@ -81,8 +81,14 @@ export function parseKey(key) {
     // process delegates_with_frozen_balance
     if ((key.indexOf("delegates_with_frozen_balance") > 0)) {
         key = key.filter((value, index) => {
-            // remove contract index from path
             return ((index > 1 && index < 4) || index > 8) ? true : false;
+        })
+    }
+
+    // process active_delegates_with_rolls
+    if ((key.indexOf("active_delegates_with_rolls") > 0)) {
+        key = key.filter((value, index) => {
+            return ((index > 1 && index < 3) || index > 7) ? true : false;
         })
     }
 

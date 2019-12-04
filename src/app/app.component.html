@@ -23,20 +23,22 @@
     .app-submenu {
         color: #0000008a;
         font-size: 10px;
-        padding: 36px 0px 16px 0px;
+        padding: 22px 0px 22px 0px;
         border-top: 1px solid #e0e0e0;
     }
 
     .app-submenu span {
         display: block;
+        padding-top: 8px;
         padding-left: 20px;
         padding-bottom: 8px;
     }
 
     .app-submenu a {
-        padding-left: 20px;
         font-weight: 300;
     }
+
+    .app-submenu a span {}
 </style>
 
 
@@ -64,10 +66,14 @@
                     </span>
 
                     <a mat-list-item routerLink="/networking" [style.color]="app.sidenav.color">
-                        Synchronization
+                        <span>
+                            Synchronization
+                        </span>
                     </a>
                     <a mat-list-item routerLink="/networking" [style.color]="app.sidenav.color">
-                        Peers
+                        <span>
+                            Peers
+                        </span>
                     </a>
                 </div>
 
@@ -79,7 +85,9 @@
                     </span>
 
                     <a mat-list-item routerLink="/storage" [style.color]="app.sidenav.color">
-                        Explorer
+                        <span>
+                            Explorer
+                        </span>
                     </a>
                 </div>
 

@@ -31,12 +31,11 @@ export function reducer(state = initialState, action) {
 
                     if (action.hasOwnProperty('Set')) {
 
-                        // console.log('[action] Set', action.Set.value, new TextDecoder("utf-8").decode(new Uint8Array(action.Set.value)), bufferToHex(new Uint8Array(action.Set.value)) );
-
                         return {
-                            'Set': {
+                            Set: {
                                 ...action.Set,
-                                text: new TextDecoder("utf-8").decode(new Uint8Array(action.Set.value)),
+                                key: action.Set.key.toString().replace(/,/g, '/'),
+                                text: new TextDecoder('utf-8').decode(new Uint8Array(action.Set.value)),
                                 hex: bufferToHex(new Uint8Array(action.Set.value))
                             }
                         };

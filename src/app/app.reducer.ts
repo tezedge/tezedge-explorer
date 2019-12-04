@@ -16,7 +16,7 @@ const initialState = {
         // backgroundColor: '#242424',
         // color: '#bfbfbf',
         backgroundColor: 'whitesmoke',
-        color: 'rgba(0,0,0,1)',
+        color: 'rgba(0,0,0,0.7)',
         toggleButton: {
             isVisible: true,
         },

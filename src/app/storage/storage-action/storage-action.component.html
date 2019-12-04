@@ -11,7 +11,7 @@
                 <th mat-header-cell *matHeaderCellDef>Path</th>
                 <td mat-cell *matCellDef="let action">
                     <span *ngIf="action?.id?.Set">
-                        <b>set</b> {{action.id.Set?.key }}
+                        <b [style.color]="action.id.Set?.color">{{action.id.Set?.category }}</b>{{action.id.Set?.key }}
                     </span>
                     <span *ngIf="action?.id?.Delete">
                         del <i>{{action.id.Delete?.key}}</i>
@@ -22,8 +22,8 @@
                     <br />
 
                     <span *ngIf="action?.id?.Set">
-                        0x{{action.id?.Set?.hex}} | {{action.id?.Set?.text}}
-                        <!-- [{{action.id?.Set?.value}}] --> 
+                        <i>set</i> {{action.id?.Set?.hex}} | {{action.id?.Set?.text}}
+                        <!-- [{{action.id?.Set?.value}}] -->
 
                     </span>
                 </td>

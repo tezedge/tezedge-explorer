@@ -5,6 +5,7 @@
 
     <div class="storage-action">
 
+        <!-- {{ storageBlock.entities[blockId]?.header?.predecessor }} -->
 
         <table mat-table [dataSource]="tableDataSource">
 
@@ -12,15 +13,16 @@
                 <th mat-header-cell *matHeaderCellDef>
                     <span>Path</span>    
                    
-                    <button routerLink="/storage/" mat-icon-button>
+                    <button routerLink="/storage/{{ storageBlock.entities[blockId]?.header?.predecessor }}" mat-icon-button *ngIf="storageBlock.entities[blockId]?.header?.predecessor">
                         <mat-icon>chevron_left</mat-icon>
                     </button>
-                    <button routerLink="/storage/" mat-icon-button>
+
+                    <!-- <button routerLink="/storage/" mat-icon-button>
                         <mat-icon>chevron_right</mat-icon>
-                    </button>
+                    </button> -->
                     
-                    <span>BLOCK: </span>    
-                    <span>LEVEL: </span> 
+                    <span *ngIf="storageBlock.entities[blockId]?.header?.level"> {{ storageBlock.entities[blockId]?.header?.level }} </span> 
+                    <span *ngIf="storageBlock.entities[blockId]?.hash" > {{ storageBlock.entities[blockId]?.hash }} </span>    
 
                 </th>
                 <td mat-cell *matCellDef="let action">
@@ -33,13 +35,11 @@
                     <span *ngIf="action?.id?.RemoveRecord">
                         rem <i>{{action.id.RemoveRecord?.key}} </i>
                     </span>
-                    <br />
 
-                    <div *ngIf="action?.id?.Set" style="text-align: left">
+                    <span *ngIf="action?.id?.Set" style="text-align: left">
                         <b>{{action.id?.Set?.hex}}</b> 
                         <!-- [{{action.id?.Set?.value}}] -->
-
-                    </div>
+                    </span>
                 </td>
             </ng-container>
 

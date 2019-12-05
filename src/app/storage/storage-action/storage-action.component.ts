@@ -14,6 +14,8 @@ import { takeUntil } from 'rxjs/operators'
 })
 export class StorageActionComponent implements OnInit {
 
+  public block
+  public blockId
   public storageBlock
   public storageAction
   public storageActionList
@@ -45,21 +47,27 @@ export class StorageActionComponent implements OnInit {
       });
 
     // wait for data changes from redux
-    this.store.select('storageBlocks')
+    this.store.select('storageBlock')
       .pipe(takeUntil(this.onDestroy$))
       .subscribe(data => {
+      
         this.storageBlock = data
+        
+
       });
 
     // get url params
     // TODO: unsubscribe after destroy
     this.router = this.route.params.subscribe(params => {
-
+      
+      // get block Id
+      this.blockId = params['blockId'];
+      
       // triger action and get blocks data
       this.store.dispatch({
         type: 'STORAGE_ACTION_LOAD',
         payload: {
-          blockId: params['blockId']
+          blockId: this.blockId
         }
       });
 

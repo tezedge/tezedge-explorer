@@ -14,6 +14,7 @@ import { takeUntil } from 'rxjs/operators'
 })
 export class StorageActionComponent implements OnInit {
 
+  public storageBlock
   public storageAction
   public storageActionList
   public storageActionShow
@@ -41,6 +42,13 @@ export class StorageActionComponent implements OnInit {
 
         this.tableDataSource = new MatTableDataSource<any>(this.storageActionList);
         this.tableDataSource.paginator = this.paginator;
+      });
+
+    // wait for data changes from redux
+    this.store.select('storageBlocks')
+      .pipe(takeUntil(this.onDestroy$))
+      .subscribe(data => {
+        this.storageBlock = data
       });
 
     // get url params

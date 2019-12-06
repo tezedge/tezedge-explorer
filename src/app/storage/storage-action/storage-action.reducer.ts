@@ -81,11 +81,15 @@ export function parseKey(key) {
 
                 if (index === 0) {
 
+                    // convert contract hex to string
+                    let addressPrefix = new Uint8Array();
+                    let address = '';
+                    if (value.substring(0, 4) === '0000') { addressPrefix = prefix.tz1; address = value.substr(4); }
+                    if (value.substring(0, 4) === '0001') { addressPrefix = prefix.tz2; address = value.substr(4); }
+                    if (value.substring(0, 4) === '0002') { addressPrefix = prefix.tz3; address = value.substr(4); }
+                    if (value.substring(0, 2) === '01') { addressPrefix = prefix.KT1; address = value.substr(2, value.length-4); }
 
-                    // get blake2b hash
-                    const hash = blake2b(20).update(Buffer.from(value)).digest('hex')
-                    console.log(value, hash);
-
+                    const hash = bs58checkEncode(addressPrefix, Buffer.from(address, 'hex'));
                     return hash;
                 }
                 return value
@@ -95,19 +99,11 @@ export function parseKey(key) {
     // process delegates_with_frozen_balance
     if ((key.indexOf("delegates_with_frozen_balance") > 0)) {
         key = key
-        .filter((value, index) => {
-            return ((index > 1 && index < 4) || index > 8) ? true : false;
-        }).map((value, index) => {
-
-            // convert hex to blake2b
-            if (index === 0) {
-
-                console.log(blake.blake2bHex('value'))
+            .filter((value, index) => {
+                return ((index > 1 && index < 4) || index > 8) ? true : false;
+            }).map((value, index) => {
                 return value
-            };
-
-            return value
-        })
+            })
     }
 
     // process active_delegates_with_rolls

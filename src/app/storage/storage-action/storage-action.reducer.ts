@@ -24,25 +24,54 @@ export function reducer(state = initialState, action) {
         }
 
         case 'STORAGE_ACTION_LOAD_SUCCESS': {
+            // clone action
+            let _action = JSON.parse(JSON.stringify(action));
 
+            // get time stamp
+            function get_time(action) {
+                if (action.hasOwnProperty('Set')) {
+                    return action.Set.start_time;
+                }
+                if (action.hasOwnProperty('Delete')) {
+                    return action.Delete.start_time;
+                }
+                if (action.hasOwnProperty('RemoveRecord')) {
+                    return action.RemoveRecord.start_time;
+                }
+            }
+
+            // sort actions by timestamp
+            _action.payload.sort((a, b) => {
+                const aa = get_time(a);
+                const bb = get_time(b);
+                return aa - bb;
+            });
+
+            let actionPreviousTimestamp = 0;
             // console.log('[STORAGE_ACTION_LOAD_SUCCESS]', action.payload);
             return {
                 ...state,
-                ids: action.payload,
-                entities: action.payload.map(action => {
+                ids: _action.payload,
+                entities: _action.payload.map(action => {
 
                     if (action.hasOwnProperty('Set')) {
-
-                        return {
+                        const result = {
                             Set: {
                                 ...action.Set,
                                 key: parseKey(action.Set.key),
                                 text: new TextDecoder('utf-8').decode(new Uint8Array(action.Set.value)),
                                 hex: bufferToHex(new Uint8Array(action.Set.value)),
                                 category: action.Set.key[0] === 'data' ? action.Set.key[1] : action.Set.key[0],
-                                color: categoryColor(action.Set.key[0] === 'data' ? action.Set.key[1] : action.Set.key[0])
+                                color: categoryColor(action.Set.key[0] === 'data' ? action.Set.key[1] : action.Set.key[0]),
+                                json: action.Set.value_as_json,
+                                start_time: action.Set.start_time,
+                                timeStorage: Math.floor((action.Set.end_time - action.Set.start_time) * 1000000),
+                                timeProtocol: Math.floor((actionPreviousTimestamp - action.Set.start_time) * 1000000),
                             }
                         };
+                        // save prev timestamp
+                        actionPreviousTimestamp = action.Set.end_time;
+                        return result;
                     }
 
                     if (action.hasOwnProperty('Delete')) {
@@ -87,7 +116,7 @@ export function parseKey(key) {
                     if (value.substring(0, 4) === '0000') { addressPrefix = prefix.tz1; address = value.substr(4); }
                     if (value.substring(0, 4) === '0001') { addressPrefix = prefix.tz2; address = value.substr(4); }
                     if (value.substring(0, 4) === '0002') { addressPrefix = prefix.tz3; address = value.substr(4); }
-                    if (value.substring(0, 2) === '01') { addressPrefix = prefix.KT1; address = value.substr(2, value.length-4); }
+                    if (value.substring(0, 2) === '01') { addressPrefix = prefix.KT1; address = value.substr(2, value.length - 4); }
 
                     const hash = bs58checkEncode(addressPrefix, Buffer.from(address, 'hex'));
                     return hash;

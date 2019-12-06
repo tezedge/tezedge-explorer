@@ -94,8 +94,19 @@ export function parseKey(key) {
 
     // process delegates_with_frozen_balance
     if ((key.indexOf("delegates_with_frozen_balance") > 0)) {
-        key = key.filter((value, index) => {
+        key = key
+        .filter((value, index) => {
             return ((index > 1 && index < 4) || index > 8) ? true : false;
+        }).map((value, index) => {
+
+            // convert hex to blake2b
+            if (index === 0) {
+
+                console.log(blake.blake2bHex('value'))
+                return value
+            };
+
+            return value
         })
     }
 

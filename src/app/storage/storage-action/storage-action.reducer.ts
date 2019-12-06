@@ -1,5 +1,6 @@
-import { ACTIONS_SUBJECT_PROVIDERS } from '@ngrx/store/src/actions_subject';
-import { bindCallback } from 'rxjs';
+import * as blake2b from 'blake2b';
+import * as bs58check from 'bs58check';
+import { Buffer } from 'buffer';
 
 const initialState: any = {
     ids: [],
@@ -72,10 +73,23 @@ export function parseKey(key) {
     }
     // process contract
     if ((key.indexOf("contracts") > 0) && (key.indexOf("index") > 0)) {
-        key = key.filter((value, index) => {
-            // remove index from path
-            return (index > 8) ? true : false;
-        })
+        key = key
+            .filter((value, index) => {
+                // remove index from path
+                return (index > 8) ? true : false;
+            }).map((value, index) => {
+
+                if (index === 0) {
+
+
+                    // get blake2b hash
+                    const hash = blake2b(20).update(Buffer.from(value)).digest('hex')
+                    console.log(value, hash);
+
+                    return hash;
+                }
+                return value
+            })
     }
 
     // process delegates_with_frozen_balance
@@ -135,4 +149,29 @@ export function categoryColor(category) {
         default:
             return 'black';
     }
+}
+
+
+export const prefix = {
+    tz1: new Uint8Array([6, 161, 159]),
+    tz2: new Uint8Array([6, 161, 161]),
+    tz3: new Uint8Array([6, 161, 164]),
+    KT1: new Uint8Array([2, 90, 121]),
+    B: new Uint8Array([1, 52]),
+    edpk: new Uint8Array([13, 15, 37, 217]),
+    sppk: new Uint8Array([3, 254, 226, 86]),
+    p2pk: new Uint8Array([3, 178, 139, 127]),
+    edsk64: new Uint8Array([43, 246, 78, 7]),
+    edsk32: new Uint8Array([13, 15, 58, 7]),
+    edsig: new Uint8Array([9, 245, 205, 134, 18]),
+    operation: new Uint8Array([5, 116]),
+}
+
+export function bs58checkEncode(this: void, prefix: Uint8Array, payload: Uint8Array) {
+    const n = new Uint8Array(prefix.length + payload.length);
+
+    n.set(prefix);
+    n.set(payload, prefix.length);
+
+    return bs58check.encode(Buffer.from(n));
 }

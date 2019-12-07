@@ -1,6 +1,7 @@
 import * as blake2b from 'blake2b';
 import * as bs58check from 'bs58check';
 import { Buffer } from 'buffer';
+import { getMatIconFailedToSanitizeLiteralError } from '@angular/material';
 
 const initialState: any = {
     ids: [],
@@ -146,7 +147,6 @@ export function parseKey(key) {
     }
 
     //  remove last element
-    // key = key.splice(0, key.length - 1);
     // key.pop()
 
     // replace , with /
@@ -238,43 +238,46 @@ export function parseValue(key, value) {
 
     // value encodings
     const encodings: any = [
-        [['data', 'contracts', 'index', '*', '*', '*', '*', '*', '*', '*', 'delegate_desactivation'], ''],
-        [['data', 'contracts', 'index', '*', '*', '*', '*', '*', '*', '*', 'frozen_balance', '*', 'rewards'], 'contractRewards'],
-        [['data', 'contracts', 'index', '*', '*', '*', '*', '*', '*', '*', 'frozen_balance', '*', 'deposits'], ''],
-        [['data', 'contracts', 'index', '*', '*', '*', '*', '*', '*', '*', 'frozen_balance', '*', 'fees'], ''],
-        [['data', 'contracts', 'index', '*', '*', '*', '*', '*', '*', '*', 'balance'], 'contractsBalance'],
-        [['data', 'contracts', 'index', '*', '*', '*', '*', '*', '*', '*', 'change'], ''],
+        [['data', 'contracts', 'index', '*', '*', '*', '*', '*', '*', '*', 'delegate_desactivation'], 'empty_repr'],
+        [['data', 'contracts', 'index', '*', '*', '*', '*', '*', '*', '*', 'frozen_balance', '*', 'rewards'], 'empty_repr'],
+        [['data', 'contracts', 'index', '*', '*', '*', '*', '*', '*', '*', 'frozen_balance', '*', 'deposits'], 'empty_repr'],
+        [['data', 'contracts', 'index', '*', '*', '*', '*', '*', '*', '*', 'frozen_balance', '*', 'fees'], 'empty_repr'],
+        [['data', 'contracts', 'index', '*', '*', '*', '*', '*', '*', '*', 'balance'], 'Tez_repr'],
+        [['data', 'contracts', 'index', '*', '*', '*', '*', '*', '*', '*', 'change'], 'empty_repr'],
 
-        [['data', 'delegates_with_frozen_balance', '*', '*', '*', '*', '*', '*', '*', '*'], ''],
-        [['data', 'active_delegates_with_rolls', '*', '*', '*', '*', '*', '*', '*'], ''],
-        [['data', 'block_priority'], 'block_priority'],
+        [['data', 'delegates_with_frozen_balance', '*', '*', '*', '*', '*', '*', '*', '*'], 'empty_repr'],
+        [['data', 'active_delegates_with_rolls', '*', '*', '*', '*', '*', '*', '*'], 'empty_repr'],
+        [['data', 'block_priority'], 'empty_repr'],
 
-        [['data', 'contracts', 'global_counter'], ''],
-        [['data', 'contracts', 'index', '*', '*', '*', '*', '*', '*', '*', 'counter'], ''],
-        [['data', 'contracts', 'index', '*', '*', '*', '*', '*', '*', '*', 'manager'], ''],
-        [['data', 'contracts', 'index', '*', '*', '*', '*', '*', '*', '*', 'len', 'code'], ''],
-        [['data', 'contracts', 'index', '*', '*', '*', '*', '*', '*', '*', 'len', 'storage'], ''],
-        [['data', 'contracts', 'index', '*', '*', '*', '*', '*', '*', '*', 'data', 'code'], ''],
-        [['data', 'contracts', 'index', '*', '*', '*', '*', '*', '*', '*', 'data', 'storage'], ''],
-        [['data', 'contracts', 'index', '*', '*', '*', '*', '*', '*', '*', 'used_bytes'], ''],
-        [['data', 'contracts', 'index', '*', '*', '*', '*', '*', '*', '*', 'paid_bytes'], ''],
+        [['data', 'contracts', 'global_counter'], 'empty_repr'],
+        [['data', 'contracts', 'index', '*', '*', '*', '*', '*', '*', '*', 'counter'], 'empty_repr'],
+        [['data', 'contracts', 'index', '*', '*', '*', '*', '*', '*', '*', 'manager'], 'empty_repr'],
+        [['data', 'contracts', 'index', '*', '*', '*', '*', '*', '*', '*', 'len', 'code'], 'empty_repr'],
+        [['data', 'contracts', 'index', '*', '*', '*', '*', '*', '*', '*', 'len', 'storage'], 'empty_repr'],
+        [['data', 'contracts', 'index', '*', '*', '*', '*', '*', '*', '*', 'data', 'code'], 'empty_repr'],
+        [['data', 'contracts', 'index', '*', '*', '*', '*', '*', '*', '*', 'data', 'storage'], 'empty_repr'],
+        [['data', 'contracts', 'index', '*', '*', '*', '*', '*', '*', '*', 'used_bytes'], 'empty_repr'],
+        [['data', 'contracts', 'index', '*', '*', '*', '*', '*', '*', '*', 'paid_bytes'], 'empty_repr'],
 
-        [['data', 'big_maps', 'index', '*', '*', '*', '*', '*', '*', '*', 'contents', '*', '*', '*', '*', '*', '*', 'len'], ''],
-        [['data', 'big_maps', 'index', '*', '*', '*', '*', '*', '*', '*', 'contents', '*', '*', '*', '*', '*', '*', 'data'], ''],
-        [['data', 'big_maps', 'index', '*', '*', '*', '*', '*', '*', '*', 'total_bytes'], ''],
+        [['data', 'big_maps', 'index', '*', '*', '*', '*', '*', '*', '*', 'contents', '*', '*', '*', '*', '*', '*', 'len'], 'empty_repr'],
+        [['data', 'big_maps', 'index', '*', '*', '*', '*', '*', '*', '*', 'contents', '*', '*', '*', '*', '*', '*', 'data'], 'empty_repr'],
+        [['data', 'big_maps', 'index', '*', '*', '*', '*', '*', '*', '*', 'total_bytes'], 'empty_repr'],
         [['data', 'big_maps', 'next'], ''],
-        [['data', 'big_maps', 'index', '*', '*', '*', '*', '*', '*', '*', 'key_type'], ''],
-        [['data', 'big_maps', 'index', '*', '*', '*', '*', '*', '*', '*', 'value_type'], ''],
-        [['data', 'cycle', '*', 'nonces', '*'], ''],
+        [['data', 'big_maps', 'index', '*', '*', '*', '*', '*', '*', '*', 'key_type'], 'empty_repr'],
+        [['data', 'big_maps', 'index', '*', '*', '*', '*', '*', '*', '*', 'value_type'], 'empty_repr'],
+        [['data', 'cycle', '*', 'nonces', '*'], 'empty_repr'],
 
-        [['data', 'version'], ''],
-        [['protocol'], ''],
-        [['test_chain'], ''],
+        [['data', 'version'], 'empty_repr'],
+        [['protocol'], 'empty_repr'],
+        [['test_chain'], 'empty_repr'],
 
     ];
 
+    // encoding representation
+    let encoding: any = '';
+
     // check encodings
-    const encoding = encodings.some(code => {
+    const isEncoding = encodings.some(code => {
 
         // check every kkey from encoding path
         const match = code[0].every((item, index) => {
@@ -291,13 +294,24 @@ export function parseValue(key, value) {
         });
         if (match) {
             // console.log('[parseValue]', match, code[0], key);
+            // save encoding
+            encoding = code[1];
         }
         return match;
     });
 
-    if (!encoding) {
+    if (!isEncoding) {
         console.log('[encoding]', encoding, key, value);
     }
 
-    return (zarithDecode(bufferToHex(new Uint8Array(value))) / 1000000);
+    // call encoding function
+    switch (encoding) {
+        case 'Tez_repr': return Tez_repr(value);
+        default: return false;
+    }
+}
+
+export function Tez_repr(value) {
+    const hexValue = bufferToHex(new Uint8Array(value));
+    return (zarithDecode(hexValue) / 1000000) + 'ꜩ';
 }

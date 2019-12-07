@@ -11,8 +11,8 @@ const initialState: any = {
 function bufferToHex(buffer) {
     return Array
         .from(new Uint8Array(buffer))
-        .map(b => b.toString(16).padStart(2, "0"))
-        .join("");
+        .map(b => b.toString(16).padStart(2, '0'))
+        .join('');
 }
 export function reducer(state = initialState, action) {
     switch (action.type) {
@@ -59,7 +59,7 @@ export function reducer(state = initialState, action) {
                             Set: {
                                 ...action.Set,
                                 key: parseKey(action.Set.key),
-                                deserialized: (zarithDecode(bufferToHex(new Uint8Array(action.Set.value)))/1000000),
+                                value: parseValue(action.Set.key, action.Set.value),
                                 text: new TextDecoder('utf-8').decode(new Uint8Array(action.Set.value)),
                                 hex: bufferToHex(new Uint8Array(action.Set.value)),
                                 category: action.Set.key[0] === 'data' ? action.Set.key[1] : action.Set.key[0],
@@ -98,13 +98,13 @@ export function reducer(state = initialState, action) {
 export function parseKey(key) {
 
     // process block priority
-    if ((key.indexOf("block_priority") > 0)) {
+    if ((key.indexOf('block_priority') > 0)) {
         key = key.filter((value, index) => {
             return (index > 2) ? true : false;
         })
     }
     // process contract
-    if ((key.indexOf("contracts") > 0) && (key.indexOf("index") > 0)) {
+    if ((key.indexOf('contracts') > 0) && (key.indexOf('index') > 0)) {
         key = key
             .filter((value, index) => {
                 // remove index from path
@@ -129,7 +129,7 @@ export function parseKey(key) {
     }
 
     // process delegates_with_frozen_balance
-    if ((key.indexOf("delegates_with_frozen_balance") > 0)) {
+    if ((key.indexOf('delegates_with_frozen_balance') > 0)) {
         key = key
             .filter((value, index) => {
                 return ((index > 1 && index < 4) || index > 8) ? true : false;
@@ -139,7 +139,7 @@ export function parseKey(key) {
     }
 
     // process active_delegates_with_rolls
-    if ((key.indexOf("active_delegates_with_rolls") > 0)) {
+    if ((key.indexOf('active_delegates_with_rolls') > 0)) {
         key = key.filter((value, index) => {
             return ((index > 1 && index < 3) || index > 7) ? true : false;
         })
@@ -147,7 +147,7 @@ export function parseKey(key) {
 
     //  remove last element
     // key = key.splice(0, key.length - 1);
-    key.pop()
+    // key.pop()
 
     // replace , with /
     return key.length > 0 ? '/' + key.toString().replace(/,/g, '/') : '';
@@ -231,6 +231,73 @@ export function zarithDecode(hex) {
             break;
         }
     }
-    console.log('hex ' + hex, value, count);
-    return value
+    return value;
+}
+
+export function parseValue(key, value) {
+
+    // value encodings
+    const encodings: any = [
+        [['data', 'contracts', 'index', '*', '*', '*', '*', '*', '*', '*', 'delegate_desactivation'], ''],
+        [['data', 'contracts', 'index', '*', '*', '*', '*', '*', '*', '*', 'frozen_balance', '*', 'rewards'], 'contractRewards'],
+        [['data', 'contracts', 'index', '*', '*', '*', '*', '*', '*', '*', 'frozen_balance', '*', 'deposits'], ''],
+        [['data', 'contracts', 'index', '*', '*', '*', '*', '*', '*', '*', 'frozen_balance', '*', 'fees'], ''],
+        [['data', 'contracts', 'index', '*', '*', '*', '*', '*', '*', '*', 'balance'], 'contractsBalance'],
+        [['data', 'contracts', 'index', '*', '*', '*', '*', '*', '*', '*', 'change'], ''],
+
+        [['data', 'delegates_with_frozen_balance', '*', '*', '*', '*', '*', '*', '*', '*'], ''],
+        [['data', 'active_delegates_with_rolls', '*', '*', '*', '*', '*', '*', '*'], ''],
+        [['data', 'block_priority'], 'block_priority'],
+
+        [['data', 'contracts', 'global_counter'], ''],
+        [['data', 'contracts', 'index', '*', '*', '*', '*', '*', '*', '*', 'counter'], ''],
+        [['data', 'contracts', 'index', '*', '*', '*', '*', '*', '*', '*', 'manager'], ''],
+        [['data', 'contracts', 'index', '*', '*', '*', '*', '*', '*', '*', 'len', 'code'], ''],
+        [['data', 'contracts', 'index', '*', '*', '*', '*', '*', '*', '*', 'len', 'storage'], ''],
+        [['data', 'contracts', 'index', '*', '*', '*', '*', '*', '*', '*', 'data', 'code'], ''],
+        [['data', 'contracts', 'index', '*', '*', '*', '*', '*', '*', '*', 'data', 'storage'], ''],
+        [['data', 'contracts', 'index', '*', '*', '*', '*', '*', '*', '*', 'used_bytes'], ''],
+        [['data', 'contracts', 'index', '*', '*', '*', '*', '*', '*', '*', 'paid_bytes'], ''],
+
+        [['data', 'big_maps', 'index', '*', '*', '*', '*', '*', '*', '*', 'contents', '*', '*', '*', '*', '*', '*', 'len'], ''],
+        [['data', 'big_maps', 'index', '*', '*', '*', '*', '*', '*', '*', 'contents', '*', '*', '*', '*', '*', '*', 'data'], ''],
+        [['data', 'big_maps', 'index', '*', '*', '*', '*', '*', '*', '*', 'total_bytes'], ''],
+        [['data', 'big_maps', 'next'], ''],
+        [['data', 'big_maps', 'index', '*', '*', '*', '*', '*', '*', '*', 'key_type'], ''],
+        [['data', 'big_maps', 'index', '*', '*', '*', '*', '*', '*', '*', 'value_type'], ''],
+        [['data', 'cycle', '*', 'nonces', '*'], ''],
+
+        [['data', 'version'], ''],
+        [['protocol'], ''],
+        [['test_chain'], ''],
+
+    ];
+
+    // check encodings
+    const encoding = encodings.some(code => {
+
+        // check every kkey from encoding path
+        const match = code[0].every((item, index) => {
+            // console.log('[item]', item, key[index]);
+            if (key[index]) {
+                if ((item === '*') || (key[index] === item)) {
+                    return true;
+                } else {
+                    return false;
+                }
+            } else {
+                return false;
+            }
+        });
+        if (match) {
+            // console.log('[parseValue]', match, code[0], key);
+        }
+        return match;
+    });
+
+    if (!encoding) {
+        console.log('[encoding]', encoding, key, value);
+    }
+
+    return (zarithDecode(bufferToHex(new Uint8Array(value))) / 1000000);
 }

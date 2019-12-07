@@ -48,9 +48,8 @@
                             rem <i>{{action.id.RemoveRecord?.key}} </i>
                         </span>
                         <span *ngIf="action?.id?.Set" style="text-align: left">
-                            <span *ngIf="action.id?.Set?.deserialized"><b>{{action.id?.Set?.deserialized}}</b> | </span>
+                            <span *ngIf="action.id?.Set?.value"><b>{{action.id?.Set?.value}}</b> | </span>
                             {{action.id?.Set?.hex}}
-                            <!-- [{{action.id?.Set?.value}}] -->
                         </span>
 
                     </div>

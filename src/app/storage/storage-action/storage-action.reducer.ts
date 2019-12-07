@@ -59,14 +59,17 @@ export function reducer(state = initialState, action) {
                             Set: {
                                 ...action.Set,
                                 key: parseKey(action.Set.key),
+                                deserialized: (zarithDecode(bufferToHex(new Uint8Array(action.Set.value)))/1000000),
                                 text: new TextDecoder('utf-8').decode(new Uint8Array(action.Set.value)),
                                 hex: bufferToHex(new Uint8Array(action.Set.value)),
                                 category: action.Set.key[0] === 'data' ? action.Set.key[1] : action.Set.key[0],
+                                lastKey: action.Set.key[action.Set.key.length - 1],
                                 color: categoryColor(action.Set.key[0] === 'data' ? action.Set.key[1] : action.Set.key[0]),
                                 json: action.Set.value_as_json,
                                 start_time: action.Set.start_time,
                                 timeStorage: Math.floor((action.Set.end_time - action.Set.start_time) * 1000000),
-                                timeProtocol: Math.floor((actionPreviousTimestamp - action.Set.start_time) * 1000000),
+                                timeProtocol: actionPreviousTimestamp !== 0 ?
+                                    Math.floor((action.Set.start_time - actionPreviousTimestamp) * 1000000) : 0,
                             }
                         };
                         // save prev timestamp
@@ -142,7 +145,11 @@ export function parseKey(key) {
         })
     }
 
-    // replace , with / 
+    //  remove last element
+    // key = key.splice(0, key.length - 1);
+    key.pop()
+
+    // replace , with /
     return key.length > 0 ? '/' + key.toString().replace(/,/g, '/') : '';
 }
 
@@ -210,4 +217,20 @@ export function bs58checkEncode(this: void, prefix: Uint8Array, payload: Uint8Ar
     n.set(payload, prefix.length);
 
     return bs58check.encode(Buffer.from(n));
+}
+
+
+export function zarithDecode(hex) {
+    let count = 0;
+    let value = 0;
+    while (1) {
+        const byte = Number('0x' + hex.slice(0 + count * 2, 2 + count * 2));
+        value += ((byte & 127) * (128 ** count));
+        count++;
+        if ((byte & 128) !== 128) {
+            break;
+        }
+    }
+    console.log('hex ' + hex, value, count);
+    return value
 }

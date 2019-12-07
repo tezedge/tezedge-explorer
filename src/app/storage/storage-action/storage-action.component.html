@@ -29,28 +29,36 @@
 
                 </th>
                 <td mat-cell *matCellDef="let action">
-                    <span *ngIf="action?.id?.Set">
-                        <!--   <span> {{action.id.Set?.start_time }}</span>&nbsp; -->
-                        <span> {{action.id.Set?.timeStorage }} μs |</span>&nbsp;
-                        <span> {{action.id.Set?.timeProtocol }} us |</span>&nbsp;  
+                    <div>
+                        <span *ngIf="action?.id?.Set">
+                            <!--   <span> {{action.id.Set?.start_time }}</span>&nbsp; -->
+                            <span> {{action.id.Set?.timeStorage }} μs |</span>&nbsp;
+                            <span> {{action.id.Set?.timeProtocol }} μs |</span>&nbsp;
 
-                        <span
-                            [style.color]="action.id.Set?.color">{{action.id.Set?.category }}</span>{{action.id.Set?.key }}
-                    </span>
-                    <span *ngIf="action?.id?.Delete">
-                        <span> {{action.id.Delete?.time }} μs |</span>&nbsp;
-                        del <i>{{action.id.Delete?.key}}</i>
-                    </span>
-                    <span *ngIf="action?.id?.RemoveRecord">
-                        <span> {{action.id.RemoveRecord?.time }} μs |</span>&nbsp;
-                        rem <i>{{action.id.RemoveRecord?.key}} </i>
-                    </span>
+                            <span
+                                [style.color]="action.id.Set?.color">{{action.id.Set?.category }}</span>{{action.id.Set?.key}}</span>
+                        <span [style.color]="action.id.Set?.color"
+                            *ngIf="action.id.Set?.lastKey">/{{ action.id.Set?.lastKey }} </span>
+                        <span *ngIf="action?.id?.Delete">
+                            <span> {{action.id.Delete?.time }} μs |</span>&nbsp;
+                            del <i>{{action.id.Delete?.key}}</i>
+                        </span>
+                        <span *ngIf="action?.id?.RemoveRecord">
+                            <span> {{action.id.RemoveRecord?.time }} μs |</span>&nbsp;
+                            rem <i>{{action.id.RemoveRecord?.key}} </i>
+                        </span>
+                        <span *ngIf="action?.id?.Set" style="text-align: left">
+                            <span *ngIf="action.id?.Set?.deserialized"><b>{{action.id?.Set?.deserialized}}</b> | </span>
+                            {{action.id?.Set?.hex}}
+                            <!-- [{{action.id?.Set?.value}}] -->
+                        </span>
 
-                    <span *ngIf="action?.id?.Set" style="text-align: left">
-                        <b>{{action.id?.Set?.hex}}</b>
-                        | {{action.id?.Set?.json | json}}
-                        <!-- [{{action.id?.Set?.value}}] -->
-                    </span>
+                    </div>
+                    <div *ngIf="false">
+                        <span style="display:flex; justify-content: flex-end;"> 
+                        
+                        </span>
+                    </div>
                 </td>
             </ng-container>
 

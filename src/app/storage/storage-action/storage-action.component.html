@@ -48,8 +48,9 @@
                             rem <i>{{action.id.RemoveRecord?.key}} </i>
                         </span>
                         <span *ngIf="action?.id?.Set" style="text-align: left">
-                            <span *ngIf="action.id?.Set?.value"><b>{{action.id?.Set?.value}}</b> | </span>
-                            {{action.id?.Set?.hex}}
+                            <span *ngIf="action.id?.Set?.value"><b>{{action.id?.Set?.value}}</b></span>
+                            <span *ngIf="!action.id?.Set?.value">{{action.id?.Set?.hex}} | {{action.id?.Set?.text}}</span>
+
                         </span>
 
                     </div>

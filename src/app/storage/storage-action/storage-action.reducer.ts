@@ -1,7 +1,6 @@
 import * as blake2b from 'blake2b';
 import * as bs58check from 'bs58check';
 import { Buffer } from 'buffer';
-import { getMatIconFailedToSanitizeLiteralError } from '@angular/material';
 
 const initialState: any = {
     ids: [],
@@ -238,20 +237,20 @@ export function parseValue(key, value) {
 
     // value encodings
     const encodings: any = [
-        [['data', 'contracts', 'index', '*', '*', '*', '*', '*', '*', '*', 'delegate_desactivation'], 'empty_repr'],
-        [['data', 'contracts', 'index', '*', '*', '*', '*', '*', '*', '*', 'frozen_balance', '*', 'rewards'], 'empty_repr'],
-        [['data', 'contracts', 'index', '*', '*', '*', '*', '*', '*', '*', 'frozen_balance', '*', 'deposits'], 'empty_repr'],
-        [['data', 'contracts', 'index', '*', '*', '*', '*', '*', '*', '*', 'frozen_balance', '*', 'fees'], 'empty_repr'],
+        [['data', 'contracts', 'index', '*', '*', '*', '*', '*', '*', '*', 'delegate_desactivation'], 'Cycle_repr'],
+        [['data', 'contracts', 'index', '*', '*', '*', '*', '*', '*', '*', 'frozen_balance', '*', 'rewards'], 'Tez_repr'],
+        [['data', 'contracts', 'index', '*', '*', '*', '*', '*', '*', '*', 'frozen_balance', '*', 'deposits'], 'Tez_repr'],
+        [['data', 'contracts', 'index', '*', '*', '*', '*', '*', '*', '*', 'frozen_balance', '*', 'fees'], 'Tez_repr'],
         [['data', 'contracts', 'index', '*', '*', '*', '*', '*', '*', '*', 'balance'], 'Tez_repr'],
-        [['data', 'contracts', 'index', '*', '*', '*', '*', '*', '*', '*', 'change'], 'empty_repr'],
+        [['data', 'contracts', 'index', '*', '*', '*', '*', '*', '*', '*', 'change'], 'Tez_repr'],
 
         [['data', 'delegates_with_frozen_balance', '*', '*', '*', '*', '*', '*', '*', '*'], 'empty_repr'],
         [['data', 'active_delegates_with_rolls', '*', '*', '*', '*', '*', '*', '*'], 'empty_repr'],
         [['data', 'block_priority'], 'empty_repr'],
 
-        [['data', 'contracts', 'global_counter'], 'empty_repr'],
-        [['data', 'contracts', 'index', '*', '*', '*', '*', '*', '*', '*', 'counter'], 'empty_repr'],
-        [['data', 'contracts', 'index', '*', '*', '*', '*', '*', '*', '*', 'manager'], 'empty_repr'],
+        [['data', 'contracts', 'global_counter'], 'Z_repr'],
+        [['data', 'contracts', 'index', '*', '*', '*', '*', '*', '*', '*', 'counter'], 'Z_repr'],
+        [['data', 'contracts', 'index', '*', '*', '*', '*', '*', '*', '*', 'manager'], 'Manager_repr'],
         [['data', 'contracts', 'index', '*', '*', '*', '*', '*', '*', '*', 'len', 'code'], 'empty_repr'],
         [['data', 'contracts', 'index', '*', '*', '*', '*', '*', '*', '*', 'len', 'storage'], 'empty_repr'],
         [['data', 'contracts', 'index', '*', '*', '*', '*', '*', '*', '*', 'data', 'code'], 'empty_repr'],
@@ -307,11 +306,51 @@ export function parseValue(key, value) {
     // call encoding function
     switch (encoding) {
         case 'Tez_repr': return Tez_repr(value);
+        case 'Cycle_repr': return Cycle_repr(value);
+        case 'Manager_repr': return Manager_repr(value);
+        case 'Z_repr': return Z_repr(value);
         default: return false;
     }
 }
 
 export function Tez_repr(value) {
     const hexValue = bufferToHex(new Uint8Array(value));
+    // zarith number
     return (zarithDecode(hexValue) / 1000000) + 'ꜩ';
+}
+
+// url to validate result
+// https://alphanet.simplestaking.com:3000/chains/main/blocks/BMSVcRKJriyu49ug6zXQaajbwMDLSYCeZKuA11ZD6rakUwBSE7p/context/contracts/tz1efSQdjbTut8NyqE6VEj6CcyRP5mL97SNi
+export function Cycle_repr(value) {
+
+    const buffer = new Buffer(value);
+    const int32 = buffer.readUIntBE(0, 4);
+
+    // console.log('[Cycle_repr]', value, result);
+    // 4 bytes to int32
+    return int32 + 'cycle';
+}
+
+export function Z_repr(value) {
+    const hexValue = bufferToHex(new Uint8Array(value));
+    // zarith number
+    return (zarithDecode(hexValue) / 2);
+}
+
+export function Manager_repr(valueBytes) {
+
+    const value = bufferToHex(new Uint8Array(valueBytes));
+    console.log(value, valueBytes);
+
+    // convert contract hex to string
+    let addressPrefix = new Uint8Array();
+    let address = '';
+    if (value.substring(0, 4) === '0000') { addressPrefix = prefix.tz1; address = value.substr(4); }
+    if (value.substring(0, 4) === '0001') { addressPrefix = prefix.tz2; address = value.substr(4); }
+    if (value.substring(0, 4) === '0002') { addressPrefix = prefix.tz3; address = value.substr(4); }
+    if (value.substring(0, 2) === '01') { addressPrefix = prefix.KT1; address = value.substr(2, value.length - 4); }
+
+    const hash = bs58checkEncode(addressPrefix, Buffer.from(address, 'hex'));
+    return value;
+
 }

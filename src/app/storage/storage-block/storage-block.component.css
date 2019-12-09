@@ -16,7 +16,7 @@
     /* text-align: left; */
 }
 .storage-block .mat-cell.cdk-column-hash.mat-column-hash {
-    width: 20vw;
+    width: 100px;
     /* text-align: left; */
     transform: scale(1,1);
 }

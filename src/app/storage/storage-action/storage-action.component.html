@@ -4,10 +4,10 @@
 <div class="storage-action-container">
 
     <div class="storage-action">
-        <th>
 
-            <button routerLink="/storage/{{ storageBlock.entities[blockId]?.header?.predecessor }}" mat-icon-button
-                *ngIf="storageBlock.entities[blockId]?.header?.predecessor">
+        <div style="font-size: 14px;padding: 6px 0px 6px 12px;border-bottom: 1px solid rgba(0,0,0,.12);"
+            *ngIf="storageBlock.entities[blockId]?.header?.predecessor">
+            <button routerLink="/storage/{{ storageBlock.entities[blockId]?.header?.predecessor }}" mat-icon-button>
                 <mat-icon>chevron_left</mat-icon>
             </button>
             <button routerLink="/storage/" *ngIf="storageBlock.entities[blockId]?.header?.predecessor" mat-icon-button>
@@ -15,13 +15,14 @@
             </button>
 
             <span *ngIf="storageBlock.entities[blockId]?.header?.level">
-                BLOCK: {{ storageBlock.entities[blockId]?.header?.level }}
+                {{ storageBlock.entities[blockId]?.header?.level }}
             </span>
 
-            <span *ngIf="storageBlock.entities[blockId]?.hash">
-                HASH: {{ storageBlock.entities[blockId]?.hash }}
+            <span *ngIf="storageBlock.entities[blockId]?.hash" style="padding-left: 12px;">
+                {{ storageBlock.entities[blockId]?.hash }}
             </span>
-        </th>
+        </div>
+
         <table mat-table [dataSource]="tableDataSource">
 
             <ng-container matColumnDef="time">

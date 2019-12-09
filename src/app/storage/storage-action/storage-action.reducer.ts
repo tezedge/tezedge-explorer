@@ -316,7 +316,7 @@ export function parseValue(key, value) {
 export function Tez_repr(value) {
     const hexValue = bufferToHex(new Uint8Array(value));
     // zarith number
-    return (zarithDecode(hexValue) / 1000000) + 'ꜩ';
+    return (zarithDecode(hexValue) / 1000000) + ' ꜩ';
 }
 
 // url to validate result
@@ -328,7 +328,7 @@ export function Cycle_repr(value) {
 
     // console.log('[Cycle_repr]', value, result);
     // 4 bytes to int32
-    return int32 + 'cycle';
+    return int32 + ' cycle';
 }
 
 export function Z_repr(value) {
@@ -341,7 +341,6 @@ export function Manager_repr(valueBytes) {
 
     const value = bufferToHex(new Uint8Array(valueBytes));
     console.log(value, valueBytes);
-
     // convert contract hex to string
     let addressPrefix = new Uint8Array();
     let address = '';

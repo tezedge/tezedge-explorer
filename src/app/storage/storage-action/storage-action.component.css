@@ -16,12 +16,15 @@
     /* text-align: left; */
 }
 .storage-action .mat-cell.cdk-column-value.mat-column-value {
-    width: 20vw;
+    /* width: 20vw; */
     /* text-align: left; */
     transform: scale(1,1);
 }
 
+.mat-cell.cdk-column-time.mat-column-time {
+    padding-right: 10px !important; 
+}
 
 .mat-cell.cdk-column-path.mat-column-path {
-    padding: 10px 0px 0px 24px !important;
+    padding-right: 10px !important; 
 }

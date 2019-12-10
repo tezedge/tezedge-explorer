@@ -32,7 +32,7 @@ export class NetworkingEndpointComponent implements OnInit {
       })
 
 
-    // wait for data changes from redux    
+    // wait for data changes from redux
     this.store.select('settings')
       .pipe(takeUntil(this.onDestroy$))
       .subscribe(data => {

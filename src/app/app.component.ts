@@ -12,6 +12,8 @@ import { MatSidenav } from "@angular/material";
 export class AppComponent {
 
   public app
+  public settings
+  public networkingEndpoint
   public innerWidth;
 
   @ViewChild('sidenav', { static: false }) sidenav: MatSidenav;
@@ -35,10 +37,22 @@ export class AppComponent {
         this.app = data
       })
 
+    // wait for data changes from redux
+    this.store.select('settings')
+      .subscribe(data => {
+        this.settings = data;
+      })
+
+    // wait for data changes from redux
+    this.store.select('networkingEndpoint')
+      .subscribe(data => {
+        this.networkingEndpoint = data;
+      })
+
     // get inner windows width
     this.innerWidth = window.innerWidth;
 
-    // dispatch inner width  
+    // dispatch inner width
     this.store.dispatch({
       type: 'APP_WINDOW',
       payload: {

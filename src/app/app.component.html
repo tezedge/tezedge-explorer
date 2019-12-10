@@ -122,17 +122,20 @@
             STATUS
         </div>
         <span style="font-size:14px;color:#0000008a;margin: 12px 0px 18px 12px;">
-            Connected
+            {{ networkingEndpoint?.status }}
         </span>
 
         <div style="color: #C4CFDC;font-size: 12px;margin: 18px 0px 6px 12px;">
             SERVER
         </div>
-        <span style="font-size:14px;color:#0000008a;margin: 12px 0px 12px 12px;">
-            babylon.tezedge.com
+        <span style="font-size:14px;color:#0000008a;margin: 0px 0px 0px 12px;
+        max-width: 165px !important;direction: rtl;display: inline-block;    
+        text-overflow: ellipsis;white-space: nowrap;overflow: hidden;">
+            {{ settings.endpoint }}
         </span>
 
-        <div style="font-size:14px;color:#C4CFDC;margin-top:12px;padding: 12px 12px 12px 0px;text-align:center;border-top: 1px solid #c4cfdc57">
+        <div
+            style="font-size:14px;color:#C4CFDC;margin-top:12px;padding: 12px 12px 12px 0px;text-align:center;border-top: 1px solid #c4cfdc57">
             <a routerLink="/settings" style="text-decoration:none;color:#C4CFDC;">
                 Edit
             </a>

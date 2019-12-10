@@ -22,3 +22,10 @@ export const environment = {
 Run `npm run start` for a dev server.
 Navigate to `http://localhost:4200/`. 
 
+## Crypto support
+/Users/jurajselep/Projects/tezos-node-explorer/node_modules/@angular-devkit/build-angular/src/angular-cli-files/models/webpack-configs/browser.js
+
+node: {
+  crypto: true,
+  stream: true
+},

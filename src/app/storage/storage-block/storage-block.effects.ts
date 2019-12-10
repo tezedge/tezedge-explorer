@@ -17,7 +17,7 @@ export class StorageBlockEffects {
         withLatestFrom(this.store, (action: any, state) => ({ action, state })),
 
         switchMap(({ action, state }) => {
-            return this.http.get('http://195.201.111.145:18732/dev/chains/main/blocks');
+            return this.http.get('https://babylon.tezedge.com:8732/dev/chains/main/blocks');
         }),
 
         // tap((payload) => console.log("[STORAGE_BLOCK_LOAD_SUCCESS]", payload)),

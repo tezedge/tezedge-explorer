@@ -37,6 +37,7 @@
     "ngrx-store-logger": "^0.2.4",
     "process": "^0.11.10",
     "rxjs": "~6.4.0",
+    "stream": "0.0.2",
     "tslib": "^1.10.0",
     "zone.js": "~0.9.1"
   },
@@ -61,5 +62,8 @@
     "tslint": "~5.15.0",
     "typescript": "~3.5.3"
   },
-  "browser": {}
+  "browser": {
+    "crypto": false,
+    "vm": false
+  }
 }

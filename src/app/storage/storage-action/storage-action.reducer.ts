@@ -58,6 +58,7 @@ export function reducer(state = initialState, action) {
                         const result = {
                             Set: {
                                 ...action.Set,
+                                type: 'SET',
                                 key: parseKey(action.Set.key),
                                 value: parseValue(action.Set.key, action.Set.value),
                                 text: new TextDecoder('utf-8').decode(new Uint8Array(action.Set.value)),
@@ -142,6 +143,15 @@ export function parseKey(key) {
     if ((key.indexOf('active_delegates_with_rolls') > 0)) {
         key = key.filter((value, index) => {
             return ((index > 1 && index < 3) || index > 7) ? true : false;
+        })
+    }
+
+
+    // process big_map
+    if ((key.indexOf('big_maps') > 0)) {
+        key = key.filter((value, index) => {
+            // return true;
+            return ((index > 8 && index < 11) || (index > 15) ) ? true : false;
         })
     }
 

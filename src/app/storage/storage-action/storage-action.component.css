@@ -1,13 +1,14 @@
-.storage-action th.mat-header-cell.cdk-column-path.mat-column-path{
+.storage-action th.mat-header-cell.cdk-column-path.mat-column-path {
     text-overflow: ellipsis;
-    overflow: hidden; 
+    overflow: hidden;
     white-space: nowrap;
     /* width: 20vw;  */
 }
-.storage-action.mat-cell.cdk-column-lpath.mat-column-path  {
+
+.storage-action.mat-cell.cdk-column-lpath.mat-column-path {
     padding: 20px;
     text-overflow: ellipsis;
-    overflow: hidden; 
+    overflow: hidden;
     white-space: nowrap;
     width: 70px;
 }
@@ -15,17 +16,34 @@
 .storage-action th.mat-header-cell.cdk-column-value.mat-column-value {
     /* text-align: left; */
 }
+
 .storage-action .mat-cell.cdk-column-value.mat-column-value {
     /* width: 20vw; */
     /* text-align: left; */
-    transform: scale(1,1);
+    transform: scale(1, 1);
+}
+
+.mat-cell.cdk-column-type.mat-column-type {
+    padding-right: 20px !important;
 }
 
 .mat-cell.cdk-column-time.mat-column-time {
     min-width: 110px;
-    padding-right: 10px !important; 
+    padding-right: 10px !important;
 }
 
 .mat-cell.cdk-column-path.mat-column-path {
-    padding-right: 10px !important; 
+    padding-right: 10px !important;
+}
+
+.mat-cell.cdk-column-value.mat-column-value {
+    /* text-align: right; */
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    max-width: 150px !important;
+}
+
+th.mat-header-cell.cdk-column-value.mat-column-value {
+    /* text-align: right; */
 }

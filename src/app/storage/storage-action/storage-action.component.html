@@ -28,7 +28,7 @@
             <ng-container matColumnDef="type">
                 <th mat-header-cell *matHeaderCellDef>Type</th>
                 <td mat-cell *matCellDef="let action">
-                   <span>{{action.id.type}}</span>
+                    <span>{{action.id.type}}</span>
                 </td>
             </ng-container>
 
@@ -36,8 +36,29 @@
                 <th mat-header-cell *matHeaderCellDef>Time</th>
                 <td mat-cell *matCellDef="let action">
                     <!-- style="width:45px;display:inline-block;text-align:right;" -->
-                    <span> {{action.id?.timeStorage }} μs |</span>&nbsp;
-                    <span>{{action.id?.timeProtocol }} μs</span>&nbsp;
+                    <div>
+                        <span *ngIf="(action.id?.timeStorage<=100)">
+                            {{action.id?.timeStorage }} μs 
+                        </span>
+                        <span style="color:darkred" *ngIf="(action.id?.timeStorage>100 && action.id?.timeStorage<1000)">
+                            {{action.id?.timeStorage }} μs
+                        </span>
+                        <span style="color:red" *ngIf="(action.id?.timeStorage>=1000)">
+                            {{action.id?.timeStorage }} μs
+                        </span>
+                        |
+                        <span *ngIf="(action.id?.timeProtocol<=100)">
+                            {{action.id?.timeProtocol }} μs
+                        </span>
+                        <span style="color:darkred"
+                            *ngIf="(action.id?.timeProtocol>100 && action.id?.timeProtocol<1000)">
+                            {{action.id?.timeProtocol }} μs
+                        </span>
+                        <span style="color:red" *ngIf="(action.id?.timeProtocol>=1000)">
+                            {{action.id?.timeProtocol }} μs
+                        </span>
+                    </div>
+
                 </td>
             </ng-container>
 

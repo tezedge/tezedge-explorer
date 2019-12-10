@@ -121,7 +121,7 @@ export function reducer(state = initialState, action) {
                         if (action.hasOwnProperty('DirMem')) {
                             const result = {
                                 ...action.DirMem,
-                                type: 'MEM',
+                                type: 'DMEM',
                                 key: parseKey(action.DirMem.key),
                                 category: action.DirMem.key[0] === 'data' ? action.DirMem.key[1] : action.DirMem.key[0],
                                 lastKey: action.DirMem.key[action.DirMem.key.length - 1],

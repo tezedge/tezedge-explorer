@@ -49,14 +49,17 @@ export function reducer(state = initialState, action) {
 
             let actionPreviousTimestamp = 0;
             // console.log('[STORAGE_ACTION_LOAD_SUCCESS]', action.payload);
-            return {
+            let result = {
                 ...state,
                 ids: _action.payload,
-                entities: _action.payload.map(action => {
+                entities: _action.payload
+                    // show only set operations
+                    // .filter(action => action.hasOwnProperty('Set'))
+                    .filter(action => action.hasOwnProperty('Get'))
+                    .map(action => {
 
-                    if (action.hasOwnProperty('Set')) {
-                        const result = {
-                            Set: {
+                        if (action.hasOwnProperty('Set')) {
+                            const result = {
                                 ...action.Set,
                                 type: 'SET',
                                 key: parseKey(action.Set.key),
@@ -71,24 +74,99 @@ export function reducer(state = initialState, action) {
                                 timeStorage: Math.floor((action.Set.end_time - action.Set.start_time) * 1000000),
                                 timeProtocol: actionPreviousTimestamp !== 0 ?
                                     Math.floor((action.Set.start_time - actionPreviousTimestamp) * 1000000) : 0,
-                            }
-                        };
-                        // save prev timestamp
-                        actionPreviousTimestamp = action.Set.end_time;
-                        return result;
-                    }
+                            };
+                            // save prev timestamp
+                            actionPreviousTimestamp = action.Set.end_time;
+                            return result;
+                        }
 
-                    if (action.hasOwnProperty('Delete')) {
+
+                        if (action.hasOwnProperty('Get')) {
+                            const result = {
+                                ...action.Get,
+                                type: 'GET',
+                                key: parseKey(action.Get.key),
+                                category: action.Get.key[0] === 'data' ? action.Get.key[1] : action.Get.key[0],
+                                lastKey: action.Get.key[action.Get.key.length - 1],
+                                color: categoryColor(action.Get.key[0] === 'data' ? action.Get.key[1] : action.Get.key[0]),
+                                start_time: action.Get.start_time,
+                                timeStorage: Math.floor((action.Get.end_time - action.Get.start_time) * 1000000),
+                                timeProtocol: actionPreviousTimestamp !== 0 ?
+                                    Math.floor((action.Get.start_time - actionPreviousTimestamp) * 1000000) : 0,
+                            };
+                            // save prev timestamp
+                            actionPreviousTimestamp = action.Get.end_time;
+                            return result;
+                        }
+
+                        if (action.hasOwnProperty('Mem')) {
+                            const result = {
+                                ...action.Mem,
+                                type: 'MEM',
+                                key: parseKey(action.Mem.key),
+                                category: action.Mem.key[0] === 'data' ? action.Mem.key[1] : action.Mem.key[0],
+                                lastKey: action.Mem.key[action.Mem.key.length - 1],
+                                color: categoryColor(action.Mem.key[0] === 'data' ? action.Mem.key[1] : action.Mem.key[0]),
+                                start_time: action.Mem.start_time,
+                                timeStorage: Math.floor((action.Mem.end_time - action.Mem.start_time) * 1000000),
+                                timeProtocol: actionPreviousTimestamp !== 0 ?
+                                    Math.floor((action.Mem.start_time - actionPreviousTimestamp) * 1000000) : 0,
+                            };
+                            // save prev timestamp
+                            actionPreviousTimestamp = action.Mem.end_time;
+                            return result;
+                        }
+
+
+                        if (action.hasOwnProperty('DirMem')) {
+                            const result = {
+                                ...action.DirMem,
+                                type: 'MEM',
+                                key: parseKey(action.DirMem.key),
+                                category: action.DirMem.key[0] === 'data' ? action.DirMem.key[1] : action.DirMem.key[0],
+                                lastKey: action.DirMem.key[action.DirMem.key.length - 1],
+                                color: categoryColor(action.DirMem.key[0] === 'data' ? action.DirMem.key[1] : action.DirMem.key[0]),
+                                start_time: action.DirMem.start_time,
+                                timeStorage: Math.floor((action.DirMem.end_time - action.DirMem.start_time) * 1000000),
+                                timeProtocol: actionPreviousTimestamp !== 0 ?
+                                    Math.floor((action.DirMem.start_time - actionPreviousTimestamp) * 1000000) : 0,
+                            };
+                            // save prev timestamp
+                            actionPreviousTimestamp = action.DirMem.end_time;
+                            return result;
+                        }
+
+                        if (action.hasOwnProperty('Delete')) {
+                            return {
+                                ...action.Delete,
+                                type: 'DEL'
+                            };
+                        }
+
+                        if (action.hasOwnProperty('RemoveRecord')) {
+                            return {
+                                ...action.RemoveRecord,
+                                type: 'REM'
+                            };
+                        }
+
                         return action;
-                    }
-
-                    if (action.hasOwnProperty('RemoveRecord')) {
-                        return action;
-                    }
-
-                    return action;
-                })
+                    })
             }
+
+            // total time for storage time
+            let totalTimeStorage = result.entities.reduce((acc, value) => {
+                return (acc + value.timeStorage);
+            }, 0);
+
+            // total time for protocol
+            let totalTimeProtocol = result.entities.reduce((acc, value) => {
+                return (acc + value.timeProtocol);
+            }, 0);
+
+            console.log('[PROFILER] Storage: ' + totalTimeStorage / 1000 + 'ms  Protocol: ' + totalTimeProtocol / 1000 + 'ms');
+
+            return result
         }
 
         default:
@@ -151,7 +229,7 @@ export function parseKey(key) {
     if ((key.indexOf('big_maps') > 0)) {
         key = key.filter((value, index) => {
             // return true;
-            return ((index > 8 && index < 11) || (index > 15) ) ? true : false;
+            return ((index > 8 && index < 11) || (index > 15)) ? true : false;
         })
     }
 
@@ -309,9 +387,10 @@ export function parseValue(key, value) {
         return match;
     });
 
-    if (!isEncoding) {
-        console.log('[encoding]', encoding, key, value);
-    }
+    // TODO: uncoment to find not hadled cases
+    // if (!isEncoding) {
+    //     console.log('[encoding]', encoding, key, value);
+    // }
 
     // call encoding function
     switch (encoding) {
@@ -350,7 +429,6 @@ export function Z_repr(value) {
 export function Manager_repr(valueBytes) {
 
     const value = bufferToHex(new Uint8Array(valueBytes));
-    console.log(value, valueBytes);
     // convert contract hex to string
     let addressPrefix = new Uint8Array();
     let address = '';

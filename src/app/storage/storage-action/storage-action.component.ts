@@ -52,7 +52,6 @@ export class StorageActionComponent implements OnInit {
       .subscribe(data => {
       
         this.storageBlock = data
-        
 
       });
 

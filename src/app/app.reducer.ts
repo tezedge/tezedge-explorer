@@ -15,8 +15,8 @@ const initialState = {
         mode: 'side',
         // backgroundColor: '#242424',
         // color: '#bfbfbf',
-        backgroundColor: 'whitesmoke',
-        color: 'rgba(0,0,0,0.7)',
+        backgroundColor: 'white',
+        color: '#1A1E2A',
         toggleButton: {
             isVisible: true,
         },
@@ -24,7 +24,7 @@ const initialState = {
     toolbar: {
         isVisible: true,
         backgroundColor: 'white',
-        color: 'black',
+        color: '#1A1E2A',
     },
     logo: {
         isVisible: true,

@@ -3,6 +3,7 @@ body {
     height: 100%;
     font-family: Roboto, "Helvetica Neue", sans-serif;
     margin: 0px !important;
+    background-color: #F5F9FC;
 }
 
 table {
@@ -102,6 +103,7 @@ table {
 }
 
 .networking-peers {
+    background-color: white;
     margin-top: 30px;
     width: 700px;
     border: 1px solid #E0E0E0 ;
@@ -213,7 +215,7 @@ mat-row, td.mat-cell {
 }
 
 .networking {
-    background-color: white;
+    background-color: #F5F9FC;
 }
 
 
@@ -225,12 +227,14 @@ mat-row, td.mat-cell {
 }
 
 .storage-block-container {
+    background-color: #F5F9FC;
     display: flex;
     align-items: center;
     justify-content: center;
 }
 
 .storage-block {
+    background-color: white;
     margin-top: 30px;
     width: 800px;
     border: 1px solid #e0e0e0;
@@ -238,12 +242,14 @@ mat-row, td.mat-cell {
 }
 
 .storage-action-container {
+    background-color: #F5F9FC;
     display: flex;
     align-items: center;
     justify-content: center;
 }
 
 .storage-action {
+    background-color: white;
     margin-top: 30px;
     border: 1px solid #e0e0e0;
     border-radius: 4px;

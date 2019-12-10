@@ -27,10 +27,8 @@ table {
 
 
 .settings {
-    margin: 25px;
-}
-
-.settings {
+    padding: 25px;
+    background-color: #F5F9FC;
     display: flex;
     align-items: center;
     justify-content: center;

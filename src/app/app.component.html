@@ -53,7 +53,7 @@
 
     <!-- Sidebar -->
     <mat-sidenav-container>
-        <mat-sidenav #start [mode]="app.sidenav.mode" style="min-width:220px;"
+        <mat-sidenav #start [mode]="app.sidenav.mode" style="min-width:230px;"
             [style.background-color]="app.sidenav.backgroundColor" [style.color]="app.sidenav.color"
             [opened]="app.sidenav.isVisible" [fixedInViewport]="true" [fixedTopGap]="0" [fixedBottomGap]="0">
 
@@ -116,7 +116,7 @@
         </mat-sidenav-content>
 
     </mat-sidenav-container>
-    <div style="position: fixed;min-width: 190px;height: 160px;left: 14px;
+    <div style="position: fixed;min-width: 200px;height: 160px;left: 14px;
         background: #F5F9FC;border-radius: 4px;bottom: 20px;z-index: 1;">
         <div style="color: #C4CFDC;font-size: 12px;margin: 12px 0px 6px 12px;">
             STATUS
@@ -129,7 +129,7 @@
             SERVER
         </div>
         <span style="font-size:14px;color:#0000008a;margin: 0px 0px 0px 12px;
-        max-width: 165px !important;direction: rtl;display: inline-block;    
+        max-width: 175px !important;direction: rtl;display: inline-block;    
         text-overflow: ellipsis;white-space: nowrap;overflow: hidden;">
             {{ settings.endpoint }}
         </span>

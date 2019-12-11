@@ -7,19 +7,34 @@
 
         <div style="font-size: 14px;padding: 6px 0px 6px 12px;border-bottom: 1px solid rgba(0,0,0,.12);"
             *ngIf="storageBlock.entities[blockId]?.header?.predecessor">
-            <button routerLink="/storage/{{ storageBlock.entities[blockId]?.header?.predecessor }}" mat-icon-button>
+            <button matTooltip="Previous Block" matTooltipPosition="above" routerLink="/storage/{{ storageBlock.entities[blockId]?.header?.predecessor }}" mat-icon-button>
                 <mat-icon>chevron_left</mat-icon>
             </button>
-            <button routerLink="/storage/" *ngIf="storageBlock.entities[blockId]?.header?.predecessor" mat-icon-button>
+            <button matTooltip="Next Block" matTooltipPosition="above" routerLink="/storage/" *ngIf="storageBlock.entities[blockId]?.header?.predecessor" mat-icon-button>
                 <mat-icon>chevron_right</mat-icon>
             </button>
 
-            <span *ngIf="storageBlock.entities[blockId]?.header?.level">
-                {{ storageBlock.entities[blockId]?.header?.level }}
-            </span>
+            <span *ngIf="storageBlock.entities[blockId]">
+                <button mat-button matTooltip="Block Level" matTooltipPosition="above" style="font-weight: 300;">
+                    {{ storageBlock.entities[blockId]?.header?.level }}
+                </button>
+                <button mat-button matTooltip="Block Hash" matTooltipPosition="above" style="font-weight: 300;">
+                    {{ storageBlock.entities[blockId]?.hash }}
+                </button>
+                <button mat-button matTooltip="Cycle" matTooltipPosition="above" style="font-weight: 300;">
+                    {{ storageBlock.entities[blockId]?.metadata?.level?.cycle }}
+                </button>
 
-            <span *ngIf="storageBlock.entities[blockId]?.hash" style="padding-left: 12px;">
-                {{ storageBlock.entities[blockId]?.hash }}
+                <button mat-button matTooltip="Cycle Position" matTooltipPosition="above" style="font-weight: 300;">
+                    {{ storageBlock.entities[blockId]?.metadata?.level?.cycle_position }}
+                </button>
+
+                <button mat-button matTooltip="Voting Period" matTooltipPosition="above" style="font-weight: 300;">
+                    {{ storageBlock.entities[blockId]?.metadata?.level?.voting_period }}
+                </button>
+                <button mat-button  matTooltip="Voting Period Position" matTooltipPosition="above" style="margin:0px 10px 0px 0px;" style="font-weight: 300;">
+                    {{ storageBlock.entities[blockId]?.metadata?.level?.voting_period_position  }}
+                </button>
             </span>
         </div>
 

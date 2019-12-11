@@ -9,18 +9,23 @@
     text-overflow: ellipsis;
     overflow: hidden; 
     white-space: nowrap;
-    width: 70px;
+    width: 80px; 
 }
 
 .storage-block th.mat-header-cell.cdk-column-hash.mat-column-hash {
     /* text-align: left; */
 }
 .storage-block .mat-cell.cdk-column-hash.mat-column-hash {
-    width: 100px;
     /* text-align: left; */
+    max-width: 350px; 
+    padding-right: 10px;
     transform: scale(1,1);
 }
 
+.storage-block .mat-cell.cdk-column-hash.mat-column-position {
+    padding-right: 10px;
+    /* text-align: left; */
+}
 
 .mat-cell.cdk-column-level.mat-column-level {
     padding: 10px 0px 10px 0px !important;

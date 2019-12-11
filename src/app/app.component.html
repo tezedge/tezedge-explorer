@@ -21,10 +21,10 @@
     }
 
     .app-submenu {
-        color: #0000008a;
+        color: #c4cfdc7a;
         font-size: 12px;
         padding: 22px 0px 12px 0px;
-        /* border-top: 1px solid #e0e0e0; */
+        border-top: 1px solid rgba(255, 255, 255, 0.1); 
     }
 
     .app-submenu span {
@@ -44,7 +44,7 @@
     .mat-list-option:hover,
     .mat-nav-list .mat-list-item:focus,
     .mat-nav-list .mat-list-item:hover {
-        background: #F5F9FC;
+        background: #1C202B;
     }
 </style>
 
@@ -53,13 +53,13 @@
 
     <!-- Sidebar -->
     <mat-sidenav-container>
-        <mat-sidenav #start [mode]="app.sidenav.mode" style="min-width:200px;"
+        <mat-sidenav #start [mode]="app.sidenav.mode" style="min-width:230px;"
             [style.background-color]="app.sidenav.backgroundColor" [style.color]="app.sidenav.color"
             [opened]="app.sidenav.isVisible" [fixedInViewport]="true" [fixedTopGap]="0" [fixedBottomGap]="0">
 
             <mat-nav-list>
                 <div class="app-menu-toolbar">
-                    <div class="app-menu-toolbar-logo" style="color:black">
+                    <div class="app-menu-toolbar-logo" style="color:#F6F9FC">
                         TezEdge
                     </div>
                     <!-- <button mat-icon-button class="app-menu-toggle" *ngIf="app.sidenav.toggleButton.isVisible">
@@ -116,27 +116,27 @@
         </mat-sidenav-content>
 
     </mat-sidenav-container>
-    <div style="position: fixed;min-width: 170px;height: 160px;left: 14px;
-        background: #F5F9FC;border-radius: 4px;bottom: 20px;z-index: 1;">
-        <div style="color: #C4CFDC;font-size: 12px;margin: 12px 0px 6px 12px;">
+    <div style="position: fixed;min-width: 195px;height: 160px;left: 14px;
+        background: #1C202B;border-radius: 4px;bottom: 20px;z-index: 1;">
+        <div style="color: #c4cfdc7a;font-size: 12px;margin: 12px 0px 6px 12px;">
             STATUS
         </div>
-        <span style="font-size:14px;color:#0000008a;margin: 12px 0px 18px 12px;">
+        <span style="font-size:14px;color:#F6F9FC;margin: 12px 0px 18px 12px;">
             {{ networkingEndpoint?.status }}
         </span>
 
        
-        <div style="color: #C4CFDC;font-size: 12px;margin: 18px 0px 6px 12px;">
+        <div style="color: #c4cfdc7a;font-size: 12px;margin: 18px 0px 6px 12px;">
             SERVER
         </div>
-        <span style="font-size:14px;color:#0000008a;margin: 0px 0px 0px 12px;
-        max-width: 140px !important;direction: rtl;display: inline-block;    
+        <span style="font-size:14px;color: #F6F9FC;margin: 0px 0px 0px 12px;
+        max-width: 175px !important;direction: rtl;display: inline-block;    
         text-overflow: ellipsis;white-space: nowrap;overflow: hidden;">
             {{ settings.endpoint }}
         </span>
 
         <div
-            style="font-size:14px;color:#C4CFDC;margin-top:12px;padding: 12px 12px 12px 0px;text-align:center;border-top: 1px solid #c4cfdc57">
+            style="font-size:14px;color:#C4CFDC;margin-top:12px;padding: 12px 12px 12px 0px;text-align:center;border-top: 1px solid rgba(255, 255, 255, 0.1);">
             <a routerLink="/settings" style="text-decoration:none;color:#C4CFDC;">
                 Edit
             </a>

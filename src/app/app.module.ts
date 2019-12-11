@@ -70,7 +70,8 @@ import { BandwidthPipe } from './shared/bandwidth.pipe';
 import { StorageComponent } from './storage/storage.component';
 import { StorageBlockComponent } from './storage/storage-block/storage-block.component';
 import { StorageActionComponent } from './storage/storage-action/storage-action.component';
-import { StorageSearchComponent } from './storage/storage-search/storage-search.component'
+import { StorageSearchComponent } from './storage/storage-search/storage-search.component';
+import { SvgIconComponent } from './shared/svg-icon/svg-icon.component'
 
 
 @NgModule({
@@ -87,7 +88,8 @@ import { StorageSearchComponent } from './storage/storage-search/storage-search.
     StorageComponent,
     StorageBlockComponent,
     StorageActionComponent,
-    StorageSearchComponent
+    StorageSearchComponent,
+    SvgIconComponent
   ],
   imports: [
     BrowserModule,

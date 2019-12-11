@@ -24,7 +24,7 @@
         color: #c4cfdc7a;
         font-size: 12px;
         padding: 22px 0px 12px 0px;
-        border-top: 1px solid rgba(255, 255, 255, 0.1); 
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
     }
 
     .app-submenu span {
@@ -74,6 +74,7 @@
 
                     <a mat-list-item routerLink="/networking" [style.color]="app.sidenav.color">
                         <span>
+                            <svg-icon icon="history"></svg-icon>
                             Synchronization
                         </span>
                     </a>
@@ -95,6 +96,7 @@
 
                     <a mat-list-item routerLink="/storage" [style.color]="app.sidenav.color">
                         <span>
+                            <svg-icon icon="explorer"></svg-icon>
                             Explorer
                         </span>
                     </a>
@@ -125,7 +127,7 @@
             {{ networkingEndpoint?.status }}
         </span>
 
-       
+
         <div style="color: #c4cfdc7a;font-size: 12px;margin: 18px 0px 6px 12px;">
             SERVER
         </div>
@@ -140,7 +142,7 @@
             <a routerLink="/settings" style="text-decoration:none;color:#C4CFDC;">
                 Edit
             </a>
-        </div> 
+        </div>
     </div>
 
     <!-- <mat-toolbar class="app-status-bar">

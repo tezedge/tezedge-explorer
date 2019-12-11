@@ -54,7 +54,7 @@ export function reducer(state = initialState, action) {
                 ids: _action.payload,
                 entities: _action.payload
                     // show only set operations
-                    .filter(action => action.hasOwnProperty('Set'))
+                    // .filter(action => action.hasOwnProperty('Set'))
                     //.filter(action => action.hasOwnProperty('Get'))
                     .map(action => {
 
@@ -65,9 +65,9 @@ export function reducer(state = initialState, action) {
                                 key: parseKey(action.Set.key),
                                 value: parseValue(action.Set.key, action.Set.value),
                                 text: new TextDecoder('utf-8').decode(new Uint8Array(action.Set.value)),
-                                hex: bufferToHex(new Uint8Array(action.Set.value)),
+                                hex: '0x' + bufferToHex(new Uint8Array(action.Set.value)),
                                 category: action.Set.key[0] === 'data' ? action.Set.key[1] : action.Set.key[0],
-                                lastKey: action.Set.key[action.Set.key.length - 1],
+                                lastKey: action.Set.key.length > 2 ? action.Set.key[action.Set.key.length - 1] : '',
                                 color: categoryColor(action.Set.key[0] === 'data' ? action.Set.key[1] : action.Set.key[0]),
                                 json: action.Set.value_as_json,
                                 start_time: action.Set.start_time,
@@ -87,7 +87,7 @@ export function reducer(state = initialState, action) {
                                 type: 'GET',
                                 key: parseKey(action.Get.key),
                                 category: action.Get.key[0] === 'data' ? action.Get.key[1] : action.Get.key[0],
-                                lastKey: action.Get.key[action.Get.key.length - 1],
+                                lastKey: action.Get.key.length > 2 ? action.Get.key[action.Get.key.length - 1] : '',
                                 color: categoryColor(action.Get.key[0] === 'data' ? action.Get.key[1] : action.Get.key[0]),
                                 start_time: action.Get.start_time,
                                 timeStorage: Math.floor((action.Get.end_time - action.Get.start_time) * 1000000),
@@ -105,7 +105,7 @@ export function reducer(state = initialState, action) {
                                 type: 'MEM',
                                 key: parseKey(action.Mem.key),
                                 category: action.Mem.key[0] === 'data' ? action.Mem.key[1] : action.Mem.key[0],
-                                lastKey: action.Mem.key[action.Mem.key.length - 1],
+                                lastKey: action.Mem.key.length > 2 ? action.Mem.key[action.Mem.key.length - 1] : '',
                                 color: categoryColor(action.Mem.key[0] === 'data' ? action.Mem.key[1] : action.Mem.key[0]),
                                 start_time: action.Mem.start_time,
                                 timeStorage: Math.floor((action.Mem.end_time - action.Mem.start_time) * 1000000),
@@ -124,7 +124,7 @@ export function reducer(state = initialState, action) {
                                 type: 'DMEM',
                                 key: parseKey(action.DirMem.key),
                                 category: action.DirMem.key[0] === 'data' ? action.DirMem.key[1] : action.DirMem.key[0],
-                                lastKey: action.DirMem.key[action.DirMem.key.length - 1],
+                                lastKey: action.DirMem.key.length > 2 ? action.DirMem.key[action.DirMem.key.length - 1] : '',
                                 color: categoryColor(action.DirMem.key[0] === 'data' ? action.DirMem.key[1] : action.DirMem.key[0]),
                                 start_time: action.DirMem.start_time,
                                 timeStorage: Math.floor((action.DirMem.end_time - action.DirMem.start_time) * 1000000),
@@ -174,13 +174,15 @@ export function reducer(state = initialState, action) {
     }
 }
 
-export function parseKey(key) {
+export function parseKey(inputKey) {
+
+    let key = JSON.parse(JSON.stringify(inputKey));
 
     // process block priority
     if ((key.indexOf('block_priority') > 0)) {
         key = key.filter((value, index) => {
             return (index > 2) ? true : false;
-        })
+        });
     }
 
     // process contract
@@ -269,6 +271,13 @@ export function parseKey(key) {
         });
     }
 
+    // process version
+    if ((key.indexOf('version') > 0)) {
+        key = key.filter((value, index) => {
+            return (index > 1) ? true : false;
+        });
+    }
+
     // process v1
     if ((key.indexOf('v1') > 0)) {
         key = key.filter((value, index) => {
@@ -276,8 +285,8 @@ export function parseKey(key) {
         });
     }
 
-    //  remove last element
-    key.pop()
+    // remove last element
+    key.pop();
 
     // replace , with /
     return key.length > 0 ? '/' + key.toString().replace(/,/g, '/') : '';

@@ -4,6 +4,7 @@ body {
     font-family: Roboto, "Helvetica Neue", sans-serif;
     margin: 0px !important;
     background-color: #F5F9FC;
+    font-weight: 300 !important;
 }
 
 table {

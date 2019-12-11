@@ -22,10 +22,10 @@ export class AppEffects {
         switchMap(({ action, state }) => {
             // console.log('[SETTINGS_INIT_SUSCCESS]', action, state);
             return webSocket(state.settings.endpoint).pipe(
-                filter((ws: any) => {
-                    // console.log('[ws]', ws);
-                    return ws.type === '' ? true : false;
-                })
+                // filter((ws: any) => {
+                //     // console.log('[ws]', ws);
+                //     return ws.type === '' ? true : false;
+                // })
                 // tap(data => console.log('[METRICS_SUBSCRIBE][ws] payload: ', data, state.settings.endpoint)),
             );
         }),

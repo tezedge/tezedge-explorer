@@ -18,9 +18,10 @@
                 <button mat-button matTooltip="Block Level" matTooltipPosition="above" style="font-weight: 300;">
                     {{ storageBlock.entities[blockId]?.header?.level }}
                 </button>
-                <button mat-button matTooltip="Block Hash" matTooltipPosition="above" style="font-weight: 300;">
+                <button mat-button matTooltip="Block Hash" matTooltipPosition="above" style="font-weight: 300;max-width: 450px;min-width: 450px;">
                     {{ storageBlock.entities[blockId]?.hash }}
                 </button>
+                
                 <button mat-button matTooltip="Cycle" matTooltipPosition="above" style="font-weight: 300;">
                     {{ storageBlock.entities[blockId]?.metadata?.level?.cycle }}
                 </button>
@@ -28,11 +29,10 @@
                 <button mat-button matTooltip="Cycle Position" matTooltipPosition="above" style="font-weight: 300;">
                     {{ storageBlock.entities[blockId]?.metadata?.level?.cycle_position }}
                 </button>
-
                 <button mat-button matTooltip="Voting Period" matTooltipPosition="above" style="font-weight: 300;">
                     {{ storageBlock.entities[blockId]?.metadata?.level?.voting_period }}
                 </button>
-                <button mat-button  matTooltip="Voting Period Position" matTooltipPosition="above" style="margin:0px 10px 0px 0px;" style="font-weight: 300;">
+                <button mat-button  matTooltip="Voting Period Position" matTooltipPosition="above" style="margin:0px 20px 0px 0px;" style="font-weight: 300;">
                     {{ storageBlock.entities[blockId]?.metadata?.level?.voting_period_position  }}
                 </button>
             </span>

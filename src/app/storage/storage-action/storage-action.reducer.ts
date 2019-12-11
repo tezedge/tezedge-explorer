@@ -54,8 +54,8 @@ export function reducer(state = initialState, action) {
                 ids: _action.payload,
                 entities: _action.payload
                     // show only set operations
-                    // .filter(action => action.hasOwnProperty('Set'))
-                    .filter(action => action.hasOwnProperty('Get'))
+                    .filter(action => action.hasOwnProperty('Set'))
+                    //.filter(action => action.hasOwnProperty('Get'))
                     .map(action => {
 
                         if (action.hasOwnProperty('Set')) {
@@ -182,6 +182,7 @@ export function parseKey(key) {
             return (index > 2) ? true : false;
         })
     }
+
     // process contract
     if ((key.indexOf('contracts') > 0) && (key.indexOf('index') > 0)) {
         key = key
@@ -203,7 +204,16 @@ export function parseKey(key) {
                     const hash = bs58checkEncode(addressPrefix, Buffer.from(address, 'hex'));
                     return hash;
                 }
-                return value
+                return value;
+            });
+    }
+
+
+    // process contract
+    if ((key.indexOf('contracts') > 0) && (key.indexOf('global_counter') > 0)) {
+        key = key
+            .filter((value, index) => {
+                return (index > 1) ? true : false;
             })
     }
 
@@ -224,17 +234,50 @@ export function parseKey(key) {
         })
     }
 
-
     // process big_map
     if ((key.indexOf('big_maps') > 0)) {
         key = key.filter((value, index) => {
-            // return true;
             return ((index > 8 && index < 11) || (index > 15)) ? true : false;
-        })
+        });
+    }
+
+    // process cycle
+    if ((key.indexOf('cycle') > 0)) {
+        key = key.filter((value, index) => {
+            return (index > 1) ? true : false;
+        });
+    }
+
+    // process rolls
+    if ((key.indexOf('rolls') > 0)) {
+        key = key.filter((value, index) => {
+            return (index > 1) ? true : false;
+        });
+    }
+
+    // process votes
+    if ((key.indexOf('votes') > 0)) {
+        key = key.filter((value, index) => {
+            return (index > 1) ? true : false;
+        });
+    }
+
+    // process protocol
+    if ((key.indexOf('protocol') > 0)) {
+        key = key.filter((value, index) => {
+            return (index > 0) ? true : false;
+        });
+    }
+
+    // process v1
+    if ((key.indexOf('v1') > 0)) {
+        key = key.filter((value, index) => {
+            return (index > 1) ? true : false;
+        });
     }
 
     //  remove last element
-    // key.pop()
+    key.pop()
 
     // replace , with /
     return key.length > 0 ? '/' + key.toString().replace(/,/g, '/') : '';
@@ -243,7 +286,7 @@ export function parseKey(key) {
 export function categoryColor(category) {
     switch (category) {
         case 'active_delegates_with_rolls': {
-            return 'red';
+            return 'blue';
         }
         case 'big_maps': {
             return 'green';
@@ -258,19 +301,19 @@ export function categoryColor(category) {
             return 'darkblue';
         }
         case 'cycle': {
-            return 'darkgreen';
+            return 'green';
         }
         case 'delegates': {
             return 'red';
         }
         case 'delegates_with_frozen_balance': {
-            return 'red';
+            return 'blue';
         }
         case 'ramp_up': {
             return 'yellow';
         }
         case 'rolls': {
-            return 'lightblue';
+            return 'gray';
         }
         case 'votes': {
             return 'lightblue';
@@ -332,8 +375,8 @@ export function parseValue(key, value) {
         [['data', 'contracts', 'index', '*', '*', '*', '*', '*', '*', '*', 'balance'], 'Tez_repr'],
         [['data', 'contracts', 'index', '*', '*', '*', '*', '*', '*', '*', 'change'], 'Tez_repr'],
 
-        [['data', 'delegates_with_frozen_balance', '*', '*', '*', '*', '*', '*', '*', '*'], 'empty_repr'],
-        [['data', 'active_delegates_with_rolls', '*', '*', '*', '*', '*', '*', '*'], 'empty_repr'],
+        [['data', 'delegates_with_frozen_balance', '*', '*', '*', '*', '*', '*', '*', '*'], 'String_repr'],
+        [['data', 'active_delegates_with_rolls', '*', '*', '*', '*', '*', '*', '*'], 'String_repr'],
         [['data', 'block_priority'], 'empty_repr'],
 
         [['data', 'contracts', 'global_counter'], 'Z_repr'],
@@ -397,6 +440,7 @@ export function parseValue(key, value) {
         case 'Tez_repr': return Tez_repr(value);
         case 'Cycle_repr': return Cycle_repr(value);
         case 'Manager_repr': return Manager_repr(value);
+        case 'String_repr': return String_repr(value);
         case 'Z_repr': return Z_repr(value);
         default: return false;
     }
@@ -405,7 +449,7 @@ export function parseValue(key, value) {
 export function Tez_repr(value) {
     const hexValue = bufferToHex(new Uint8Array(value));
     // zarith number
-    return (zarithDecode(hexValue) / 1000000) + ' ꜩ';
+    return (zarithDecode(hexValue) / 1000000) + '';
 }
 
 // url to validate result
@@ -417,7 +461,7 @@ export function Cycle_repr(value) {
 
     // console.log('[Cycle_repr]', value, result);
     // 4 bytes to int32
-    return int32 + ' cycle';
+    return int32 + '';
 }
 
 export function Z_repr(value) {
@@ -439,5 +483,11 @@ export function Manager_repr(valueBytes) {
 
     const hash = bs58checkEncode(addressPrefix, Buffer.from(address, 'hex'));
     return value;
+
+}
+
+export function String_repr(valueBytes) {
+
+    return new TextDecoder('utf-8').decode(new Uint8Array(valueBytes));
 
 }

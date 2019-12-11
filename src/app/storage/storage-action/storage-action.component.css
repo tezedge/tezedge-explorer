@@ -28,11 +28,11 @@
 }
 
 .mat-cell.cdk-column-time.mat-column-time {
-    min-width: 110px;
-    padding-right: 10px !important;
+    /* padding-right: 10px !important; */
 }
 
 .mat-cell.cdk-column-path.mat-column-path {
+    width: 500px !important;
     padding-right: 10px !important;
 }
 
@@ -41,7 +41,8 @@
     text-overflow: ellipsis;
     white-space: nowrap;
     overflow: hidden;
-    max-width: 150px !important;
+    min-width: 100px !important;
+    max-width: 100px !important;
 }
 
 th.mat-header-cell.cdk-column-value.mat-column-value {

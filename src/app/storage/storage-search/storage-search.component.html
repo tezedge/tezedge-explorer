@@ -10,22 +10,25 @@
 
     .app-storage-search-input {
         max-width: 50%;
+
     }
 
-    .app-storage-search-input a {
-        color: black;
-        text-decoration: none;
+    .mat-form-field {
+        height: 40px !important;
+        font-weight: 300;
+        padding: 0px !important;
     }
+    
+    
 </style>
 
 <div class="app-storage-search">
 
     <span call="app-storage-search-input">
-        <!--
-            <mat-form-field appearance="outline">
-                <input matInput [(ngModel)]="settingsEndpointInput" (ngModelChange)="valueChange($event)">
-            </mat-form-field>
-        -->
+
+        <mat-form-field appearance="outline">
+            <input matInput [(ngModel)]="storageSearchInput" (ngModelChange)="valueChange($event)">
+        </mat-form-field>
     </span>
 
 </div>

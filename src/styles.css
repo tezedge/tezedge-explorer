@@ -269,3 +269,10 @@ mat-row, td.mat-cell {
 .mat-list-base .mat-list-item {
     font-size: 14px !important;
 }
+
+.mat-form-field-appearance-outline .mat-form-field-infix {
+    font-size: 14px;
+    padding: 0px;
+    /* remove label spacing */
+    border-top: 0px;
+}

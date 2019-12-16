@@ -18,8 +18,6 @@
         font-weight: 300;
         padding: 0px !important;
     }
-    
-    
 </style>
 
 <div class="app-storage-search">
@@ -28,7 +26,13 @@
 
         <mat-form-field appearance="outline">
             <input matInput [(ngModel)]="storageSearchInput" (ngModelChange)="valueChange($event)">
+            <!-- <mat-chip-list>
+                <mat-chip>End Of Cycle</mat-chip>
+                <mat-chip>Proposal</mat-chip>
+                <mat-chip>Smart Contract</mat-chip>
+            </mat-chip-list> -->
         </mat-form-field>
+
     </span>
 
 </div>

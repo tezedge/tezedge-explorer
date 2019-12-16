@@ -288,4 +288,26 @@ input.mat-input-element {
 
 .mat-form-field-appearance-outline .mat-form-field-flex {
     margin-top: -6px !important;
+    width: 800px;
+}
+
+.mat-form-field-appearance-outline .mat-form-field-outline {
+}
+
+
+/* focused color */
+.mat-form-field-appearance-outline.mat-focused .mat-form-field-outline-thick {
+    color: #1C202B !important;
+}
+
+/* floating label color */
+.mat-form-field-appearance-outline.mat-focused .mat-form-field-label { 
+    color: #1C202B !important; 
+}
+
+.mat-form-field-appearance-outline .mat-form-field-outline-thick .mat-form-field-outline-end,
+.mat-form-field-appearance-outline .mat-form-field-outline-thick .mat-form-field-outline-gap,
+.mat-form-field-appearance-outline .mat-form-field-outline-thick .mat-form-field-outline-start {
+    color: #1C202B !important; 
+    border-width: 1px !important;
 }

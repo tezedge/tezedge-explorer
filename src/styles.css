@@ -275,4 +275,17 @@ mat-row, td.mat-cell {
     padding: 0px;
     /* remove label spacing */
     border-top: 0px;
+    height: 40px;
+}
+
+input.mat-input-element {
+    margin-top: 14px;
+}
+
+.mat-form-field-appearance-outline .mat-form-field-wrapper {
+    margin: 0px 0px 0px 0px;
+}
+
+.mat-form-field-appearance-outline .mat-form-field-flex {
+    margin-top: -6px !important;
 }

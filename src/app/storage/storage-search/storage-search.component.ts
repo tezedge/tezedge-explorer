@@ -7,7 +7,8 @@ import { Component, OnInit } from '@angular/core';
 })
 export class StorageSearchComponent implements OnInit {
 
-  public storageSearchInput=123;
+  public storageSearchInput="";
+  
   constructor() { }
 
   ngOnInit() {

@@ -115,4 +115,13 @@ export class NetworkingStatsComponent implements OnInit {
       })
   }
 
+  
+  ngOnDestroy() {
+
+    // close all observables
+    this.onDestroy$.next();
+    this.onDestroy$.complete();
+
+  }
+
 }

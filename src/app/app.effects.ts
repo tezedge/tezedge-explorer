@@ -1,19 +1,21 @@
 import { Injectable, NgZone } from '@angular/core';
 import { Effect, Actions, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
-import { Observable, of, defer } from 'rxjs';
-import { tap, map, switchMap, catchError, withLatestFrom, delay, filter } from 'rxjs/operators';
+import { Observable, of, defer, Subject } from 'rxjs';
+import { tap, map, switchMap, catchError, withLatestFrom, delay, filter, takeUntil } from 'rxjs/operators';
 import { webSocket } from 'rxjs/webSocket';
 
 import { environment } from '../environments/environment';
 
+let onDestroy$ = new Subject()
+let wsCounter = 0;
 @Injectable()
 export class AppEffects {
 
     // effect to handle subscription to metrics WS
     @Effect()
     MetriscsSubscirbeEffect$ = this.actions$.pipe(
-        ofType('METRICS_SUBSCRIBE'),
+        ofType('METRICS_SUBSCRIBE', 'NETWORKING_OPEN'),
 
         // merge state
         withLatestFrom(this.store, (action: any, state) => ({ action, state })),
@@ -22,10 +24,13 @@ export class AppEffects {
         switchMap(({ action, state }) => {
             // console.log('[SETTINGS_INIT_SUSCCESS]', action, state);
             return webSocket(state.settings.endpoint).pipe(
-                // filter((ws: any) => {
-                //     // console.log('[ws]', ws);
-                //     return ws.type === '' ? true : false;
-                // })
+                takeUntil(onDestroy$),
+                filter((ws: any) => {
+                    // even if ws is turned off update state cca every minute
+                    wsCounter = wsCounter < 100 ? wsCounter + 1 : 0;
+                    // console.log('[state.networking] open', state.app.networking.open);
+                    return state.app.networking.open || wsCounter > 92;
+                })
                 // tap(data => console.log('[METRICS_SUBSCRIBE][ws] payload: ', data, state.settings.endpoint)),
             );
         }),
@@ -41,6 +46,29 @@ export class AppEffects {
             console.error(error);
             this.store.dispatch({
                 type: 'METRICS_SUBSCRIBE_ERROR',
+                payload: error,
+            });
+            return caught;
+        })
+    );
+
+    // close WS
+    @Effect()
+    NetworkingClose$ = this.actions$.pipe(
+        ofType('NETWORKING_CLOSE'),
+
+        tap(() => {
+            // generate observables and close websocket
+            onDestroy$.next();
+            // this.onDestroy$.complete();
+        }),
+
+        map((data) => ({ type: 'NETWOKING_CLOSE_SUCCESS' })),
+
+        catchError((error, caught) => {
+            console.error(error);
+            this.store.dispatch({
+                type: 'NETWOKING_CLOSE_ERROR',
                 payload: error,
             });
             return caught;

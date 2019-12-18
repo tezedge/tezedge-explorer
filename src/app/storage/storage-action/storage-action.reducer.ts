@@ -54,7 +54,7 @@ export function reducer(state = initialState, action) {
                 ids: _action.payload,
                 entities: _action.payload
                     // show only set operations
-                    // .filter(action => action.hasOwnProperty('Set'))
+                    .filter(action => action.hasOwnProperty('Set'))
                     //.filter(action => action.hasOwnProperty('Get'))
                     .map(action => {
 

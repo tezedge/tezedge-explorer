@@ -36,6 +36,9 @@ const initialState = {
         type: 'web',
         value: '',
         valueUpdate: '',
+    },
+    networking: {
+        open: false
     }
 
 };
@@ -55,6 +58,24 @@ export function reducer(state = initialState, action) {
                     toggleButton: {
                         isVisible: action.payload.width < MOBILE_WIDTH ? true : false,
                     }
+                }
+            }
+        }
+
+        case 'NETWORKING_OPEN': {
+            return {
+                ...state,
+                networking: {
+                    open: true,
+                }
+            }
+        }
+
+        case 'NETWORKING_CLOSE': {
+            return {
+                ...state,
+                networking: {
+                    open: false,
                 }
             }
         }

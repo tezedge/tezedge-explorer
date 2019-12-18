@@ -4,7 +4,7 @@ import { HttpClient } from '@angular/common/http';
 import { Store } from '@ngrx/store';
 import { tap, map, switchMap, withLatestFrom, catchError } from 'rxjs/operators';
 
-// import { environment } from '../../environments/environment';
+import { environment } from '../../../environments/environment';
 
 @Injectable()
 export class StorageActionEffects {
@@ -17,7 +17,7 @@ export class StorageActionEffects {
         withLatestFrom(this.store, (action: any, state) => ({ action, state })),
 
         switchMap(({ action, state }) => {
-            return this.http.get('https://babylon.tezedge.com:8732/dev/chains/main/blocks/' + action.payload.blockId + '/actions')
+            return this.http.get(environment.api.http + '/dev/chains/main/blocks/' + action.payload.blockId + '/actions')
         }),
 
         // dispatch action

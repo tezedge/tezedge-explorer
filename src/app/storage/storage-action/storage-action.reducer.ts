@@ -56,7 +56,7 @@ export function reducer(state = initialState, action) {
 
                     if (action.hasOwnProperty('Set')) {
                         const blockHash = Block_repr(action.Set.block_hash);
-                        return accum.indexOf(blockHash) > 0 ?
+                        return accum.indexOf(blockHash) !== -1 ?
                             accum :
                             [
                                 ...accum,

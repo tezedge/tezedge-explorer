@@ -19,6 +19,7 @@ export class StorageActionComponent implements OnInit {
   public storageBlock
   public storageAction
   public storageActionList
+  public storageActionBlocks
   public storageActionShow
   public tableDataSource
   public router
@@ -43,7 +44,9 @@ export class StorageActionComponent implements OnInit {
 
         this.storageAction = data
         this.storageActionShow = data.entities.length > 0 ? true : false;
-
+        
+        this.storageActionBlocks = data.blocks; 
+        
         this.storageActionList = data.ids[data.blocks[0]].map(id => ({ ...data.entities[id] }))
 
         this.tableDataSource = new MatTableDataSource<any>(this.storageActionList);

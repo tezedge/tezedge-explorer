@@ -4,7 +4,7 @@
 <div class="storage-action-container">
 
     <div class="storage-action">
-        
+
         <div style="font-size: 14px;padding: 6px 0px 6px 12px;border-bottom: 1px solid rgba(0,0,0,.12);"
             *ngIf="storageBlock.entities[blockId]?.header?.predecessor">
             <!-- <button matTooltip="Previous Block" matTooltipPosition="above" routerLink="/storage/{{ storageBlock.entities[blockId]?.header?.predecessor }}" mat-icon-button>
@@ -18,10 +18,11 @@
                 <button mat-button matTooltip="Block Level" matTooltipPosition="above" style="font-weight: 300;">
                     {{ storageBlock.entities[blockId]?.header?.level }}
                 </button>
-                <button mat-button matTooltip="Block Hash" matTooltipPosition="above" style="font-weight: 300;max-width: 450px;min-width: 450px;">
+                <button mat-button matTooltip="Block Hash" matTooltipPosition="above"
+                    style="font-weight: 300;max-width: 450px;min-width: 450px;">
                     {{ storageBlock.entities[blockId]?.hash }}
                 </button>
-                
+
                 <button mat-button matTooltip="Cycle" matTooltipPosition="above" style="font-weight: 300;">
                     {{ storageBlock.entities[blockId]?.metadata?.level?.cycle }}
                 </button>
@@ -32,7 +33,8 @@
                 <button mat-button matTooltip="Voting Period" matTooltipPosition="above" style="font-weight: 300;">
                     {{ storageBlock.entities[blockId]?.metadata?.level?.voting_period }}
                 </button>
-                <button mat-button  matTooltip="Voting Period Position" matTooltipPosition="above" style="margin:0px 20px 0px 0px;" style="font-weight: 300;">
+                <button mat-button matTooltip="Voting Period Position" matTooltipPosition="above"
+                    style="margin:0px 20px 0px 0px;" style="font-weight: 300;">
                     {{ storageBlock.entities[blockId]?.metadata?.level?.voting_period_position  }}
                 </button>
             </span>
@@ -43,7 +45,7 @@
             <ng-container matColumnDef="type">
                 <th mat-header-cell *matHeaderCellDef>Type</th>
                 <td mat-cell *matCellDef="let action">
-                    <span>{{action.type }}</span> 
+                    <span>{{action.type }}</span>
                 </td>
             </ng-container>
 
@@ -65,8 +67,7 @@
                         <span *ngIf="(action.timeProtocol<=100)">
                             {{action.timeProtocol }}
                         </span>
-                        <span style="color:darkred"
-                            *ngIf="(action.timeProtocol>100 && action.timeProtocol<1000)">
+                        <span style="color:darkred" *ngIf="(action.timeProtocol>100 && action.timeProtocol<1000)">
                             {{action.timeProtocol }}
                         </span>
                         <span style="color:red" *ngIf="(action.timeProtocol>=1000)">
@@ -132,15 +133,16 @@
 </div>
 
 
-<!-- {{ storageActionList | json }} -->
-<!-- <li *ngFor="let action of storageAction.entities">
-    <span *ngIf="action?">
-        <b>set</b>: {{action?.key}} - <b> {{action?.value}} </b> | {{action?.text}} | {{action?.hex}}
-    </span>
-    <span *ngIf="action?.Delete">
-        del:<i>{{action.Delete?.key}}</i>
-    </span>
-    <span *ngIf="action?.RemoveRecord">
-        rem: <i>{{action.RemoveRecord?.key}} </i>
-    </span>
-</li> -->
+
+<div *ngFor="let block of storageActionBlocks">
+    <br/><br/>{{ block | json }}
+    <!-- {{ storageAction.ids[block] | json }} <br /> -->
+
+    <li *ngFor="let id of storageAction.ids[block]">
+        <!-- {{ storageAction.entities[id] | json }} -->
+        <span>
+            {{storageAction.entities[id]?.category}} {{storageAction.entities[id]?.key}}  <b>{{storageAction.entities[id]?.lastKey}}</b> - <i> {{storageAction.entities[id]?.json}} </i>
+        </span>
+    </li>
+
+</div>

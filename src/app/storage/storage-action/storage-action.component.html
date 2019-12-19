@@ -4,7 +4,7 @@
 <div class="storage-action-container">
 
     <div class="storage-action">
-
+        
         <div style="font-size: 14px;padding: 6px 0px 6px 12px;border-bottom: 1px solid rgba(0,0,0,.12);"
             *ngIf="storageBlock.entities[blockId]?.header?.predecessor">
             <!-- <button matTooltip="Previous Block" matTooltipPosition="above" routerLink="/storage/{{ storageBlock.entities[blockId]?.header?.predecessor }}" mat-icon-button>
@@ -43,7 +43,7 @@
             <ng-container matColumnDef="type">
                 <th mat-header-cell *matHeaderCellDef>Type</th>
                 <td mat-cell *matCellDef="let action">
-                    <span>{{action.id.type}}</span>
+                    <span>{{action.type }}</span> 
                 </td>
             </ng-container>
 
@@ -52,25 +52,25 @@
                 <td mat-cell *matCellDef="let action">
                     <!-- style="display:inline-block;text-align:right;" -->
                     <div style="text-align:left;width:80px;">
-                        <span *ngIf="(action.id?.timeStorage<=100)">
-                            {{action.id?.timeStorage }}
+                        <span *ngIf="(action.timeStorage<=100)">
+                            {{action.timeStorage }}
                         </span>
-                        <span style="color:darkred" *ngIf="(action.id?.timeStorage>100 && action.id?.timeStorage<1000)">
-                            {{action.id?.timeStorage }}
+                        <span style="color:darkred" *ngIf="(action.timeStorage>100 && action.timeStorage<1000)">
+                            {{action.timeStorage }}
                         </span>
-                        <span style="color:red" *ngIf="(action.id?.timeStorage>=1000)">
-                            {{action.id?.timeStorage }}
+                        <span style="color:red" *ngIf="(action.timeStorage>=1000)">
+                            {{action.timeStorage }}
                         </span>
                         |
-                        <span *ngIf="(action.id?.timeProtocol<=100)">
-                            {{action.id?.timeProtocol }}
+                        <span *ngIf="(action.timeProtocol<=100)">
+                            {{action.timeProtocol }}
                         </span>
                         <span style="color:darkred"
-                            *ngIf="(action.id?.timeProtocol>100 && action.id?.timeProtocol<1000)">
-                            {{action.id?.timeProtocol }}
+                            *ngIf="(action.timeProtocol>100 && action.timeProtocol<1000)">
+                            {{action.timeProtocol }}
                         </span>
-                        <span style="color:red" *ngIf="(action.id?.timeProtocol>=1000)">
-                            {{action.id?.timeProtocol }}
+                        <span style="color:red" *ngIf="(action.timeProtocol>=1000)">
+                            {{action.timeProtocol }}
                         </span>
                     </div>
 
@@ -90,10 +90,10 @@
                 </th>
                 <td mat-cell *matCellDef="let action">
                     <div>
-                        <span [style.color]="action.id?.color">{{action.id?.category }}</span><span
-                            *ngIf="action?.id">{{action.id?.key}}</span>
+                        <span [style.color]="action.color">{{action.category }}</span><span
+                            *ngIf="action">{{action.key}}</span>
 
-                        <span [style.color]="action.id?.color" *ngIf="action.id?.lastKey">/{{ action.id?.lastKey }}
+                        <span [style.color]="action.color" *ngIf="action.lastKey">/{{ action.lastKey }}
                         </span>
 
                     </div>
@@ -107,13 +107,13 @@
             <ng-container matColumnDef="value">
                 <th mat-header-cell *matHeaderCellDef>Value</th>
                 <td mat-cell *matCellDef="let action">
-                    <span *ngIf="action?.id" style="text-align: left">
-                        <span *ngIf="action.id?.value">
-                            {{action.id?.value}}
+                    <span *ngIf="action" style="text-align: left">
+                        <span *ngIf="action.value">
+                            {{action.value}}
                         </span>
-                        <span *ngIf="!action.id?.value" style="height: 100px !important;color:#b0b0b0;">
-                            {{action.id?.hex}}
-                            <!-- {{action.id?.text}} -->
+                        <span *ngIf="!action.value" style="height: 100px !important;color:#b0b0b0;">
+                            {{action.hex}}
+                            <!-- {{action.text}} -->
                         </span>
                     </span>
                 </td>
@@ -132,7 +132,7 @@
 </div>
 
 
-<!-- {{ storageAction.ids | json }} -->
+<!-- {{ storageActionList | json }} -->
 <!-- <li *ngFor="let action of storageAction.entities">
     <span *ngIf="action?">
         <b>set</b>: {{action?.key}} - <b> {{action?.value}} </b> | {{action?.text}} | {{action?.hex}}

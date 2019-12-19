@@ -52,12 +52,44 @@ export function reducer(state = initialState, action) {
             // console.log('[STORAGE_ACTION_LOAD_SUCCESS]', action.payload);
             let result = {
                 ...state,
-                ids: _action.payload,
+                blocks: _action.payload.reduce((accum, action) => {
+
+                    if (action.hasOwnProperty('Set')) {
+                        const blockHash = Block_repr(action.Set.block_hash);
+                        return accum.indexOf(blockHash) > 0 ?
+                            accum :
+                            [
+                                ...accum,
+                                blockHash
+                            ];
+                    }
+                    return accum;
+                }, []),
+
+                ids: _action.payload.reduce((accum, action) => {
+
+
+                    if (action.hasOwnProperty('Set')) {
+                        const blockHash = Block_repr(action.Set.block_hash);
+                        const blockActions = accum[blockHash] ? accum[blockHash] : [];
+                        return {
+                            ...accum,
+                            [blockHash]: [
+                                ...blockActions,
+                                action.Set.start_time
+                            ]
+                        };
+                    }
+
+                    return accum;
+
+                }, []),
+
                 entities: _action.payload
                     // show only set operations
                     // .filter(action => action.hasOwnProperty('Set'))
                     //.filter(action => action.hasOwnProperty('Get'))
-                    .map(action => {
+                    .reduce((accum, action) => {
 
                         if (action.hasOwnProperty('Set')) {
                             const result = {
@@ -78,7 +110,10 @@ export function reducer(state = initialState, action) {
                             };
                             // save prev timestamp
                             actionPreviousTimestamp = action.Set.end_time;
-                            return result;
+                            return {
+                                ...accum,
+                                [result.start_time]: result
+                            }
                         }
 
 
@@ -97,7 +132,10 @@ export function reducer(state = initialState, action) {
                             };
                             // save prev timestamp
                             actionPreviousTimestamp = action.Get.end_time;
-                            return result;
+                            return {
+                                ...accum,
+                                [result.start_time]: result
+                            }
                         }
 
                         if (action.hasOwnProperty('Mem')) {
@@ -115,7 +153,10 @@ export function reducer(state = initialState, action) {
                             };
                             // save prev timestamp
                             actionPreviousTimestamp = action.Mem.end_time;
-                            return result;
+                            return {
+                                ...accum,
+                                [result.start_time]: result
+                            }
                         }
 
 
@@ -134,38 +175,47 @@ export function reducer(state = initialState, action) {
                             };
                             // save prev timestamp
                             actionPreviousTimestamp = action.DirMem.end_time;
-                            return result;
+                            return {
+                                ...accum,
+                                [result.start_time]: result
+                            }
                         }
 
                         if (action.hasOwnProperty('Delete')) {
                             return {
-                                ...action.Delete,
-                                type: 'DEL'
-                            };
+                                ...accum,
+                                [action.Delete.start_time]: {
+                                    type: 'DEL',
+                                    ...action.Delete
+                                }
+                            }
                         }
 
                         if (action.hasOwnProperty('RemoveRecord')) {
                             return {
-                                ...action.RemoveRecord,
-                                type: 'REM'
-                            };
+                                ...accum,
+                                [action.RemoveRecord.start_time]: {
+                                    type: 'REM',
+                                    ...action.RemoveRecord
+                                }
+                            }
                         }
 
-                        return action;
-                    })
+                        return accum;
+                    }, {})
             }
 
-            // total time for storage time
-            let totalTimeStorage = result.entities.reduce((acc, value) => {
-                return (acc + value.timeStorage);
-            }, 0);
+            // // total time for storage time
+            // let totalTimeStorage = result.entities.reduce((acc, value) => {
+            //     return (acc + value.timeStorage);
+            // }, 0);
 
-            // total time for protocol
-            let totalTimeProtocol = result.entities.reduce((acc, value) => {
-                return (acc + value.timeProtocol);
-            }, 0);
+            // // total time for protocol
+            // let totalTimeProtocol = result.entities.reduce((acc, value) => {
+            //     return (acc + value.timeProtocol);
+            // }, 0);
 
-            console.log('[PROFILER] Storage: ' + totalTimeStorage / 1000 + 'ms  Protocol: ' + totalTimeProtocol / 1000 + 'ms');
+            // console.log('[PROFILER] Storage: ' + totalTimeStorage / 1000 + 'ms  Protocol: ' + totalTimeProtocol / 1000 + 'ms');
 
             return result
         }
@@ -499,5 +549,14 @@ export function Manager_repr(valueBytes) {
 export function String_repr(valueBytes) {
 
     return new TextDecoder('utf-8').decode(new Uint8Array(valueBytes));
+
+}
+
+export function Block_repr(valueBytes) {
+
+    const value = bufferToHex(new Uint8Array(valueBytes));
+    // convert contract hex to string
+    const hash = bs58checkEncode(prefix.B, new Uint8Array(valueBytes));
+    return hash;
 
 }

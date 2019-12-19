@@ -4,7 +4,7 @@ import { MatPaginator, MatTableDataSource } from '@angular/material';
 import { ActivatedRoute } from '@angular/router';
 import { Store } from '@ngrx/store'
 import { Subject } from 'rxjs'
-import { takeUntil } from 'rxjs/operators'
+import { takeUntil, filter } from 'rxjs/operators'
 
 
 @Component({
@@ -35,12 +35,16 @@ export class StorageActionComponent implements OnInit {
 
     // wait for data changes from redux
     this.store.select('storageAction')
-      .pipe(takeUntil(this.onDestroy$))
+      .pipe(
+        takeUntil(this.onDestroy$),
+        filter(data => data.entities.length !== 0)
+      )
       .subscribe(data => {
 
         this.storageAction = data
         this.storageActionShow = data.entities.length > 0 ? true : false;
-        this.storageActionList = data.entities.map(id => ({ id, ...data.entities[id] }))
+
+        this.storageActionList = data.ids[data.blocks[0]].map(id => ({ ...data.entities[id] }))
 
         this.tableDataSource = new MatTableDataSource<any>(this.storageActionList);
         this.tableDataSource.paginator = this.paginator;
@@ -50,7 +54,7 @@ export class StorageActionComponent implements OnInit {
     this.store.select('storageBlock')
       .pipe(takeUntil(this.onDestroy$))
       .subscribe(data => {
-      
+
         this.storageBlock = data
 
       });
@@ -58,10 +62,10 @@ export class StorageActionComponent implements OnInit {
     // get url params
     // TODO: unsubscribe after destroy
     this.router = this.route.params.subscribe(params => {
-      
+
       // get block Id
       this.blockId = params['blockId'];
-      
+
       // triger action and get blocks data
       this.store.dispatch({
         type: 'STORAGE_ACTION_LOAD',

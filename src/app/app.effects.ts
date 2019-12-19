@@ -29,7 +29,7 @@ export class AppEffects {
                     // even if ws is turned off update state cca every minute
                     wsCounter = wsCounter < 70 ? wsCounter + 1 : 0;
                     // console.log('[state.networking] open', state.app.networking.open);
-                    return state.app.networking.open || wsCounter > 62;
+                    return state.app.networking.open || wsCounter < 6;
                 })
                 // tap(data => console.log('[METRICS_SUBSCRIBE][ws] payload: ', data, state.settings.endpoint)),
             );

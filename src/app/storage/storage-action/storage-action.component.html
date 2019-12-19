@@ -4,130 +4,133 @@
 <div class="storage-action-container">
 
     <div class="storage-action">
+        
+        <div *ngFor="let block of storageActionBlocks">
 
-        <div style="font-size: 14px;padding: 6px 0px 6px 12px;border-bottom: 1px solid rgba(0,0,0,.12);"
-            *ngIf="storageBlock.entities[blockId]?.header?.predecessor">
-            <!-- <button matTooltip="Previous Block" matTooltipPosition="above" routerLink="/storage/{{ storageBlock.entities[blockId]?.header?.predecessor }}" mat-icon-button>
-                <mat-icon>chevron_left</mat-icon>
-            </button>
-            <button matTooltip="Next Block" matTooltipPosition="above" routerLink="/storage/" *ngIf="storageBlock.entities[blockId]?.header?.predecessor" mat-icon-button>
-                <mat-icon>chevron_right</mat-icon>
-            </button> -->
-
-            <span *ngIf="storageBlock.entities[blockId]">
-                <button mat-button matTooltip="Block Level" matTooltipPosition="above" style="font-weight: 300;">
-                    {{ storageBlock.entities[blockId]?.header?.level }}
+            <div style="font-size: 14px;padding: 6px 0px 6px 12px;border-bottom: 1px solid rgba(0,0,0,.12);"
+                *ngIf="storageBlock.entities[blockId]?.header?.predecessor">
+                <!-- <button matTooltip="Previous Block" matTooltipPosition="above" routerLink="/storage/{{ storageBlock.entities[blockId]?.header?.predecessor }}" mat-icon-button>
+                    <mat-icon>chevron_left</mat-icon>
                 </button>
-                <button mat-button matTooltip="Block Hash" matTooltipPosition="above"
-                    style="font-weight: 300;max-width: 450px;min-width: 450px;">
-                    {{ storageBlock.entities[blockId]?.hash }}
-                </button>
+                <button matTooltip="Next Block" matTooltipPosition="above" routerLink="/storage/" *ngIf="storageBlock.entities[blockId]?.header?.predecessor" mat-icon-button>
+                    <mat-icon>chevron_right</mat-icon>
+                </button> -->
 
-                <button mat-button matTooltip="Cycle" matTooltipPosition="above" style="font-weight: 300;">
-                    {{ storageBlock.entities[blockId]?.metadata?.level?.cycle }}
-                </button>
+                <span *ngIf="storageBlock.entities[blockId]">
+                    <button mat-button matTooltip="Block Level" matTooltipPosition="above" style="font-weight: 300;">
+                        {{ storageBlock.entities[blockId]?.header?.level }}
+                    </button>
+                    <button mat-button matTooltip="Block Hash" matTooltipPosition="above"
+                        style="font-weight: 300;max-width: 450px;min-width: 450px;">
+                        {{ storageBlock.entities[blockId]?.hash }}
+                    </button>
 
-                <button mat-button matTooltip="Cycle Position" matTooltipPosition="above" style="font-weight: 300;">
-                    {{ storageBlock.entities[blockId]?.metadata?.level?.cycle_position }}
-                </button>
-                <button mat-button matTooltip="Voting Period" matTooltipPosition="above" style="font-weight: 300;">
-                    {{ storageBlock.entities[blockId]?.metadata?.level?.voting_period }}
-                </button>
-                <button mat-button matTooltip="Voting Period Position" matTooltipPosition="above"
-                    style="margin:0px 20px 0px 0px;" style="font-weight: 300;">
-                    {{ storageBlock.entities[blockId]?.metadata?.level?.voting_period_position  }}
-                </button>
-            </span>
-        </div>
+                    <button mat-button matTooltip="Cycle" matTooltipPosition="above" style="font-weight: 300;">
+                        {{ storageBlock.entities[blockId]?.metadata?.level?.cycle }}
+                    </button>
 
-        <table mat-table [dataSource]="tableDataSource">
+                    <button mat-button matTooltip="Cycle Position" matTooltipPosition="above" style="font-weight: 300;">
+                        {{ storageBlock.entities[blockId]?.metadata?.level?.cycle_position }}
+                    </button>
+                    <button mat-button matTooltip="Voting Period" matTooltipPosition="above" style="font-weight: 300;">
+                        {{ storageBlock.entities[blockId]?.metadata?.level?.voting_period }}
+                    </button>
+                    <button mat-button matTooltip="Voting Period Position" matTooltipPosition="above"
+                        style="margin:0px 20px 0px 0px;" style="font-weight: 300;">
+                        {{ storageBlock.entities[blockId]?.metadata?.level?.voting_period_position  }}
+                    </button>
+                </span>
+            </div>
 
-            <ng-container matColumnDef="type">
-                <th mat-header-cell *matHeaderCellDef>Type</th>
-                <td mat-cell *matCellDef="let action">
-                    <span>{{action.type }}</span>
-                </td>
-            </ng-container>
+            <table mat-table [dataSource]="tableDataSource[block]">
 
-            <ng-container matColumnDef="time">
-                <th mat-header-cell *matHeaderCellDef>Time (μs)</th>
-                <td mat-cell *matCellDef="let action">
-                    <!-- style="display:inline-block;text-align:right;" -->
-                    <div style="text-align:left;width:80px;">
-                        <span *ngIf="(action.timeStorage<=100)">
-                            {{action.timeStorage }}
+                <ng-container matColumnDef="type">
+                    <th mat-header-cell *matHeaderCellDef>Type</th>
+                    <td mat-cell *matCellDef="let action">
+                        <span>{{action.type }}</span>
+                    </td>
+                </ng-container>
+
+                <ng-container matColumnDef="time">
+                    <th mat-header-cell *matHeaderCellDef>Time (μs)</th>
+                    <td mat-cell *matCellDef="let action">
+                        <!-- style="display:inline-block;text-align:right;" -->
+                        <div style="text-align:left;width:80px;">
+                            <span *ngIf="(action.timeStorage<=100)">
+                                {{action.timeStorage }}
+                            </span>
+                            <span style="color:darkred" *ngIf="(action.timeStorage>100 && action.timeStorage<1000)">
+                                {{action.timeStorage }}
+                            </span>
+                            <span style="color:red" *ngIf="(action.timeStorage>=1000)">
+                                {{action.timeStorage }}
+                            </span>
+                            |
+                            <span *ngIf="(action.timeProtocol<=100)">
+                                {{action.timeProtocol }}
+                            </span>
+                            <span style="color:darkred" *ngIf="(action.timeProtocol>100 && action.timeProtocol<1000)">
+                                {{action.timeProtocol }}
+                            </span>
+                            <span style="color:red" *ngIf="(action.timeProtocol>=1000)">
+                                {{action.timeProtocol }}
+                            </span>
+                        </div>
+
+                    </td>
+                </ng-container>
+
+                <ng-container matColumnDef="category">
+                    <th mat-header-cell *matHeaderCellDef>Category</th>
+                    <td mat-cell *matCellDef="let action">
+
+                    </td>
+                </ng-container>
+
+                <ng-container matColumnDef="path">
+                    <th mat-header-cell *matHeaderCellDef>
+                        <span>Path</span>
+                    </th>
+                    <td mat-cell *matCellDef="let action">
+                        <div>
+                            <span [style.color]="action.color">{{action.category }}</span><span
+                                *ngIf="action">{{action.key}}</span>
+
+                            <span [style.color]="action.color" *ngIf="action.lastKey">/{{ action.lastKey }}
+                            </span>
+
+                        </div>
+                        <div *ngIf="false">
+                            <span style="display:flex; justify-content: flex-end;">
+                            </span>
+                        </div>
+                    </td>
+                </ng-container>
+
+                <ng-container matColumnDef="value">
+                    <th mat-header-cell *matHeaderCellDef>Value</th>
+                    <td mat-cell *matCellDef="let action">
+                        <span *ngIf="action" style="text-align: left">
+                            <span *ngIf="action.value">
+                                {{action.value}}
+                            </span>
+                            <span *ngIf="!action.value" style="height: 100px !important;color:#b0b0b0;">
+                                {{action.hex}}
+                                <!-- {{action.text}} -->
+                            </span>
                         </span>
-                        <span style="color:darkred" *ngIf="(action.timeStorage>100 && action.timeStorage<1000)">
-                            {{action.timeStorage }}
-                        </span>
-                        <span style="color:red" *ngIf="(action.timeStorage>=1000)">
-                            {{action.timeStorage }}
-                        </span>
-                        |
-                        <span *ngIf="(action.timeProtocol<=100)">
-                            {{action.timeProtocol }}
-                        </span>
-                        <span style="color:darkred" *ngIf="(action.timeProtocol>100 && action.timeProtocol<1000)">
-                            {{action.timeProtocol }}
-                        </span>
-                        <span style="color:red" *ngIf="(action.timeProtocol>=1000)">
-                            {{action.timeProtocol }}
-                        </span>
-                    </div>
+                    </td>
+                </ng-container>
 
-                </td>
-            </ng-container>
+                <tr mat-header-row *matHeaderRowDef="['type','time','path','value']">
+                </tr>
+                <tr mat-row *matRowDef="let row; columns: ['type','time','path','value'];">
+                </tr>
 
-            <ng-container matColumnDef="category">
-                <th mat-header-cell *matHeaderCellDef>Category</th>
-                <td mat-cell *matCellDef="let action">
+            </table>
 
-                </td>
-            </ng-container>
-
-            <ng-container matColumnDef="path">
-                <th mat-header-cell *matHeaderCellDef>
-                    <span>Path</span>
-                </th>
-                <td mat-cell *matCellDef="let action">
-                    <div>
-                        <span [style.color]="action.color">{{action.category }}</span><span
-                            *ngIf="action">{{action.key}}</span>
-
-                        <span [style.color]="action.color" *ngIf="action.lastKey">/{{ action.lastKey }}
-                        </span>
-
-                    </div>
-                    <div *ngIf="false">
-                        <span style="display:flex; justify-content: flex-end;">
-                        </span>
-                    </div>
-                </td>
-            </ng-container>
-
-            <ng-container matColumnDef="value">
-                <th mat-header-cell *matHeaderCellDef>Value</th>
-                <td mat-cell *matCellDef="let action">
-                    <span *ngIf="action" style="text-align: left">
-                        <span *ngIf="action.value">
-                            {{action.value}}
-                        </span>
-                        <span *ngIf="!action.value" style="height: 100px !important;color:#b0b0b0;">
-                            {{action.hex}}
-                            <!-- {{action.text}} -->
-                        </span>
-                    </span>
-                </td>
-            </ng-container>
-
-            <tr mat-header-row *matHeaderRowDef="['type','time','path','value']">
-            </tr>
-            <tr mat-row *matRowDef="let row; columns: ['type','time','path','value'];">
-            </tr>
-
-        </table>
-
-        <mat-paginator [pageSizeOptions]="[15]"></mat-paginator>
+            <mat-paginator [pageSizeOptions]="[15]"></mat-paginator>
+        </div>   
     </div>
 
 </div>

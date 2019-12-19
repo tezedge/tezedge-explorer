@@ -21,7 +21,7 @@ export class StorageActionComponent implements OnInit {
   public storageActionList
   public storageActionBlocks
   public storageActionShow
-  public tableDataSource
+  public tableDataSource = []
   public router
   public onDestroy$ = new Subject()
 
@@ -44,13 +44,18 @@ export class StorageActionComponent implements OnInit {
 
         this.storageAction = data
         this.storageActionShow = data.entities.length > 0 ? true : false;
-        
-        this.storageActionBlocks = data.blocks; 
-        
-        this.storageActionList = data.ids[data.blocks[0]].map(id => ({ ...data.entities[id] }))
 
-        this.tableDataSource = new MatTableDataSource<any>(this.storageActionList);
-        this.tableDataSource.paginator = this.paginator;
+        this.storageActionBlocks = data.blocks;
+
+        this.storageActionBlocks.map(block => {
+
+          console.log('[block]', block );
+          const tableData  = data.ids[block].map(id => ({ ...data.entities[id] }));
+          this.tableDataSource[block] = new MatTableDataSource<any>(tableData);
+          this.tableDataSource[block].paginator = this.paginator;
+        
+        });
+
       });
 
     // wait for data changes from redux

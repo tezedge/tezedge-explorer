@@ -14,7 +14,7 @@ export const AppRouting: Routes = [
 
   { path: 'networking', component: NetworkingComponent },
   { path: 'storage', component: StorageComponent },
-  { path: 'storage/:blockId', component: StorageActionComponent },
+  { path: 'storage/:search', component: StorageActionComponent },
 
   { path: 'settings', component: SettingsComponent },
 

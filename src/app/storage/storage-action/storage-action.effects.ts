@@ -10,29 +10,52 @@ import { environment } from '../../../environments/environment';
 export class StorageActionEffects {
 
     @Effect()
-    StorageActionBlock$ = this.actions$.pipe(
-        ofType('STORAGE_ACTION_LOAD'),
+    StorageBlockAction$ = this.actions$.pipe(
+        ofType('STORAGE_BLOCK_ACTION_LOAD'),
 
         // merge state
         withLatestFrom(this.store, (action: any, state) => ({ action, state })),
 
         switchMap(({ action, state }) => {
-            return this.http.get(environment.api.http + '/dev/chains/main/blocks/' + action.payload.blockId + '/actions')
+            return this.http.get(environment.api.http + '/dev/chains/main/blocks/' + action.payload.blockHash + '/actions')
         }),
 
         // dispatch action
-        map((payload) => ({ type: 'STORAGE_ACTION_LOAD_SUCCESS', payload: payload })),
+        map((payload) => ({ type: 'STORAGE_BLOCK_ACTION_LOAD_SUCCESS', payload: payload })),
         catchError((error, caught) => {
             console.error(error)
             this.store.dispatch({
-                type: 'STORAGE_ACTION_LOAD_ERROR',
+                type: 'STORAGE_BLOCK_ACTION_LOAD_ERROR',
                 payload: error,
             });
             return caught;
         })
 
     )
+    
+    @Effect()
+    StorageAddressAction$ = this.actions$.pipe(
+        ofType('STORAGE_ADDRESS_ACTION_LOAD'),
 
+        // merge state
+        withLatestFrom(this.store, (action: any, state) => ({ action, state })),
+
+        switchMap(({ action, state }) => {
+            return this.http.get(environment.api.http + '/dev/chains/main/actions/contracts/' + action.payload.addressHash + '?limit=100&offset=0');
+        }),
+
+        // dispatch action
+        map((payload) => ({ type: 'STORAGE_ADDRESS_ACTION_LOAD_SUCCESS', payload: payload })),
+        catchError((error, caught) => {
+            console.error(error)
+            this.store.dispatch({
+                type: 'STORAGE_ADDRESS_ACTION_LOAD_ERROR',
+                payload: error,
+            });
+            return caught;
+        })
+
+    )
 
     constructor(
         private http: HttpClient,

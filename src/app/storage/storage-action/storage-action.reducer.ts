@@ -17,14 +17,15 @@ function bufferToHex(buffer) {
 export function reducer(state = initialState, action) {
     switch (action.type) {
 
-        case 'STORAGE_ACTION_LOAD': {
+        case 'STORAGE_BLOCK_ACTION_LOAD': 
+        case 'STORAGE_ADDRESS_ACTION_LOAD': {
             return {
-                ...state,
+                ...initialState,
             }
         }
 
-        case 'STORAGE_SEARCH_SUCCESS':
-        case 'STORAGE_ACTION_LOAD_SUCCESS': {
+        case 'STORAGE_BLOCK_ACTION_LOAD_SUCCESS':
+        case 'STORAGE_ADDRESS_ACTION_LOAD_SUCCESS': {
             // clone action
             let _action = JSON.parse(JSON.stringify(action));
 

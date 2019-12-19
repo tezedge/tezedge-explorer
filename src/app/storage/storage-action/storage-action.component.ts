@@ -14,8 +14,10 @@ import { takeUntil, filter } from 'rxjs/operators'
 })
 export class StorageActionComponent implements OnInit {
 
+  public search
   public block
-  public blockId
+  public blockHash
+  public addressHash
   public storageBlock
   public storageAction
   public storageActionList
@@ -49,11 +51,11 @@ export class StorageActionComponent implements OnInit {
 
         this.storageActionBlocks.map(block => {
 
-          console.log('[block]', block );
-          const tableData  = data.ids[block].map(id => ({ ...data.entities[id] }));
+          console.log('[block]', block);
+          const tableData = data.ids[block].map(id => ({ ...data.entities[id] }));
           this.tableDataSource[block] = new MatTableDataSource<any>(tableData);
           this.tableDataSource[block].paginator = this.paginator;
-        
+
         });
 
       });
@@ -71,16 +73,35 @@ export class StorageActionComponent implements OnInit {
     // TODO: unsubscribe after destroy
     this.router = this.route.params.subscribe(params => {
 
-      // get block Id
-      this.blockId = params['blockId'];
+      console.log('[storage][actions]', params, params['search']);
 
-      // triger action and get blocks data
-      this.store.dispatch({
-        type: 'STORAGE_ACTION_LOAD',
-        payload: {
-          blockId: this.blockId
-        }
-      });
+      // process block ID
+      const blockPrefix = params['search'].substr(0, 1);
+      if (blockPrefix === "B") {
+
+        // triger action and get blocks data
+        this.store.dispatch({
+          type: 'STORAGE_BLOCK_ACTION_LOAD',
+          payload: {
+            blockHash: params['search']
+          }
+        });
+
+      }
+
+      // porcess address id
+      const addressPrefix = params['search'].substr(0, 3);
+      if (addressPrefix === "tz1" || addressPrefix === "tz2" || addressPrefix === "tz3" || addressPrefix === "KT1") {
+
+        // triger action and get blocks data
+        this.store.dispatch({
+          type: 'STORAGE_ADDRESS_ACTION_LOAD',
+          payload: {
+            addressHash: params['search']
+          }
+        });
+
+      }
 
     });
 

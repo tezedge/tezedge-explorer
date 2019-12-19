@@ -7,12 +7,12 @@
 
         <div style="font-size: 14px;padding: 6px 0px 6px 12px;border-bottom: 1px solid rgba(0,0,0,.12);"
             *ngIf="storageBlock.entities[blockId]?.header?.predecessor">
-            <button matTooltip="Previous Block" matTooltipPosition="above" routerLink="/storage/{{ storageBlock.entities[blockId]?.header?.predecessor }}" mat-icon-button>
+            <!-- <button matTooltip="Previous Block" matTooltipPosition="above" routerLink="/storage/{{ storageBlock.entities[blockId]?.header?.predecessor }}" mat-icon-button>
                 <mat-icon>chevron_left</mat-icon>
             </button>
             <button matTooltip="Next Block" matTooltipPosition="above" routerLink="/storage/" *ngIf="storageBlock.entities[blockId]?.header?.predecessor" mat-icon-button>
                 <mat-icon>chevron_right</mat-icon>
-            </button>
+            </button> -->
 
             <span *ngIf="storageBlock.entities[blockId]">
                 <button mat-button matTooltip="Block Level" matTooltipPosition="above" style="font-weight: 300;">

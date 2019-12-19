@@ -20,6 +20,7 @@ import { environment } from '../environments/environment';
 import { AppEffects } from './app.effects';
 import { StorageBlockEffects } from './storage/storage-block/storage-block.effects';
 import { StorageActionEffects } from './storage/storage-action/storage-action.effects';
+import { StorageSearchEffects } from './storage/storage-search/storage-search.effects';
 import { SettingsEffects } from './settings/settings.effects';
 
 import { NetworkingComponent } from './networking/networking.component';
@@ -117,6 +118,7 @@ import { SvgIconComponent } from './shared/svg-icon/svg-icon.component'
       AppEffects,
       StorageBlockEffects,
       StorageActionEffects,
+      StorageSearchEffects,
       SettingsEffects,
     ]),
 

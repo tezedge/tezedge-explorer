@@ -3,19 +3,20 @@
 
 <div class="storage-action-container">
 
-    <div class="storage-action">
+    <div class="storage-action" *ngFor="let block of storageActionBlocks">
         
-        <div *ngFor="let block of storageActionBlocks">
+        <div>
 
-            <div style="font-size: 14px;padding: 6px 0px 6px 12px;border-bottom: 1px solid rgba(0,0,0,.12);"
+            <!-- <div style="font-size: 14px;padding: 6px 0px 6px 12px;border-bottom: 1px solid rgba(0,0,0,.12);"
                 *ngIf="storageBlock.entities[blockId]?.header?.predecessor">
-                <!-- <button matTooltip="Previous Block" matTooltipPosition="above" routerLink="/storage/{{ storageBlock.entities[blockId]?.header?.predecessor }}" mat-icon-button>
+                
+                <button matTooltip="Previous Block" matTooltipPosition="above" routerLink="/storage/{{ storageBlock.entities[blockId]?.header?.predecessor }}" mat-icon-button>
                     <mat-icon>chevron_left</mat-icon>
                 </button>
                 <button matTooltip="Next Block" matTooltipPosition="above" routerLink="/storage/" *ngIf="storageBlock.entities[blockId]?.header?.predecessor" mat-icon-button>
                     <mat-icon>chevron_right</mat-icon>
-                </button> -->
-
+                </button>
+                
                 <span *ngIf="storageBlock.entities[blockId]">
                     <button mat-button matTooltip="Block Level" matTooltipPosition="above" style="font-weight: 300;">
                         {{ storageBlock.entities[blockId]?.header?.level }}
@@ -39,8 +40,18 @@
                         style="margin:0px 20px 0px 0px;" style="font-weight: 300;">
                         {{ storageBlock.entities[blockId]?.metadata?.level?.voting_period_position  }}
                     </button>
-                </span>
+                </span> 
+            </div> -->
+
+            <div style="font-size: 14px;padding: 6px 0px 6px 12px;border-bottom: 1px solid rgba(0,0,0,.12);">
+                <span>
+                    <button mat-button matTooltip="Block Hash" matTooltipPosition="above"
+                        style="font-weight: 300;max-width: 450px;min-width: 450px;">
+                        {{ block }}
+                    </button>
+                </span> 
             </div>
+
 
             <table mat-table [dataSource]="tableDataSource[block]">
 
@@ -111,10 +122,10 @@
                     <th mat-header-cell *matHeaderCellDef>Value</th>
                     <td mat-cell *matCellDef="let action">
                         <span *ngIf="action" style="text-align: left">
-                            <span *ngIf="action.value">
-                                {{action.value}}
+                            <span *ngIf="action.json">
+                                {{action.json}}
                             </span>
-                            <span *ngIf="!action.value" style="height: 100px !important;color:#b0b0b0;">
+                            <span *ngIf="!action.json" style="height: 100px !important;color:#b0b0b0;">
                                 {{action.hex}}
                                 <!-- {{action.text}} -->
                             </span>
@@ -129,23 +140,20 @@
 
             </table>
 
-            <mat-paginator [pageSizeOptions]="[15]"></mat-paginator>
+            <mat-paginator [pageSizeOptions]="[100]"></mat-paginator>
         </div>   
     </div>
 
 </div>
 
 
-
-<div *ngFor="let block of storageActionBlocks">
-    <br/><br/>{{ block | json }}
-    <!-- {{ storageAction.ids[block] | json }} <br /> -->
-
-    <li *ngFor="let id of storageAction.ids[block]">
-        <!-- {{ storageAction.entities[id] | json }} -->
-        <span>
-            {{storageAction.entities[id]?.category}} {{storageAction.entities[id]?.key}}  <b>{{storageAction.entities[id]?.lastKey}}</b> - <i> {{storageAction.entities[id]?.json}} </i>
-        </span>
-    </li>
-
-</div>
+<!--
+    <div *ngFor="let block of storageActionBlocks">
+        <br/><br/>{{ block | json }}
+        <li *ngFor="let id of storageAction.ids[block]">
+            <span>
+                {{storageAction.entities[id]?.category}} {{storageAction.entities[id]?.key}}  <b>{{storageAction.entities[id]?.lastKey}}</b> - <i> {{storageAction.entities[id]?.json}} </i>
+            </span>
+        </li>
+    </div>
+-->

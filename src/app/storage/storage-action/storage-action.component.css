@@ -41,8 +41,8 @@
     text-overflow: ellipsis;
     white-space: nowrap;
     overflow: hidden;
-    min-width: 100px !important;
-    max-width: 100px !important;
+    min-width: 85px !important;
+    max-width: 85px !important;
 }
 
 th.mat-header-cell.cdk-column-value.mat-column-value {

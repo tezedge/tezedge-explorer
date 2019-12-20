@@ -15,7 +15,7 @@ export class AppEffects {
     // effect to handle subscription to metrics WS
     @Effect()
     MetriscsSubscirbeEffect$ = this.actions$.pipe(
-        ofType('METRICS_SUBSCRIBE', 'NETWORKING_OPEN'),
+        ofType('METRICS_SUBSCRIBE_', 'NETWORKING_OPEN_'),
 
         // merge state
         withLatestFrom(this.store, (action: any, state) => ({ action, state })),

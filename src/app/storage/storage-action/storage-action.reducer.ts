@@ -4,7 +4,8 @@ import { Buffer } from 'buffer';
 
 const initialState: any = {
     ids: [],
-    entities: []
+    entities: [],
+    blocks: []
 }
 
 
@@ -88,7 +89,7 @@ export function reducer(state = initialState, action) {
 
                 entities: _action.payload
                     // show only set operations
-                    // .filter(action => action.hasOwnProperty('Set'))
+                    //.filter(action => action.hasOwnProperty('Set'))
                     //.filter(action => action.hasOwnProperty('Get'))
                     .reduce((accum, action) => {
 
@@ -101,6 +102,7 @@ export function reducer(state = initialState, action) {
                                 text: new TextDecoder('utf-8').decode(new Uint8Array(action.Set.value)),
                                 hex: '0x' + bufferToHex(new Uint8Array(action.Set.value)),
                                 category: action.Set.key[0] === 'data' ? action.Set.key[1] : action.Set.key[0],
+                                address: action.Set.key[1] === 'contracts' ? bytes2address(action.Set.key[9]) : '',
                                 lastKey: action.Set.key.length > 2 ? action.Set.key[action.Set.key.length - 1] : '',
                                 color: categoryColor(action.Set.key[0] === 'data' ? action.Set.key[1] : action.Set.key[0]),
                                 json: action.Set.value_as_json,
@@ -246,17 +248,7 @@ export function parseKey(inputKey) {
             }).map((value, index) => {
 
                 if (index === 0) {
-
-                    // convert contract hex to string
-                    let addressPrefix = new Uint8Array();
-                    let address = '';
-                    if (value.substring(0, 4) === '0000') { addressPrefix = prefix.tz1; address = value.substr(4); }
-                    if (value.substring(0, 4) === '0001') { addressPrefix = prefix.tz2; address = value.substr(4); }
-                    if (value.substring(0, 4) === '0002') { addressPrefix = prefix.tz3; address = value.substr(4); }
-                    if (value.substring(0, 2) === '01') { addressPrefix = prefix.KT1; address = value.substr(2, value.length - 4); }
-
-                    const hash = bs58checkEncode(addressPrefix, Buffer.from(address, 'hex'));
-                    return hash;
+                    return bytes2address(value);
                 }
                 return value;
             });
@@ -560,4 +552,19 @@ export function Block_repr(valueBytes) {
     const hash = bs58checkEncode(prefix.B, new Uint8Array(valueBytes));
     return hash;
 
+}
+
+
+
+export function bytes2address(value) {
+    // convert contract hex to string
+    let addressPrefix = new Uint8Array();
+    let address = '';
+    if (value.substring(0, 4) === '0000') { addressPrefix = prefix.tz1; address = value.substr(4); }
+    if (value.substring(0, 4) === '0001') { addressPrefix = prefix.tz2; address = value.substr(4); }
+    if (value.substring(0, 4) === '0002') { addressPrefix = prefix.tz3; address = value.substr(4); }
+    if (value.substring(0, 2) === '01') { addressPrefix = prefix.KT1; address = value.substr(2, value.length - 4); }
+
+    const hash = bs58checkEncode(addressPrefix, Buffer.from(address, 'hex'));
+    return hash
 }

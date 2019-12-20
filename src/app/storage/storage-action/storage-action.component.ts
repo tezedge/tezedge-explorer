@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ChangeDetectionStrategy } from '@angular/core';
+import { Component, OnInit, ViewChild, ViewChildren, QueryList } from '@angular/core';
 import { MatPaginator, MatTableDataSource } from '@angular/material';
 
 import { ActivatedRoute } from '@angular/router';
@@ -27,7 +27,8 @@ export class StorageActionComponent implements OnInit {
   public router
   public onDestroy$ = new Subject()
 
-  @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
+  // @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
+  @ViewChildren(MatPaginator) paginators: QueryList<MatPaginator>;
 
   constructor(
     public store: Store<any>,
@@ -51,23 +52,24 @@ export class StorageActionComponent implements OnInit {
 
         this.storageActionBlocks.map(block => {
 
-          console.log('[block]', block);
+          // console.log('[block]', block);
+
           const tableData = data.ids[block].map(id => ({ ...data.entities[id] }));
           this.tableDataSource[block] = new MatTableDataSource<any>(tableData);
-          this.tableDataSource[block].paginator = this.paginator;
+          // this.tableDataSource[block].paginator = this.paginators.first;
 
         });
 
       });
 
     // wait for data changes from redux
-    this.store.select('storageBlock')
-      .pipe(takeUntil(this.onDestroy$))
-      .subscribe(data => {
+    // this.store.select('storageBlock')
+    //   .pipe(takeUntil(this.onDestroy$))
+    //   .subscribe(data => {
 
-        this.storageBlock = data
+    //     this.storageBlock = data
 
-      });
+    //   });
 
     // get url params
     // TODO: unsubscribe after destroy
@@ -108,8 +110,17 @@ export class StorageActionComponent implements OnInit {
 
   }
 
+  ngAfterViewInit () {
+
+    // console.log('[paginator]', this.paginators);
+    // this.paginators.forEach(alertInstance => console.log('[+][paginator]', alertInstance));
+
+  }
 
   ngOnDestroy() {
+
+    // unsubscribe router
+    this.router.unsubscribe();
 
     // close all observables
     this.onDestroy$.next();

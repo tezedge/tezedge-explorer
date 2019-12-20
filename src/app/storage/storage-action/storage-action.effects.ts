@@ -19,7 +19,6 @@ export class StorageActionEffects {
         switchMap(({ action, state }) => {
             return this.http.get(environment.api.http + '/dev/chains/main/blocks/' + action.payload.blockHash + '/actions')
         }),
-
         // dispatch action
         map((payload) => ({ type: 'STORAGE_BLOCK_ACTION_LOAD_SUCCESS', payload: payload })),
         catchError((error, caught) => {
@@ -32,7 +31,7 @@ export class StorageActionEffects {
         })
 
     )
-    
+
     @Effect()
     StorageAddressAction$ = this.actions$.pipe(
         ofType('STORAGE_ADDRESS_ACTION_LOAD'),
@@ -41,9 +40,11 @@ export class StorageActionEffects {
         withLatestFrom(this.store, (action: any, state) => ({ action, state })),
 
         switchMap(({ action, state }) => {
-            return this.http.get(environment.api.http + '/dev/chains/main/actions/contracts/' + action.payload.addressHash + '?limit=100&offset=0');
+            return this.http.get(environment.api.http + '/dev/chains/main/actions/contracts/' + action.payload.addressHash + '?limit=100');
         }),
-
+        // change data structure
+        map((payload: any) => payload.data.map(action => action.action)),
+        // tap(payload => console.log('[STORAGE_BLOCK_ACTION_LOAD]', payload)),
         // dispatch action
         map((payload) => ({ type: 'STORAGE_ADDRESS_ACTION_LOAD_SUCCESS', payload: payload })),
         catchError((error, caught) => {

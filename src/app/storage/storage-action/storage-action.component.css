@@ -49,10 +49,33 @@ th.mat-header-cell.cdk-column-value.mat-column-value {
     /* text-align: right; */
 }
 
-.expanded {
-    display: show;
+.detail-expanded {
+    display: table-row;
+    background-color: #F5F9FC;
+    min-height: 36px !important;
 }
 
-.colapsed {
+.detail-colapsed {
     display: none;
+}
+
+.row-expanded {
+    background-color: #F5F9FC;
+}
+
+/* change row  border */
+.row-expanded td.mat-cell {
+    border-top: 1px solid #c5cae9 !important;
+    border-bottom: 1px solid #F5F9FC !important;
+}
+
+.row-colapsed {
+    background-color: #FFFFFF;
+}
+
+.expanded-detail-cell {
+    max-width: 700px;
+    padding-top: 5px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid #c5cae9 !important;
 }

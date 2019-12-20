@@ -48,3 +48,11 @@
 th.mat-header-cell.cdk-column-value.mat-column-value {
     /* text-align: right; */
 }
+
+.expanded {
+    display: show;
+}
+
+.colapsed {
+    display: none;
+}

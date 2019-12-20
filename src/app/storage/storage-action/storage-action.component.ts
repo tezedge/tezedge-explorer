@@ -23,6 +23,7 @@ export class StorageActionComponent implements OnInit {
   public storageActionList
   public storageActionBlocks
   public storageActionShow
+  public storageActionDetail = false
   public tableDataSource = []
   public router
   public onDestroy$ = new Subject()
@@ -107,6 +108,20 @@ export class StorageActionComponent implements OnInit {
 
     });
 
+
+  }
+
+  expandedDetail(row) {
+    this.storageActionDetail = this.storageActionDetail ? false : true;
+    console.log('[storage][action] expandedDetail', this.storageActionDetail, row);
+  }
+
+  // launched for every row
+  isRowExpanded = (i: number, row: Object) => {
+
+    // console.log('[isRowExpanded]', i, row);
+    return this.storageActionDetail;
+    // return row.hasOwnProperty('detailRow');
 
   }
 

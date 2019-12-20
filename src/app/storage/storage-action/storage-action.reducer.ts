@@ -95,11 +95,11 @@ export function reducer(state = initialState, action) {
 
                         if (action.hasOwnProperty('Set')) {
                             const result = {
-                                ...action.Set,
+                                // ...action.Set,
                                 type: 'SET',
                                 key: parseKey(action.Set.key),
                                 value: parseValue(action.Set.key, action.Set.value),
-                                text: new TextDecoder('utf-8').decode(new Uint8Array(action.Set.value)),
+                                // text: new TextDecoder('utf-8').decode(new Uint8Array(action.Set.value)),
                                 hex: '0x' + bufferToHex(new Uint8Array(action.Set.value)),
                                 category: action.Set.key[0] === 'data' ? action.Set.key[1] : action.Set.key[0],
                                 address: action.Set.key[1] === 'contracts' ? bytes2address(action.Set.key[9]) : '',

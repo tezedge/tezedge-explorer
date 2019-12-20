@@ -75,7 +75,7 @@ export class StorageActionComponent implements OnInit {
     // TODO: unsubscribe after destroy
     this.router = this.route.params.subscribe(params => {
 
-      console.log('[storage][actions]', params, params['search']);
+      // console.log('[storage][actions]', params, params['search']);
 
       // process block ID
       const blockPrefix = params['search'].substr(0, 1);

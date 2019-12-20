@@ -32,7 +32,7 @@
 }
 
 .mat-cell.cdk-column-path.mat-column-path {
-    width: 500px !important;
+    min-width: 530px !important;
     padding-right: 10px !important;
 }
 

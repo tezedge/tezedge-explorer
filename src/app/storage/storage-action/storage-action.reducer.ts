@@ -557,6 +557,7 @@ export function Block_repr(valueBytes) {
 
 
 export function bytes2address(value) {
+    if (!value) return '';
     // convert contract hex to string
     let addressPrefix = new Uint8Array();
     let address = '';

@@ -12,8 +12,8 @@ import { takeUntil, filter } from 'rxjs/operators'
   templateUrl: './storage-action.component.html',
   styleUrls: ['./storage-action.component.css']
 })
-export class StorageActionComponent implements OnInit {
 
+export class StorageActionComponent implements OnInit {
   public search
   public block
   public blockHash
@@ -110,7 +110,7 @@ export class StorageActionComponent implements OnInit {
 
   }
 
-  ngAfterViewInit () {
+  ngAfterViewInit() {
 
     // console.log('[paginator]', this.paginators);
     // this.paginators.forEach(alertInstance => console.log('[+][paginator]', alertInstance));

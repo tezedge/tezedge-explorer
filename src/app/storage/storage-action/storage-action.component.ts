@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild, ViewChildren, QueryList } from '@angular/core';
 import { MatPaginator, MatTableDataSource } from '@angular/material';
 
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
 import { Store } from '@ngrx/store'
 import { Subject } from 'rxjs'
 import { takeUntil, filter } from 'rxjs/operators'
@@ -25,7 +25,8 @@ export class StorageActionComponent implements OnInit {
   public storageActionShow
   public storageActionDetail = false
   public tableDataSource = []
-  public router
+  public routerParams
+  public routerScroll
   public onDestroy$ = new Subject()
 
   // @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
@@ -34,6 +35,7 @@ export class StorageActionComponent implements OnInit {
   constructor(
     public store: Store<any>,
     private route: ActivatedRoute,
+    private router: Router,
   ) { }
 
   ngOnInit() {
@@ -74,7 +76,10 @@ export class StorageActionComponent implements OnInit {
 
     // get url params
     // TODO: unsubscribe after destroy
-    this.router = this.route.params.subscribe(params => {
+    this.routerParams = this.route.params.subscribe(params => {
+
+      // move to scroll
+      window.scrollTo(0, 0)
 
       // console.log('[storage][actions]', params, params['search']);
 
@@ -135,7 +140,7 @@ export class StorageActionComponent implements OnInit {
   ngOnDestroy() {
 
     // unsubscribe router
-    this.router.unsubscribe();
+    this.routerParams.unsubscribe();
 
     // close all observables
     this.onDestroy$.next();

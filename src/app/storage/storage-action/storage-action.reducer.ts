@@ -32,8 +32,17 @@ export function reducer(state = initialState, action) {
 
             // get time stamp
             function get_time(action) {
+                if (action.hasOwnProperty('Get')) {
+                    return action.Get.start_time;
+                }
                 if (action.hasOwnProperty('Set')) {
                     return action.Set.start_time;
+                }
+                if (action.hasOwnProperty('Mem')) {
+                    return action.Mem.start_time;
+                }
+                if (action.hasOwnProperty('DirMem')) {
+                    return action.DirMem.start_time;
                 }
                 if (action.hasOwnProperty('Delete')) {
                     return action.Delete.start_time;
@@ -65,11 +74,63 @@ export function reducer(state = initialState, action) {
                                 blockHash
                             ];
                     }
+                    
+                    if (action.hasOwnProperty('Get')) {
+                        const blockHash = Block_repr(action.Get.block_hash);
+                        return accum.indexOf(blockHash) !== -1 ?
+                            accum :
+                            [
+                                ...accum,
+                                blockHash
+                            ];
+                    }
+
+                    if (action.hasOwnProperty('Mem')) {
+                        const blockHash = Block_repr(action.Mem.block_hash);
+                        return accum.indexOf(blockHash) !== -1 ?
+                            accum :
+                            [
+                                ...accum,
+                                blockHash
+                            ];
+                    }
+
+                    if (action.hasOwnProperty('DirMem')) {
+                        const blockHash = Block_repr(action.DirMem.block_hash);
+                        return accum.indexOf(blockHash) !== -1 ?
+                            accum :
+                            [
+                                ...accum,
+                                blockHash
+                            ];
+                    }
+
+                    if (action.hasOwnProperty('Del')) {
+                        const blockHash = Block_repr(action.Del.block_hash);
+                        return accum.indexOf(blockHash) !== -1 ?
+                            accum :
+                            [
+                                ...accum,
+                                blockHash
+                            ];
+                    }
+
+                    
+                    if (action.hasOwnProperty('RemoveRecord')) {
+                        const blockHash = Block_repr(action.RemoveRecord.block_hash);
+                        return accum.indexOf(blockHash) !== -1 ?
+                            accum :
+                            [
+                                ...accum,
+                                blockHash
+                            ];
+                    }
+                    
+
                     return accum;
                 }, []),
 
                 ids: _action.payload.reduce((accum, action) => {
-
 
                     if (action.hasOwnProperty('Set')) {
                         const blockHash = Block_repr(action.Set.block_hash);
@@ -79,6 +140,67 @@ export function reducer(state = initialState, action) {
                             [blockHash]: [
                                 ...blockActions,
                                 action.Set.start_time
+                            ]
+                        };
+                    }
+
+                    if (action.hasOwnProperty('Get')) {
+                        const blockHash = Block_repr(action.Get.block_hash);
+                        const blockActions = accum[blockHash] ? accum[blockHash] : [];
+                        return {
+                            ...accum,
+                            [blockHash]: [
+                                ...blockActions,
+                                action.Get.start_time
+                            ]
+                        };
+                    }
+
+                    if (action.hasOwnProperty('Mem')) {
+                        const blockHash = Block_repr(action.Mem.block_hash);
+                        const blockActions = accum[blockHash] ? accum[blockHash] : [];
+                        return {
+                            ...accum,
+                            [blockHash]: [
+                                ...blockActions,
+                                action.Mem.start_time
+                            ]
+                        };
+                    }
+
+                    if (action.hasOwnProperty('DirMem')) {
+                        const blockHash = Block_repr(action.DirMem.block_hash);
+                        const blockActions = accum[blockHash] ? accum[blockHash] : [];
+                        return {
+                            ...accum,
+                            [blockHash]: [
+                                ...blockActions,
+                                action.DirMem.start_time
+                            ]
+                        };
+                    }
+
+                    if (action.hasOwnProperty('Del')) {
+                        const blockHash = Block_repr(action.Del.block_hash);
+                        const blockActions = accum[blockHash] ? accum[blockHash] : [];
+                        return {
+                            ...accum,
+                            [blockHash]: [
+                                ...blockActions,
+                                action.Del.start_time
+                            ]
+                        };
+                    }
+
+
+                    if (action.hasOwnProperty('RemoveRecord')) {
+                        const blockHash = Block_repr(action.RemoveRecord.block_hash);
+                        const blockActions = accum[blockHash] ? accum[blockHash] : [];
+                        return {
+                            ...accum,
+                            [blockHash]: [
+                                ...blockActions,
+                                action.RemoveRecord.start_time
                             ]
                         };
                     }
@@ -94,6 +216,7 @@ export function reducer(state = initialState, action) {
                     .reduce((accum, action) => {
 
                         if (action.hasOwnProperty('Set')) {
+                            
                             const result = {
                                 // ...action.Set,
                                 type: 'SET',

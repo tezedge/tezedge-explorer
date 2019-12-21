@@ -114,8 +114,7 @@ export function reducer(state = initialState, action) {
                                 blockHash
                             ];
                     }
-
-                    
+         
                     if (action.hasOwnProperty('RemoveRecord')) {
                         const blockHash = Block_repr(action.RemoveRecord.block_hash);
                         return accum.indexOf(blockHash) !== -1 ?
@@ -125,10 +124,9 @@ export function reducer(state = initialState, action) {
                                 blockHash
                             ];
                     }
-                    
 
                     return accum;
-                }, []),
+                }, []).reverse(),
 
                 ids: _action.payload.reduce((accum, action) => {
 
@@ -249,6 +247,7 @@ export function reducer(state = initialState, action) {
                                 type: 'GET',
                                 key: parseKey(action.Get.key),
                                 category: action.Get.key[0] === 'data' ? action.Get.key[1] : action.Get.key[0],
+                                address: action.Get.key[1] === 'contracts' ? bytes2address(action.Get.key[9]) : '',
                                 lastKey: action.Get.key.length > 2 ? action.Get.key[action.Get.key.length - 1] : '',
                                 color: categoryColor(action.Get.key[0] === 'data' ? action.Get.key[1] : action.Get.key[0]),
                                 start_time: action.Get.start_time,
@@ -270,6 +269,7 @@ export function reducer(state = initialState, action) {
                                 type: 'MEM',
                                 key: parseKey(action.Mem.key),
                                 category: action.Mem.key[0] === 'data' ? action.Mem.key[1] : action.Mem.key[0],
+                                address: action.Mem.key[1] === 'contracts' ? bytes2address(action.Mem.key[9]) : '',
                                 lastKey: action.Mem.key.length > 2 ? action.Mem.key[action.Mem.key.length - 1] : '',
                                 color: categoryColor(action.Mem.key[0] === 'data' ? action.Mem.key[1] : action.Mem.key[0]),
                                 start_time: action.Mem.start_time,
@@ -292,6 +292,7 @@ export function reducer(state = initialState, action) {
                                 type: 'DMEM',
                                 key: parseKey(action.DirMem.key),
                                 category: action.DirMem.key[0] === 'data' ? action.DirMem.key[1] : action.DirMem.key[0],
+                                address: action.DirMem.key[1] === 'contracts' ? bytes2address(action.DirMem.key[9]) : '',
                                 lastKey: action.DirMem.key.length > 2 ? action.DirMem.key[action.DirMem.key.length - 1] : '',
                                 color: categoryColor(action.DirMem.key[0] === 'data' ? action.DirMem.key[1] : action.DirMem.key[0]),
                                 start_time: action.DirMem.start_time,

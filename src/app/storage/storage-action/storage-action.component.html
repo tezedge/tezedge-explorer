@@ -65,7 +65,7 @@
                 <ng-container matColumnDef="time">
                     <th mat-header-cell *matHeaderCellDef>Time (μs)</th>
                     <td mat-cell *matCellDef="let action">
-                        {{ action.start_time }}
+                        <!-- {{ action.start_time }} -->
                         <!-- style="display:inline-block;text-align:right;" -->
                         <div style="text-align:left;width:80px;">
                             <span *ngIf="(action.timeStorage<=100)">

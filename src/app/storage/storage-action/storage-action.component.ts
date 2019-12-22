@@ -27,6 +27,8 @@ export class StorageActionComponent implements OnInit {
   public tableDataSource = []
   public routerParams
   public routerScroll
+  public viewChange = false;
+  public viewLast;
   public onDestroy$ = new Subject()
 
   // @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
@@ -51,11 +53,14 @@ export class StorageActionComponent implements OnInit {
         this.storageAction = data
         this.storageActionShow = data.entities.length > 0 ? true : false;
 
+        // save view change
+        this.viewChange =  this.viewLast !== data.view ? true : false;
+        this.viewLast = data.view;
+
+        // clean up tableData Source
+        this.tableDataSource = [];
         this.storageActionBlocks = data.blocks;
-
         this.storageActionBlocks.map(block => {
-
-          // console.log('[block]', block);
 
           const tableData = data.ids[block].map(id => ({ ...data.entities[id] }));
           this.tableDataSource[block] = new MatTableDataSource<any>(tableData);
@@ -65,21 +70,12 @@ export class StorageActionComponent implements OnInit {
 
       });
 
-    // wait for data changes from redux
-    // this.store.select('storageBlock')
-    //   .pipe(takeUntil(this.onDestroy$))
-    //   .subscribe(data => {
-
-    //     this.storageBlock = data
-
-    //   });
-
     // get url params
     // TODO: unsubscribe after destroy
     this.routerParams = this.route.params.subscribe(params => {
 
       // move to scroll
-      window.scrollTo(0, 0)
+      window.scrollTo(0, 0);
 
       // console.log('[storage][actions]', params, params['search']);
 
@@ -121,23 +117,27 @@ export class StorageActionComponent implements OnInit {
     console.log('[storage][action] expandedDetail', this.storageActionDetail, row);
   }
 
-  // launched for every row
-  isRowExpanded = (i: number, row: Object) => {
 
-    // console.log('[isRowExpanded]', i, row);
-    return this.storageActionDetail;
-    // return row.hasOwnProperty('detailRow');
+  ngAfterViewChecked() {
 
-  }
+    // trigger only for router change
+    if (this.viewChange) {
 
-  ngAfterViewInit() {
+      console.log('[storage-action][ngAfterViewChecked] tableDataSource ', this.tableDataSource);
+      this.paginators.toArray().forEach(paginator => console.log('[+][paginator]', paginator));
 
-    // console.log('[paginator]', this.paginators);
-    // this.paginators.forEach(alertInstance => console.log('[+][paginator]', alertInstance));
+      // this.tableDataSource[block].paginator = this.paginators.first;
+
+      // prevent multiple loads on same url
+      this.viewChange = false;
+
+    }
 
   }
 
   ngOnDestroy() {
+
+    console.log('[storage-action] OnDestroy');
 
     // unsubscribe router
     this.routerParams.unsubscribe();

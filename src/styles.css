@@ -312,3 +312,23 @@ input.mat-input-element {
     color: #1C202B !important; 
     border-width: 1px !important;
 }
+
+.storage-action-filter .mat-form-field-underline {
+    display: none;
+}
+
+.storage-action-filter .mat-form-field-wrapper {
+    padding-bottom: 0px;
+}
+
+.storage-action-filter .mat-form-field-infix {
+    border-top: 0px;
+}
+
+.storage-action-filter {
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.storage-action-filter .mat-icon {
+    opacity: .3;
+}

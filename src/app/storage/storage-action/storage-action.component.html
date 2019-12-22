@@ -1,7 +1,93 @@
+<style>
+    .storage-action-filter {
+        width: 100%;
+        background-color: white;
+        padding-top: 2px;
+        height: 48px;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .mat-chip {
+        font-weight: 300;
+    }
+
+    .mat-chip.mat-standard-chip {
+        background-color: #f5f9fc !important;
+    }
+
+    .mat-chip.mat-standard-chip .mat-chip-remove {
+        opacity: .3;
+    }
+
+    .mat-standard-chip {
+        min-height: 30px;
+    }
+    .mat-standard-chip.mat-chip-with-trailing-icon {
+        padding-top: 8px;
+    }
+</style>
+
 <app-storage-search>
 </app-storage-search>
 
 <div class="storage-action-container">
+
+    <div class="storage-action-filter">
+
+        <mat-form-field style="width: 800px;">
+            <mat-chip-list #chipList aria-label="Filter">
+                <mat-chip>
+                    SET
+                    <mat-icon matChipRemove>clear</mat-icon>
+                </mat-chip>
+                <mat-chip>
+                    GET
+                    <mat-icon matChipRemove>clear</mat-icon>
+                </mat-chip>
+                <mat-chip>
+                    MEM
+                    <mat-icon matChipRemove>clear</mat-icon>
+                </mat-chip>
+                <mat-chip>
+                    DMEM
+                    <mat-icon matChipRemove>clear</mat-icon>
+                </mat-chip>
+                <mat-chip>
+                    DEL
+                    <mat-icon matChipRemove>clear</mat-icon>
+                </mat-chip>
+                <input id="storage-filter-input" [matAutocomplete]="auto" [matChipInputFor]="chipList"
+                    [matChipInputSeparatorKeyCodes]="separatorKeysCodes" [matChipInputAddOnBlur]="addOnBlur"
+                    (matChipInputTokenEnd)="add($event)">
+                <button mat-icon-button>
+                    <mat-icon>add</mat-icon>
+                </button>
+            </mat-chip-list>
+
+
+
+            <mat-autocomplete #auto="matAutocomplete">
+                <mat-option>
+                    GET
+                </mat-option>
+                <mat-option>
+                    SET
+                </mat-option>
+                <mat-option>
+                    MEM
+                </mat-option>
+                <mat-option>
+                    DEL
+                </mat-option>
+                <mat-option>
+                    MEM
+                </mat-option>
+            </mat-autocomplete>
+        </mat-form-field>
+    </div>
 
     <div class="storage-action" *ngFor="let block of storageActionBlocks">
 

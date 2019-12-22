@@ -50,23 +50,27 @@ export class StorageActionComponent implements OnInit {
       )
       .subscribe(data => {
 
-        this.storageAction = data
+        this.storageAction = data;
         this.storageActionShow = data.entities.length > 0 ? true : false;
 
         // save view change
-        this.viewChange =  this.viewLast !== data.view ? true : false;
+        this.viewChange = this.viewLast !== data.view ? true : false;
         this.viewLast = data.view;
 
-        // clean up tableData Source
-        this.tableDataSource = [];
-        this.storageActionBlocks = data.blocks;
-        this.storageActionBlocks.map(block => {
+        // chnage data only after view change
+        if (this.viewChange) {
 
-          const tableData = data.ids[block].map(id => ({ ...data.entities[id] }));
-          this.tableDataSource[block] = new MatTableDataSource<any>(tableData);
-          // this.tableDataSource[block].paginator = this.paginators.first;
+          // clean up tableData Source
+          this.tableDataSource = [];
+          this.storageActionBlocks = data.blocks;
+          this.storageActionBlocks.map(block => {
 
-        });
+            const tableData = data.ids[block].map(id => ({ ...data.entities[id] }));
+            this.tableDataSource[block] = new MatTableDataSource<any>(tableData);
+
+          });
+
+        }
 
       });
 
@@ -120,15 +124,20 @@ export class StorageActionComponent implements OnInit {
 
   ngAfterViewChecked() {
 
-    // trigger only for router change
+    // trigger only for screen view change
     if (this.viewChange) {
 
-      console.log('[storage-action][ngAfterViewChecked] tableDataSource ', this.tableDataSource);
-      this.paginators.toArray().forEach(paginator => console.log('[+][paginator]', paginator));
+      // console.log('[storage-action][ngAfterViewChecked] tableDataSource + ', this.storageActionBlocks, this.tableDataSource);
 
-      // this.tableDataSource[block].paginator = this.paginators.first;
+      // table data source
+      this.storageActionBlocks.map((block, index) => {
+        // console.log('[paginator]', this.paginators.toArray()[index]);
+        // console.log('[table]', block, index, this.tableDataSource[block]);
+        this.tableDataSource[block].paginator = this.paginators.toArray()[index];
 
-      // prevent multiple loads on same url
+      });
+
+      // prevent multiple loads on same screen view
       this.viewChange = false;
 
     }

@@ -19,19 +19,19 @@ function bufferToHex(buffer) {
 export function reducer(state = initialState, action) {
     switch (action.type) {
 
-        // case 'STORAGE_BLOCK_ACTION_LOAD': {
-        //     return {
-        //         ...initialState,
-        //         view: 'block',
-        //     };
-        // }
+        case 'STORAGE_BLOCK_ACTION_LOAD': {
+            return {
+                ...initialState,
+                view: 'block',
+            };
+        }
 
-        // case 'STORAGE_ADDRESS_ACTION_LOAD': {
-        //     return {
-        //         ...initialState,
-        //         view: 'address',
-        //     };
-        // }
+        case 'STORAGE_ADDRESS_ACTION_LOAD': {
+            return {
+                ...initialState,
+                view: 'address',
+            };
+        }
 
         case 'STORAGE_BLOCK_ACTION_LOAD_SUCCESS': {
             return {

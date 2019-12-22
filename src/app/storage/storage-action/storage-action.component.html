@@ -77,16 +77,21 @@
                             <span style="color:red" *ngIf="(action.timeStorage>=1000)">
                                 {{action.timeStorage }}
                             </span>
-                            |
-                            <span *ngIf="(action.timeProtocol<=100)">
-                                {{action.timeProtocol }}
+
+                            <span *ngIf="viewLast=='block'">
+                                |
+                                <span *ngIf="(action.timeProtocol<=100)">
+                                    {{action.timeProtocol }}
+                                </span>
+                                <span style="color:darkred"
+                                    *ngIf="(action.timeProtocol>100 && action.timeProtocol<1000)">
+                                    {{action.timeProtocol }}
+                                </span>
+                                <span style="color:red" *ngIf="(action.timeProtocol>=1000)">
+                                    {{action.timeProtocol }}
+                                </span>
                             </span>
-                            <span style="color:darkred" *ngIf="(action.timeProtocol>100 && action.timeProtocol<1000)">
-                                {{action.timeProtocol }}
-                            </span>
-                            <span style="color:red" *ngIf="(action.timeProtocol>=1000)">
-                                {{action.timeProtocol }}
-                            </span>
+
                         </div>
 
                     </td>

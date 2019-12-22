@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ViewChildren, QueryList } from '@angular/core';
+import { Component, OnInit, ViewChild, ViewChildren, ElementRef, QueryList } from '@angular/core';
 import { MatPaginator, MatTableDataSource } from '@angular/material';
 
 import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
@@ -6,6 +6,8 @@ import { Store } from '@ngrx/store'
 import { Subject } from 'rxjs'
 import { takeUntil, filter } from 'rxjs/operators'
 
+import { FormControl } from '@angular/forms';
+import { MatAutocompleteSelectedEvent, MatChipInputEvent } from '@angular/material';
 
 @Component({
   selector: 'app-storage-action',
@@ -24,12 +26,15 @@ export class StorageActionComponent implements OnInit {
   public storageActionBlocks
   public storageActionShow
   public storageActionDetail = false
-  public tableDataSource = []
-  public routerParams
-  public routerScroll
+  public tableDataSource = [];
+  public routerParams;
+  public routerScroll;
   public viewChange = false;
   public viewLast;
-  public onDestroy$ = new Subject()
+  public onDestroy$ = new Subject();
+  public storageActionInputForm = new FormControl();
+
+  @ViewChild('storageActionInput', { static: true }) storageActionInput: ElementRef<HTMLInputElement>;
 
   // @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   @ViewChildren(MatPaginator) paginators: QueryList<MatPaginator>;
@@ -119,6 +124,24 @@ export class StorageActionComponent implements OnInit {
   expandedDetail(row) {
     this.storageActionDetail = this.storageActionDetail ? false : true;
     console.log('[storage][action] expandedDetail', this.storageActionDetail, row);
+  }
+
+
+  add(event): void {
+    const input = event.input;
+    const value = event.value;
+
+    // // Add our fruit
+    // if ((value || '').trim()) {
+    //   this.filter.push(value.trim());
+    // }
+
+    // // Reset the input value
+    // if (input) {
+    //   input.value = '';
+    // }
+
+    // this.storageActionInput.setValue(null);
   }
 
 

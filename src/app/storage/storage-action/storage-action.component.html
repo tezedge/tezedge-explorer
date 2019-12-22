@@ -26,7 +26,7 @@
         min-height: 30px;
     }
     .mat-standard-chip.mat-chip-with-trailing-icon {
-        padding-top: 8px;
+        /* padding-top: 8px; */
     }
 </style>
 
@@ -39,7 +39,7 @@
 
         <mat-form-field style="width: 800px;">
             <mat-chip-list #chipList aria-label="Filter">
-                <mat-chip>
+                <mat-chip [selectable]="false">
                     SET
                     <mat-icon matChipRemove>clear</mat-icon>
                 </mat-chip>
@@ -59,9 +59,15 @@
                     DEL
                     <mat-icon matChipRemove>clear</mat-icon>
                 </mat-chip>
-                <input id="storage-filter-input" [matAutocomplete]="auto" [matChipInputFor]="chipList"
-                    [matChipInputSeparatorKeyCodes]="separatorKeysCodes" [matChipInputAddOnBlur]="addOnBlur"
-                    (matChipInputTokenEnd)="add($event)">
+
+                <input id="storage-filter-input" 
+                    #storageActionInput
+                    [formControl]="storageActionInputForm"
+                    [matAutocomplete]="auto" [matChipInputFor]="chipList"
+                    [matChipInputAddOnBlur]="addOnBlur"
+                    (matChipInputTokenEnd)="add($event)"
+                >
+
                 <button mat-icon-button>
                     <mat-icon>add</mat-icon>
                 </button>

@@ -66,7 +66,7 @@ import { SettingsEndpointComponent } from './settings/settings-endpoint/settings
 import { NetworkingEndpointComponent } from './networking/networking-endpoint/networking-endpoint.component';
 
 // TODO: replace woth reactive forms
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BandwidthPipe } from './shared/bandwidth.pipe';
 import { StorageComponent } from './storage/storage.component';
 import { StorageBlockComponent } from './storage/storage-block/storage-block.component';
@@ -159,6 +159,7 @@ import { SvgIconComponent } from './shared/svg-icon/svg-icon.component'
     NgxChartsModule,
 
     FormsModule,
+    ReactiveFormsModule,
 
   ],
   providers: [],

@@ -23,9 +23,10 @@
 <div class="app-storage-search">
 
     <span call="app-storage-search-input">
-
         <mat-form-field appearance="outline">
-            <input matInput [(ngModel)]="storageSearchInput" (ngModelChange)="valueChange($event)">
+            <mat-icon style="opacity:0.4;position:absolute;top: 12px;font-size: 22px;">search</mat-icon>
+            <input style="padding-left: 30px;padding-top: 1px;" matInput [(ngModel)]="storageSearchInput"
+                (ngModelChange)="valueChange($event)">
             <!-- <mat-chip-list>
                 <mat-chip>End Of Cycle</mat-chip>
                 <mat-chip>Proposal</mat-chip>

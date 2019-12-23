@@ -7,7 +7,7 @@ import { Subject } from 'rxjs'
 import { takeUntil, filter } from 'rxjs/operators'
 
 import { FormControl } from '@angular/forms';
-import { MatAutocompleteSelectedEvent, MatChipInputEvent } from '@angular/material';
+import { MatAutocompleteSelectedEvent, MatChipInputEvent, MatAutocompleteTrigger } from '@angular/material';
 
 @Component({
   selector: 'app-storage-action',
@@ -16,28 +16,30 @@ import { MatAutocompleteSelectedEvent, MatChipInputEvent } from '@angular/materi
 })
 
 export class StorageActionComponent implements OnInit {
-  public search
-  public block
-  public blockHash
-  public addressHash
-  public storageBlock
-  public storageAction
-  public storageActionList
-  public storageActionBlocks
-  public storageActionShow
-  public storageActionDetail = false
+  public search;
+  public block;
+  public blockHash;
+  public addressHash;
+  public storageBlock;
+  public storageAction;
+  public storageActionList;
+  public storageActionBlocks;
+  public storageActionShow;
+  public storageActionDetail = false;
   public tableDataSource = [];
   public routerParams;
   public routerScroll;
   public viewChange = false;
   public viewLast;
+  public filters = [];
   public onDestroy$ = new Subject();
   public storageActionInputForm = new FormControl();
 
   @ViewChild('storageActionInput', { static: true }) storageActionInput: ElementRef<HTMLInputElement>;
+  @ViewChild(MatAutocompleteTrigger, { static: true }) autocomplete: MatAutocompleteTrigger;
 
-  // @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   @ViewChildren(MatPaginator) paginators: QueryList<MatPaginator>;
+
 
   constructor(
     public store: Store<any>,
@@ -126,24 +128,30 @@ export class StorageActionComponent implements OnInit {
     console.log('[storage][action] expandedDetail', this.storageActionDetail, row);
   }
 
+  remove(filter) {
+    const index = this.filters.indexOf(filter);
+    if (index >= 0) {
+      this.filters.splice(index, 1);
+    }
+    console.log('[remove]', this.filters);
 
-  add(event): void {
-    const input = event.input;
-    const value = event.value;
-
-    // // Add our fruit
-    // if ((value || '').trim()) {
-    //   this.filter.push(value.trim());
-    // }
-
-    // // Reset the input value
-    // if (input) {
-    //   input.value = '';
-    // }
-
-    // this.storageActionInput.setValue(null);
   }
 
+  selected(event: MatAutocompleteSelectedEvent): void {
+
+    // add only new properties
+    if (this.filters.indexOf(event.option.viewValue) === -1) {
+      this.filters.push(event.option.viewValue);
+    }
+    this.storageActionInput.nativeElement.blur();
+
+    console.log('[selected]', this.filters);
+  }
+
+  openFilter() {
+    console.log('[openFilter]');
+    this.autocomplete.openPanel();
+  }
 
   ngAfterViewChecked() {
 

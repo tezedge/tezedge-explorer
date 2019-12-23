@@ -25,6 +25,7 @@
     .mat-standard-chip {
         min-height: 30px;
     }
+
     .mat-standard-chip.mat-chip-with-trailing-icon {
         /* padding-top: 8px; */
     }
@@ -39,43 +40,22 @@
 
         <mat-form-field style="width: 800px;">
             <mat-chip-list #chipList aria-label="Filter">
-                <mat-chip [selectable]="false">
-                    SET
-                    <mat-icon matChipRemove>clear</mat-icon>
-                </mat-chip>
-                <mat-chip>
-                    GET
-                    <mat-icon matChipRemove>clear</mat-icon>
-                </mat-chip>
-                <mat-chip>
-                    MEM
-                    <mat-icon matChipRemove>clear</mat-icon>
-                </mat-chip>
-                <mat-chip>
-                    DMEM
-                    <mat-icon matChipRemove>clear</mat-icon>
-                </mat-chip>
-                <mat-chip>
-                    DEL
+                <mat-chip *ngFor="let filter of filters" (removed)="remove(filter)">
+                    {{ filter }}
                     <mat-icon matChipRemove>clear</mat-icon>
                 </mat-chip>
 
-                <input id="storage-filter-input" 
-                    #storageActionInput
-                    [formControl]="storageActionInputForm"
-                    [matAutocomplete]="auto" [matChipInputFor]="chipList"
-                    [matChipInputAddOnBlur]="addOnBlur"
-                    (matChipInputTokenEnd)="add($event)"
-                >
+                <input #storageActionInput [formControl]="storageActionInputForm"
+                    [matAutocomplete]="auto" [matChipInputFor]="chipList" [matChipInputAddOnBlur]="addOnBlur"
+                    (matChipInputTokenEnd)="add($event)">
 
-                <button mat-icon-button>
+                <button mat-icon-button (click)="openFilter()">
                     <mat-icon>add</mat-icon>
                 </button>
+
             </mat-chip-list>
 
-
-
-            <mat-autocomplete #auto="matAutocomplete">
+            <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)">
                 <mat-option>
                     GET
                 </mat-option>
@@ -87,9 +67,6 @@
                 </mat-option>
                 <mat-option>
                     DEL
-                </mat-option>
-                <mat-option>
-                    MEM
                 </mat-option>
             </mat-autocomplete>
         </mat-form-field>

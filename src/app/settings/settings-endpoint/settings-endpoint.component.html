@@ -3,7 +3,7 @@
     <div class="settings-endpoint-content">
 
         <mat-form-field class="settings-endpoint-input" appearance="outline">
-            <mat-label>Remote endpoint</mat-label>
+            <!-- <mat-label>Remote endpoint</mat-label> -->
             <input matInput [(ngModel)]="settingsEndpointInput" (ngModelChange)="valueChange($event)">
             <mat-hint>Tezos node endpoint (websocket)</mat-hint>
         </mat-form-field>
@@ -11,7 +11,7 @@
         <br />
         <br />
 
-        <button class="settings-endpoint-button" mat-flat-button  (click)="save_endpoint()">Save
+        <button class="settings-endpoint-button" mat-stroked-button  (click)="save_endpoint()">Save
             Settings</button>
 
 

@@ -7,6 +7,7 @@ const initialState: any = {
     entities: [],
     blocks: [],
     view: '',
+    filters: ['SET']
 }
 
 
@@ -44,6 +45,16 @@ export function reducer(state = initialState, action) {
             return {
                 ...processActions(state, action),
                 view: 'address'
+            };
+        }
+
+        case 'STORAGE_ACTION_FILTER' : {
+            console.log(action.payload);
+            return {
+                ...state,
+                filters: [
+                    ...action.payload
+                ]
             };
         }
 

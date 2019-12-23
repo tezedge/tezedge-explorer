@@ -332,3 +332,10 @@ input.mat-input-element {
 .storage-action-filter .mat-icon {
     opacity: .3;
 }
+
+.mat-option-text {
+    font-size: 14px !important;
+}
+.mat-option {
+    height: 40px !important;
+}

@@ -31,14 +31,13 @@ export class StorageActionComponent implements OnInit {
   public routerScroll;
   public viewChange = false;
   public viewLast;
-  public filters = [];
+  public filters = ['SET'];
   public onDestroy$ = new Subject();
   public storageActionInputForm = new FormControl();
 
+  @ViewChildren(MatPaginator) paginators: QueryList<MatPaginator>;
   @ViewChild('storageActionInput', { static: true }) storageActionInput: ElementRef<HTMLInputElement>;
   @ViewChild(MatAutocompleteTrigger, { static: true }) autocomplete: MatAutocompleteTrigger;
-
-  @ViewChildren(MatPaginator) paginators: QueryList<MatPaginator>;
 
 
   constructor(
@@ -128,12 +127,25 @@ export class StorageActionComponent implements OnInit {
     console.log('[storage][action] expandedDetail', this.storageActionDetail, row);
   }
 
-  remove(filter) {
-    const index = this.filters.indexOf(filter);
+  remove(value) {
+
+    const index = this.filters.indexOf(value);
     if (index >= 0) {
-      this.filters.splice(index, 1);
+
+      this.filters = [
+        ...this.filters.slice(0, index),
+        ...this.filters.slice(index + 1)
+      ];
+
+      // dispatch action
+      this.store.dispatch({
+        type: 'STORAGE_ACTION_FILTER',
+        payload: this.filters,
+      });
+
     }
-    console.log('[remove]', this.filters);
+    this.storageActionInput.nativeElement.blur();
+    // console.log('[remove]', this.filters);
 
   }
 
@@ -141,16 +153,28 @@ export class StorageActionComponent implements OnInit {
 
     // add only new properties
     if (this.filters.indexOf(event.option.viewValue) === -1) {
-      this.filters.push(event.option.viewValue);
-    }
-    this.storageActionInput.nativeElement.blur();
 
-    console.log('[selected]', this.filters);
+      this.filters = [
+        ...this.filters,
+        event.option.viewValue,
+      ];
+
+      // dispatch action
+      this.store.dispatch({
+        type: 'STORAGE_ACTION_FILTER',
+        payload: this.filters,
+      });
+
+    }
+
+    this.storageActionInput.nativeElement.blur();
+    // console.log('[selected]', this.filters);
+
   }
 
   openFilter() {
-    console.log('[openFilter]');
     this.autocomplete.openPanel();
+    // console.log('[openFilter]');
   }
 
   ngAfterViewChecked() {

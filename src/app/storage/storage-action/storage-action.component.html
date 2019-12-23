@@ -45,9 +45,8 @@
                     <mat-icon matChipRemove>clear</mat-icon>
                 </mat-chip>
 
-                <input #storageActionInput [formControl]="storageActionInputForm"
-                    [matAutocomplete]="auto" [matChipInputFor]="chipList" [matChipInputAddOnBlur]="addOnBlur"
-                    (matChipInputTokenEnd)="add($event)">
+                <input #storageActionInput [formControl]="storageActionInputForm" [matAutocomplete]="auto"
+                    [matChipInputFor]="chipList" (matChipInputTokenEnd)="add($event)">
 
                 <button mat-icon-button (click)="openFilter()">
                     <mat-icon>add</mat-icon>

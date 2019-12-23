@@ -35,9 +35,9 @@
 </app-storage-search>
 
 <div class="storage-action-container">
-
+        
+    <!--
     <div class="storage-action-filter">
-
         <mat-form-field style="width: 800px;">
             <mat-chip-list #chipList aria-label="Filter">
                 <mat-chip *ngFor="let filter of filters" (removed)="remove(filter)">
@@ -68,9 +68,10 @@
                     DEL
                 </mat-option>
             </mat-autocomplete>
-        </mat-form-field>
+        </mat-form-field>    
     </div>
-
+    -->
+    
     <div class="storage-action" *ngFor="let block of storageActionBlocks">
 
         <div>
@@ -145,21 +146,21 @@
                             <span style="color:red" *ngIf="(action.timeStorage>=1000)">
                                 {{action.timeStorage }}
                             </span>
-
-                            <span *ngIf="viewLast=='block'">
-                                |
-                                <span *ngIf="(action.timeProtocol<=100)">
-                                    {{action.timeProtocol }}
+                            <!-- 
+                                <span *ngIf="viewLast=='block'">
+                                    |
+                                    <span *ngIf="(action.timeProtocol<=100)">
+                                        {{action.timeProtocol }}
+                                    </span>
+                                    <span style="color:darkred"
+                                        *ngIf="(action.timeProtocol>100 && action.timeProtocol<1000)">
+                                        {{action.timeProtocol }}
+                                    </span>
+                                    <span style="color:red" *ngIf="(action.timeProtocol>=1000)">
+                                        {{action.timeProtocol }}
+                                    </span>
                                 </span>
-                                <span style="color:darkred"
-                                    *ngIf="(action.timeProtocol>100 && action.timeProtocol<1000)">
-                                    {{action.timeProtocol }}
-                                </span>
-                                <span style="color:red" *ngIf="(action.timeProtocol>=1000)">
-                                    {{action.timeProtocol }}
-                                </span>
-                            </span>
-
+                            -->
                         </div>
 
                     </td>
@@ -213,7 +214,7 @@
                 <ng-container matColumnDef="expandedDetail">
                     <td mat-cell *matCellDef="let action" [attr.colspan]="4" class="expanded-detail-cell">
                         <span>
-                            {{action.json | json}}
+                            {{action.json}}
                         </span>
                     </td>
                 </ng-container>

@@ -10,9 +10,10 @@
     }
 
     .app-menu-toggle {
-        position: fixed;
+        position: absolute;
         top: 5px;
-        left: 5px;
+        left: 10px;
+        opacity: 0.5;
     }
 
     .mat-list-base {
@@ -87,8 +88,6 @@
                     -->
                 </div>
 
-
-
                 <div class="app-submenu">
                     <span>
                         STORAGE
@@ -105,45 +104,46 @@
 
             </mat-nav-list>
 
+            <div style="position: absolute;min-width: 195px;height: 160px;left: 14px;
+            background: #1C202B;border-radius: 4px;bottom: 20px;z-index: 1;">
+                <div style="color: #c4cfdc7a;font-size: 12px;margin: 12px 0px 6px 12px;">
+                    STATUS
+                </div>
+                <span style="font-size:14px;color:#F6F9FC;margin: 12px 0px 18px 12px;">
+                    {{ networkingEndpoint?.status }}
+                </span>
+
+
+                <div style="color: #c4cfdc7a;font-size: 12px;margin: 18px 0px 6px 12px;">
+                    SERVER
+                </div>
+                <span style="font-size:14px;color: #F6F9FC;margin: 0px 0px 0px 12px;
+            max-width: 175px !important;direction: rtl;display: inline-block;    
+            text-overflow: ellipsis;white-space: nowrap;overflow: hidden;">
+                    {{ settings.endpoint }}
+                </span>
+
+                <div
+                    style="font-size:14px;color:#C4CFDC;margin-top:12px;padding: 12px 12px 12px 0px;text-align:center;border-top: 1px solid rgba(255, 255, 255, 0.1);">
+                    <a routerLink="/settings" style="text-decoration:none;color:#C4CFDC;">
+                        Edit
+                    </a>
+                </div>
+            </div>
+
         </mat-sidenav>
 
         <!-- Content -->
         <mat-sidenav-content>
             <div class="sidenav-content">
                 <button mat-icon-button class="app-menu-toggle">
-                    <mat-icon (click)="start.toggle()">menu</mat-icon>
+                    <mat-icon (click)="start.toggle()">dehaze</mat-icon>
                 </button>
                 <router-outlet></router-outlet>
             </div>
         </mat-sidenav-content>
 
     </mat-sidenav-container>
-    <div style="position: fixed;min-width: 195px;height: 160px;left: 14px;
-        background: #1C202B;border-radius: 4px;bottom: 20px;z-index: 1;">
-        <div style="color: #c4cfdc7a;font-size: 12px;margin: 12px 0px 6px 12px;">
-            STATUS
-        </div>
-        <span style="font-size:14px;color:#F6F9FC;margin: 12px 0px 18px 12px;">
-            {{ networkingEndpoint?.status }}
-        </span>
-
-
-        <div style="color: #c4cfdc7a;font-size: 12px;margin: 18px 0px 6px 12px;">
-            SERVER
-        </div>
-        <span style="font-size:14px;color: #F6F9FC;margin: 0px 0px 0px 12px;
-        max-width: 175px !important;direction: rtl;display: inline-block;    
-        text-overflow: ellipsis;white-space: nowrap;overflow: hidden;">
-            {{ settings.endpoint }}
-        </span>
-
-        <div
-            style="font-size:14px;color:#C4CFDC;margin-top:12px;padding: 12px 12px 12px 0px;text-align:center;border-top: 1px solid rgba(255, 255, 255, 0.1);">
-            <a routerLink="/settings" style="text-decoration:none;color:#C4CFDC;">
-                Edit
-            </a>
-        </div>
-    </div>
 
     <!-- <mat-toolbar class="app-status-bar">
     </mat-toolbar> -->

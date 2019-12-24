@@ -287,12 +287,8 @@ input.mat-input-element {
     margin: 0px 0px 0px 0px;
 }
 
-.mat-form-field-appearance-outline .mat-form-field-flex {
-    margin-top: -6px !important;
-    width: 800px;
-}
-
 .mat-form-field-appearance-outline .mat-form-field-outline {
+    
 }
 
 

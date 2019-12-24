@@ -32,6 +32,7 @@ export class StorageActionComponent implements OnInit {
   public viewChange = false;
   public viewLast;
   public filters = ['SET'];
+  public expandedElement;
   public onDestroy$ = new Subject();
   public storageActionInputForm = new FormControl();
 

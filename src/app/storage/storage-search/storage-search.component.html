@@ -8,21 +8,27 @@
         border-bottom: 1px solid rgba(0, 0, 0, 0.1);
     }
 
-    .app-storage-search-input {
-        max-width: 50%;
-
-    }
-
     .mat-form-field {
         height: 40px !important;
         font-weight: 300;
         padding: 0px !important;
     }
+
+    .app-storage-search-input {
+    }
+
+    .app-storage-search-input .mat-form-field-appearance-outline .mat-form-field-flex {
+    }
+
+    @media (max-width: 600px) {
+        .app-storage-search-input {
+        }
+    }
 </style>
 
 <div class="app-storage-search">
 
-    <span call="app-storage-search-input">
+    <span class="app-storage-search-input">
         <mat-form-field appearance="outline">
             <mat-icon style="opacity:0.4;position:absolute;top: 12px;font-size: 22px;">search</mat-icon>
             <input style="padding-left: 30px;padding-top: 1px;" matInput [(ngModel)]="storageSearchInput"

@@ -1,25 +1,27 @@
 .storage-block th.mat-header-cell.cdk-column-level.mat-column-level {
     text-overflow: ellipsis;
-    overflow: hidden; 
+    overflow: hidden;
     white-space: nowrap;
     /* width: 20vw;  */
 }
-.storage-block .mat-cell.cdk-column-level.mat-column-level  {
+
+.storage-block .mat-cell.cdk-column-level.mat-column-level {
     padding: 20px;
     text-overflow: ellipsis;
-    overflow: hidden; 
+    overflow: hidden;
     white-space: nowrap;
-    width: 80px; 
+    width: 80px;
 }
 
 .storage-block th.mat-header-cell.cdk-column-hash.mat-column-hash {
     /* text-align: left; */
 }
+
 .storage-block .mat-cell.cdk-column-hash.mat-column-hash {
     /* text-align: left; */
-    max-width: 350px; 
+    max-width: 350px;
     padding-right: 10px;
-    transform: scale(1,1);
+    transform: scale(1, 1);
 }
 
 .storage-block .mat-cell.cdk-column-hash.mat-column-position {
@@ -29,4 +31,36 @@
 
 .mat-cell.cdk-column-level.mat-column-level {
     padding: 10px 0px 10px 0px !important;
+}
+
+@media (max-width: 600px) {
+
+    /* table {
+         table-layout: fixed;
+    } */
+
+    th.mat-header-cell.cdk-column-level.mat-column-level {
+        display: none;
+    }
+
+    .mat-cell.cdk-column-level.mat-column-level {
+        display: none;
+    }
+
+    th.mat-header-cell.cdk-column-position.mat-column-position {
+        display: none;
+    }
+
+    .mat-cell.cdk-column-position.mat-column-position {
+        display: none;
+    }
+
+    .mat-cell.cdk-column-datetime.mat-column-datetime {
+        max-width: 45vw !important;
+        /* padding-right: 10px; */
+    }
+
+    .mat-cell.cdk-column-hash.mat-column-hash {
+        max-width: 45vw !important;
+    }
 }

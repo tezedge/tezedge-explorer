@@ -56,11 +56,17 @@
     }
 
     .mat-cell.cdk-column-datetime.mat-column-datetime {
+        text-overflow: ellipsis;
+        overflow: hidden;
+        white-space: nowrap;
         max-width: 45vw !important;
         /* padding-right: 10px; */
     }
 
     .mat-cell.cdk-column-hash.mat-column-hash {
+        text-overflow: ellipsis;
+        overflow: hidden;
+        white-space: nowrap;
         max-width: 45vw !important;
     }
 }

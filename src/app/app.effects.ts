@@ -27,7 +27,7 @@ export class AppEffects {
                 takeUntil(onDestroy$),
                 filter((ws: any) => {
                     // even if ws is turned off update state cca every minute
-                    wsCounter = wsCounter < 70 ? wsCounter + 1 : 0;
+                    wsCounter = wsCounter < 700 ? wsCounter + 1 : 0;
                     // console.log('[state.networking] open', state.app.networking.open);
                     return state.app.networking.open || wsCounter < 6;
                 })

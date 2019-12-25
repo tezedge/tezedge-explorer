@@ -29,15 +29,20 @@ export class AppComponent {
     public store: Store<any>,
     public router: Router,
     public zone: NgZone
-  ) { }
+  ) {
+
+    // get inner windows width
+    this.innerWidth = window.innerWidth;
+    this.isMobile = window.innerWidth < 600 ? true : false;
+  }
 
   ngOnInit() {
 
-    // select store data 
+    // select store data
     this.store.select('app')
       .subscribe(data => {
-        this.app = data
-      })
+        this.app = data;
+    });
 
     // wait for data changes from redux
     this.store.select('settings')
@@ -50,10 +55,6 @@ export class AppComponent {
       .subscribe(data => {
         this.networkingEndpoint = data;
       })
-
-    // get inner windows width
-    this.innerWidth = window.innerWidth;
-    this.isMobile = window.innerWidth < 600 ? true : false;
 
     // dispatch inner width
     this.store.dispatch({

@@ -48,7 +48,11 @@
     }
 </style>
 
+
 <div class="sidenav-area" style="height: 100%">
+    
+    <mat-progress-bar [style.display]="app.progressbar.isVisible ? 'inline' : 'none'" mode="indeterminate"
+        style="position:fixed;z-index:2;height: 1px;"></mat-progress-bar>
 
     <!-- Sidebar -->
     <mat-sidenav-container style="height: 100%">
@@ -72,7 +76,8 @@
                         NETWORKING
                     </span>
 
-                    <a mat-list-item routerLink="/networking" (click)="isMobile && start.toggle()" [style.color]="app.sidenav.color">
+                    <a mat-list-item routerLink="/networking" (click)="isMobile && start.toggle()"
+                        [style.color]="app.sidenav.color">
                         <span>
                             <svg-icon icon="history"></svg-icon>
                             Synchronization
@@ -93,7 +98,8 @@
                         STORAGE
                     </span>
 
-                    <a mat-list-item routerLink="/storage" (click)="isMobile && start.toggle()"  [style.color]="app.sidenav.color">
+                    <a mat-list-item routerLink="/storage" (click)="isMobile && start.toggle()"
+                        [style.color]="app.sidenav.color">
                         <span>
                             <svg-icon icon="explorer"></svg-icon>
                             Explorer
@@ -124,7 +130,8 @@
 
                 <div
                     style="font-size:14px;color:#C4CFDC;margin-top:12px;padding: 12px 12px 12px 0px;text-align:center;border-top: 1px solid rgba(255, 255, 255, 0.1);">
-                    <a routerLink="/settings" (click)="isMobile && start.toggle()"  style="text-decoration:none;color:#C4CFDC;">
+                    <a routerLink="/settings" (click)="isMobile && start.toggle()"
+                        style="text-decoration:none;color:#C4CFDC;">
                         Edit
                     </a>
                 </div>

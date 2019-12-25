@@ -59,7 +59,7 @@ export function reducer(state = initialState, action) {
                         isVisible: action.payload.width < MOBILE_WIDTH ? true : false,
                     }
                 }
-            }
+            };
         }
 
         case 'NETWORKING_OPEN': {
@@ -68,7 +68,7 @@ export function reducer(state = initialState, action) {
                 networking: {
                     open: true,
                 }
-            }
+            };
         }
 
         case 'NETWORKING_CLOSE': {
@@ -77,7 +77,31 @@ export function reducer(state = initialState, action) {
                 networking: {
                     open: false,
                 }
-            }
+            };
+        }
+
+        // probress bar show
+        case 'STORAGE_BLOCK_LOAD':
+        case 'STORAGE_BLOCK_ACTION_LOAD': {
+            return {
+                ...state,
+                progressbar: {
+                    isVisible: state.progressbar.counter >= 0 ? true : false,
+                    counter: state.progressbar.counter + 1
+                }
+            };
+        }
+
+        // probress bar hide
+        case 'STORAGE_BLOCK_LOAD_SUCCESS':
+        case 'STORAGE_BLOCK_ACTION_LOAD_SUCCESS': {
+            return {
+                ...state,
+                progressbar: {
+                    isVisible: state.progressbar.counter === 1 ? false : true,
+                    counter: state.progressbar.counter - 1,
+                }
+            };
         }
 
         default:

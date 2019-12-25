@@ -27,20 +27,19 @@ export class StorageBlockComponent implements OnInit {
 
   ngOnInit() {
 
-    // wait for data changes from redux    
+    // wait for data changes from redux
     this.store.select('storageBlock')
       .pipe(takeUntil(this.onDestroy$))
       .subscribe(data => {
 
-        this.storageBlock = data
+        this.storageBlock = data;
         this.storageBlockShow = data.ids.length > 0 ? true : false;
-        this.storageBlockList = data.ids.map(id => ({ id, ...data.entities[id] }))
+        this.storageBlockList = data.ids.map(id => ({ id, ...data.entities[id] }));
 
         this.tableDataSource = new MatTableDataSource<any>(this.storageBlockList);
         this.tableDataSource.paginator = this.paginator;
 
-      })
-
+    });
 
     // triger action and get blocks data
     this.store.dispatch({

@@ -15,12 +15,14 @@ export class AppComponent {
   public settings
   public networkingEndpoint
   public innerWidth;
+  public isMobile = false;
 
   @ViewChild('sidenav', { static: false }) sidenav: MatSidenav;
 
   @HostListener('window:resize', ['$event'])
   onResize(event) {
     this.innerWidth = window.innerWidth;
+    this.isMobile = window.innerWidth < 600 ? true : false;
   }
 
   constructor(
@@ -51,6 +53,7 @@ export class AppComponent {
 
     // get inner windows width
     this.innerWidth = window.innerWidth;
+    this.isMobile = window.innerWidth < 600 ? true : false;
 
     // dispatch inner width
     this.store.dispatch({

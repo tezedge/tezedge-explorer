@@ -17,7 +17,7 @@ export class StorageBlockEffects {
         withLatestFrom(this.store, (action: any, state) => ({ action, state })),
 
         switchMap(({ action, state }) => {
-            return this.http.get(environment.api.http + '/dev/chains/main/blocks');
+            return this.http.get(environment.api.http + '/dev/chains/main/blocks?limit=15');
         }),
 
         // tap((payload) => console.log("[STORAGE_BLOCK_LOAD_SUCCESS]", payload)),

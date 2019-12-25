@@ -35,7 +35,7 @@
 </app-storage-search>
 
 <div class="storage-action-container">
-        
+
     <!--
     <div class="storage-action-filter">
         <mat-form-field style="width: 800px;">
@@ -71,7 +71,7 @@
         </mat-form-field>    
     </div>
     -->
-    
+
     <div class="storage-action" *ngFor="let block of storageActionBlocks">
 
         <div>
@@ -112,12 +112,10 @@
                 </span> 
             </div> -->
 
-            <div style="font-size: 14px;padding: 6px 0px 6px 12px;border-bottom: 1px solid rgba(0,0,0,.12);">
-                <span>
-                    <button routerLink="/storage/{{block}}" mat-button matTooltip="Block Hash"
-                        matTooltipPosition="above" style="font-weight: 300;max-width: 450px;min-width: 450px;">
-                        {{ block }}
-                    </button>
+            <div class="storage-action-block-link">
+                <span routerLink="/storage/{{block}}" mat-button matTooltip="Block Hash" matTooltipPosition="above"
+                    style="font-weight: 300;max-width: 450px;min-width: 450px;">
+                    {{ block }}
                 </span>
             </div>
 

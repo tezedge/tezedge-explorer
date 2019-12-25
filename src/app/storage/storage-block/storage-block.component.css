@@ -35,9 +35,9 @@
 
 @media (max-width: 600px) {
 
-    /* table {
-         table-layout: fixed;
-    } */
+    .storage-block {
+        max-width: 90vw !important;
+    } 
 
     th.mat-header-cell.cdk-column-level.mat-column-level {
         display: none;
@@ -55,18 +55,28 @@
         display: none;
     }
 
+    th.mat-header-cell.cdk-column-datetime.mat-column-datetime {
+        width: 5vw !important;
+    }
+
     .mat-cell.cdk-column-datetime.mat-column-datetime {
         text-overflow: ellipsis;
         overflow: hidden;
         white-space: nowrap;
-        max-width: 45vw !important;
+        min-width: 30vw !important;
+        max-width: 3vw !important;
         /* padding-right: 10px; */
+    }
+
+    th.mat-header-cell.cdk-column-hash.mat-column-hash {
+        width: 35vw !important;
     }
 
     .mat-cell.cdk-column-hash.mat-column-hash {
         text-overflow: ellipsis;
         overflow: hidden;
         white-space: nowrap;
-        max-width: 45vw !important;
+        min-width: 5vw !important;
+        max-width: 5vw !important;
     }
 }

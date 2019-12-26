@@ -111,7 +111,7 @@ th.mat-header-cell.cdk-column-value.mat-column-value {
 
 
     th.mat-header-cell.cdk-column-path.mat-column-path {
-        padding-left: 12px;
+        padding-left: 24px;
     }
 
     .mat-cell.cdk-column-path.mat-column-path {
@@ -120,9 +120,9 @@ th.mat-header-cell.cdk-column-value.mat-column-value {
         text-overflow: ellipsis;
         overflow: hidden;
         white-space: nowrap;
-        min-width: 60vw !important;
-        max-width: 60vw !important;
-        padding-left: 12px;
+        min-width: 45vw !important;
+        max-width: 45vw !important;
+        padding-left: 24px;
         padding-right: 12px;
     }
 
@@ -130,8 +130,8 @@ th.mat-header-cell.cdk-column-value.mat-column-value {
         text-overflow: ellipsis;
         overflow: hidden;
         white-space: nowrap;
-        max-width: 90vw !important;
-        padding: 12px 0px 12px 12px !important;
+        max-width: 80vw !important;
+        padding: 12px 12px 12px 24px !important;
     }
 
 }

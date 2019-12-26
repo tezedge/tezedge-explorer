@@ -176,20 +176,13 @@
                         <span>Path</span>
                     </th>
                     <td mat-cell *matCellDef="let action">
-                        <div>
-                            <!-- {{action.address}} -->
+                        <span>
                             <span [style.color]="action.color">{{action.category}}</span>
                             <span *ngIf="action && action.category !='contracts'">{{action.key}}</span>
                             <span *ngIf="action && action.category =='contracts'" style="cursor:pointer;"
                                 routerLink="/storage/{{action.address}}">{{action.key}}</span>
-
                             <span [style.color]="action.color" *ngIf="action.lastKey">/{{ action.lastKey }}</span>
-                        </div>
-
-                        <div *ngIf="false">
-                            <span style="display:flex; justify-content: flex-end;">
-                            </span>
-                        </div>
+                        </span>
                     </td>
                 </ng-container>
 

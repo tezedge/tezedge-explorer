@@ -261,6 +261,7 @@ export function processActions(state, action) {
                         // ...action.Set,
                         type: 'SET',
                         key: parseKey(action.Set.key),
+                        path: parsePath(action.Set.key),
                         value: parseValue(action.Set.key, action.Set.value),
                         // text: new TextDecoder('utf-8').decode(new Uint8Array(action.Set.value)),
                         hex: '0x' + bufferToHex(new Uint8Array(action.Set.value)),
@@ -288,6 +289,7 @@ export function processActions(state, action) {
                         ...action.Get,
                         type: 'GET',
                         key: parseKey(action.Get.key),
+                        path: parsePath(action.Get.key),
                         category: action.Get.key[0] === 'data' ? action.Get.key[1] : action.Get.key[0],
                         address: action.Get.key[1] === 'contracts' ? bytes2address(action.Get.key[9]) : '',
                         lastKey: action.Get.key.length > 2 ? action.Get.key[action.Get.key.length - 1] : '',
@@ -310,6 +312,7 @@ export function processActions(state, action) {
                         ...action.Mem,
                         type: 'MEM',
                         key: parseKey(action.Mem.key),
+                        path: parsePath(action.Mem.key),
                         category: action.Mem.key[0] === 'data' ? action.Mem.key[1] : action.Mem.key[0],
                         address: action.Mem.key[1] === 'contracts' ? bytes2address(action.Mem.key[9]) : '',
                         lastKey: action.Mem.key.length > 2 ? action.Mem.key[action.Mem.key.length - 1] : '',
@@ -333,6 +336,7 @@ export function processActions(state, action) {
                         ...action.DirMem,
                         type: 'DMEM',
                         key: parseKey(action.DirMem.key),
+                        path: parsePath(action.DirMem.key),
                         category: action.DirMem.key[0] === 'data' ? action.DirMem.key[1] : action.DirMem.key[0],
                         address: action.DirMem.key[1] === 'contracts' ? bytes2address(action.DirMem.key[9]) : '',
                         lastKey: action.DirMem.key.length > 2 ? action.DirMem.key[action.DirMem.key.length - 1] : '',
@@ -390,8 +394,12 @@ export function processActions(state, action) {
 
 }
 
-
 export function parseKey(inputKey) {
+    const key = JSON.parse(JSON.stringify(inputKey));
+    return key.length > 0 ? '/' + key.toString().replace(/,/g, '/') : '';
+}
+
+export function parsePath(inputKey) {
 
     let key = JSON.parse(JSON.stringify(inputKey));
 

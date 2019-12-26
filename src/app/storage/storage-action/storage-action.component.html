@@ -178,9 +178,9 @@
                     <td mat-cell *matCellDef="let action">
                         <span>
                             <span [style.color]="action.color">{{action.category}}</span>
-                            <span *ngIf="action && action.category !='contracts'">{{action.key}}</span>
+                            <span *ngIf="action && action.category !='contracts'">{{action.path}}</span>
                             <span *ngIf="action && action.category =='contracts'" style="cursor:pointer;"
-                                routerLink="/storage/{{action.address}}">{{action.key}}</span>
+                                routerLink="/storage/{{action.address}}">{{action.path}}</span>
                             <span [style.color]="action.color" *ngIf="action.lastKey">/{{ action.lastKey }}</span>
                         </span>
                     </td>
@@ -195,7 +195,7 @@
                                 {{action.json}}
                             </span>
                             <span *ngIf="!action.json" style="height: 100px !important;color:#b0b0b0;">
-                                {{action.hex}}
+                                Ox{{action.hex}}
                                 <!-- {{action.text}} -->
                             </span>
                         </span>
@@ -204,9 +204,15 @@
 
                 <ng-container matColumnDef="expandedDetail">
                     <td mat-cell *matCellDef="let action" [attr.colspan]="4" class="expanded-detail-cell">
+                        <span style="word-break: break-all">
+                            {{action.key}}
+                        </span>
+                        <br/>
+                        <br/>
                         <span>
                             {{action.json}}
                         </span>
+
                     </td>
                 </ng-container>
 

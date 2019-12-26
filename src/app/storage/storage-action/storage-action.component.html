@@ -204,14 +204,20 @@
 
                 <ng-container matColumnDef="expandedDetail">
                     <td mat-cell *matCellDef="let action" [attr.colspan]="4" class="expanded-detail-cell">
-                        <span style="word-break: break-all">
+                        
+                        <div class="storage-action-detail-type">
+                            {{action.type}}   
+                            <span style="margin-left: 12px;">
+                                {{action.timeStorage }}
+                            </span>
+                        </div>
+
+                        <div class="storage-action-detail-key">
                             {{action.key}}
-                        </span>
-                        <br/>
-                        <br/>
-                        <span>
+                        </div>
+                        <div class="storage-action-detail-value" >
                             {{action.json}}
-                        </span>
+                        </div>
 
                     </td>
                 </ng-container>

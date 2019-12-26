@@ -87,6 +87,20 @@ th.mat-header-cell.cdk-column-value.mat-column-value {
     cursor: pointer;
 }
 
+.storage-action-detail-key{
+    word-break: break-all;
+    margin: 0px 0px 12px 0px;
+}
+
+.storage-action-detail-type {
+    margin: 0px 0px 12px 0px;
+    display: none;
+}
+
+.storage-action-detail-value {
+    word-break: break-all;
+}
+
 @media (max-width: 600px) {
 
     th.mat-header-cell.cdk-column-time.mat-column-time {
@@ -134,4 +148,7 @@ th.mat-header-cell.cdk-column-value.mat-column-value {
         padding: 12px 12px 12px 24px !important;
     }
 
+    .storage-action-detail-type {
+        display: block;
+    }
 }

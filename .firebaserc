@@ -1,5 +1,5 @@
 {
   "projects": {
-    "default": "devtez-7bf5c"
+      "default": "tezos-node-web"
   }
 }

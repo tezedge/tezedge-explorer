@@ -18,7 +18,7 @@ export const AppRouting: Routes = [
 
   { path: 'settings', component: SettingsComponent },
 
-  { path: '', redirectTo: '/storage', pathMatch: 'full' },
+  { path: '', redirectTo: '/networking', pathMatch: 'full' },
   // { path: '**', component: PageNotFoundComponent }
 
 ];

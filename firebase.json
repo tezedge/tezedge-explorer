@@ -1,5 +1,6 @@
 {
   "hosting": {
+    "site": "tezedge",
     "public": "dist/tezos-node-explorer",
     "ignore": [
       "firebase.json",

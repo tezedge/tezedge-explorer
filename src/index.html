@@ -1,5 +1,6 @@
 <!doctype html>
 <html lang="en">
+
 <head>
   <meta charset="utf-8">
   <title>TezEdge - Tezos Explorer</title>
@@ -11,8 +12,28 @@
 
   <script async src="https://www.googletagmanager.com/gtag/js?id=UA-147554170-3"></script>
 
-   <!-- Start of Async Drift Code -->
-   <script>
+  <!-- Facebook Pixel Code -->
+  <script>
+    !function (f, b, e, v, n, t, s) {
+      if (f.fbq) return; n = f.fbq = function () {
+        n.callMethod ?
+        n.callMethod.apply(n, arguments) : n.queue.push(arguments)
+      };
+      if (!f._fbq) f._fbq = n; n.push = n; n.loaded = !0; n.version = '2.0';
+      n.queue = []; t = b.createElement(e); t.async = !0;
+      t.src = v; s = b.getElementsByTagName(e)[0];
+      s.parentNode.insertBefore(t, s)
+    }(window, document, 'script',
+      'https://connect.facebook.net/en_US/fbevents.js');
+    fbq('init', '691655537913100');
+    fbq('track', 'PageView');
+  </script>
+  <noscript><img height="1" width="1" style="display:none"
+      src="https://www.facebook.com/tr?id=691655537913100&ev=PageView&noscript=1" /></noscript>
+  <!-- End Facebook Pixel Code -->
+
+  <!-- Start of Async Drift Code -->
+  <script>
     "use strict";
 
     !function () {
@@ -37,10 +58,12 @@
     }();
     drift.SNIPPET_VERSION = '0.3.1';
     drift.load('acym43nhet3g'); 
-  </script> 
+  </script>
   <!-- End of Async Drift Code -->
 </head>
+
 <body>
   <app-root></app-root>
 </body>
+
 </html>

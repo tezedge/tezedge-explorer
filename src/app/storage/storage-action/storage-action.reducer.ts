@@ -102,7 +102,8 @@ export function processActions(state, action) {
     let result = {
         ...state,
         blocks: _action.payload
-            .filter(action => action.hasOwnProperty('Set'))
+            // .filter(action => action.hasOwnProperty('Set'))
+            // .filter(action => action.hasOwnProperty('Delete'))
             .reduce((accum, action) => {
 
                 if (action.hasOwnProperty('Set')) {
@@ -169,7 +170,11 @@ export function processActions(state, action) {
             }, []).reverse(),
 
         ids: _action.payload
-            .filter(action => action.hasOwnProperty('Set'))
+            .filter(action =>
+                action.hasOwnProperty('Set') ||
+                action.hasOwnProperty('Delete') ||
+                action.hasOwnProperty('RemoveRecord')
+            )
             .reduce((accum, action) => {
 
                 if (action.hasOwnProperty('Set')) {
@@ -220,14 +225,14 @@ export function processActions(state, action) {
                     };
                 }
 
-                if (action.hasOwnProperty('Del')) {
-                    const blockHash = Block_repr(action.Del.block_hash);
+                if (action.hasOwnProperty('Delete')) {
+                    const blockHash = Block_repr(action.Delete.block_hash);
                     const blockActions = accum[blockHash] ? accum[blockHash] : [];
                     return {
                         ...accum,
                         [blockHash]: [
                             ...blockActions,
-                            action.Del.start_time
+                            action.Delete.start_time
                         ]
                     };
                 }
@@ -251,8 +256,8 @@ export function processActions(state, action) {
 
         entities: _action.payload
             // show only set operations
-            .filter(action => action.hasOwnProperty('Set'))
-            //.filter(action => action.hasOwnProperty('Get'))
+            // .filter(action => action.hasOwnProperty('Set'))
+            // .filter(action => action.hasOwnProperty('Delete'))
             .reduce((accum, action) => {
 
                 if (action.hasOwnProperty('Set')) {
@@ -355,21 +360,40 @@ export function processActions(state, action) {
                 }
 
                 if (action.hasOwnProperty('Delete')) {
+                    console.log('[Delete]', action);
                     return {
                         ...accum,
                         [action.Delete.start_time]: {
                             type: 'DEL',
-                            ...action.Delete
+                            ...action.Delete,
+                            key: parseKey(action.Delete.key),
+                            path: parsePath(action.Delete.key),
+                            category: action.Delete.key[0] === 'data' ? action.Delete.key[1] : action.Delete.key[0],
+                            address: action.Delete.key[1] === 'contracts' ? bytes2address(action.Delete.key[9]) : '',
+                            lastKey: action.Delete.key.length > 2 ? action.Delete.key[action.Delete.key.length - 1] : '',
+                            color: categoryColor(action.Delete.key[0] === 'data' ? action.Delete.key[1] : action.Delete.key[0]),
+                            start_time: action.Delete.start_time,
+                            timeStorage: Math.floor((action.Delete.end_time - action.Delete.start_time) * 1000000),
                         }
                     }
                 }
 
                 if (action.hasOwnProperty('RemoveRecord')) {
+                    console.log('[RemoveRecord]', action);
                     return {
                         ...accum,
                         [action.RemoveRecord.start_time]: {
                             type: 'REM',
-                            ...action.RemoveRecord
+                            ...action.RemoveRecord,
+                            key: parseKey(action.RemoveRecord.key),
+                            path: parsePath(action.RemoveRecord.key),
+                            category: action.RemoveRecord.key[0] === 'data' ? action.RemoveRecord.key[1] : action.RemoveRecord.key[0],
+                            address: action.RemoveRecord.key[1] === 'contracts' ? bytes2address(action.RemoveRecord.key[9]) : '',
+                            lastKey: action.RemoveRecord.key.length > 2 ? action.RemoveRecord.key[action.RemoveRecord.key.length - 1] : '',
+                            color: categoryColor(action.RemoveRecord.key[0] === 'data' ?
+                                action.RemoveRecord.key[1] : action.RemoveRecord.key[0]),
+                            start_time: action.RemoveRecord.start_time,
+                            timeStorage: Math.floor((action.RemoveRecord.end_time - action.RemoveRecord.start_time) * 1000000),
                         }
                     }
                 }

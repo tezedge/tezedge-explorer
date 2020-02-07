@@ -170,11 +170,11 @@ export function processActions(state, action) {
             }, []).reverse(),
 
         ids: _action.payload
-            .filter(action =>
-                action.hasOwnProperty('Set') ||
-                action.hasOwnProperty('Delete') ||
-                action.hasOwnProperty('RemoveRecord')
-            )
+            // .filter(action =>
+            //     action.hasOwnProperty('Set') ||
+            //     action.hasOwnProperty('Delete') ||
+            //     action.hasOwnProperty('RemoveRecord')
+            // )
             .reduce((accum, action) => {
 
                 if (action.hasOwnProperty('Set')) {
@@ -402,19 +402,29 @@ export function processActions(state, action) {
             }, {})
     }
 
-    // // total time for storage time
-    // let totalTimeStorage = result.entities.reduce((acc, value) => {
-    //     return (acc + value.timeStorage);
-    // }, 0);
+    
+    console.log('[result]', result);
+    // debugger;
 
-    // // total time for protocol
-    // let totalTimeProtocol = result.entities.reduce((acc, value) => {
-    //     return (acc + value.timeProtocol);
-    // }, 0);
+    // total time for storage time
+    const totalTimeStorage = Object.keys(result.entities).reduce((acc, value) => {
+        return (acc + result.entities[value].timeStorage);
+    }, 0);
 
-    // console.log('[PROFILER] Storage: ' + totalTimeStorage / 1000 + 'ms  Protocol: ' + totalTimeProtocol / 1000 + 'ms');
+    // total time for protocol
+    const totalTimeProtocol = Object.keys(result.entities).reduce((acc, value) => {
+        return (acc + result.entities[value].timeProtocol);
+    }, 0);
 
-    return result
+    console.log('[PROFILER] Storage: ' + totalTimeStorage / 1000 + 'ms  Protocol: ' + totalTimeProtocol / 1000 + 'ms');
+
+    return {
+        ...result,
+        debug: {
+            totalTimeStorage :totalTimeStorage,
+            totalTimeProtocol: totalTimeProtocol
+        },
+    }
 
 }
 

@@ -113,6 +113,9 @@
             </div> -->
 
             <div class="storage-action-block-link">
+                <span *ngIf="viewLast=='block'">
+                    <b>Storage:</b> {{ storageAction.debug.totalTimeStorage / 1000 }} ms | <b>Protocol:</b> {{ storageAction.debug.totalTimeProtocol / 1000 }} ms | <b>Hash:</b>
+                </span>    
                 <span routerLink="/storage/{{block}}" mat-button matTooltip="Block Hash" matTooltipPosition="above"
                     style="font-weight: 300;max-width: 450px;min-width: 450px;">
                     {{ block }}
@@ -144,21 +147,19 @@
                             <span style="color:red" *ngIf="(action.timeStorage>=1000)">
                                 {{action.timeStorage }}
                             </span>
-                            <!-- 
-                                <span *ngIf="viewLast=='block'">
-                                    |
-                                    <span *ngIf="(action.timeProtocol<=100)">
-                                        {{action.timeProtocol }}
-                                    </span>
-                                    <span style="color:darkred"
-                                        *ngIf="(action.timeProtocol>100 && action.timeProtocol<1000)">
-                                        {{action.timeProtocol }}
-                                    </span>
-                                    <span style="color:red" *ngIf="(action.timeProtocol>=1000)">
-                                        {{action.timeProtocol }}
-                                    </span>
+                            <span *ngIf="viewLast=='block'">
+                                |
+                                <span *ngIf="(action.timeProtocol<=100)">
+                                    {{action.timeProtocol }}
                                 </span>
-                            -->
+                                <span style="color:darkred"
+                                    *ngIf="(action.timeProtocol>100 && action.timeProtocol<1000)">
+                                    {{action.timeProtocol }}
+                                </span>
+                                <span style="color:red" *ngIf="(action.timeProtocol>=1000)">
+                                    {{action.timeProtocol }}
+                                </span>
+                            </span>
                         </div>
 
                     </td>
@@ -194,7 +195,7 @@
                             <span *ngIf="action.json">
                                 {{action.json}}
                             </span>
-                            <span *ngIf="!action.json" style="height: 100px !important;color:#b0b0b0;">
+                            <span *ngIf="!action.json && action.hex" style="height: 100px !important;color:#b0b0b0;">
                                 Ox{{action.hex}}
                                 <!-- {{action.text}} -->
                             </span>

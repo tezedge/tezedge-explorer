@@ -5,7 +5,7 @@ export const environment = {
     // // ws: 'ws://195.201.111.145:4927/',
     // http: 'https://babylon.tezedge.com:8732',
     // ws: 'wss://babylon.tezedge.com',
-    http: 'https://127.0.0.1:18732',
+    http: 'http://127.0.0.1:18732',
     ws: 'ws://127.0.0.1:4927/',
   }
 };

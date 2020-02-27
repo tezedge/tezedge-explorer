@@ -11,7 +11,7 @@ RUN npm install http-server -g
 
 # clone & install deps for repo
 ARG node_explorer_git="https://github.com/simplestaking/tezos-node-explorer"
-ARG node_explorer_commit_hash="534797616add1f916a9bb7f0d978983c44a0738c"
+ARG node_explorer_commit_hash="54fad5adea562f3462a4955e948e417bfce95278"
 RUN git clone ${node_explorer_git} && \
     cd tezos-node-explorer && \
     git checkout ${node_explorer_commit_hash} && \

@@ -1,3 +1,3 @@
 docker login --username=jurajselep
-docker build -t simplestakingcom/tezedge-node-explorer .
-docker push simpelstaktingcom/tezedge-node-explorer
+sudo docker build -t simplestakingcom/tezedge-node-explorer . --no-cache=true
+sudo docker push simplestakingcom/tezedge-node-explorer

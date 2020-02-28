@@ -15,7 +15,8 @@ ARG node_explorer_commit_hash="83acaf7b08bb827d62c9668464f72d14caf2f438"
 RUN git clone ${node_explorer_git} && \
     cd tezos-node-explorer && \
     git checkout ${node_explorer_commit_hash} && \
-    npm install
+    npm install && \
+    node path.js
 
 # change dir to angular app
 WORKDIR /app/tezos-node-explorer

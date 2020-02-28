@@ -1,4 +1,4 @@
-# TezosNodeExplorer 
+# TezEdge | Explorer
 
 ## Instalaltion
 
@@ -13,6 +13,7 @@ export const environment = {
   production: false,
   api: {
     ws: 'ws://127.0.0.1:4927/',
+    http: 'http://127.0.0.1:18732',
   } 
 };
 ```
@@ -20,12 +21,4 @@ export const environment = {
 ## Development server
 
 Run `npm run start` for a dev server.
-Navigate to `http://localhost:4200/`. 
-
-## Crypto support
-/Users/jurajselep/Projects/tezos-node-explorer/node_modules/@angular-devkit/build-angular/src/angular-cli-files/models/webpack-configs/browser.js
-
-node: {
-  crypto: true,
-  stream: true
-},
+Navigate to `http://localhost:4200/`.

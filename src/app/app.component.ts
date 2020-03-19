@@ -2,7 +2,7 @@ import { Component, OnInit, NgZone, ViewChild, HostListener } from '@angular/cor
 import { Router } from '@angular/router';
 import { Store } from '@ngrx/store'
 import { environment } from '../environments/environment';
-import { MatSidenav } from "@angular/material";
+import { MatSidenav } from "@angular/material/sidenav";
 
 @Component({
   selector: 'app-root',

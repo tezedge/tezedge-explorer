@@ -27,38 +27,25 @@ import { NetworkingComponent } from './networking/networking.component';
 import { NetworkingPeersComponent } from './networking/networking-peers/networking-peers.component';
 
 
-import {
-  MatAutocompleteModule,
-  MatButtonModule,
-  MatButtonToggleModule,
-  MatFormFieldModule,
-  MatIconModule,
-  MatInputModule,
-  MatListModule,
-  MatProgressBarModule,
-  MatSelectModule,
-  MatSidenavModule,
-  MatTableModule,
-  MatTabsModule,
-  MatToolbarModule,
-  MatTooltipModule,
-  MatProgressSpinnerModule,
-  MatSnackBarModule,
-  MatCardModule,
-  // MatCheckboxModule,
-  MatChipsModule,
-  // MatDatepickerModule,
-  // MatDialogModule,
-  // MatExpansionModule,
-  // MatGridListModule,
-  // MatMenuModule,
-  MatPaginatorModule,
-  // MatRadioModule,
-  // MatSliderModule,
-  // MatSlideToggleModule,
-  // MatSortModule,
-  // MatStepperModule,
-} from '@angular/material';
+import { MatAutocompleteModule } from '@angular/material/autocomplete'; 
+import { MatButtonModule } from '@angular/material/button';
+import { MatButtonToggleModule  } from '@angular/material/button-toggle';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatIconModule } from '@angular/material/icon';
+import { MatInputModule } from '@angular/material/input';
+import { MatListModule } from '@angular/material/list';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatTableModule } from '@angular/material/table';
+import { MatTabsModule } from '@angular/material/tabs';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatCardModule } from '@angular/material/card';
+import { MatChipsModule } from '@angular/material/chips';
+import { MatPaginatorModule } from '@angular/material/paginator';
+
 import { NetworkingStatsComponent } from './networking/networking-stats/networking-stats.component';
 import { NetworkingHistoryComponent } from './networking/networking-history/networking-history.component';
 import { SettingsComponent } from './settings/settings.component';

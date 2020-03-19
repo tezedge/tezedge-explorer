@@ -8,7 +8,8 @@ import { Subject } from 'rxjs'
 import { takeUntil, filter } from 'rxjs/operators'
 
 import { FormControl } from '@angular/forms';
-import { MatAutocompleteSelectedEvent, MatChipInputEvent, MatAutocompleteTrigger } from '@angular/material';
+import { MatAutocompleteSelectedEvent, MatAutocompleteTrigger } from '@angular/material/autocomplete';
+import { MatChipInputEvent } from '@angular/material/chips';
 
 @Component({
   selector: 'app-storage-action',

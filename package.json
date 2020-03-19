@@ -6,6 +6,8 @@
     "start": "ng serve",
     "build": "node --max_old_space_size=8192 ./node_modules/@angular/cli/bin/ng build",
     "build:prod": "node --max_old_space_size=8192 ./node_modules/@angular/cli/bin/ng build --prod",
+    "build:stats": "ng build --prod --stats-json",
+    "analyze": "webpack-bundle-analyzer dist/tezedge-explorer/stats-es2015.json",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
@@ -62,7 +64,8 @@
     "protractor": "^5.4.3",
     "ts-node": "~7.0.0",
     "tslint": "~5.15.0",
-    "typescript": "~3.5.3"
+    "typescript": "~3.5.3",
+    "webpack-bundle-analyzer": "^3.6.1"
   },
   "browser": {}
 }

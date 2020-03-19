@@ -1,4 +1,4 @@
-import * as moment from 'moment/moment';
+import * as moment from 'moment-mini-ts';
 
 const initialState: any = {
     ids: [],

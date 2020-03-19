@@ -17,7 +17,7 @@ export class AppComponent {
   public innerWidth;
   public isMobile = false;
 
-  @ViewChild('sidenav', { static: false }) sidenav: MatSidenav;
+  @ViewChild('sidenav') sidenav: MatSidenav;
 
   @HostListener('window:resize', ['$event'])
   onResize(event) {

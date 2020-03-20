@@ -51,8 +51,9 @@
 
 <div class="sidenav-area" style="height: 100%">
     
-    <mat-progress-bar [style.display]="app.progressbar.isVisible ? 'inline' : 'none'" mode="indeterminate"
-        style="position:fixed;z-index:2;height: 1px;"></mat-progress-bar>
+    <!-- TODO: resolve issue with change detection -->
+    <!-- <mat-progress-bar [style.display]="app.progressbar.isVisible ? 'inline' : 'none'" mode="indeterminate"
+        style="position:fixed;z-index:2;height: 1px;"></mat-progress-bar> -->
 
     <!-- Sidebar -->
     <mat-sidenav-container style="height: 100%">
@@ -73,30 +74,30 @@
 
                 <div class="app-submenu">
                     <span>
-                        STATUS
+                        MONITORING
                     </span>
 
-                    <a mat-list-item routerLink="/networking" (click)="isMobile && start.toggle()"
+                    <a mat-list-item routerLink="/monitoring" (click)="isMobile && start.toggle()"
                         [style.color]="app.sidenav.color">
                         <span>
                             <svg-icon icon="history"></svg-icon>
                             Synchronization
                         </span>
                     </a>
-                    <!--
-                        <a mat-list-item routerLink="/networking" [style.color]="app.sidenav.color">
-                            <span>
-                                <svg-icon icon="peer"></svg-icon>
-                                Peers
-                            </span>
-                        </a>
-                    -->
+                    
                 </div>
 
                 <div class="app-submenu">
                     <span>
                         EXPLORER
                     </span>
+
+                    <a mat-list-item routerLink="/networking" [style.color]="app.sidenav.color">
+                        <span>
+                            <svg-icon icon="peer"></svg-icon>
+                            Network
+                        </span>
+                    </a>
 
                     <a mat-list-item routerLink="/storage" (click)="isMobile && start.toggle()"
                     [style.color]="app.sidenav.color">
@@ -106,12 +107,6 @@
                         </span>
                     </a>
 
-                    <a mat-list-item routerLink="/explorer/network/" (click)="isMobile && start.toggle()"
-                        [style.color]="app.sidenav.color">
-                        <span>
-                            Network (P2P)
-                        </span>
-                    </a>
 
 <!-- 
                     <a mat-list-item routerLink="/storage" (click)="isMobile && start.toggle()"

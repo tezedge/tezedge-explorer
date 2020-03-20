@@ -62,7 +62,8 @@ import { StorageSearchComponent } from './storage/storage-search/storage-search.
 import { SvgIconComponent } from './shared/svg-icon/svg-icon.component';
 import { NetworkingActionComponent } from './networking/networking-action/networking-action.component';
 import { NetworkingSearchComponent } from './networking/networking-search/networking-search.component';
-import { NetworkingActionDetailComponent } from './networking/networking-action-detail/networking-action-detail.component'
+import { NetworkingActionDetailComponent } from './networking/networking-action-detail/networking-action-detail.component';
+import { MonitoringComponent } from './monitoring/monitoring.component'
 
 
 @NgModule({
@@ -83,7 +84,8 @@ import { NetworkingActionDetailComponent } from './networking/networking-action-
     SvgIconComponent,
     NetworkingActionComponent,
     NetworkingSearchComponent,
-    NetworkingActionDetailComponent
+    NetworkingActionDetailComponent,
+    MonitoringComponent
   ],
   imports: [
     BrowserModule,

@@ -73,7 +73,7 @@
 
                 <div class="app-submenu">
                     <span>
-                        NETWORKING
+                        STATUS
                     </span>
 
                     <a mat-list-item routerLink="/networking" (click)="isMobile && start.toggle()"
@@ -95,17 +95,83 @@
 
                 <div class="app-submenu">
                     <span>
-                        STORAGE
+                        EXPLORER
+                    </span>
+
+                    <a mat-list-item routerLink="/storage" (click)="isMobile && start.toggle()"
+                    [style.color]="app.sidenav.color">
+                        <span>
+                            <svg-icon icon="explorer"></svg-icon>
+                            Storage
+                        </span>
+                    </a>
+
+                    <a mat-list-item routerLink="/explorer/network/" (click)="isMobile && start.toggle()"
+                        [style.color]="app.sidenav.color">
+                        <span>
+                            Network (P2P)
+                        </span>
+                    </a>
+
+<!-- 
+                    <a mat-list-item routerLink="/storage" (click)="isMobile && start.toggle()"
+                        [style.color]="app.sidenav.color">
+                        <span>
+                            Endpoints (RPC)
+                        </span>
+                    </a>
+
+                    <a mat-list-item routerLink="/storage" (click)="isMobile && start.toggle()"
+                        [style.color]="app.sidenav.color">
+                        <span>
+                            Mempool
+                        </span>
+                    </a>
+
+                    <a mat-list-item routerLink="/storage" (click)="isMobile && start.toggle()"
+                    [style.color]="app.sidenav.color">
+                        <span>
+                            Storage
+                        </span>
+                    </a> -->
+
+
+                </div>
+
+                <!-- <div class="app-submenu">
+                    <span>
+                        DEVELOPER
                     </span>
 
                     <a mat-list-item routerLink="/storage" (click)="isMobile && start.toggle()"
                         [style.color]="app.sidenav.color">
                         <span>
-                            <svg-icon icon="explorer"></svg-icon>
-                            Explorer
+                            Chain
                         </span>
                     </a>
-                </div>
+
+                    <a mat-list-item routerLink="/storage" (click)="isMobile && start.toggle()"
+                        [style.color]="app.sidenav.color">
+                        <span>
+                            Replay
+                        </span>
+                    </a>
+
+                    <a mat-list-item routerLink="/storage" (click)="isMobile && start.toggle()"
+                        [style.color]="app.sidenav.color">
+                        <span>
+                            Debug
+                        </span>
+                    </a>
+
+                    <a mat-list-item routerLink="/storage" (click)="isMobile && start.toggle()"
+                    [style.color]="app.sidenav.color">
+                        <span>
+                            Error
+                        </span>
+                    </a>
+                </div> -->
+
 
                 <div class="app-submenu">
                     <span>

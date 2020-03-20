@@ -63,7 +63,8 @@ import { SvgIconComponent } from './shared/svg-icon/svg-icon.component';
 import { NetworkingActionComponent } from './networking/networking-action/networking-action.component';
 import { NetworkingSearchComponent } from './networking/networking-search/networking-search.component';
 import { NetworkingActionDetailComponent } from './networking/networking-action-detail/networking-action-detail.component';
-import { MonitoringComponent } from './monitoring/monitoring.component'
+import { MonitoringComponent } from './monitoring/monitoring.component';
+import { ServiceWorkerModule } from '@angular/service-worker'
 
 
 @NgModule({
@@ -155,6 +156,7 @@ import { MonitoringComponent } from './monitoring/monitoring.component'
 
     FormsModule,
     ReactiveFormsModule,
+    ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production }),
 
   ],
   providers: [],

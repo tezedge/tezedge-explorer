@@ -1,6 +1,13 @@
 # TezEdge | Explorer
 
-## Instalaltion
+## Version history
+
+
+## Pre-requisites
+
+* nodejs v13
+
+## Installation
 
 `npm install`
 

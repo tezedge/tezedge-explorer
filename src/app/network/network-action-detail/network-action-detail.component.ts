@@ -5,7 +5,7 @@ import { Component, OnInit } from '@angular/core';
   templateUrl: './network-action-detail.component.html',
   styleUrls: ['./network-action-detail.component.css']
 })
-export class networkActionDetailComponent implements OnInit {
+export class NetworkActionDetailComponent implements OnInit {
 
   constructor() { }
 

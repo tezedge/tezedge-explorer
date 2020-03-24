@@ -60,9 +60,9 @@ import { StorageBlockComponent } from './storage/storage-block/storage-block.com
 import { StorageActionComponent } from './storage/storage-action/storage-action.component';
 import { StorageSearchComponent } from './storage/storage-search/storage-search.component';
 import { SvgIconComponent } from './shared/svg-icon/svg-icon.component';
-import { networkActionComponent } from './network/network-action/network-action.component';
-import { networkSearchComponent } from './network/network-search/network-search.component';
-import { networkActionDetailComponent } from './network/network-action-detail/network-action-detail.component';
+import { NetworkActionComponent } from './network/network-action/network-action.component';
+import { NetworkSearchComponent } from './network/network-search/network-search.component';
+import { NetworkActionDetailComponent } from './network/network-action-detail/network-action-detail.component';
 import { MonitoringComponent } from './monitoring/monitoring.component';
 import { ServiceWorkerModule } from '@angular/service-worker'
 
@@ -83,9 +83,9 @@ import { ServiceWorkerModule } from '@angular/service-worker'
     StorageActionComponent,
     StorageSearchComponent,
     SvgIconComponent,
-    networkActionComponent,
-    networkSearchComponent,
-    networkActionDetailComponent,
+    NetworkActionComponent,
+    NetworkSearchComponent,
+    NetworkActionDetailComponent,
     MonitoringComponent
   ],
   imports: [

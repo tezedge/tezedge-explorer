@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { networkActionComponent } from './network-action.component';
+import { NetworkActionComponent } from './network-action.component';
 
-describe('networkActionComponent', () => {
-  let component: networkActionComponent;
-  let fixture: ComponentFixture<networkActionComponent>;
+describe('NetworkActionComponent', () => {
+  let component: NetworkActionComponent;
+  let fixture: ComponentFixture<NetworkActionComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ networkActionComponent ]
+      declarations: [ NetworkActionComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(networkActionComponent);
+    fixture = TestBed.createComponent(NetworkActionComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

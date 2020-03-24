@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { networkSearchComponent } from './network-search.component';
+import { NetworkSearchComponent } from './network-search.component';
 
-describe('networkSearchComponent', () => {
-  let component: networkSearchComponent;
-  let fixture: ComponentFixture<networkSearchComponent>;
+describe('NetworkSearchComponent', () => {
+  let component: NetworkSearchComponent;
+  let fixture: ComponentFixture<NetworkSearchComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ networkSearchComponent ]
+      declarations: [ NetworkSearchComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(networkSearchComponent);
+    fixture = TestBed.createComponent(NetworkSearchComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

@@ -37,7 +37,7 @@ const initialState = {
         value: '',
         valueUpdate: '',
     },
-    networking: {
+    network: {
         open: false
     }
 
@@ -62,19 +62,19 @@ export function reducer(state = initialState, action) {
             };
         }
 
-        case 'NETWORKING_OPEN': {
+        case 'NETWORK_OPEN': {
             return {
                 ...state,
-                networking: {
+                network: {
                     open: true,
                 }
             };
         }
 
-        case 'NETWORKING_CLOSE': {
+        case 'NETWORK_CLOSE': {
             return {
                 ...state,
-                networking: {
+                network: {
                     open: false,
                 }
             };

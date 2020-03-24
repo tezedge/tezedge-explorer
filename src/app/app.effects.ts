@@ -15,7 +15,7 @@ export class AppEffects {
     // effect to handle subscription to metrics WS
     @Effect()
     MetriscsSubscirbeEffect$ = this.actions$.pipe(
-        ofType('METRICS_SUBSCRIBE', 'NETWORKING_OPEN'),
+        ofType('METRICS_SUBSCRIBE', 'NETWORK_OPEN'),
 
         // merge state
         withLatestFrom(this.store, (action: any, state) => ({ action, state })),
@@ -28,8 +28,8 @@ export class AppEffects {
                 filter((ws: any) => {
                     // even if ws is turned off update state cca every minute
                     wsCounter = wsCounter < 700 ? wsCounter + 1 : 0;
-                    // console.log('[state.networking] open', state.app.networking.open);
-                    return state.app.networking.open || wsCounter < 6;
+                    // console.log('[state.network] open', state.app.network.open);
+                    return state.app.network.open || wsCounter < 6;
                 })
                 // tap(data => console.log('[METRICS_SUBSCRIBE][ws] payload: ', data, state.settings.endpoint)),
             );
@@ -54,8 +54,8 @@ export class AppEffects {
 
     // close WS
     @Effect()
-    NetworkingClose$ = this.actions$.pipe(
-        ofType('NETWORKING_CLOSE'),
+    networkClose$ = this.actions$.pipe(
+        ofType('NETWORK_CLOSE'),
 
         tap(() => {
             // generate observables and close websocket
@@ -63,12 +63,12 @@ export class AppEffects {
             // this.onDestroy$.complete();
         }),
 
-        map((data) => ({ type: 'NETWOKING_CLOSE_SUCCESS' })),
+        map((data) => ({ type: 'NETWORK_CLOSE_SUCCESS' })),
 
         catchError((error, caught) => {
             console.error(error);
             this.store.dispatch({
-                type: 'NETWOKING_CLOSE_ERROR',
+                type: 'NETWORK_CLOSE_ERROR',
                 payload: error,
             });
             return caught;

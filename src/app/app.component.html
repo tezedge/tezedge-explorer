@@ -4,42 +4,42 @@
         align-items: center;
         height: 50px;
     }
-
+    
     .app-menu-toolbar-logo {
         padding-left: 18px;
     }
-
+    
     .app-menu-toggle {
         position: absolute;
         top: 5px;
         left: 10px;
         opacity: 0.5;
     }
-
+    
     .mat-list-base {
         padding-top: 0px;
     }
-
+    
     .app-submenu {
         color: #c4cfdc7a;
         font-size: 12px;
         padding: 22px 0px 12px 0px;
         border-top: 1px solid rgba(255, 255, 255, 0.1);
     }
-
+    
     .app-submenu span {
         display: block;
         padding-top: 8px;
         padding-left: 20px;
         padding-bottom: 8px;
     }
-
+    
     .app-submenu a {
         /* font-weight: 300; */
     }
-
+    
     .app-submenu a span {}
-
+    
     list-option:focus,
     .mat-list-option:hover,
     .mat-nav-list .mat-list-item:focus,
@@ -50,16 +50,14 @@
 
 
 <div class="sidenav-area" style="height: 100%">
-    
+
     <!-- TODO: resolve issue with change detection -->
     <!-- <mat-progress-bar [style.display]="app.progressbar.isVisible ? 'inline' : 'none'" mode="indeterminate"
         style="position:fixed;z-index:2;height: 1px;"></mat-progress-bar> -->
 
     <!-- Sidebar -->
     <mat-sidenav-container style="height: 100%">
-        <mat-sidenav #start [mode]="app.sidenav.mode" style="min-width:230px;"
-            [style.background-color]="app.sidenav.backgroundColor" [style.color]="app.sidenav.color"
-            [opened]="app.sidenav.isVisible" [fixedInViewport]="true" [fixedTopGap]="0" [fixedBottomGap]="0">
+        <mat-sidenav #start [mode]="app.sidenav.mode" style="min-width:230px;" [style.background-color]="app.sidenav.backgroundColor" [style.color]="app.sidenav.color" [opened]="app.sidenav.isVisible" [fixedInViewport]="true" [fixedTopGap]="0" [fixedBottomGap]="0">
 
             <mat-nav-list>
 
@@ -77,14 +75,13 @@
                         MONITORING
                     </span>
 
-                    <a mat-list-item routerLink="/monitoring" (click)="isMobile && start.toggle()"
-                        [style.color]="app.sidenav.color">
+                    <a mat-list-item routerLink="/monitoring" (click)="isMobile && start.toggle()" [style.color]="app.sidenav.color">
                         <span>
                             <svg-icon icon="history"></svg-icon>
                             Synchronization
                         </span>
                     </a>
-                    
+
                 </div>
 
                 <div class="app-submenu">
@@ -92,15 +89,14 @@
                         EXPLORER
                     </span>
 
-                    <a mat-list-item routerLink="/networking" [style.color]="app.sidenav.color">
+                    <a mat-list-item routerLink="/network" [style.color]="app.sidenav.color">
                         <span>
                             <svg-icon icon="peer"></svg-icon>
                             Network
                         </span>
                     </a>
 
-                    <a mat-list-item routerLink="/storage" (click)="isMobile && start.toggle()"
-                    [style.color]="app.sidenav.color">
+                    <a mat-list-item routerLink="/storage" (click)="isMobile && start.toggle()" [style.color]="app.sidenav.color">
                         <span>
                             <svg-icon icon="explorer"></svg-icon>
                             Storage
@@ -108,7 +104,7 @@
                     </a>
 
 
-<!-- 
+                    <!-- 
                     <a mat-list-item routerLink="/storage" (click)="isMobile && start.toggle()"
                         [style.color]="app.sidenav.color">
                         <span>
@@ -173,8 +169,7 @@
                         LEARN
                     </span>
 
-                    <a mat-list-item href="https://docs.tezedge.com" target="_blank" rel="noreferrer"
-                        [style.color]="app.sidenav.color">
+                    <a mat-list-item href="https://docs.tezedge.com" target="_blank" rel="noreferrer" [style.color]="app.sidenav.color">
                         <span>
                             <svg-icon icon="documentation"></svg-icon>
                             Documentation
@@ -190,7 +185,7 @@
                     STATUS
                 </div>
                 <span style="font-size:14px;color:#F6F9FC;margin: 12px 0px 18px 12px;">
-                    {{ networkingEndpoint?.status }}
+                    {{ networkEndpoint?.status }}
                 </span>
 
 
@@ -203,10 +198,8 @@
                     {{ settings.endpoint }}
                 </span>
 
-                <div
-                    style="font-size:14px;color:#C4CFDC;margin-top:12px;padding: 12px 12px 12px 0px;text-align:center;border-top: 1px solid rgba(255, 255, 255, 0.1);">
-                    <a routerLink="/settings" (click)="isMobile && start.toggle()"
-                        style="text-decoration:none;color:#C4CFDC;">
+                <div style="font-size:14px;color:#C4CFDC;margin-top:12px;padding: 12px 12px 12px 0px;text-align:center;border-top: 1px solid rgba(255, 255, 255, 0.1);">
+                    <a routerLink="/settings" (click)="isMobile && start.toggle()" style="text-decoration:none;color:#C4CFDC;">
                         Edit
                     </a>
                 </div>

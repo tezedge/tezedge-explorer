@@ -1,0 +1,40 @@
+.network-peers th.mat-header-cell.cdk-column-id.mat-column-id {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    /* width: 20vw;  */
+}
+
+.network-peers .mat-cell.cdk-column-id.mat-column-id {
+    padding: 20px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+.network-peers th.mat-header-cell.cdk-column-transferredBytes.mat-column-transferredBytes {
+    text-align: right;
+}
+
+.network-peers .mat-cell.cdk-column-transferredBytes.mat-column-transferredBytes {
+    width: 20vw;
+    text-align: right;
+}
+
+.network-peers th.mat-header-cell.cdk-column-averageTransferSpeed.mat-column-averageTransferSpeed {
+    text-align: right;
+}
+
+.network-peers .mat-cell.cdk-column-averageTransferSpeed.mat-column-averageTransferSpeed {
+    width: 20vw;
+    text-align: right;
+}
+
+.network-peers th.mat-header-cell.cdk-column-currentTransferSpeed.mat-column-currentTransferSpeed {
+    text-align: right;
+}
+
+.network-peers .mat-cell.cdk-column-currentTransferSpeed.mat-column-currentTransferSpeed {
+    width: 20vw;
+    text-align: right;
+}

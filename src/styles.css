@@ -11,21 +11,18 @@ table {
     width: 100%;
 }
 
-.networking {
+.network {
     display: flex;
     align-items: center;
     justify-content: center;
     flex-direction: column;
 }
 
-
-.networking .networking .mat-h1 {
+.network .network .mat-h1 {
     font: 300 24px/32px Roboto, "Helvetica Neue", sans-serif;
 }
 
-.networking-stats ngx-charts-line-chart {
-}
-
+.network-stats ngx-charts-line-chart {}
 
 .settings {
     padding: 25px;
@@ -36,12 +33,11 @@ table {
     flex-direction: column;
 }
 
-
 .settings .settings .mat-h1 {
     font: 300 24px/32px Roboto, "Helvetica Neue", sans-serif;
 }
 
-.networking-endpoint {
+.network-endpoint {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -49,21 +45,20 @@ table {
     background: white;
     height: 50px;
     width: 100%;
-
     border-bottom: 1px solid rgba(0, 0, 0, 0.1);
 }
 
-.networking-endpoint-content {
+.network-endpoint-content {
     width: 690px;
     justify-content: space-between;
     padding: 0px 20px 0px 45px;
 }
 
-.networking-endpoint-content a {
+.network-endpoint-content a {
     color: black;
 }
 
-.networking-endpoint-content a:visited {
+.network-endpoint-content a:visited {
     color: black;
 }
 
@@ -84,33 +79,32 @@ table {
     align-self: flex-end;
 }
 
-.networking {}
+.network {}
 
-.networking-stats {}
+.network-stats {}
 
-.networking-stats-chart {
+.network-stats-chart {
     display: none;
     width: 697px;
     margin: 15px 0px 5px 10px;
     height: 14vh;
     border-bottom: 1px solid #E0E0E0;
     border-left: 1px solid #E0E0E0;
-    border-bottom-left-radius: 4px; 
-
+    border-bottom-left-radius: 4px;
     /*border: 1px solid #E0E0E0;
     border-radius: 4px;*/
 }
 
-.networking-peers {
+.network-peers {
     background-color: white;
     margin-top: 30px;
     width: 700px;
-    border: 1px solid #E0E0E0 ;
+    border: 1px solid #E0E0E0;
     border-radius: 4px;
 }
 
 .mat-table {
-    background: initial ;
+    background: initial;
 }
 
 .mat-paginator {
@@ -125,104 +119,85 @@ tr.mat-header-row {
     min-height: 46px !important;
 }
 
-tr.mat-footer-row, tr.mat-row {
-    height: 36px !important; 
+tr.mat-footer-row,
+tr.mat-row {
+    height: 36px !important;
 }
 
 .mat-cell.cdk-column-id.mat-column-id {
     padding: 14px !important;
 }
 
-mat-row, td.mat-cell {
+mat-row,
+td.mat-cell {
     border-bottom-color: white !important;
 }
-
 
 @media (max-width: 600px) {
     body {
         margin: 0px !important;
     }
-
-    .networking {
+    .network {
         width: 100vw;
     }
-
-    .networking-endpoint-content {
+    .network-endpoint-content {
         width: 100vw;
     }
-
-    .networking-stats {
+    .network-stats {
         width: 100vw;
     }
-
-    .networking-stats-chart {
+    .network-stats-chart {
         display: block;
         width: 340px;
         margin-left: 15px;
         height: 12vh;
     }
-
-    .networking-endpoint {
+    .network-endpoint {
         width: 100vw;
     }
-
-    .networking-history {}
-
-    .networking-peers {
+    .network-history {}
+    .network-peers {
         width: 92vw;
         margin-bottom: 30px;
     }
     td.mat-cell:last-of-type {
         padding-right: 14px !important;
     }
-
     th.mat-header-cell.cdk-column-id.mat-column-id {
         width: 25vw !important;
     }
-
     .mat-cell.cdk-column-id.mat-column-id.ng-star-inserted {
         display: block;
         width: 25vw;
     }
-
-    .networking-peers th.mat-header-cell.cdk-column-averageTransferSpeed.mat-column-averageTransferSpeed {
+    .network-peers th.mat-header-cell.cdk-column-averageTransferSpeed.mat-column-averageTransferSpeed {
         display: none
     }
-
-    .networking-peers .mat-cell.cdk-column-averageTransferSpeed.mat-column-averageTransferSpeed {
+    .network-peers .mat-cell.cdk-column-averageTransferSpeed.mat-column-averageTransferSpeed {
         display: none
     }
-
-    .networking-peers .mat-cell.cdk-column-transferredBytes.mat-column-transferredBytes {
+    .network-peers .mat-cell.cdk-column-transferredBytes.mat-column-transferredBytes {
         width: 30vw;
     }
-
-    .networking-peers .mat-cell.cdk-column-currentTransferSpeed.mat-column-currentTransferSpeed {
+    .network-peers .mat-cell.cdk-column-currentTransferSpeed.mat-column-currentTransferSpeed {
         width: 35vw;
     }
-
-
     .settings-endpoint {
         width: 90vw;
     }
-
     .settings-endpoint-input {
         width: 90vw;
     }
-
-
 }
 
-.networking {
+.network {
     background-color: #F5F9FC;
 }
 
-
-
-@media screen and (max-width: 40em) {	
-	.mat-sidenav {
-		display:none;
-	}
+@media screen and (max-width: 40em) {
+    .mat-sidenav {
+        display: none;
+    }
 }
 
 .storage-block-container {
@@ -254,16 +229,18 @@ mat-row, td.mat-cell {
     border: 1px solid #e0e0e0;
     border-radius: 4px;
 }
- 
+
 .mat-drawer-container {
     background-color: white;
 }
 
-.mat-list-base .mat-list-item .mat-list-item-content, .mat-list-base .mat-list-option .mat-list-item-content {
+.mat-list-base .mat-list-item .mat-list-item-content,
+.mat-list-base .mat-list-option .mat-list-item-content {
     padding: 0px !important;
 }
 
-.mat-list-base .mat-list-item, .mat-list-base .mat-list-option {
+.mat-list-base .mat-list-item,
+.mat-list-base .mat-list-option {
     height: 36px !important;
 }
 
@@ -287,25 +264,26 @@ input.mat-input-element {
     margin: 0px 0px 0px 0px;
 }
 
-.mat-form-field-appearance-outline .mat-form-field-outline {
-    
-}
+.mat-form-field-appearance-outline .mat-form-field-outline {}
 
 
 /* focused color */
+
 .mat-form-field-appearance-outline.mat-focused .mat-form-field-outline-thick {
     color: #1C202B !important;
 }
 
+
 /* floating label color */
-.mat-form-field-appearance-outline.mat-focused .mat-form-field-label { 
-    color: #1C202B !important; 
+
+.mat-form-field-appearance-outline.mat-focused .mat-form-field-label {
+    color: #1C202B !important;
 }
 
 .mat-form-field-appearance-outline .mat-form-field-outline-thick .mat-form-field-outline-end,
 .mat-form-field-appearance-outline .mat-form-field-outline-thick .mat-form-field-outline-gap,
 .mat-form-field-appearance-outline .mat-form-field-outline-thick .mat-form-field-outline-start {
-    color: #1C202B !important; 
+    color: #1C202B !important;
     border-width: 1px !important;
 }
 
@@ -332,17 +310,22 @@ input.mat-input-element {
 .mat-option-text {
     font-size: 14px !important;
 }
+
 .mat-option {
     height: 40px !important;
 }
 
+
 /* progress bar */
+
 .mat-progress-bar-fill::after {
     background-color: #2e3648;
 }
+
 .mat-progress-bar-buffer {
     background: #f6f9fc;
 }
+
 .mat-progress-bar {
     border-radius: 2px;
 }

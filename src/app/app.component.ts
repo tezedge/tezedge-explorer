@@ -13,7 +13,7 @@ export class AppComponent {
 
   public app
   public settings
-  public networkingEndpoint
+  public networkEndpoint
   public innerWidth;
   public isMobile = false;
 
@@ -51,9 +51,9 @@ export class AppComponent {
       })
 
     // wait for data changes from redux
-    this.store.select('networkingEndpoint')
+    this.store.select('networkEndpoint')
       .subscribe(data => {
-        this.networkingEndpoint = data;
+        this.networkEndpoint = data;
       })
 
     // dispatch inner width

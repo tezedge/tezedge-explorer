@@ -62,8 +62,8 @@ export class SettingsEndpointComponent implements OnInit {
       }
     })
 
-    // redirect back to networking
-    this.router.navigate(['/networking']);
+    // redirect back to network
+    this.router.navigate(['/network']);
 
   }
 

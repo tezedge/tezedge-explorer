@@ -23,8 +23,8 @@ import { StorageActionEffects } from './storage/storage-action/storage-action.ef
 import { StorageSearchEffects } from './storage/storage-search/storage-search.effects';
 import { SettingsEffects } from './settings/settings.effects';
 
-import { NetworkingComponent } from './networking/networking.component';
-import { NetworkingPeersComponent } from './networking/networking-peers/networking-peers.component';
+import { NetworkComponent } from './network/network.component';
+import { NetworkPeersComponent } from './network/network-peers/network-peers.component';
 
 
 import { MatAutocompleteModule } from '@angular/material/autocomplete'; 
@@ -46,11 +46,11 @@ import { MatCardModule } from '@angular/material/card';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatPaginatorModule } from '@angular/material/paginator';
 
-import { NetworkingStatsComponent } from './networking/networking-stats/networking-stats.component';
-import { NetworkingHistoryComponent } from './networking/networking-history/networking-history.component';
+import { NetworkStatsComponent } from './network/network-stats/network-stats.component';
+import { NetworkHistoryComponent } from './network/network-history/network-history.component';
 import { SettingsComponent } from './settings/settings.component';
 import { SettingsEndpointComponent } from './settings/settings-endpoint/settings-endpoint.component';
-import { NetworkingEndpointComponent } from './networking/networking-endpoint/networking-endpoint.component';
+import { networkEndpointComponent } from './network/network-endpoint/network-endpoint.component';
 
 // TODO: replace woth reactive forms
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -60,9 +60,9 @@ import { StorageBlockComponent } from './storage/storage-block/storage-block.com
 import { StorageActionComponent } from './storage/storage-action/storage-action.component';
 import { StorageSearchComponent } from './storage/storage-search/storage-search.component';
 import { SvgIconComponent } from './shared/svg-icon/svg-icon.component';
-import { NetworkingActionComponent } from './networking/networking-action/networking-action.component';
-import { NetworkingSearchComponent } from './networking/networking-search/networking-search.component';
-import { NetworkingActionDetailComponent } from './networking/networking-action-detail/networking-action-detail.component';
+import { networkActionComponent } from './network/network-action/network-action.component';
+import { networkSearchComponent } from './network/network-search/network-search.component';
+import { networkActionDetailComponent } from './network/network-action-detail/network-action-detail.component';
 import { MonitoringComponent } from './monitoring/monitoring.component';
 import { ServiceWorkerModule } from '@angular/service-worker'
 
@@ -70,22 +70,22 @@ import { ServiceWorkerModule } from '@angular/service-worker'
 @NgModule({
   declarations: [
     AppComponent,
-    NetworkingComponent,
-    NetworkingPeersComponent,
-    NetworkingStatsComponent,
-    NetworkingHistoryComponent,
+    NetworkComponent,
+    NetworkPeersComponent,
+    NetworkStatsComponent,
+    NetworkHistoryComponent,
     SettingsComponent,
     SettingsEndpointComponent,
-    NetworkingEndpointComponent,
+    networkEndpointComponent,
     BandwidthPipe,
     StorageComponent,
     StorageBlockComponent,
     StorageActionComponent,
     StorageSearchComponent,
     SvgIconComponent,
-    NetworkingActionComponent,
-    NetworkingSearchComponent,
-    NetworkingActionDetailComponent,
+    networkActionComponent,
+    networkSearchComponent,
+    networkActionDetailComponent,
     MonitoringComponent
   ],
   imports: [

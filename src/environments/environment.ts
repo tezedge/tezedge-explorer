@@ -11,6 +11,7 @@ export const environment = {
     ws: 'wss://babylon.tezedge.com',
     // http: 'http://ws://127.0.0.1:18732',
     // ws: 'ws://127.0.0.1:4927',
+    mock: 'http://127.0.0.1:3000',
   }
 };
 

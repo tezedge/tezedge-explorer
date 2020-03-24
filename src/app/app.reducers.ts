@@ -17,10 +17,12 @@ import { RouterStateUrl } from './app.routing';
 
 import * as fromApp from './app.reducer';
 import * as fromSettings from './settings/settings.reducer';
-import * as fromnetworkPeers from './network/network-peers/network-peers.reducer';
-import * as fromnetworkStats from './network/network-stats/network-stats.reducer';
-import * as fromnetworkHistory from './network/network-history/network-history.reducer';
-import * as fromnetworkEndpoint from './network/network-endpoint/network-endpoint.reducer';
+import * as fromNetworkAction from './network/network-action/network-action.reducer';
+import * as fromNetworkActionDetail from './network/network-action-detail/network-action-detail.reducer';
+import * as fromNetworkPeers from './network/network-peers/network-peers.reducer';
+import * as fromNetworkStats from './network/network-stats/network-stats.reducer';
+import * as fromNetworkHistory from './network/network-history/network-history.reducer';
+import * as fromNetworkEndpoint from './network/network-endpoint/network-endpoint.reducer';
 
 import * as fromStorageBlock from './storage/storage-block/storage-block.reducer';
 import * as fromStorageAction from './storage/storage-action/storage-action.reducer';
@@ -29,6 +31,8 @@ import * as fromStorageAction from './storage/storage-action/storage-action.redu
 export interface State {
     app: any;
     settings: any,
+    networkAction: any;
+    networkActionDetail: any;
     networkPeers: any;
     networkStats: any;
     networkHistory: any;
@@ -42,10 +46,12 @@ export interface State {
 export const reducers: ActionReducerMap<State> = {
     app: fromApp.reducer,
     settings: fromSettings.reducer,
-    networkPeers: fromnetworkPeers.reducer,
-    networkStats: fromnetworkStats.reducer,
-    networkHistory: fromnetworkHistory.reducer,
-    networkEndpoint: fromnetworkEndpoint.reducer,
+    networkAction: fromNetworkAction.reducer,
+    networkActionDetail: fromNetworkActionDetail.reducer,
+    networkPeers: fromNetworkPeers.reducer,
+    networkStats: fromNetworkStats.reducer,
+    networkHistory: fromNetworkHistory.reducer,
+    networkEndpoint: fromNetworkEndpoint.reducer,
     storageBlock: fromStorageBlock.reducer,
     storageAction: fromStorageAction.reducer,
     routerReducer: fromRouter.routerReducer,

@@ -18,6 +18,10 @@ import { reducers, metaReducers } from './app.reducers';
 import { environment } from '../environments/environment';
 
 import { AppEffects } from './app.effects';
+
+import { NetworkActionEffects } from './network/network-action/network-action.effects';
+import { NetworkActionDetailEffects } from './network/network-action-detail/network-action-detail.effects';
+
 import { StorageBlockEffects } from './storage/storage-block/storage-block.effects';
 import { StorageActionEffects } from './storage/storage-action/storage-action.effects';
 import { StorageSearchEffects } from './storage/storage-search/storage-search.effects';
@@ -112,6 +116,8 @@ import { ServiceWorkerModule } from '@angular/service-worker'
     // load effect module
     EffectsModule.forRoot([
       AppEffects,
+      NetworkActionEffects,
+      NetworkActionDetailEffects,
       StorageBlockEffects,
       StorageActionEffects,
       StorageSearchEffects,

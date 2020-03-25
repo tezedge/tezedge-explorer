@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 
@@ -14,13 +14,35 @@ import { takeUntil } from 'rxjs/operators'
 export class NetworkActionComponent implements OnInit {
 
   public networkAction
+  public networkActionList
+  public networkActionShow
+
+  public tableDataSource
   public onDestroy$ = new Subject()
+
+  @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
 
   constructor(
     public store: Store<any>,
   ) { }
 
   ngOnInit(): void {
+
+
+    // wait for data changes from redux
+    this.store.select('networkAction')
+      .pipe(takeUntil(this.onDestroy$))
+      .subscribe(data => {
+
+        this.networkAction = data;
+        
+        this.networkActionShow = data.ids.length > 0 ? true : false;
+        this.networkActionList = data.ids.map(id => ({ id, ...data.entities[id] }));
+
+        this.tableDataSource = new MatTableDataSource<any>(this.networkActionList);
+        this.tableDataSource.paginator = this.paginator;
+
+      });
 
     // triger action and get network data
     this.store.dispatch({

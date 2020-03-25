@@ -1,0 +1,85 @@
+.network-action-container {
+    background-color: #F5F9FC;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.network-action {
+    background-color: white;
+    margin-top: 30px;
+    width: 800px;
+    border: 1px solid #e0e0e0;
+    border-radius: 4px;
+}
+
+.network-action th.mat-header-cell.cdk-column-datetime.mat-column-datetime {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    /* width: 20vw;  */
+}
+
+.network-action .mat-cell.cdk-column-datetime.mat-column-datetime {
+    padding: 20px;
+    width: 140px;
+}
+
+.network-action th.mat-header-cell.cdk-column-hash.mat-column-hash {
+    /* text-align: left; */
+}
+
+.network-action .mat-cell.cdk-column-hash.mat-column-hash {
+    /* text-align: left; */
+    max-width: 350px;
+    padding-right: 10px;
+    transform: scale(1, 1);
+}
+
+.network-action .mat-cell.cdk-column-message.mat-column-message {
+    padding-right: 10px;
+    width: 260px;
+    /* text-align: left; */
+    /* text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap; */
+}
+
+@media (max-width: 600px) {
+    .network-action {
+        max-width: 90vw !important;
+    }
+    th.mat-header-cell.cdk-column-level.mat-column-level {
+        display: none;
+    }
+    .mat-cell.cdk-column-level.mat-column-level {
+        display: none;
+    }
+    th.mat-header-cell.cdk-column-position.mat-column-position {
+        display: none;
+    }
+    .mat-cell.cdk-column-position.mat-column-position {
+        display: none;
+    }
+    th.mat-header-cell.cdk-column-datetime.mat-column-datetime {
+        width: 5vw !important;
+    }
+    .mat-cell.cdk-column-datetime.mat-column-datetime {
+        text-overflow: ellipsis;
+        overflow: hidden;
+        white-space: nowrap;
+        min-width: 30vw !important;
+        max-width: 3vw !important;
+        /* padding-right: 10px; */
+    }
+    th.mat-header-cell.cdk-column-hash.mat-column-hash {
+        width: 35vw !important;
+    }
+    .mat-cell.cdk-column-hash.mat-column-hash {
+        text-overflow: ellipsis;
+        overflow: hidden;
+        white-space: nowrap;
+        min-width: 5vw !important;
+        max-width: 5vw !important;
+    }
+}

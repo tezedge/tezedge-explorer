@@ -1,24 +1,9 @@
 {
     "p2p": [
-        { "id": 1, "title": "json-server", "author": "typicode" },
-        { "id": 2, "title": "json-server", "author": "typicode" },
-        { "id": 3, "title": "json-server", "author": "typicode" },
-        { "id": 4, "title": "json-server", "author": "typicode" },
-        { "id": 5, "title": "json-server", "author": "typicode" },
-        { "id": 6, "title": "json-server", "author": "typicode" },
-        { "id": 7, "title": "json-server", "author": "typicode" },
-        { "id": 8, "title": "json-server", "author": "typicode" },
-        { "id": 9, "title": "json-server", "author": "typicode" }
+        { "id": "1", "timestamp": "2020-03-25T11:40:38Z", "peer": "idsqS42wWjY9cfPHmqHzCU4TeWjqAb", "source": "8.8.8.8", "destination": "localhost", "from": "Mempool", "to": "Network", "type": "Advertise", "message": "70 32 70 20 74 65 73 74 20 6d 65 73 73 61 67 65 20" },
+        { "id": "2", "timestamp": "2020-03-25T11:40:36Z", "peer": "idsqS42wWjY9cfPHmqHzCU4TeWjqAb", "source": "localhost", "destination": "8.8.8.8", "from": "Network", "to": "Protocol", "type": "Bootstrap", "message": "70 32 70 20 74 65 73 74 20 6d 65 73 73 61 67 65 20" }
     ],
     "p2p-detail": [
-        { "id": 1, "title": "json-server", "author": "typicode" },
-        { "id": 2, "title": "json-server", "author": "typicode" },
-        { "id": 3, "title": "json-server", "author": "typicode" },
-        { "id": 4, "title": "json-server", "author": "typicode" },
-        { "id": 5, "title": "json-server", "author": "typicode" },
-        { "id": 6, "title": "json-server", "author": "typicode" },
-        { "id": 7, "title": "json-server", "author": "typicode" },
-        { "id": 8, "title": "json-server", "author": "typicode" },
-        { "id": 9, "title": "json-server", "author": "typicode" }
+        {}
     ]
 }

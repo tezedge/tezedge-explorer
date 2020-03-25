@@ -1,7 +1,5 @@
 # TezEdge | Explorer
 
-## Version history
-
 
 ## Pre-requisites
 
@@ -29,3 +27,11 @@ export const environment = {
 
 Run `npm run start` for a dev server.
 Navigate to `http://localhost:4200/`.
+
+
+## Mock server
+Run `npm run server:json` for a json dev server.
+Navigate to `http://localhost:3000/`.
+
+Please view/edit `db.json` file according to your needs.
+

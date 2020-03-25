@@ -3,6 +3,7 @@ import { RouterStateSnapshot, Params } from '@angular/router';
 import { RouterStateSerializer } from '@ngrx/router-store';
 
 import { NetworkComponent } from './network/network.component';
+import { NetworkActionDetailComponent } from './network/network-action-detail/network-action-detail.component';
 import { MonitoringComponent } from './monitoring/monitoring.component';
 import { StorageComponent } from './storage/storage.component';
 import { StorageActionComponent } from './storage/storage-action/storage-action.component';
@@ -16,6 +17,7 @@ export const AppRouting: Routes = [
   { path: 'monitoring', component: MonitoringComponent },
 
   { path: 'network', component: NetworkComponent },
+  { path: 'network/:action', component: NetworkActionDetailComponent },
 
   { path: 'storage', component: StorageComponent },
   { path: 'storage/:search', component: StorageActionComponent },

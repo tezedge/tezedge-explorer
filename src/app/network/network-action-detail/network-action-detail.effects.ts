@@ -16,9 +16,9 @@ export class NetworkActionDetailEffects {
         // merge state
         withLatestFrom(this.store, (action: any, state) => ({ action, state })),
 
-        switchMap(({ action, state }) => {
-            return this.http.get(environment.api.mock + '/p2p-detail/')
-        }),
+        // switchMap(({ action, state }) => {
+        //     return this.http.get(environment.api.mock + '/p2p-detail/')
+        // }),
 
         // dispatch action
         map((payload) => ({ type: 'NETWORK_ACTION_DETAIL_LOAD_SUCCESS', payload: payload })),

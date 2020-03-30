@@ -7,8 +7,8 @@ export const environment = {
   api: {
     // ws: 'ws://127.0.0.1:4927/',
     // ws: 'ws://195.201.111.145:4927/',
-    https: 'https://babylon.tezedge.com:38732',
-    http: 'http://babylon.tezedge.com:38732',
+    // https: 'https://babylon.tezedge.com:8732',
+    http: 'https://babylon.tezedge.com:8732',
     ws: 'wss://babylon.tezedge.com',
     // http: 'http://ws://127.0.0.1:18732',
     // ws: 'ws://127.0.0.1:4927',

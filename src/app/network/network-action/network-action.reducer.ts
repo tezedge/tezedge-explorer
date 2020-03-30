@@ -22,20 +22,26 @@ export function reducer(state = initialState, action) {
 
 
                         if (networkAction.type === 'connection_message') {
+
+                            console.log("[connection_message]", networkAction);
+
                             return {
                                 ...accumulator,
                                 [networkAction.id]: {
                                     ...networkAction,
                                     category: 'Connection',
-                                    kind: networkAction.message[0].type,
-                                    payload: networkAction.message[0],
-                                    // preview: JSON.stringify(networkAction.message[0]),
+                                    kind: '',
+                                    payload: networkAction.message,
+                                    preview: networkAction.message.substring(0, 20) + '...' ,
                                     datetime: moment.utc(Math.ceil(networkAction.timestamp/1000000)).format('HH:mm:ss.SSS, DD MMM YY'),
                                 }
                             };
                         }
 
                         if (networkAction.type === 'p2p_message') {
+
+                            console.log("[p2p_message]", networkAction);
+
                             let payload = { ...networkAction.message[0] };
                             delete payload.type;
                             let preview = JSON.stringify(payload);
@@ -51,6 +57,8 @@ export function reducer(state = initialState, action) {
                                 }
                             };
                         }
+
+                        console.log("[default]", networkAction);
 
                         return {
                             ...accumulator,

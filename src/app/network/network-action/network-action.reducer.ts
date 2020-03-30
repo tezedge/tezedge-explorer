@@ -14,50 +14,66 @@ export function reducer(state = initialState, action) {
 
             return {
                 ...state,
-                // TODO: replace with id
-                ids: [
-                    ...Array(action.payload.length).keys()
-                ],
+                ids: action.payload
+                    .map(networkAction => networkAction.id),
                 entities: action.payload
-                    .reduce((accumulator, networkAction, index) => {
+                    .reduce((accumulator, networkAction) => {
 
-                        // process TcpMessage
-                        if (networkAction.hasOwnProperty('TcpMessage')) {
+
+
+                        if (networkAction.type === 'connection_message') {
                             return {
                                 ...accumulator,
-                                [index]: {
-                                    ...networkAction.TcpMessage,
-                                    type: 'TcpMessage',
-                                    message: 'packet', //networkAction.TcpMessage.packet,
-                                    datetime: moment(networkAction.timestamp).format('HH:mm:ss,  DD MMM YYYY'),
+                                [networkAction.id]: {
+                                    ...networkAction,
+                                    category: 'Connection',
+                                    kind: networkAction.message[0].type,
+                                    payload: networkAction.message[0],
+                                    // preview: JSON.stringify(networkAction.message[0]),
+                                    datetime: moment.utc(Math.ceil(networkAction.timestamp/1000000)).format('HH:mm:ss.SSS, DD MMM YY'),
                                 }
                             };
                         }
 
-                        if (networkAction.hasOwnProperty('ConnectionMessage')) {
+                        if (networkAction.type === 'p2p_message') {
+                            let payload = { ...networkAction.message[0] };
+                            delete payload.type;
+                            let preview = JSON.stringify(payload);
                             return {
                                 ...accumulator,
-                                [index]: {
-                                    ...networkAction.ConnectionMessage,
-                                    type: 'ConnectionMessage',
-                                    message: networkAction.ConnectionMessage.payload,
-                                    datetime: moment(networkAction.timestamp).format('HH:mm:ss,  DD MMM YYYY'),
+                                [networkAction.id]: {
+                                    ...networkAction,
+                                    category: 'P2P',
+                                    kind: networkAction.message[0].type,
+                                    payload: payload,
+                                    preview: preview.length > 20 ? preview.substring(0, 20) + '...' :  '' ,
+                                    datetime: moment.utc(Math.ceil(networkAction.timestamp/1000000)).format('HH:mm:ss.SSS, DD MMM YY'),
                                 }
                             };
                         }
 
+                        return {
+                            ...accumulator,
+                            [networkAction.id]: {
+                                ...networkAction,
+                                payload: networkAction.message,
+                                datetime: moment.utc(Math.ceil(networkAction.timestamp/1000000)).format('HH:mm:ss.SSS, DD MMM YY'),
 
-                        if (networkAction.hasOwnProperty('P2PMessage')) {
-                            return {
-                                ...accumulator,
-                                [index]: {
-                                    ...networkAction.P2PMessage,
-                                    type: 'P2PMessage',
-                                    message: networkAction.P2PMessage.payload,
-                                    datetime: moment(networkAction.timestamp).format('HH:mm:ss,  DD MMM YYYY'),
-                                }
-                            };
-                        }
+                            }
+                        };
+
+                        // if (networkAction.hasOwnProperty('p2p_message')) {
+                        //     return {
+                        //         ...accumulator,
+                        //         [index]: {
+                        //             ...networkAction.P2PMessage,
+                        //             category: 'P2P',
+                        //             type: Object.getOwnPropertyNames(networkAction.P2PMessage.payload[0])[0],
+                        //             message: networkAction.P2PMessage.payload[0][Object.getOwnPropertyNames(networkAction.P2PMessage.payload[0])[0]],
+                        //             datetime: moment(networkAction.ts).format('HH:mm:ss,  DD MMM YYYY'),
+                        //         }
+                        //     };
+                        // }
 
                     }, {}),
             };

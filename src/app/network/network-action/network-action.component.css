@@ -17,32 +17,39 @@
     text-overflow: ellipsis;
     overflow: hidden;
     white-space: nowrap;
-    /* width: 20vw;  */
 }
-
 .network-action .mat-cell.cdk-column-datetime.mat-column-datetime {
     padding: 20px;
     width: 140px;
 }
 
-.network-action th.mat-header-cell.cdk-column-hash.mat-column-hash {
-    /* text-align: left; */
+
+.network-action th.mat-header-cell.cdk-column-address.mat-column-address {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+}
+.network-action .mat-cell.cdk-column-address.mat-column-address {
+    width: 160px;
 }
 
-.network-action .mat-cell.cdk-column-hash.mat-column-hash {
-    /* text-align: left; */
-    max-width: 350px;
-    padding-right: 10px;
-    transform: scale(1, 1);
+.network-action th.mat-header-cell.cdk-column-type.mat-column-type {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+}
+.network-action .mat-cell.cdk-column-type.mat-column-type {
+    width: 180px;
 }
 
+.network-action th.mat-header-cell.cdk-column-message.mat-column-message {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+}
 .network-action .mat-cell.cdk-column-message.mat-column-message {
     padding-right: 10px;
-    width: 260px;
-    /* text-align: left; */
-    /* text-overflow: ellipsis;
-    overflow: hidden;
-    white-space: nowrap; */
+    width: 140px;
 }
 
 

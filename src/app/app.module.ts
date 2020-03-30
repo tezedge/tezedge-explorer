@@ -5,7 +5,7 @@ import { Routes, RouterModule, PreloadAllModules } from '@angular/router';
 import { HttpClientModule } from '@angular/common/http';
 
 import { AppComponent } from './app.component';
-import { AppRouting } from './app.routing'
+import { AppRouting } from './app.routing';
 
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
@@ -68,7 +68,9 @@ import { NetworkActionComponent } from './network/network-action/network-action.
 import { NetworkSearchComponent } from './network/network-search/network-search.component';
 import { NetworkActionDetailComponent } from './network/network-action-detail/network-action-detail.component';
 import { MonitoringComponent } from './monitoring/monitoring.component';
-import { ServiceWorkerModule } from '@angular/service-worker'
+import { ServiceWorkerModule } from '@angular/service-worker';
+
+import { NgxJsonViewerModule } from 'ngx-json-viewer';
 
 
 @NgModule({
@@ -163,6 +165,8 @@ import { ServiceWorkerModule } from '@angular/service-worker'
     FormsModule,
     ReactiveFormsModule,
     ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production }),
+
+    NgxJsonViewerModule,
 
   ],
   providers: [],

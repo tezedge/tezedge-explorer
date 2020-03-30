@@ -40,6 +40,7 @@
         "moment-mini-ts": "^2.20.1",
         "ngrx-store-freeze": "^0.2.4",
         "ngrx-store-logger": "^0.2.4",
+        "ngx-json-viewer": "^2.4.0",
         "process": "^0.11.10",
         "rxjs": "~6.5.4",
         "stream": "0.0.2",

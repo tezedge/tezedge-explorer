@@ -133,6 +133,15 @@ td.mat-cell {
     border-bottom-color: white !important;
 }
 
+.ngx-json-viewer {
+    font-family: Roboto, "Helvetica Neue", sans-serif !important;
+    font-size: 14px !important;
+}
+
+.ngx-json-viewer .segment .segment-main .toggler::after {
+    font-size: 10px !important;
+}
+
 @media (max-width: 600px) {
     body {
         margin: 0px !important;

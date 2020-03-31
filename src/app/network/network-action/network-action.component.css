@@ -78,8 +78,7 @@
 
 .expanded-detail-cell {
     max-width: 700px;
-    padding-top: 15px;
-    padding-bottom: 15px;
+    padding: 0px 0px 15px 0px !important;
     border-top: 1px solid #c5cae9 !important;
     border-bottom: 1px solid #c5cae9 !important;
 }

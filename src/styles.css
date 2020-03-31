@@ -170,7 +170,7 @@ td.mat-cell {
         margin-bottom: 30px;
     }
     td.mat-cell:last-of-type {
-        padding-right: 14px !important;
+        /* padding-right: 14px !important;*/
     }
     th.mat-header-cell.cdk-column-id.mat-column-id {
         width: 25vw !important;
@@ -337,4 +337,18 @@ input.mat-input-element {
 
 .mat-progress-bar {
     border-radius: 2px;
+}
+
+.mat-tab-label {
+    min-width: 90px !important;
+    height: 36px !important;
+    padding: 0px 0px 0px 0px !important;
+    opacity: 0.9 !important;
+    font-size: 12px;
+    font-weight: 300;
+}
+
+.mat-tab-group.mat-primary .mat-ink-bar, .mat-tab-nav-bar.mat-primary .mat-ink-bar {
+    /*background-color: grey;*/
+    height: 1px;
 }

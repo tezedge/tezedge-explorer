@@ -49,10 +49,21 @@
 
             <ng-container matColumnDef="expandedDetail">
                 <td mat-cell *matCellDef="let action" [attr.colspan]="4" class="expanded-detail-cell">
-                    <div *ngIf="expandedElement == action">
-                        <ngx-json-viewer  [json]="action.payload" [expanded]="false"></ngx-json-viewer>
-                    </div>    
-                </td>
+                    <div *ngIf="expandedElement == action" style="min-width: 700px;">
+                        <mat-tab-group>
+                            <mat-tab label="PREVIEW"> 
+                                <div style="padding: 15px 20px 0px 20px">
+                                    <ngx-json-viewer  [json]="action.payload" [expanded]="false">
+                                    </ngx-json-viewer>
+                                </div>
+                            </mat-tab>
+                            <!--  
+                                <mat-tab label="SOURCE"> 
+                                </mat-tab>
+                            -->
+                          </mat-tab-group>
+                        </div>    
+                    </td>
             </ng-container>
 
             <tr mat-header-row *matHeaderRowDef="['datetime','address','type','message']"></tr>

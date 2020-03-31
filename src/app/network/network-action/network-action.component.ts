@@ -51,8 +51,6 @@ export class NetworkActionComponent implements OnInit {
       .pipe(takeUntil(this.onDestroy$))
       .subscribe(data => {
 
-        console.log('[networkAction]', data);
-
         this.networkAction = data;
 
         this.networkActionShow = data.ids.length > 0 ? true : false;

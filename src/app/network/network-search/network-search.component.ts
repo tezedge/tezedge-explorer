@@ -23,42 +23,28 @@ export class NetworkSearchComponent implements OnInit {
 
   valueChange(input) {
 
-    const searchInput = input;
-    
-    // process block ID
-    const blockPrefix = input.substr(0, 1);
-    if (blockPrefix === "B" && input.length === 51) {
-      
-      console.log('[networkSearchInput]', this.networkSearchInput, input, input.length);
+    // porocess address
+    if (input.indexOf(':') > 0) {
 
-      // clean search
-      this.networkSearchInput = "";
-
-      // change route 
+      // load relevant data for search
       this.store.dispatch({
-        type: 'NETWORK_SEARCH',
-        payload: searchInput,
+        type: 'NETWORK_ACTION_LOAD',
+        payload: '/' + input,
       });
 
-      // this.router.navigate(['/storage', input]);
     }
 
-    // porcess address id
-    const addressPrefix = input.substr(0, 3);
-    if (input.length === 36) {
+    // reset search
+    if (input.length === 0) {
 
-      console.log('[networkSearchInput]', this.networkSearchInput, input, input.length);
-
-      // clean search
-      this.networkSearchInput = "";
-
-      // change route 
+      // dispatch action for search resete
       this.store.dispatch({
-        type: 'NETWORK_SEARCH',
-        payload: searchInput,
+        type: 'NETWORK_ACTION_LOAD',
+        payload: '',
       });
 
-      // this.router.navigate(['/storage', input]);
+      // navigate to default url
+      this.router.navigate(['/network']);
     }
 
   }

@@ -19,11 +19,28 @@ export function reducer(state = initialState, action) {
                 entities: action.payload
                     .reduce((accumulator, networkAction) => {
 
+                        if (networkAction.type === 'metadata') {
 
+                            // console.log("[metadata]", networkAction);
+                            const preview = JSON.stringify(networkAction.message);
+
+                            return {
+                                ...accumulator,
+                                [networkAction.id]: {
+                                    ...networkAction,
+                                    category: 'Meta',
+                                    kind: '',
+                                    payload: networkAction.message,
+                                    preview: preview.length > 20 ? preview.substring(0, 20) + '...' : '' ,
+                                    datetime: moment.utc(Math.ceil(networkAction.timestamp/1000000)).format('HH:mm:ss.SSS, DD MMM YY'),
+                                }
+                            };
+                        }
 
                         if (networkAction.type === 'connection_message') {
 
-                            console.log("[connection_message]", networkAction);
+                            // console.log("[connection_message]", networkAction);
+                            const preview = JSON.stringify(networkAction.message);
 
                             return {
                                 ...accumulator,
@@ -32,7 +49,7 @@ export function reducer(state = initialState, action) {
                                     category: 'Connection',
                                     kind: '',
                                     payload: networkAction.message,
-                                    preview: networkAction.message.substring(0, 20) + '...' ,
+                                    preview: preview.length > 20 ? preview.substring(0, 20) + '...' : '' ,
                                     datetime: moment.utc(Math.ceil(networkAction.timestamp/1000000)).format('HH:mm:ss.SSS, DD MMM YY'),
                                 }
                             };
@@ -40,11 +57,11 @@ export function reducer(state = initialState, action) {
 
                         if (networkAction.type === 'p2p_message') {
 
-                            console.log("[p2p_message]", networkAction);
+                            // console.log("[p2p_message]", networkAction);
 
-                            let payload = { ...networkAction.message[0] };
+                            const payload = { ...networkAction.message[0] };
                             delete payload.type;
-                            let preview = JSON.stringify(payload);
+                            const preview = JSON.stringify(payload);
                             return {
                                 ...accumulator,
                                 [networkAction.id]: {
@@ -58,7 +75,7 @@ export function reducer(state = initialState, action) {
                             };
                         }
 
-                        console.log("[default]", networkAction);
+                        // console.log("[default]", networkAction);
 
                         return {
                             ...accumulator,

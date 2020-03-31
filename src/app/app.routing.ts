@@ -17,7 +17,7 @@ export const AppRouting: Routes = [
   { path: 'monitoring', component: MonitoringComponent },
 
   { path: 'network', component: NetworkComponent },
-  { path: 'network/:action', component: NetworkActionDetailComponent },
+  { path: 'network/:address', component: NetworkComponent },
 
   { path: 'storage', component: StorageComponent },
   { path: 'storage/:search', component: StorageActionComponent },

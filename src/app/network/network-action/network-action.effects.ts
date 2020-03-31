@@ -17,7 +17,7 @@ export class NetworkActionEffects {
         withLatestFrom(this.store, (action: any, state) => ({ action, state })),
 
         switchMap(({ action, state }) => {
-            return this.http.get(environment.api.http + '/p2p/0/450')
+            return this.http.get(environment.api.http + '/p2p/0/450' + action.payload)
         }),
 
         // dispatch action

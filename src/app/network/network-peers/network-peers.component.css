@@ -2,6 +2,9 @@
     text-overflow: ellipsis;
     overflow: hidden;
     white-space: nowrap;
+    padding-left: 16px !important;
+
+
     /* width: 20vw;  */
 }
 

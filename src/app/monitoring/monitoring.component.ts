@@ -33,8 +33,8 @@ export class MonitoringComponent implements OnInit, OnDestroy {
     });
 
     // close all observables
-    this.onDestroy$.next();
-    this.onDestroy$.complete();
+    // this.onDestroy$.next();
+    // this.onDestroy$.complete();
 
   }
 

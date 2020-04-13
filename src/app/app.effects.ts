@@ -7,8 +7,16 @@ import { webSocket } from 'rxjs/webSocket';
 
 import { environment } from '../environments/environment';
 
-let onDestroy$ = new Subject();
+const onDestroy$ = new Subject();
 let wsCounter = 0;
+
+const webSocketConnection$ = (
+    webSocket({
+      url: environment.api.ws,
+      WebSocketCtor: WebSocket,
+    })
+  );
+
 @Injectable()
 export class AppEffects {
 
@@ -23,12 +31,12 @@ export class AppEffects {
         // connect to ws
         switchMap(({ action, state }) => {
             // console.log('[SETTINGS_INIT_SUSCCESS]', action, state);
-            return webSocket(state.settings.endpoint).pipe(
+            return webSocketConnection$.pipe(
                 takeUntil(onDestroy$),
                 filter((ws: any) => {
                     // even if ws is turned off update state cca every minute
                     wsCounter = wsCounter < 700 ? wsCounter + 1 : 0;
-                    // console.log('[state.monitoring] open', state.app.monitoring.open);
+                    // console.log('[state.monitoring] open', state.app.monitoring.open, wsCounter);
                     return state.app.monitoring.open || wsCounter < 6;
                 })
                 // tap(data => console.log('[METRICS_SUBSCRIBE][ws] payload: ', data, state.settings.endpoint)),
@@ -55,20 +63,24 @@ export class AppEffects {
     // close WS
     @Effect()
     networkClose$ = this.actions$.pipe(
-        ofType('NETWORK_CLOSE'),
+        ofType('MONITORING_CLOSE'),
 
         tap(() => {
+            console.log('[NETWORK_CLOSE]');
             // generate observables and close websocket
             onDestroy$.next();
-            // this.onDestroy$.complete();
+            // onDestroy$.complete();
+
+            // close websocket
+            // webSocketConnection$.unsubscribe();
         }),
 
-        map((data) => ({ type: 'NETWORK_CLOSE_SUCCESS' })),
+        map((data) => ({ type: 'MONITORING_CLOSE_SUCCESS' })),
 
         catchError((error, caught) => {
             console.error(error);
             this.store.dispatch({
-                type: 'NETWORK_CLOSE_ERROR',
+                type: 'MONITORING_CLOSE_ERROR',
                 payload: error,
             });
             return caught;

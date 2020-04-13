@@ -17,18 +17,9 @@ export class NetworkComponent implements OnInit {
 
   ngOnInit() {
 
-    // start ws stream
-    this.store.dispatch({
-      type: 'network_OPEN',
-    })
   }
 
   ngOnDestroy() {
-
-    // stop ws stream 
-    this.store.dispatch({
-      type: 'network_CLOSE',
-    })
 
     // close all observables
     this.onDestroy$.next();

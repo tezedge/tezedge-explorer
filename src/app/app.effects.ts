@@ -7,7 +7,7 @@ import { webSocket } from 'rxjs/webSocket';
 
 import { environment } from '../environments/environment';
 
-let onDestroy$ = new Subject()
+let onDestroy$ = new Subject();
 let wsCounter = 0;
 @Injectable()
 export class AppEffects {
@@ -15,7 +15,7 @@ export class AppEffects {
     // effect to handle subscription to metrics WS
     @Effect()
     MetriscsSubscirbeEffect$ = this.actions$.pipe(
-        ofType('METRICS_SUBSCRIBE', 'NETWORK_OPEN'),
+        ofType('METRICS_SUBSCRIBE', 'MONITORING_OPEN'),
 
         // merge state
         withLatestFrom(this.store, (action: any, state) => ({ action, state })),
@@ -28,8 +28,8 @@ export class AppEffects {
                 filter((ws: any) => {
                     // even if ws is turned off update state cca every minute
                     wsCounter = wsCounter < 700 ? wsCounter + 1 : 0;
-                    // console.log('[state.network] open', state.app.network.open);
-                    return state.app.network.open || wsCounter < 6;
+                    // console.log('[state.monitoring] open', state.app.monitoring.open);
+                    return state.app.monitoring.open || wsCounter < 6;
                 })
                 // tap(data => console.log('[METRICS_SUBSCRIBE][ws] payload: ', data, state.settings.endpoint)),
             );

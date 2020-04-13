@@ -37,7 +37,7 @@ const initialState = {
         value: '',
         valueUpdate: '',
     },
-    network: {
+    monitoring: {
         open: false
     }
 
@@ -62,19 +62,19 @@ export function reducer(state = initialState, action) {
             };
         }
 
-        case 'NETWORK_OPEN': {
+        case 'MONITORING_OPEN': {
             return {
                 ...state,
-                network: {
+                monitoring: {
                     open: true,
                 }
             };
         }
 
-        case 'NETWORK_CLOSE': {
+        case 'MONITORING_CLOSE': {
             return {
                 ...state,
-                network: {
+                monitoring: {
                     open: false,
                 }
             };

@@ -1,7 +1,43 @@
+<style>
+    .network-action-filter {
+        width: 800px;
+        padding: 2px 0px 2px 0px;
+        height: 48px;
+
+        display: flex;
+        align-items: center;
+        /*justify-content: center;*/
+    }
+
+    .network-action-filter button {
+        border:1px solid #e0e0e0;
+        margin-right: 2px;
+        line-height: 32px !important;
+        font-weight: 300 !important;
+        background-color: #f5f9fc;
+        min-width: 100px;
+    }
+    
+</style>
+
 <div class="network-action-container">
+    
+    <div class="network-action-filter">
+            <button mat-flat-button>
+                Local
+            </button>
+            <button mat-flat-button style="background-color:white;">
+                
+                    <mat-icon style="font-size: 18px;margin-left:-8px;height:20px;width:20px;">
+                        check
+                    </mat-icon>
+                
+                Remote
+            </button>       
+    </div>
 
     <div class="network-action">
-
+        
         <table mat-table [dataSource]="tableDataSource" multiTemplateDataRows>
 
             <ng-container matColumnDef="datetime">

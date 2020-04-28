@@ -17,7 +17,7 @@ export class NetworkActionEffects {
         withLatestFrom(this.store, (action: any, state) => ({ action, state })),
 
         switchMap(({ action, state }) => {
-            return this.http.get(environment.api.http + '/p2p/0/900' + action.payload)
+            return this.http.get(environment.api.http + '/p2p/0/3600' + action.payload)
         }),
 
         // dispatch action
@@ -32,6 +32,24 @@ export class NetworkActionEffects {
         })
 
     )
+
+
+    // @Effect()
+    // NetworkActionFilter$ = this.actions$.pipe(
+    //     ofType('NETWORK_ACTION_FILTER'),
+
+    //     // dispatch action
+    //     map((payload) => ({ type: 'NETWORK_ACTION_LOAD_SUCCESS', payload: payload })),
+    //     catchError((error, caught) => {
+    //         console.error(error)
+    //         this.store.dispatch({
+    //             type: 'NETWORK_ACTION_LOAD_ERROR',
+    //             payload: error,
+    //         });
+    //         return caught;
+    //     })
+
+    // )
 
     constructor(
         private http: HttpClient,

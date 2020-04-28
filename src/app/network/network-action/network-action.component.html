@@ -15,7 +15,22 @@
         line-height: 32px !important;
         font-weight: 300 !important;
         background-color: #f5f9fc;
-        min-width: 100px;
+        min-width: 155px;
+    }
+    .network-action-filter button mat-icon {
+        display: none;
+    }
+
+    .network-action-filter button.active {
+        background-color:white;
+    }
+
+    .network-action-filter button.active mat-icon {
+        display: inline-block;
+        font-size: 18px;
+        margin-left: -8px;
+        height: 20px;
+        width: 20px;
     }
     
 </style>
@@ -23,18 +38,50 @@
 <div class="network-action-container">
     
     <div class="network-action-filter">
-            <button mat-flat-button>
-                Local
-            </button>
-            <button mat-flat-button style="background-color:white;">
-                
-                    <mat-icon style="font-size: 18px;margin-left:-8px;height:20px;width:20px;">
-                        check
-                    </mat-icon>
-                
-                Remote
-            </button>       
+        <button mat-flat-button [class.active]="networkAction.filter.local" (click)="filter('local')">
+            <mat-icon>check</mat-icon>
+            Local
+        </button>
+        <button mat-flat-button [class.active]="networkAction.filter.remote" (click)="filter('remote')">
+            <mat-icon>check</mat-icon>
+            Remote
+        </button>       
+        <!--&nbsp;&nbsp;&nbsp;
+        <button mat-flat-button [class.active]="networkAction.filter.meta" (click)="filter('meta')">
+            <mat-icon>check</mat-icon>
+            Meta
+        </button>    
+        <button mat-flat-button [class.active]="networkAction.filter.connection" (click)="filter('connection')">
+            <mat-icon>check</mat-icon>
+            Connection
+        </button>-->
     </div>
+    <!--
+    <div class="network-action-filter">   
+
+        <button mat-flat-button [class.active]="networkAction.filter.current_head" (click)="filter('current_head')">
+            <mat-icon>check</mat-icon>
+            Current Head
+        </button>    
+        <button mat-flat-button [class.active]="networkAction.filter.current_branch" (click)="filter('current_branch')">
+            <mat-icon>check</mat-icon>
+            Current Branch
+        </button>   
+        &nbsp;&nbsp;&nbsp;
+        <button mat-flat-button [class.active]="networkAction.filter.block_headers" (click)="filter('block_headers')">
+            <mat-icon>check</mat-icon>
+            Block Headers
+        </button>    
+        <button mat-flat-button [class.active]="networkAction.filter.block_operatons" (click)="filter('block_operatons')">
+            <mat-icon>check</mat-icon>
+            Block Operations
+        </button>  
+        &nbsp;&nbsp;&nbsp; 
+        <button mat-flat-button [class.active]="networkAction.filter.bootstrap" (click)="filter('bootstrap')">
+            <mat-icon>check</mat-icon>
+            Bootstrap
+        </button>    
+    </div>-->
 
     <div class="network-action">
         

@@ -17,6 +17,8 @@ export class NetworkActionComponent implements OnInit {
   public networkAction
   public networkActionList
   public networkActionShow
+  public networkActionFilter
+
 
   public networkJSONView
 
@@ -53,8 +55,8 @@ export class NetworkActionComponent implements OnInit {
 
         this.networkAction = data;
 
-        this.networkActionShow = data.ids.length > 0 ? true : false;
-        this.networkActionList = data.ids.map(id => ({ id, ...data.entities[id] }));
+        this.networkActionShow = data.idsFilter.length > 0 ? true : false;
+        this.networkActionList = data.idsFilter.map(id => ({ id, ...data.entities[id] }));
 
         this.tableDataSource = new MatTableDataSource<any>(this.networkActionList);
         this.tableDataSource.paginator = this.paginator;
@@ -67,6 +69,16 @@ export class NetworkActionComponent implements OnInit {
   expandedDetail(row) {
     // this.storageActionDetail = this.storageActionDetail ? false : true;
     console.log('[network][action] expandedDetail', this.networkAction, row);
+  }
+
+  filter(filter) {
+
+    // dispatch action
+    this.store.dispatch({
+      type: 'NETWORK_ACTION_FILTER',
+      payload: filter,
+    });
+
   }
 
   ngOnDestroy() {

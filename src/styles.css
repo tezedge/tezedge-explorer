@@ -112,11 +112,11 @@ table {
 }
 
 tr.mat-header-row {
-    height: 46px !important;
+    height: 38px !important;
 }
 
 .mat-paginator-container {
-    min-height: 46px !important;
+    min-height: 38px !important;
 }
 
 tr.mat-footer-row,

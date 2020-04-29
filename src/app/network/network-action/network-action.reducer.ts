@@ -7,6 +7,13 @@ const initialState: any = {
     filter: {
         local: true,
         remote: true,
+        connection: true,
+        metadata: true,
+        bootstrap: true,
+        current_head: true,
+        current_branch: true,
+        block_headers: true,
+        block_operatons: true,
     },
 };
 
@@ -127,7 +134,7 @@ export function networkActionSourceFilter(entity, filter) {
         }
 
         // process all connection messages
-        if (entity.type === 'connection_message') {
+        if (entity.type === 'connection_message' && filter.connection ) {
 
             if (filter.local && !entity.incoming) { return true; }
             if (filter.remote && entity.incoming) { return true; }
@@ -135,7 +142,7 @@ export function networkActionSourceFilter(entity, filter) {
         }
 
         // process all meta messages
-        if (entity.type === 'metadata') {
+        if (entity.type === 'metadata' && filter.metadata ) {
 
             if (filter.local && !entity.incoming) { return true; }
             if (filter.remote && entity.incoming) { return true; }
@@ -147,48 +154,40 @@ export function networkActionSourceFilter(entity, filter) {
 
             if (filter.local) {
 
-                if (entity.kind === 'bootstrap' && !entity.incoming) { return true; }
+                if (filter.bootstrap && entity.kind === 'bootstrap' && !entity.incoming) { return true; }
 
-                if (entity.kind === 'get_current_head' && !entity.incoming) { return true; }
-                if (entity.kind === 'current_head' && entity.incoming) { return true; }
+                if (filter.current_head && entity.kind === 'get_current_head' && !entity.incoming) { return true; }
+                if (filter.current_head && entity.kind === 'current_head' && entity.incoming) { return true; }
 
-                if (entity.kind === 'get_current_branch' && !entity.incoming) { return true; }
-                if (entity.kind === 'current_branch' && entity.incoming) { return true; }
+                if (filter.current_branch && entity.kind === 'get_current_branch' && !entity.incoming) { return true; }
+                if (filter.current_branch && entity.kind === 'current_branch' && entity.incoming) { return true; }
 
-                if (entity.kind === 'get_block_headers' && !entity.incoming) { return true; }
-                if (entity.kind === 'block_header' && entity.incoming) { return true; }
+                if (filter.block_headers && entity.kind === 'get_block_headers' && !entity.incoming) { return true; }
+                if (filter.block_headers && entity.kind === 'block_header' && entity.incoming) { return true; }
 
-                if (entity.kind === 'get_operations_for_blocks' && !entity.incoming) { return true; }
-                if (entity.kind === 'operations_for_blocks' && entity.incoming) { return true; }
+                if (filter.block_operatons && entity.kind === 'get_operations_for_blocks' && !entity.incoming) { return true; }
+                if (filter.block_operatons && entity.kind === 'operations_for_blocks' && entity.incoming) { return true; }
 
             }
 
             if (filter.remote) {
 
-                if (entity.kind === 'bootstrap' && entity.incoming) { return true; }
+                if (filter.bootstrap && entity.kind === 'bootstrap' && entity.incoming) { return true; }
 
-                if (entity.kind === 'get_current_head' && entity.incoming) { return true; }
-                if (entity.kind === 'current_head' && !entity.incoming) { return true; }
+                if (filter.current_head &&  entity.kind === 'get_current_head' && entity.incoming) { return true; }
+                if (filter.current_head &&  entity.kind === 'current_head' && !entity.incoming) { return true; }
 
-                if (entity.kind === 'get_current_branch' && entity.incoming) { return true; }
-                if (entity.kind === 'current_branch' && !entity.incoming) { return true; }
+                if (filter.current_branch && entity.kind === 'get_current_branch' && entity.incoming) { return true; }
+                if (filter.current_branch && entity.kind === 'current_branch' && !entity.incoming) { return true; }
 
-                if (entity.kind === 'get_block_headers' && entity.incoming) { return true; }
-                if (entity.kind === 'block_header' && !entity.incoming) { return true; }
+                if (filter.block_headers && entity.kind === 'get_block_headers' && entity.incoming) { return true; }
+                if (filter.block_headers && entity.kind === 'block_header' && !entity.incoming) { return true; }
 
-                if (entity.kind === 'get_operations_for_blocks' && entity.incoming) { return true; }
-                if (entity.kind === 'operations_for_blocks' && !entity.incoming) { return true; }
+                if (filter.block_operatons && entity.kind === 'get_operations_for_blocks' && entity.incoming) { return true; }
+                if (filter.block_operatons && entity.kind === 'operations_for_blocks' && !entity.incoming) { return true; }
 
             }
 
-        }
-
-        if (filter.remote) {
-            console.log(entity);
-        }
-
-        if (filter.local) {
-            console.log(entity);
         }
 
         return false;

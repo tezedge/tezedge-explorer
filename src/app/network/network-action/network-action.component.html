@@ -1,8 +1,8 @@
 <style>
     .network-action-filter {
         width: 800px;
-        padding: 2px 0px 2px 0px;
-        height: 48px;
+        padding: 10px 0px 10px 0px;
+        height: 32px;
 
         display: flex;
         align-items: center;
@@ -15,7 +15,7 @@
         line-height: 32px !important;
         font-weight: 300 !important;
         background-color: #f5f9fc;
-        min-width: 155px;
+        min-width: 154px;
     }
     .network-action-filter button mat-icon {
         display: none;
@@ -46,18 +46,20 @@
             <mat-icon>check</mat-icon>
             Remote
         </button>       
-        <!--&nbsp;&nbsp;&nbsp;
-        <button mat-flat-button [class.active]="networkAction.filter.meta" (click)="filter('meta')">
+        <!-- &nbsp;&nbsp;&nbsp;
+        <button mat-flat-button [class.active]="networkAction.filter.metadata" (click)="filter('metadata')">
             <mat-icon>check</mat-icon>
             Meta
         </button>    
         <button mat-flat-button [class.active]="networkAction.filter.connection" (click)="filter('connection')">
             <mat-icon>check</mat-icon>
             Connection
-        </button>-->
+        </button>
+        -->
     </div>
+
     <!--
-    <div class="network-action-filter">   
+    <div class="network-action-filter"  style="padding-bottom: 10px;">   
 
         <button mat-flat-button [class.active]="networkAction.filter.current_head" (click)="filter('current_head')">
             <mat-icon>check</mat-icon>
@@ -81,7 +83,7 @@
             <mat-icon>check</mat-icon>
             Bootstrap
         </button>    
-    </div>-->
+    </div> -->
 
     <div class="network-action">
         

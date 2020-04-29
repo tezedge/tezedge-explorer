@@ -17,12 +17,15 @@ import { RouterStateUrl } from './app.routing';
 
 import * as fromApp from './app.reducer';
 import * as fromSettings from './settings/settings.reducer';
+
 import * as fromNetworkAction from './network/network-action/network-action.reducer';
 import * as fromNetworkActionDetail from './network/network-action-detail/network-action-detail.reducer';
 import * as fromNetworkPeers from './network/network-peers/network-peers.reducer';
 import * as fromNetworkStats from './network/network-stats/network-stats.reducer';
 import * as fromNetworkHistory from './network/network-history/network-history.reducer';
 import * as fromNetworkEndpoint from './network/network-endpoint/network-endpoint.reducer';
+
+import * as fromEndpointsAction from './endpoints/endpoints-action/endpoints-action.reducer';
 
 import * as fromStorageBlock from './storage/storage-block/storage-block.reducer';
 import * as fromStorageAction from './storage/storage-action/storage-action.reducer';
@@ -37,6 +40,7 @@ export interface State {
     networkStats: any;
     networkHistory: any;
     networkEndpoint: any;
+    endpointsAction: any;
     storageBlock: any;
     storageAction: any;
     routerReducer: fromRouter.RouterReducerState<RouterStateUrl>;
@@ -52,6 +56,7 @@ export const reducers: ActionReducerMap<State> = {
     networkStats: fromNetworkStats.reducer,
     networkHistory: fromNetworkHistory.reducer,
     networkEndpoint: fromNetworkEndpoint.reducer,
+    endpointsAction: fromEndpointsAction.reducer,
     storageBlock: fromStorageBlock.reducer,
     storageAction: fromStorageAction.reducer,
     routerReducer: fromRouter.routerReducer,

@@ -22,6 +22,8 @@ import { AppEffects } from './app.effects';
 import { NetworkActionEffects } from './network/network-action/network-action.effects';
 import { NetworkActionDetailEffects } from './network/network-action-detail/network-action-detail.effects';
 
+import { EndpointsActionEffects } from './endpoints/endpoints-action/endpoints-action.effects';
+
 import { StorageBlockEffects } from './storage/storage-block/storage-block.effects';
 import { StorageActionEffects } from './storage/storage-action/storage-action.effects';
 import { StorageSearchEffects } from './storage/storage-search/storage-search.effects';
@@ -129,6 +131,7 @@ import { EndpointsComponent } from './endpoints/endpoints.component';
       StorageBlockEffects,
       StorageActionEffects,
       StorageSearchEffects,
+      EndpointsActionEffects,
       SettingsEffects,
     ]),
 

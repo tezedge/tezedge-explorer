@@ -32,14 +32,70 @@
         height: 20px;
         width: 20px;
     }
+
+
     
+    .endpoints-action-container {
+        background-color: #F5F9FC;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+    }
+
+    .endpoints-action {
+        background-color: white;
+        width: 800px;
+        border: 1px solid #e0e0e0;
+        border-radius: 4px;
+        margin-top: 30px;
+    }
+
+    .endpoints-action th.mat-header-cell.cdk-column-datetime.mat-column-datetime {
+        text-overflow: ellipsis;
+        overflow: hidden;
+        white-space: nowrap;
+    }
+    .endpoints-action .mat-cell.cdk-column-datetime.mat-column-datetime {
+        padding: 20px;
+        width: 140px;
+    }
+
+
+    .endpoints-action th.mat-header-cell.cdk-column-address.mat-column-address {
+        text-overflow: ellipsis;
+        overflow: hidden;
+        white-space: nowrap;
+    }
+    .endpoints-action .mat-cell.cdk-column-address.mat-column-address {
+        width: 100px;
+    }
+
+    .endpoints-action th.mat-header-cell.cdk-column-type.mat-column-type {
+        text-overflow: ellipsis;
+        overflow: hidden;
+        white-space: nowrap;
+    }
+    .endpoints-action .mat-cell.cdk-column-type.mat-column-type {
+        width: 180px;
+    }
+
+    .endpoints-action th.mat-header-cell.cdk-column-message.mat-column-message {
+        text-overflow: ellipsis;
+        overflow: hidden;
+        white-space: nowrap;
+    }
+    .endpoints-action .mat-cell.cdk-column-message.mat-column-message {
+        padding-right: 10px;
+        width: 140px;
+    }
+
 </style>
 
 <div class="endpoints-action-container">
   
     <div class="endpoints-action">
-        {{ endpointsAction | json }}
-        <!--
+
         <table mat-table [dataSource]="tableDataSource" multiTemplateDataRows>
 
             <ng-container matColumnDef="datetime">
@@ -61,16 +117,7 @@
             <ng-container matColumnDef="type">
                 <th mat-header-cell *matHeaderCellDef>Type</th>
                 <td mat-cell *matCellDef="let element">
-                    <span *ngIf="element" style="text-align: left; cursor: pointer;"
-                    (click)="expandedElement = element">
-                        <span *ngIf="!element.incoming">
-                            <svg-icon icon="upload"></svg-icon>
-                        </span>    
-                        <span *ngIf="element.incoming">
-                            <svg-icon icon="download"></svg-icon>
-                        </span>
-                        {{ element.category }} <span *ngIf="element.kind"> | {{ element.kind }} </span>
-                    </span>
+                    {{ element.message.type }} 
                 </td>
             </ng-container>
 
@@ -79,7 +126,7 @@
                 <td mat-cell *matCellDef="let element">
                     <span *ngIf="element" style="text-align: left; cursor: pointer;"
                             (click)="expandedElement = element">
-                        {{ element.preview}}
+                        {{ element.message.payload }}
                     </span>
                 </td>
             </ng-container>
@@ -110,7 +157,6 @@
 
         <mat-paginator [pageSizeOptions]="[15]"></mat-paginator>
         
-    -->
     </div>
 
 </div>

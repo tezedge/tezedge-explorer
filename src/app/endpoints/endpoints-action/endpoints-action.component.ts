@@ -53,8 +53,8 @@ export class EndpointsActionComponent implements OnInit {
 
         this.endpointsAction = data;
 
-        this.endpointsActionShow = data.idsFilter.length > 0 ? true : false;
-        this.endpointsActionList = data.idsFilter.map(id => ({ id, ...data.entities[id] }));
+        this.endpointsActionShow = data.ids.length > 0 ? true : false;
+        this.endpointsActionList = data.ids.map(id => ({ id, ...data.entities[id] }));
 
         this.tableDataSource = new MatTableDataSource<any>(this.endpointsActionList);
         this.tableDataSource.paginator = this.paginator;

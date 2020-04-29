@@ -89,12 +89,20 @@
                         EXPLORER
                     </span>
 
+                    <a mat-list-item routerLink="/endpoints" [style.color]="app.sidenav.color">
+                        <span>
+                            <svg-icon icon="peer"></svg-icon>
+                            Endpoints
+                        </span>
+                    </a>
+                    
                     <a mat-list-item routerLink="/network" [style.color]="app.sidenav.color">
                         <span>
                             <svg-icon icon="peer"></svg-icon>
                             Network
                         </span>
                     </a>
+
 
                     <a mat-list-item routerLink="/storage" (click)="isMobile && start.toggle()" [style.color]="app.sidenav.color">
                         <span>

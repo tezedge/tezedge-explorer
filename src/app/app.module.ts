@@ -71,6 +71,9 @@ import { MonitoringComponent } from './monitoring/monitoring.component';
 import { ServiceWorkerModule } from '@angular/service-worker';
 
 import { NgxJsonViewerModule } from 'ngx-json-viewer';
+import { EndpointsActionComponent } from './endpoints/endpoints-action/endpoints-action.component';
+import { EndpointsSearchComponent } from './endpoints/endpoints-search/endpoints-search.component';
+import { EndpointsComponent } from './endpoints/endpoints.component';
 
 
 @NgModule({
@@ -92,7 +95,10 @@ import { NgxJsonViewerModule } from 'ngx-json-viewer';
     NetworkActionComponent,
     NetworkSearchComponent,
     NetworkActionDetailComponent,
-    MonitoringComponent
+    MonitoringComponent,
+    EndpointsActionComponent,
+    EndpointsSearchComponent,
+    EndpointsComponent
   ],
   imports: [
     BrowserModule,

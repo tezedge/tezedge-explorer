@@ -4,6 +4,7 @@ import { RouterStateSerializer } from '@ngrx/router-store';
 
 import { NetworkComponent } from './network/network.component';
 import { NetworkActionDetailComponent } from './network/network-action-detail/network-action-detail.component';
+import { EndpointsComponent } from './endpoints/endpoints.component';
 import { MonitoringComponent } from './monitoring/monitoring.component';
 import { StorageComponent } from './storage/storage.component';
 import { StorageActionComponent } from './storage/storage-action/storage-action.component';
@@ -18,6 +19,8 @@ export const AppRouting: Routes = [
 
   { path: 'network', component: NetworkComponent },
   { path: 'network/:address', component: NetworkComponent },
+
+  { path: 'endpoints', component: EndpointsComponent },
 
   { path: 'storage', component: StorageComponent },
   { path: 'storage/:search', component: StorageActionComponent },

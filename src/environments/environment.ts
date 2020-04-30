@@ -8,9 +8,9 @@ export const environment = {
     // ws: 'ws://127.0.0.1:4927/',
     // ws: 'ws://95.217.115.243::4927/',
     // https: 'https://carthage.tezedge.com:8732',
-    // http: 'https://carthage.tezedge.com:8732',
+    http: 'https://carthage.tezedge.com:8732',
     ws: 'wss://carthage.tezedge.com',
-    http: 'http://116.202.246.107:18732',
+    // http: 'http://116.202.246.107:18732',
     // ws: 'ws://127.0.0.1:4927',
     mock: 'http://127.0.0.1:3000'
     }

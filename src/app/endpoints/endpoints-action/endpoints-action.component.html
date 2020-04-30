@@ -57,7 +57,6 @@
         white-space: nowrap;
     }
     .endpoints-action .mat-cell.cdk-column-datetime.mat-column-datetime {
-        padding: 20px;
         width: 140px;
     }
 
@@ -90,6 +89,38 @@
         width: 140px;
     }
 
+
+    .detail-expanded {
+        display: table-row;
+        background-color: #F5F9FC;
+        min-height: 36px !important;
+    }
+
+    .detail-colapsed {
+        display: none;
+    }
+
+    .row-expanded {
+        background-color: #F5F9FC;
+    }
+
+    .row-expanded td.mat-cell {
+        border-top: 1px solid #c5cae9 !important;
+        border-bottom: 1px solid #F5F9FC !important;
+    }
+
+    .row-colapsed {
+        background-color: #FFFFFF;
+    }
+
+    .expanded-detail-cell {
+        max-width: 700px;
+        padding: 0px 0px 15px 0px !important;
+        border-top: 1px solid #c5cae9 !important;
+        border-bottom: 1px solid #c5cae9 !important;
+    }
+
+
 </style>
 
 <div class="endpoints-action-container">
@@ -117,7 +148,10 @@
             <ng-container matColumnDef="type">
                 <th mat-header-cell *matHeaderCellDef>Type</th>
                 <td mat-cell *matCellDef="let element">
-                    {{ element.message.type }} 
+                    <span *ngIf="element.message.type==='response'" (click)="expandedElement = element"> Response </span>
+                    <span *ngIf="element.message.type==='request'"> {{ element.message.method }} </span>
+
+                    {{ element.message.path }} 
                 </td>
             </ng-container>
 
@@ -126,7 +160,7 @@
                 <td mat-cell *matCellDef="let element">
                     <span *ngIf="element" style="text-align: left; cursor: pointer;"
                             (click)="expandedElement = element">
-                        {{ element.message.payload }}
+                        {{ element.preview }}
                     </span>
                 </td>
             </ng-container>

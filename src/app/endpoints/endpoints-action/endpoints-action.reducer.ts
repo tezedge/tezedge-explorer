@@ -20,11 +20,14 @@ export function reducer(state = initialState, action) {
                 entities: action.payload
                     .reduce((accumulator, endpointAction) => {
 
+                        const preview = JSON.stringify(endpointAction.message.payload);
+
                         return {
                             ...accumulator,
                             [endpointAction.id]: {
                                 ...endpointAction,
                                 payload: endpointAction.message,
+                                preview: preview.length > 20 ? preview.substring(0, 20) + '...' : '',
                                 datetime: moment.utc(Math.ceil(endpointAction.timestamp / 1000000)).format('HH:mm:ss.SSS, DD MMM YY'),
                             }
                         };

@@ -64,7 +64,7 @@ export class EndpointsActionComponent implements OnInit {
   }
 
   expandedDetail(row) {
-    // console.log('[endpoints][action] expandedDetail', this.endpointsAction, row);
+    console.log('[endpoints][action] expandedDetail', this.endpointsAction, row);
   }
 
   ngOnDestroy() {

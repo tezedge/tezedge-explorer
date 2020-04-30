@@ -148,10 +148,17 @@
             <ng-container matColumnDef="type">
                 <th mat-header-cell *matHeaderCellDef>Type</th>
                 <td mat-cell *matCellDef="let element">
-                    <span *ngIf="element.message.type==='response'" (click)="expandedElement = element"> Response </span>
-                    <span *ngIf="element.message.type==='request'"> {{ element.message.method }} </span>
-
-                    {{ element.message.path }} 
+                    <span *ngIf="element.message.type==='response'" (click)="expandedElement = element"
+                        style="text-align: left; cursor: pointer;"> 
+                        <svg-icon icon="upload"></svg-icon>
+                        {{ element.message.status }} 
+                    </span>
+                    <span *ngIf="element.message.type==='request'" (click)="expandedElement = element"
+                        style="text-align: left; cursor: pointer;"> 
+                        <svg-icon icon="download"></svg-icon>
+                        {{ element.message.method }} 
+                        {{ element.message.path }} 
+                    </span>
                 </td>
             </ng-container>
 
@@ -171,6 +178,7 @@
                         <mat-tab-group>
                             <mat-tab label="PREVIEW"> 
                                 <div style="padding: 15px 20px 0px 20px">
+                                   <!-- {{ action.message.payload | json}} -->
                                     <ngx-json-viewer  [json]="action.payload" [expanded]="false">
                                     </ngx-json-viewer>
                                 </div>

@@ -25,11 +25,16 @@ export function reducer(state = initialState, action) {
                             payload: endpointAction.message.payload,
                         };
 
+                        console.log('[ENDPOINTS_ACTION_LOAD_SUCCESS]', endpointAction.message );
+
+                        // try() {}
+                        debugger
+
                         return {
                             ...accumulator,
                             [endpointAction.id]: {
                                 ...endpointAction,
-                                payload: message,
+                                message: message,
                                 preview: message.payload.length > 20 ? message.payload.substring(0, 20) + '...' : '',
                                 datetime: moment.utc(Math.ceil(endpointAction.timestamp / 1000000)).format('HH:mm:ss.SSS, DD MMM YY'),
                             }

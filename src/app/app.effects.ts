@@ -12,7 +12,7 @@ let wsCounter = 0;
 
 const webSocketConnection$ = (
     webSocket({
-      url: environment.api.ws,
+      url: environment.api.default.ws,
       WebSocketCtor: WebSocket,
     })
   );

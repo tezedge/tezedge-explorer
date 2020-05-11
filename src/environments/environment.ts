@@ -5,16 +5,26 @@
 export const environment = {
   production: false,
   api: {
-    // ws: 'ws://127.0.0.1:4927/',
-    // ws: 'ws://95.217.115.243::4927/',
-    // https: 'https://carthage.tezedge.com:8732',
-    http: 'https://carthage.tezedge.com:8732',
-    ws: 'wss://carthage.tezedge.com',
-    // http: 'http://116.202.246.107:18732',
-    // ws: 'ws://127.0.0.1:4927',
-    mock: 'http://127.0.0.1:3000'
+    default: {
+      ws: 'wss://carthage.tezedge.com',
+      http: 'https://carthage.tezedge.com:8732',
+    }, 
+    list:[
+        {
+          ws: 'ws://127.0.0.1:4927/',
+          http: 'http://127.0.0.1:8732',
+        },
+        {
+          ws: 'wss://carthage.tezedge.com',
+          http: 'https://carthage.tezedge.com:8732',
+        },
+        {
+          ws: 'wss://',
+          http: 'http://116.202.246.107:18732',
+        },
+      ],
     }
-};
+ };
 
 /*
  * For easier debugging in development mode, you can import the following file

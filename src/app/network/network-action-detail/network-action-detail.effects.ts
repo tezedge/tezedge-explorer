@@ -17,7 +17,7 @@ export class NetworkActionDetailEffects {
         withLatestFrom(this.store, (action: any, state) => ({ action, state })),
 
         // switchMap(({ action, state }) => {
-        //     return this.http.get(environment.api.mock + '/p2p-detail/')
+        //     return this.http.get(environment.api.default.mock + '/p2p-detail/')
         // }),
 
         // dispatch action

@@ -17,7 +17,7 @@ export class SettingsEffects {
         switchMap(() => {
             // localStorage.setItem('endpoint', 'wss://babylon.tezedge.com/');
             // get data from localStorage ( sync call)
-            const endpoint: any = localStorage.getItem('endpoint') ? localStorage.getItem('endpoint') : environment.api.ws;
+            const endpoint: any = localStorage.getItem('endpoint') ? localStorage.getItem('endpoint') : environment.api.default.ws;
             console.log('[SETTINGS_INIT]', endpoint);
             return of([]).pipe(
                 map(() => ({ endpoint: endpoint }))

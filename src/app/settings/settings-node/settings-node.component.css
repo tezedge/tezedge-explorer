@@ -1,0 +1,34 @@
+.settings-node {
+    position: absolute;
+    min-width: 200px;
+    height: 65px;
+    left: 14px;
+    background: #1C202B;
+    border-radius: 4px;
+    bottom: 20px;
+    z-index: 1;
+}
+
+.settings-node-status {
+    color: #c4cfdc7a;
+    font-size: 12px;
+    margin: 12px 0px 0px 12px;
+}
+
+.settings-node-status-icon {
+    font-size: 12px;
+    padding-left:121px;
+    height: 20px;
+    color:#48e5d061
+}
+
+.settings-node-expand-input { 
+    padding-left: 12px
+}
+
+.settings-node-expand-icon { 
+    display: flex;
+    font-size:16px;
+    margin: -18px 0px 0px 165px;
+    color:#c4cfdc
+}

@@ -10,7 +10,7 @@ export function reducer(state = initialState, action) {
             return {
                 ...state,
                 connected: false,
-                status: 'Reconnecting ',
+                status: 'reconnecting ',
             }
         }
 
@@ -18,8 +18,7 @@ export function reducer(state = initialState, action) {
             return {
                 ...state,
                 connected: false,
-                status: 'Disconnected',
-            }
+                status: 'disconnected',            }
         }
 
         // TODO: refactor create action for succesfull websocket connect
@@ -27,7 +26,7 @@ export function reducer(state = initialState, action) {
             return {
                 ...state,
                 connected: true,
-                status: 'Connected',
+                status: 'connected',
             }
         }
 

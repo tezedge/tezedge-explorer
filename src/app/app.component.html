@@ -187,32 +187,11 @@
 
             </mat-nav-list>
 
-            <!-- <div style="position: absolute;min-width: 195px;height: 160px;left: 14px;
-            background: #1C202B;border-radius: 4px;bottom: 20px;z-index: 1;">
-                <div style="color: #c4cfdc7a;font-size: 12px;margin: 12px 0px 6px 12px;">
-                    STATUS
-                </div>
-                <span style="font-size:14px;color:#F6F9FC;margin: 12px 0px 18px 12px;">
-                    {{ networkEndpoint?.status }}
-                </span>
-
-
-                <div style="color: #c4cfdc7a;font-size: 12px;margin: 18px 0px 6px 12px;">
-                    SERVER
-                </div>
-                <span style="font-size:14px;color: #F6F9FC;margin: 0px 0px 0px 12px;
-            max-width: 175px !important;direction: rtl;display: inline-block;    
-            text-overflow: ellipsis;white-space: nowrap;overflow: hidden;">
-                    {{ settings.endpoint }}
-                </span>
-
-                <div style="font-size:14px;color:#C4CFDC;margin-top:12px;padding: 12px 12px 12px 0px;text-align:center;border-top: 1px solid rgba(255, 255, 255, 0.1);">
-                    <a routerLink="/settings" (click)="isMobile && start.toggle()" style="text-decoration:none;color:#C4CFDC;">
-                        Edit
-                    </a>
-                </div>
-            </div> -->
-
+            <!-- node settings -->
+            <app-settings-node>
+            </app-settings-node>
+            
+        
         </mat-sidenav>
 
         <!-- Content -->

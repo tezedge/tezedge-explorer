@@ -1,0 +1,33 @@
+
+<div class="settings-node">
+    
+    <div class="settings-node-status">
+        STATUS
+        <mat-icon *ngIf="networkEndpoint?.connected" class="settings-node-status-icon">
+            fiber_manual_record
+        </mat-icon>
+        <mat-icon *ngIf="!networkEndpoint?.connected" class="settings-node-status-icon">
+            fiber_manual_record
+        </mat-icon>
+    </div>
+
+    <mat-form-field class="settings-node-expand-input">
+        <mat-select [(value)]="selected">
+            <mat-option *ngFor="let node of nodes" [value]="node.value">
+                {{node.viewValue}}
+            </mat-option>
+        </mat-select>
+        <mat-icon class="settings-node-expand-icon">expand_more</mat-icon>
+    </mat-form-field>
+
+    <!-- <div style="font-size:14px;color:#C4CFDC;margin-top:12px;padding: 12px 12px 12px 0px;text-align:center;border-top: 1px solid rgba(255, 255, 255, 0.1);">
+        <a routerLink="/settings" (click)="isMobile && start.toggle()" style="text-decoration:none;color:#C4CFDC;">
+            Edit
+        </a>
+    </div> -->
+
+</div> 
+
+<!-- {{ networkEndpoint?.status }}    
+<br/>
+{{ settings.endpoint }} -->

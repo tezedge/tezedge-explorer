@@ -44,18 +44,6 @@ export class AppComponent {
         this.app = data;
     });
 
-    // wait for data changes from redux
-    this.store.select('settings')
-      .subscribe(data => {
-        this.settings = data;
-      })
-
-    // wait for data changes from redux
-    this.store.select('networkEndpoint')
-      .subscribe(data => {
-        this.networkEndpoint = data;
-      })
-
     // dispatch inner width
     this.store.dispatch({
       type: 'APP_WINDOW',

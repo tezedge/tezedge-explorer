@@ -8,6 +8,8 @@ import { AppComponent } from './app.component';
 import { AppRouting } from './app.routing';
 
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+
 import { NgxChartsModule } from '@swimlane/ngx-charts';
 
 import { StoreModule } from '@ngrx/store';
@@ -51,6 +53,7 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatCardModule } from '@angular/material/card';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatSelectModule } from '@angular/material/select';
 
 import { NetworkStatsComponent } from './network/network-stats/network-stats.component';
 import { NetworkHistoryComponent } from './network/network-history/network-history.component';
@@ -76,6 +79,7 @@ import { NgxJsonViewerModule } from 'ngx-json-viewer';
 import { EndpointsActionComponent } from './endpoints/endpoints-action/endpoints-action.component';
 import { EndpointsSearchComponent } from './endpoints/endpoints-search/endpoints-search.component';
 import { EndpointsComponent } from './endpoints/endpoints.component';
+import { SettingsNodeComponent } from './settings/settings-node/settings-node.component';
 
 
 @NgModule({
@@ -100,11 +104,15 @@ import { EndpointsComponent } from './endpoints/endpoints.component';
     MonitoringComponent,
     EndpointsActionComponent,
     EndpointsSearchComponent,
-    EndpointsComponent
+    EndpointsComponent,
+    SettingsNodeComponent
   ],
   imports: [
     BrowserModule,
-    BrowserAnimationsModule,
+    // disable material animations
+    // BrowserAnimationsModule,
+    NoopAnimationsModule,
+
     HttpClientModule,
 
     // loading routing
@@ -160,7 +168,7 @@ import { EndpointsComponent } from './endpoints/endpoints.component';
     MatProgressBarModule,
     MatProgressSpinnerModule,
     // MatRadioModule,
-    // MatSelectModule,
+    MatSelectModule,
     MatSidenavModule,
     // MatSlideToggleModule,
     // MatSliderModule,

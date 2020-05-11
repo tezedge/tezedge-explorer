@@ -352,3 +352,33 @@ input.mat-input-element {
     /*background-color: grey;*/
     height: 1px;
 }
+
+mat-form-field .mat-select-value {
+    color: white;
+    font-size: 13px;
+    font-weight: 300;
+}
+
+/* remove undeline in mat-select */
+mat-form-field .mat-form-field-underline {
+    background-color: initial !important;
+}
+.mat-form-field.mat-focused .mat-form-field-ripple {
+    background-color: initial !important;
+}
+
+/* change arrow color in mat select */
+mat-form-field .mat-select-arrow {
+    color: #c4cfdc !important;
+    /* hide arrow in mat select*/
+    border: 0px;
+}
+
+.mat-form-field-wrapper, .mat-form-field-infix {
+    padding: 0px !important;
+    border: 0px !important;
+}
+
+.mat-select-panel{
+    min-width: initial !important;
+}

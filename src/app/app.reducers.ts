@@ -3,7 +3,7 @@ import {
     ActionReducer,
     MetaReducer,
 } from '@ngrx/store';
-import { storeLogger } from 'ngrx-store-logger';
+// import { storeLogger } from 'ngrx-store-logger';
 import { storeFreeze } from 'ngrx-store-freeze';
 import { environment } from '../environments/environment';
 
@@ -62,13 +62,15 @@ export const reducers: ActionReducerMap<State> = {
     routerReducer: fromRouter.routerReducer,
 };
 
-// log all actions to console for production
-export function logger(reducer: ActionReducer<State>): any {
-    // default, no options
-    return storeLogger()(reducer);
-}
+// // log all actions to console for production
+// export function logger(reducer: ActionReducer<State>): any {
+//     // default, no options
+//     return storeLogger()(reducer);
+// }
 
 // compose all reducers to map
 export const metaReducers: MetaReducer<State>[] = !environment.production
     ? [storeFreeze]
-    : [logger];
+    : [
+    //    logger
+    ];

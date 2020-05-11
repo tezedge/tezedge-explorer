@@ -40,4 +40,14 @@ export class SettingsNodeComponent implements OnInit {
 
   }
 
+  nodeChange(node) {
+
+    // change node and reload effects
+    this.store.dispatch({
+      type: 'SETTINGS_NODE_CHANGE',
+      payload: node,
+    });
+
+  }
+
 }

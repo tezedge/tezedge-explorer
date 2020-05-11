@@ -13,7 +13,7 @@
 
     <mat-form-field class="settings-node-expand-input">
         <mat-select [(value)]="selected">
-            <mat-option *ngFor="let node of nodes" [value]="node.value">
+            <mat-option *ngFor="let node of nodes" [value]="node.value" (click)="nodeChange(node.value)">
                 {{node.viewValue}}
             </mat-option>
         </mat-select>

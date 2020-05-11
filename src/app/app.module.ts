@@ -121,6 +121,7 @@ import { EndpointsComponent } from './endpoints/endpoints.component';
         strictStateImmutability: true,
         strictActionImmutability: true,
         strictActionWithinNgZone: true,
+        strictStateSerializability: true,
       }
     }),
 

@@ -119,7 +119,8 @@ import { EndpointsComponent } from './endpoints/endpoints.component';
       metaReducers,
       runtimeChecks: {
         strictStateImmutability: true,
-        strictActionImmutability: true
+        strictActionImmutability: true,
+        strictActionWithinNgZone: true,
       }
     }),
 

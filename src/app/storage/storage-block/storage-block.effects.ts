@@ -4,8 +4,6 @@ import { HttpClient } from '@angular/common/http';
 import { Store } from '@ngrx/store';
 import { tap, map, switchMap, withLatestFrom, catchError } from 'rxjs/operators';
 
-import { environment } from '../../../environments/environment';
-
 @Injectable()
 export class StorageBlockEffects {
 
@@ -17,7 +15,7 @@ export class StorageBlockEffects {
         withLatestFrom(this.store, (action: any, state) => ({ action, state })),
 
         switchMap(({ action, state }) => {
-            return this.http.get(environment.api.default.http + '/dev/chains/main/blocks?limit=15');
+            return this.http.get(state.settingsNode.api.http + '/dev/chains/main/blocks?limit=15');
         }),
 
         // tap((payload) => console.log("[STORAGE_BLOCK_LOAD_SUCCESS]", payload)),

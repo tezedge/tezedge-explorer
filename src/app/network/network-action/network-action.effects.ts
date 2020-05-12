@@ -4,8 +4,6 @@ import { HttpClient } from '@angular/common/http';
 import { Store } from '@ngrx/store';
 import { map, switchMap, withLatestFrom, catchError } from 'rxjs/operators';
 
-import { environment } from '../../../environments/environment';
-
 @Injectable()
 export class NetworkActionEffects {
 
@@ -17,7 +15,7 @@ export class NetworkActionEffects {
         withLatestFrom(this.store, (action: any, state) => ({ action, state })),
 
         switchMap(({ action, state }) => {
-            return this.http.get(environment.api.default.http + '/p2p/0/500' + action.payload)
+            return this.http.get(state.settingsNode.api.http + '/p2p/0/500' + action.payload)
         }),
 
         // dispatch action

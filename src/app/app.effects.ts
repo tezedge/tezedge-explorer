@@ -5,17 +5,8 @@ import { Observable, of, defer, Subject } from 'rxjs';
 import { tap, map, switchMap, catchError, withLatestFrom, delay, filter, takeUntil } from 'rxjs/operators';
 import { webSocket } from 'rxjs/webSocket';
 
-import { environment } from '../environments/environment';
-
 const onDestroy$ = new Subject();
 let wsCounter = 0;
-
-const webSocketConnection$ = (
-    webSocket({
-      url: environment.api.default.ws,
-      WebSocketCtor: WebSocket,
-    })
-  );
 
 @Injectable()
 export class AppEffects {
@@ -30,6 +21,14 @@ export class AppEffects {
 
         // connect to ws
         switchMap(({ action, state }) => {
+
+            const webSocketConnection$ = (
+                webSocket({
+                  url: state.settingsNode.api.ws,
+                  WebSocketCtor: WebSocket,
+                })
+            );
+            
             // console.log('[SETTINGS_INIT_SUSCCESS]', action, state);
             return webSocketConnection$.pipe(
                 takeUntil(onDestroy$),

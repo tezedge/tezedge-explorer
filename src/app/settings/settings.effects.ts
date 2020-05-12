@@ -2,10 +2,8 @@ import { Injectable, NgZone } from '@angular/core';
 import { Effect, Actions, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { Observable, of } from 'rxjs';
-import { tap, map, switchMap, catchError } from 'rxjs/operators';
+import { tap, map, switchMap, withLatestFrom, catchError } from 'rxjs/operators';
 import { webSocket } from "rxjs/webSocket";
-
-import { environment } from '../../environments/environment';
 
 @Injectable()
 export class SettingsEffects {
@@ -14,10 +12,13 @@ export class SettingsEffects {
     SettingsInitEffect$ = this.actions$.pipe(
         ofType('SETTINGS_INIT'),
 
-        switchMap(() => {
+        // merge state
+        withLatestFrom(this.store, (action: any, state) => ({ action, state })),
+
+        switchMap(({ action, state }) => {
             // localStorage.setItem('endpoint', 'wss://babylon.tezedge.com/');
             // get data from localStorage ( sync call)
-            const endpoint: any = localStorage.getItem('endpoint') ? localStorage.getItem('endpoint') : environment.api.default.ws;
+            const endpoint: any = localStorage.getItem('endpoint') ? localStorage.getItem('endpoint') : state.settingsNode.api.ws;
             console.log('[SETTINGS_INIT]', endpoint);
             return of([]).pipe(
                 map(() => ({ endpoint: endpoint }))

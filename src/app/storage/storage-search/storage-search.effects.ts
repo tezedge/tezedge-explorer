@@ -5,8 +5,6 @@ import { Store } from '@ngrx/store';
 import { tap, map, switchMap, withLatestFrom, catchError } from 'rxjs/operators';
 import { Router } from '@angular/router';
 
-import { environment } from '../../../environments/environment';
-
 @Injectable()
 export class StorageSearchEffects {
 

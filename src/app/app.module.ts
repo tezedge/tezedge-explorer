@@ -29,7 +29,9 @@ import { EndpointsActionEffects } from './endpoints/endpoints-action/endpoints-a
 import { StorageBlockEffects } from './storage/storage-block/storage-block.effects';
 import { StorageActionEffects } from './storage/storage-action/storage-action.effects';
 import { StorageSearchEffects } from './storage/storage-search/storage-search.effects';
+
 import { SettingsEffects } from './settings/settings.effects';
+import { SettingsNodeEffects } from './settings/settings-node/settings-node.effects';
 
 import { NetworkComponent } from './network/network.component';
 import { NetworkPeersComponent } from './network/network-peers/network-peers.component';
@@ -143,6 +145,7 @@ import { SettingsNodeComponent } from './settings/settings-node/settings-node.co
       StorageSearchEffects,
       EndpointsActionEffects,
       SettingsEffects,
+      SettingsNodeEffects,
     ]),
 
     // https://github.com/zalmoxisus/redux-devtools-extension

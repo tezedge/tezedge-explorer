@@ -16,6 +16,7 @@ import { RouterStateUrl } from './app.routing';
 
 import * as fromApp from './app.reducer';
 import * as fromSettings from './settings/settings.reducer';
+import * as fromSettingsNode from './settings/settings-node/settings-node.reducer';
 
 import * as fromNetworkAction from './network/network-action/network-action.reducer';
 import * as fromNetworkActionDetail from './network/network-action-detail/network-action-detail.reducer';
@@ -32,7 +33,8 @@ import * as fromStorageAction from './storage/storage-action/storage-action.redu
 // state interface
 export interface State {
     app: any;
-    settings: any,
+    settings: any;
+    settingsNode: any;
     networkAction: any;
     networkActionDetail: any;
     networkPeers: any;
@@ -45,10 +47,11 @@ export interface State {
     routerReducer: fromRouter.RouterReducerState<RouterStateUrl>;
 }
 
-// state 
+// state
 export const reducers: ActionReducerMap<State> = {
     app: fromApp.reducer,
     settings: fromSettings.reducer,
+    settingsNode: fromSettingsNode.reducer,
     networkAction: fromNetworkAction.reducer,
     networkActionDetail: fromNetworkActionDetail.reducer,
     networkPeers: fromNetworkPeers.reducer,

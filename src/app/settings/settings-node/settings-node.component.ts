@@ -8,44 +8,32 @@ import { Store } from '@ngrx/store'
 })
 export class SettingsNodeComponent implements OnInit {
 
-  public settings
-  public networkEndpoint
+  public settingsNodeApi
+  public settingsNodeEntities
 
-  public selected = 'node-0';
+  // public selected = 'node-0';
 
-  public nodes = [
-    {value: 'node-0', viewValue: 'ocaml.mainnet.tezedge.com'},
-    {value: 'node-1', viewValue: 'rust.babylon.tezedge.com'},
-    {value: 'node-2', viewValue: 'rust.carthage.tezedge.com'},
-    {value: 'node-3', viewValue: 'ocaml.carthage.tezedge.com'},
-  ]
-
-  constructor(    
+  constructor(
     public store: Store<any>,
   ) { }
 
   ngOnInit(): void {
 
     // wait for data changes from redux
-    this.store.select('settings')
-      .subscribe(data => {
-        this.settings = data;
-      })
-  
-    // wait for data changes from redux
-    this.store.select('networkEndpoint')
-      .subscribe(data => {
-        this.networkEndpoint = data;
+    this.store.select('settingsNode')
+      .subscribe(state => {
+        this.settingsNodeApi = state.api;
+        this.settingsNodeEntities = state.ids.map(id => state.entities[id]);
       })
 
   }
 
-  nodeChange(node) {
+  nodeChange(id) {
 
     // change node and reload effects
     this.store.dispatch({
       type: 'SETTINGS_NODE_CHANGE',
-      payload: node,
+      payload: { id: id },
     });
 
   }

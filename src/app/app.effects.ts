@@ -102,19 +102,11 @@ export class AppEffects {
         map(() => ({ type: 'METRICS_SUBSCRIBE' }))
     );
 
-
-    // initialize app
-    // @Effect()
-    // AppInitEffect$$ = defer(() => {
-    //     return of({ type: 'SETTINGS_INIT' });
-    // });
-
-
-    // trigger subscription to webservice
+    // initialize settings
     @Effect()
     AppEffectInit$ = this.actions$.pipe(
         ofType('@ngrx/effects/init'),
-        map(() => ({ type: 'SETTINGS_INIT' }))
+        map(() => ({ type: 'SETTINGS_NODE_LOAD' }))
     );
 
 

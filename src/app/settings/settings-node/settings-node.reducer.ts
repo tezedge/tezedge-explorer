@@ -19,6 +19,8 @@ export function reducer(state = initialState, action) {
                     ...accumulator,
                     [node.id]: {
                         ...node,
+                        connected: false,
+                        header: {},
                     }
                 }), {}),
             }
@@ -37,7 +39,8 @@ export function reducer(state = initialState, action) {
                     ...state.entities,
                     [action.payload.node.id]: {
                         ...action.payload.node,
-                        connected: true
+                        connected: true,
+                        header: action.payload.response,
                     },
                 }
             }
@@ -56,7 +59,8 @@ export function reducer(state = initialState, action) {
                     ...state.entities,
                     [action.payload.node.id]: {
                         ...action.payload.node,
-                        connected: false
+                        connected: false,
+                        header: {},
                     },
                 }
             }

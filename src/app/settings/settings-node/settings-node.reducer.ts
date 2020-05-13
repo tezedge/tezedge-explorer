@@ -1,10 +1,11 @@
+import * as moment from 'moment-mini-ts';
 import { environment } from '../../../environments/environment';
 
 const initialState: any = {
     api: {},
     ids: [],
     entities: {},
-}
+};
 
 export function reducer(state = initialState, action) {
     switch (action.type) {
@@ -13,17 +14,17 @@ export function reducer(state = initialState, action) {
         case 'SETTINGS_NODE_LOAD': {
             // console.log("[SETTINGS_NODE_LOAD][reducer]", environment, action, environment.api);
             return {
-                api: environment.api[1],
+                api: state.api.connected ? state.api : environment.api[0],
                 ids: environment.api.map(node => node.id),
                 entities: environment.api.reduce((accumulator, node) => ({
                     ...accumulator,
                     [node.id]: {
                         ...node,
-                        connected: false,
+                        connected: 'pending',
                         header: {},
                     }
                 }), {}),
-            }
+            };
         }
 
         // save connected node
@@ -31,19 +32,18 @@ export function reducer(state = initialState, action) {
             // console.log("[SETTINGS_NODE_LOAD_SUSCCESS][reducer]", action);
             return {
                 ...state,
-                api: {
-                    ...state.api,
-                    connected: action.payload.node.id === state.api.id ? true : state.api.connected 
-                },
+                // if this is first available api use it
+                api: state.api.connected !== true ? { ...action.payload.node, connected: true } : state.api,
                 entities: {
                     ...state.entities,
                     [action.payload.node.id]: {
                         ...action.payload.node,
                         connected: true,
                         header: action.payload.response,
+                        relativeDatetime: moment(action.payload.response.timestamp).fromNow(),
                     },
                 }
-            }
+            };
         }
 
         // save offline node
@@ -53,7 +53,7 @@ export function reducer(state = initialState, action) {
                 ...state,
                 api: {
                     ...state.api,
-                    connected: action.payload.node.id === state.api.id ? false : state.api.connected 
+                    connected: action.payload.node.id === state.api.id ? false : state.api.connected
                 },
                 entities: {
                     ...state.entities,
@@ -63,14 +63,14 @@ export function reducer(state = initialState, action) {
                         header: {},
                     },
                 }
-            }
+            };
         }
 
         case 'SETTINGS_NODE_CHANGE': {
             // console.log("[SETTINGS_NODE_CHANGE]", action);
             return {
                 ...state,
-                api: state.entities[action.payload.id] 
+                api: state.entities[action.payload.id]
             };
         }
 

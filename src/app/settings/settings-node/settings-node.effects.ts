@@ -8,35 +8,68 @@ import { tap, map, switchMap, catchError, withLatestFrom, flatMap } from 'rxjs/o
 @Injectable()
 export class SettingsNodeEffects {
 
+    // check node availability
     @Effect()
-    SettingsNodeInitEffect$ = this.actions$.pipe(
-        ofType('SETTINGS_NODE_LOAD', 'SETTINGS_NODE_CHANGE'),
+    SettingsNodeLoadEffect$ = this.actions$.pipe(
+        ofType('SETTINGS_NODE_LOAD'),
 
         // merge state
         withLatestFrom(this.store, (action: any, state) => ({ action, state })),
 
-        // create observable from every item in list 
+        // create observable from every item in list
         flatMap(({ action, state }) => {
 
-            // get api settings from localstorage 
+            // get api settings from localstorage
             // const settingsNode: any = localStorage.getItem('settingsNode') ? localStorage.getItem('settingsNode') : api.ws;
             // console.log('[SETTINGS_NODE_LOAD][effect][settingsNode]',  settingsNode);
 
             return state.settingsNode.ids.map(id => state.settingsNode.entities[id]);
         }),
 
-        // chekc if api is available    
+        // check if api is available
         flatMap((node: any) => {
             // call node
             return this.http.get(node.http + '/chains/main/blocks/head/header').pipe(
                 // dispatch action
                 map((response) => ({ type: 'SETTINGS_NODE_LOAD_SUSCCESS', payload: { node: node, response: response } })),
-                // dispatch error 
+                // dispatch error
                 catchError((error) => of({ type: 'SETTINGS_NODE_LOAD_ERROR', payload: { node: node, response: error } })),
-            )
+            );
         }),
 
-    )
+    );
+
+    @Effect()
+    SettingsNodeInitEffect$ = this.actions$.pipe(
+        ofType('SETTINGS_NODE_LOAD_SUSCCESS_'),
+
+        // merge state
+        withLatestFrom(this.store, (action: any, state) => ({ action, state })),
+
+        // create observable from every item in list
+        flatMap(({ action, state }) => {
+
+            // get api settings from localstorage
+            // const settingsNode: any = localStorage.getItem('settingsNode') ? localStorage.getItem('settingsNode') : api.ws;
+            // console.log('[SETTINGS_NODE_LOAD][effect][settingsNode]',  settingsNode);
+
+            return state.settingsNode.ids.map(id => state.settingsNode.entities[id]);
+        }),
+
+        // check if api is available
+        flatMap((node: any) => {
+            // call node
+            return this.http.get(node.http + '/chains/main/blocks/head/header').pipe(
+                // dispatch action
+                map((response) => ({ type: 'SETTINGS_NODE_LOAD_SUSCCESS', payload: { node: node, response: response } })),
+                // dispatch error
+                catchError((error) => of({ type: 'SETTINGS_NODE_LOAD_ERROR', payload: { node: node, response: error } })),
+            );
+        }),
+
+    );
+
+
 
     constructor(
         private http: HttpClient,

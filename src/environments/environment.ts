@@ -12,15 +12,27 @@ export const environment = {
       ws: 'ws://127.0.0.1:4927',
     },
     {
-      id: 'rust-carthage-tezedge',
-      name: 'carthage.tezedge.com',
+      id: 'rust1-carthage-tezedge',
+      name: 'rust1.carthage.tezedge.com',
       http: 'https://carthage.tezedge.com:8732',
       ws: 'wss://carthage.tezedge.com',
     },
     {
-      id: 'ocaml-carthage-tezedge',
-      name: '116.202.246.107',
+      id: 'rust2-carthage-tezedge',
+      name: 'rust2.carthage.tezedge.com',
+      http: 'https://carthage.tezedge.com:8732',
+      ws: 'wss://carthage.tezedge.com',
+    },
+    {
+      id: 'ocaml1-carthage-tezedge-debuger',
+      name: 'ocaml1.carthage.tezedge.com',
       http: 'http://116.202.246.107:18732',
+      ws: false,
+    },
+    {
+      id: 'ocaml-mainnet-simplestaking-com',
+      name: 'ocaml.mainnet.simplestaking.com',
+      http: 'https://mainnet.simplestaking.com:3000',
       ws: false,
     }
   ]

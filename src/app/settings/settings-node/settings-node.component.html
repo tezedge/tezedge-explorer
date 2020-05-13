@@ -1,20 +1,45 @@
-
 <div class="settings-node">
-    
+
     <div class="settings-node-status">
         STATUS
-        <mat-icon *ngIf="settingsNodeApi?.connected" class="settings-node-status-icon">
+        <mat-icon *ngIf="settingsNodeApi?.connected===true" class="settings-node-status-icon">
             fiber_manual_record
         </mat-icon>
-        <mat-icon *ngIf="!settingsNodeApi?.connected" class="settings-node-status-icon-offline">
-            wifi_off
+        <mat-icon *ngIf="settingsNodeApi?.connected===false" class="settings-node-status-icon-offline">
+            fiber_manual_record
         </mat-icon>
     </div>
-    <!--  -->
+
     <mat-form-field class="settings-node-expand-input">
-        <mat-select [value]="settingsNodeApi.id"> 
-            <mat-option *ngFor="let node of settingsNodeEntities" [value]="node.id" (click)="nodeChange(node.id)">
-                {{node.name}}
+        <mat-select [value]="settingsNodeApi.id" (click)="nodeSelectOpen()">
+            <mat-select-trigger>
+                {{ settingsNodeApi.name }}
+            </mat-select-trigger>
+            <mat-option class="settings-node-option" *ngFor="let node of settingsNodeEntities" [value]="node.id" (click)="nodeSelectChange(node.id)">
+                <div>
+                    <mat-icon *ngIf="node.connected==='pending'" class="settings-node-status-option-icon-offline">
+                        <!-- add spinner -->
+                        hourglass_empty
+                    </mat-icon>
+                    <mat-icon *ngIf="node.connected===true" class="settings-node-status-option-icon">
+                        fiber_manual_record
+                    </mat-icon>
+                    <mat-icon *ngIf="node.connected===false" class="settings-node-status-option-icon-offline">
+                        fiber_manual_record
+                    </mat-icon>
+                    {{node.name}}
+                </div>
+                <div class="settings-node-option-status" >
+                    <span *ngIf="node.connected==='pending'">
+                        connecting
+                    </span>
+                    <span *ngIf="node.connected===true">
+                        {{ node.header?.protocol | slice:0:10 }} | last block {{ node.relativeDatetime }}
+                    </span>
+                    <span *ngIf="node.connected===false">
+                        offline
+                    </span>
+                </div>
             </mat-option>
         </mat-select>
         <mat-icon class="settings-node-expand-icon">expand_more</mat-icon>
@@ -26,7 +51,7 @@
         </a>
     </div> -->
 
-</div> 
+</div>
 
 <!-- {{ networkEndpoint?.status }}    
 <br/>

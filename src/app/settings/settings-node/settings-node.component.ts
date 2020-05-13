@@ -8,8 +8,8 @@ import { Store } from '@ngrx/store'
 })
 export class SettingsNodeComponent implements OnInit {
 
-  public settingsNodeApi
-  public settingsNodeEntities
+  public settingsNodeApi;
+  public settingsNodeEntities;
 
   // public selected = 'node-0';
 
@@ -24,11 +24,21 @@ export class SettingsNodeComponent implements OnInit {
       .subscribe(state => {
         this.settingsNodeApi = state.api;
         this.settingsNodeEntities = state.ids.map(id => state.entities[id]);
-      })
+      });
 
   }
 
-  nodeChange(id) {
+  nodeSelectOpen() {
+
+    // check node availability
+    this.store.dispatch({
+      type: 'SETTINGS_NODE_LOAD',
+      payload: '',
+    });
+
+  }
+
+  nodeSelectChange(id) {
 
     // change node and reload effects
     this.store.dispatch({

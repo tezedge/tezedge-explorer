@@ -95,7 +95,7 @@ export function reducer(state = initialState, action) {
                 menu: action.payload.ws === false ?
                     {
                         monitoring: {
-                            synchronization: false,
+                            synchronization: true,
                         },
                         explorer: {
                             endpoints: true,

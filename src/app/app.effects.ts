@@ -121,21 +121,21 @@ export class AppEffects {
         // TODO: refactor and add checks for every featured api (node, debugger, monitoring )
         tap(({ action, state }) => {
 
-            // console.log('[APP_INIT]', action, state );
-
-            let redirectUrl = '/';
-            if ( action.payload.connected  ) {
+            let redirectUrl = '';
+            if ( action.payload.connected ) {
                 if ( action.payload.ws === false ) {
-                    redirectUrl = 'network';
+                    redirectUrl = 'monitoring';
                 } else {
                     redirectUrl = 'monitoring';
                 }
             } else {
-                redirectUrl = '/';
+                redirectUrl = '';
             }
 
+            console.log('[APP_INIT]', action, state , redirectUrl );
+
             // force url reload
-            this.router.navigateByUrl('/', { skipLocationChange: true }).then(() =>
+            this.router.navigateByUrl('/', { skipLocationChange: false }).then(() =>
                 this.router.navigate([redirectUrl])
             );
 

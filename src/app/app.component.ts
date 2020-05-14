@@ -10,9 +10,7 @@ import { MatSidenav } from "@angular/material/sidenav";
 })
 export class AppComponent {
 
-  public app
-  public settings
-  public networkEndpoint
+  public app;
   public innerWidth;
   public isMobile = false;
 

@@ -60,7 +60,6 @@ import { MatSelectModule } from '@angular/material/select';
 import { NetworkStatsComponent } from './network/network-stats/network-stats.component';
 import { NetworkHistoryComponent } from './network/network-history/network-history.component';
 import { SettingsComponent } from './settings/settings.component';
-import { SettingsEndpointComponent } from './settings/settings-endpoint/settings-endpoint.component';
 import { networkEndpointComponent } from './network/network-endpoint/network-endpoint.component';
 
 // TODO: replace woth reactive forms
@@ -92,7 +91,6 @@ import { SettingsNodeComponent } from './settings/settings-node/settings-node.co
     NetworkStatsComponent,
     NetworkHistoryComponent,
     SettingsComponent,
-    SettingsEndpointComponent,
     networkEndpointComponent,
     BandwidthPipe,
     StorageComponent,

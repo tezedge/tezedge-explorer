@@ -22,7 +22,7 @@ export class SettingsNodeComponent implements OnInit {
     // wait for data changes from redux
     this.store.select('settingsNode')
       .subscribe(state => {
-        this.settingsNodeApi = state.api;
+        this.settingsNodeApi = state.entities[state.api.id];
         this.settingsNodeEntities = state.ids.map(id => state.entities[id]);
       });
 

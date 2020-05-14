@@ -4,6 +4,7 @@ import { Store } from '@ngrx/store';
 import { Observable, of, defer, Subject } from 'rxjs';
 import { tap, map, switchMap, catchError, withLatestFrom, delay, filter, takeUntil } from 'rxjs/operators';
 import { webSocket } from 'rxjs/webSocket';
+import { Router } from '@angular/router';
 
 const onDestroy$ = new Subject();
 let wsCounter = 0;
@@ -24,11 +25,11 @@ export class AppEffects {
 
             const webSocketConnection$ = (
                 webSocket({
-                  url: state.settingsNode.api.ws,
-                  WebSocketCtor: WebSocket,
+                    url: state.settingsNode.api.ws,
+                    WebSocketCtor: WebSocket,
                 })
             );
-            
+
             // console.log('[SETTINGS_INIT_SUSCCESS]', action, state);
             return webSocketConnection$.pipe(
                 takeUntil(onDestroy$),
@@ -113,12 +114,39 @@ export class AppEffects {
     @Effect()
     AppInitEffect$ = this.actions$.pipe(
         ofType('APP_INIT'),
+
+        // merge state
+        withLatestFrom(this.store, (action: any, state) => ({ action, state })),
+
+        // TODO: refactor and add checks for every featured api (node, debugger, monitoring )
+        tap(({ action, state }) => {
+
+            // console.log('[APP_INIT]', action, state );
+
+            let redirectUrl = '/';
+            if ( action.payload.connected  ) {
+                if ( action.payload.ws === false ) {
+                    redirectUrl = 'network';
+                } else {
+                    redirectUrl = 'monitoring';
+                }
+            } else {
+                redirectUrl = '/';
+            }
+
+            // force url reload
+            this.router.navigateByUrl('/', { skipLocationChange: true }).then(() =>
+                this.router.navigate([redirectUrl])
+            );
+
+        }),
         map(() => ({ type: 'APP_INIT_SUCCESS' }))
     );
 
     constructor(
         private actions$: Actions,
         private store: Store<any>,
+        private router: Router,
     ) { }
 
 }

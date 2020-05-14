@@ -102,13 +102,19 @@ export class AppEffects {
         map(() => ({ type: 'METRICS_SUBSCRIBE' }))
     );
 
-    // initialize settings
+    // load node settings
     @Effect()
-    AppEffectInit$ = this.actions$.pipe(
+    SettingsNodeLoadEffect$ = this.actions$.pipe(
         ofType('@ngrx/effects/init'),
         map(() => ({ type: 'SETTINGS_NODE_LOAD' }))
     );
 
+    // initialize app features
+    @Effect()
+    AppInitEffect$ = this.actions$.pipe(
+        ofType('APP_INIT'),
+        map(() => ({ type: 'APP_INIT_SUCCESS' }))
+    );
 
     constructor(
         private actions$: Actions,

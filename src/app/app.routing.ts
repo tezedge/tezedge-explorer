@@ -27,7 +27,7 @@ export const AppRouting: Routes = [
 
   { path: 'settings', component: SettingsComponent },
 
-  { path: '', redirectTo: '/network', pathMatch: 'full' },
+  // { path: '', redirectTo: '/network', pathMatch: 'full' },
   // { path: '**', component: PageNotFoundComponent }
 
 ];

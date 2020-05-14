@@ -69,68 +69,60 @@
                         <mat-icon (click)="start.toggle()">menu</mat-icon>
                     </button> -->
                 </div>
-<!-- 
-                <div class="app-submenu">
+
+                <div class="app-submenu" *ngIf="app.menu.monitoring.synchronization">
                     <span>
                         MONITORING
                     </span>
 
-                    <a mat-list-item routerLink="/monitoring" (click)="isMobile && start.toggle()" [style.color]="app.sidenav.color">
+                    <a mat-list-item *ngIf="app.menu.monitoring.synchronization" routerLink="/monitoring" (click)="isMobile && start.toggle()" [style.color]="app.sidenav.color">
                         <span>
                             <svg-icon icon="history"></svg-icon>
                             Synchronization
                         </span>
                     </a>
 
-                </div> -->
+                </div>
 
-                <div class="app-submenu">
+                <div class="app-submenu" *ngIf="app.menu.explorer.endpoints || app.menu.explorer.network || app.menu.explorer.storage" >
                     <span>
                         EXPLORER
                     </span>
 
-                    <a mat-list-item routerLink="/endpoints" [style.color]="app.sidenav.color">
+                    <a *ngIf="app.menu.explorer.endpoints" mat-list-item routerLink="/endpoints" [style.color]="app.sidenav.color">
                         <span>
                             <svg-icon icon="endpoints"></svg-icon>
                             Endpoints
                         </span>
                     </a>
                     
-                    <a mat-list-item routerLink="/network" [style.color]="app.sidenav.color">
+                    <a *ngIf="app.menu.explorer.network" mat-list-item routerLink="/network" [style.color]="app.sidenav.color">
                         <span>
                             <svg-icon icon="peer"></svg-icon>
                             Network
                         </span>
                     </a>
 
-
-                    <!-- <a mat-list-item routerLink="/storage" (click)="isMobile && start.toggle()" [style.color]="app.sidenav.color">
+                    <a *ngIf="app.menu.explorer.storage" mat-list-item routerLink="/storage" (click)="isMobile && start.toggle()" [style.color]="app.sidenav.color">
                         <span>
                             <svg-icon icon="explorer"></svg-icon>
                             Storage
                         </span>
-                    </a> -->
-
+                    </a> 
 
                     <!-- 
-                    <a mat-list-item routerLink="/storage" (click)="isMobile && start.toggle()"
-                        [style.color]="app.sidenav.color">
-                        <span>
-                            Endpoints (RPC)
-                        </span>
-                    </a>
 
-                    <a mat-list-item routerLink="/storage" (click)="isMobile && start.toggle()"
+                    <a mat-list-item routerLink="/mempool" (click)="isMobile && start.toggle()"
                         [style.color]="app.sidenav.color">
                         <span>
                             Mempool
                         </span>
                     </a>
 
-                    <a mat-list-item routerLink="/storage" (click)="isMobile && start.toggle()"
+                    <a mat-list-item routerLink="/logs" (click)="isMobile && start.toggle()"
                     [style.color]="app.sidenav.color">
                         <span>
-                            Storage
+                            Logs
                         </span>
                     </a> -->
 

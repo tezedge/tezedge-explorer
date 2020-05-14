@@ -149,7 +149,7 @@ import { SettingsNodeComponent } from './settings/settings-node/settings-node.co
     ]),
 
     // https://github.com/zalmoxisus/redux-devtools-extension
-    !environment.production ? StoreDevtoolsModule.instrument({ maxAge: 10 }) : [],
+    !environment.production ? StoreDevtoolsModule.instrument({ maxAge: 50 }) : [],
 
     MatAutocompleteModule,
     MatButtonModule,

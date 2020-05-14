@@ -43,7 +43,7 @@ export class SettingsNodeComponent implements OnInit {
     // change node and reload effects
     this.store.dispatch({
       type: 'SETTINGS_NODE_CHANGE',
-      payload: { id: id },
+      payload: { api: { id: id } },
     });
 
   }

@@ -33,11 +33,11 @@ export function reducer(state = initialState, action) {
             return {
                 ...state,
                 // if this is first available api use it
-                api: state.api.connected !== true ? { ...action.payload.node, connected: true } : state.api,
+                api: state.api.connected !== true ? { ...action.payload.api, connected: true } : state.api,
                 entities: {
                     ...state.entities,
-                    [action.payload.node.id]: {
-                        ...action.payload.node,
+                    [action.payload.api.id]: {
+                        ...action.payload.api,
                         connected: true,
                         header: action.payload.response,
                         relativeDatetime: moment(action.payload.response.timestamp).fromNow(),
@@ -53,12 +53,12 @@ export function reducer(state = initialState, action) {
                 ...state,
                 api: {
                     ...state.api,
-                    connected: action.payload.node.id === state.api.id ? false : state.api.connected
+                    connected: action.payload.api.id === state.api.id ? false : state.api.connected
                 },
                 entities: {
                     ...state.entities,
-                    [action.payload.node.id]: {
-                        ...action.payload.node,
+                    [action.payload.api.id]: {
+                        ...action.payload.api,
                         connected: false,
                         header: {},
                     },
@@ -70,7 +70,7 @@ export function reducer(state = initialState, action) {
             // console.log("[SETTINGS_NODE_CHANGE]", action);
             return {
                 ...state,
-                api: state.entities[action.payload.id]
+                api: state.entities[action.payload.api.id]
             };
         }
 

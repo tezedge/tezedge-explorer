@@ -9,7 +9,6 @@ const initialState = {
         isVisible: false,
         counter: 0,
     },
-
     sidenav: {
         isVisible: true,
         mode: 'side',
@@ -39,7 +38,17 @@ const initialState = {
     },
     monitoring: {
         open: false
-    }
+    },
+    menu: {
+        monitoring: {
+            synchronization: false,
+        },
+        explorer: {
+            endpoints: false,
+            network: false,
+            storage: false,
+        },
+    },
 
 };
 
@@ -59,6 +68,51 @@ export function reducer(state = initialState, action) {
                         isVisible: action.payload.width < MOBILE_WIDTH ? true : false,
                     }
                 }
+            };
+        }
+
+
+        case 'APP_INIT': {
+
+            if (action.payload.connected === false) {
+                return {
+                    ...state,
+                    menu: {
+                        monitoring: {
+                            synchronization: false,
+                        },
+                        explorer: {
+                            endpoints: false,
+                            network: false,
+                            storage: false,
+                        },
+                    },
+                };
+            }
+
+            return {
+                ...state,
+                menu: action.payload.ws === false ?
+                    {
+                        monitoring: {
+                            synchronization: false,
+                        },
+                        explorer: {
+                            endpoints: true,
+                            network: true,
+                            storage: false,
+                        },
+                    } :
+                    {
+                        monitoring: {
+                            synchronization: true,
+                        },
+                        explorer: {
+                            endpoints: false,
+                            network: true,
+                            storage: true,
+                        },
+                    },
             };
         }
 

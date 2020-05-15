@@ -129,7 +129,7 @@
                     </span>
                 </div>
 
-                <div class="network-stats-card-right">
+                <div class="network-stats-card-right" *ngIf="networkStats?.downloadedBlocks>0">
 
                     <span class="network-stats-card-right-content" style="font-weight:400;">{{networkStats?.eta}}
                         remaining</span>
@@ -155,7 +155,7 @@
                     </span>
                 </div>
 
-                <div class="network-stats-card-right">
+                <div class="network-stats-card-right" *ngIf="networkStats?.lastAppliedBlock?.level > 0 ">
 
                     <span class="network-stats-card-right-content" style="font: weight 400;">{{networkStats?.etaApplications}}
                         remaining</span>

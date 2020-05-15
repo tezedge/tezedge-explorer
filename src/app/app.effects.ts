@@ -72,7 +72,8 @@ export class AppEffects {
         ofType('MONITORING_CLOSE'),
 
         tap(() => {
-            console.log('[NETWORK_CLOSE]');
+            // console.log('[NETWORK_CLOSE]');
+            
             // generate observables and close websocket
             onDestroy$.next();
             // onDestroy$.complete();
@@ -131,7 +132,7 @@ export class AppEffects {
                 redirectUrl = '';
             }
 
-            console.log('[APP_INIT]', action, state, redirectUrl);
+            // console.log('[APP_INIT]', action, state, redirectUrl);
 
             // force url reload
             this.router.navigateByUrl('/', { skipLocationChange: false }).then(() =>

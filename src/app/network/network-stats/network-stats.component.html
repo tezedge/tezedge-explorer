@@ -147,7 +147,8 @@
             <div class="network-stats-card-content">
 
                 <div class="network-stats-card-left">
-                    <span class="network-stats-card-number" style="color: #00DBC6;" *ngIf="networkStats?.currentBlockCount!==0">
+                    <span class="network-stats-card-number" style="color: #00DBC6;" 
+                        *ngIf="networkStats?.currentBlockCount > 0 && networkStats?.lastAppliedBlock?.level<=networkStats?.currentBlockCount">
                         {{ (networkStats?.lastAppliedBlock?.level/(networkStats?.currentBlockCount*0.01)) | number:'1.1-1'}}%
                     </span>
                 </div>

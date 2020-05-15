@@ -39,30 +39,33 @@ export function reducer(state = initialState, action) {
             // action.payload.currentApplicationSpeed
         }
 
+        case 'MONITORING_LOAD':
         case 'METRICS_SUBSCRIBE_ERROR':
             return initialState;
 
         case 'MONITORING_LOAD_SUCCESS': {
 
-            const etaApplicationMinutes = moment().diff(moment(action.payload.timestamp), 'minutes') / state.currentApplicationSpeed;
+            const etaApplicationMinutes =
+                moment().diff(moment(action.payload.timestamp), 'minutes') / state.currentApplicationSpeed;
 
             return {
                 ...state,
                 blockTimestamp: action.payload.timestamp,
-                currentBlockCount: state.blockTimestamp !== 0 ?
+                currentBlockCount: action.payload.timestamp === state.blockTimestamp ? action.payload.level :
                     Math.floor(moment().diff(moment(action.payload.timestamp), 'minutes') /
                         // TODO: refactor and use constans
                         (moment(action.payload.timestamp).diff(moment(state.blockTimestamp), 'minutes') /
                             (action.payload.level - state.lastAppliedBlock.level)
                         )
-                    ) : 0 ,
-                currentApplicationSpeed: (action.payload.level - state.lastAppliedBlock.level) * 60,
+                    ),
+                currentApplicationSpeed: state.lastAppliedBlock.level === 0 ? 0 :
+                    (action.payload.level - state.lastAppliedBlock.level) * 60,
                 lastAppliedBlock: {
                     level: action.payload.level,
                 },
-                etaApplications: state.currentApplicationSpeed !== 0 ?
+                etaApplications: state.currentApplicationSpeed === 0 ? '0 m' :
                     Math.floor(etaApplicationMinutes / 60) + ' h ' +
-                    Math.floor(etaApplicationMinutes % 60) + ' m ' : '',
+                    Math.floor(etaApplicationMinutes % 60) + ' m ' ,
             };
         }
 

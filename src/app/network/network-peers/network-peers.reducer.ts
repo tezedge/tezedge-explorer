@@ -2,7 +2,7 @@ const initialState: any = {
     ids: [],
     entities: {},
     metrics: {},
-}
+};
 
 export function reducer(state = initialState, action) {
     switch (action.type) {
@@ -14,7 +14,7 @@ export function reducer(state = initialState, action) {
                     ...action.payload
                         // remove peers without id
                         .filter(peer => peer.id !== null)
-                        // sort rows according to average speed   
+                        // sort rows according to average speed
                         .slice().sort((a, b) => b.averageTransferSpeed - a.averageTransferSpeed)
                         .map(peer => peer.id)
                 ],
@@ -33,11 +33,47 @@ export function reducer(state = initialState, action) {
                             Math.floor(accumulator + peer.currentTransferSpeed), 0) ),
                     totalPeers: action.payload.length,
                 }
-            }
+            };
         }
 
+        case 'MONITORING_LOAD':
         case 'METRICS_SUBSCRIBE_ERROR':
-                return initialState
+                return initialState;
+
+        case 'NETWORK_PEERS_LOAD_SUCCESS': {
+            // console.log('[NETWORK_PEERS_LOAD_SUCCESS]', action);
+            return {
+                ids: [
+                    ...action.payload
+                        // use only active peers
+                        .filter(peer => peer[1].state === 'running')
+                        // sort rows according to average speed
+                        .slice().sort((a, b) => b[1].stat.current_outflow - a[1].stat.current_outflow)
+                        .map(peer => peer[0])
+                ],
+                entities: action.payload
+                    .filter(peer => peer[1].state === 'running')
+                    .reduce((accumulator, peer) => ({
+                        ...accumulator,
+                        [peer[0]]: {
+                            ...state.entities[peer[0]],
+                            ...peer[1],
+                            ipAddress: peer[1].reachable_at.addr.substr(7),
+                            transferredBytes: peer[1].stat.total_recv,
+                            // TODO: change to avegage
+                            averageTransferSpeed: peer[1].stat.current_outflow,
+                            currentTransferSpeed: (peer[1].stat.current_outflow + peer[1].stat.current_inflow),
+                        }
+                    }), {}),
+                metrics: {
+                    totalAvgSpeed:
+                        (action.payload.reduce((accumulator, peer) =>
+                            Math.floor(accumulator + peer[1].stat.total_recv), 0) ),
+                    totalPeers: action.payload.length,
+                }
+            };
+        }
+
 
         default:
             return state;

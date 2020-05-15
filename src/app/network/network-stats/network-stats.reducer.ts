@@ -43,7 +43,7 @@ export function reducer(state = initialState, action) {
         case 'METRICS_SUBSCRIBE_ERROR':
             return initialState;
 
-        case 'MONITORING_LOAD_SUCCESS': {
+        case 'NETWORK_STATS_LOAD_SUCCESS': {
 
             const etaApplicationMinutes =
                 moment().diff(moment(action.payload.timestamp), 'minutes') / state.currentApplicationSpeed;

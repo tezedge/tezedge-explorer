@@ -73,7 +73,7 @@ export class AppEffects {
 
         tap(() => {
             // console.log('[NETWORK_CLOSE]');
-            
+
             // generate observables and close websocket
             onDestroy$.next();
             // onDestroy$.complete();
@@ -144,9 +144,9 @@ export class AppEffects {
     );
 
 
-    // load node monitoring
+    // load network stats
     @Effect()
-    MonitoringLoadEffect$ = this.actions$.pipe(
+    NetworkStatsLoadEffect$ = this.actions$.pipe(
         ofType('MONITORING_LOAD'),
 
         // merge state
@@ -159,13 +159,35 @@ export class AppEffects {
                 takeUntil(onDestroy$),
                 switchMap(() =>
                     this.http.get(state.settingsNode.api.http + '/chains/main/blocks/head/header').pipe(
-                        map(response => ({ type: 'MONITORING_LOAD_SUCCESS', payload: response })),
-                        catchError(error => of({ type: 'MONITORING_LOAD_ERROR', payload: error })),
+                        map(response => ({ type: 'NETWORK_STATS_LOAD_SUCCESS', payload: response })),
+                        catchError(error => of({ type: 'NETWORK_STATS_LOAD_ERROR', payload: error })),
                     )
                 )
             )
         ),
+    );
 
+    // load network peers
+    @Effect()
+    NetworkPeersLoadEffect$ = this.actions$.pipe(
+        ofType('MONITORING_LOAD'),
+
+        // merge state
+        withLatestFrom(this.store, (action: any, state) => ({ action, state })),
+
+        switchMap(({ action, state }) =>
+
+            // get header data every second
+            timer(0, 1000).pipe(
+                takeUntil(onDestroy$),
+                switchMap(() =>
+                    this.http.get(state.settingsNode.api.http + '/network/peers').pipe(
+                        map(response => ({ type: 'NETWORK_PEERS_LOAD_SUCCESS', payload: response })),
+                        catchError(error => of({ type: 'NETWORK_PEERS_LOAD_ERROR', payload: error })),
+                    )
+                )
+            )
+        ),
     );
 
     constructor(

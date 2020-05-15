@@ -11,12 +11,12 @@ export const environment = {
     //   http: 'http://127.0.0.1:8732',
     //   ws: 'ws://127.0.0.1:4927',
     // },
-    {
-      id: 'rust1-carthage-tezedge',
-      name: 'rust1.carthage.tezedge.com',
-      http: 'https://carthage.tezedge.com:8732',
-      ws: 'wss://carthage.tezedge.com',
-    },
+    // {
+    //   id: 'rust1-carthage-tezedge',
+    //   name: 'rust1.carthage.tezedge.com',
+    //   http: 'https://carthage.tezedge.com:8732',
+    //   ws: 'wss://carthage.tezedge.com',
+    // },
     // {
     //   id: 'rust2-carthage-tezedge',
     //   name: 'rust2.carthage.tezedge.com',

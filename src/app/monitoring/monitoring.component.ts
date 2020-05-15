@@ -20,7 +20,7 @@ export class MonitoringComponent implements OnInit, OnDestroy {
 
     // start ws stream
     this.store.dispatch({
-      type: 'MONITORING_OPEN',
+      type: 'MONITORING_LOAD',
     });
 
   }

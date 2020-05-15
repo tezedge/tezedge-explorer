@@ -1,3 +1,6 @@
+
+import * as moment from 'moment-mini-ts';
+
 const initialState: any = {
     eta: '',
     currentBlockCount: 0,
@@ -7,8 +10,9 @@ const initialState: any = {
     averageApplicationSpeed: 0,
     lastAppliedBlock: {
         level: 0
-    }
-}
+    },
+    blockTimestamp: 0,
+};
 
 export function reducer(state = initialState, action) {
     switch (action.type) {
@@ -16,11 +20,11 @@ export function reducer(state = initialState, action) {
         case 'incomingTransfer': {
             return {
                 ...state,
-                eta: Math.floor(action.payload.eta / 60) + " m " + Math.floor(action.payload.eta % 60) + " s",
+                eta: Math.floor(action.payload.eta / 60) + ' m ' + Math.floor(action.payload.eta % 60) + ' s',
                 currentBlockCount: action.payload.currentBlockCount,
                 downloadedBlocks: action.payload.downloadedBlocks,
                 downloadRate: Math.floor(action.payload.downloadRate),
-            }
+            };
         }
 
         case 'blockApplicationStatus': {
@@ -29,13 +33,38 @@ export function reducer(state = initialState, action) {
                 currentApplicationSpeed: action.payload.currentApplicationSpeed,
                 averageApplicationSpeed: action.payload.averageApplicationSpeed,
                 lastAppliedBlock: action.payload.lastAppliedBlock ? action.payload.lastAppliedBlock : state.lastAppliedBlock,
-                etaApplications: Math.floor((state.currentBlockCount - state.lastAppliedBlock.level) / action.payload.currentApplicationSpeed) + " m ",
-            }
-            // action.payload.currentApplicationSpeed 
+                etaApplications:
+                    Math.floor((state.currentBlockCount - state.lastAppliedBlock.level) / action.payload.currentApplicationSpeed) + ' m ',
+            };
+            // action.payload.currentApplicationSpeed
         }
 
         case 'METRICS_SUBSCRIBE_ERROR':
-            return initialState
+            return initialState;
+
+        case 'MONITORING_LOAD_SUCCESS': {
+
+            const etaApplicationMinutes = moment().diff(moment(action.payload.timestamp), 'minutes') / state.currentApplicationSpeed;
+
+            return {
+                ...state,
+                blockTimestamp: action.payload.timestamp,
+                currentBlockCount: state.blockTimestamp !== 0 ?
+                    Math.floor(moment().diff(moment(action.payload.timestamp), 'minutes') /
+                        // TODO: refactor and use constans
+                        (moment(action.payload.timestamp).diff(moment(state.blockTimestamp), 'minutes') /
+                            (action.payload.level - state.lastAppliedBlock.level)
+                        )
+                    ) : 0 ,
+                currentApplicationSpeed: (action.payload.level - state.lastAppliedBlock.level) * 60,
+                lastAppliedBlock: {
+                    level: action.payload.level,
+                },
+                etaApplications: state.currentApplicationSpeed !== 0 ?
+                    Math.floor(etaApplicationMinutes / 60) + ' h ' +
+                    Math.floor(etaApplicationMinutes % 60) + ' m ' : '',
+            };
+        }
 
         default:
             return state;

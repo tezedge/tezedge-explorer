@@ -1,10 +1,11 @@
 import { Injectable, NgZone } from '@angular/core';
 import { Effect, Actions, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
-import { Observable, of, defer, Subject } from 'rxjs';
+import { Observable, of, defer, Subject, empty, timer } from 'rxjs';
 import { tap, map, switchMap, catchError, withLatestFrom, delay, filter, takeUntil } from 'rxjs/operators';
 import { webSocket } from 'rxjs/webSocket';
 import { Router } from '@angular/router';
+import { HttpClient } from '@angular/common/http';
 
 const onDestroy$ = new Subject();
 let wsCounter = 0;
@@ -15,13 +16,18 @@ export class AppEffects {
     // effect to handle subscription to metrics WS
     @Effect()
     MetriscsSubscirbeEffect$ = this.actions$.pipe(
-        ofType('METRICS_SUBSCRIBE', 'MONITORING_OPEN'),
+        ofType('METRICS_SUBSCRIBE', 'MONITORING_LOAD'),
 
         // merge state
         withLatestFrom(this.store, (action: any, state) => ({ action, state })),
 
         // connect to ws
         switchMap(({ action, state }) => {
+
+            // return empty observable
+            if (state.settingsNode.api.ws === false) {
+                return empty();
+            }
 
             const webSocketConnection$ = (
                 webSocket({
@@ -96,13 +102,6 @@ export class AppEffects {
         map(() => ({ type: 'METRICS_SUBSCRIBE' }))
     );
 
-    // trigger subscription to webservice
-    @Effect()
-    SettingsInitSuccessEffect$ = this.actions$.pipe(
-        ofType('SETTINGS_INIT_SUSCCESS'),
-        map(() => ({ type: 'METRICS_SUBSCRIBE' }))
-    );
-
     // load node settings
     @Effect()
     SettingsNodeLoadEffect$ = this.actions$.pipe(
@@ -122,8 +121,8 @@ export class AppEffects {
         tap(({ action, state }) => {
 
             let redirectUrl = '';
-            if ( action.payload.connected ) {
-                if ( action.payload.ws === false ) {
+            if (action.payload.connected) {
+                if (action.payload.ws === false) {
                     redirectUrl = 'monitoring';
                 } else {
                     redirectUrl = 'monitoring';
@@ -132,7 +131,7 @@ export class AppEffects {
                 redirectUrl = '';
             }
 
-            console.log('[APP_INIT]', action, state , redirectUrl );
+            console.log('[APP_INIT]', action, state, redirectUrl);
 
             // force url reload
             this.router.navigateByUrl('/', { skipLocationChange: false }).then(() =>
@@ -143,10 +142,36 @@ export class AppEffects {
         map(() => ({ type: 'APP_INIT_SUCCESS' }))
     );
 
+
+    // load node monitoring
+    @Effect()
+    MonitoringLoadEffect$ = this.actions$.pipe(
+        ofType('MONITORING_LOAD'),
+
+        // merge state
+        withLatestFrom(this.store, (action: any, state) => ({ action, state })),
+
+        switchMap(({ action, state }) =>
+
+            // get header data every second
+            timer(0, 1000).pipe(
+                takeUntil(onDestroy$),
+                switchMap(() =>
+                    this.http.get(state.settingsNode.api.http + '/chains/main/blocks/head/header').pipe(
+                        map(response => ({ type: 'MONITORING_LOAD_SUCCESS', payload: response })),
+                        catchError(error => of({ type: 'MONITORING_LOAD_ERROR', payload: error })),
+                    )
+                )
+            )
+        ),
+
+    );
+
     constructor(
         private actions$: Actions,
         private store: Store<any>,
         private router: Router,
+        private http: HttpClient,
     ) { }
 
 }

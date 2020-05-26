@@ -71,45 +71,39 @@ export function reducer(state = initialState, action) {
 
         case 'APP_INIT': {
 
-            if (action.payload.connected === false) {
-                return {
-                    ...state,
-                    menu: {
-                        monitoring: {
-                            synchronization: false,
-                        },
-                        explorer: {
-                            endpoints: false,
-                            network: false,
-                            storage: false,
-                        },
-                    },
-                };
+            // TODO: refactor use app features
+            let monitoringSynchronization = false;
+            let explorerEndpoints = false;
+            let explorerNetwork = false;
+            let explorerStorage = false;
+
+            if (action.payload.connected === true) {
+                monitoringSynchronization = true;
+            }
+
+            if (action.payload.ws === false) {
+                explorerStorage = false;
+            } else {
+                explorerStorage = true;
+            }
+
+            if (action.payload.debugger !== false) {
+                explorerEndpoints = true;
+                explorerNetwork = true;
             }
 
             return {
                 ...state,
-                menu: action.payload.ws === false ?
-                    {
-                        monitoring: {
-                            synchronization: true,
-                        },
-                        explorer: {
-                            endpoints: true,
-                            network: true,
-                            storage: false,
-                        },
-                    } :
-                    {
-                        monitoring: {
-                            synchronization: true,
-                        },
-                        explorer: {
-                            endpoints: false,
-                            network: true,
-                            storage: true,
-                        },
+                menu: {
+                    monitoring: {
+                        synchronization: monitoringSynchronization,
                     },
+                    explorer: {
+                        endpoints: explorerEndpoints,
+                        network: explorerNetwork,
+                        storage: explorerStorage,
+                    },
+                }
             };
         }
 

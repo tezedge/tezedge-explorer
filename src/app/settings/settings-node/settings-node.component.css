@@ -57,8 +57,10 @@
 }
 
 .settings-node-option {
-    height:45px !important;
-    padding-right:25px;
+    height: 50px !important;
+    padding-top: 5px;
+    padding-right: 25px;
+    padding-bottom: 3px;
 }
 
 .settings-node-option-status {

@@ -18,6 +18,8 @@ import * as fromApp from './app.reducer';
 import * as fromSettings from './settings/settings.reducer';
 import * as fromSettingsNode from './settings/settings-node/settings-node.reducer';
 
+import * as fromMonitoring from './monitoring/monitoring.reducer';
+
 import * as fromNetworkAction from './network/network-action/network-action.reducer';
 import * as fromNetworkActionDetail from './network/network-action-detail/network-action-detail.reducer';
 import * as fromNetworkPeers from './network/network-peers/network-peers.reducer';
@@ -35,6 +37,7 @@ export interface State {
     app: any;
     settings: any;
     settingsNode: any;
+    monitoring: any;
     networkAction: any;
     networkActionDetail: any;
     networkPeers: any;
@@ -52,6 +55,7 @@ export const reducers: ActionReducerMap<State> = {
     app: fromApp.reducer,
     settings: fromSettings.reducer,
     settingsNode: fromSettingsNode.reducer,
+    monitoring: fromMonitoring.reducer,
     networkAction: fromNetworkAction.reducer,
     networkActionDetail: fromNetworkActionDetail.reducer,
     networkPeers: fromNetworkPeers.reducer,

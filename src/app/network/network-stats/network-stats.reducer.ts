@@ -40,7 +40,7 @@ export function reducer(state = initialState, action) {
         }
 
         case 'MONITORING_LOAD':
-        case 'METRICS_SUBSCRIBE_ERROR':
+        case 'MONITORING_LOAD_ERROR':
             return initialState;
 
         case 'NETWORK_STATS_LOAD_SUCCESS': {

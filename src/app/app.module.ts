@@ -21,6 +21,8 @@ import { environment } from '../environments/environment';
 
 import { AppEffects } from './app.effects';
 
+import { MonitoringEffects } from './monitoring/monitoring.effects';
+
 import { NetworkActionEffects } from './network/network-action/network-action.effects';
 import { NetworkActionDetailEffects } from './network/network-action-detail/network-action-detail.effects';
 
@@ -136,6 +138,7 @@ import { SettingsNodeComponent } from './settings/settings-node/settings-node.co
     // load effect module
     EffectsModule.forRoot([
       AppEffects,
+      MonitoringEffects,
       NetworkActionEffects,
       NetworkActionDetailEffects,
       StorageBlockEffects,

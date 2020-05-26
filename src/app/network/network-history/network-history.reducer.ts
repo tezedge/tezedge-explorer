@@ -43,7 +43,7 @@ export function reducer(state = initialState, action) {
              }
         }
 
-        case 'METRICS_SUBSCRIBE_ERROR':
+        case 'MONITORING_LOAD':
             return initialState
 
         default:

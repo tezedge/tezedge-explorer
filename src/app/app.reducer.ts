@@ -36,9 +36,6 @@ const initialState = {
         value: '',
         valueUpdate: '',
     },
-    monitoring: {
-        open: false
-    },
     menu: {
         monitoring: {
             synchronization: false,
@@ -116,23 +113,6 @@ export function reducer(state = initialState, action) {
             };
         }
 
-        case 'MONITORING_OPEN': {
-            return {
-                ...state,
-                monitoring: {
-                    open: true,
-                }
-            };
-        }
-
-        case 'MONITORING_CLOSE': {
-            return {
-                ...state,
-                monitoring: {
-                    open: false,
-                }
-            };
-        }
 
         // probress bar show
         case 'NETWORK_ACTION_LOAD':

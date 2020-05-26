@@ -11,7 +11,7 @@ export function reducer(state = initialState, action) {
 
         case 'ENDPOINTS_ACTION_LOAD_SUCCESS': {
 
-            console.log('[ENDPOINTS_ACTION_LOAD_SUCCESS]', action );
+            // console.log('[ENDPOINTS_ACTION_LOAD_SUCCESS]', action );
 
             return {
                 ...state,
@@ -25,10 +25,10 @@ export function reducer(state = initialState, action) {
                             payload: endpointAction.message.payload,
                         };
 
-                        console.log('[ENDPOINTS_ACTION_LOAD_SUCCESS]', endpointAction.message );
+                        // console.log('[ENDPOINTS_ACTION_LOAD_SUCCESS]', endpointAction.message );
 
                         // try() {}
-                        debugger
+                        // debugger
 
                         return {
                             ...accumulator,

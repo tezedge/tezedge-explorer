@@ -38,9 +38,13 @@ export class MonitoringEffects {
         switchMap(({ action, state }) => {
             const appFeaturesActions = [];
 
-            // appFeaturesActions.push({ type: 'NETWORK_STATS_LOAD' });
-            // appFeaturesActions.push({ type: 'NETWORK_PEERS_LOAD' });
-            appFeaturesActions.push({ type: 'NETWORK_WEBSOCKET_LOAD' });
+            // TODO: use app features
+            if (state.settingsNode.api.ws === false) {
+                appFeaturesActions.push({ type: 'NETWORK_STATS_LOAD' });
+                appFeaturesActions.push({ type: 'NETWORK_PEERS_LOAD' });
+            } else {
+                appFeaturesActions.push({ type: 'NETWORK_WEBSOCKET_LOAD' });
+            }
 
             return appFeaturesActions;
         })
@@ -48,20 +52,20 @@ export class MonitoringEffects {
 
 
     // initialize app features
-    @Effect()
+    @Effect({ dispatch: false })
     MonitoringCloseEffect$ = this.actions$.pipe(
         ofType('MONITORING_CLOSE'),
         // merge state
         withLatestFrom(this.store, (action: any, state) => ({ action, state })),
         // init app modules
-        switchMap(({ action, state }) => {
-            const appFeaturesActions = [];
-
-            // appFeaturesActions.push({ type: 'NETWORK_STATS_LOAD' });
-            // appFeaturesActions.push({ type: 'NETWORK_PEERS_LOAD' });
-            appFeaturesActions.push({ type: 'NETWORK_WEBSOCKET_STOP' });
-
-            return appFeaturesActions;
+        tap(({ action, state }) => {
+            // TODO: use app features
+            if (state.settingsNode.api.ws === false) {
+                // close all open observables
+                networkDestroy$.next();
+            } else {
+                websocketDestroy$.next();
+            }
         })
     );
 
@@ -160,19 +164,6 @@ export class MonitoringEffects {
         })
 
     );
-
-    // stop network websocket
-    @Effect()
-    NetworkWebsocketStopEffect$ = this.actions$.pipe(
-        ofType('NETWORK_WEBSOCKET_STOP'),
-        tap(({ action, state }) => {
-            // close all open observables
-            networkDestroy$.next();
-            websocketDestroy$.next();
-        }),
-        map(() => ({ type: 'NETWORK_WEBSOCKET_STOP_SUCCESS' }))
-    );
-
 
     constructor(
         private http: HttpClient,

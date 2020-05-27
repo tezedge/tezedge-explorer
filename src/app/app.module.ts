@@ -28,6 +28,8 @@ import { NetworkActionDetailEffects } from './network/network-action-detail/netw
 
 import { EndpointsActionEffects } from './endpoints/endpoints-action/endpoints-action.effects';
 
+import { LogsActionEffects } from './logs/logs-action/logs-action.effects';
+
 import { StorageBlockEffects } from './storage/storage-block/storage-block.effects';
 import { StorageActionEffects } from './storage/storage-action/storage-action.effects';
 import { StorageSearchEffects } from './storage/storage-search/storage-search.effects';
@@ -151,6 +153,7 @@ import { LogsComponent } from './logs/logs.component';
       StorageActionEffects,
       StorageSearchEffects,
       EndpointsActionEffects,
+      LogsActionEffects,
       SettingsEffects,
       SettingsNodeEffects,
     ]),

@@ -3,9 +3,9 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { Router, ActivatedRoute, Params } from '@angular/router';
 
-import { Store } from '@ngrx/store'
-import { Subject } from 'rxjs'
-import { takeUntil } from 'rxjs/operators'
+import { Store } from '@ngrx/store';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'app-endpoints-action',
@@ -14,16 +14,16 @@ import { takeUntil } from 'rxjs/operators'
 })
 export class EndpointsActionComponent implements OnInit {
 
-  public endpointsAction
-  public endpointsActionList
-  public endpointsActionShow
-  public endpointsActionFilter
+  public endpointsAction;
+  public endpointsActionList;
+  public endpointsActionShow;
+  public endpointsActionFilter;
 
-  public endpointsJSONView
+  public endpointsJSONView;
 
-  public tableDataSource
-  public onDestroy$ = new Subject()
-  public expandedElement
+  public tableDataSource;
+  public onDestroy$ = new Subject();
+  public expandedElement;
 
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
 

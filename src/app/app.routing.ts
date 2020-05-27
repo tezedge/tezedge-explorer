@@ -2,6 +2,7 @@ import { Routes } from '@angular/router'
 import { RouterStateSnapshot, Params } from '@angular/router';
 import { RouterStateSerializer } from '@ngrx/router-store';
 
+import { LogsComponent } from './logs/logs.component';
 import { NetworkComponent } from './network/network.component';
 import { NetworkActionDetailComponent } from './network/network-action-detail/network-action-detail.component';
 import { EndpointsComponent } from './endpoints/endpoints.component';
@@ -16,6 +17,8 @@ export const AppRouting: Routes = [
   //   { path: 'network', loadChildren: 'app/network/network.module#networkModule' },
 
   { path: 'monitoring', component: MonitoringComponent },
+
+  { path: 'logs', component: LogsComponent },
 
   { path: 'network', component: NetworkComponent },
   { path: 'network/:address', component: NetworkComponent },

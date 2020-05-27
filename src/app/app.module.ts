@@ -83,6 +83,9 @@ import { EndpointsActionComponent } from './endpoints/endpoints-action/endpoints
 import { EndpointsSearchComponent } from './endpoints/endpoints-search/endpoints-search.component';
 import { EndpointsComponent } from './endpoints/endpoints.component';
 import { SettingsNodeComponent } from './settings/settings-node/settings-node.component';
+import { LogsActionComponent } from './logs/logs-action/logs-action.component';
+import { LogsSearchComponent } from './logs/logs-search/logs-search.component';
+import { LogsComponent } from './logs/logs.component';
 
 
 @NgModule({
@@ -107,7 +110,10 @@ import { SettingsNodeComponent } from './settings/settings-node/settings-node.co
     EndpointsActionComponent,
     EndpointsSearchComponent,
     EndpointsComponent,
-    SettingsNodeComponent
+    SettingsNodeComponent,
+    LogsActionComponent,
+    LogsSearchComponent,
+    LogsComponent
   ],
   imports: [
     BrowserModule,

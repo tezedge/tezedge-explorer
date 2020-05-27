@@ -44,6 +44,7 @@ const initialState = {
             endpoints: false,
             network: false,
             storage: false,
+            logs: false,
         },
     },
 
@@ -76,6 +77,8 @@ export function reducer(state = initialState, action) {
             let explorerEndpoints = false;
             let explorerNetwork = false;
             let explorerStorage = false;
+            let explorerLogs = false;
+
 
             if (action.payload.connected === true) {
                 monitoringSynchronization = true;
@@ -90,6 +93,7 @@ export function reducer(state = initialState, action) {
             if (action.payload.debugger !== false) {
                 explorerEndpoints = true;
                 explorerNetwork = true;
+                explorerLogs = true;
             }
 
             return {
@@ -102,6 +106,7 @@ export function reducer(state = initialState, action) {
                         endpoints: explorerEndpoints,
                         network: explorerNetwork,
                         storage: explorerStorage,
+                        logs: explorerLogs,
                     },
                 }
             };

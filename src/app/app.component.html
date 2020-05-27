@@ -110,6 +110,14 @@
                         </span>
                     </a> 
 
+
+                    <a *ngIf="app.menu.explorer.logs" mat-list-item routerLink="/logs" (click)="isMobile && start.toggle()" [style.color]="app.sidenav.color">
+                        <span>
+                            <svg-icon icon="logs"></svg-icon>
+                            Logs
+                        </span>
+                    </a> 
+                    
                     <!-- 
 
                     <a mat-list-item routerLink="/mempool" (click)="isMobile && start.toggle()"
@@ -118,13 +126,7 @@
                             Mempool
                         </span>
                     </a>
-
-                    <a mat-list-item routerLink="/logs" (click)="isMobile && start.toggle()"
-                    [style.color]="app.sidenav.color">
-                        <span>
-                            Logs
-                        </span>
-                    </a> -->
+-->
 
 
                 </div>

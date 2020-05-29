@@ -10,7 +10,7 @@ import * as shape from 'd3-shape';
 @Component({
   selector: 'app-network-stats',
   templateUrl: './network-stats.component.html',
-  styleUrls: ['./network-stats.component.css']
+  styleUrls: ['./network-stats.component.scss']
 })
 export class NetworkStatsComponent implements OnInit {
 

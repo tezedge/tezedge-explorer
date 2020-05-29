@@ -9,7 +9,7 @@ import { takeUntil, take } from 'rxjs/operators'
 @Component({
   selector: 'app-network-peers',
   templateUrl: './network-peers.component.html',
-  styleUrls: ['./network-peers.component.css'],
+  styleUrls: ['./network-peers.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class NetworkPeersComponent implements OnInit {

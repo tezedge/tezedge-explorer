@@ -13,7 +13,7 @@ import * as d3 from 'd3';
 @Component({
   selector: 'app-network-history',
   templateUrl: './network-history.component.html',
-  styleUrls: ['./network-history.component.css'],
+  styleUrls: ['./network-history.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 

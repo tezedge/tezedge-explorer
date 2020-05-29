@@ -7,7 +7,7 @@ import { Router } from '@angular/router';
 @Component({
   selector: 'app-network-search',
   templateUrl: './network-search.component.html',
-  styleUrls: ['./network-search.component.css']
+  styleUrls: ['./network-search.component.scss']
 })
 export class NetworkSearchComponent implements OnInit {
 

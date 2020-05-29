@@ -4,7 +4,7 @@ import { Store } from '@ngrx/store'
 @Component({
   selector: 'app-settings-node',
   templateUrl: './settings-node.component.html',
-  styleUrls: ['./settings-node.component.css']
+  styleUrls: ['./settings-node.component.scss']
 })
 export class SettingsNodeComponent implements OnInit {
 

@@ -7,7 +7,7 @@ import { Router } from '@angular/router';
 @Component({
   selector: 'app-storage-search',
   templateUrl: './storage-search.component.html',
-  styleUrls: ['./storage-search.component.css']
+  styleUrls: ['./storage-search.component.scss']
 })
 export class StorageSearchComponent implements OnInit {
 

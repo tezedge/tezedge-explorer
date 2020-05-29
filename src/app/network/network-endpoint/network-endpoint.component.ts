@@ -7,7 +7,7 @@ import { takeUntil } from 'rxjs/operators';
 @Component({
   selector: 'app-network-endpoint',
   templateUrl: './network-endpoint.component.html',
-  styleUrls: ['./network-endpoint.component.css']
+  styleUrls: ['./network-endpoint.component.scss']
 })
 export class NetworkEndpointComponent implements OnInit, OnDestroy {
 

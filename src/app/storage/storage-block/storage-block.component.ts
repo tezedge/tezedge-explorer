@@ -10,7 +10,7 @@ import { takeUntil } from 'rxjs/operators'
 @Component({
   selector: 'app-storage-block',
   templateUrl: './storage-block.component.html',
-  styleUrls: ['./storage-block.component.css']
+  styleUrls: ['./storage-block.component.scss']
 })
 export class StorageBlockComponent implements OnInit {
 

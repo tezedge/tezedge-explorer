@@ -6,7 +6,7 @@ import { Subject } from 'rxjs';
 @Component({
   selector: 'app-monitoring',
   templateUrl: './monitoring.component.html',
-  styleUrls: ['./monitoring.component.css']
+  styleUrls: ['./monitoring.component.scss']
 })
 export class MonitoringComponent implements OnInit, OnDestroy {
 

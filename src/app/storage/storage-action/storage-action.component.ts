@@ -14,7 +14,7 @@ import { MatChipInputEvent } from '@angular/material/chips';
 @Component({
   selector: 'app-storage-action',
   templateUrl: './storage-action.component.html',
-  styleUrls: ['./storage-action.component.css']
+  styleUrls: ['./storage-action.component.scss']
 })
 
 export class StorageActionComponent implements OnInit {

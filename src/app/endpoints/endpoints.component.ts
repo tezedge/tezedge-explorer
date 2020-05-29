@@ -3,7 +3,7 @@ import { Component, OnInit } from '@angular/core';
 @Component({
   selector: 'app-endpoints',
   templateUrl: './endpoints.component.html',
-  styleUrls: ['./endpoints.component.css']
+  styleUrls: ['./endpoints.component.scss']
 })
 export class EndpointsComponent implements OnInit {
 

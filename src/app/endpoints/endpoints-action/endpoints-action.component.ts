@@ -10,7 +10,7 @@ import { takeUntil } from 'rxjs/operators';
 @Component({
   selector: 'app-endpoints-action',
   templateUrl: './endpoints-action.component.html',
-  styleUrls: ['./endpoints-action.component.css']
+  styleUrls: ['./endpoints-action.component.scss']
 })
 export class EndpointsActionComponent implements OnInit {
 

@@ -10,7 +10,7 @@ import { takeUntil } from 'rxjs/operators'
 @Component({
   selector: 'app-network-action',
   templateUrl: './network-action.component.html',
-  styleUrls: ['./network-action.component.css']
+  styleUrls: ['./network-action.component.scss']
 })
 export class NetworkActionComponent implements OnInit {
 

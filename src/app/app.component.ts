@@ -51,4 +51,12 @@ export class AppComponent {
 
   }
 
+  // change app theme
+  changeTheme(theme) {
+    this.store.dispatch({
+      type: 'APP_THEME_CHANGE',
+      payload: theme,
+    });
+  }
+
 }

@@ -1,3 +1,5 @@
+import { discardPeriodicTasks } from '@angular/core/testing';
+
 const initialState = {
 
     user: {
@@ -47,6 +49,9 @@ const initialState = {
             logs: false,
         },
     },
+    theme: {
+        name: 'light',
+    }
 
 };
 
@@ -112,6 +117,15 @@ export function reducer(state = initialState, action) {
             };
         }
 
+        case 'APP_THEME_CHANGE': {
+            return {
+                ...state,
+                theme: {
+                    ...state.theme,
+                    name: action.payload === 'dark' ? 'light' : 'dark',
+                }
+            };
+        }
 
         // probress bar show
         case 'NETWORK_ACTION_LOAD':

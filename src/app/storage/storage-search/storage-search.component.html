@@ -1,12 +1,9 @@
 <style>
-    .app-storage-search {
+    .storage-search {
         display: flex;
         align-items: center;
         justify-content: center;
-
         height: 50px;
-        border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-        background-color: white;
     }
 
     .mat-form-field {
@@ -27,9 +24,9 @@
 
 </style>
 
-<div class="app-storage-search">
+<div class="toolbar storage-search">
 
-    <span class="app-storage-search-input">
+    <span class="storage-search-input">
         <mat-form-field appearance="outline">
             <mat-icon style="opacity:0.4;position:absolute;top: 12px;font-size: 22px;">search</mat-icon>
             <input style="padding-left: 30px;padding-top: 1px;" matInput [(ngModel)]="storageSearchInput"

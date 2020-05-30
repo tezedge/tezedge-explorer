@@ -7,8 +7,18 @@ body {
     font-weight: 300 !important;
 }
 
+
 table {
     width: 100%;
+}
+
+.sidenav-content {
+    background-color: $color-background;
+}
+
+.toolbar {
+    background-color: $color-toolbar;
+    border-bottom: 1px solid $color-toolbar-border;
 }
 
 .network {
@@ -41,10 +51,10 @@ table {
     align-items: center;
     justify-content: center;
     flex-direction: row;
-    background: $color-background-white;
+    background: $color-toolbar;
     height: 50px;
     width: 100%;
-    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    border-bottom: 1px solid $color-toolbar-border;
 }
 
 .network-endpoint-content {

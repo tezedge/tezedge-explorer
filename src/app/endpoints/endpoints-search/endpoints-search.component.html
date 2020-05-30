@@ -1,12 +1,10 @@
 <style>
-    .app-endpoints-search {
+    .endpoints-search {
         display: flex;
         align-items: center;
         justify-content: center;
 
         height: 50px;
-        border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-        background-color: white;
     }
 
     .mat-form-field {
@@ -17,7 +15,7 @@
     }
 
     @media (max-width: 600px) {
-        .app-endpoints-search-input {
+        .endpoints-search-input {
             margin-left: 10vw;
         }
         .mat-form-field {
@@ -27,9 +25,9 @@
 
 </style>
 
-<div class="app-endpoints-search">
+<div class="toolbar endpoints-search">
 
-    <span class="app-endpoints-search-input">
+    <span class="endpoints-search-input">
         <!-- <mat-form-field appearance="outline">
             <mat-icon style="opacity:0.4;position:absolute;top: 12px;font-size: 22px;">search</mat-icon>
             <input style="padding-left: 30px;padding-top: 1px;" matInput [(ngModel)]="networkSearchInput"

@@ -67,8 +67,8 @@
                     </div>
                     
                     <button mat-icon-button style="margin-left:110px">
-                        <mat-icon *ngIf="app.theme.name === 'dark'" style="font-size:16px; opacity:0.1" (click)="changeTheme('dark')">wb_sunny</mat-icon>
-                        <mat-icon *ngIf="app.theme.name === 'light'"style="font-size:16px; opacity:0.1" (click)="changeTheme('light')">bedtime</mat-icon>
+                        <mat-icon *ngIf="app.theme.name === 'dark'" style="font-size:16px; opacity:0.1" (click)="changeTheme('light')">wb_sunny</mat-icon>
+                        <mat-icon *ngIf="app.theme.name === 'light'"style="font-size:16px; opacity:0.1" (click)="changeTheme('dark')">bedtime</mat-icon>
                     </button>
                     <!-- <button mat-icon-button class="app-menu-toggle" *ngIf="app.sidenav.toggleButton.isVisible">
                         <mat-icon (click)="start.toggle()">menu</mat-icon>

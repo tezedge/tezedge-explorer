@@ -1,13 +1,9 @@
-@import '@angular/material/prebuilt-themes/indigo-pink.css';
-
-$background-color: #1d212b;
-
 html,
 body {
     height: 100%;
     font-family: Roboto, "Helvetica Neue", sans-serif;
     margin: 0px !important;
-    background-color: $background-color;
+    background-color: $color-background;
     font-weight: 300 !important;
 }
 
@@ -26,11 +22,10 @@ table {
     font: 300 24px/32px Roboto, "Helvetica Neue", sans-serif;
 }
 
-.network-stats ngx-charts-line-chart {}
 
 .settings {
     padding: 25px;
-    background-color: #F5F9FC;
+    background-color: $color-background;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -46,7 +41,7 @@ table {
     align-items: center;
     justify-content: center;
     flex-direction: row;
-    background: white;
+    background: $color-background-white;
     height: 50px;
     width: 100%;
     border-bottom: 1px solid rgba(0, 0, 0, 0.1);
@@ -59,11 +54,11 @@ table {
 }
 
 .network-endpoint-content a {
-    color: black;
+    color: $color-black;
 }
 
 .network-endpoint-content a:visited {
-    color: black;
+    color: $color-black;
 }
 
 .settings-endpoint {
@@ -83,8 +78,6 @@ table {
     align-self: flex-end;
 }
 
-.network {}
-
 .network-stats {}
 
 .network-stats-chart {
@@ -92,18 +85,18 @@ table {
     width: 697px;
     margin: 15px 0px 5px 10px;
     height: 14vh;
-    border-bottom: 1px solid #E0E0E0;
-    border-left: 1px solid #E0E0E0;
+    border-bottom: 1px solid $color-border;
+    border-left: 1px solid $color-border;
     border-bottom-left-radius: 4px;
     /*border: 1px solid #E0E0E0;
     border-radius: 4px;*/
 }
 
 .network-peers {
-    background-color: white;
+    background-color: $color-background-white;
     margin-top: 30px;
     width: 700px;
-    border: 1px solid #E0E0E0;
+    border: 1px solid $color-border;
     border-radius: 4px;
 }
 
@@ -134,7 +127,7 @@ tr.mat-row {
 
 mat-row,
 td.mat-cell {
-    border-bottom-color: white !important;
+    border-bottom-color: $color-background-white !important;
 }
 
 .ngx-json-viewer {
@@ -204,7 +197,7 @@ td.mat-cell {
 }
 
 .network {
-    background-color: #F5F9FC;
+    background-color: $color-background;
 }
 
 @media screen and (max-width: 40em) {
@@ -214,22 +207,22 @@ td.mat-cell {
 }
 
 .storage-block-container {
-    background-color: #F5F9FC;
+    background-color: $color-background;
     display: flex;
     align-items: center;
     justify-content: center;
 }
 
 .storage-block {
-    background-color: white;
+    background-color: $color-background-white;
     margin-top: 30px;
     width: 800px;
-    border: 1px solid #e0e0e0;
+    border: 1px solid $color-border;
     border-radius: 4px;
 }
 
 .storage-action-container {
-    background-color: #F5F9FC;
+    background-color: $color-background;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -237,14 +230,14 @@ td.mat-cell {
 }
 
 .storage-action {
-    background-color: white;
+    background-color: $color-background-white;
     margin-top: 30px;
-    border: 1px solid #e0e0e0;
+    border: 1px solid $color-border;
     border-radius: 4px;
 }
 
 .mat-drawer-container {
-    background-color: white;
+    background-color: $color-background-white;
 }
 
 .mat-list-base .mat-list-item .mat-list-item-content,
@@ -283,20 +276,20 @@ input.mat-input-element {
 /* focused color */
 
 .mat-form-field-appearance-outline.mat-focused .mat-form-field-outline-thick {
-    color: #1C202B !important;
+    color: $color-focus !important;
 }
 
 
 /* floating label color */
 
 .mat-form-field-appearance-outline.mat-focused .mat-form-field-label {
-    color: #1C202B !important;
+    color: $color-focus !important;
 }
 
 .mat-form-field-appearance-outline .mat-form-field-outline-thick .mat-form-field-outline-end,
 .mat-form-field-appearance-outline .mat-form-field-outline-thick .mat-form-field-outline-gap,
 .mat-form-field-appearance-outline .mat-form-field-outline-thick .mat-form-field-outline-start {
-    color: #1C202B !important;
+    color: $color-focus !important;
     border-width: 1px !important;
 }
 
@@ -357,7 +350,7 @@ input.mat-input-element {
 }
 
 mat-form-field .mat-select-value {
-    color: white;
+    color: $color-background-white;
     font-size: 13px;
     font-weight: 300;
 }

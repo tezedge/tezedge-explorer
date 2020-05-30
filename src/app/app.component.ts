@@ -53,10 +53,14 @@ export class AppComponent {
 
   // change app theme
   changeTheme(theme) {
+
     this.store.dispatch({
       type: 'APP_THEME_CHANGE',
       payload: theme,
     });
+
+    // change theme
+    (document.getElementById('app-style-theme') as any).href = 'styles.' + theme + '.css';
   }
 
 }

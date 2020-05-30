@@ -122,7 +122,7 @@ export function reducer(state = initialState, action) {
                 ...state,
                 theme: {
                     ...state.theme,
-                    name: action.payload === 'dark' ? 'light' : 'dark',
+                    name: action.payload,
                 }
             };
         }

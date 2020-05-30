@@ -25,8 +25,20 @@
               "src/manifest.webmanifest"
             ],
             "styles": [
-              "src/styles.scss"
+              { 
+                "input": "src/styles.light.scss", 
+                "bundleName": "styles.light",
+                "lazy": true,
+                "inject": false
+              },
+              { 
+                "input": "src/styles.dark.scss", 
+                "bundleName": "styles.dark",
+                "lazy": true,
+                "inject": false
+              }
             ],
+            "extractCss": true,
             "scripts": []
           },
           "configurations": {
@@ -92,7 +104,18 @@
               "src/manifest.webmanifest"
             ],
             "styles": [
-              "src/styles.scss"
+              { 
+                "input": "src/styles.light.scss", 
+                "bundleName": "styles.light",
+                "lazy": true,
+                "inject": false
+              },
+              { 
+                "input": "src/styles.dark.scss", 
+                "bundleName": "styles.dark",
+                "lazy": true,
+                "inject": false
+              }
             ],
             "scripts": []
           }

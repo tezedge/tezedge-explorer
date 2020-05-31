@@ -33,7 +33,7 @@ table > tbody > tr > td, table > tbody > tr > td > a {
 
 mat-row,
 td.mat-cell {
-    border-bottom-color: $color-table-background !important;
+    border-bottom-color: $color-table-background;
 }
 
 .mat-table {
@@ -64,6 +64,35 @@ tr.mat-row {
 
 .mat-icon-button[disabled][disabled] {
     color: $color-disabled;
+}
+
+.row-expanded {
+    background-color: $color-table-expanded;
+}
+
+.detail-expanded {
+    display: table-row;
+    background-color: $color-table-expanded;
+    min-height: 36px !important;
+}
+
+.row-expanded td.mat-cell {
+    border-top: 1px solid $color-table-expanded-border ;
+    border-bottom: 1px solid $color-table-expanded;
+}
+
+.expanded-detail-cell {
+    max-width: 700px;
+    padding: 5px 15px 15px 23px !important;
+    border-bottom: 1px solid $color-table-expanded-border !important;
+}
+
+.mat-form-field-wrapper {
+    color: $color;
+}
+
+.mat-form-field-outline {
+     color: $color-border !important;
 }
 
 .network {
@@ -410,10 +439,18 @@ mat-form-field .mat-select-arrow {
 }
 
 .storage-action {
+    color: $color;
     background-color: $color-table-background;
     margin-top: 30px;
     border: 1px solid $color-table-border;
     border-radius: 4px;
+}
+
+.storage-action-block-link {
+    font-size: 14px;
+    padding: 12px 12px 12px 24px;
+    border-bottom: 1px solid $color-table-border;
+    cursor: pointer;
 }
 
 .logs-action {
@@ -454,3 +491,5 @@ mat-form-field .mat-select-arrow {
     padding: 7px 0px 7px 15px;
     border-bottom: 1px solid $color-table-border;
 }
+
+

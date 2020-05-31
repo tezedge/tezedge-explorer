@@ -544,7 +544,7 @@ export function parsePath(inputKey) {
 export function categoryColor(category) {
     switch (category) {
         case 'active_delegates_with_rolls': {
-            return  'brown'; //'blue';
+            return  'darkorange'; //'blue';
         }
         case 'big_maps': {
             return 'green';
@@ -565,7 +565,7 @@ export function categoryColor(category) {
             return 'red';
         }
         case 'delegates_with_frozen_balance': {
-            return 'brown'; //'blue';
+            return 'darkorange'; //'blue';
         }
         case 'ramp_up': {
             return 'yellow';

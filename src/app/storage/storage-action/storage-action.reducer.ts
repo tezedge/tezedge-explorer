@@ -544,7 +544,7 @@ export function parsePath(inputKey) {
 export function categoryColor(category) {
     switch (category) {
         case 'active_delegates_with_rolls': {
-            return 'blue';
+            return  'brown'; //'blue';
         }
         case 'big_maps': {
             return 'green';
@@ -556,7 +556,7 @@ export function categoryColor(category) {
             return 'red';
         }
         case 'contracts': {
-            return 'darkblue';
+            return 'darkorange'; //'darkblue';
         }
         case 'cycle': {
             return 'green';
@@ -565,7 +565,7 @@ export function categoryColor(category) {
             return 'red';
         }
         case 'delegates_with_frozen_balance': {
-            return 'blue';
+            return 'brown'; //'blue';
         }
         case 'ramp_up': {
             return 'yellow';
@@ -578,7 +578,7 @@ export function categoryColor(category) {
         }
 
         default:
-            return 'black';
+            return 'gray';
     }
 }
 

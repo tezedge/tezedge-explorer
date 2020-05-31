@@ -62,6 +62,10 @@ tr.mat-row {
     padding: 14px !important;
 }
 
+.mat-icon-button[disabled][disabled] {
+    color: $color-disabled;
+}
+
 
 .network {
     display: flex;

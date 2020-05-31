@@ -10,7 +10,7 @@
             <ng-container matColumnDef="datetime">
                 <th mat-header-cell *matHeaderCellDef>Datetime</th>
                 <td mat-cell *matCellDef="let element">
-                    <a style="color:black;text-decoration: none;" href="#/storage/{{ element.hash }}">
+                    <a style="text-decoration: none;" href="#/storage/{{ element.hash }}">
                         {{ element.datetime }}
                     </a>
                 </td>
@@ -19,7 +19,7 @@
             <ng-container matColumnDef="level">
                 <th mat-header-cell *matHeaderCellDef>Level</th>
                 <td mat-cell *matCellDef="let element">
-                    <a style="color:black;text-decoration: none;" href="#/storage/{{ element.hash }}">
+                    <a style="text-decoration: none;" href="#/storage/{{ element.hash }}">
                         {{ element.header.level }} </a>
                 </td>
             </ng-container>
@@ -27,7 +27,7 @@
             <ng-container matColumnDef="hash">
                 <th mat-header-cell *matHeaderCellDef>Hash</th>
                 <td mat-cell *matCellDef="let element">
-                    <a style="color:black;text-decoration: none;" href="#/storage/{{ element.hash }}">
+                    <a style="text-decoration: none;" href="#/storage/{{ element.hash }}">
                         {{ element.hash }}
                     </a>
                 </td>
@@ -36,7 +36,7 @@
             <ng-container matColumnDef="cycle">
                 <th mat-header-cell *matHeaderCellDef>Cycle</th>
                 <td mat-cell *matCellDef="let element">
-                    <a style="color:black;text-decoration: none;" href="#/storage/{{ element.hash }}">
+                    <a style="text-decoration: none;" href="#/storage/{{ element.hash }}">
                         {{ element.metadata.level.cycle }} </a>
                 </td>
             </ng-container>
@@ -44,7 +44,7 @@
             <ng-container matColumnDef="position">
                 <th mat-header-cell *matHeaderCellDef>Position</th>
                 <td mat-cell *matCellDef="let element">
-                    <a style="color:black;text-decoration: none;" href="#/storage/{{ element.hash }}">
+                    <a style="text-decoration: none;" href="#/storage/{{ element.hash }}">
                         {{ element?.metadata?.level?.cycle_position  }} </a>
                 </td>
             </ng-container>

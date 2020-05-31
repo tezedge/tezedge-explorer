@@ -8,10 +8,6 @@ body {
 }
 
 
-table {
-    width: 100%;
-}
-
 .sidenav-content {
     background-color: $color-background;
 }
@@ -20,6 +16,52 @@ table {
     background-color: $color-toolbar;
     border-bottom: 1px solid $color-toolbar-border;
 }
+
+/* table */
+table {
+    width: 100%;
+}
+
+table > thead > tr > th {
+    color: $color-table-header !important;
+    border-bottom-color: $color-table-border !important;
+}
+
+table > tbody > tr > td, table > tbody > tr > td > a {
+    color: $color-table !important;
+}
+
+mat-row,
+td.mat-cell {
+    border-bottom-color: $color-table-background !important;
+}
+
+.mat-table {
+    background: initial;
+}
+
+.mat-paginator {
+    background: initial;
+    color: $color-table-paginator;
+}
+
+tr.mat-header-row {
+    height: 38px !important;
+}
+
+.mat-paginator-container {
+    min-height: 38px !important;
+}
+
+tr.mat-footer-row,
+tr.mat-row {
+    height: 36px !important;
+}
+
+.mat-cell.cdk-column-id.mat-column-id {
+    padding: 14px !important;
+}
+
 
 .network {
     display: flex;
@@ -31,7 +73,6 @@ table {
 .network .network .mat-h1 {
     font: 300 24px/32px Roboto, "Helvetica Neue", sans-serif;
 }
-
 
 .settings {
     padding: 25px;
@@ -88,8 +129,6 @@ table {
     align-self: flex-end;
 }
 
-.network-stats {}
-
 .network-stats-chart {
     display: none;
     width: 697px;
@@ -98,46 +137,6 @@ table {
     border-bottom: 1px solid $color-border;
     border-left: 1px solid $color-border;
     border-bottom-left-radius: 4px;
-    /*border: 1px solid #E0E0E0;
-    border-radius: 4px;*/
-}
-
-.network-peers {
-    background-color: $color-background-white;
-    margin-top: 30px;
-    width: 700px;
-    border: 1px solid $color-border;
-    border-radius: 4px;
-}
-
-.mat-table {
-    background: initial;
-}
-
-.mat-paginator {
-    background: initial;
-}
-
-tr.mat-header-row {
-    height: 38px !important;
-}
-
-.mat-paginator-container {
-    min-height: 38px !important;
-}
-
-tr.mat-footer-row,
-tr.mat-row {
-    height: 36px !important;
-}
-
-.mat-cell.cdk-column-id.mat-column-id {
-    padding: 14px !important;
-}
-
-mat-row,
-td.mat-cell {
-    border-bottom-color: $color-background-white !important;
 }
 
 .ngx-json-viewer {
@@ -223,13 +222,6 @@ td.mat-cell {
     justify-content: center;
 }
 
-.storage-block {
-    background-color: $color-background-white;
-    margin-top: 30px;
-    width: 800px;
-    border: 1px solid $color-border;
-    border-radius: 4px;
-}
 
 .storage-action-container {
     background-color: $color-background;
@@ -237,13 +229,6 @@ td.mat-cell {
     align-items: center;
     justify-content: center;
     flex-direction: column;
-}
-
-.storage-action {
-    background-color: $color-background-white;
-    margin-top: 30px;
-    border: 1px solid $color-border;
-    border-radius: 4px;
 }
 
 .mat-drawer-container {
@@ -280,18 +265,13 @@ input.mat-input-element {
     margin: 0px 0px 0px 0px;
 }
 
-.mat-form-field-appearance-outline .mat-form-field-outline {}
-
-
 /* focused color */
-
 .mat-form-field-appearance-outline.mat-focused .mat-form-field-outline-thick {
     color: $color-focus !important;
 }
 
 
 /* floating label color */
-
 .mat-form-field-appearance-outline.mat-focused .mat-form-field-label {
     color: $color-focus !important;
 }
@@ -315,10 +295,6 @@ input.mat-input-element {
     border-top: 0px;
 }
 
-.storage-action-filter {
-   /* border-bottom: 1px solid rgba(0, 0, 0, 0.1); */
-}
-
 .storage-action-filter .mat-icon {
     opacity: .3;
 }
@@ -327,12 +303,7 @@ input.mat-input-element {
     font-size: 14px !important;
 }
 
-.mat-option {
-}
-
-
 /* progress bar */
-
 .mat-progress-bar-fill::after {
     background-color: #2e3648;
 }
@@ -387,4 +358,52 @@ mat-form-field .mat-select-arrow {
 
 .mat-select-panel{
     min-width: initial !important;
+}
+
+
+/* content tables */
+.network-peers {
+    background-color: $color-table-background;
+    margin-top: 30px;
+    width: 700px;
+    border: 1px solid $color-table-border;
+    border-radius: 4px;
+}
+
+.network-action {
+    background-color: $color-table-background;
+    width: 800px;
+    border: 1px solid $color-table-border;
+    border-radius: 4px;
+}
+
+.storage-block {
+    background-color: $color-table-background;
+    margin-top: 30px;
+    width: 800px;
+    border: 1px solid $color-table-border;
+    border-radius: 4px;
+}
+
+.storage-action {
+    background-color: $color-table-background;
+    margin-top: 30px;
+    border: 1px solid $color-table-border;
+    border-radius: 4px;
+}
+
+.logs-action {
+    background-color: $color-table-background;
+    width: 800px;
+    border: 1px solid $color-table-border;
+    border-radius: 4px;
+    margin-top: 30px;
+}
+
+.endpoints-action {
+    background-color: $color-table-background;
+    width: 800px;
+    border: 1px solid $color-table-border;
+    border-radius: 4px;
+    margin-top: 30px;
 }

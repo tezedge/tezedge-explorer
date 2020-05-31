@@ -3,7 +3,6 @@
         width: 800px;
         padding: 10px 0px 10px 0px;
         height: 32px;
-
         display: flex;
         align-items: center;
         /*justify-content: center;*/
@@ -99,7 +98,7 @@
             <ng-container matColumnDef="address">
                 <th mat-header-cell *matHeaderCellDef>Address</th>
                 <td mat-cell *matCellDef="let element">
-                    <a style="color:black;text-decoration: none;" href="#/network/{{ element.remote_addr }}">
+                    <a style="text-decoration: none;" href="#/network/{{ element.remote_addr }}">
                         {{ element.remote_addr }} 
                     </a>
                 </td>

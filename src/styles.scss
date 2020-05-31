@@ -66,7 +66,6 @@ tr.mat-row {
     color: $color-disabled;
 }
 
-
 .network {
     display: flex;
     align-items: center;
@@ -109,11 +108,11 @@ tr.mat-row {
 }
 
 .network-endpoint-content a {
-    color: $color-black;
+    color: $color;
 }
 
 .network-endpoint-content a:visited {
-    color: $color-black;
+    color: $color;
 }
 
 .settings-endpoint {
@@ -236,7 +235,7 @@ tr.mat-row {
 }
 
 .mat-drawer-container {
-    background-color: $color-background-white;
+    background-color: white;
 }
 
 .mat-list-base .mat-list-item .mat-list-item-content,
@@ -330,12 +329,11 @@ input.mat-input-element {
 }
 
 .mat-tab-group.mat-primary .mat-ink-bar, .mat-tab-nav-bar.mat-primary .mat-ink-bar {
-    /*background-color: grey;*/
     height: 1px;
 }
 
 mat-form-field .mat-select-value {
-    color: $color-background-white;
+    color: white;
     font-size: 13px;
     font-weight: 300;
 }
@@ -381,6 +379,28 @@ mat-form-field .mat-select-arrow {
     border-radius: 4px;
 }
 
+.history-voting-period {
+    background-color: $color-table-background;
+    flex-direction: row;
+    margin: 2px -4px 2px 6px;
+    padding: 4px 4px 4px 4px;
+    border: 1.1px solid $color-table-border;
+    box-sizing: border-box;
+    border-radius: 4px;
+}
+
+.history-voting-period-label {
+    flex-direction: row;
+    font-family: Roboto;
+    font-style: normal;
+    font-weight: normal;
+    margin: 2px;
+    font-size: 12px;
+    line-height: 12px;    
+    // color: rgba(0, 0, 0, 0.4);
+    color: fade-out($color, .6);
+}
+
 .storage-block {
     background-color: $color-table-background;
     margin-top: 30px;
@@ -410,4 +430,27 @@ mat-form-field .mat-select-arrow {
     border: 1px solid $color-table-border;
     border-radius: 4px;
     margin-top: 30px;
+}
+
+/* network stats */
+.network-stats-card {
+    color: $color;
+    background-color: $color-table-background;
+    border: 1px solid $color-table-border;
+    box-sizing: border-box;
+    border-radius: 4px;
+    width: 340px;
+    margin: 10px;
+}
+
+.network-stats-card-title {
+    font-family: Roboto;
+    font-size: 14px;
+    line-height: 24px;
+    /* identical to box height, or 171% */
+    // color: rgba(0, 0, 0, 0.6);
+    color: fade-out($color, .4);
+    mix-blend-mode: normal;
+    padding: 7px 0px 7px 15px;
+    border-bottom: 1px solid $color-table-border;
 }

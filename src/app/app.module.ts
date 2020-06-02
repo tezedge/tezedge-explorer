@@ -3,6 +3,7 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule, PreloadAllModules } from '@angular/router';
 
 import { HttpClientModule } from '@angular/common/http';
+import { ScrollingModule } from '@angular/cdk/scrolling';
 
 import { AppComponent } from './app.component';
 import { AppRouting } from './app.routing';
@@ -122,7 +123,7 @@ import { LogsComponent } from './logs/logs.component';
     // disable material animations
     // BrowserAnimationsModule,
     NoopAnimationsModule,
-
+    ScrollingModule,
     HttpClientModule,
 
     // loading routing

@@ -14,7 +14,8 @@ export function reducer(state = initialState, action) {
             return {
                 ...state,
                 ids: action.payload
-                    .map(logsAction => logsAction.id),
+                    .map(logsAction => logsAction.id)
+                    .sort((a, b) => a - b),
                 entities: action.payload
                     .reduce((accumulator, logsAction) => {
 
@@ -22,10 +23,9 @@ export function reducer(state = initialState, action) {
                             ...accumulator,
                             [logsAction.id]: {
                                 ...logsAction,
-                                datetime: logsAction.date,
                                 // message: message,
                                 // preview: message.payload.length > 20 ? message.payload.substring(0, 20) + '...' : '',
-                                // datetime: moment.utc(Math.ceil(endpointAction.timestamp / 1000000)).format('HH:mm:ss.SSS, DD MMM YY'),
+                                datetime: moment.utc(Math.ceil(logsAction.timestamp / 1000000)).format('HH:mm:ss.SSS, DD MMM YY'),
                             }
                         };
 

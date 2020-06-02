@@ -1,0 +1,47 @@
+.table-virtual-scroll {
+    color: #f0f3f7;
+    background-color: #2e3748;
+    border: 1px solid #434b5b;
+    border-radius: 4px;
+    scrollbar-color: red yellow !important;
+    margin: 40px;
+    height: 370px;
+    min-width: 800px;
+}
+
+.table-virtual-scroll-header {
+    height: 20px;
+    padding: 10px;
+    border-bottom: 1px solid #434b5b;
+}
+
+.table-virtual-scroll-footer {
+    height: 30px;
+}
+
+.table-virtual-scroll-viewport {
+    height: 300px;
+}
+
+.table-virtual-scroll-item {
+    padding: 0px 10px 0px 10px;
+    height: 40px;
+}
+
+cdk-virtual-scroll-viewport::-webkit-scrollbar-track
+{
+    background: #2e3748;
+    background-color: #2e3748;
+}
+
+cdk-virtual-scroll-viewport::-webkit-scrollbar
+{
+    width: 12px;
+    background-color: #F5F5F5;
+}
+
+cdk-virtual-scroll-viewport::-webkit-scrollbar-thumb
+{
+    height: 80px;
+    background-color: #434b5b;
+}

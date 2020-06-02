@@ -15,7 +15,9 @@ export class LogsActionEffects {
         withLatestFrom(this.store, (action: any, state) => ({ action, state })),
 
         switchMap(({ action, state }) => {
-            return this.http.get(state.settingsNode.api.debugger + '/v2/log/?offset=0&count=500');
+            console.log('[LOGS_ACTION_LOAD]', action)
+            const cursor_id = action.payload ? 'cursor_id=' + action.payload +'&' : '';
+            return this.http.get(state.settingsNode.api.debugger + '/v2/log/?' + cursor_id + 'limit=1000');
         }),
 
         // dispatch action

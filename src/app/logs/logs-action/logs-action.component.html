@@ -1,4 +1,4 @@
-<style>
+<!-- <style>
     .logs-action-filter {
         width: 800px;
         padding: 10px 0px 10px 0px;
@@ -143,4 +143,41 @@
         
     </div>
 
+</div> -->
+
+<!-- <pre style="color:#f0f3f7">
+    dataLength: {{ viewPortGetDataLength }}  
+    offsetToRenderedContentStart: {{ viewPortGetOffsetToRenderedContentStart }}
+    renderedRange: {{ viewPortGetRenderedRange | json }}
+    viewPortGetViewportSize: {{ viewPortGetViewportSize }}
+    measureRenderedContentSize: {{ viewPortMeasureRenderedContentSize }}
+</pre> -->
+
+<div class="table-virtual-scroll">
+    <div class="table-virtual-scroll-header">
+        Timestamp
+    </div>
+    <cdk-virtual-scroll-viewport [itemSize]=40 class="table-virtual-scroll-viewport"
+        (scrolledIndexChange)="onScroll($event)">
+        <div *cdkVirtualFor="let item of logsActionList" class="table-virtual-scroll-item">
+            <span style="display:inline-block;width: 200px">{{item?.datetime}}</span>
+            <span style="display:inline-block;width: 100px">{{item?.level}}</span>
+            <span style="display:inline-block;width: 100px">{{item?.section}}</span>
+            <!-- <span style="display:inline-block;width: 200px">{{item.message}}</span>   -->
+        </div>
+    </cdk-virtual-scroll-viewport>
+    <div class="table-virtual-scroll-footer">
+        <div (click)="scrollToEnd()">
+            <span style="color:#f0f3f7;cursor:pointer;">scroll to end</span>
+        </div>
+    </div> 
 </div>
+
+
+<span style="color:white">
+    <ul>
+        <li *ngFor="let log of logsActionList">
+            {{ log.id }} | {{ log.datetime }} | {{ log.message }}
+        </li>
+    </ul>
+</span>

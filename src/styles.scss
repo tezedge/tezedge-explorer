@@ -492,4 +492,52 @@ mat-form-field .mat-select-arrow {
     border-bottom: 1px solid $color-table-border;
 }
 
+/* virtual scroll variable */
+.table-virtual-scroll {
+    font-family: Roboto, "Helvetica Neue", sans-serif;
+    color: $color-table;
+    background-color: $color-table-background;
+    border: 1px solid $color-table-border;
+    border-radius: 4px;
+    margin: 52px 40px 0px 40px;
+    height: 600px;
+    min-width: 800px;
+}
 
+.table-virtual-scroll-header {
+    font-size: 12px;
+    font-weight: 500;
+    padding: 11px 11px 12px 20px;
+    color: $color-table-header !important;
+    border-bottom: 1px solid $color-table-border;
+}
+
+.table-virtual-scroll-footer {
+    height: 30px;
+}
+
+.table-virtual-scroll-viewport {
+    height: 540px;
+}
+
+.table-virtual-scroll-item {
+    font-size: 14px;
+    padding: 10px 10px 10px 20px !important;
+}
+
+cdk-virtual-scroll-viewport::-webkit-scrollbar-track
+{
+    background-color: $color-table-background;
+}
+
+cdk-virtual-scroll-viewport::-webkit-scrollbar
+{
+    width: 12px;
+    background-color: $color-table-border; //#F5F5F5;
+}
+
+cdk-virtual-scroll-viewport::-webkit-scrollbar-thumb
+{
+    height: 80px;
+    background-color: $color-border;
+}

@@ -15,7 +15,7 @@ export class NetworkActionEffects {
         withLatestFrom(this.store, (action: any, state) => ({ action, state })),
 
         switchMap(({ action, state }) => {
-            return this.http.get(state.settingsNode.api.debugger + '/p2p/0/500' + action.payload)
+            return this.http.get(state.settingsNode.api.debugger + '/v2/p2p/?limit=500' + action.payload)
         }),
 
         // dispatch action

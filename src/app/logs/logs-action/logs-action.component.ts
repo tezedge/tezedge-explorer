@@ -69,7 +69,7 @@ export class LogsActionComponent implements OnInit {
       const range = this.viewPort.getRenderedRange();
       // console.log("[elementScrolled] range ", range);
       // this.getScrollStats();
-    })
+    });
 
     // wait for data changes from redux
     this.store.select('logsAction')
@@ -80,19 +80,18 @@ export class LogsActionComponent implements OnInit {
 
         this.logsActionShow = data.ids.length > 0 ? true : false;
 
-        this.logsActionList = data.ids.map(id => ({ id, ...data.entities[id] }));
+        // set viewport at the end
+        if (this.logsActionShow) {
 
-        this.tableDataSource = new MatTableDataSource<any>(this.logsActionList);
-        this.tableDataSource.paginator = this.paginator;
+          this.logsActionList = data.ids.map(id => ({ id, ...data.entities[id] }));
 
-        // set viewport at the end 
-        if (this.logsActionList.length > 0) {
-          // console.log('[logsAction] lenght', this.logsActionList.length)
+          this.tableDataSource = new MatTableDataSource<any>(this.logsActionList);
+          this.tableDataSource.paginator = this.paginator;
 
           setTimeout(() => {
-            this.viewPort.scrollToIndex(this.logsActionList.length)
+            this.viewPort.scrollToIndex(1000);
             // this.viewPort.checkViewportSize()
-          })
+          });
 
         }
         // this.viewPort.setRenderedRange({start: 900, end: this.viewPort.getRenderedRange().end + 1});
@@ -175,7 +174,7 @@ export class LogsDataSource extends DataSource<string | undefined> {
       ...Array.from({ length: this.pageSize })
         .map((_, i) => `log #${page * this.pageSize + i}`));
     console.log('[cachedData]', this.cachedData);
-    
+
     this.dataStream.next(this.cachedData);
   }
 }

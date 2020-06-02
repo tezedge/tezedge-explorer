@@ -155,29 +155,31 @@
 
 <div class="table-virtual-scroll">
     <div class="table-virtual-scroll-header">
-        Timestamp
+        <span style="display:inline-block;width: 170px;">Timestamp</span>
+        <span style="display:inline-block;width: 60px;">Level</span>
+        <span style="display:inline-block;width: 100px;">Section</span>
     </div>
-    <cdk-virtual-scroll-viewport [itemSize]=40 class="table-virtual-scroll-viewport"
+    <cdk-virtual-scroll-viewport [itemSize]=30 class="table-virtual-scroll-viewport"
         (scrolledIndexChange)="onScroll($event)">
         <div *cdkVirtualFor="let item of logsActionList" class="table-virtual-scroll-item">
-            <span style="display:inline-block;width: 200px">{{item?.datetime}}</span>
-            <span style="display:inline-block;width: 100px">{{item?.level}}</span>
+            <span style="display:inline-block;width: 170px">{{item?.datetime}}</span>
+            <span style="display:inline-block;width: 60px">{{item?.level}}</span>
             <span style="display:inline-block;width: 100px">{{item?.section}}</span>
             <!-- <span style="display:inline-block;width: 200px">{{item.message}}</span>   -->
         </div>
     </cdk-virtual-scroll-viewport>
     <div class="table-virtual-scroll-footer">
-        <div (click)="scrollToEnd()">
+        <!--  <div (click)="scrollToEnd()">
             <span style="color:#f0f3f7;cursor:pointer;">scroll to end</span>
-        </div>
+        </div>  -->
     </div> 
 </div>
 
-
+<!--
 <span style="color:white">
     <ul>
         <li *ngFor="let log of logsActionList">
             {{ log.id }} | {{ log.datetime }} | {{ log.message }}
         </li>
     </ul>
-</span>
+</span>  -->

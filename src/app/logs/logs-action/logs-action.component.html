@@ -157,21 +157,30 @@
     <div class="table-virtual-scroll-header">
         <span style="display:inline-block;width: 170px;">Timestamp</span>
         <span style="display:inline-block;width: 60px;">Level</span>
-        <span style="display:inline-block;width: 100px;">Section</span>
+        <span style="display:inline-block;min-width: 700px;">Message</span>
     </div>
     <cdk-virtual-scroll-viewport [itemSize]=30 class="table-virtual-scroll-viewport"
         (scrolledIndexChange)="onScroll($event)">
         <div *cdkVirtualFor="let item of logsActionList" class="table-virtual-scroll-item">
             <span style="display:inline-block;width: 170px">{{item?.datetime}}</span>
             <span style="display:inline-block;width: 60px">{{item?.level}}</span>
-            <span style="display:inline-block;width: 100px">{{item?.section}}</span>
+            <span style="display:inline-block;width: 700px;text-overflow: ellipsis;
+            overflow: hidden;  white-space: nowrap;">{{item?.message}}</span>
             <!-- <span style="display:inline-block;width: 200px">{{item.message}}</span>   -->
         </div>
     </cdk-virtual-scroll-viewport>
-    <div class="table-virtual-scroll-footer">
-        <!--  <div (click)="scrollToEnd()">
-            <span style="color:#f0f3f7;cursor:pointer;">scroll to end</span>
-        </div>  -->
+    <div class="table-virtual-scroll-footer" >
+        <span >
+            <button mat-icon-button matTooltip="Play">
+                <mat-icon>play_arrow_outline</mat-icon>
+            </button>
+            <button mat-icon-button matTooltip="Stop">
+                <mat-icon>stop_outline</mat-icon>
+            </button>
+            <button mat-icon-button style="transform: rotate(90deg)" matTooltip="Last page" (click)="scrollToEnd()">
+                <mat-icon>last_page</mat-icon>
+            </button>
+        </span> 
     </div> 
 </div>
 

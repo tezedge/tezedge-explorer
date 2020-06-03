@@ -500,8 +500,8 @@ mat-form-field .mat-select-arrow {
     border: 1px solid $color-table-border;
     border-radius: 4px;
     margin: 52px 40px 0px 40px;
-    height: 600px;
-    min-width: 800px;
+    height: 620px;
+    width: 1000px;
 }
 
 .table-virtual-scroll-header {
@@ -513,7 +513,10 @@ mat-form-field .mat-select-arrow {
 }
 
 .table-virtual-scroll-footer {
-    height: 30px;
+    justify-content: flex-end;
+    margin-right: 10px;
+    display: flex;
+    height: 40px;
 }
 
 .table-virtual-scroll-viewport {
@@ -525,19 +528,16 @@ mat-form-field .mat-select-arrow {
     padding: 10px 10px 10px 20px !important;
 }
 
-cdk-virtual-scroll-viewport::-webkit-scrollbar-track
-{
+cdk-virtual-scroll-viewport::-webkit-scrollbar-track {
     background-color: $color-table-background;
 }
 
-cdk-virtual-scroll-viewport::-webkit-scrollbar
-{
+cdk-virtual-scroll-viewport::-webkit-scrollbar {
     width: 12px;
     background-color: $color-table-border; //#F5F5F5;
 }
 
-cdk-virtual-scroll-viewport::-webkit-scrollbar-thumb
-{
+cdk-virtual-scroll-viewport::-webkit-scrollbar-thumb {
     height: 80px;
     background-color: $color-border;
 }

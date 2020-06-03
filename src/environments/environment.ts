@@ -22,9 +22,9 @@ export const environment = {
     {
       id: 'rust-carthage-tezedge',
       name: 'rust.carthage.tezedge.com',
-      http: 'https://carthage.tezedge.com:8732',
-      debugger: false,
-      ws: 'wss://carthage.tezedge.com',
+      http: 'http://carthage.tezedge.com:10100',
+      debugger: 'http://carthage.tezedge.com:10000',
+      ws: 'ws://carthage.tezedge.com:4972',
     },
     {
       id: 'ocaml-mainnet-simplestaking-com',

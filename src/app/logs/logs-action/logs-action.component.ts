@@ -1,10 +1,8 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
-import { Router, ActivatedRoute, Params } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
-import { CollectionViewer, DataSource } from '@angular/cdk/collections';
-import { BehaviorSubject, Observable, Subscription } from 'rxjs';
 
 import { Store } from '@ngrx/store';
 import { Subject } from 'rxjs';
@@ -15,10 +13,11 @@ import { takeUntil } from 'rxjs/operators';
   templateUrl: './logs-action.component.html',
   styleUrls: ['./logs-action.component.scss']
 })
-export class LogsActionComponent implements OnInit {
+export class LogsActionComponent implements OnInit, OnDestroy {
 
   public logsAction;
   public logsActionList = [];
+  public logsActionListCache = [];
   public logsActionShow;
   public logsActionFilter;
 
@@ -28,14 +27,13 @@ export class LogsActionComponent implements OnInit {
   public onDestroy$ = new Subject();
   public expandedElement;
 
-  public viewPortGetDataLength
-  public viewPortGetElementRef
-  public viewPortGetOffsetToRenderedContentStart
-  public viewPortGetRenderedRange
-  public viewPortGetViewportSize
-  public viewPortMeasureRenderedContentSize
-
-  public dataSource = new LogsDataSource();
+  public viewPortGetDataLength;
+  public viewPortGetElementRef;
+  public viewPortGetOffsetToRenderedContentStart;
+  public viewPortGetRenderedRange;
+  public viewPortGetViewportSize;
+  public viewPortMeasureRenderedContentSize;
+  public ITEM_SIZE = 36;
 
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   @ViewChild(CdkVirtualScrollViewport) viewPort: CdkVirtualScrollViewport;
@@ -45,30 +43,11 @@ export class LogsActionComponent implements OnInit {
     private activeRoute: ActivatedRoute
   ) { }
 
-  ngOnInit(): void {
+  ngOnInit() {
 
     // triger action and get logs data
     this.store.dispatch({
       type: 'LOGS_ACTION_LOAD',
-    });
-
-  }
-
-  ngAfterViewInit(): void {
-
-    setTimeout(() => {
-      // const itemSize = 40;
-      // const totalItems = 10000;
-      // this.viewPort.setTotalContentSize(itemSize * totalItems);
-      // this.viewPort.scrollToIndex(1000);
-    })
-
-
-    // listen for scroll events 
-    this.viewPort.elementScrolled().subscribe(event => {
-      const range = this.viewPort.getRenderedRange();
-      // console.log("[elementScrolled] range ", range);
-      // this.getScrollStats();
     });
 
     // wait for data changes from redux
@@ -77,7 +56,6 @@ export class LogsActionComponent implements OnInit {
       .subscribe(data => {
 
         this.logsAction = data;
-
         this.logsActionShow = data.ids.length > 0 ? true : false;
 
         // set viewport at the end
@@ -88,93 +66,88 @@ export class LogsActionComponent implements OnInit {
           this.tableDataSource = new MatTableDataSource<any>(this.logsActionList);
           this.tableDataSource.paginator = this.paginator;
 
-          setTimeout(() => {
-            this.viewPort.scrollToIndex(1000);
-            // this.viewPort.checkViewportSize()
-          });
+          const viewPortRange = this.viewPort.getRenderedRange();
+          const viewPortItemLength = this.logsActionList.length;
+          // trigger only if we are streaming and not at the end of page
+          if (data.stream && viewPortItemLength > 0 && (viewPortRange.end !== viewPortItemLength) &&
+            (viewPortRange.start !== viewPortRange.end)) {
+            console.log('[set][scrollToOffset] ', data.stream, this.logsActionList.length, viewPortItemLength, viewPortRange);
+
+            setTimeout(() => {
+              const offset = this.ITEM_SIZE * this.logsActionList.length;
+              this.viewPort.scrollToOffset(offset);
+            });
+
+          }
 
         }
-        // this.viewPort.setRenderedRange({start: 900, end: this.viewPort.getRenderedRange().end + 1});
-
       });
 
   }
 
-  onScroll(event) {
-
-    console.log("[onScroll]", event);
-
-    // this.viewPort.setRenderedContentOffset(event);
-    // this.viewPort.setRenderedRange({ start: event, end: event + 10 });
-    // this.viewPort.setTotalContentSize(30000000);
-
-    this.getScrollStats();
+  start() {
 
     // triger action and get logs data
-    // this.store.dispatch({
-    //   type: 'LOGS_ACTION_LOAD',
-    //   payload: event,
-    // });
+    this.store.dispatch({
+      type: 'LOGS_ACTION_START',
+      // payload: event,
+    });
 
   }
 
-  getScrollStats() {
+  stop() {
+
+    // stop streaming logs actions
+    this.store.dispatch({
+      type: 'LOGS_ACTION_STOP',
+      // payload: event,
+    });
+
+  }
+
+  ngOnDestroy() {
+
+    // stop logs stream
+    this.store.dispatch({
+      type: 'LOGS_ACTION_STOP',
+    });
+
+  }
 
 
-    this.viewPortGetDataLength = this.viewPort.getDataLength()
-    this.viewPortGetOffsetToRenderedContentStart = this.viewPort.getOffsetToRenderedContentStart()
-    this.viewPortGetRenderedRange = this.viewPort.getRenderedRange()
-    this.viewPortGetViewportSize = this.viewPort.getViewportSize()
-    this.viewPortMeasureRenderedContentSize = this.viewPort.measureRenderedContentSize()
+  onScroll(index) {
+
+    if (this.logsActionList.length - index > 16) {
+      // console.warn('[onScroll][stop] length', index, this.logsActionList.length, this.logsActionList.length - index);
+      // stop log actions stream
+      this.store.dispatch({
+        type: 'LOGS_ACTION_STOP',
+        payload: event,
+      });
+    } else {
+      // console.warn('[onScroll][start] length', index, this.logsActionList.length, this.logsActionList.length - index);
+      // start log actions stream
+      this.store.dispatch({
+        type: 'LOGS_ACTION_START',
+        payload: event,
+      });
+    }
 
   }
 
   scrollToEnd() {
-    this.viewPort.scrollToIndex(this.logsActionList.length);
+    const offset = this.ITEM_SIZE * this.logsActionList.length;
+    this.viewPort.scrollToOffset(offset);
   }
 
-}
+  getScrollStats() {
 
-// add data spurce for table
-export class LogsDataSource extends DataSource<string | undefined> {
-  private length = 10000;
-  private pageSize = 100;
-  private cachedData = Array.from<string>({ length: this.length });
-  private fetchedPages = new Set<number>();
-  private dataStream = new BehaviorSubject<(string | undefined)[]>(this.cachedData);
-  private subscription = new Subscription();
+    this.viewPortGetDataLength = this.viewPort.getDataLength();
+    this.viewPortGetOffsetToRenderedContentStart = this.viewPort.getOffsetToRenderedContentStart();
+    this.viewPortGetRenderedRange = this.viewPort.getRenderedRange();
+    this.viewPortGetViewportSize = this.viewPort.getViewportSize();
+    this.viewPortMeasureRenderedContentSize = this.viewPort.measureRenderedContentSize();
 
-  connect(collectionViewer: CollectionViewer): Observable<(string | undefined)[]> {
-    this.subscription.add(collectionViewer.viewChange.subscribe(range => {
-      const startPage = this.getPageForIndex(range.start);
-      const endPage = this.getPageForIndex(range.end - 1);
-      for (let i = startPage; i <= endPage; i++) {
-        this.fetchPage(i);
-      }
-    }));
-    return this.dataStream;
   }
 
-  disconnect(): void {
-    this.subscription.unsubscribe();
-  }
-
-  private getPageForIndex(index: number): number {
-    return Math.floor(index / this.pageSize);
-  }
-
-  private fetchPage(page: number) {
-
-    if (this.fetchedPages.has(page)) {
-      return;
-    }
-    this.fetchedPages.add(page);
-
-    this.cachedData.splice(page * this.pageSize, this.pageSize,
-      ...Array.from({ length: this.pageSize })
-        .map((_, i) => `log #${page * this.pageSize + i}`));
-    console.log('[cachedData]', this.cachedData);
-
-    this.dataStream.next(this.cachedData);
-  }
 }

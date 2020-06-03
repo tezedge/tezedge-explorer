@@ -94,6 +94,13 @@
                         EXPLORER
                     </span>
 
+                    <a *ngIf="app.menu.explorer.storage" mat-list-item routerLink="/storage" (click)="isMobile && start.toggle()" [style.color]="app.sidenav.color">
+                        <span>
+                            <svg-icon icon="explorer"></svg-icon>
+                            Storage
+                        </span>
+                    </a> 
+
                     <a *ngIf="app.menu.explorer.endpoints" mat-list-item routerLink="/endpoints" [style.color]="app.sidenav.color">
                         <span>
                             <svg-icon icon="endpoints"></svg-icon>
@@ -107,14 +114,6 @@
                             Network
                         </span>
                     </a>
-
-                    <a *ngIf="app.menu.explorer.storage" mat-list-item routerLink="/storage" (click)="isMobile && start.toggle()" [style.color]="app.sidenav.color">
-                        <span>
-                            <svg-icon icon="explorer"></svg-icon>
-                            Storage
-                        </span>
-                    </a> 
-
 
                     <a *ngIf="app.menu.explorer.logs" mat-list-item routerLink="/logs" (click)="isMobile && start.toggle()" [style.color]="app.sidenav.color">
                         <span>

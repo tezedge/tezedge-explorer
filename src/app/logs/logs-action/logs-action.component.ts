@@ -66,12 +66,13 @@ export class LogsActionComponent implements OnInit, OnDestroy {
           this.tableDataSource = new MatTableDataSource<any>(this.logsActionList);
           this.tableDataSource.paginator = this.paginator;
 
-          const viewPortRange = this.viewPort.getRenderedRange();
+          const viewPortRange = this.viewPort && this.viewPort.getRenderedRange() ?
+            this.viewPort.getRenderedRange() : { start: 0, end: 0 };
           const viewPortItemLength = this.logsActionList.length;
           // trigger only if we are streaming and not at the end of page
           if (data.stream && viewPortItemLength > 0 && (viewPortRange.end !== viewPortItemLength) &&
             (viewPortRange.start !== viewPortRange.end)) {
-            console.log('[set][scrollToOffset] ', data.stream, this.logsActionList.length, viewPortItemLength, viewPortRange);
+            // console.log('[set][scrollToOffset] ', data.stream, this.logsActionList.length, viewPortItemLength, viewPortRange);
 
             setTimeout(() => {
               const offset = this.ITEM_SIZE * this.logsActionList.length;

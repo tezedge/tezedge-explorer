@@ -27,7 +27,7 @@ export function reducer(state = initialState, action) {
                             }
                         };
                     }, {}),
-                    stream: true,
+                stream: true,
             };
         }
 
@@ -43,7 +43,9 @@ export function reducer(state = initialState, action) {
                             ...accumulator,
                             [logsAction.id]: {
                                 ...logsAction,
-                                preview: logsAction.message.length > 20 ? logsAction.message.substring(0, 80) + '...' : '',
+                                preview: logsAction.message,
+                                // preview: logsAction.message.length > 80 ?
+                                //  logsAction.message.substring(0, 80) + '...' : logsAction.message,
                                 datetime: moment.utc(Math.ceil(logsAction.timestamp / 1000000)).format('HH:mm:ss.SSS, DD MMM YY'),
                             }
                         };
@@ -54,7 +56,7 @@ export function reducer(state = initialState, action) {
 
         case 'LOGS_ACTION_STOP': {
             return {
-                ... state,
+                ...state,
                 stream: false
             };
         }

@@ -154,20 +154,22 @@
     measureRenderedContentSize: {{ viewPortMeasureRenderedContentSize }}
 </pre> 
 -->
+<div class="logs-action-container">
 
 <div class="table-virtual-scroll">
     <div class="table-virtual-scroll-header">
-        <span style="display:inline-block;width: 170px;">Timestamp</span>
-        <span style="display:inline-block;width: 60px;">Level</span>
-        <span style="display:inline-block;min-width: 700px;">Message</span>
+        <span style="display:inline-block;min-width: 170px;">Timestamp</span>
+        <span style="display:inline-block;min-width: 60px;">Level</span>
+        <span style="display:inline-block;min-width: 725px;">Message</span>
     </div>
     <cdk-virtual-scroll-viewport [itemSize]="36" [maxBufferPx]="288" [minBufferPx]="288" class="table-virtual-scroll-viewport"
         (scrolledIndexChange)="onScroll($event)">
         <div *cdkVirtualFor="let item of logsActionList" class="table-virtual-scroll-item">
-            <span style="display:inline-block;width: 170px">{{item?.datetime}}</span>
-            <span style="display:inline-block;width: 60px">{{item?.level}}</span>
-            <span style="width: 700px;text-overflow: ellipsis;
-            overflow: hidden;  white-space: nowrap;">{{item?.preview}}</span>
+            <span style="display:inline-block;min-width: 170px">{{item?.datetime}}</span>
+            <span style="display:inline-block;min-width: 60px">{{item?.level}}</span>
+           <span style="display:inline-block;width: 725px;  white-space: nowrap;
+           overflow: hidden !important;
+           text-overflow: ellipsis;">{{item?.preview}}</span>
             <!-- <span style="display:inline-block;width: 200px">{{item.message}}</span>   -->
         </div>
     </cdk-virtual-scroll-viewport>
@@ -195,3 +197,4 @@
     </ul>
 </span>
 -->
+</div>

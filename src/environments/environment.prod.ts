@@ -1,22 +1,32 @@
 export const environment = {
   production: true,
   api: [
+    // {
+    //   id: 'localhost',
+    //   name: 'localhost',
+    //   http: 'http://127.0.0.1:8732',
+    //   debugger: false,
+    //   ws: 'ws://127.0.0.1:4927',
+    // },
     {
-      id: 'localhost',
-      name: 'localhost',
-      http: 'http://127.0.0.1:8732',
-      ws: 'ws://127.0.0.1:4927',
+      id: 'ocaml-carthage-tezedge-debuger',
+      name: 'debugger.ocaml.carthage.tezedge.com',
+      http: 'http://116.202.246.107:18732',
+      debugger: 'http://116.202.246.107:17732',
+      ws: false,
     },
     {
       id: 'rust-carthage-tezedge',
-      name: 'carthage.tezedge.com',
-      http: 'https://carthage.tezedge.com:8732',
-      ws: 'wss://carthage.tezedge.com',
+      name: 'rust.carthage.tezedge.com',
+      http: 'http://carthage.tezedge.com:10100',
+      debugger: 'http://carthage.tezedge.com:10000',
+      ws: 'ws://carthage.tezedge.com:4972',
     },
     {
-      id: 'ocaml-carthage-tezedge',
-      name: '116.202.246.107',
-      http: 'http://116.202.246.107:18732',
+      id: 'ocaml-mainnet-simplestaking-com',
+      name: 'ocaml.mainnet.simplestaking.com',
+      http: 'https://mainnet.simplestaking.com:3000',
+      debugger: false,
       ws: false,
     }
   ]

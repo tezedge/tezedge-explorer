@@ -521,12 +521,13 @@ mat-form-field .mat-select-arrow {
 }
 
 .table-virtual-scroll-viewport {
+    overflow-x: hidden;
     height: 540px;
 }
 
 .table-virtual-scroll-item {
     display: flex;
-    justify-content: center;
+    justify-content: start;
     align-items: center;
     max-height: 16px !important;
     font-size: 14px;

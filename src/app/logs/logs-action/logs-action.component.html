@@ -158,7 +158,7 @@
 
 <div class="table-virtual-scroll">
     <div class="table-virtual-scroll-header">
-        <span style="display:inline-block;min-width: 170px;">Timestamp</span>
+        <span style="display:inline-block;min-width: 170px;">Datetime</span>
         <span style="display:inline-block;min-width: 60px;">Level</span>
         <span style="display:inline-block;min-width: 725px;">Message</span>
     </div>
@@ -167,22 +167,21 @@
         <div *cdkVirtualFor="let item of logsActionList" class="table-virtual-scroll-item">
             <span style="display:inline-block;min-width: 170px">{{item?.datetime}}</span>
             <span style="display:inline-block;min-width: 60px">{{item?.level}}</span>
-           <span style="display:inline-block;width: 725px;  white-space: nowrap;
-           overflow: hidden !important;
+           <span style="display:inline-block;min-width: 725px;  white-space: nowrap;
            text-overflow: ellipsis;">{{item?.preview}}</span>
             <!-- <span style="display:inline-block;width: 200px">{{item.message}}</span>   -->
         </div>
     </cdk-virtual-scroll-viewport>
     <div class="table-virtual-scroll-footer" >
         <span >
-            <button mat-icon-button matTooltip="Start" (click)="start()" *ngIf="!logsAction?.stream">
-                <mat-icon>play_arrow_outline</mat-icon>
+            <button mat-icon-button matTooltip="Start" (click)="start()" *ngIf="!logsAction?.stream" >
+                <mat-icon style="color: #737373">play_arrow_outline</mat-icon>
             </button>
             <button mat-icon-button matTooltip="Stop" (click)="stop()" *ngIf="logsAction?.stream">
-                <mat-icon>stop_outline</mat-icon>
+                <mat-icon style="color:#737373">stop_outline</mat-icon>
             </button>
             <button mat-icon-button style="transform: rotate(90deg)" matTooltip="Last page" (click)="scrollToEnd()">
-                <mat-icon>last_page</mat-icon>
+                <mat-icon style="color: #737373">last_page</mat-icon>
             </button>
         </span> 
     </div> 

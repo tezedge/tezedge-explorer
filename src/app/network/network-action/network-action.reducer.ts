@@ -23,7 +23,7 @@ export function reducer(state = initialState, action) {
 
         case 'NETWORK_ACTION_START_SUCCESS':
         case 'NETWORK_ACTION_LOAD_SUCCESS': {
-            console.log('['+ action.type +']', action.payload[0])
+            // console.log('['+ action.type +']', action.payload[0])
             return {
                 ...state,
                 ids: action.payload

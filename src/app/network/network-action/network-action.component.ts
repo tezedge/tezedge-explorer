@@ -16,12 +16,12 @@ import { CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
 export class NetworkActionComponent implements OnInit {
 
   public networkAction
-  public networkActionList
+  public networkActionList = []
   public networkActionShow
   public networkActionFilter
-  
+
   public networkJSONView
-  
+
   public tableDataSource
   public onDestroy$ = new Subject()
   public expandedElement
@@ -59,10 +59,31 @@ export class NetworkActionComponent implements OnInit {
         this.networkAction = data;
 
         this.networkActionShow = data.idsFilter.length > 0 ? true : false;
-        this.networkActionList = data.idsFilter.map(id => ({ id, ...data.entities[id] }));
+        // set viewport at the end
+        if (this.networkActionShow) {
 
-        this.tableDataSource = new MatTableDataSource<any>(this.networkActionList);
-        this.tableDataSource.paginator = this.paginator;
+          this.networkActionList = data.idsFilter.map(id => ({ id, ...data.entities[id] }));
+
+          const viewPortRange = this.viewPort && this.viewPort.getRenderedRange() ?
+            this.viewPort.getRenderedRange() : { start: 0, end: 0 };
+          const viewPortItemLength = this.networkActionList.length;
+
+          // trigger only if we are streaming and not at the end of page
+          if (data.stream && viewPortItemLength > 0 && (viewPortRange.end !== viewPortItemLength) &&
+            (viewPortRange.start !== viewPortRange.end)) {
+            // console.log('[set][scrollToOffset] ', data.stream, this.networkActionList.length, viewPortItemLength, viewPortRange);
+
+            setTimeout(() => {
+              const offset = this.ITEM_SIZE * this.networkActionList.length;
+              this.viewPort.scrollToOffset(offset);
+            });
+
+          }
+
+          this.tableDataSource = new MatTableDataSource<any>(this.networkActionList);
+          this.tableDataSource.paginator = this.paginator;
+
+        }
 
       });
 

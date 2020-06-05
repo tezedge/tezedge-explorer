@@ -175,8 +175,8 @@ export function networkActionSourceFilter(entity, filter) {
                 if (filter.block_headers && entity.kind === 'get_block_headers' && !entity.incoming) { return true; }
                 if (filter.block_headers && entity.kind === 'block_header' && entity.incoming) { return true; }
 
-                if (filter.block_operatons && entity.kind === 'get_operations_for_blocks' && !entity.incoming) { return true; }
-                if (filter.block_operatons && entity.kind === 'operations_for_blocks' && entity.incoming) { return true; }
+                if (filter.block_operations && entity.kind === 'get_operations_for_blocks' && !entity.incoming) { return true; }
+                if (filter.block_operations && entity.kind === 'operations_for_blocks' && entity.incoming) { return true; }
 
             }
 
@@ -193,8 +193,8 @@ export function networkActionSourceFilter(entity, filter) {
                 if (filter.block_headers && entity.kind === 'get_block_headers' && entity.incoming) { return true; }
                 if (filter.block_headers && entity.kind === 'block_header' && !entity.incoming) { return true; }
 
-                if (filter.block_operatons && entity.kind === 'get_operations_for_blocks' && entity.incoming) { return true; }
-                if (filter.block_operatons && entity.kind === 'operations_for_blocks' && !entity.incoming) { return true; }
+                if (filter.block_operations && entity.kind === 'get_operations_for_blocks' && entity.incoming) { return true; }
+                if (filter.block_operations && entity.kind === 'operations_for_blocks' && !entity.incoming) { return true; }
 
             }
 

@@ -115,7 +115,7 @@ export class NetworkActionComponent implements OnInit {
 
   onScroll(index) {
 
-    if (this.networkActionList.length - index > 16) {
+    if (this.networkActionList.length - index > 15) {
       // console.warn('[onScroll][stop] length', index, this.networkActionList.length, this.networkActionList.length - index);
       // stop log actions stream
       this.store.dispatch({

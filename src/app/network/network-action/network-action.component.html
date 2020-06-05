@@ -1,7 +1,7 @@
-<!-- <style>
+<style>
     .network-action-filter {
         width: 800px;
-        padding: 10px 0px 10px 0px;
+        padding: 0px 0px 0px 0px;
         height: 32px;
         display: flex;
         align-items: center;
@@ -11,7 +11,7 @@
     .network-action-filter button {
         border:1px solid #e0e0e0;
         margin-right: 2px;
-        line-height: 32px !important;
+        line-height: 24px !important;
         font-weight: 300 !important;
         background-color: #f5f9fc;
         min-width: 154px;
@@ -34,9 +34,9 @@
     
 </style>
 
-<div class="network-action-container"> -->
-    
-    <!-- 
+<!-- 
+<div class="network-action-container">
+
     <div class="network-action-filter">
        <button mat-flat-button [class.active]="networkAction.filter.local" (click)="filter('local')">
             <mat-icon>check</mat-icon>
@@ -57,7 +57,7 @@
         </button>
     </div> -->
 
-    <!--
+<!--
     <div class="network-action-filter"  style="padding-bottom: 10px;">   
 
         <button mat-flat-button [class.active]="networkAction.filter.current_head" (click)="filter('current_head')">
@@ -73,7 +73,7 @@
             <mat-icon>check</mat-icon>
             Block Headers
         </button>    
-        <button mat-flat-button [class.active]="networkAction.filter.block_operatons" (click)="filter('block_operatons')">
+        <button mat-flat-button [class.active]="networkAction.filter.block_operations" (click)="filter('block_operations')">
             <mat-icon>check</mat-icon>
             Block Operations
         </button>  
@@ -160,8 +160,57 @@
 
 </div> -->
 
-
 <div class="network-action-container">
+
+    <div class="network-action-filter"  style="padding-top: 10px;">
+
+        <button mat-flat-button [class.active]="networkAction.filter.local" (click)="filter('local')">
+            <mat-icon>check</mat-icon>
+            Local
+        </button>
+        <button mat-flat-button [class.active]="networkAction.filter.remote" (click)="filter('remote')">
+            <mat-icon>check</mat-icon>
+            Remote
+        </button>
+        &nbsp;&nbsp;&nbsp;
+        <button mat-flat-button [class.active]="networkAction.filter.metadata" (click)="filter('metadata')">
+            <mat-icon>check</mat-icon>
+            Meta
+        </button>
+        <button mat-flat-button [class.active]="networkAction.filter.connection" (click)="filter('connection')">
+            <mat-icon>check</mat-icon>
+            Connection
+        </button>
+        
+    </div>
+
+    <div class="network-action-filter">
+
+        <button mat-flat-button [class.active]="networkAction.filter.current_head" (click)="filter('current_head')">
+            <mat-icon>check</mat-icon>
+            Current Head
+        </button>
+        <button mat-flat-button [class.active]="networkAction.filter.current_branch" (click)="filter('current_branch')">
+            <mat-icon>check</mat-icon>
+            Current Branch
+        </button>
+        &nbsp;&nbsp;&nbsp;
+        <button mat-flat-button [class.active]="networkAction.filter.block_headers" (click)="filter('block_headers')">
+            <mat-icon>check</mat-icon>
+            Block Headers
+        </button>
+        <button mat-flat-button [class.active]="networkAction.filter.block_operatons"
+            (click)="filter('block_operatons')">
+            <mat-icon>check</mat-icon>
+            Block Operations
+        </button>
+        &nbsp;&nbsp;&nbsp;
+        <button mat-flat-button [class.active]="networkAction.filter.bootstrap" (click)="filter('bootstrap')">
+            <mat-icon>check</mat-icon>
+            Bootstrap
+        </button>
+
+    </div>
 
     <div class="table-virtual-scroll">
         <div class="table-virtual-scroll-header">
@@ -175,7 +224,8 @@
             <div *cdkVirtualFor="let item of networkActionList" class="table-virtual-scroll-item">
                 <span style="display:inline-block;min-width: 170px">{{item?.datetime}}</span>
                 <span style="display:inline-block;min-width: 160px">{{item?.remote_addr}}</span>
-                <span style="display:inline-block;min-width: 240px">{{item?.category}} <span *ngIf="item?.kind"> | {{ item?.kind }} </span> </span>
+                <span style="display:inline-block;min-width: 240px">{{item?.category}} <span *ngIf="item?.kind"> |
+                        {{ item?.kind }} </span> </span>
                 <span style="display:inline-block;min-width: 325px;  white-space: nowrap;
            text-overflow: ellipsis;">{{item?.preview}}</span>
                 <!-- <span style="display:inline-block;width: 200px">{{item.message}}</span>   -->

@@ -1,27 +1,36 @@
 <style>
-    .network-action-filter {
+    .table-virtual-scroll-filter {
         width: 800px;
-        padding: 0px 0px 0px 0px;
+        margin: 10px 0px 0px 0px;
+        padding: 0px 10px 0px 20px;
         height: 32px;
         display: flex;
         align-items: center;
         /*justify-content: center;*/
     }
 
-    .network-action-filter button {
-        border:1px solid #e0e0e0;
-        margin-right: 2px;
-        line-height: 24px !important;
-        font-weight: 300 !important;
-        background-color: #f5f9fc;
-        min-width: 154px;
+    .table-virtual-scroll-filter button {
+        min-width: 100px;
+        margin-right: 4px;
+        font-family: Roboto, "Helvetica Neue", sans-serif;
+        font-size: 12px;
+        line-height: 20px !important;
+        font-weight: 400 !important;
+
+        color: #dde0e6;
+        background-color: #2f3848 !important;
+        border: 1px solid #434b5b !important;
+        border-radius: 8px;
+        min-width: 0px;
+        padding: 0px 12px 0px 8px !important;
     }
+
     .network-action-filter button mat-icon {
         display: none;
     }
 
     .network-action-filter button.active {
-        background-color:white;
+        background-color: #e0e0e0;
     }
 
     .network-action-filter button.active mat-icon {
@@ -164,55 +173,55 @@
 
     <div class="network-action-filter"  style="padding-top: 10px;">
 
-        <button mat-flat-button [class.active]="networkAction.filter.local" (click)="filter('local')">
-            <mat-icon>check</mat-icon>
-            Local
-        </button>
-        <button mat-flat-button [class.active]="networkAction.filter.remote" (click)="filter('remote')">
-            <mat-icon>check</mat-icon>
-            Remote
-        </button>
-        &nbsp;&nbsp;&nbsp;
-        <button mat-flat-button [class.active]="networkAction.filter.metadata" (click)="filter('metadata')">
-            <mat-icon>check</mat-icon>
-            Meta
-        </button>
-        <button mat-flat-button [class.active]="networkAction.filter.connection" (click)="filter('connection')">
-            <mat-icon>check</mat-icon>
-            Connection
-        </button>
-        
-    </div>
-
-    <div class="network-action-filter">
-
-        <button mat-flat-button [class.active]="networkAction.filter.current_head" (click)="filter('current_head')">
-            <mat-icon>check</mat-icon>
-            Current Head
-        </button>
-        <button mat-flat-button [class.active]="networkAction.filter.current_branch" (click)="filter('current_branch')">
-            <mat-icon>check</mat-icon>
-            Current Branch
-        </button>
-        &nbsp;&nbsp;&nbsp;
-        <button mat-flat-button [class.active]="networkAction.filter.block_headers" (click)="filter('block_headers')">
-            <mat-icon>check</mat-icon>
-            Block Headers
-        </button>
-        <button mat-flat-button [class.active]="networkAction.filter.block_operatons"
-            (click)="filter('block_operatons')">
-            <mat-icon>check</mat-icon>
-            Block Operations
-        </button>
-        &nbsp;&nbsp;&nbsp;
-        <button mat-flat-button [class.active]="networkAction.filter.bootstrap" (click)="filter('bootstrap')">
-            <mat-icon>check</mat-icon>
-            Bootstrap
-        </button>
 
     </div>
+
+    <!-- <div style="padding: 20px;">
+        <mat-chip-list aria-label="Fish selection">
+            <mat-chip>One fish</mat-chip>
+            <mat-chip>Two fish</mat-chip>
+            <mat-chip color="primary" selected>Primary fish</mat-chip>
+            <mat-chip color="accent" selected>Accent fish</mat-chip>
+        </mat-chip-list>
+    </div> -->
+
 
     <div class="table-virtual-scroll">
+        
+        <div class="table-virtual-scroll-filter">
+            <span style="font-size:12px;padding-right:8px;font-weight: 500; width: 100px;color:#cacaca !important">Available filters:</span> 
+            <button mat-flat-button [class.active]="networkAction.filter.local" (click)="filter('local')">
+                <!-- <mat-icon>check</mat-icon> -->
+                Local
+            </button>
+            <button mat-flat-button [class.active]="networkAction.filter.remote" (click)="filter('remote')">
+                Remote
+            </button>
+            <button mat-flat-button [class.active]="networkAction.filter.metadata" (click)="filter('metadata')">
+                Meta
+            </button>
+            <button mat-flat-button [class.active]="networkAction.filter.connection" (click)="filter('connection')">
+                Connection
+            </button>
+            <button mat-flat-button [class.active]="networkAction.filter.current_head" (click)="filter('current_head')">
+                Current Head
+            </button>
+            <button mat-flat-button [class.active]="networkAction.filter.current_branch" (click)="filter('current_branch')">
+                Current Branch
+            </button>
+            <button mat-flat-button [class.active]="networkAction.filter.block_headers" (click)="filter('block_headers')">
+                Block Headers
+            </button>
+            <button mat-flat-button [class.active]="networkAction.filter.block_operatons"
+                (click)="filter('block_operatons')">
+                Block Operations
+            </button>
+            <button mat-flat-button [class.active]="networkAction.filter.bootstrap" (click)="filter('bootstrap')">
+                Bootstrap
+            </button>
+
+        </div>
+
         <div class="table-virtual-scroll-header">
             <span style="display:inline-block;min-width: 170px;">Datetime</span>
             <span style="display:inline-block;min-width: 160px;">Address</span>

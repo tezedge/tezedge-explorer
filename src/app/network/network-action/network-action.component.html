@@ -1,4 +1,4 @@
-<style>
+<!-- <style>
     .network-action-filter {
         width: 800px;
         padding: 10px 0px 10px 0px;
@@ -34,7 +34,7 @@
     
 </style>
 
-<div class="network-action-container">
+<div class="network-action-container"> -->
     
     <!-- 
     <div class="network-action-filter">
@@ -83,7 +83,7 @@
             Bootstrap
         </button>    
     </div> -->
-
+<!-- 
     <div class="network-action">
         
         <table mat-table [dataSource]="tableDataSource" multiTemplateDataRows>
@@ -109,7 +109,6 @@
                 <td mat-cell *matCellDef="let element">
                     <span *ngIf="element" style="text-align: left; cursor: pointer;"
                     (click)="expandedElement = element">
-                        <!-- feathericons.com -->
                         <span *ngIf="!element.incoming">
                             <svg-icon icon="upload"></svg-icon>
                         </span>    
@@ -141,10 +140,6 @@
                                     </ngx-json-viewer>
                                 </div>
                             </mat-tab>
-                            <!--  
-                                <mat-tab label="SOURCE"> 
-                                </mat-tab>
-                            -->
                           </mat-tab-group>
                         </div>    
                     </td>
@@ -163,4 +158,40 @@
 
     </div>
 
-</div>
+</div> -->
+
+
+<div class="network-action-container">
+
+    <div class="table-virtual-scroll">
+        <div class="table-virtual-scroll-header">
+            <span style="display:inline-block;min-width: 170px;">Datetime</span>
+            <span style="display:inline-block;min-width: 160px;">Address</span>
+            <span style="display:inline-block;min-width: 240px;">Type</span>
+            <span style="display:inline-block;min-width: 325px;">Message</span>
+        </div>
+        <cdk-virtual-scroll-viewport [itemSize]="36" [maxBufferPx]="288" [minBufferPx]="288"
+            class="table-virtual-scroll-viewport" (scrolledIndexChange)="onScroll($event)">
+            <div *cdkVirtualFor="let item of networkActionList" class="table-virtual-scroll-item">
+                <span style="display:inline-block;min-width: 170px">{{item?.datetime}}</span>
+                <span style="display:inline-block;min-width: 160px">{{item?.remote_addr}}</span>
+                <span style="display:inline-block;min-width: 240px">{{item?.category}} <span *ngIf="item?.kind"> | {{ item?.kind }} </span> </span>
+                <span style="display:inline-block;min-width: 325px;  white-space: nowrap;
+           text-overflow: ellipsis;">{{item?.preview}}</span>
+                <!-- <span style="display:inline-block;width: 200px">{{item.message}}</span>   -->
+            </div>
+        </cdk-virtual-scroll-viewport>
+        <div class="table-virtual-scroll-footer">
+            <span>
+                <button mat-icon-button matTooltip="Start" (click)="start()" *ngIf="!networkAction?.stream">
+                    <mat-icon style="color: #737373">play_arrow_outline</mat-icon>
+                </button>
+                <button mat-icon-button matTooltip="Stop" (click)="stop()" *ngIf="networkAction?.stream">
+                    <mat-icon style="color:#737373">stop_outline</mat-icon>
+                </button>
+                <button mat-icon-button style="transform: rotate(90deg)" matTooltip="Last page" (click)="scrollToEnd()">
+                    <mat-icon style="color: #737373">last_page</mat-icon>
+                </button>
+            </span>
+        </div>
+    </div>

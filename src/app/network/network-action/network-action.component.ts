@@ -6,6 +6,7 @@ import { Router, ActivatedRoute, Params } from '@angular/router';
 import { Store } from '@ngrx/store'
 import { Subject } from 'rxjs'
 import { takeUntil } from 'rxjs/operators'
+import { CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
 
 @Component({
   selector: 'app-network-action',
@@ -18,16 +19,18 @@ export class NetworkActionComponent implements OnInit {
   public networkActionList
   public networkActionShow
   public networkActionFilter
-
-
+  
   public networkJSONView
-
+  
   public tableDataSource
   public onDestroy$ = new Subject()
   public expandedElement
 
+  public ITEM_SIZE = 36;
+
 
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
+  @ViewChild(CdkVirtualScrollViewport) viewPort: CdkVirtualScrollViewport;
 
   constructor(
     public store: Store<any>,
@@ -87,6 +90,45 @@ export class NetworkActionComponent implements OnInit {
     this.onDestroy$.next();
     this.onDestroy$.complete();
 
+  }
+
+  onScroll(index) {
+
+    if (this.networkActionList.length - index > 16) {
+      // console.warn('[onScroll][stop] length', index, this.networkActionList.length, this.networkActionList.length - index);
+      // stop log actions stream
+      this.store.dispatch({
+        type: 'NETWORK_ACTION_STOP',
+        payload: event,
+      });
+    } else {
+      // console.warn('[onScroll][start] length', index, this.networkActionList.length, this.networkActionList.length - index);
+      // start log actions stream
+      this.store.dispatch({
+        type: 'NETWORK_ACTION_START',
+        payload: event,
+      });
+    }
+
+  }
+
+  start() {
+    // triger action and get action data
+    this.store.dispatch({
+      type: 'NETWORK_ACTION_START'
+    });
+  }
+
+  stop() {
+    // stop streaming action actions
+    this.store.dispatch({
+      type: 'NETWORK_ACTION_STOP'
+    });
+  }
+
+  scrollToEnd() {
+    const offset = this.ITEM_SIZE * this.networkActionList.length;
+    this.viewPort.scrollToOffset(offset);
   }
 
 }

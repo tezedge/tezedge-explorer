@@ -2,7 +2,10 @@ import { Injectable, NgZone } from '@angular/core';
 import { Effect, Actions, ofType } from '@ngrx/effects';
 import { HttpClient } from '@angular/common/http';
 import { Store } from '@ngrx/store';
-import { map, switchMap, withLatestFrom, catchError } from 'rxjs/operators';
+import { map, switchMap, withLatestFrom, catchError, tap, filter, takeUntil } from 'rxjs/operators';
+import { of, Subject, empty, timer } from 'rxjs';
+
+const networkActionDestroy$ = new Subject();
 
 @Injectable()
 export class NetworkActionEffects {
@@ -15,7 +18,7 @@ export class NetworkActionEffects {
         withLatestFrom(this.store, (action: any, state) => ({ action, state })),
 
         switchMap(({ action, state }) => {
-            return this.http.get(state.settingsNode.api.debugger + '/v2/p2p/?limit=500' + action.payload)
+            return this.http.get(state.settingsNode.api.debugger + '/v2/p2p/?limit=300' + action.payload)
         }),
 
         // dispatch action
@@ -31,6 +34,44 @@ export class NetworkActionEffects {
 
     )
 
+    // load network actions
+    @Effect()
+    NetworkActionStartEffect$ = this.actions$.pipe(
+        ofType('NETWORK_ACTION_START'),
+
+        // merge state
+        withLatestFrom(this.store, (action: any, state) => ({ action, state })),
+
+        switchMap(({ action, state }) =>
+
+            // get header data every second
+            timer(0, 1000).pipe(
+                takeUntil(networkActionDestroy$),
+                switchMap(() =>
+                    this.http.get(state.settingsNode.api.debugger + '/v2/p2p/?limit=300').pipe(
+                        map(response => ({ type: 'NETWORK_ACTION_START_SUCCESS', payload: response })),
+                        catchError(error => of({ type: 'NETWORK_ACTION_START_ERROR', payload: error })),
+                    )
+                )
+            )
+        ),
+    );
+
+    // stop network action download
+    @Effect({ dispatch: false })
+    NetworkActionStopEffect$ = this.actions$.pipe(
+        ofType('NETWORK_ACTION_STOP'),
+        // merge state
+        withLatestFrom(this.store, (action: any, state) => ({ action, state })),
+        // init app modules
+        tap(({ action, state }) => {
+            // console.log('[LOGS_ACTION_STOP] stream', state.logsAction.stream);
+            // close all open observables
+            // if (state.logsAction.stream) {
+            networkActionDestroy$.next();
+            // }
+        }),
+    );
 
     // @Effect()
     // NetworkActionFilter$ = this.actions$.pipe(

@@ -15,22 +15,24 @@ const initialState: any = {
         block_headers: true,
         block_operatons: true,
     },
+    stream: false,
 };
 
 export function reducer(state = initialState, action) {
     switch (action.type) {
 
+        case 'NETWORK_ACTION_START_SUCCESS':
         case 'NETWORK_ACTION_LOAD_SUCCESS': {
-
-            // console.log('[NETWORK_ACTION_LOAD_SUCCESS]', action );
-
+            console.log('['+ action.type +']', action.payload[0])
             return {
                 ...state,
                 ids: action.payload
-                    .map(networkAction => networkAction.id),
+                    .map(networkAction => networkAction.id)
+                    .sort((a, b) => a - b),
                 idsFilter: action.payload
                     .filter(entity => networkActionSourceFilter(entity, state.filter) )
-                    .map(networkAction => networkAction.id),
+                    .map(networkAction => networkAction.id)
+                    .sort((a, b) => a - b),
                 entities: action.payload
                     .reduce((accumulator, networkAction) => {
 
@@ -46,7 +48,7 @@ export function reducer(state = initialState, action) {
                                     category: 'Meta',
                                     kind: '',
                                     payload: networkAction.message,
-                                    preview: preview.length > 20 ? preview.substring(0, 20) + '...' : '',
+                                    preview: preview.length > 0 ? preview.substring(0, 100)  : '',
                                     datetime: moment.utc(Math.ceil(networkAction.timestamp / 1000000)).format('HH:mm:ss.SSS, DD MMM YY'),
                                 }
                             };
@@ -64,7 +66,7 @@ export function reducer(state = initialState, action) {
                                     category: 'Connection',
                                     kind: '',
                                     payload: networkAction.message,
-                                    preview: preview.length > 20 ? preview.substring(0, 20) + '...' : '',
+                                    preview: preview.length > 0 ? preview.substring(0, 100) : '',
                                     datetime: moment.utc(Math.ceil(networkAction.timestamp / 1000000)).format('HH:mm:ss.SSS, DD MMM YY'),
                                 }
                             };
@@ -84,7 +86,7 @@ export function reducer(state = initialState, action) {
                                     category: 'P2P',
                                     kind: networkAction.message[0].type,
                                     payload: payload,
-                                    preview: preview.length > 20 ? preview.substring(0, 20) + '...' : '',
+                                    preview: preview.length > 0 ? preview.substring(0, 100) : '',
                                     datetime: moment.utc(Math.ceil(networkAction.timestamp / 1000000)).format('HH:mm:ss.SSS, DD MMM YY'),
                                 }
                             };
@@ -103,6 +105,14 @@ export function reducer(state = initialState, action) {
                         };
 
                     }, {}),
+                stream: true,
+            };
+        }
+
+        case 'NETWORK_ACTION_STOP': {
+            return {
+                ...state,
+                stream: false
             };
         }
 

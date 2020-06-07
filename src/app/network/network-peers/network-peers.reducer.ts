@@ -59,6 +59,7 @@ export function reducer(state = initialState, action) {
                             ...state.entities[peer[0]],
                             ...peer[1],
                             ipAddress: peer[1].reachable_at.addr.substr(7),
+                            port: peer[1].reachable_at.port,
                             transferredBytes: peer[1].stat.total_recv,
                             // TODO: change to avegage
                             averageTransferSpeed: peer[1].stat.current_outflow,

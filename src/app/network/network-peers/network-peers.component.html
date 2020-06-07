@@ -5,8 +5,8 @@
         <ng-container matColumnDef="id">
             <th mat-header-cell *matHeaderCellDef> Address </th>
             <td mat-cell *matCellDef="let element">
-                <a style="color:black;text-decoration: none;" href="#/network/{{ element.ipAddress }}">
-                    {{element.ipAddress}}
+                <a style="color:black;text-decoration: none;" href="#/network/{{ element.ipAddress }}:{{ element.port }} ">
+                    {{ element.ipAddress }}:{{ element.port }}
                 </a>
             </td>
         </ng-container>
@@ -18,7 +18,7 @@
             </td>
         </ng-container>
         <ng-container matColumnDef="averageTransferSpeed">
-            <th mat-header-cell *matHeaderCellDef>Average</th>
+            <th mat-header-cell *matHeaderCellDef>Average/TODO: fix this </th>
             <td mat-cell *matCellDef="let element">
                 {{element.averageTransferSpeed | bandwidth:'s' }}
             </td>

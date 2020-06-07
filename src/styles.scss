@@ -528,6 +528,7 @@ mat-form-field .mat-select-arrow {
 .table-virtual-scroll-viewport {
     overflow-x: hidden;
     height: 540px;
+    width: 650px;
 }
 
 .table-virtual-scroll-item {
@@ -576,3 +577,7 @@ cdk-virtual-scroll-viewport::-webkit-scrollbar-thumb {
     color: $color-table; 
 }
 
+/* ngx view */
+ngx-json-viewer .segment .segment-main .segment-key {
+    color: $color-json-field !important;
+}

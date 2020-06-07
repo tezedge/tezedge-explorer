@@ -18,17 +18,17 @@
     }
 
     .network-action-table-filter span {
-        font-size:12px;
+        font-size: 12px;
         font-weight: 500;
     }
 
     .network-action-table-datetime {
-        display:inline-block;
+        display: inline-block;
         min-width: 170px;
     }
 
     .network-action-table-address {
-        display:inline-block;
+        display: inline-block;
         min-width: 150px;
     }
 
@@ -37,36 +37,35 @@
     }
 
     .network-action-table-source {
-        display:inline-block;
+        display: inline-block;
         min-width: 70px;
     }
 
     .network-action-table-type {
-        display:inline-block;
+        display: inline-block;
         min-width: 220px;
     }
 
     .network-action-table-message {
-        display:inline-block;
+        display: inline-block;
         min-width: 325px;
         white-space: nowrap;
         text-overflow: ellipsis;
     }
-
 </style>
 
 <div class="network-action-container">
 
-    <div class="table-virtual-scroll">
+    <div style="width: 1000px;margin-top: 10px;">
 
         <div class="network-action-table-filter">
 
-            <span
-                style="padding: 0px 14px 0px 0px; width: 51px;">Control</span>
+            <span style="padding: 0px 14px 0px 0px; width: 51px;">Control</span>
             <button mat-flat-button [class.active]="networkAction.filter.meta" (click)=" filterType('meta')">
                 Meta
             </button>
-            <button mat-flat-button [class.active]="networkAction.filter.connection" (click)=" filterType('connection')">
+            <button mat-flat-button [class.active]="networkAction.filter.connection"
+                (click)=" filterType('connection')">
                 Connection
             </button>
             <button mat-flat-button [class.active]="networkAction.filter.bootstrap" (click)=" filterType('bootstrap')">
@@ -78,7 +77,8 @@
             <button mat-flat-button [class.active]="networkAction.filter.swap" (click)=" filterType('swap')">
                 Swap
             </button>
-            <button mat-flat-button [class.active]="networkAction.filter.deactivate" (click)=" filterType('deactivate')">
+            <button mat-flat-button [class.active]="networkAction.filter.deactivate"
+                (click)=" filterType('deactivate')">
                 Deactivate
             </button>
 
@@ -105,14 +105,15 @@
             <button *ngIf="networkAction.urlParams" mat-flat-button class="active" (click)="filterAddress()">
                 {{ networkAction.urlParams }}
             </button>
-        
+
         </div>
 
         <div class="network-action-table-filter" style="padding-bottom:10px;">
 
             <span style="padding:0px 6px 0px 0px; width: 60px;">Messages</span>
 
-            <button mat-flat-button [class.active]="networkAction.filter.currentHead" (click)=" filterType('currentHead')">
+            <button mat-flat-button [class.active]="networkAction.filter.currentHead"
+                (click)=" filterType('currentHead')">
                 Current Head
             </button>
             <button mat-flat-button [class.active]="networkAction.filter.currentBranch"
@@ -125,7 +126,8 @@
             <button mat-flat-button [class.active]="networkAction.filter.protocol" (click)=" filterType('protocol')">
                 Protocol
             </button>
-            <button mat-flat-button [class.active]="networkAction.filter.blockHeaders" (click)=" filterType('blockHeaders')">
+            <button mat-flat-button [class.active]="networkAction.filter.blockHeaders"
+                (click)=" filterType('blockHeaders')">
                 Block Headers
             </button>
             <button mat-flat-button [class.active]="networkAction.filter.blockOperations"
@@ -139,69 +141,81 @@
 
         </div>
 
+    </div>
+
+    <div class="table-virtual-scroll">
+
         <div class="table-virtual-scroll-header">
             <span class="network-action-table-datetime">Datetime</span>
             <span class="network-action-table-address">Address</span>
             <span class="network-action-table-source">Source</span>
             <span class="network-action-table-type">Type</span>
-            <span class="network-action-table-message">Message</span>
+            <!-- <span class="network-action-table-message">Message</span> -->
         </div>
 
-        <cdk-virtual-scroll-viewport class="table-virtual-scroll-viewport" (scrolledIndexChange)="onScroll($event)" 
-            [itemSize]="36" [maxBufferPx]="288" [minBufferPx]="288">
-            
-            <div *cdkVirtualFor="let item of networkActionList" class="table-virtual-scroll-item" (mouseenter)="tableMouseEnter(item)">
-                <span class="network-action-table-datetime">
-                    {{item?.datetime}}
-                </span>
-                <span class="network-action-table-address">
-                    <a href="#/network/{{ item?.remote_addr }}"> {{ item?.remote_addr }}</a>
-                </span>
-                <span class="network-action-table-source" >
-                    <span *ngIf="item?.remote_requested===true">
-                        <svg-icon icon="local"></svg-icon>
-                        <svg-icon icon="arrow-left"></svg-icon>
-                        <svg-icon icon="remote"></svg-icon>
+        <div style="display:flex;flex-direction: row;">
+
+            <cdk-virtual-scroll-viewport style="align-items: flex-start;" class="table-virtual-scroll-viewport"
+                (scrolledIndexChange)="onScroll($event)" [itemSize]="36" [maxBufferPx]="288" [minBufferPx]="288">
+
+                <div *cdkVirtualFor="let item of networkActionList" class="table-virtual-scroll-item"
+                    (mouseenter)="tableMouseEnter(item)">
+                    <span class="network-action-table-datetime">
+                        {{item?.datetime}}
                     </span>
-                    <span *ngIf="item?.remote_requested===false">
-                        <svg-icon icon="remote"></svg-icon>
-                        <svg-icon icon="arrow-left"></svg-icon>
-                        <svg-icon icon="local"></svg-icon>
+                    <span class="network-action-table-address">
+                        <a href="#/network/{{ item?.remote_addr }}"> {{ item?.remote_addr }}</a>
                     </span>
-                </span>
-                <span class="network-action-table-type">
-                    {{item?.category}}<span *ngIf="item?.kind"> | {{ item?.kind }}</span>
-                </span>
-                <span class="network-action-table-message">
+                    <span class="network-action-table-source">
+                        <span *ngIf="item?.remote_requested===true">
+                            <svg-icon icon="local"></svg-icon>
+                            <svg-icon icon="arrow-left"></svg-icon>
+                            <svg-icon icon="remote"></svg-icon>
+                        </span>
+                        <span *ngIf="item?.remote_requested===false">
+                            <svg-icon icon="remote"></svg-icon>
+                            <svg-icon icon="arrow-left"></svg-icon>
+                            <svg-icon icon="local"></svg-icon>
+                        </span>
+                    </span>
+                    <span class="network-action-table-type">
+                        {{item?.category}}<span *ngIf="item?.kind"> | {{ item?.kind }}</span>
+                    </span>
+                    <!-- <span class="network-action-table-message">
                     {{item?.preview}}
-                </span>
+                </span> -->
+                </div>
+            </cdk-virtual-scroll-viewport>
+
+            <div style="align-items: flex-end;" class="network-action-table-detail">
+                <!-- <mat-tab-group style="">
+                    <mat-tab label="PREVIEW"> -->
+                <div style="width: 350px;padding: 15px 20px 0px 20px">
+
+                    <ngx-json-viewer [json]="networkActionItem?.payload" [expanded]="false">
+                    </ngx-json-viewer>
+
+                </div>
+                <!-- </mat-tab>
+                </mat-tab-group> -->
             </div>
-        </cdk-virtual-scroll-viewport>
+
+        </div>
+
         <div class="table-virtual-scroll-footer">
             <span>
                 <button mat-icon-button matTooltip="Start" (click)="scrollStart()" *ngIf="!networkAction?.stream">
                     <mat-icon>play_arrow_outline</mat-icon>
                 </button>
                 <button mat-icon-button matTooltip="Stop" (click)="scrollStop()" *ngIf="networkAction?.stream">
-                    <mat-icon>stop_outline</mat-icon> 
+                    <mat-icon>stop_outline</mat-icon>
                 </button>
                 <button mat-icon-button matTooltip="Last page" (click)="scrollToEnd()">
-                    <mat-icon style="transform: rotate(90deg)" >last_page</mat-icon>
+                    <mat-icon style="transform: rotate(90deg)">last_page</mat-icon>
                 </button>
             </span>
         </div>
+
     </div>
-
-    <mat-tab-group style="width: 400px;">
-        <mat-tab label="PREVIEW"> 
-            <div style="padding: 15px 20px 0px 20px">
-
-                <ngx-json-viewer  [json]="networkActionItem.payload" [expanded]="false">
-                </ngx-json-viewer>
-
-            </div>
-        </mat-tab>
-    </mat-tab-group>
-    <!-- {{ this.networkActionItem | json }} -->
 
 </div>

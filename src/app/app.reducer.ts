@@ -50,7 +50,7 @@ const initialState = {
         },
     },
     theme: {
-        name: 'light',
+        name: 'dark',
     }
 
 };

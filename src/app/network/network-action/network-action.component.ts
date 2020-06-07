@@ -22,14 +22,11 @@ export class NetworkActionComponent implements OnInit {
 
   public networkJSONView
 
-  public tableDataSource
   public onDestroy$ = new Subject()
   public expandedElement
 
   public ITEM_SIZE = 36;
 
-
-  @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   @ViewChild(CdkVirtualScrollViewport) viewPort: CdkVirtualScrollViewport;
 
   constructor(
@@ -58,11 +55,11 @@ export class NetworkActionComponent implements OnInit {
 
         this.networkAction = data;
 
-        this.networkActionShow = data.idsFilter.length > 0 ? true : false;
+        this.networkActionShow = data.ids.length > 0 ? true : false;
+        this.networkActionList = data.ids.map(id => ({ id, ...data.entities[id] }));
+        
         // set viewport at the end
         if (this.networkActionShow) {
-
-          this.networkActionList = data.idsFilter.map(id => ({ id, ...data.entities[id] }));
 
           const viewPortRange = this.viewPort && this.viewPort.getRenderedRange() ?
             this.viewPort.getRenderedRange() : { start: 0, end: 0 };
@@ -79,9 +76,6 @@ export class NetworkActionComponent implements OnInit {
             });
 
           }
-
-          this.tableDataSource = new MatTableDataSource<any>(this.networkActionList);
-          this.tableDataSource.paginator = this.paginator;
 
         }
 

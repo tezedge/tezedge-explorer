@@ -22,12 +22,8 @@
         padding: 0px 8px 0px 8px !important;
     }
 
-    .network-action-filter button mat-icon {
-        display: none;
-    }
-
-    .network-action-filter button.active {
-        background-color: #e0e0e0;
+    .table-virtual-scroll-filter button.active {
+        background-color: #434b5b !important;
     }
 
     .network-action-filter button.active mat-icon {
@@ -47,19 +43,23 @@
             <!--
             <span style="font-size:12px;padding-right:8px;font-weight: 500; color:#cacaca !important">Filters:</span> 
             -->
+            <!--
+                {{ networkAction.filter.local }}
+            -->
 
-            <span style="font-size:12px;padding: 0px 8px 0px 0px;font-weight: 500; width: 60px;color:#cacaca !important">Source</span>
-            <button mat-flat-button [class.active]="networkAction.filter.local" (click)="filter('local')">
-                <!-- <mat-icon>check</mat-icon> -->
-                Local
-            </button>
-            <button mat-flat-button [class.active]="networkAction.filter.remote" (click)="filter('remote')">
-                Remote
-            </button>
+            <!--
+                <span style="font-size:12px;padding: 0px 8px 0px 0px;font-weight: 500; width: 60px;color:#cacaca !important">Source</span>
+                <button mat-flat-button [class.active]="networkAction.filter.local" (click)="filter('local')">
+                    Local
+                </button>
+                <button mat-flat-button [class.active]="networkAction.filter.remote" (click)="filter('remote')">
+                    Remote
+                </button>
+            -->
 
-
-            <span style="font-size:12px;padding: 0px 16px 0px 16px;font-weight: 500; width: 50px;color:#cacaca !important">Control</span>
-            <button mat-flat-button [class.active]="networkAction.filter.metadata" (click)="filter('metadata')">
+            <span
+                style="font-size:12px;padding: 0px 16px 0px 0px;font-weight: 500; width: 50px;color:#cacaca !important">Control</span>
+            <button mat-flat-button [class.active]="networkAction.filter.meta" (click)="filter('meta')">
                 Meta
             </button>
             <button mat-flat-button [class.active]="networkAction.filter.connection" (click)="filter('connection')">
@@ -68,13 +68,13 @@
             <button mat-flat-button [class.active]="networkAction.filter.bootstrap" (click)="filter('bootstrap')">
                 Bootstrap
             </button>
-            <button mat-flat-button [class.active]="networkAction.filter.bootstrap" (click)="filter('advertise')">
+            <button mat-flat-button [class.active]="networkAction.filter.advertise" (click)="filter('advertise')">
                 Advertise
             </button>
-            <button mat-flat-button [class.active]="networkAction.filter.bootstrap" (click)="filter('swap')">
+            <button mat-flat-button [class.active]="networkAction.filter.swap" (click)="filter('swap')">
                 Swap
             </button>
-            <button mat-flat-button [class.active]="networkAction.filter.bootstrap" (click)="filter('deactivate')">
+            <button mat-flat-button [class.active]="networkAction.filter.deactivate" (click)="filter('deactivate')">
                 Deactivate
             </button>
 
@@ -86,27 +86,28 @@
             <span
                 style="font-size:12px;padding:0px 8px 0px 0px;font-weight: 500; width: 60px;color:#cacaca !important">Messages</span>
 
-            <button mat-flat-button [class.active]="networkAction.filter.current_head" (click)="filter('current_head')">
+            <button mat-flat-button [class.active]="networkAction.filter.currentHead" (click)="filter('currentHead')">
                 Current Head
             </button>
-            <button mat-flat-button [class.active]="networkAction.filter.current_branch"
-                (click)="filter('current_branch')">
+            <button mat-flat-button [class.active]="networkAction.filter.currentBranch"
+                (click)="filter('currentBranch')">
                 Current Branch
             </button>
-            <button mat-flat-button [class.active]="networkAction.filter.block_headers"
-                (click)="filter('block_headers')">
+            <button mat-flat-button [class.active]="networkAction.filter.operation" (click)="filter('operation')">
+                Operation
+            </button>
+            <button mat-flat-button [class.active]="networkAction.filter.protocol" (click)="filter('protocol')">
                 Protocol
             </button>
-            <button mat-flat-button [class.active]="networkAction.filter.block_headers"
-                (click)="filter('block_headers')">
+            <button mat-flat-button [class.active]="networkAction.filter.blockHeaders" (click)="filter('blockHeaders')">
                 Block Headers
             </button>
-            <button mat-flat-button [class.active]="networkAction.filter.block_operatons"
-                (click)="filter('block_operatons')">
+            <button mat-flat-button [class.active]="networkAction.filter.blockOperations"
+                (click)="filter('blockOperations')">
                 Block Operations
             </button>
-            <button mat-flat-button [class.active]="networkAction.filter.block_operatons"
-                (click)="filter('block_operatons')">
+            <button mat-flat-button [class.active]="networkAction.filter.blockOperationsHashes"
+                (click)="filter('blockOperationsHashes')">
                 Block Operations Hashes
             </button>
 

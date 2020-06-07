@@ -18,12 +18,10 @@ export class NetworkActionComponent implements OnInit {
   public networkAction
   public networkActionList = []
   public networkActionShow
-  public networkActionFilter
-
-  public networkJSONView
 
   public onDestroy$ = new Subject()
   public expandedElement
+  public networkJSONView
 
   public ITEM_SIZE = 36;
 
@@ -58,7 +56,7 @@ export class NetworkActionComponent implements OnInit {
 
         this.networkActionShow = data.ids.length > 0 ? true : false;
         this.networkActionList = data.ids.map(id => ({ id, ...data.entities[id] }));
-        
+
         // set viewport at the end
         if (this.networkActionShow) {
 
@@ -82,7 +80,6 @@ export class NetworkActionComponent implements OnInit {
 
       });
 
-
   }
 
   expandedDetail(row) {
@@ -101,7 +98,7 @@ export class NetworkActionComponent implements OnInit {
   }
 
   filterAddress() {
-    
+
     // remove address and route to default network url 
     this.router.navigate(['network'])
 
@@ -136,23 +133,29 @@ export class NetworkActionComponent implements OnInit {
 
   }
 
-  start() {
+  scrollStart() {
+
     // triger action and get action data
     this.store.dispatch({
       type: 'NETWORK_ACTION_START'
     });
+
   }
 
-  stop() {
-    // stop streaming action actions
+  scrollStop() {
+
+    // stop streaming actions
     this.store.dispatch({
       type: 'NETWORK_ACTION_STOP'
     });
+
   }
 
   scrollToEnd() {
+
     const offset = this.ITEM_SIZE * this.networkActionList.length;
     this.viewPort.scrollToOffset(offset);
+
   }
 
 }

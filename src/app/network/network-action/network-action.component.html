@@ -33,6 +33,11 @@
         height: 20px;
         width: 20px;
     }
+
+    .cdk-virtual-scroll-content-wrapper > div > span > svg-icon > img {
+        margin:0px !important
+    }
+
 </style>
 
 <div class="network-action-container">
@@ -121,8 +126,8 @@
 
         <div class="table-virtual-scroll-header">
             <span style="display:inline-block;min-width: 170px;">Datetime</span>
-            <span style="display:inline-block;min-width: 160px;">Address</span>
-            <span style="display:inline-block;min-width:  50px;">Source</span>
+            <span style="display:inline-block;min-width: 150px;">Address</span>
+            <span style="display:inline-block;min-width:  70px;">Source</span>
             <span style="display:inline-block;min-width: 220px;">Type</span>
             <span style="display:inline-block;min-width: 325px;">Message</span>
         </div>
@@ -130,12 +135,23 @@
             class="table-virtual-scroll-viewport" (scrolledIndexChange)="onScroll($event)">
             <div *cdkVirtualFor="let item of networkActionList" class="table-virtual-scroll-item">
                 <span style="display:inline-block;min-width: 170px">{{item?.datetime}}</span>
-                <span style="display:inline-block;min-width: 160px">
+                <span style="display:inline-block;min-width: 150px">
                     <a style="color: #dde0e6; text-decoration: none;" href="#/network/{{ item?.remote_addr }}">
                         {{ item?.remote_addr }}
                     </a>
                 </span>
-                <span style="display:inline-block;min-width:  50px">{{item?.remote_requested}}</span>
+                <span style="display:inline-block;min-width:  70px">
+                    <span *ngIf="item?.remote_requested===true">
+                        <svg-icon icon="local"></svg-icon>
+                        <svg-icon icon="arrow-left"></svg-icon>
+                        <svg-icon icon="remote"></svg-icon>
+                    </span>
+                    <span *ngIf="item?.remote_requested===false">
+                        <svg-icon icon="remote"></svg-icon>
+                        <svg-icon icon="arrow-left"></svg-icon>
+                        <svg-icon icon="local"></svg-icon>
+                    </span>
+                </span>
                 <span style="display:inline-block;min-width: 220px">{{item?.category}} <span *ngIf="item?.kind"> |
                         {{ item?.kind }} </span> </span>
                 <span style="display:inline-block;min-width: 325px;  white-space: nowrap;
@@ -145,10 +161,10 @@
         </cdk-virtual-scroll-viewport>
         <div class="table-virtual-scroll-footer">
             <span>
-                <button mat-icon-button matTooltip="Start" (click)="start()" *ngIf="!networkAction?.stream">
+                <button mat-icon-button matTooltip="Start" (click)="scrollStart()" *ngIf="!networkAction?.stream">
                     <mat-icon style="color: #737373">play_arrow_outline</mat-icon>
                 </button>
-                <button mat-icon-button matTooltip="Stop" (click)="stop()" *ngIf="networkAction?.stream">
+                <button mat-icon-button matTooltip="Stop" (click)="scrollStop()" *ngIf="networkAction?.stream">
                     <mat-icon style="color:#737373">stop_outline</mat-icon>
                 </button>
                 <button mat-icon-button style="transform: rotate(90deg)" matTooltip="Last page" (click)="scrollToEnd()">

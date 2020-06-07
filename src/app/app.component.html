@@ -46,6 +46,7 @@
     .mat-nav-list .mat-list-item:hover {
         background: #1C202B;
     }
+
 </style>
 
 
@@ -82,7 +83,7 @@
 
                     <a mat-list-item *ngIf="app.menu.monitoring.synchronization" routerLink="/monitoring" (click)="isMobile && start.toggle()" [style.color]="app.sidenav.color">
                         <span>
-                            <svg-icon icon="history"></svg-icon>
+                            <svg-icon style="margin-right: 7px;" icon="history"></svg-icon>
                             Synchronization
                         </span>
                     </a>
@@ -96,28 +97,28 @@
 
                     <a *ngIf="app.menu.explorer.storage" mat-list-item routerLink="/storage" (click)="isMobile && start.toggle()" [style.color]="app.sidenav.color">
                         <span>
-                            <svg-icon icon="explorer"></svg-icon>
+                            <svg-icon style="margin-right: 7px;" icon="explorer"></svg-icon>
                             Storage
                         </span>
                     </a> 
 
                     <a *ngIf="app.menu.explorer.endpoints" mat-list-item routerLink="/endpoints" [style.color]="app.sidenav.color">
                         <span>
-                            <svg-icon icon="endpoints"></svg-icon>
+                            <svg-icon style="margin-right: 7px;" icon="endpoints"></svg-icon>
                             Endpoints
                         </span>
                     </a>
                     
                     <a *ngIf="app.menu.explorer.network" mat-list-item routerLink="/network" [style.color]="app.sidenav.color">
                         <span>
-                            <svg-icon icon="peer"></svg-icon>
+                            <svg-icon style="margin-right: 7px;" icon="peer"></svg-icon>
                             Network
                         </span>
                     </a>
 
                     <a *ngIf="app.menu.explorer.logs" mat-list-item routerLink="/logs" (click)="isMobile && start.toggle()" [style.color]="app.sidenav.color">
                         <span>
-                            <svg-icon icon="logs"></svg-icon>
+                            <svg-icon style="margin-right: 7px;" icon="logs"></svg-icon>
                             Logs
                         </span>
                     </a> 
@@ -177,7 +178,7 @@
 
                     <a mat-list-item href="https://docs.tezedge.com" target="_blank" rel="noreferrer" [style.color]="app.sidenav.color">
                         <span>
-                            <svg-icon icon="documentation"></svg-icon>
+                            <svg-icon style="margin-right: 7px" icon="documentation"></svg-icon>
                             Documentation
                         </span>
                     </a>

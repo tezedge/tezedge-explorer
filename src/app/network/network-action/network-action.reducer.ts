@@ -23,10 +23,19 @@ const initialState: any = {
         blockOperationsHashes: false
     },
     stream: false,
+    urlParams: '',
 };
 
 export function reducer(state = initialState, action) {
     switch (action.type) {
+
+        // add network url params 
+        case 'NETWORK_ACTION_LOAD': {
+            return {
+                ...state,
+                urlParams: action.payload,
+            }
+        }
 
         case 'NETWORK_ACTION_START_SUCCESS':
         case 'NETWORK_ACTION_LOAD_SUCCESS': {

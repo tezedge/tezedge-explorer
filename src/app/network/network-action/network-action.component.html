@@ -124,7 +124,11 @@
             class="table-virtual-scroll-viewport" (scrolledIndexChange)="onScroll($event)">
             <div *cdkVirtualFor="let item of networkActionList" class="table-virtual-scroll-item">
                 <span style="display:inline-block;min-width: 170px">{{item?.datetime}}</span>
-                <span style="display:inline-block;min-width: 160px">{{item?.remote_addr}}</span>
+                <span style="display:inline-block;min-width: 160px">
+                    <a style="color: #dde0e6; text-decoration: none;" href="#/network/{{ item?.remote_addr }}">
+                        {{ item?.remote_addr }}
+                    </a>
+                </span>
                 <span style="display:inline-block;min-width:  50px">{{item?.remote_requested}}</span>
                 <span style="display:inline-block;min-width: 220px">{{item?.category}} <span *ngIf="item?.kind"> |
                         {{ item?.kind }} </span> </span>

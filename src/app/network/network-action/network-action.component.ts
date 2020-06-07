@@ -43,7 +43,7 @@ export class NetworkActionComponent implements OnInit {
         // triger action and get network data
         this.store.dispatch({
           type: 'NETWORK_ACTION_LOAD',
-          payload: params.address ? '/' + params.address : '',
+          payload: params.address ? params.address : '',
         });
 
       });

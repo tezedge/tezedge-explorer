@@ -18,7 +18,7 @@ export class NetworkActionEffects {
         withLatestFrom(this.store, (action: any, state) => ({ action, state })),
 
         switchMap(({ action, state }) => {
-            return this.http.get(state.settingsNode.api.debugger + '/v2/p2p/?limit=300' + action.payload)
+            return this.http.get(state.settingsNode.api.debugger + '/v2/p2p/?' +  networkActionFilter(action, state) + 'limit=300' )
         }),
 
         // dispatch action
@@ -108,32 +108,37 @@ export class NetworkActionEffects {
 
 // filter network action
 export function networkActionFilter(action, state) {
-
-    let filter = '';
+    
+    // add type filterType    
+    let filterType = '';
     const stateFilter = state.networkAction.filter;
     
-    filter = stateFilter.local ? filter + 'local,' : filter;
-    filter = stateFilter.remote ? filter + 'remote,' : filter;
+    filterType = stateFilter.local ? filterType + 'local,' : filterType;
+    filterType = stateFilter.remote ? filterType + 'remote,' : filterType;
 
-    filter = stateFilter.meta ? filter + 'metadata,' : filter;
-    filter = stateFilter.connection ? filter + 'connection_message,' : filter;
-    filter = stateFilter.bootstrap ? filter + 'bootstrap,' : filter;
-    filter = stateFilter.advertise ? filter + 'advertise,' : filter;
-    filter = stateFilter.swap ? filter + 'swap_request,swap_ack,' : filter;
-    filter = stateFilter.deactivate ? filter + 'deactivate,' : filter;
+    filterType = stateFilter.meta ? filterType + 'metadata,' : filterType;
+    filterType = stateFilter.connection ? filterType + 'connection_message,' : filterType;
+    filterType = stateFilter.bootstrap ? filterType + 'bootstrap,' : filterType;
+    filterType = stateFilter.advertise ? filterType + 'advertise,' : filterType;
+    filterType = stateFilter.swap ? filterType + 'swap_request,swap_ack,' : filterType;
+    filterType = stateFilter.deactivate ? filterType + 'deactivate,' : filterType;
 
-    filter = stateFilter.protocol ? filter + 'get_protocols,protocol,' : filter;
-    filter = stateFilter.operation ? filter + 'get_operations,operation,' : filter;
-    filter = stateFilter.currentHead ? filter + 'get_current_head,current_head,' : filter;
-    filter = stateFilter.currentBranch ? filter + 'get_current_branch,current_branch,' : filter;
-    filter = stateFilter.blockHeaders ? filter + 'get_block_header,block_header,' : filter;
-    filter = stateFilter.blockOperations ? filter + 'get_operations_for_blocks,operations_for_blocks,' : filter;
-    filter = stateFilter.blockOperationsHashes ? filter + 'get_operation_hashes_for_blocks,operation_hashes_for_block,' : filter;
+    filterType = stateFilter.protocol ? filterType + 'get_protocols,protocol,' : filterType;
+    filterType = stateFilter.operation ? filterType + 'get_operations,operation,' : filterType;
+    filterType = stateFilter.currentHead ? filterType + 'get_current_head,current_head,' : filterType;
+    filterType = stateFilter.currentBranch ? filterType + 'get_current_branch,current_branch,' : filterType;
+    filterType = stateFilter.blockHeaders ? filterType + 'get_block_header,block_header,' : filterType;
+    filterType = stateFilter.blockOperations ? filterType + 'get_operations_for_blocks,operations_for_blocks,' : filterType;
+    filterType = stateFilter.blockOperationsHashes ? filterType + 'get_operation_hashes_for_blocks,operation_hashes_for_block,' : filterType;
 
     // replace last , with &
-    filter = filter.length > 0 ?  'types=' + filter.slice(0, -1) + '&' : '';  
-    // console.log("[networkActionFilter] url ", state.settingsNode.api.debugger + '/v2/p2p/?' + filter + 'limit=10');
+    filterType = filterType.length > 0 ?  'types=' + filterType.slice(0, -1) + '&' : '';  
+    
+    // add remote_addr filter 
+    let filterRemoteAddr = state.networkAction.urlParams ? 'remote_addr=' + state.networkAction.urlParams + '&': '';
+    
+    console.log("[networkActionFilter] url ", state.settingsNode.api.debugger + '/v2/p2p/?' + filterType + filterRemoteAddr + 'limit=10');
 
-    return filter
+    return  filterType + filterRemoteAddr
 
 }

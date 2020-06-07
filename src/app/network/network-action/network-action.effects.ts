@@ -137,7 +137,7 @@ export function networkActionFilter(action, state) {
     // add remote_addr filter 
     let filterRemoteAddr = state.networkAction.urlParams ? 'remote_addr=' + state.networkAction.urlParams + '&': '';
     
-    console.log("[networkActionFilter] url ", state.settingsNode.api.debugger + '/v2/p2p/?' + filterType + filterRemoteAddr + 'limit=10');
+    // console.log("[networkActionFilter] url ", state.settingsNode.api.debugger + '/v2/p2p/?' + filterType + filterRemoteAddr + 'limit=10');
 
     return  filterType + filterRemoteAddr
 

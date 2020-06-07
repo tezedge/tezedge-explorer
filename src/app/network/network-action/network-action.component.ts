@@ -31,7 +31,8 @@ export class NetworkActionComponent implements OnInit {
 
   constructor(
     public store: Store<any>,
-    private activeRoute: ActivatedRoute
+    private activeRoute: ActivatedRoute,
+    private router: Router,
   ) { }
 
   ngOnInit(): void {
@@ -89,15 +90,23 @@ export class NetworkActionComponent implements OnInit {
     console.log('[network][action] expandedDetail', this.networkAction, row);
   }
 
-  filter(filter) {
+  filterType(filterType) {
 
     // dispatch action
     this.store.dispatch({
       type: 'NETWORK_ACTION_FILTER',
-      payload: filter,
+      payload: filterType,
     });
 
   }
+
+  filterAddress() {
+    
+    // remove address and route to default network url 
+    this.router.navigate(['network'])
+
+  }
+
 
   ngOnDestroy() {
 

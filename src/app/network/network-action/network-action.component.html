@@ -45,25 +45,9 @@
     <div class="table-virtual-scroll">
 
         <div class="table-virtual-scroll-filter">
-            <!--
-            <span style="font-size:12px;padding-right:8px;font-weight: 500; color:#cacaca !important">Filters:</span> 
-            -->
-            <!--
-                {{ networkAction.filter.local }}
-            -->
-
-            <!--
-                <span style="font-size:12px;padding: 0px 8px 0px 0px;font-weight: 500; width: 60px;color:#cacaca !important">Source</span>
-                <button mat-flat-button [class.active]="networkAction.filter.local" (click)=" filterType('local')">
-                    Local
-                </button>
-                <button mat-flat-button [class.active]="networkAction.filter.remote" (click)=" filterType('remote')">
-                    Remote
-                </button>
-            -->
 
             <span
-                style="font-size:12px;padding: 0px 16px 0px 0px;font-weight: 500; width: 50px;color:#cacaca !important">Control</span>
+                style="font-size:12px;padding: 0px 14px 0px 0px;font-weight: 500; width: 51px;color:#cacaca !important">Control</span>
             <button mat-flat-button [class.active]="networkAction.filter.meta" (click)=" filterType('meta')">
                 Meta
             </button>
@@ -83,19 +67,38 @@
                 Deactivate
             </button>
 
-            <span *ngIf="networkAction.urlParams" style="font-size:12px;padding:0px 16px 0px 16px;font-weight: 500; width: 50px;color:#cacaca !important">Address</span>
-            <button *ngIf="networkAction.urlParams" mat-flat-button class="active" (click)="filterAddress()">
-                {{ networkAction.urlParams }}
+            <span style="font-size:12px;padding: 0px 8px 0px 8px;font-weight: 500; width: 40px;color:#cacaca !important">Source</span>
+            <button mat-flat-button [class.active]="networkAction.filter.local" (click)=" filterType('local')">
+                Local
+                <span style="margin-left: 5px;">
+                    <svg-icon icon="local" scale="0.8"></svg-icon>
+                    <svg-icon icon="arrow-left" scale="0.8"></svg-icon>
+                    <svg-icon icon="remote" scale="0.8"></svg-icon>
+                </span>
+            </button>
+            <button mat-flat-button [class.active]="networkAction.filter.remote" (click)=" filterType('remote')">
+                Remote
+                <span style="margin-left: 5px;">
+                    <svg-icon icon="remote" scale="0.8"></svg-icon>
+                    <svg-icon icon="arrow-left" scale="0.8"></svg-icon>
+                    <svg-icon icon="local" scale="0.8"></svg-icon>
+                </span>
             </button>
 
 
+            <span *ngIf="networkAction.urlParams" style="font-size:12px;padding:0px 8px 0px 8px;font-weight: 500; width: 50px;color:#cacaca !important">Address</span>
+            <button *ngIf="networkAction.urlParams" mat-flat-button class="active" (click)="filterAddress()">
+                {{ networkAction.urlParams }}
+            </button>
+        
+        
         </div>
 
         <div class="table-virtual-scroll-filter"
             style="border-bottom: 0px solid #434b5b !important;padding-bottom:10px;">
 
             <span
-                style="font-size:12px;padding:0px 8px 0px 0px;font-weight: 500; width: 60px;color:#cacaca !important">Messages</span>
+                style="font-size:12px;padding:0px 6px 0px 0px;font-weight: 500; width: 60px;color:#cacaca !important">Messages</span>
 
             <button mat-flat-button [class.active]="networkAction.filter.currentHead" (click)=" filterType('currentHead')">
                 Current Head

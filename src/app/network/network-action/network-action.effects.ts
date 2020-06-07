@@ -112,9 +112,6 @@ export function networkActionFilter(action, state) {
     // add type filterType    
     let filterType = '';
     const stateFilter = state.networkAction.filter;
-    
-    filterType = stateFilter.local ? filterType + 'local,' : filterType;
-    filterType = stateFilter.remote ? filterType + 'remote,' : filterType;
 
     filterType = stateFilter.meta ? filterType + 'metadata,' : filterType;
     filterType = stateFilter.connection ? filterType + 'connection_message,' : filterType;
@@ -134,11 +131,16 @@ export function networkActionFilter(action, state) {
     // replace last , with &
     filterType = filterType.length > 0 ?  'types=' + filterType.slice(0, -1) + '&' : '';  
     
+    // add filter for source 
+    let filterIncoming = '';
+    filterIncoming = stateFilter.local && !stateFilter.remote ? 
+        'incoming=false&' : (!stateFilter.local && stateFilter.remote ? 'incoming=true&' : '');
+    
     // add remote_addr filter 
     let filterRemoteAddr = state.networkAction.urlParams ? 'remote_addr=' + state.networkAction.urlParams + '&': '';
-    
-    // console.log("[networkActionFilter] url ", state.settingsNode.api.debugger + '/v2/p2p/?' + filterType + filterRemoteAddr + 'limit=10');
 
-    return  filterType + filterRemoteAddr
+    console.log("[networkActionFilter] url ", state.settingsNode.api.debugger + '/v2/p2p/?' + filterType + filterIncoming + filterRemoteAddr + 'limit=10');
+
+    return  filterType + filterIncoming + filterRemoteAddr
 
 }

@@ -514,10 +514,15 @@ mat-form-field .mat-select-arrow {
 }
 
 .table-virtual-scroll-footer {
+    display: flex;
     justify-content: flex-end;
     margin-right: 10px;
-    display: flex;
     height: 40px;
+    opacity: 0.8;
+}
+
+.table-virtual-scroll-footer mat-icon {
+    color: $color-table-paginator;
 }
 
 .table-virtual-scroll-viewport {
@@ -551,3 +556,23 @@ cdk-virtual-scroll-viewport::-webkit-scrollbar-thumb {
 .mat-drawer-content {
     overflow: initial !important;
 }
+
+/* network action*/
+.network-action-table-filter button {
+    color: $color-table;
+    background-color: $color-table-background !important;
+    border: 1px solid $color-table-border !important;
+}
+
+.network-action-table-filter button.active {
+    background-color: $color-table-border !important;
+}
+
+.network-action-table-filter span {
+    color:$color-table-header !important;
+}
+
+.network-action-table-address a {
+    color: $color-table; 
+}
+

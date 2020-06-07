@@ -147,10 +147,13 @@
             <span class="network-action-table-message">Message</span>
         </div>
 
-        <cdk-virtual-scroll-viewport [itemSize]="36" [maxBufferPx]="288" [minBufferPx]="288"
-            class="table-virtual-scroll-viewport" (scrolledIndexChange)="onScroll($event)">
-            <div *cdkVirtualFor="let item of networkActionList" class="table-virtual-scroll-item">
-                <span class="network-action-table-datetime">{{item?.datetime}}</span>
+        <cdk-virtual-scroll-viewport class="table-virtual-scroll-viewport" (scrolledIndexChange)="onScroll($event)" 
+            [itemSize]="36" [maxBufferPx]="288" [minBufferPx]="288">
+            
+            <div *cdkVirtualFor="let item of networkActionList" class="table-virtual-scroll-item" (mouseenter)="tableMouseEnter(item)">
+                <span class="network-action-table-datetime">
+                    {{item?.datetime}}
+                </span>
                 <span class="network-action-table-address">
                     <a href="#/network/{{ item?.remote_addr }}"> {{ item?.remote_addr }}</a>
                 </span>
@@ -169,7 +172,9 @@
                 <span class="network-action-table-type">
                     {{item?.category}}<span *ngIf="item?.kind"> | {{ item?.kind }}</span>
                 </span>
-                <span class="network-action-table-message">{{item?.preview}}</span>
+                <span class="network-action-table-message">
+                    {{item?.preview}}
+                </span>
             </div>
         </cdk-virtual-scroll-viewport>
         <div class="table-virtual-scroll-footer">
@@ -186,5 +191,17 @@
             </span>
         </div>
     </div>
+
+    <mat-tab-group style="width: 400px;">
+        <mat-tab label="PREVIEW"> 
+            <div style="padding: 15px 20px 0px 20px">
+
+                <ngx-json-viewer  [json]="networkActionItem.payload" [expanded]="false">
+                </ngx-json-viewer>
+
+            </div>
+        </mat-tab>
+    </mat-tab-group>
+    <!-- {{ this.networkActionItem | json }} -->
 
 </div>

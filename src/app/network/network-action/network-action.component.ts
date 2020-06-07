@@ -18,11 +18,10 @@ export class NetworkActionComponent implements OnInit {
   public networkAction
   public networkActionList = []
   public networkActionShow
+  public networkActionItem
 
   public onDestroy$ = new Subject()
-  public expandedElement
-  public networkJSONView
-
+  
   public ITEM_SIZE = 36;
 
   @ViewChild(CdkVirtualScrollViewport) viewPort: CdkVirtualScrollViewport;
@@ -105,14 +104,6 @@ export class NetworkActionComponent implements OnInit {
   }
 
 
-  ngOnDestroy() {
-
-    // close all observables
-    this.onDestroy$.next();
-    this.onDestroy$.complete();
-
-  }
-
   onScroll(index) {
 
     if (this.networkActionList.length - index > 15) {
@@ -158,4 +149,16 @@ export class NetworkActionComponent implements OnInit {
 
   }
 
+  tableMouseEnter(item) {
+    console.log('[tableMouseEnter]', item)
+    this.networkActionItem = item;
+  }
+
+  ngOnDestroy() {
+
+    // close all observables
+    this.onDestroy$.next();
+    this.onDestroy$.complete();
+
+  }
 }

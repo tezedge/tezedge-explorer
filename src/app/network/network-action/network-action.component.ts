@@ -81,11 +81,6 @@ export class NetworkActionComponent implements OnInit {
 
   }
 
-  expandedDetail(row) {
-    // this.storageActionDetail = this.storageActionDetail ? false : true;
-    console.log('[network][action] expandedDetail', this.networkAction, row);
-  }
-
   filterType(filterType) {
 
     // dispatch action
@@ -107,14 +102,12 @@ export class NetworkActionComponent implements OnInit {
   onScroll(index) {
 
     if (this.networkActionList.length - index > 15) {
-      // console.warn('[onScroll][stop] length', index, this.networkActionList.length, this.networkActionList.length - index);
       // stop log actions stream
       this.store.dispatch({
         type: 'NETWORK_ACTION_STOP',
         payload: event,
       });
     } else {
-      // console.warn('[onScroll][start] length', index, this.networkActionList.length, this.networkActionList.length - index);
       // start log actions stream
       this.store.dispatch({
         type: 'NETWORK_ACTION_START',

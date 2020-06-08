@@ -1,113 +1,43 @@
-<!-- <style>
-    .logs-action-filter {
-        width: 800px;
-        padding: 10px 0px 10px 0px;
-        height: 32px;
-
-        display: flex;
-        align-items: center;
-        /*justify-content: center;*/
-    }
-
-    .logs-action-filter button {
-        border:1px solid #e0e0e0;
-        margin-right: 2px;
-        line-height: 32px !important;
-        font-weight: 300 !important;
-        background-color: #f5f9fc;
-        min-width: 154px;
-    }
-    .logs-action-filter button mat-icon {
-        display: none;
-    }
-
-    .logs-action-filter button.active {
-        background-color:white;
-    }
-
-    .logs-action-filter button.active mat-icon {
+<style>
+    .logs-action-table-datetime {
         display: inline-block;
-        font-size: 18px;
-        margin-left: -8px;
-        height: 20px;
-        width: 20px;
-    }
-   
-    .logs-action-container {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        flex-direction: column;
+        min-width: 170px;
     }
 
-    .logs-action th.mat-header-cell.cdk-column-datetime.mat-column-datetime {
-        text-overflow: ellipsis;
-        overflow: hidden;
-        white-space: nowrap;
-    }
-    .logs-action .mat-cell.cdk-column-datetime.mat-column-datetime {
-        width: 140px;
+    .logs-action-table-level {
+        display: inline-block;
+        min-width: 60px;
     }
 
-
-    .logs-action th.mat-header-cell.cdk-column-address.mat-column-address {
-        text-overflow: ellipsis;
-        overflow: hidden;
-        white-space: nowrap;
+    .logs-action-table-message {
+        display: inline-block;
+        min-width: 725px;
     }
-    .logs-action .mat-cell.cdk-column-address.mat-column-address {
-        width: 100px;
-    }
-
-    .logs-action th.mat-header-cell.cdk-column-level.mat-column-level {
-        text-overflow: ellipsis;
-        overflow: hidden;
-        white-space: nowrap;
-    }
-    .logs-action .mat-cell.cdk-column-level.mat-column-level {
-        width: 80px;
-    }
-
-    .logs-action th.mat-header-cell.cdk-column-message.mat-column-message {
-        text-overflow: ellipsis;
-        overflow: hidden;
-        white-space: nowrap;
-    }
-    .logs-action .mat-cell.cdk-column-message.mat-column-message {
-        padding-right: 10px;
-    }
-
-    .detail-colapsed {
-        display: none;
-    }
-
 </style>
--->
-
 
 <div class="logs-action-container">
 
     <div class="table-virtual-scroll">
 
         <div class="table-virtual-scroll-header">
-            <span style="display:inline-block;min-width: 170px;">Datetime</span>
-            <span style="display:inline-block;min-width: 60px;">Level</span>
-            <span style="display:inline-block;min-width: 725px;">Message</span>
+            <span class="logs-action-table-datetime">Datetime</span>
+            <span class="logs-action-table-level">Level</span>
+            <span class="logs-action-table-message">Message</span>
         </div>
 
         <div style="display:flex;flex-direction: row;">
 
-            <cdk-virtual-scroll-viewport style="align-items: flex-start;" [itemSize]="36" [maxBufferPx]="288"
-                [minBufferPx]="288" class="logs-action-table-viewport" (scrolledIndexChange)="onScroll($event)">
-                <div *cdkVirtualFor="let item of logsActionList" class="table-virtual-scroll-item"
-                    [class.hover]="item?.id === logsActionItem?.id"
-                    (mouseenter)="tableMouseEnter(item)">
+            <cdk-virtual-scroll-viewport style="align-items: flex-start;" class="logs-action-table-viewport"
+                (scrolledIndexChange)="onScroll($event)" 
+                [itemSize]="36" [maxBufferPx]="288" [minBufferPx]="288">
+                
+                <div *cdkVirtualFor="let item of logsActionList"  class="table-virtual-scroll-item"
+                    (mouseenter)="tableMouseEnter(item)"
+                    [class.hover]="item?.id === logsActionItem?.id">
 
-                    <span style="display:inline-block;min-width: 170px">{{item?.datetime}}</span>
-                    <span style="display:inline-block;min-width: 60px">{{item?.level}}</span>
-                    <span style="display:inline-block;min-width: 725px;  white-space: nowrap;
-                    text-overflow: ellipsis;">{{item?.preview}}</span>
-                    <!-- <span style="display:inline-block;width: 200px">{{item.message}}</span>   -->
+                    <span class="logs-action-table-datetime">{{item?.datetime}}</span>
+                    <span class="logs-action-table-level">{{item?.level}}</span>
+                    <span class="logs-action-table-message" style="white-space: nowrap;text-overflow: ellipsis;">{{item?.preview}}</span>
                 </div>
             </cdk-virtual-scroll-viewport>
 
@@ -124,13 +54,13 @@
         <div class="table-virtual-scroll-footer">
             <span>
                 <button mat-icon-button matTooltip="Start" (click)="scrollStart()" *ngIf="!logsAction?.stream">
-                    <mat-icon style="color: #737373">play_arrow_outline</mat-icon>
+                    <mat-icon>play_arrow_outline</mat-icon>
                 </button>
                 <button mat-icon-button matTooltip="Stop" (click)="scrollStop()" *ngIf="logsAction?.stream">
-                    <mat-icon style="color:#737373">stop_outline</mat-icon>
+                    <mat-icon>stop_outline</mat-icon>
                 </button>
                 <button mat-icon-button style="transform: rotate(90deg)" matTooltip="Last page" (click)="scrollToEnd()">
-                    <mat-icon style="color: #737373">last_page</mat-icon>
+                    <mat-icon>last_page</mat-icon>
                 </button>
             </span>
         </div>

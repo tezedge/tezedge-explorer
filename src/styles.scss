@@ -527,7 +527,7 @@ mat-form-field .mat-select-arrow {
 
 .table-virtual-scroll-viewport {
     overflow-x: hidden;
-    height: 504px; /* 36*14 */
+    /* height: 504px; */ /* 36*14 */
     width: 650px;
 }
 
@@ -626,7 +626,7 @@ ngx-json-viewer .segment .segment-main .segment-key {
 
 .logs-action-table-viewport {
     overflow-x: hidden;
-    height: 504px; /* 36*14 */
+    /* height: 504px; */ /* 36*14 */
     width: 750px;
 }
 

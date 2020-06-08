@@ -19,9 +19,7 @@ export class LogsActionComponent implements OnInit, OnDestroy {
   public logsActionList = [];
   public logsActionItem
   public logsActionShow;
-  public logsActionFilter;
 
-  public tableDataSource;
   public onDestroy$ = new Subject();
 
   public ITEM_SIZE = 36;
@@ -75,15 +73,13 @@ export class LogsActionComponent implements OnInit, OnDestroy {
   
   onScroll(index) {
 
-    if (this.logsActionList.length - index > 16) {
-      // console.warn('[onScroll][stop] length', index, this.logsActionList.length, this.logsActionList.length - index);
+    if (this.logsActionList.length - index > 15) {
       // stop log actions stream
       this.store.dispatch({
         type: 'LOGS_ACTION_STOP',
         payload: event,
       });
     } else {
-      // console.warn('[onScroll][start] length', index, this.logsActionList.length, this.logsActionList.length - index);
       // start log actions stream
       this.store.dispatch({
         type: 'LOGS_ACTION_START',
@@ -98,7 +94,6 @@ export class LogsActionComponent implements OnInit, OnDestroy {
     // triger action and get logs data
     this.store.dispatch({
       type: 'LOGS_ACTION_START',
-      // payload: event,
     });
 
   }
@@ -108,7 +103,6 @@ export class LogsActionComponent implements OnInit, OnDestroy {
     // stop streaming logs actions
     this.store.dispatch({
       type: 'LOGS_ACTION_STOP',
-      // payload: event,
     });
 
   }
@@ -132,6 +126,10 @@ export class LogsActionComponent implements OnInit, OnDestroy {
     this.store.dispatch({
       type: 'LOGS_ACTION_STOP',
     });
+
+    // close all observables
+    this.onDestroy$.next();
+    this.onDestroy$.complete();
 
   }
 

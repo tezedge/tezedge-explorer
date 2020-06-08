@@ -2,7 +2,10 @@ import { Injectable, NgZone } from '@angular/core';
 import { Effect, Actions, ofType } from '@ngrx/effects';
 import { HttpClient } from '@angular/common/http';
 import { Store } from '@ngrx/store';
-import { map, switchMap, withLatestFrom, catchError } from 'rxjs/operators';
+import { map, switchMap, withLatestFrom, catchError, tap, takeUntil } from 'rxjs/operators';
+import { of, Subject, empty, timer } from 'rxjs';
+
+const endpointsActionDestroy$ = new Subject();
 
 @Injectable()
 export class EndpointsActionEffects {
@@ -15,7 +18,7 @@ export class EndpointsActionEffects {
         withLatestFrom(this.store, (action: any, state) => ({ action, state })),
 
         switchMap(({ action, state }) => {
-            return this.http.get(state.settingsNode.api.debugger + '/v2/rpc?limit=500' + action.payload)
+            return this.http.get(state.settingsNode.api.debugger + '/v2/rpc?limit=30' + action.payload)
         }),
 
         // dispatch action
@@ -30,6 +33,41 @@ export class EndpointsActionEffects {
         })
 
     )
+
+    // load logs actions
+    @Effect()
+    EndpointsActionStartEffect$ = this.actions$.pipe(
+        ofType('ENDPOINTS_ACTION_START'),
+
+        // merge state
+        withLatestFrom(this.store, (action: any, state) => ({ action, state })),
+
+        switchMap(({ action, state }) =>
+
+            // get header data every second
+            timer(0, 2000).pipe(
+                takeUntil(endpointsActionDestroy$),
+                switchMap(() =>
+                    this.http.get(state.settingsNode.api.debugger + '/v2/rpc/?limit=30').pipe(
+                        map(response => ({ type: 'ENDPOINTS_ACTION_START_SUCCESS', payload: response })),
+                        catchError(error => of({ type: 'ENDPOINTS_ACTION_START_ERROR', payload: error })),
+                    )
+                )
+            )
+        ),
+    );
+
+    // stop endpoints action download
+    @Effect({ dispatch: false })
+    EndpointsActionStopEffect$ = this.actions$.pipe(
+        ofType('ENDPOINTS_ACTION_STOP'),
+        // merge state
+        withLatestFrom(this.store, (action: any, state) => ({ action, state })),
+        // init app modules
+        tap(({ action, state }) => {
+            endpointsActionDestroy$.next();
+        }),
+    );
 
     constructor(
         private http: HttpClient,

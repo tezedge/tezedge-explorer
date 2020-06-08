@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { MatPaginator } from '@angular/material/paginator';
-import { MatTableDataSource } from '@angular/material/table';
+
 import { Router, ActivatedRoute, Params } from '@angular/router';
+import { CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
 
 import { Store } from '@ngrx/store';
 import { Subject } from 'rxjs';
@@ -17,15 +17,13 @@ export class EndpointsActionComponent implements OnInit {
   public endpointsAction;
   public endpointsActionList;
   public endpointsActionShow;
-  public endpointsActionFilter;
+  public endpointsActionItem;
 
-  public endpointsJSONView;
-
-  public tableDataSource;
   public onDestroy$ = new Subject();
-  public expandedElement;
 
-  @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
+  public ITEM_SIZE = 36;
+
+  @ViewChild(CdkVirtualScrollViewport) viewPort: CdkVirtualScrollViewport;
 
   constructor(
     public store: Store<any>,
@@ -41,7 +39,7 @@ export class EndpointsActionComponent implements OnInit {
         // triger action and get endpoints data
         this.store.dispatch({
           type: 'ENDPOINTS_ACTION_LOAD',
-          payload: params.address ? '/' + params.address : '',
+          payload: params.address ?  params.address : '',
         });
 
       });
@@ -56,15 +54,77 @@ export class EndpointsActionComponent implements OnInit {
         this.endpointsActionShow = data.ids.length > 0 ? true : false;
         this.endpointsActionList = data.ids.map(id => ({ id, ...data.entities[id] }));
 
-        this.tableDataSource = new MatTableDataSource<any>(this.endpointsActionList);
-        this.tableDataSource.paginator = this.paginator;
+                
+        // set viewport at the end
+        if (this.endpointsActionShow) {
+
+          const viewPortRange = this.viewPort && this.viewPort.getRenderedRange() ?
+            this.viewPort.getRenderedRange() : { start: 0, end: 0 };
+          const viewPortItemLength = this.endpointsActionList.length;
+          // trigger only if we are streaming and not at the end of page
+          if (data.stream && viewPortItemLength > 0 && (viewPortRange.end !== viewPortItemLength) &&
+            (viewPortRange.start !== viewPortRange.end)) {
+
+            setTimeout(() => {
+              const offset = this.ITEM_SIZE * this.endpointsActionList.length;
+              this.viewPort.scrollToOffset(offset);
+            });
+
+          }
+
+        }
 
       });
 
   }
+    
+  onScroll(index) {
 
-  expandedDetail(row) {
-    console.log('[endpoints][action] expandedDetail', this.endpointsAction, row);
+    if (this.endpointsActionList.length - index > 15) {
+      // stop log actions stream
+      this.store.dispatch({
+        type: 'ENDPOINTS_ACTION_STOP',
+        payload: event,
+      });
+    } else {
+      // start log actions stream
+      this.store.dispatch({
+        type: 'ENDPOINTS_ACTION_START',
+        payload: event,
+      });
+    }
+
+  }
+
+  scrollStart() {
+
+    // triger action and get logs data
+    this.store.dispatch({
+      type: 'ENDPOINTS_ACTION_START',
+    });
+
+  }
+
+  scrollStop() {
+
+    // stop streaming logs actions
+    this.store.dispatch({
+      type: 'ENDPOINTS_ACTION_STOP',
+    });
+
+  }
+  
+  scrollToEnd() {
+
+    const offset = this.ITEM_SIZE * this.endpointsActionList.length;
+    this.viewPort.scrollToOffset(offset);
+  
+  }
+  
+  tableMouseEnter(item) {
+
+    this.endpointsActionItem = item
+
   }
 
   ngOnDestroy() {

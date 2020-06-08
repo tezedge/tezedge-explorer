@@ -18,7 +18,7 @@ export class NetworkActionEffects {
         withLatestFrom(this.store, (action: any, state) => ({ action, state })),
 
         switchMap(({ action, state }) => {
-            return this.http.get(state.settingsNode.api.debugger + '/v2/p2p/?' +  networkActionFilter(action, state) + 'limit=300' )
+            return this.http.get(state.settingsNode.api.debugger + '/v2/p2p/?' +  networkActionFilter(action, state) + 'limit=30' )
         }),
 
         // dispatch action
@@ -48,7 +48,7 @@ export class NetworkActionEffects {
             timer(0, 1000).pipe(
                 takeUntil(networkActionDestroy$),
                 switchMap(() =>
-                    this.http.get(state.settingsNode.api.debugger + '/v2/p2p/?' +  networkActionFilter(action, state) + 'limit=300').pipe(
+                    this.http.get(state.settingsNode.api.debugger + '/v2/p2p/?' +  networkActionFilter(action, state) + 'limit=30').pipe(
                         map(response => ({ type: 'NETWORK_ACTION_START_SUCCESS', payload: response })),
                         catchError(error => of({ type: 'NETWORK_ACTION_START_ERROR', payload: error })),
                     )

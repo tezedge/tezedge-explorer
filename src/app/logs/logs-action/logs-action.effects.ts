@@ -20,7 +20,7 @@ export class LogsActionEffects {
         switchMap(({ action, state }) => {
             // console.log('[LOGS_ACTION_LOAD]', action);
             const cursorId = action.payload ? 'cursor_id=' + action.payload + '&' : '';
-            return this.http.get(state.settingsNode.api.debugger + '/v2/log/?' + cursorId + 'limit=300');
+            return this.http.get(state.settingsNode.api.debugger + '/v2/log/?' + cursorId + 'limit=30');
         }),
 
         // dispatch action
@@ -50,7 +50,7 @@ export class LogsActionEffects {
             timer(0, 1000).pipe(
                 takeUntil(logActionDestroy$),
                 switchMap(() =>
-                    this.http.get(state.settingsNode.api.debugger + '/v2/log/?limit=300').pipe(
+                    this.http.get(state.settingsNode.api.debugger + '/v2/log/?limit=30').pipe(
                         map(response => ({ type: 'LOGS_ACTION_START_SUCCESS', payload: response })),
                         catchError(error => of({ type: 'LOGS_ACTION_START_ERROR', payload: error })),
                     )

@@ -1,168 +1,62 @@
 <style>
-    .endpoints-action-filter {
-        width: 800px;
-        padding: 10px 0px 10px 0px;
-        height: 32px;
-
-        display: flex;
-        align-items: center;
-        /*justify-content: center;*/
-    }
-
-    .endpoints-action-filter button {
-        border:1px solid #e0e0e0;
-        margin-right: 2px;
-        line-height: 32px !important;
-        font-weight: 300 !important;
-        background-color: #f5f9fc;
-        min-width: 154px;
-    }
-    .endpoints-action-filter button mat-icon {
-        display: none;
-    }
-
-    .endpoints-action-filter button.active {
-        background-color:white;
-    }
-
-    .endpoints-action-filter button.active mat-icon {
+    .endpoints-action-table-datetime {
         display: inline-block;
-        font-size: 18px;
-        margin-left: -8px;
-        height: 20px;
-        width: 20px;
+        min-width: 170px;
     }
 
-
-    
-    .endpoints-action-container {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        flex-direction: column;
+    .endpoints-action-table-message {
+        display: inline-block;
+        min-width: 725px;
     }
-
-    .endpoints-action th.mat-header-cell.cdk-column-datetime.mat-column-datetime {
-        text-overflow: ellipsis;
-        overflow: hidden;
-        white-space: nowrap;
-    }
-    .endpoints-action .mat-cell.cdk-column-datetime.mat-column-datetime {
-        width: 140px;
-    }
-
-
-    .endpoints-action th.mat-header-cell.cdk-column-address.mat-column-address {
-        text-overflow: ellipsis;
-        overflow: hidden;
-        white-space: nowrap;
-    }
-    .endpoints-action .mat-cell.cdk-column-address.mat-column-address {
-        width: 100px;
-    }
-
-    .endpoints-action th.mat-header-cell.cdk-column-type.mat-column-type {
-        text-overflow: ellipsis;
-        overflow: hidden;
-        white-space: nowrap;
-    }
-    .endpoints-action .mat-cell.cdk-column-type.mat-column-type {
-        width: 180px;
-    }
-
-    .endpoints-action th.mat-header-cell.cdk-column-message.mat-column-message {
-        text-overflow: ellipsis;
-        overflow: hidden;
-        white-space: nowrap;
-    }
-    .endpoints-action .mat-cell.cdk-column-message.mat-column-message {
-        padding-right: 10px;
-        width: 140px;
-    }
-
-
-    .detail-colapsed {
-        display: none;
-    }
-
-
 </style>
 
 <div class="endpoints-action-container">
-  
-    <div class="endpoints-action">
 
-        <table mat-table [dataSource]="tableDataSource" multiTemplateDataRows>
+    <div class="table-virtual-scroll">
 
-            <ng-container matColumnDef="datetime">
-                <th mat-header-cell *matHeaderCellDef>Datetime</th>
-                <td mat-cell *matCellDef="let element">
-                    {{ element.datetime }}
-                </td>
-            </ng-container>
+        <div class="table-virtual-scroll-header">
+            <span class="endpoints-action-table-datetime">Datetime</span>
+            <span class="endpoints-action-table-message">Message</span>
+        </div>
 
-            <ng-container matColumnDef="address">
-                <th mat-header-cell *matHeaderCellDef>Address</th>
-                <td mat-cell *matCellDef="let element">
-                    <a style="color:black;text-decoration: none;" href="#/endpoints/{{ element.remote_addr }}">
-                        {{ element.remote_addr }} 
-                    </a>
-                </td>
-            </ng-container>
+        <div style="display:flex;flex-direction: row;">
 
-            <ng-container matColumnDef="type">
-                <th mat-header-cell *matHeaderCellDef>Type</th>
-                <td mat-cell *matCellDef="let element">
-                    <span *ngIf="element.message.type==='response'" (click)="expandedElement = element"
-                        style="text-align: left; cursor: pointer;"> 
-                        <svg-icon icon="upload"></svg-icon>
-                        {{ element.message.status }} 
-                    </span>
-                    <span *ngIf="element.message.type==='request'" (click)="expandedElement = element"
-                        style="text-align: left; cursor: pointer;"> 
-                        <svg-icon icon="download"></svg-icon>
-                        {{ element.message.method }} 
-                        {{ element.message.path }} 
-                    </span>
-                </td>
-            </ng-container>
+            <cdk-virtual-scroll-viewport style="align-items: flex-start;" class="endpoints-action-table-viewport"
+                (scrolledIndexChange)="onScroll($event)" 
+                [itemSize]="36" [maxBufferPx]="288" [minBufferPx]="288">
+                
+                <div *cdkVirtualFor="let item of endpointsActionList"  class="table-virtual-scroll-item"
+                    (mouseenter)="tableMouseEnter(item)"
+                    [class.hover]="item?.id === endpointsActionItem?.id">
 
-            <ng-container matColumnDef="message">
-                <th mat-header-cell *matHeaderCellDef>Message</th>
-                <td mat-cell *matCellDef="let element">
-                    <span *ngIf="element" style="text-align: left; cursor: pointer;"
-                            (click)="expandedElement = element">
-                        {{ element.preview }}
-                    </span>
-                </td>
-            </ng-container>
+                    <span class="endpoints-action-table-datetime">{{item?.datetime}}</span>
+                    <span class="endpoints-action-table-message" style="white-space: nowrap;text-overflow: ellipsis;">{{item?.preview}}</span>
+                </div>
+            </cdk-virtual-scroll-viewport>
 
-            <ng-container matColumnDef="expandedDetail">
-                <td mat-cell *matCellDef="let endpointAction" [attr.colspan]="4" class="expanded-detail-cell">
-                    <div *ngIf="expandedElement == endpointAction" style="min-width: 700px;">
-                        <mat-tab-group>
-                            <mat-tab label="PREVIEW"> 
-                                <div style="padding: 15px 20px 0px 20px">
-                                    <ngx-json-viewer  [json]="endpointAction.message" [expanded]="false">
-                                    </ngx-json-viewer>
-                                </div>
-                            </mat-tab>
-                          </mat-tab-group>
-                        </div>    
-                    </td>
-            </ng-container>
+            <div class="endpoints-action-table-detail">
+                <div *ngIf="endpointsActionItem?.message">
 
-            <tr mat-header-row *matHeaderRowDef="['datetime','address','type','message']"></tr>
-            <tr mat-row *matRowDef="let row; columns: ['datetime','address','type','message'];"></tr>
+                    <ngx-json-viewer [json]="{message:endpointsActionItem?.message}" [expanded]="true">
+                    </ngx-json-viewer>
 
-            <tr mat-row *matRowDef="let row; columns: ['expandedDetail']"
-                [class.detail-expanded]="expandedElement == row" [class.detail-colapsed]="expandedElement != row">
-            </tr>
+                </div>
+            </div>
 
-        </table>
-
-        <mat-paginator [pageSizeOptions]="[15]"></mat-paginator>
-        
+        </div>
+        <div class="table-virtual-scroll-footer">
+            <span>
+                <button mat-icon-button matTooltip="Start" (click)="scrollStart()" *ngIf="!endpointsAction?.stream">
+                    <mat-icon>play_arrow_outline</mat-icon>
+                </button>
+                <button mat-icon-button matTooltip="Stop" (click)="scrollStop()" *ngIf="endpointsAction?.stream">
+                    <mat-icon>stop_outline</mat-icon>
+                </button>
+                <button mat-icon-button style="transform: rotate(90deg)" matTooltip="Last page" (click)="scrollToEnd()">
+                    <mat-icon>last_page</mat-icon>
+                </button>
+            </span>
+        </div>
     </div>
 
 </div>

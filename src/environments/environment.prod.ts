@@ -9,18 +9,18 @@ export const environment = {
     //   ws: 'ws://127.0.0.1:4927',
     // },
     {
+      id: 'rust-carthage-tezedge',
+      name: 'rust.carthage.tezedge.com',
+      http: 'https://carthage.tezedge.com:8732',
+      debugger: 'https://carthage.tezedge.com:8733',
+      ws: 'wss://carthage.tezedge.com',
+    },
+    {
       id: 'ocaml-carthage-tezedge-debuger',
       name: 'debugger.ocaml.carthage.tezedge.com',
       http: 'http://116.202.246.107:18732',
       debugger: 'http://116.202.246.107:17732',
       ws: false,
-    },
-    {
-      id: 'rust-carthage-tezedge',
-      name: 'rust.carthage.tezedge.com',
-      http: 'http://carthage.tezedge.com:10100',
-      debugger: 'http://carthage.tezedge.com:10000',
-      ws: 'ws://carthage.tezedge.com:4972',
     },
     {
       id: 'ocaml-mainnet-simplestaking-com',

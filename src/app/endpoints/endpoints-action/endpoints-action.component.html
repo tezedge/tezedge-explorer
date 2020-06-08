@@ -4,9 +4,14 @@
         min-width: 170px;
     }
 
-    .endpoints-action-table-message {
+    .endpoints-action-table-type {
         display: inline-block;
-        min-width: 725px;
+        min-width: 80px;
+    }
+
+    .endpoints-action-table-path {
+        display: inline-block;
+        min-width: 325px;
     }
 </style>
 
@@ -16,7 +21,8 @@
 
         <div class="table-virtual-scroll-header">
             <span class="endpoints-action-table-datetime">Datetime</span>
-            <span class="endpoints-action-table-message">Message</span>
+            <span class="endpoints-action-table-type">Type</span>
+            <span class="endpoints-action-table-path">Path</span>
         </div>
 
         <div style="display:flex;flex-direction: row;">
@@ -30,14 +36,15 @@
                     [class.hover]="item?.id === endpointsActionItem?.id">
 
                     <span class="endpoints-action-table-datetime">{{item?.datetime}}</span>
-                    <span class="endpoints-action-table-message" style="white-space: nowrap;text-overflow: ellipsis;">{{item?.preview}}</span>
+                    <span class="endpoints-action-table-type">{{item?.message?.type}}</span>
+                    <span class="endpoints-action-table-path" style="white-space: nowrap;text-overflow: ellipsis;">{{item?.message.path}}</span>
                 </div>
             </cdk-virtual-scroll-viewport>
 
             <div class="endpoints-action-table-detail">
                 <div *ngIf="endpointsActionItem?.message">
 
-                    <ngx-json-viewer [json]="{message:endpointsActionItem?.message}" [expanded]="true">
+                    <ngx-json-viewer [json]="endpointsActionItem?.message" [expanded]="false">
                     </ngx-json-viewer>
 
                 </div>

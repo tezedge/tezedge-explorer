@@ -15,14 +15,18 @@ export function reducer(state = initialState, action) {
             return {
                 ...state,
                 ids: action.payload
-                    .map(endpointAction => endpointAction.id),
+                    .map(endpointAction => endpointAction.id)
+                    .sort((a, b) => a - b),
                 entities: action.payload
                     .reduce((accumulator, endpointAction) => {
 
                         const message = {
                             ...endpointAction.message,
-                            payload: endpointAction.message.payload,
+                            payload: endpointAction.message.payload.length > 1500 ?
+                                endpointAction.message.payload.substring(0, 1500) + '...' : endpointAction.message.payload ,
                         };
+
+                        console.log('[ENDPOINTS_ACTION_LOAD_SUCCESS]', endpointAction);
 
                         return {
                             ...accumulator,

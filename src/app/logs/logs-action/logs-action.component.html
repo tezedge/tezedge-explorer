@@ -100,6 +100,7 @@
             <cdk-virtual-scroll-viewport style="align-items: flex-start;" [itemSize]="36" [maxBufferPx]="288"
                 [minBufferPx]="288" class="logs-action-table-viewport" (scrolledIndexChange)="onScroll($event)">
                 <div *cdkVirtualFor="let item of logsActionList" class="table-virtual-scroll-item"
+                    [class.hover]="item?.id === logsActionItem?.id"
                     (mouseenter)="tableMouseEnter(item)">
 
                     <span style="display:inline-block;min-width: 170px">{{item?.datetime}}</span>

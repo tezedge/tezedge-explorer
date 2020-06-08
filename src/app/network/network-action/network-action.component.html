@@ -43,14 +43,12 @@
 
     .network-action-table-type {
         display: inline-block;
-        min-width: 220px;
+        min-width: 260px;
     }
 
     .network-action-table-message {
         display: inline-block;
-        min-width: 325px;
-        white-space: nowrap;
-        text-overflow: ellipsis;
+        min-width: 200px;
     }
 </style>
 
@@ -61,7 +59,7 @@
         <div class="network-action-table-filter">
 
             <span style="padding: 0px 14px 0px 0px; width: 51px;">Control</span>
-            <button mat-flat-button [class.active]="networkAction.filter.meta" (click)=" filterType('meta')">
+            <button mat-flat-button [class.active]="networkAction.filter.meta" (click)="filterType('meta')">
                 Meta
             </button>
             <button mat-flat-button [class.active]="networkAction.filter.connection"
@@ -150,7 +148,7 @@
             <span class="network-action-table-address">Address</span>
             <span class="network-action-table-source">Source</span>
             <span class="network-action-table-type">Type</span>
-            <!-- <span class="network-action-table-message">Message</span> -->
+            <span class="network-action-table-message">Message</span>
         </div>
 
         <div style="display:flex;flex-direction: row;">
@@ -158,7 +156,8 @@
             <cdk-virtual-scroll-viewport style="align-items: flex-start;" class="table-virtual-scroll-viewport"
                 (scrolledIndexChange)="onScroll($event)" [itemSize]="36" [maxBufferPx]="288" [minBufferPx]="288">
 
-                <div *cdkVirtualFor="let item of networkActionList" class="table-virtual-scroll-item"
+                <div *cdkVirtualFor="let item of networkActionList" class="table-virtual-scroll-item" 
+                    [class.hover]="item?.id === networkActionItem?.id"
                     (mouseenter)="tableMouseEnter(item)">
                     <span class="network-action-table-datetime">
                         {{item?.datetime}}
@@ -187,12 +186,12 @@
                 </div>
             </cdk-virtual-scroll-viewport>
 
-            <div style="align-items: flex-end;" class="network-action-table-detail">
+            <div class="network-action-table-detail">
                 <!-- <mat-tab-group style="">
                     <mat-tab label="PREVIEW"> -->
-                <div style="width: 350px;padding: 15px 20px 0px 20px">
+                <div>
 
-                    <ngx-json-viewer [json]="networkActionItem?.payload" [expanded]="false">
+                    <ngx-json-viewer [json]="networkActionItem?.payload" [expanded]="true">
                     </ngx-json-viewer>
 
                 </div>

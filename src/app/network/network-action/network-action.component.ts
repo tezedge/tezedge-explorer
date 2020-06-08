@@ -150,7 +150,7 @@ export class NetworkActionComponent implements OnInit {
   }
 
   tableMouseEnter(item) {
-    console.log('[tableMouseEnter]', item)
+    console.log('[tableMouseEnter]', item);
     this.networkActionItem = item;
   }
 

@@ -189,7 +189,7 @@
             <div class="network-action-table-detail">
                 <!-- <mat-tab-group style="">
                     <mat-tab label="PREVIEW"> -->
-                <div>
+                <div *ngIf="networkActionItem?.payload">
 
                     <ngx-json-viewer [json]="networkActionItem?.payload" [expanded]="true">
                     </ngx-json-viewer>

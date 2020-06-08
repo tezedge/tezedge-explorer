@@ -614,3 +614,27 @@ cdk-virtual-scroll-viewport::-webkit-scrollbar-thumb {
 ngx-json-viewer .segment .segment-main .segment-key {
     color: $color-json-field !important;
 }
+
+.logs-action-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    margin-top: 15px;
+}
+
+
+.logs-action-table-viewport {
+    overflow-x: hidden;
+    height: 504px; /* 36*14 */
+    width: 750px;
+}
+
+.logs-action-table-detail {
+    align-items: flex-end;
+    height: 489px; /* 36 height of item * 14 number of items - 15 padding top*/
+    width: 250px;
+    overflow-y: overlay;
+    padding: 10px 0px 0px 0px;
+    border-left: 1px solid $color-table-border;
+}

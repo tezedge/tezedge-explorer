@@ -17,25 +17,15 @@ export class LogsActionComponent implements OnInit, OnDestroy {
 
   public logsAction;
   public logsActionList = [];
-  public logsActionListCache = [];
+  public logsActionItem
   public logsActionShow;
   public logsActionFilter;
 
-  public endpointsJSONView;
-
   public tableDataSource;
   public onDestroy$ = new Subject();
-  public expandedElement;
 
-  public viewPortGetDataLength;
-  public viewPortGetElementRef;
-  public viewPortGetOffsetToRenderedContentStart;
-  public viewPortGetRenderedRange;
-  public viewPortGetViewportSize;
-  public viewPortMeasureRenderedContentSize;
   public ITEM_SIZE = 36;
 
-  @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   @ViewChild(CdkVirtualScrollViewport) viewPort: CdkVirtualScrollViewport;
 
   constructor(
@@ -57,14 +47,11 @@ export class LogsActionComponent implements OnInit, OnDestroy {
 
         this.logsAction = data;
         this.logsActionShow = data.ids.length > 0 ? true : false;
-
+        
+        this.logsActionList = data.ids.map(id => ({ id, ...data.entities[id] }));
+        
         // set viewport at the end
         if (this.logsActionShow) {
-
-          this.logsActionList = data.ids.map(id => ({ id, ...data.entities[id] }));
-
-          this.tableDataSource = new MatTableDataSource<any>(this.logsActionList);
-          this.tableDataSource.paginator = this.paginator;
 
           const viewPortRange = this.viewPort && this.viewPort.getRenderedRange() ?
             this.viewPort.getRenderedRange() : { start: 0, end: 0 };
@@ -85,37 +72,7 @@ export class LogsActionComponent implements OnInit, OnDestroy {
       });
 
   }
-
-  start() {
-
-    // triger action and get logs data
-    this.store.dispatch({
-      type: 'LOGS_ACTION_START',
-      // payload: event,
-    });
-
-  }
-
-  stop() {
-
-    // stop streaming logs actions
-    this.store.dispatch({
-      type: 'LOGS_ACTION_STOP',
-      // payload: event,
-    });
-
-  }
-
-  ngOnDestroy() {
-
-    // stop logs stream
-    this.store.dispatch({
-      type: 'LOGS_ACTION_STOP',
-    });
-
-  }
-
-
+  
   onScroll(index) {
 
     if (this.logsActionList.length - index > 16) {
@@ -136,19 +93,47 @@ export class LogsActionComponent implements OnInit, OnDestroy {
 
   }
 
+  scrollStart() {
+
+    // triger action and get logs data
+    this.store.dispatch({
+      type: 'LOGS_ACTION_START',
+      // payload: event,
+    });
+
+  }
+
+  scrollStop() {
+
+    // stop streaming logs actions
+    this.store.dispatch({
+      type: 'LOGS_ACTION_STOP',
+      // payload: event,
+    });
+
+  }
+  
   scrollToEnd() {
+
     const offset = this.ITEM_SIZE * this.logsActionList.length;
     this.viewPort.scrollToOffset(offset);
+  
   }
+  
+  tableMouseEnter(item) {
 
-  getScrollStats() {
-
-    this.viewPortGetDataLength = this.viewPort.getDataLength();
-    this.viewPortGetOffsetToRenderedContentStart = this.viewPort.getOffsetToRenderedContentStart();
-    this.viewPortGetRenderedRange = this.viewPort.getRenderedRange();
-    this.viewPortGetViewportSize = this.viewPort.getViewportSize();
-    this.viewPortMeasureRenderedContentSize = this.viewPort.measureRenderedContentSize();
+    this.logsActionItem = item
 
   }
 
+  ngOnDestroy() {
+
+    // stop logs stream
+    this.store.dispatch({
+      type: 'LOGS_ACTION_STOP',
+    });
+
+  }
+
+  
 }

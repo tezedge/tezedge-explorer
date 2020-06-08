@@ -577,6 +577,21 @@ cdk-virtual-scroll-viewport::-webkit-scrollbar-thumb {
     background-color: $color-border;
 }
 
+.logs-action-table-detail::-webkit-scrollbar-track {
+    background-color: $color-table-background;
+}
+
+.logs-action-table-detail::-webkit-scrollbar {
+    width: 12px;
+    background-color: $color-table-border; //#F5F5F5;
+}
+
+.logs-action-table-detail::-webkit-scrollbar-thumb {
+    height: 80px;
+    background-color: $color-border;
+}
+
+
 .mat-drawer-content {
     overflow: initial !important;
 }

@@ -164,14 +164,14 @@
                     <span class="network-action-table-source">
                         <span *ngIf="item?.source_type==='local'">
                             <svg-icon icon="local"></svg-icon>
-                            <svg-icon *ngIf="!item?.incomming" icon="arrow-right"></svg-icon>
-                            <svg-icon *ngIf="item?.incomming" icon="arrow-left"></svg-icon>
+                            <svg-icon *ngIf="!item?.incoming" icon="arrow-right"></svg-icon>
+                            <svg-icon *ngIf="item?.incoming" icon="arrow-left"></svg-icon>
                             <svg-icon icon="remote"></svg-icon>
                         </span>
                         <span *ngIf="item?.source_type==='remote'">
                             <svg-icon icon="remote"></svg-icon>
-                            <svg-icon *ngIf="!item?.incomming" icon="arrow-right"></svg-icon>
-                            <svg-icon *ngIf="item?.incomming" icon="arrow-left"></svg-icon>
+                            <svg-icon *ngIf="item?.incoming" icon="arrow-right"></svg-icon>
+                            <svg-icon *ngIf="!item?.incoming" icon="arrow-left"></svg-icon>
                             <svg-icon icon="local"></svg-icon>
                         </span> 
                     </span>

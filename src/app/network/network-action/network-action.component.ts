@@ -157,6 +157,11 @@ export class NetworkActionComponent implements OnInit {
 
   ngOnDestroy() {
 
+    // stop streaming actions
+    this.store.dispatch({
+      type: 'NETWORK_ACTION_STOP'
+    });
+    
     // close all observables
     this.onDestroy$.next();
     this.onDestroy$.complete();

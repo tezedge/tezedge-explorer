@@ -84,16 +84,12 @@
             <button mat-flat-button [class.active]="networkAction.filter.local" (click)=" filterType('local')">
                 <span style="display:inline-block; margin: 1px 0px 0px -5px;">
                     <svg-icon icon="local" scale="0.8"></svg-icon>
-                    <svg-icon icon="arrow-left" scale="0.8"></svg-icon>
-                    <svg-icon icon="remote" scale="0.8"></svg-icon>
                 </span>
                 Local
             </button>
             <button mat-flat-button [class.active]="networkAction.filter.remote" (click)=" filterType('remote')">
                 <span style="display:inline-block; margin: 1px 0px 0px -5px;">
                     <svg-icon icon="remote" scale="0.8"></svg-icon>
-                    <svg-icon icon="arrow-left" scale="0.8"></svg-icon>
-                    <svg-icon icon="local" scale="0.8"></svg-icon>
                 </span>
                 Remote
             </button>
@@ -166,16 +162,18 @@
                         <a href="#/network/{{ item?.remote_addr }}"> {{ item?.remote_addr }}</a>
                     </span>
                     <span class="network-action-table-source">
-                        <span *ngIf="item?.remote_requested===true">
+                        <span *ngIf="item?.source_type==='local'">
                             <svg-icon icon="local"></svg-icon>
-                            <svg-icon icon="arrow-left"></svg-icon>
+                            <svg-icon *ngIf="!item?.incomming" icon="arrow-right"></svg-icon>
+                            <svg-icon *ngIf="item?.incomming" icon="arrow-left"></svg-icon>
                             <svg-icon icon="remote"></svg-icon>
                         </span>
-                        <span *ngIf="item?.remote_requested===false">
+                        <span *ngIf="item?.source_type==='remote'">
                             <svg-icon icon="remote"></svg-icon>
-                            <svg-icon icon="arrow-left"></svg-icon>
+                            <svg-icon *ngIf="!item?.incomming" icon="arrow-right"></svg-icon>
+                            <svg-icon *ngIf="item?.incomming" icon="arrow-left"></svg-icon>
                             <svg-icon icon="local"></svg-icon>
-                        </span>
+                        </span> 
                     </span>
                     <span class="network-action-table-type">
                         {{item?.category}}<span *ngIf="item?.kind"> | {{ item?.kind }}</span>
@@ -187,16 +185,11 @@
             </cdk-virtual-scroll-viewport>
 
             <div class="network-action-table-detail">
-                <!-- <mat-tab-group style="">
-                    <mat-tab label="PREVIEW"> -->
-                <div *ngIf="networkActionItem?.payload">
 
+                <div *ngIf="networkActionItem?.payload">
                     <ngx-json-viewer [json]="networkActionItem?.payload" [expanded]="true">
                     </ngx-json-viewer>
-
                 </div>
-                <!-- </mat-tab>
-                </mat-tab-group> -->
             </div>
 
         </div>

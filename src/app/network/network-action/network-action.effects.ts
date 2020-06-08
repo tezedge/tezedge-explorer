@@ -134,7 +134,7 @@ export function networkActionFilter(action, state) {
     // add filter for source 
     let filterIncoming = '';
     filterIncoming = stateFilter.local && !stateFilter.remote ? 
-        'incoming=false&' : (!stateFilter.local && stateFilter.remote ? 'incoming=true&' : '');
+        'source_type=local&' : (!stateFilter.local && stateFilter.remote ? 'source_type=remote&' : '');
     
     // add remote_addr filter 
     let filterRemoteAddr = state.networkAction.urlParams ? 'remote_addr=' + state.networkAction.urlParams + '&': '';

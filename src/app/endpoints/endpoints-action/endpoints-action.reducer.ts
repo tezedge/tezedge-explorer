@@ -26,8 +26,6 @@ export function reducer(state = initialState, action) {
                                 endpointAction.message.payload.substring(0, 1500) + '...' : endpointAction.message.payload ,
                         };
 
-                        console.log('[ENDPOINTS_ACTION_LOAD_SUCCESS]', endpointAction);
-
                         return {
                             ...accumulator,
                             [endpointAction.id]: {

@@ -20,6 +20,7 @@ export function reducer(state = initialState, action) {
                 ids: [
                     ...action.payload
                         .map(block => block.hash)
+                        .reverse()
                 ],
                 entities: action.payload
                     .reduce((accumulator, block) => ({

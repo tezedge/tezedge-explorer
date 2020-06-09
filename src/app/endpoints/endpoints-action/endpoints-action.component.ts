@@ -54,7 +54,6 @@ export class EndpointsActionComponent implements OnInit {
         this.endpointsActionShow = data.ids.length > 0 ? true : false;
         this.endpointsActionList = data.ids.map(id => ({ id, ...data.entities[id] }));
 
-
         // set viewport at the end
         if (this.endpointsActionShow) {
 

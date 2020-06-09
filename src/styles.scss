@@ -202,7 +202,6 @@ tr.mat-row {
     .network-endpoint {
         width: 100vw;
     }
-    .network-history {}
     .network-peers {
         width: 92vw;
         margin-bottom: 30px;
@@ -732,4 +731,56 @@ ngx-json-viewer .segment .segment-main .segment-key {
     overflow-y: overlay;
     padding: 10px 10px 0px 10px;
     border-left: 1px solid $color-table-border;
+}
+
+.app-menu-toggle {
+    color: $color-table-paginator;
+}
+
+@media (max-width: 600px) {
+    
+    .table-virtual-scroll-viewport {
+        width: 95vw;
+    }
+
+    .table-virtual-scroll {
+        width: initial;
+    }
+
+    .cdk-virtual-scroll-viewport {
+        height: 360px !important; /* 36 * 5  */
+    }
+
+    /*  network action */
+    .network-action-table-datetime {
+        display: none !important;
+    }
+
+    .network-action-table-message {
+        display: none !important;
+    }
+
+    .network-action-table-source {
+        display: none !important;
+    }
+
+    .network-action-table-type {
+        min-width: 100px !important;
+    }
+
+    .network-action-table-filter {
+        display: none !important;
+    }
+
+    .network-action-table-detail {
+        // display: none;
+        width: 90vw;
+        height: 200px;
+        padding: 20px 10px 0px 10px;
+        border-top: 1px solid $color-border;
+    }
+    
+    .table-virtual-scroll-panel {
+        flex-direction: column !important;
+    }
 }

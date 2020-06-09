@@ -15,7 +15,7 @@ export class StorageActionEffects {
         withLatestFrom(this.store, (action: any, state) => ({ action, state })),
 
         switchMap(({ action, state }) => {
-            return this.http.get(state.settingsNode.api.http + '/dev/chains/main/blocks/' + action.payload.blockHash + '/actions')
+            return this.http.get(state.settingsNode.api.http + '/dev/chains/main/actions/blocks/' + action.payload.blockHash )
         }),
         // dispatch action
         map((payload) => ({ type: 'STORAGE_BLOCK_ACTION_LOAD_SUCCESS', payload: payload })),

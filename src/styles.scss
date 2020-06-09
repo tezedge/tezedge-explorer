@@ -737,6 +737,11 @@ ngx-json-viewer .segment .segment-main .segment-key {
     color: $color-table-paginator;
 }
 
+/* reset outline  */
+*:focus {
+    outline: none;
+}
+
 @media (max-width: 600px) {
     
     .table-virtual-scroll-viewport {

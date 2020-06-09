@@ -812,4 +812,43 @@ ngx-json-viewer .segment .segment-main .segment-key {
         // border-left: initial;
     }
 
+    /*  endpoints actions */
+    .endpoints-action-table-viewport {
+        width: 95vw;
+    }
+
+    .endpoints-action-table-path {
+        min-width: 50px !important;
+    }
+
+    .endpoints-action-table-detail {
+        width: 90vw;
+        height: 150px;
+        padding: 20px 10px 0px 10px;
+        border-top: 1px solid $color-border;
+        border-left: initial;
+    }
+
+
+    /*  logs actions */
+    .logs-action-table-viewport {
+        width: 95vw;
+    }
+
+    .logs-action-table-level {
+        display: none !important;
+    }
+
+    .logs-action-table-message {
+        min-width: 50px !important;
+    }
+
+    .logs-action-table-detail {
+        width: 90vw;
+        height: 150px;
+        padding: 20px 10px 0px 10px;
+        border-top: 1px solid $color-border;
+        border-left: initial;
+    }
+
 }

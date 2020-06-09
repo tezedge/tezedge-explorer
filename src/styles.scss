@@ -752,6 +752,10 @@ ngx-json-viewer .segment .segment-main .segment-key {
         width: initial;
     }
 
+    .table-virtual-scroll-panel {
+        flex-direction: column !important;
+    }
+    
     .cdk-virtual-scroll-viewport {
         height: 360px !important; /* 36 * 5  */
     }
@@ -780,12 +784,32 @@ ngx-json-viewer .segment .segment-main .segment-key {
     .network-action-table-detail {
         // display: none;
         width: 90vw;
-        height: 200px;
+        height: 150px;
         padding: 20px 10px 0px 10px;
         border-top: 1px solid $color-border;
+        border-left: initial;
     }
     
-    .table-virtual-scroll-panel {
-        flex-direction: column !important;
+    /*  storage blocks */
+    .storage-block-table-viewport {
+        width: 95vw;
     }
+
+    .storage-block-table-hash {
+        display: none !important;
+    }
+
+    .storage-block-table-filter {
+        display: none !important;
+    }
+
+    .storage-block-table-detail {
+        display: none;
+        // width: 90vw;
+        // height: 150px;
+        // padding: 20px 10px 0px 10px;
+        // border-top: 1px solid $color-border;
+        // border-left: initial;
+    }
+
 }

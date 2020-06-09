@@ -1,6 +1,7 @@
 <app-storage-search>
 </app-storage-search>
 
+<!-- 
 <div class="storage-block-container">
 
     <div class="storage-block">
@@ -55,14 +56,78 @@
             </tr>
 
         </table>
-        <div style="height: 30px;"></div>
+        <div style="height: 30px;"></div> -->
         <!-- <mat-paginator [pageSizeOptions]="[15]"></mat-paginator> -->
+   <!-- </div>
+
+</div> -->
+<style>
+    .storage-block-table-datetime {
+        display: inline-block;
+        min-width: 160px;
+    }
+
+    .storage-block-table-level {
+        display: inline-block;
+        min-width: 70px;
+    }
+
+</style>
+
+<div class="storage-block-container">
+
+    <div class="table-virtual-scroll">
+        <div class="table-virtual-scroll-header">
+            <span class="storage-block-table-datetime">Datetime</span>
+            <span class="storage-block-table-level">Level</span>
+            <span class="storage-block-table-hash">Hash</span>
+        </div>
+
+        <div style="display:flex;flex-direction: row;">
+
+            <cdk-virtual-scroll-viewport style="align-items: flex-start;" class="storage-block-table-viewport"
+                (scrolledIndexChange)="onScroll($event)" 
+                [itemSize]="36" [maxBufferPx]="288" [minBufferPx]="288">
+            
+                <div *cdkVirtualFor="let item of storageBlockList"  class="table-virtual-scroll-item"
+                    (mouseenter)="tableMouseEnter(item)"
+                    [routerLink]="['/storage',item?.hash]"
+                    [class.hover]="item?.id === storageBlockItem?.id">
+                    <span class="storage-block-table-datetime" >
+                        {{item?.datetime}}
+                    </span>
+                    <span class="storage-block-table-level">
+                        {{item?.header?.level}}
+                    </span>
+                    <span class="storage-block-table-hash">
+                        {{item?.hash}}
+                    </span>
+                </div>
+            </cdk-virtual-scroll-viewport>
+
+            <div class="storage-block-table-detail">
+                <div *ngIf="storageBlockItem">
+
+                    <ngx-json-viewer [json]="storageBlockItem" [expanded]="false">
+                    </ngx-json-viewer>
+
+                </div>
+            </div>
+
+        </div>
+        <div class="table-virtual-scroll-footer">
+            <span>
+                <button mat-icon-button matTooltip="Start" (click)="scrollStart()" *ngIf="!storageBlock?.stream">
+                    <mat-icon>play_arrow_outline</mat-icon>
+                </button>
+                <button mat-icon-button matTooltip="Stop" (click)="scrollStop()" *ngIf="storageBlock?.stream">
+                    <mat-icon>stop_outline</mat-icon>
+                </button>
+                <button mat-icon-button style="transform: rotate(90deg)" matTooltip="Last page" (click)="scrollToEnd()">
+                    <mat-icon>last_page</mat-icon>
+                </button>
+            </span>
+        </div>
     </div>
 
 </div>
-
-<!-- {{ storageBlockList | json }}
-<li *ngFor="let block of storageBlockList">
-    {{ block.header.timestamp }} | {{ block.header.level }} | <a href="#/storage/{{ block.hash }}"> {{ block.hash }}
-    </a>
-</li> -->

@@ -32,7 +32,7 @@ export class NetworkActionEffects {
             return caught;
         })
 
-    )
+    );
 
     // load network actions
     @Effect()

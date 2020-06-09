@@ -15,13 +15,13 @@ import { CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
 })
 export class NetworkActionComponent implements OnInit {
 
-  public networkAction
-  public networkActionList = []
-  public networkActionShow
-  public networkActionItem
+  public networkAction;
+  public networkActionList = [];
+  public networkActionShow;
+  public networkActionItem;
 
-  public onDestroy$ = new Subject()
-  
+  public onDestroy$ = new Subject();
+
   public ITEM_SIZE = 36;
 
   @ViewChild(CdkVirtualScrollViewport) viewPort: CdkVirtualScrollViewport;
@@ -145,7 +145,7 @@ export class NetworkActionComponent implements OnInit {
   tableMouseEnter(item) {
 
     this.networkActionItem = item;
-  
+
   }
 
   ngOnDestroy() {
@@ -154,7 +154,7 @@ export class NetworkActionComponent implements OnInit {
     this.store.dispatch({
       type: 'NETWORK_ACTION_STOP'
     });
-    
+
     // close all observables
     this.onDestroy$.next();
     this.onDestroy$.complete();

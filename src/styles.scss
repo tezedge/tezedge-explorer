@@ -605,6 +605,20 @@ cdk-virtual-scroll-viewport::-webkit-scrollbar-thumb {
     background-color: $color-border;
 }
 
+.storage-block-table-detail::-webkit-scrollbar-track {
+    background-color: $color-table-background;
+}
+
+.storage-block-table-detail::-webkit-scrollbar {
+    width: 12px;
+    background-color: $color-table-border; //#F5F5F5;
+}
+
+.storage-block-table-detail::-webkit-scrollbar-thumb {
+    height: 80px;
+    background-color: $color-border;
+}
+
 
 .mat-drawer-content {
     overflow: initial !important;
@@ -634,7 +648,7 @@ cdk-virtual-scroll-viewport::-webkit-scrollbar-thumb {
     height: 489px; /* 36 height of item * 14 number of items - 15 padding top*/
     width: 350px;
     overflow-y: overlay;
-    padding: 10px 0px 0px 20px;
+    padding: 10px 10px 0px 20px;
     border-left: 1px solid $color-table-border;
 
 }
@@ -642,6 +656,10 @@ cdk-virtual-scroll-viewport::-webkit-scrollbar-thumb {
 /* ngx view */
 ngx-json-viewer .segment .segment-main .segment-key {
     color: $color-json-field !important;
+}
+
+.segment-value {
+    word-break: break-all;
 }
 
 .logs-action-container {
@@ -664,7 +682,7 @@ ngx-json-viewer .segment .segment-main .segment-key {
     height: 489px; /* 36 height of item * 14 number of items - 15 padding top*/
     width: 250px;
     overflow-y: overlay;
-    padding: 10px 0px 0px 0px;
+    padding: 10px 10px 0px 0px;
     border-left: 1px solid $color-table-border;
 }
 
@@ -688,6 +706,30 @@ ngx-json-viewer .segment .segment-main .segment-key {
     height: 489px; /* 36 height of item * 14 number of items - 15 padding top*/
     width: 400px;
     overflow-y: overlay;
-    padding: 10px 0px 0px 0px;
+    padding: 10px 10px 0px 0px;
+    border-left: 1px solid $color-table-border;
+}
+
+.storage-block-container {
+    background-color: $color-background;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    margin-top: 25px;
+}
+
+.storage-block-table-viewport {
+    overflow-x: hidden;
+    /* height: 504px; */ /* 36*14 */
+    width: 700px;
+}
+
+.storage-block-table-detail {
+    align-items: flex-end;
+    height: 489px; /* 36 height of item * 14 number of items - 15 padding top*/
+    width: 300px;
+    overflow-y: overlay;
+    padding: 10px 10px 0px 10px;
     border-left: 1px solid $color-table-border;
 }

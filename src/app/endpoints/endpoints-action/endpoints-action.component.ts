@@ -39,7 +39,7 @@ export class EndpointsActionComponent implements OnInit {
         // triger action and get endpoints data
         this.store.dispatch({
           type: 'ENDPOINTS_ACTION_LOAD',
-          payload: params.address ?  params.address : '',
+          payload: params.address ? params.address : '',
         });
 
       });
@@ -54,7 +54,7 @@ export class EndpointsActionComponent implements OnInit {
         this.endpointsActionShow = data.ids.length > 0 ? true : false;
         this.endpointsActionList = data.ids.map(id => ({ id, ...data.entities[id] }));
 
-                
+
         // set viewport at the end
         if (this.endpointsActionShow) {
 
@@ -77,7 +77,7 @@ export class EndpointsActionComponent implements OnInit {
       });
 
   }
-    
+
   onScroll(index) {
 
     if (this.endpointsActionList.length - index > 15) {
@@ -113,14 +113,14 @@ export class EndpointsActionComponent implements OnInit {
     });
 
   }
-  
+
   scrollToEnd() {
 
     const offset = this.ITEM_SIZE * this.endpointsActionList.length;
     this.viewPort.scrollToOffset(offset);
-  
+
   }
-  
+
   tableMouseEnter(item) {
 
     this.endpointsActionItem = item
@@ -128,6 +128,11 @@ export class EndpointsActionComponent implements OnInit {
   }
 
   ngOnDestroy() {
+
+    // stop streaming logs actions
+    this.store.dispatch({
+      type: 'ENDPOINTS_ACTION_STOP',
+    });
 
     // close all observables
     this.onDestroy$.next();

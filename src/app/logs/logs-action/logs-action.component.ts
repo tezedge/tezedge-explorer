@@ -61,7 +61,10 @@ export class LogsActionComponent implements OnInit, OnDestroy {
 
             setTimeout(() => {
               const offset = this.ITEM_SIZE * this.logsActionList.length;
+              // set scroll
               this.viewPort.scrollToOffset(offset);
+              // set hover
+              this.logsActionItem = this.logsActionList[this.logsActionList.length - 1];
             });
 
           }

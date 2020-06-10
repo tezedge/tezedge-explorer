@@ -70,7 +70,10 @@ export class NetworkActionComponent implements OnInit {
 
             setTimeout(() => {
               const offset = this.ITEM_SIZE * this.networkActionList.length;
+              // set scroll
               this.viewPort.scrollToOffset(offset);
+              // set hover
+              this.networkActionItem = this.networkActionList[this.networkActionList.length - 1];
             });
 
           }

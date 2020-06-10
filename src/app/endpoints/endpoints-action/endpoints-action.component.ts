@@ -66,7 +66,10 @@ export class EndpointsActionComponent implements OnInit {
 
             setTimeout(() => {
               const offset = this.ITEM_SIZE * this.endpointsActionList.length;
+              // set scroll
               this.viewPort.scrollToOffset(offset);
+              // set hover
+              this.endpointsActionList = this.endpointsActionList[this.endpointsActionList.length - 1];
             });
 
           }

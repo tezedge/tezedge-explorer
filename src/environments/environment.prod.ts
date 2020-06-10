@@ -29,12 +29,12 @@ export const environment = {
     //   debugger: 'http://116.202.246.107:17732',
     //   ws: false,
     // },
-    {
-      id: 'ocaml-mainnet-simplestaking-com',
-      name: 'ocaml.mainnet.simplestaking.com',
-      http: 'https://mainnet.simplestaking.com:3000',
-      debugger: false,
-      ws: false,
-    }
+    // {
+    //   id: 'ocaml-mainnet-simplestaking-com',
+    //   name: 'ocaml.mainnet.simplestaking.com',
+    //   http: 'https://mainnet.simplestaking.com:3000',
+    //   debugger: false,
+    //   ws: false,
+    // }
   ]
 };

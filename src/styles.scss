@@ -7,8 +7,11 @@ body {
     font-weight: 300 !important;
 }
 
-
 .sidenav-content {
+    background-color: $color-background;
+}
+
+.mat-drawer-container.mat-sidenav-container {
     background-color: $color-background;
 }
 
@@ -218,7 +221,8 @@ tr.mat-row {
     }
 
     .network-peers {
-        width: 90vw !important;
+        width: initial !important;
+        margin: 15px;
     }
     
     .network-peers th.mat-header-cell.cdk-column-averageTransferSpeed.mat-column-averageTransferSpeed {

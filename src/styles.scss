@@ -216,18 +216,41 @@ tr.mat-row {
         display: block;
         width: 25vw;
     }
+
+    .network-peers {
+        width: 90vw !important;
+    }
+    
     .network-peers th.mat-header-cell.cdk-column-averageTransferSpeed.mat-column-averageTransferSpeed {
         display: none
     }
     .network-peers .mat-cell.cdk-column-averageTransferSpeed.mat-column-averageTransferSpeed {
         display: none
     }
+    
+    .network-peers th.mat-header-cell.cdk-column-transferredBytes.mat-column-transferredBytes {
+        display: none
+    }
     .network-peers .mat-cell.cdk-column-transferredBytes.mat-column-transferredBytes {
-        width: 30vw;
+        display: none
+    }
+    
+    .network-peers th.mat-header-cell.cdk-column-id.mat-column-id {
+        width: 50vw !important;
+    }
+    .network-peers .mat-cell.cdk-column-id.mat-column-id {
+        width: 50vw !important;
+    }
+    
+    
+    .network-peers th.mat-header-cell.cdk-column-currentTransferSpeed.mat-column-currentTransferSpeed {
+        width: 40vw !important;
     }
     .network-peers .mat-cell.cdk-column-currentTransferSpeed.mat-column-currentTransferSpeed {
-        width: 35vw;
+        width: 40vw !important;
     }
+
+
     .settings-endpoint {
         width: 90vw;
     }
@@ -235,6 +258,7 @@ tr.mat-row {
         width: 90vw;
     }
 }
+
 
 .network {
     background-color: $color-background;

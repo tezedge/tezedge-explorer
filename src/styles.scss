@@ -186,6 +186,7 @@ tr.mat-row {
 @media (max-width: 600px) {
     body {
         margin: 0px !important;
+        -webkit-text-size-adjust: none !important;
     }
     .network {
         width: 100vw;
@@ -290,9 +291,6 @@ tr.mat-row {
     flex-direction: column;
 }
 
-.mat-drawer-container {
-    background-color: white;
-}
 
 .mat-list-base .mat-list-item .mat-list-item-content,
 .mat-list-base .mat-list-option .mat-list-item-content {

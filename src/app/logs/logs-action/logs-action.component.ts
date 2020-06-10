@@ -54,6 +54,10 @@ export class LogsActionComponent implements OnInit, OnDestroy {
           const viewPortRange = this.viewPort && this.viewPort.getRenderedRange() ?
             this.viewPort.getRenderedRange() : { start: 0, end: 0 };
           const viewPortItemLength = this.logsActionList.length;
+
+          // set hover
+          this.logsActionItem = this.logsActionList[this.logsActionList.length - 1];
+
           // trigger only if we are streaming and not at the end of page
           if (data.stream && viewPortItemLength > 0 && (viewPortRange.end !== viewPortItemLength) &&
             (viewPortRange.start !== viewPortRange.end)) {
@@ -63,8 +67,7 @@ export class LogsActionComponent implements OnInit, OnDestroy {
               const offset = this.ITEM_SIZE * this.logsActionList.length;
               // set scroll
               this.viewPort.scrollToOffset(offset);
-              // set hover
-              this.logsActionItem = this.logsActionList[this.logsActionList.length - 1];
+
             });
 
           }

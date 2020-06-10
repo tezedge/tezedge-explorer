@@ -60,6 +60,10 @@ export class EndpointsActionComponent implements OnInit {
           const viewPortRange = this.viewPort && this.viewPort.getRenderedRange() ?
             this.viewPort.getRenderedRange() : { start: 0, end: 0 };
           const viewPortItemLength = this.endpointsActionList.length;
+
+          // set hover
+          this.endpointsActionList = this.endpointsActionList[this.endpointsActionList.length - 1];
+
           // trigger only if we are streaming and not at the end of page
           if (data.stream && viewPortItemLength > 0 && (viewPortRange.end !== viewPortItemLength) &&
             (viewPortRange.start !== viewPortRange.end)) {
@@ -68,8 +72,7 @@ export class EndpointsActionComponent implements OnInit {
               const offset = this.ITEM_SIZE * this.endpointsActionList.length;
               // set scroll
               this.viewPort.scrollToOffset(offset);
-              // set hover
-              this.endpointsActionList = this.endpointsActionList[this.endpointsActionList.length - 1];
+
             });
 
           }

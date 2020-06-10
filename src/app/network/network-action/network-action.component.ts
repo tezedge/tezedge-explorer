@@ -63,6 +63,9 @@ export class NetworkActionComponent implements OnInit {
             this.viewPort.getRenderedRange() : { start: 0, end: 0 };
           const viewPortItemLength = this.networkActionList.length;
 
+          // set hover
+          this.networkActionItem = this.networkActionList[this.networkActionList.length - 1];
+
           // trigger only if we are streaming and not at the end of page
           if (data.stream && viewPortItemLength > 0 && (viewPortRange.end !== viewPortItemLength) &&
             (viewPortRange.start !== viewPortRange.end)) {
@@ -72,8 +75,6 @@ export class NetworkActionComponent implements OnInit {
               const offset = this.ITEM_SIZE * this.networkActionList.length;
               // set scroll
               this.viewPort.scrollToOffset(offset);
-              // set hover
-              this.networkActionItem = this.networkActionList[this.networkActionList.length - 1];
             });
 
           }

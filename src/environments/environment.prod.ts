@@ -8,11 +8,18 @@ export const environment = {
     //   debugger: false,
     //   ws: 'ws://127.0.0.1:4927',
     // },
+    // {
+    //   id: 'rust-carthage-tezedge',
+    //   name: 'rust.carthage.tezedge.com',
+    //   http: 'https://carthage.tezedge.com:8732',
+    //   debugger: 'https://carthage.tezedge.com:8733',
+    //   ws: 'wss://carthage.tezedge.com',
+    // },
     {
       id: 'rust-carthage-tezedge',
       name: 'rust.carthage.tezedge.com',
-      http: 'https://carthage.tezedge.com:8732',
-      debugger: 'https://carthage.tezedge.com:8733',
+      http: 'https://carthage.tezedge.com:8752',
+      debugger: 'https://carthage.tezedge.com:8753',
       ws: 'wss://carthage.tezedge.com',
     },
     {

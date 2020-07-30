@@ -1,9 +1,9 @@
 version: '3'
 services: 
-  tezedge-node-explorer:
-    image: simplestakingcom/tezedge-node-explorer
+  tezedge-explorer:
+    image: simplestakingcom/tezedge-explorer:v0.1.6
     build: .
-    # ports: 
-    #   - "8080:8080"
-    hostname: tezedge-node-explorer
+    ports: 
+      - "8080:8080"
+    hostname: tezedge-explorer
     # network_mode: host

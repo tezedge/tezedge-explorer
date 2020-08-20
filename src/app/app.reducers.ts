@@ -14,6 +14,10 @@ import { RouterStateUrl } from './app.routing';
 //   import createNgrxMiddleware from 'logrocket-ngrx';
 //   const logrocketMiddleware = createNgrxMiddleware(LogRocket);
 
+// meta reducer for dynamic forms
+import * as fromNgrxForm from './shared/ngrx-form.reducer';
+
+
 import * as fromApp from './app.reducer';
 import * as fromSettings from './settings/settings.reducer';
 import * as fromSettingsNode from './settings/settings-node/settings-node.reducer';
@@ -28,6 +32,8 @@ import * as fromNetworkHistory from './network/network-history/network-history.r
 import * as fromNetworkEndpoint from './network/network-endpoint/network-endpoint.reducer';
 
 import * as fromEndpointsAction from './endpoints/endpoints-action/endpoints-action.reducer';
+
+import * as fromChainServer from './chain/chain-server/chain-server.reducer';
 
 import * as fromLogsAction from './logs/logs-action/logs-action.reducer';
 
@@ -50,6 +56,7 @@ export interface State {
     logsAction: any;
     storageBlock: any;
     storageAction: any;
+    chainServer : any;
     routerReducer: fromRouter.RouterReducerState<RouterStateUrl>;
 }
 
@@ -69,6 +76,7 @@ export const reducers: ActionReducerMap<State> = {
     logsAction: fromLogsAction.reducer,
     storageBlock: fromStorageBlock.reducer,
     storageAction: fromStorageAction.reducer,
+    chainServer: fromChainServer.reducer,
     routerReducer: fromRouter.routerReducer,
 };
 
@@ -80,7 +88,7 @@ export const reducers: ActionReducerMap<State> = {
 
 // compose all reducers to map
 export const metaReducers: MetaReducer<State>[] = !environment.production
-    ? []
-    : [
-    //    logger
+    ? [fromNgrxForm.form]
+    : [fromNgrxForm.form
+    //    ,logger
     ];

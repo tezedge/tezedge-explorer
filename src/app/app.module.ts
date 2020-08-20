@@ -95,6 +95,7 @@ import { ChainConfigComponent } from './chain/chain-config/chain-config.componen
 import { ChainWalletsComponent } from './chain/chain-wallets/chain-wallets.component';
 import { ChainBakingComponent } from './chain/chain-baking/chain-baking.component';
 import { ChainFinishComponent } from './chain/chain-finish/chain-finish.component';
+import { ChainOtherComponent } from './chain/chain-other/chain-other.component';
 
 
 @NgModule({
@@ -128,7 +129,8 @@ import { ChainFinishComponent } from './chain/chain-finish/chain-finish.componen
     ChainConfigComponent,
     ChainWalletsComponent,
     ChainBakingComponent,
-    ChainFinishComponent
+    ChainFinishComponent,
+    ChainOtherComponent
   ],
   imports: [
     BrowserModule,

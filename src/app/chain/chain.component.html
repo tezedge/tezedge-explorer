@@ -1,16 +1,28 @@
-<p>chain works!</p>
 
-<app-chain-server>
-</app-chain-server>
+<div class="chain">
 
-<app-chain-config>
-</app-chain-config>
+    <mat-tab-group animationDuration="0ms">
 
-<app-chain-wallets>
-</app-chain-wallets>
+        <mat-tab label="SERVER">
+            <app-chain-server>
+            </app-chain-server>
+        </mat-tab>
+    
+        <mat-tab label="CONFIG">
+            <app-chain-config>
+            </app-chain-config>
+        </mat-tab>
+    
+        <mat-tab label="CONFIG">
+            <app-chain-baking>
+            </app-chain-baking>
+        </mat-tab>
+    
+        <mat-tab label="OTHER">
+            <app-chain-other>
+            </app-chain-other>
+        </mat-tab>
+    
+    </mat-tab-group>
 
-<app-chain-baking>
-</app-chain-baking>
-
-<app-chain-finish>
-</app-chain-finish>
+</div>

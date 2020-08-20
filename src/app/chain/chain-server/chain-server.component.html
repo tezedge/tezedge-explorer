@@ -1,8 +1,13 @@
 <div class="chain-server" [formGroup]="chainServer" ngrxForm="chainServer">
 
-    <mat-form-field appearance="outline">
-        <mat-label>Port</mat-label>
-        <input matInput #port type="number" placeholder="Port" formControlName="port" />
+    
+    <p class="from-field-title">PORT</p>
+    <p class="from-field-description">
+        Lorem ipsum dolor, sit amet consectetur adipisicing elit.
+    </p>
+
+    <mat-form-field>
+        <input matInput #port type="text" formControlName="port" />
     </mat-form-field>
 
 </div>

@@ -793,6 +793,34 @@ ngx-json-viewer .segment .segment-main .segment-key {
 }
 
 
+// from fields styles 
+.chain mat-form-field {
+    color: $color;
+    background: $color-border;
+    height: 40px;
+    border-radius: 4px;
+    padding-left: 10px;
+}
+
+input.mat-input-element {
+    margin-top: 12px;
+}
+
+mat-form-field-underline {
+    display: none !important;
+}
+
+.from-field-title {
+    font-size: 12px;
+    line-height: 12px;
+}
+
+.from-field-description {
+    font-size: 12px;
+    opacity: 0.6;
+    line-height: 14px;
+}
+
 .app-menu-toggle {
     color: $color-table-paginator;
 }

@@ -797,22 +797,28 @@ ngx-json-viewer .segment .segment-main .segment-key {
 .chain mat-form-field {
     color: $color;
     background: $color-border;
-    height: 40px;
+    height: 34px;
     border-radius: 4px;
     padding-left: 10px;
 }
 
-input.mat-input-element {
-    margin-top: 12px;
+.form-field {
+    padding: 10px 0px 10px 0px;
 }
 
-mat-form-field-underline {
+input.mat-input-element {
+    margin-top: 10px;
+    font-size: 14px;
+}
+
+.mat-form-field-ripple {
     display: none !important;
 }
 
 .from-field-title {
     font-size: 12px;
     line-height: 12px;
+    font-weight: 400;
 }
 
 .from-field-description {

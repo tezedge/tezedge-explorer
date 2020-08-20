@@ -1,13 +1,27 @@
 <div class="chain-server" [formGroup]="chainServer" ngrxForm="chainServer">
 
-    
-    <p class="from-field-title">PORT</p>
-    <p class="from-field-description">
-        Lorem ipsum dolor, sit amet consectetur adipisicing elit.
-    </p>
+    <div class="form-field">
 
-    <mat-form-field>
-        <input matInput #port type="text" formControlName="port" />
-    </mat-form-field>
+        <p class="from-field-title">PORT</p>
+        <p class="from-field-description">
+            Lorem ipsum dolor, sit amet consectetur adipisicing elit.
+        </p>
 
-</div>
+        <mat-form-field>
+            <input matInput #port type="text" formControlName="port" />
+        </mat-form-field>
+
+    </div>
+
+    <div class="form-field">
+
+        <p class="from-field-title">CHAIN ID</p>
+        <p class="from-field-description">
+            Lorem ipsum dolor, sit amet consectetur adipisicing elit.
+        </p>
+
+        <mat-form-field>
+            <input matInput #port type="text" formControlName="chainId" />
+        </mat-form-field>
+
+    </div>

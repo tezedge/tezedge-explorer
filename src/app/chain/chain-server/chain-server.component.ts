@@ -24,6 +24,7 @@ export class ChainServerComponent implements OnInit {
     // create form group
     this.chainServer = this.fb.group({
       port: ['', [Validators.required]],
+      chainId: ['', [Validators.required]],
     })
 
   }

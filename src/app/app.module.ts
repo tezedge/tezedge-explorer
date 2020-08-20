@@ -96,6 +96,7 @@ import { ChainWalletsComponent } from './chain/chain-wallets/chain-wallets.compo
 import { ChainBakingComponent } from './chain/chain-baking/chain-baking.component';
 import { ChainFinishComponent } from './chain/chain-finish/chain-finish.component';
 import { ChainOtherComponent } from './chain/chain-other/chain-other.component';
+import { NgrxFormDirective } from './shared/ngrx-form.directive';
 
 
 @NgModule({
@@ -130,7 +131,8 @@ import { ChainOtherComponent } from './chain/chain-other/chain-other.component';
     ChainWalletsComponent,
     ChainBakingComponent,
     ChainFinishComponent,
-    ChainOtherComponent
+    ChainOtherComponent,
+    NgrxFormDirective
   ],
   imports: [
     BrowserModule,

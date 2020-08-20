@@ -764,6 +764,35 @@ ngx-json-viewer .segment .segment-main .segment-key {
     border-left: 1px solid $color-table-border;
 }
 
+
+.chain {
+    color: $color;
+}
+
+.mat-tab-label, .mat-tab-link {
+    color: $color;
+}
+
+// change active label color
+.mat-tab-group.mat-primary .mat-ink-bar {
+    background-color: $color-focus;
+}
+
+.mat-tab-nav-bar, .mat-tab-header {
+    border-color: $color-border;
+} 
+
+
+// move tab group to left
+.mat-tab-body-wrapper {
+    padding-left: 24px;
+}
+
+.mat-tab-label-container {
+    padding-left: 24px;
+}
+
+
 .app-menu-toggle {
     color: $color-table-paginator;
 }

@@ -29,9 +29,11 @@ export class AppEffects {
             let redirectUrl = '';
             if (action.payload.connected) {
                 if (action.payload.ws === false) {
-                    redirectUrl = 'monitoring';
+                    // redirectUrl = 'monitoring';
+                    redirectUrl = 'chain';
                 } else {
-                    redirectUrl = 'monitoring';
+                    // redirectUrl = 'monitoring';
+                    redirectUrl = 'chain';
                 }
             } else {
                 redirectUrl = '';

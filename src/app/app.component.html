@@ -23,7 +23,7 @@
     .app-submenu {
         color: #c4cfdc7a;
         font-size: 12px;
-        padding: 22px 0px 12px 0px;
+        padding: 12px 0px 12px 0px;
         border-top: 1px solid rgba(255, 255, 255, 0.1);
     }
     
@@ -38,13 +38,16 @@
         /* font-weight: 300; */
     }
     
-    .app-submenu a span {}
+    .app-submenu a span:focus {
+        color: green;
+    }
     
     list-option:focus,
     .mat-list-option:hover,
     .mat-nav-list .mat-list-item:focus,
     .mat-nav-list .mat-list-item:hover {
-        background: #1C202B;
+        background:  #323234;
+        color: white !important;
     }
 
 </style>
@@ -184,7 +187,7 @@
                     </a>
 
                     <span>
-                        <button style="font-size: 12px;line-height: 32px;color:white; background: #1C202B; " mat-flat-button>
+                        <button style="font-size: 12px;line-height: 32px;color:white; background: #323234; " mat-flat-button>
                             START SANDBOX NODE
                         </button>
                     </span>

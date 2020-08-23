@@ -9,6 +9,7 @@ body {
 
 .sidenav-content {
     background-color: $color-background;
+    margin-top: 30px;
 }
 
 .mat-drawer-container.mat-sidenav-container {
@@ -23,6 +24,25 @@ body {
 .toolbar {
     background-color: $color-toolbar;
     border-bottom: 1px solid $color-toolbar-border;
+}
+
+.app-status-bar {
+    position: absolute;
+    display: flex;
+    background: #323234;
+    color: white;
+
+    align-items: center;
+
+    height: 26px;
+    width: 100%;
+    font-size: 12px;
+    
+    z-index: 10;
+    
+    // padding-left: 16px;
+    // border-radius: 4px;
+    // margin: 4px;
 }
 
 /* table */

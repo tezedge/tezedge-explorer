@@ -55,13 +55,28 @@
 
 <div class="sidenav-area" style="height: 100%;">
 
+    <div class="app-status-bar">
+        
+        <!-- <span>ocaml.carthage.tezedge.com</span>
+        <mat-icon class="settings-node-expand-icon">expand_more</mat-icon> -->
+        
+        <app-settings-node>
+        </app-settings-node>
+
+        <!-- 
+            CURRENT BLOCK <span>40000</span>
+            PROTOCOL <span>40000</span>
+        -->
+
+    </div>
+
     <!-- TODO: resolve issue with change detection -->
     <!-- <mat-progress-bar [style.display]="app.progressbar.isVisible ? 'inline' : 'none'" mode="indeterminate"
         style="position:fixed;z-index:2;height: 1px;"></mat-progress-bar> -->
 
     <!-- Sidebar -->
     <mat-sidenav-container>
-        <mat-sidenav #start [mode]="app.sidenav.mode" style="min-width:230px; z-index:5 !important;" [style.background-color]="app.sidenav.backgroundColor" [style.color]="app.sidenav.color" [opened]="app.sidenav.isVisible" [fixedInViewport]="true" [fixedTopGap]="0" [fixedBottomGap]="0">
+        <mat-sidenav #start [mode]="app.sidenav.mode" style="min-width:230px; z-index:5 !important;top: 30px;" [style.background-color]="app.sidenav.backgroundColor" [style.color]="app.sidenav.color" [opened]="app.sidenav.isVisible" [fixedInViewport]="true" [fixedTopGap]="0" [fixedBottomGap]="0">
 
             <mat-nav-list>
 

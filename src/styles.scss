@@ -9,6 +9,7 @@ body {
 
 .sidenav-content {
     background-color: $color-background;
+    margin-top: 30px;
 }
 
 .mat-drawer-container.mat-sidenav-container {
@@ -23,6 +24,25 @@ body {
 .toolbar {
     background-color: $color-toolbar;
     border-bottom: 1px solid $color-toolbar-border;
+}
+
+.app-status-bar {
+    position: absolute;
+    display: flex;
+    background: #323234;
+    color: white;
+
+    align-items: center;
+
+    height: 26px;
+    width: 100%;
+    font-size: 12px;
+    
+    z-index: 10;
+    
+    // padding-left: 16px;
+    // border-radius: 4px;
+    // margin: 4px;
 }
 
 /* table */
@@ -762,6 +782,69 @@ ngx-json-viewer .segment .segment-main .segment-key {
     overflow-y: overlay;
     padding: 10px 10px 0px 10px;
     border-left: 1px solid $color-table-border;
+}
+
+
+.chain {
+    color: $color;
+}
+
+.mat-tab-label, .mat-tab-link {
+    color: $color;
+}
+
+// change active label color
+.mat-tab-group.mat-primary .mat-ink-bar {
+    background-color: $color-focus;
+}
+
+.mat-tab-nav-bar, .mat-tab-header {
+    border-color: $color-border;
+} 
+
+
+// move tab group
+.mat-tab-body-wrapper {
+    padding-left: 24px;
+}
+
+.mat-tab-label-container {
+    padding-left: 24px;
+}
+
+
+// from fields styles 
+.chain mat-form-field {
+    color: $color;
+    background: $color-border;
+    height: 34px;
+    border-radius: 4px;
+    padding-left: 10px;
+}
+
+.form-field {
+    padding: 10px 0px 10px 0px;
+}
+
+input.mat-input-element {
+    margin-top: 10px;
+    font-size: 14px;
+}
+
+.mat-form-field-ripple {
+    display: none !important;
+}
+
+.from-field-title {
+    font-size: 12px;
+    line-height: 12px;
+    font-weight: 400;
+}
+
+.from-field-description {
+    font-size: 12px;
+    opacity: 0.6;
+    line-height: 14px;
 }
 
 .app-menu-toggle {

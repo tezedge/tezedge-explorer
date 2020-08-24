@@ -14,10 +14,10 @@ const initialState = {
     sidenav: {
         isVisible: true,
         mode: 'side',
-        backgroundColor: '#2E3748',
-        color: '#F6F9FC',
-        // backgroundColor: 'white',
-        // color: '#1A1E2A',
+        // backgroundColor: '#2E3748',
+        // color: '#F6F9FC',
+        backgroundColor: '#1b1b1d',
+        color: '#a4a4a5',
         toggleButton: {
             isVisible: true,
         },

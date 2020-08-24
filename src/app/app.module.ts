@@ -89,6 +89,14 @@ import { SettingsNodeComponent } from './settings/settings-node/settings-node.co
 import { LogsActionComponent } from './logs/logs-action/logs-action.component';
 import { LogsSearchComponent } from './logs/logs-search/logs-search.component';
 import { LogsComponent } from './logs/logs.component';
+import { ChainComponent } from './chain/chain.component';
+import { ChainServerComponent } from './chain/chain-server/chain-server.component';
+import { ChainConfigComponent } from './chain/chain-config/chain-config.component';
+import { ChainWalletsComponent } from './chain/chain-wallets/chain-wallets.component';
+import { ChainBakingComponent } from './chain/chain-baking/chain-baking.component';
+import { ChainFinishComponent } from './chain/chain-finish/chain-finish.component';
+import { ChainOtherComponent } from './chain/chain-other/chain-other.component';
+import { NgrxFormDirective } from './shared/ngrx-form.directive';
 
 
 @NgModule({
@@ -116,7 +124,15 @@ import { LogsComponent } from './logs/logs.component';
     SettingsNodeComponent,
     LogsActionComponent,
     LogsSearchComponent,
-    LogsComponent
+    LogsComponent,
+    ChainComponent,
+    ChainServerComponent,
+    ChainConfigComponent,
+    ChainWalletsComponent,
+    ChainBakingComponent,
+    ChainFinishComponent,
+    ChainOtherComponent,
+    NgrxFormDirective
   ],
   imports: [
     BrowserModule,

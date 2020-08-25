@@ -27,22 +27,24 @@ body {
 }
 
 .app-status-bar {
-    position: absolute;
     display: flex;
+    align-items: center;
+    flex-direction: row;
+
     background: #323234;
     color: white;
 
-    align-items: center;
-
-    height: 26px;
+    height: 30px;
     width: 100%;
-    font-size: 12px;
-    
-    z-index: 10;
+    font-size: 12px !important;
     
     // padding-left: 16px;
     // border-radius: 4px;
     // margin: 4px;
+}
+
+.app-status-bar .mat-form-field-infix {
+    display: flex;
 }
 
 /* table */
@@ -415,6 +417,20 @@ mat-form-field .mat-select-value {
     color: white;
     font-size: 13px;
     font-weight: 300;
+}
+
+// .mat-select-panel {
+//     border-radius: 4px !important;
+// }
+
+.mat-select-panel .mat-option.mat-selected:not(.mat-option-multiple) {
+    color: white;
+    background-color: #525255;
+}
+
+.mat-option:hover:not(.mat-option-disabled), .mat-option:focus:not(.mat-option-disabled) {
+    color: white;
+    background-color: #525255;  
 }
 
 /* remove undeline in mat-select */

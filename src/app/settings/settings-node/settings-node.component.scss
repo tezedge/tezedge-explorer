@@ -1,37 +1,33 @@
-.settings-node {
-    position: absolute;
-    min-width: 200px;
-    height: 65px;
-    left: 14px;
-    background: #323234;
-    border-radius: 4px;
-    bottom: 20px;
-    z-index: 1;
-}
-
-.settings-node-status {
-    color: #c4cfdc7a;
-    font-size: 12px;
-    margin: 12px 0px 0px 12px;
-}
-
 .settings-node-status-icon {
     font-size: 12px;
-    padding-left:121px;
-    height: 20px;
-    color:#48e5d061
+    padding-left: 4px;
+    height: auto;
+    width: auto;
+    color: #48e5d061
 }
 
 .settings-node-status-icon-offline {
     font-size: 12px;
-    padding-left:121px;
-    height: 20px;
-    color:#ae4d6861
+    padding-left: 4px;
+    height: auto;
+    width: auto;
+    color: #ae4d6861
+}
+
+.settings-node-expand-input { 
+    width: 198px;
+}
+
+.settings-node-expand-icon { 
+    font-size: 16px;
+    height: auto;
+    width: auto;
+    color:#c4cfdc
 }
 
 .settings-node-status-option-icon {
     font-size: 12px;
-    margin: 25px 0px 0px 0px !important;
+    margin: 8px 0px 0px 0px !important;
     height: 20px;
     width: 20px;
     color: #48e5d0c9
@@ -39,21 +35,10 @@
 
 .settings-node-status-option-icon-offline {
     font-size: 12px;
-    margin: 24px 0px 0px 0px !important;
+    margin: 8px 0px 0px 0px !important;
     height: 20px;
     width: 20px;
     color:#ae4d68b3
-}
-
-.settings-node-expand-input { 
-    padding-left: 12px
-}
-
-.settings-node-expand-icon { 
-    display: flex;
-    font-size:16px;
-    margin: -18px 0px 0px 165px;
-    color:#c4cfdc
 }
 
 .settings-node-option {
@@ -61,9 +46,12 @@
     padding-top: 5px;
     padding-right: 25px;
     padding-bottom: 3px;
+    background-color: #3F3F43;
+    color: white;
 }
 
 .settings-node-option-status {
-    margin: -30px 0px 0px 24px; 
+    margin: -20px 0px 0px 0px; 
     font-size: 10px;
 }
+

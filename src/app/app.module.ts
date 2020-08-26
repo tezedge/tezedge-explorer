@@ -61,6 +61,7 @@ import { MatCardModule } from '@angular/material/card';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSelectModule } from '@angular/material/select';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 
 import { NetworkStatsComponent } from './network/network-stats/network-stats.component';
 import { NetworkHistoryComponent } from './network/network-history/network-history.component';
@@ -200,7 +201,7 @@ import { NgrxFormDirective } from './shared/ngrx-form.directive';
     // MatRadioModule,
     MatSelectModule,
     MatSidenavModule,
-    // MatSlideToggleModule,
+    MatSlideToggleModule,
     // MatSliderModule,
     MatSnackBarModule,
     // MatSortModule,

@@ -18,7 +18,7 @@ body {
 
 .mat-drawer-container {
     background-color: $color-background;
-    position: static !important;;
+    position: static !important;
 }
 
 .toolbar {
@@ -254,17 +254,17 @@ tr.mat-row {
     }
     
     .network-peers th.mat-header-cell.cdk-column-averageTransferSpeed.mat-column-averageTransferSpeed {
-        display: none
+        display: none;
     }
     .network-peers .mat-cell.cdk-column-averageTransferSpeed.mat-column-averageTransferSpeed {
-        display: none
+        display: none;
     }
     
     .network-peers th.mat-header-cell.cdk-column-transferredBytes.mat-column-transferredBytes {
-        display: none
+        display: none;
     }
     .network-peers .mat-cell.cdk-column-transferredBytes.mat-column-transferredBytes {
-        display: none
+        display: none;
     }
     
     .network-peers th.mat-header-cell.cdk-column-id.mat-column-id {
@@ -456,6 +456,34 @@ mat-form-field .mat-select-arrow {
     /* hide arrow in mat select*/
     border: 0px;
 }
+
+	/* hide number input arrows */
+	mat-form-field input::-webkit-outer-spin-button,
+	mat-form-field input::-webkit-inner-spin-button {
+		-webkit-appearance: none;
+		margin: 0;
+	}
+	mat-form-field input[type='number'] {
+		-moz-appearance: textfield;
+	}
+
+	/* Change color of mat-slide toggle */
+	.mat-slide-toggle {
+		.mat-slide-toggle-bar {
+			background-color: $color-border;
+		}
+		.mat-slide-toggle-thumb {
+			background-color: #555558;
+		}
+		&.mat-checked {
+			.mat-slide-toggle-bar {
+				background-color: $color-border;
+			}
+			.mat-slide-toggle-thumb {
+				background-color: $color-focus;
+			}
+		}
+	}
 
 .mat-form-field-wrapper, .mat-form-field-infix {
     padding: 0px !important;

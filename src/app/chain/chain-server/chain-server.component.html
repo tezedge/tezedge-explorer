@@ -1,27 +1,367 @@
 <div class="chain-server" [formGroup]="chainServer" ngrxForm="chainServer">
+	<!-- ESENTIALS SECTION -->
+	<div class="section essentials-section">
+		<h5 class="section-header">ESENTIALS</h5>
+		<!-- Hostname -->
+		<div class="form-field">
+			<p class="from-field-title">Hostname</p>
+			<mat-form-field class="half-size">
+				<mat-select #hostname formControlName="hostname">
+					<mat-option value="127.0.0.1">127.0.0.1</mat-option>
+					<mat-option value="216.58.210.238">216.58.210.238</mat-option>
+				</mat-select>
+			</mat-form-field>
+		</div>
+	</div>
 
-    <div class="form-field">
+	<!-- ARGUMENTS SECTION -->
+	<div class="section arguments-section">
+		<h5 class="section-header">ARGUMENTS</h5>
+		<!-- Bootstrap database path -->
+		<div class="form-field">
+			<p class="from-field-title">Bootstrap database path</p>
+			<p class="from-field-description">
+				Path to bootstrap database directory. In case it starts with "./" or "../", it is relative path to the current
+				dir, otherwise to the --tezos-data-dir. If directory does not exists, it will be created. If directory already
+				exists, and contains valid database, node will continue in bootstrap process on that database
+			</p>
+			<mat-form-field class="full-size">
+				<input matInput #bootstrapDbPath type="text" formControlName="bootstrapDbPath" />
+			</mat-form-field>
+		</div>
 
-        <p class="from-field-title">PORT</p>
-        <p class="from-field-description">
-            Lorem ipsum dolor, sit amet consectetur adipisicing elit.
-        </p>
+		<!-- db cfg max threads -->
+		<div class="form-field">
+			<p class="from-field-title">db cfg max threads (optional)</p>
+			<div class="inline-wrapper">
+				<mat-form-field class="small-size">
+					<input matInput #maxThreads type="number" formControlName="maxThreads" />
+				</mat-form-field>
+				<p class="from-field-description">
+					Max number of threads used by database configuration. If not specified, then the number of threads is equal to
+					the number of CPU cores.
+				</p>
+			</div>
+		</div>
 
-        <mat-form-field>
-            <input matInput #port type="text" formControlName="port" />
-        </mat-form-field>
+		<!-- db cfg max open files -->
+		<div class="form-field">
+			<p class="from-field-title">db cfg max open files (optional)</p>
+			<div class="inline-wrapper">
+				<mat-form-field class="small-size">
+					<input matInput #maxOpenFiles type="number" formControlName="maxOpenFiles" />
+				</mat-form-field>
+				<p class="from-field-description">
+					Max open files for database. Unlimited if specified as '-1'. Default value: 512
+				</p>
+			</div>
+		</div>
 
-    </div>
+		<!-- Logging file -->
+		<div class="form-field">
+			<p class="from-field-title">Logging file (optional)</p>
+			<p class="from-field-description">
+				Path to the logger file. If provided, logs are written to the log file, otherwise displayed in terminal. In case
+				it starts with "./" or "../", it is relative path to the current dir, otherwise to the --tezos-data-dir
+			</p>
+			<mat-form-field class="full-size">
+				<input matInput #loggingFile type="text" formControlName="loggingFile" />
+			</mat-form-field>
+		</div>
 
-    <div class="form-field">
+		<!-- Logging format -->
+		<div class="form-field">
+			<p class="from-field-title">Logging format</p>
+			<p class="from-field-description">
+				Set format of logger entries, used usually with --logger-format argument. Possible values are either simple or
+				json. Simple format is human-readable format, where JSON produce structured, easily machine consumable log
+				entries.
+			</p>
+			<mat-form-field class="half-size">
+				<mat-select #loggingFormat formControlName="loggingFormat">
+					<mat-option value="simple">simple</mat-option>
+					<mat-option value="json">json</mat-option>
+				</mat-select>
+			</mat-form-field>
+		</div>
 
-        <p class="from-field-title">CHAIN ID</p>
-        <p class="from-field-description">
-            Lorem ipsum dolor, sit amet consectetur adipisicing elit.
-        </p>
+		<!-- Logging level -->
+		<div class="form-field">
+			<p class="from-field-title">Logging level</p>
+			<p class="from-field-description">
+				Set log level. Possible values are: `critical`, `error`, `warn`, `info`, `debug`, `trace`
+			</p>
+			<mat-form-field class="half-size">
+				<mat-select #loggingLevel formControlName="loggingLevel">
+					<mat-option value="critical">critical</mat-option>
+					<mat-option value="error">error</mat-option>
+					<mat-option value="warn">warn</mat-option>
+					<mat-option value="info">info</mat-option>
+					<mat-option value="debug">debug</mat-option>
+					<mat-option value="trace">trace</mat-option>
+				</mat-select>
+			</mat-form-field>
+		</div>
 
-        <mat-form-field>
-            <input matInput #port type="text" formControlName="chainId" />
-        </mat-form-field>
+		<!-- OCaml logging -->
+		<div class="form-field">
+			<p class="from-field-title">OCaml logging</p>
+			<div class="inline-wrapper">
+				<mat-slide-toggle #oCamlLogging formControlName="oCamlLogging"> </mat-slide-toggle>
+				<p class="from-field-description">Enable OCaml runtime logger.</p>
+			</div>
+		</div>
 
-    </div>
+		<!-- Network -->
+		<div class="form-field">
+			<p class="from-field-title">Network</p>
+			<p class="from-field-description">
+				Specify the Tezos environment for this node. Accepted values are: `alphanet, babylonnet, babylon, mainnet or
+				zeronet`, where `babylon` and `babylonnet` refer to same environment.
+			</p>
+			<mat-form-field class="half-size">
+				<input matInput #network type="text" formControlName="network" />
+			</mat-form-field>
+		</div>
+
+		<!-- P2P Port -->
+		<div class="form-field">
+			<p class="from-field-title">P2P Port</p>
+			<div class="inline-wrapper">
+				<mat-form-field class="small-size">
+					<input matInput #p2pPort type="number" formControlName="p2pPort" />
+				</mat-form-field>
+				<p class="from-field-description">Specify port for peer to peer communication.</p>
+			</div>
+		</div>
+
+		<!-- RPC Port -->
+		<div class="form-field">
+			<p class="from-field-title">RPC Port</p>
+			<div class="inline-wrapper">
+				<mat-form-field class="small-size">
+					<input matInput #rpcPort type="number" formControlName="rpcPort" />
+				</mat-form-field>
+				<p class="from-field-description">
+					Node contains subset of Tezos node REST API, described in further sections. This argument specifies port, on
+					which those APIs will be available.
+				</p>
+			</div>
+		</div>
+
+		<!-- WebSocket Access Address -->
+		<div class="form-field">
+			<p class="from-field-title">WebSocket Access Address</p>
+			<p class="from-field-description">
+				Node expose various metrics and statistics in real-time through websocket. This argument specifies address, on
+				which this websocket will be accessible.
+			</p>
+			<mat-form-field class="half-size">
+				<input matInput #webSocketAddress type="text" formControlName="webSocketAddress" />
+			</mat-form-field>
+		</div>
+
+		<!-- Monitor port -->
+		<div class="form-field">
+			<p class="from-field-title">Monitor port</p>
+			<div class="inline-wrapper">
+				<mat-form-field class="small-size">
+					<input matInput #monitorPort type="number" formControlName="monitorPort" />
+				</mat-form-field>
+				<p class="from-field-description">Port on which the Tezedge node monitoring information will be exposed</p>
+			</div>
+		</div>
+
+		<!-- Lower peer treshold -->
+		<div class="form-field">
+			<p class="from-field-title">Lower peer treshold</p>
+			<div class="inline-wrapper">
+				<mat-form-field class="small-size">
+					<input matInput #lowerPeerTreshold type="number" formControlName="lowerPeerTreshold" />
+				</mat-form-field>
+				<p class="from-field-description">
+					Set minimal peer number, if running node does not has enough connected peers, peer discovery is enforced.
+				</p>
+			</div>
+		</div>
+
+		<!-- Higher peer treshold -->
+		<div class="form-field">
+			<p class="from-field-title">Higher peer treshold</p>
+			<div class="inline-wrapper">
+				<mat-form-field class="small-size">
+					<input matInput #higherPeerTreshold type="number" formControlName="higherPeerTreshold" />
+				</mat-form-field>
+				<p class="from-field-description">
+					Set maximum number of connected peers, running node will not try to connect to any more peers, if this
+					threshold is met.
+				</p>
+			</div>
+		</div>
+
+		<!-- Peers -->
+		<div class="form-field">
+			<p class="from-field-title">Peers (optional)</p>
+			<p class="from-field-description">
+				Allowed network peers to bootstrap from. This argument is good to use in controlled testing environmnet. Each
+				peer is described by its address and port in `IP:PORT` format, delimited by a colon.
+			</p>
+			<mat-form-field class="full-size">
+				<input matInput #peers type="text" formControlName="peers" />
+			</mat-form-field>
+		</div>
+
+		<!-- Disable Bootstrap DNS lookup -->
+		<div class="form-field">
+			<p class="from-field-title">Disable Bootstrap DNS lookup</p>
+			<div class="inline-wrapper">
+				<mat-slide-toggle #disableBootstrapDnsLookup formControlName="disableBootstrapDnsLookup"> </mat-slide-toggle>
+				<p class="from-field-description">
+					Disables DNS lookup to get peers to bootstrap the network from. Default: false
+				</p>
+			</div>
+		</div>
+
+		<!-- Bootstrap lookup addresses -->
+		<div class="form-field">
+			<p class="from-field-title">Bootstrap lookup addresses (Optional)</p>
+			<p class="from-field-description">
+				List of peers to bootstrap the network from. Peers are delimited by a colon. For further information, see
+				--network parameter of OCaml node.
+			</p>
+			<mat-form-field class="full-size">
+				<input matInput #bootstrapLookupAddresses type="text" formControlName="bootstrapLookupAddresses" />
+			</mat-form-field>
+		</div>
+
+		<!-- Protocol runner -->
+		<div class="form-field">
+			<p class="from-field-title">Protocol runner</p>
+			<p class="from-field-description">
+				Path to the protocol runner binary, which is compiled with `tezedge`. For example:
+				`./target/debug/protocol-runner`.
+			</p>
+			<mat-form-field class="half-size">
+				<input matInput #protocolRunner type="text" formControlName="protocolRunner" />
+			</mat-form-field>
+		</div>
+
+		<!-- Number of ffi calls -->
+		<div class="form-field">
+			<p class="from-field-title">Number of ffi calls</p>
+			<div class="inline-wrapper">
+				<mat-form-field class="small-size">
+					<input matInput #ffiCallsNo type="number" formControlName="ffiCallsNo" />
+				</mat-form-field>
+				<p class="from-field-description">
+					Number of ffi (foreign function interface) calls, after which will be Ocaml garbage collector called
+				</p>
+			</div>
+		</div>
+
+		<!-- Ffi connection pool max connections -->
+		<div class="form-field">
+			<p class="from-field-title">Ffi connection pool max connections</p>
+			<div class="inline-wrapper">
+				<mat-form-field class="small-size">
+					<input matInput #ffiMaxConn type="number" formControlName="ffiMaxConn" />
+				</mat-form-field>
+				<p class="from-field-description">Max number of FFI pool connections, default: 10</p>
+			</div>
+		</div>
+
+		<!-- Ffi connection timeout -->
+		<div class="form-field">
+			<p class="from-field-title">Ffi connection timeout</p>
+			<div class="inline-wrapper">
+				<mat-form-field class="small-size">
+					<input matInput #ffiConnTimeout type="number" formControlName="ffiConnTimeout" />
+				</mat-form-field>
+				<p class="from-field-description">Number of seconds to wait for connection, default: 60</p>
+			</div>
+		</div>
+
+		<!-- Ffi pool lifetime (seconds) -->
+		<div class="form-field">
+			<p class="from-field-title">Ffi pool lifetime (seconds)</p>
+			<div class="inline-wrapper">
+				<mat-form-field class="small-size">
+					<input matInput #ffiPoolLifetime type="number" formControlName="ffiPoolLifetime" />
+				</mat-form-field>
+				<p class="from-field-description">
+					Number of seconds to remove protocol_runner from pool, default: 21600 (6 hours)
+				</p>
+			</div>
+		</div>
+
+		<!-- Ffi pool unused timeout (seconds) -->
+		<div class="form-field">
+			<p class="from-field-title">Ffi pool unused timeout (seconds)</p>
+			<div class="inline-wrapper">
+				<mat-form-field class="small-size">
+					<input matInput #ffiPoolUnusedTimeout type="number" formControlName="ffiPoolUnusedTimeout" />
+				</mat-form-field>
+				<p class="from-field-description">
+					Number of seconds to remove unused protocol_runner from pool, default: 1800 (30 minutes)
+				</p>
+			</div>
+		</div>
+
+		<!-- Mempool -->
+		<div class="form-field">
+			<p class="from-field-title">Mempool</p>
+			<div class="inline-wrapper">
+				<mat-slide-toggle #mempool formControlName="mempool"> </mat-slide-toggle>
+				<p class="from-field-description">Enable or disable memopool</p>
+			</div>
+		</div>
+
+		<!-- Private node mode -->
+		<div class="form-field">
+			<p class="from-field-title">Private node mode</p>
+			<div class="inline-wrapper">
+				<mat-slide-toggle #privateNodeMode formControlName="privateNodeMode"> </mat-slide-toggle>
+				<p class="from-field-description">
+					Enable or disable the private node. Use peers to set the IP addresses of the peers you want to connect to
+				</p>
+			</div>
+		</div>
+
+		<!-- Test chain -->
+		<div class="form-field">
+			<p class="from-field-title">Test chain</p>
+			<div class="inline-wrapper">
+				<mat-slide-toggle #testChain formControlName="testChain"> </mat-slide-toggle>
+				<p class="from-field-description">
+					Flag for enable/disable test chain switching for block applying. Default: false
+				</p>
+			</div>
+		</div>
+
+		<!-- Recording context actions -->
+		<div class="form-field">
+			<p class="from-field-title">Recording context actions</p>
+			<div class="inline-wrapper">
+				<mat-slide-toggle #recordingContextActions formControlName="recordingContextActions"> </mat-slide-toggle>
+				<p class="from-field-description">Activate recording of context storage actions</p>
+			</div>
+		</div>
+
+		<!-- Sandbox context patching-->
+		<div class="form-field">
+			<p class="from-field-title">Sandbox context patching</p>
+			<p class="from-field-description">
+				Path to the json file with key-values, which will be added to the empty context on startup and commit genesis
+			</p>
+			<mat-form-field class="full-size">
+				<input matInput #sandboxContextPatching type="text" formControlName="sandboxContextPatching" />
+			</mat-form-field>
+		</div>
+
+		<!-- CONTINUE button -->
+		<button mat-button class="continue-btn" type="submit">
+			<span class="text">CONTINUE</span>
+			<img class="icon" src="../../../assets/icon/arrow-right.svg" />
+		</button>
+	</div>
+</div>

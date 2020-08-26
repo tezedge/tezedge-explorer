@@ -1,0 +1,54 @@
+.chain-server {
+	padding-bottom: 50px;
+	max-width: 600px;
+
+	.section {
+		.section-header {
+			margin-bottom: 0;
+		}
+	}
+
+	.form-field {
+		::ng-deep .mat-form-field {
+			&.small-size {
+				width: 56px;
+				display: inline-block;
+			}
+			&.half-size {
+				width: 50%;
+			}
+			&.full-size {
+				width: 100%;
+			}
+
+			.mat-select {
+				.mat-select-arrow {
+					margin: 0 10px;
+					border-left: 5px solid transparent;
+					border-right: 5px solid transparent;
+					border-top: 5px solid;
+				}
+			}
+		}
+
+		.inline-wrapper {
+			display: inline-flex;
+			align-items: center;
+
+			.from-field-description {
+				margin: 0;
+				margin-left: 10px;
+			}
+		}
+	}
+
+	.continue-btn {
+		background-color: #204e8a;
+		color: #fff;
+		margin-top: 20px;
+
+		.text {
+			margin-right: 10px;
+		}
+	}
+}

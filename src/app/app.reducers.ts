@@ -56,7 +56,7 @@ export interface State {
     logsAction: any;
     storageBlock: any;
     storageAction: any;
-    chainServer : any;
+    chainServer: any;
     routerReducer: fromRouter.RouterReducerState<RouterStateUrl>;
 }
 

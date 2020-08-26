@@ -16,38 +16,47 @@
 
             <mat-option class="settings-node-option" *ngFor="let node of settingsNodeEntities" [value]="node.id"
                 (click)="nodeSelectChange(node.id)" >
-                <div>
-                    {{node.name}}
-                    <mat-icon *ngIf="node.connected==='pending'" class="settings-node-status-option-icon-offline">
-                        hourglass_empty
-                    </mat-icon>
-                    <mat-icon *ngIf="node.connected===true" class="settings-node-status-option-icon">
-                        fiber_manual_record
-                    </mat-icon>
-                    <mat-icon *ngIf="node.connected===false" class="settings-node-status-option-icon-offline">
-                        fiber_manual_record
-                    </mat-icon>
-                </div>
-                <div class="settings-node-option-status">
-                    <span *ngIf="node.connected==='pending'">
-                        connecting
-                    </span>
-                    <span *ngIf="node.connected===true">
-                        {{ node.header?.protocol | slice:0:10 }} | last block {{ node.relativeDatetime }}
-                    </span>
-                    <span *ngIf="node.connected===false">
-                        offline
-                    </span>
+                <div style="display: flex;flex-direction:row;align-items:center;">
+                    <div style="width: 30px;">
+                        <mat-icon *ngIf="node.id == settingsNodeApi.id" style="margin-right: 5px;">done</mat-icon>
+                    </div>
+                    <div style="flex-direction:column">
+
+                        {{node.name}}
+                        <mat-icon *ngIf="node.connected==='pending'" class="settings-node-status-option-icon-offline">
+                            hourglass_empty
+                        </mat-icon>
+                        <mat-icon *ngIf="node.connected===true" class="settings-node-status-option-icon">
+                            fiber_manual_record
+                        </mat-icon>
+                        <mat-icon *ngIf="node.connected===false" class="settings-node-status-option-icon-offline">
+                            fiber_manual_record
+                        </mat-icon>
+
+                        <div class="settings-node-option-status">
+                            <span *ngIf="node.connected==='pending'">
+                                connecting
+                            </span>
+                            <span *ngIf="node.connected===true">
+                                {{ node.header?.protocol | slice:0:10 }} | last block {{ node.relativeDatetime }}
+                            </span>
+                            <span *ngIf="node.connected===false">
+                                offline
+                            </span>
+                        </div>
+
+                    </div>
+
                 </div>
             </mat-option>
-
-            <!-- 
-            <span>
-                <button style="font-size: 12px;line-height: 32px;color:white; background: #323234; " mat-flat-button>
-                    START SANDBOX NODE
+            
+            <div style="background-color: #3f4043;padding:12px 10px 12px 40px;">
+                <button style="font-size: 12px;line-height: 28px;color:white; background: #525255; font-weight:300" mat-flat-button>
+                    ADD SANDBOX NODE
                 </button>
-            </span>
-            -->
+            </div>
+
+
         </mat-select>
 
         <!--

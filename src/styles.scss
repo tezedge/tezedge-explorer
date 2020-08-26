@@ -419,12 +419,17 @@ mat-form-field .mat-select-value {
     font-weight: 300;
 }
 
-// .mat-select-panel {
-//     border-radius: 4px !important;
-// }
+/* node settings */
+.mat-select-panel {
+    border-radius: 4px !important;
+}
 
 .mat-select-panel .mat-option.mat-selected:not(.mat-option-multiple) {
     color: white;
+    background-color: #3f4043;
+}
+
+.mat-select-panel .mat-option.mat-selected:not(.mat-option-multiple):hover {
     background-color: #525255;
 }
 
@@ -433,7 +438,11 @@ mat-form-field .mat-select-value {
     background-color: #525255;  
 }
 
-/* remove undeline in mat-select */
+.mat-option:not(:last-child) {
+    border-bottom: 1px rgba(255, 255, 255, 0.1) solid;
+}
+
+/* remove underline in mat-select */
 mat-form-field .mat-form-field-underline {
     background-color: initial !important;
 }

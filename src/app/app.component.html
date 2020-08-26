@@ -58,6 +58,12 @@
     <div class="app-status-bar">
         <app-settings-node>
         </app-settings-node>
+        <div style="flex-grow:1;"></div>
+        <button mat-icon-button style="margin-top: -2px;">
+            <mat-icon *ngIf="app.theme.name === 'dark'" style="font-size:12px; opacity:0.3" (click)="changeTheme('light')">wb_sunny</mat-icon>
+            <mat-icon *ngIf="app.theme.name === 'light'"style="font-size:12px; opacity:0.3" (click)="changeTheme('dark')">bedtime</mat-icon>
+        </button>
+
     </div>
 
     <!-- TODO: resolve issue with change detection -->
@@ -66,7 +72,7 @@
 
     <!-- Sidebar -->
     <mat-sidenav-container>
-        <mat-sidenav #start [mode]="app.sidenav.mode" style="min-width:230px; z-index:5 !important;top: 30px;" [style.background-color]="app.sidenav.backgroundColor" [style.color]="app.sidenav.color" [opened]="app.sidenav.isVisible" [fixedInViewport]="true" [fixedTopGap]="0" [fixedBottomGap]="0">
+        <mat-sidenav #start [mode]="app.sidenav.mode" style="min-width:230px; z-index:5 !important;top: 34px;" [style.background-color]="app.sidenav.backgroundColor" [style.color]="app.sidenav.color" [opened]="app.sidenav.isVisible" [fixedInViewport]="true" [fixedTopGap]="0" [fixedBottomGap]="0">
 
             <mat-nav-list>
 
@@ -75,10 +81,12 @@
                         TezEdge
                     </div>
                     
+                    <!--
                     <button mat-icon-button style="margin-left:110px">
                         <mat-icon *ngIf="app.theme.name === 'dark'" style="font-size:16px; opacity:0.3" (click)="changeTheme('light')">wb_sunny</mat-icon>
                         <mat-icon *ngIf="app.theme.name === 'light'"style="font-size:16px; opacity:0.3" (click)="changeTheme('dark')">bedtime</mat-icon>
-                    </button>
+                    </button> -->
+
                     <!-- <button mat-icon-button class="app-menu-toggle" *ngIf="app.sidenav.toggleButton.isVisible">
                         <mat-icon (click)="start.toggle()">menu</mat-icon>
                     </button> -->
@@ -190,13 +198,13 @@
                             Settings
                         </span>
                     </a>
-
+                    <!--
                     <span>
                         <button style="font-size: 12px;line-height: 32px;color:white; background: #323234; " mat-flat-button>
                             START SANDBOX NODE
                         </button>
                     </span>
-
+                    -->
                 </div>
 
 
@@ -229,8 +237,5 @@
         </mat-sidenav-content>
 
     </mat-sidenav-container>
-
-    <!-- <mat-toolbar class="app-status-bar">
-    </mat-toolbar> -->
 
 </div>

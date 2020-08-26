@@ -34,6 +34,7 @@ import * as fromNetworkEndpoint from './network/network-endpoint/network-endpoin
 import * as fromEndpointsAction from './endpoints/endpoints-action/endpoints-action.reducer';
 
 import * as fromChainServer from './chain/chain-server/chain-server.reducer';
+import * as fromChainConfig from './chain/chain-config/chain-config.reducer';
 
 import * as fromLogsAction from './logs/logs-action/logs-action.reducer';
 
@@ -57,6 +58,7 @@ export interface State {
     storageBlock: any;
     storageAction: any;
     chainServer: any;
+    chainConfig: any;
     routerReducer: fromRouter.RouterReducerState<RouterStateUrl>;
 }
 
@@ -77,6 +79,7 @@ export const reducers: ActionReducerMap<State> = {
     storageBlock: fromStorageBlock.reducer,
     storageAction: fromStorageAction.reducer,
     chainServer: fromChainServer.reducer,
+    chainConfig: fromChainConfig.reducer,
     routerReducer: fromRouter.routerReducer,
 };
 

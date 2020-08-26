@@ -1,1 +1,303 @@
-<p>chain-config works!</p>
+<div class="chain-config" [formGroup]="chainConfig" ngrxForm="chainConfig">
+	<!-- CHAIN SECTION -->
+	<div class="section chain-section">
+		<h5 class="section-header">CHAIN</h5>
+		<!-- Preserved Cycles -->
+		<div class="form-field">
+			<p class="from-field-title">Preserved Cycles</p>
+			<div class="inline-wrapper">
+				<mat-form-field class="small-size">
+					<input matInput #preservedCycles type="number" formControlName="preservedCycles" />
+				</mat-form-field>
+				<p class="from-field-description">Number of preserved cycles.</p>
+			</div>
+		</div>
+	</div>
+
+	<!-- BLOCKS SECTION -->
+	<div class="section blocks-section">
+		<h5 class="section-header">BLOCKS</h5>
+		<!-- Blocks per cycle -->
+		<div class="form-field">
+			<p class="from-field-title">Blocks per cycle</p>
+			<div class="inline-wrapper">
+				<mat-form-field class="small-size">
+					<input matInput #blocksPerCycle type="number" formControlName="blocksPerCycle" />
+				</mat-form-field>
+				<p class="from-field-description">Number of blocks in a cycle.</p>
+			</div>
+		</div>
+		<!-- Blocks per commitment -->
+		<div class="form-field">
+			<p class="from-field-title">Blocks per commitment</p>
+			<div class="inline-wrapper">
+				<mat-form-field class="small-size">
+					<input matInput #blocksPerCommit type="number" formControlName="blocksPerCommit" />
+				</mat-form-field>
+				<p class="from-field-description">
+					The number of blocks between 2 nonce-containing blocks for the random seed calculation (commitment == hash of
+					a nonce).
+				</p>
+			</div>
+		</div>
+		<!-- Blocks per roll snapshot -->
+		<div class="form-field">
+			<p class="from-field-title">Blocks per roll snapshot</p>
+			<div class="inline-wrapper">
+				<mat-form-field class="small-size">
+					<input matInput #blocksPerRollSnap type="number" formControlName="blocksPerRollSnap" />
+				</mat-form-field>
+				<p class="from-field-description">Number of blocks between 2 snapshot blocks.</p>
+			</div>
+		</div>
+		<!-- Blocks per voting period -->
+		<div class="form-field">
+			<p class="from-field-title">Blocks per voting period</p>
+			<div class="inline-wrapper">
+				<mat-form-field class="small-size">
+					<input matInput #blocksPerVotingPeriod type="number" formControlName="blocksPerVotingPeriod" />
+				</mat-form-field>
+				<p class="from-field-description">Number of blocks in one voting period.</p>
+			</div>
+		</div>
+
+		<!-- Time between blocks -->
+		<div class="form-field">
+			<p class="from-field-title">Time between blocks</p>
+			<div class="inline-wrapper">
+				<mat-form-field class="small-size">
+					<input matInput #timeBetweenBlocks type="text" formControlName="timeBetweenBlocks" />
+				</mat-form-field>
+				<p class="from-field-description">Used for calculating estimated timestamps.</p>
+			</div>
+		</div>
+		<!-- Endorsers per block -->
+		<div class="form-field">
+			<p class="from-field-title">Endorsers per block</p>
+			<div class="inline-wrapper">
+				<mat-form-field class="small-size">
+					<input matInput #endorsersPerBlock type="number" formControlName="endorsersPerBlock" />
+				</mat-form-field>
+				<p class="from-field-description">Number of endorser slots per block.</p>
+			</div>
+		</div>
+	</div>
+
+	<!-- SMART CONTRACT (GAS) SECTION -->
+	<div class="section smart-contract-section">
+		<h5 class="section-header">SMART CONTRACT (GAS)</h5>
+		<!-- Hard gas limit per operation -->
+		<div class="form-field">
+			<p class="from-field-title">Hard gas limit per operation</p>
+			<div class="inline-wrapper">
+				<mat-form-field class="medium-size">
+					<input matInput #hardGasLimitPerOperation type="number" formControlName="hardGasLimitPerOperation" />
+					<span matSuffix class="input-suffix">Mutez</span>
+				</mat-form-field>
+				<p class="from-field-description">Cost in Mutez, maximum gas used per operation.</p>
+			</div>
+		</div>
+		<!-- Hard gas limit per block -->
+		<div class="form-field">
+			<p class="from-field-title">Hard gas limit per block</p>
+			<div class="inline-wrapper">
+				<mat-form-field class="medium-size">
+					<input matInput #hardGasLimitPerBlock type="number" formControlName="hardGasLimitPerBlock" />
+					<span matSuffix class="input-suffix">Mutez</span>
+				</mat-form-field>
+				<p class="from-field-description">Cost in Mutez, maximum total gas usage of one block.</p>
+			</div>
+		</div>
+		<!-- Proof of work treshold -->
+		<div class="form-field">
+			<p class="from-field-title">Proof of work treshold</p>
+			<div class="inline-wrapper">
+				<mat-form-field class="small-size">
+					<input matInput #proofOfWorkTreshold type="number" formControlName="proofOfWorkTreshold" />
+				</mat-form-field>
+				<p class="from-field-description">Maximum total gas usage of one block.</p>
+			</div>
+		</div>
+		<!-- Tokens per roll -->
+		<div class="form-field">
+			<p class="from-field-title">Tokens per roll</p>
+			<div class="inline-wrapper">
+				<mat-form-field class="medium-size">
+					<input matInput #tokensPerRoll type="number" formControlName="tokensPerRoll" />
+					<span matSuffix class="input-suffix">Mutez</span>
+				</mat-form-field>
+				<p class="from-field-description">Number of mutez needed for one roll.</p>
+			</div>
+		</div>
+		<!-- Michelson maximum type size -->
+		<div class="form-field">
+			<p class="from-field-title">Michelson maximum type size</p>
+			<div class="inline-wrapper">
+				<mat-form-field class="small-size">
+					<input matInput #michelsonMaxTypeSize type="number" formControlName="michelsonMaxTypeSize" />
+				</mat-form-field>
+				<p class="from-field-description">Maximum size of a type structure in Michelson.</p>
+			</div>
+		</div>
+		<!-- Seed nonce revelation tip -->
+		<div class="form-field">
+			<p class="from-field-title">Seed nonce revelation tip</p>
+			<div class="inline-wrapper">
+				<mat-form-field class="medium-size">
+					<input matInput #seedNonceRevelationTip type="number" formControlName="seedNonceRevelationTip" />
+					<span matSuffix class="input-suffix">Mutez</span>
+				</mat-form-field>
+				<p class="from-field-description">The amount of mutez awarded for including a nonce reveal operation.</p>
+			</div>
+		</div>
+	</div>
+
+	<!-- BAKING SECTION -->
+	<div class="section baking-section">
+		<h5 class="section-header">BAKING</h5>
+		<!-- Origination size -->
+		<div class="form-field">
+			<p class="from-field-title">Origination size</p>
+			<div class="inline-wrapper">
+				<mat-form-field class="small-size">
+					<input matInput #originationSize type="number" formControlName="originationSize" />
+				</mat-form-field>
+				<p class="from-field-description">Size of the contract script of the origination operation.</p>
+			</div>
+		</div>
+		<!-- Block security deposit -->
+		<div class="form-field">
+			<p class="from-field-title">Block security deposit</p>
+			<div class="inline-wrapper">
+				<mat-form-field class="medium-size">
+					<input matInput #blockSecurityDeposit type="number" formControlName="blockSecurityDeposit" />
+					<span matSuffix class="input-suffix">Mutez</span>
+				</mat-form-field>
+				<p class="from-field-description">Cost in Mutez, deposit per baked block.</p>
+			</div>
+		</div>
+		<!-- Endorsement security deposit -->
+		<div class="form-field">
+			<p class="from-field-title">Endorsement security deposit</p>
+			<div class="inline-wrapper">
+				<mat-form-field class="medium-size">
+					<input matInput #endorsementSecurityDeposit type="number" formControlName="endorsementSecurityDeposit" />
+					<span matSuffix class="input-suffix">Mutez</span>
+				</mat-form-field>
+				<p class="from-field-description">Cost in Mutez, deposit per endorsement slot.</p>
+			</div>
+		</div>
+		<!-- Baking reward per endorsement -->
+		<div class="form-field">
+			<p class="from-field-title">Baking reward per endorsement</p>
+			<div class="inline-wrapper">
+				<mat-form-field class="medium-size">
+					<input matInput #bakingRewardPerEndorsement type="text" formControlName="bakingRewardPerEndorsement" />
+				</mat-form-field>
+				<p class="from-field-description">List of values used for block reward calculation.</p>
+			</div>
+		</div>
+		<!-- Endorsement reward -->
+		<div class="form-field">
+			<p class="from-field-title">Endorsement reward</p>
+			<div class="inline-wrapper">
+				<mat-form-field class="medium-size">
+					<input matInput #endorsementReward type="text" formControlName="endorsementReward" />
+				</mat-form-field>
+				<p class="from-field-description">List of values used for endorsement reward calculation.</p>
+			</div>
+		</div>
+		<!-- Cost per byte -->
+		<div class="form-field">
+			<p class="from-field-title">Cost per byte</p>
+			<div class="inline-wrapper">
+				<mat-form-field class="medium-size">
+					<input matInput #costPerByte type="number" formControlName="costPerByte" />
+					<span matSuffix class="input-suffix">Mutez</span>
+				</mat-form-field>
+				<p class="from-field-description">Cost in Mutez per bytes used in contracts.</p>
+			</div>
+		</div>
+		<!-- Hard storage limit per operation -->
+		<div class="form-field">
+			<p class="from-field-title">Hard storage limit per operation</p>
+			<div class="inline-wrapper">
+				<mat-form-field class="small-size">
+					<input matInput #storageLimitPerOperation type="number" formControlName="storageLimitPerOperation" />
+				</mat-form-field>
+				<p class="from-field-description">Maximum amount of bytes the storage limit of a transaction can be set to.</p>
+			</div>
+		</div>
+		<!-- Test chain duration -->
+		<div class="form-field">
+			<p class="from-field-title">Test chain duration</p>
+			<div class="inline-wrapper">
+				<mat-form-field class="medium-size">
+					<input matInput #testChainDuration type="number" formControlName="testChainDuration" />
+				</mat-form-field>
+				<p class="from-field-description">Lifetime of the testchain in seconds.</p>
+			</div>
+		</div>
+	</div>
+
+	<!-- GOVERNANCE SECTION -->
+	<div class="section governance-section">
+		<h5 class="section-header">GOVERNANCE</h5>
+		<!-- Quorum min. -->
+		<div class="form-field">
+			<p class="from-field-title">Quorum min.</p>
+			<div class="inline-wrapper">
+				<mat-form-field class="small-size">
+					<input matInput #quorumMin type="number" formControlName="quorumMin" />
+				</mat-form-field>
+				<p class="from-field-description">Minimum quorum for a voting period to be successful, expressed in percentage multiplied by 100.</p>
+			</div>
+		</div>
+		<!-- Quorum max. -->
+		<div class="form-field">
+			<p class="from-field-title">Quorum max.</p>
+			<div class="inline-wrapper">
+				<mat-form-field class="small-size">
+					<input matInput #quorumMax type="number" formControlName="quorumMax" />
+				</mat-form-field>
+				<p class="from-field-description">Maximum value a quorum can reach expressed in percentage multiplied by 100.</p>
+			</div>
+		</div>
+		<!-- Min proposal quorum -->
+		<div class="form-field">
+			<p class="from-field-title">Min proposal quorum</p>
+			<div class="inline-wrapper">
+				<mat-form-field class="small-size">
+					<input matInput #minProposalQuorum type="number" formControlName="minProposalQuorum" />
+				</mat-form-field>
+				<p class="from-field-description">Maximum value a quorum can reach expressed in percentage multiplied by 100.</p>
+			</div>
+		</div>
+		<!-- Initial endorsers -->
+		<div class="form-field">
+			<p class="from-field-title">Initial endorsers</p>
+			<div class="inline-wrapper">
+				<mat-form-field class="small-size">
+					<input matInput #initialEndorsers type="number" formControlName="initialEndorsers" />
+				</mat-form-field>
+				<p class="from-field-description">Value used in calculation of the minimal delay between baked blocks.</p>
+			</div>
+		</div>
+		<!-- Delay per missing endorsement -->
+		<div class="form-field">
+			<p class="from-field-title">Delay per missing endorsement</p>
+			<div class="inline-wrapper">
+				<mat-form-field class="small-size">
+					<input matInput #delayPerMissingEndorsement type="number" formControlName="delayPerMissingEndorsement" />
+				</mat-form-field>
+				<p class="from-field-description">Expressed in seconds. Used in calculation of the minimal delay between baked blocks.</p>
+			</div>
+		</div>
+	</div>
+
+	<!-- CONTINUE button -->
+	<button mat-button class="continue-btn" type="submit">
+		<span class="text">CONTINUE</span>
+		<img class="icon" src="../../../assets/icon/arrow-right.svg" />
+	</button>
+</div>

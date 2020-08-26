@@ -15,7 +15,17 @@ export class SandboxEffects {
         withLatestFrom(this.store, (action: any, state) => ({ action, state })),
 
         switchMap(({ action, state }) => {
-            return this.http.get(state.settingsNode.api.sandbox + '/start' )
+            console.log('[SANDBOX_NODE_START]', state.settingsNode);
+            return this.http.post(state.settingsNode.sandbox + '/start', {
+                // "config_file": "./light_node/etc/tezedge/tezedge.config",
+                // "identity_expected_pow": 0,
+                // "disable_bootstrap_lookup": true,
+                // "network": "sandbox",
+                // "peer_thresh_low": 1,
+                // "peer_thresh_high": 1,
+                // "sandbox_patch_context_json_file": "./light_node/etc/tezedge_sandbox/sandbox-patch-context.json",
+                // "protocol_runner": "./target/release/protocol-runner"
+            })
         }),
 
         // dispatch action

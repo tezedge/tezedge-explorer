@@ -24,6 +24,7 @@ export function reducer(state = initialState, action) {
                         header: {},
                     }
                 }), {}),
+                sandbox: environment.sandbox
             };
         }
 

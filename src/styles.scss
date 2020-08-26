@@ -9,7 +9,7 @@ body {
 
 .sidenav-content {
     background-color: $color-background;
-    margin-top: 30px;
+    margin-top: 34px;
 }
 
 .mat-drawer-container.mat-sidenav-container {
@@ -27,20 +27,20 @@ body {
 }
 
 .app-status-bar {
+    position: fixed;
     display: flex;
     align-items: center;
     flex-direction: row;
 
-    background: #323234;
-    color: white;
+    background: $color-border;
+    color: $color;
 
-    height: 30px;
-    width: 100%;
+    height: 28px;
+    width: calc( 100% - 8px );
     font-size: 12px !important;
     
-    // padding-left: 16px;
-    // border-radius: 4px;
-    // margin: 4px;
+    border-radius: 4px;
+    margin: 4px;
 }
 
 .app-status-bar .mat-form-field-infix {
@@ -419,12 +419,17 @@ mat-form-field .mat-select-value {
     font-weight: 300;
 }
 
-// .mat-select-panel {
-//     border-radius: 4px !important;
-// }
+/* node settings */
+.mat-select-panel {
+    border-radius: 4px !important;
+}
 
 .mat-select-panel .mat-option.mat-selected:not(.mat-option-multiple) {
     color: white;
+    background-color: #3f4043;
+}
+
+.mat-select-panel .mat-option.mat-selected:not(.mat-option-multiple):hover {
     background-color: #525255;
 }
 
@@ -433,7 +438,11 @@ mat-form-field .mat-select-value {
     background-color: #525255;  
 }
 
-/* remove undeline in mat-select */
+.mat-option:not(:last-child) {
+    border-bottom: 1px rgba(255, 255, 255, 0.1) solid;
+}
+
+/* remove underline in mat-select */
 mat-form-field .mat-form-field-underline {
     background-color: initial !important;
 }

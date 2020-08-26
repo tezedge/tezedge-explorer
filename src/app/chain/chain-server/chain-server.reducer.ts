@@ -2,7 +2,7 @@ const initialState: any = {
     form: {
         port: '',
     },
-}
+};
 
 export function reducer(state = initialState, action) {
     switch (action.type) {
@@ -10,4 +10,4 @@ export function reducer(state = initialState, action) {
         default:
             return state;
     }
-}
+};

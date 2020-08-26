@@ -1,5 +1,3 @@
-import { discardPeriodicTasks } from '@angular/core/testing';
-
 const initialState = {
 
     user: {

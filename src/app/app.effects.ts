@@ -12,7 +12,8 @@ export class AppEffects {
     @Effect()
     SettingsNodeLoadEffect$ = this.actions$.pipe(
         ofType('@ngrx/effects/init'),
-        map(() => ({ type: 'SETTINGS_NODE_LOAD' }))
+        // get current url 
+        map(() => ({ type: 'SETTINGS_NODE_LOAD', payload: window.location.hostname }))
     );
 
     // initialize app features

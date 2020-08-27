@@ -37,10 +37,10 @@ import { StorageSearchEffects } from './storage/storage-search/storage-search.ef
 
 import { SettingsEffects } from './settings/settings.effects';
 import { SettingsNodeEffects } from './settings/settings-node/settings-node.effects';
+import { SandboxEffects } from './sandbox/sandbox.effects';
 
 import { NetworkComponent } from './network/network.component';
 import { NetworkPeersComponent } from './network/network-peers/network-peers.component';
-
 
 import { MatAutocompleteModule } from '@angular/material/autocomplete'; 
 import { MatButtonModule } from '@angular/material/button';
@@ -61,6 +61,7 @@ import { MatCardModule } from '@angular/material/card';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSelectModule } from '@angular/material/select';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 
 import { NetworkStatsComponent } from './network/network-stats/network-stats.component';
 import { NetworkHistoryComponent } from './network/network-history/network-history.component';
@@ -89,15 +90,18 @@ import { SettingsNodeComponent } from './settings/settings-node/settings-node.co
 import { LogsActionComponent } from './logs/logs-action/logs-action.component';
 import { LogsSearchComponent } from './logs/logs-search/logs-search.component';
 import { LogsComponent } from './logs/logs.component';
+
 import { ChainComponent } from './chain/chain.component';
 import { ChainServerComponent } from './chain/chain-server/chain-server.component';
 import { ChainConfigComponent } from './chain/chain-config/chain-config.component';
 import { ChainWalletsComponent } from './chain/chain-wallets/chain-wallets.component';
 import { ChainBakingComponent } from './chain/chain-baking/chain-baking.component';
 import { ChainFinishComponent } from './chain/chain-finish/chain-finish.component';
-import { ChainOtherComponent } from './chain/chain-other/chain-other.component';
-import { NgrxFormDirective } from './shared/ngrx-form.directive';
 
+import { ChainOtherComponent } from './chain/chain-other/chain-other.component';
+import { SandboxComponent } from './sandbox/sandbox.component';
+
+import { NgrxFormDirective } from './shared/ngrx-form.directive';
 
 @NgModule({
   declarations: [
@@ -132,7 +136,8 @@ import { NgrxFormDirective } from './shared/ngrx-form.directive';
     ChainBakingComponent,
     ChainFinishComponent,
     ChainOtherComponent,
-    NgrxFormDirective
+    NgrxFormDirective,
+    SandboxComponent
   ],
   imports: [
     BrowserModule,
@@ -173,6 +178,7 @@ import { NgrxFormDirective } from './shared/ngrx-form.directive';
       LogsActionEffects,
       SettingsEffects,
       SettingsNodeEffects,
+      SandboxEffects,
     ]),
 
     // https://github.com/zalmoxisus/redux-devtools-extension
@@ -200,7 +206,7 @@ import { NgrxFormDirective } from './shared/ngrx-form.directive';
     // MatRadioModule,
     MatSelectModule,
     MatSidenavModule,
-    // MatSlideToggleModule,
+    MatSlideToggleModule,
     // MatSliderModule,
     MatSnackBarModule,
     // MatSortModule,

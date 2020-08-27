@@ -50,18 +50,25 @@
         color: white !important;
     }
 
+    .theme-switcher:hover {
+        background:  #ffffff20;
+    }
+
 </style>
 
 
 <div class="sidenav-area" style="height: 100%;">
 
-    <div class="app-status-bar">
+    <div class="app-status-bar" [class.app-status-bar-sanbox]="app.statusbar.sandbox" >
+
         <app-settings-node>
         </app-settings-node>
+
         <div style="flex-grow:1;"></div>
-        <button mat-icon-button style="margin-top: -2px;">
+
+        <button class="theme-switcher" mat-button style="font-size: 12px;font-weight: 300; height: 28px; min-width: 24px; padding: 0px 6px 0px 6px;">
             <mat-icon *ngIf="app.theme.name === 'dark'" style="font-size:12px; opacity:0.3" (click)="changeTheme('light')">wb_sunny</mat-icon>
-            <mat-icon *ngIf="app.theme.name === 'light'"style="font-size:12px; opacity:0.3" (click)="changeTheme('dark')">bedtime</mat-icon>
+            <mat-icon *ngIf="app.theme.name === 'light'" style="font-size:12px; opacity:0.3" (click)="changeTheme('dark')">bedtime</mat-icon>
         </button>
 
     </div>

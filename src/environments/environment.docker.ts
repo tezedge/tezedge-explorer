@@ -8,6 +8,7 @@ export const environment = {
         debugger: 'http://127.0.0.1:17732',
         ws: 'ws://127.0.0.1:4927',
       },
-    ]
+    ],
+    sandbox: 'http://127.0.0.1:3030', 
   };
   

@@ -65,6 +65,80 @@ export class SandboxEffects {
         })
     );
 
+
+    @Effect()
+    SandboxWalletInit$ = this.actions$.pipe(
+        ofType('SANDBOX_WALLET_INIT'),
+
+        // merge state
+        withLatestFrom(this.store, (action: any, state) => ({ action, state })),
+
+        switchMap(({ action, state }) => {
+            console.log('[SANDBOX_WALLET_INIT]', state.settingsNode);
+            return this.http.get(state.settingsNode.sandbox + '/init_client')
+        }),
+
+        // dispatch action
+        map((payload) => ({ type: 'SANDBOX_WALLET_INIT_SUCCESS', payload: payload })),
+        catchError((error, caught) => {
+            console.error(error)
+            this.store.dispatch({
+                type: 'SANDBOX_WALLET_INIT_ERROR',
+                payload: error,
+            });
+            return caught;
+        })
+    );
+
+    @Effect()
+    SandboxActivateProtocol$ = this.actions$.pipe(
+        ofType('SANDBOX_ACTIVATE_PROTOCOL'),
+
+        // merge state
+        withLatestFrom(this.store, (action: any, state) => ({ action, state })),
+
+        switchMap(({ action, state }) => {
+            console.log('[SANDBOX_ACTIVATE_PROTOCOL]', state.settingsNode);
+            return this.http.get(state.settingsNode.sandbox + '/activate_protocol')
+        }),
+
+        // dispatch action
+        map((payload) => ({ type: 'SANDBOX_ACTIVATE_PROTOCOL_SUCCESS', payload: payload })),
+        catchError((error, caught) => {
+            console.error(error)
+            this.store.dispatch({
+                type: 'SANDBOX_ACTIVATE_PROTOCOL_ERROR',
+                payload: error,
+            });
+            return caught;
+        })
+    );
+
+    @Effect()
+    SandboxBakeBLock$ = this.actions$.pipe(
+        ofType('SANDBOX_BAKE_BLOCK'),
+
+        // merge state
+        withLatestFrom(this.store, (action: any, state) => ({ action, state })),
+
+        switchMap(({ action, state }) => {
+            console.log('[SANDBOX_BAKE_BLOCK]', state.settingsNode);
+            return this.http.get(state.settingsNode.sandbox + '/bake')
+        }),
+
+        // dispatch action
+        map((payload) => ({ type: 'SANDBOX_BAKE_BLOCK_SUCCESS', payload: payload })),
+        catchError((error, caught) => {
+            console.error(error)
+            this.store.dispatch({
+                type: 'SANDBOX_BAKE_BLOCK_ERROR',
+                payload: error,
+            });
+            return caught;
+        })
+    );
+
+
     constructor(
         private http: HttpClient,
         private actions$: Actions,

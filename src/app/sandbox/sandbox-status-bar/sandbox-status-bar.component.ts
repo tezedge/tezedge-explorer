@@ -31,10 +31,10 @@ export class SandboxStatusBarComponent implements OnInit {
 
   }
 
-  sandboxBake() {
+  sandboxBakeBlock() {
 
     this.store.dispatch({
-      type: 'SANDBOX_BAKE',
+      type: 'SANDBOX_BAKE_BLOCK',
     });
 
   }

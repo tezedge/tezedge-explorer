@@ -8,6 +8,7 @@ import { Store } from '@ngrx/store'
 })
 export class SettingsNodeComponent implements OnInit {
 
+  public app;
   public settingsNodeApi;
   public settingsNodeEntities;
 
@@ -24,6 +25,12 @@ export class SettingsNodeComponent implements OnInit {
       .subscribe(state => {
         this.settingsNodeApi = state.entities[state.api.id];
         this.settingsNodeEntities = state.ids.map(id => state.entities[id]);
+      });
+
+    // select store data
+    this.store.select('app')
+      .subscribe(data => {
+        this.app = data;
       });
 
   }
@@ -58,4 +65,13 @@ export class SettingsNodeComponent implements OnInit {
 
   }
 
+  nodeSandboxStop() {
+
+    // stop sandbox node 
+    this.store.dispatch({
+      type: 'SANDBOX_NODE_STOP',
+      payload: '',
+    });
+
+  }
 }

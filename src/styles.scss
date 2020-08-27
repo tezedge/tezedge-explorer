@@ -47,6 +47,15 @@ body {
     display: flex;
 }
 
+.app-status-bar-sanbox {
+    background: #8C6141;
+    color: white;
+}
+
+.mat-button-focus-overlay {
+    background-color: white;
+}
+
 /* table */
 table {
     width: 100%;
@@ -422,21 +431,21 @@ mat-form-field .mat-select-value {
 /* node settings */
 .mat-select-panel {
     border-radius: 4px !important;
-    background-color: #333334;
+    background-color: #1b1b1d;
 }
 
 .mat-select-panel .mat-option.mat-selected:not(.mat-option-multiple) {
     color: white;
-    background-color: #333334;
+    background-color: #1b1b1d;
 }
 
 .mat-select-panel .mat-option.mat-selected:not(.mat-option-multiple):hover {
-    background-color: #525255;
+    background-color: #333334;
 }
 
 .mat-option:hover:not(.mat-option-disabled), .mat-option:focus:not(.mat-option-disabled) {
     color: white;
-    background-color: #525255;  
+    background-color: #333334;  
 }
 
 .mat-option:not(:last-child) {

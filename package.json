@@ -4,7 +4,7 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "start:prod": "ng serve --prod --port 80 --host 0.0.0.0",
+    "start:sandbox": "ng serve --prod --port 80 --host sandbox.dev.tezedge.com",
     "build": "node --max_old_space_size=8192 ./node_modules/@angular/cli/bin/ng build",
     "build:prod": "node --max_old_space_size=8192 ./node_modules/@angular/cli/bin/ng build --prod",
     "build:docker": "node --max_old_space_size=8192 ./node_modules/@angular/cli/bin/ng build --configuration=docker",

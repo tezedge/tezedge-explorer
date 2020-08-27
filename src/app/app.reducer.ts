@@ -1,5 +1,3 @@
-import { discardPeriodicTasks } from '@angular/core/testing';
-
 const initialState = {
 
     user: {
@@ -51,6 +49,9 @@ const initialState = {
     },
     theme: {
         name: 'dark',
+    },
+    statusbar: {
+        sandbox: false,
     }
 
 };
@@ -127,6 +128,24 @@ export function reducer(state = initialState, action) {
             };
         }
 
+        case 'SANDBOX_NODE_START': {
+            return {
+                ...state,
+                statusbar: {
+                    sandbox: true,
+                }
+            }
+        }
+
+        case 'SANDBOX_NODE_STOP': {
+            return {
+                ...state,
+                statusbar: {
+                    sandbox: false,
+                }
+            }
+        }
+
         // probress bar show
         case 'NETWORK_ACTION_LOAD':
         case 'STORAGE_BLOCK_LOAD':
@@ -155,6 +174,13 @@ export function reducer(state = initialState, action) {
                     counter: state.progressbar.counter - 1,
                 }
             };
+        }
+
+
+        case 'NETWORK_ACTION_LOAD_ERROR':{
+            return {
+
+            }
         }
 
         default:

@@ -14,15 +14,19 @@
     color: #ae4d6861
 }
 
-.settings-node-expand-input { 
+.settings-node-select { 
     width: 198px;
+    line-height: 28px;
+    padding-left: 14px;
+    border-radius: 4px;
 }
 
-.settings-node-expand-icon { 
-    font-size: 16px;
-    height: auto;
-    width: auto;
-    color:#c4cfdc
+.settings-node-select:hover { 
+    background-color: #ffffff20;
+}
+
+.mat-button:hover { 
+    background-color: #ffffff20;
 }
 
 .settings-node-status-option-icon {
@@ -42,9 +46,9 @@
 }
 
 .settings-node-option {
-    height: 50px !important;
+    height: 46px !important;
     padding: 3px 25px 3px 10px;
-    background-color: #3F3F43;
+    background-color: #1b1b1d;
     color: white;
 }
 

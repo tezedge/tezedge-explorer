@@ -27,20 +27,14 @@ export const environment = {
       ws: false,
     },
     // {
-    //   id: 'ocaml-carthage-tezedge-debuger',
-    //   name: 'debugger.ocaml.carthage.tezedge.com',
-    //   http: 'http://116.202.246.107:18732',
-    //   debugger: 'http://116.202.246.107:17732',
-    //   ws: false,
-    // },
-    // {
     //   id: 'ocaml-mainnet-simplestaking-com',
     //   name: 'ocaml.mainnet.simplestaking.com',
     //   http: 'https://mainnet.simplestaking.com:3000',
     //   debugger: false,
     //   ws: false,
     // }
-  ]
+  ],
+  sandbox: 'http://sandbox.dev.tezedge.com:3030', 
 };
 
 /*

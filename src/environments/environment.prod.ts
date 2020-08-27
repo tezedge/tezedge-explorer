@@ -43,5 +43,6 @@ export const environment = {
     //   debugger: false,
     //   ws: false,
     // }
-  ]
+  ],
+  sandbox: 'http://sandbox.dev.tezedge.com:3030', 
 };

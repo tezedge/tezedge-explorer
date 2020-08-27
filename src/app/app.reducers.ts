@@ -41,11 +41,11 @@ import * as fromLogsAction from './logs/logs-action/logs-action.reducer';
 import * as fromStorageBlock from './storage/storage-block/storage-block.reducer';
 import * as fromStorageAction from './storage/storage-action/storage-action.reducer';
 
+import * as fromSandbox from './sandbox/sandbox.reducer';
+
 // state interface
 export interface State {
     app: any;
-    settings: any;
-    settingsNode: any;
     monitoring: any;
     networkAction: any;
     networkActionDetail: any;
@@ -59,14 +59,15 @@ export interface State {
     storageAction: any;
     chainServer: any;
     chainConfig: any;
+    settings: any;
+    settingsNode: any;
+    sandbox: any;
     routerReducer: fromRouter.RouterReducerState<RouterStateUrl>;
 }
 
 // state
 export const reducers: ActionReducerMap<State> = {
     app: fromApp.reducer,
-    settings: fromSettings.reducer,
-    settingsNode: fromSettingsNode.reducer,
     monitoring: fromMonitoring.reducer,
     networkAction: fromNetworkAction.reducer,
     networkActionDetail: fromNetworkActionDetail.reducer,
@@ -80,6 +81,9 @@ export const reducers: ActionReducerMap<State> = {
     storageAction: fromStorageAction.reducer,
     chainServer: fromChainServer.reducer,
     chainConfig: fromChainConfig.reducer,
+    sandbox: fromSandbox.reducer,
+    settings: fromSettings.reducer,
+    settingsNode: fromSettingsNode.reducer,
     routerReducer: fromRouter.routerReducer,
 };
 

@@ -1,8 +1,8 @@
 <div style="opacity: 0.8;">
 
-    <mat-form-field class="settings-node-expand-input" style="line-height: 28px; padding-left: 14px; border-radius: 4px;">
+    <mat-form-field class="settings-node-select">
         
-        <mat-select #settingsNode [value]="settingsNodeApi.id" (click)="nodeSelectOpen()" disableOptionCentering>
+        <mat-select #settingsNode [value]="settingsNodeApi.id" (click)="nodeSelectOpen()" disableOptionCentering panelClass="settings-node">
 
             <mat-select-trigger style="display: flex; align-items: center;">
                 {{ settingsNodeApi.name }}
@@ -57,71 +57,13 @@
                 </button>
             </div>
 
-
         </mat-select>
 
-        <!--
-        <mat-icon class="settings-node-expand-icon">expand_more</mat-icon>
-        -->
     </mat-form-field>
 
     <button mat-button style="font-size: 12px;font-weight: 300;line-height: 28px; padding: 0px 12px 0px 12px;"
         (click)="nodeSandboxStop();" *ngIf="app.statusbar.sandbox">
-        <!-- <mat-slide-toggle [checked]="true" [disabled]="true" color="warn">
-        </mat-slide-toggle> -->
         STOP SANDBOX NODE
     </button>
 
-
 </div>
-
-
-<!--
-<div class="settings-node">
-
-    <div class="settings-node-status">
-        SERVER
-        
-        <mat-icon *ngIf="settingsNodeApi?.connected===true" class="settings-node-status-icon">
-            fiber_manual_record
-        </mat-icon>
-        <mat-icon *ngIf="settingsNodeApi?.connected===false" class="settings-node-status-icon-offline">
-            fiber_manual_record
-        </mat-icon>
-    </div> 
-    
-    <mat-form-field class="settings-node-expand-input">
-        <mat-select [value]="settingsNodeApi.id" (click)="nodeSelectOpen()">
-            <mat-select-trigger>
-                {{ settingsNodeApi.name }}
-            </mat-select-trigger>
-            <mat-option class="settings-node-option" *ngFor="let node of settingsNodeEntities" [value]="node.id" (click)="nodeSelectChange(node.id)">
-                <div>
-                    <mat-icon *ngIf="node.connected==='pending'" class="settings-node-status-option-icon-offline">
-                        hourglass_empty
-                    </mat-icon>
-                    <mat-icon *ngIf="node.connected===true" class="settings-node-status-option-icon">
-                        fiber_manual_record
-                    </mat-icon>
-                    <mat-icon *ngIf="node.connected===false" class="settings-node-status-option-icon-offline">
-                        fiber_manual_record
-                    </mat-icon>
-                    {{node.name}}
-                </div>
-                <div class="settings-node-option-status" >
-                    <span *ngIf="node.connected==='pending'">
-                        connecting
-                    </span>
-                    <span *ngIf="node.connected===true">
-                        {{ node.header?.protocol | slice:0:10 }} | last block {{ node.relativeDatetime }}
-                    </span>
-                    <span *ngIf="node.connected===false">
-                        offline
-                    </span>
-                </div>
-            </mat-option>
-        </mat-select>
-        <mat-icon class="settings-node-expand-icon">expand_more</mat-icon>
-    </mat-form-field>
-</div>
--->

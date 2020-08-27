@@ -1,0 +1,11 @@
+.mat-button {
+    font-size: 12px;
+    font-weight: 300;
+    line-height: 28px; 
+    padding: 0px 12px 0px 12px;
+    opacity:0.9;
+}
+
+.mat-button:hover {
+    background:  #ffffff20;
+}

@@ -64,6 +64,9 @@
         <app-settings-node>
         </app-settings-node>
 
+        <app-sandbox-status-bar *ngIf="app.statusbar.sandbox">
+        </app-sandbox-status-bar>
+        
         <div style="flex-grow:1;"></div>
 
         <button class="theme-switcher" mat-button style="font-size: 12px;font-weight: 300; height: 28px; min-width: 24px; padding: 0px 6px 0px 6px;">

@@ -103,6 +103,7 @@ import { ChainOtherComponent } from './chain/chain-other/chain-other.component';
 import { SandboxComponent } from './sandbox/sandbox.component';
 
 import { NgrxFormDirective } from './shared/ngrx-form.directive';
+import { SandboxStatusBarComponent } from './sandbox/sandbox-status-bar/sandbox-status-bar.component';
 
 @NgModule({
   declarations: [
@@ -138,7 +139,8 @@ import { NgrxFormDirective } from './shared/ngrx-form.directive';
     ChainFinishComponent,
     ChainOtherComponent,
     NgrxFormDirective,
-    SandboxComponent
+    SandboxComponent,
+    SandboxStatusBarComponent
   ],
   imports: [
     BrowserModule,

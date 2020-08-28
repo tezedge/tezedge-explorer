@@ -497,7 +497,34 @@ mat-form-field .mat-select-arrow {
 				background-color: $color-focus;
 			}
 		}
-	}
+    }
+
+/* Change color of mat-stepper (sandbox) */
+.mat-horizontal-stepper-header-container{
+    .mat-step-header {
+        .mat-step-label{
+            color: $color;
+            opacity: 0.6;
+            &.mat-step-label-active{
+                color: $color;
+                opacity: 1;
+            }
+        }
+        .mat-step-icon {
+            background-color: $color-border;
+            color: $color;
+            opacity: 0.6;
+            &.mat-step-icon-selected {
+                background: #204e8a;
+                color: $color;
+                opacity: 1;
+            }
+        }
+    }
+    .mat-stepper-horizontal-line{
+        border-top-color: $color-border;
+    }
+}
 
 .mat-form-field-wrapper, .mat-form-field-infix {
     padding: 0px !important;
@@ -852,7 +879,8 @@ ngx-json-viewer .segment .segment-main .segment-key {
 }
 
 
-.chain {
+.chain, 
+.sandbox {
     color: $color;
 }
 
@@ -881,7 +909,8 @@ ngx-json-viewer .segment .segment-main .segment-key {
 
 
 // from fields styles 
-.chain mat-form-field {
+.chain mat-form-field,
+.sandbox mat-form-field {
     color: $color;
     background: $color-border;
     height: 34px;

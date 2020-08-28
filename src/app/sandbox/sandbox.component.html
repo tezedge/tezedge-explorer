@@ -1,1 +1,43 @@
-<p>sandbox works!</p>
+<div class="sandbox">
+  <mat-horizontal-stepper [linear]="true" #stepper>
+    <mat-step label="SERVER">
+      <div class="step-form-wrapper">
+        <app-chain-server></app-chain-server>
+      </div>
+    </mat-step>
+    <mat-step label="CHAIN">
+      <div class="step-form-wrapper">
+        <app-chain-config></app-chain-config>
+      </div>
+    </mat-step>
+    <mat-step label="WALLETS">
+      <div class="step-form-wrapper">
+        <app-chain-wallets></app-chain-wallets>
+      </div>
+    </mat-step>
+    <mat-step label="BAKING">
+      <div class="step-form-wrapper">
+        <app-chain-baking></app-chain-baking>
+      </div>
+    </mat-step>
+    <mat-step label="OTHER">
+      <div class="step-form-wrapper">
+        <app-chain-other></app-chain-other>
+      </div>
+    </mat-step>
+    <mat-step label="FINISH">
+      <div class="step-form-wrapper">
+        <app-chain-finish></app-chain-finish>
+      </div>
+    </mat-step>
+  </mat-horizontal-stepper>
+
+  <div class="stepper-footer">
+    <div class="footer-container">
+      <button mat-button (click)="nextStep(stepper)" class="continue-btn">
+        <span class="text">CONTINUE</span>
+        <img class="icon" src="../../../assets/icon/arrow-right.svg" />
+      </button>
+    </div>
+  </div>
+</div>

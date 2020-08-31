@@ -526,6 +526,46 @@ mat-form-field .mat-select-arrow {
     }
 }
 
+/* Style for mat-radio-button */
+.mat-radio-button{
+    display: block !important;
+
+    &:not(:last-child){
+        margin-bottom: 16px;    
+    }
+    .mat-radio-label{
+        .mat-radio-container{
+            .mat-radio-outer-circle {
+                border-color: $color;
+                opacity: 0.6;
+            }
+        }
+        .mat-radio-label-content{
+            font-size: 12px;
+            opacity: 0.6;
+            line-height: 14px;
+        }
+    }
+
+    &.mat-radio-checked{
+        .mat-radio-label{
+            .mat-radio-container{
+                .mat-radio-outer-circle {
+                    border-color: $color;
+                    opacity: 1;
+                }
+                .mat-radio-inner-circle {
+                    background-color: $color;
+                    opacity: 1;
+                }
+            }
+            .mat-radio-label-content{
+                opacity: 1;
+            }
+        }
+    }
+}
+
 .mat-form-field-wrapper, .mat-form-field-infix {
     padding: 0px !important;
     border: 0px !important;
@@ -916,6 +956,45 @@ ngx-json-viewer .segment .segment-main .segment-key {
     height: 34px;
     border-radius: 4px;
     padding-left: 10px;
+}
+
+.sandbox .mat-button{
+    color: $color;
+    background: $color-border;
+}
+
+.chain .section,
+.sandbox .section{
+    border: 1px solid $color-border;
+}
+
+.mat-expansion-panel {
+    &.warning{  
+        background-color: fade-out($color-highlight-red, 0.5);  
+        color: #fff;
+        border: 1px solid $color;
+        border-radius: 4px;
+
+        .mat-expansion-panel-header{
+            border-bottom: 1px solid $color;
+            border-radius: 0;
+            padding: 16px 16px 8px 16px;
+            height: 32px !important;
+
+            .mat-expansion-panel-header-title {
+                color: #fff;
+                opacity: 1;
+
+                .icon{
+                    margin-right: 8px;
+                }
+            }
+        }
+        .mat-expansion-panel-body{
+            color: fade-out(#fff, 0.4);
+            padding: 0 16px 16px;
+        }
+    }
 }
 
 .form-field {

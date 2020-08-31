@@ -65,8 +65,11 @@
 		<div class="form-field">
 			<p class="from-field-title">Time between blocks</p>
 			<div class="inline-wrapper">
+				<mat-form-field class="small-size input-list">
+					<input matInput #timeBetweenBlocks1 type="text" formControlName="timeBetweenBlocks1" />
+				</mat-form-field>
 				<mat-form-field class="small-size">
-					<input matInput #timeBetweenBlocks type="text" formControlName="timeBetweenBlocks" />
+					<input matInput #timeBetweenBlocks2 type="text" formControlName="timeBetweenBlocks2" />
 				</mat-form-field>
 				<p class="from-field-description">Used for calculating estimated timestamps.</p>
 			</div>
@@ -191,8 +194,11 @@
 		<div class="form-field">
 			<p class="from-field-title">Baking reward per endorsement</p>
 			<div class="inline-wrapper">
+				<mat-form-field class="medium-size input-list">
+					<input matInput #bakingRewardPerEndorsement1 type="text" formControlName="bakingRewardPerEndorsement1" />
+				</mat-form-field>
 				<mat-form-field class="medium-size">
-					<input matInput #bakingRewardPerEndorsement type="text" formControlName="bakingRewardPerEndorsement" />
+					<input matInput #bakingRewardPerEndorsement2 type="text" formControlName="bakingRewardPerEndorsement2" />
 				</mat-form-field>
 				<p class="from-field-description">List of values used for block reward calculation.</p>
 			</div>
@@ -201,8 +207,11 @@
 		<div class="form-field">
 			<p class="from-field-title">Endorsement reward</p>
 			<div class="inline-wrapper">
+				<mat-form-field class="medium-size input-list">
+					<input matInput #endorsementReward1 type="text" formControlName="endorsementReward1" />
+				</mat-form-field>
 				<mat-form-field class="medium-size">
-					<input matInput #endorsementReward type="text" formControlName="endorsementReward" />
+					<input matInput #endorsementReward2 type="text" formControlName="endorsementReward2" />
 				</mat-form-field>
 				<p class="from-field-description">List of values used for endorsement reward calculation.</p>
 			</div>

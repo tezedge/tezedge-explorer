@@ -1,4 +1,20 @@
 <div class="sandbox">
+  <div class="sandbox-header">
+    <div class="header-container">
+      <button mat-button class="left" (click)="closePage()">
+        <img class="icon" src="../../../assets/icon/times.svg" />
+        <span class="text">CLOSE</span>
+      </button>
+      <button mat-button class="right" (click)="uploadConfig()">
+        <span class="text">UPLOAD CONFIG FILE</span>
+      </button>
+    </div>
+  </div>
+
+  <div class="page-title">
+    NEW CHAIN CONFIG
+  </div>
+
   <mat-horizontal-stepper [linear]="true" #stepper>
     <mat-step label="SERVER">
       <div class="step-form-wrapper">
@@ -32,7 +48,7 @@
     </mat-step>
   </mat-horizontal-stepper>
 
-  <div class="stepper-footer">
+  <div class="sandbox-footer">
     <div class="footer-container">
       <button mat-button (click)="nextStep(stepper)" class="continue-btn">
         <span class="text">CONTINUE</span>

@@ -183,6 +183,27 @@ export function reducer(state = initialState, action) {
             }
         }
 
+        case 'SIDENAV_VISIBILITY_CHANGE': {
+            return {
+                ...state,
+                sidenav: {
+                    ...state.sidenav,
+                    isVisible: action.payload,
+                }
+            };
+        }
+
+
+        case 'TOOLBAR_VISIBILITY_CHANGE': {
+            return {
+                ...state,
+                toolbar: {
+                    ...state.toolbar,
+                    isVisible: action.payload,
+                }
+            };
+        }
+
         default:
             return state;
 

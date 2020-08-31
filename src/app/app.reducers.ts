@@ -35,6 +35,7 @@ import * as fromEndpointsAction from './endpoints/endpoints-action/endpoints-act
 
 import * as fromChainServer from './chain/chain-server/chain-server.reducer';
 import * as fromChainConfig from './chain/chain-config/chain-config.reducer';
+import * as fromChainFinish from './chain/chain-finish/chain-finish.reducer';
 
 import * as fromLogsAction from './logs/logs-action/logs-action.reducer';
 
@@ -59,6 +60,7 @@ export interface State {
     storageAction: any;
     chainServer: any;
     chainConfig: any;
+    chainFinish: any;
     settings: any;
     settingsNode: any;
     sandbox: any;
@@ -81,6 +83,7 @@ export const reducers: ActionReducerMap<State> = {
     storageAction: fromStorageAction.reducer,
     chainServer: fromChainServer.reducer,
     chainConfig: fromChainConfig.reducer,
+    chainFinish: fromChainFinish.reducer,
     sandbox: fromSandbox.reducer,
     settings: fromSettings.reducer,
     settingsNode: fromSettingsNode.reducer,

@@ -1,1 +1,27 @@
-<p>chain-finish works!</p>
+<div class="chain-finish" [formGroup]="chainFinish" ngrxForm="chainFinish">
+  <mat-expansion-panel hideToggle expanded class="warning">
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+        <img class="icon" src="../../assets/icon/warning.svg" />
+        <span class="text">Warning</span>
+      </mat-panel-title>
+    </mat-expansion-panel-header>
+    <p>Data stored in local cache, when clean history data lost</p>
+    <p>Please, save your config , so you can restore your settings later</p>
+
+    <button mat-button>
+      <img class="icon" src="../../../assets/icon/file-download-regular.svg" />
+      <span class="text">SAVE CONFIG FILE</span>
+    </button>
+  </mat-expansion-panel>
+
+  <div class="form-field">
+    <p class="from-field-title">GOOGLE ANALYTICS</p>
+    <p class="from-field-description">Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto</p>
+
+    <div class="inline-wrapper">
+      <mat-slide-toggle #googleAnalytics formControlName="googleAnalytics"> </mat-slide-toggle>
+      <p class="from-field-description">{{ googleAnalytics.checked ? 'ENABLED' : 'DISABLED' }}</p>
+    </div>
+  </div>
+</div>

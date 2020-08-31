@@ -15,7 +15,7 @@ export class ChainServerComponent implements OnInit {
 	ngOnInit(): void {
 		// create form group
 		this.chainServer = this.fb.group({
-			hostname: ['', [Validators.required]],
+			hostname: [{ value: '', disabled: true }, [Validators.required]],
 			bootstrapDbPath: ['', [Validators.required]],
 			maxThreads: [''],
 			maxOpenFiles: [''],

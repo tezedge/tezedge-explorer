@@ -1,0 +1,27 @@
+.chain-finish{
+
+  ::ng-deep .mat-expansion-panel {
+    .mat-expansion-panel-body{
+      .mat-button{
+        background-color: fade-out(#fff, 0.8);
+
+        .icon{
+          margin-right: 8px;
+        }
+        .text{
+          color: #fff;
+        }
+      }
+    }
+  }
+
+  .inline-wrapper {
+    display: inline-flex;
+    align-items: center;
+
+    .from-field-description {
+      margin: 0;
+      margin-left: 10px;
+    }
+  }
+}

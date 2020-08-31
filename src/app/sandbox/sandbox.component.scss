@@ -1,5 +1,40 @@
 .sandbox {
   display: flex;
+  flex-direction: column;
+
+  .sandbox-header{
+    position: fixed;
+    top: 0;
+    width: 100vw;
+
+    .header-container{
+      padding: 16px;
+    
+      .mat-button{
+        line-height: normal;
+        padding: 4px 8px;
+
+        &.right{
+          float: right;
+        }
+        
+        .icon{ 
+          margin-right: 10px;
+        }
+      }
+    }
+  }
+
+  .page-title{
+    margin-left: auto;
+    margin-right: auto;
+    max-width: 800px;
+    width: 100%;
+    text-align: center;
+    font-size: 20px;
+    padding-top: 32px;
+    padding-bottom: 16px;
+  }
 
   .mat-stepper-horizontal {
     margin-left: auto;
@@ -13,7 +48,7 @@
     }
   }
 
-  .stepper-footer{
+  .sandbox-footer{
     position: fixed;
     bottom: 0;
     width: 100%;
@@ -32,11 +67,10 @@
       .continue-btn {
         background-color: #204e8a;
         color: #fff;
+        line-height: normal;
         padding: 6px 8px;
 
         ::ng-deep .mat-button-wrapper {
-          line-height: normal;
-
           .text {
             margin-right: 10px;
           }

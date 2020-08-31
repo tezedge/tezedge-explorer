@@ -6,10 +6,7 @@
 		<div class="form-field">
 			<p class="from-field-title">Hostname</p>
 			<mat-form-field class="half-size">
-				<mat-select #hostname formControlName="hostname">
-					<mat-option value="127.0.0.1">127.0.0.1</mat-option>
-					<mat-option value="216.58.210.238">216.58.210.238</mat-option>
-				</mat-select>
+				<input matInput #hostname type="text" formControlName="hostname"/>
 			</mat-form-field>
 		</div>
 	</div>
@@ -116,11 +113,18 @@
 		<div class="form-field">
 			<p class="from-field-title">Network</p>
 			<p class="from-field-description">
-				Specify the Tezos environment for this node. Accepted values are: `alphanet, babylonnet, babylon, mainnet or
-				zeronet`, where `babylon` and `babylonnet` refer to same environment.
+				Specify the Tezos environment for this node.
+				Note:  ‘babylon’ and ‘babylonnet’ refer to same environment.
 			</p>
 			<mat-form-field class="half-size">
-				<input matInput #network type="text" formControlName="network" />
+				<mat-select #network formControlName="network">
+					<mat-option value="carthagenet">carthagenet</mat-option>
+					<mat-option value="alphanet">alphanet</mat-option>
+					<mat-option value="babylonnet">babylonnet</mat-option>
+					<mat-option value="babylon">babylon</mat-option>
+					<mat-option value="mainnet">mainnet</mat-option>
+					<mat-option value="zeronet">zeronet</mat-option>
+				</mat-select>
 			</mat-form-field>
 		</div>
 
@@ -211,14 +215,14 @@
 			</mat-form-field>
 		</div>
 
-		<!-- Disable Bootstrap DNS lookup -->
+		<!-- Bootstrap DNS lookup -->
 		<div class="form-field">
-			<p class="from-field-title">Disable Bootstrap DNS lookup</p>
+			<p class="from-field-title">Bootstrap DNS lookup</p>
 			<div class="inline-wrapper">
-				<mat-slide-toggle #disableBootstrapDnsLookup formControlName="disableBootstrapDnsLookup"> </mat-slide-toggle>
-				<p class="from-field-description">
-					Disables DNS lookup to get peers to bootstrap the network from. Default: false
-				</p>
+				<mat-radio-group #disableBootstrapDnsLookup formControlName="disableBootstrapDnsLookup">
+					<mat-radio-button [value]="true">Disabled Bootstrap DNS</mat-radio-button>
+					<mat-radio-button [value]="false">Enabled Bootstrap DNS</mat-radio-button>
+				</mat-radio-group>
 			</div>
 		</div>
 

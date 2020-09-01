@@ -16,44 +16,52 @@
   </div>
 
   <mat-horizontal-stepper [linear]="true" #stepper>
-    <mat-step label="SERVER">
+    <mat-step label="SERVER" [stepControl]="chainServer?.formGroup">
       <div class="step-form-wrapper">
         <app-chain-server></app-chain-server>
+        <ng-template [ngTemplateOutlet]="sandboxFooter"></ng-template>
       </div>
     </mat-step>
-    <mat-step label="CHAIN">
+    <mat-step label="CHAIN" [stepControl]="chainConfig?.formGroup">
       <div class="step-form-wrapper">
         <app-chain-config></app-chain-config>
+        <ng-template [ngTemplateOutlet]="sandboxFooter"></ng-template>
       </div>
     </mat-step>
     <mat-step label="WALLETS">
       <div class="step-form-wrapper">
         <app-chain-wallets></app-chain-wallets>
+        <ng-template [ngTemplateOutlet]="sandboxFooter"></ng-template>
       </div>
     </mat-step>
     <mat-step label="BAKING">
       <div class="step-form-wrapper">
         <app-chain-baking></app-chain-baking>
+        <ng-template [ngTemplateOutlet]="sandboxFooter"></ng-template>
       </div>
     </mat-step>
     <mat-step label="OTHER">
       <div class="step-form-wrapper">
         <app-chain-other></app-chain-other>
+        <ng-template [ngTemplateOutlet]="sandboxFooter"></ng-template>
       </div>
     </mat-step>
-    <mat-step label="FINISH">
+    <mat-step label="FINISH" [stepControl]="chainFinish?.formGroup">
       <div class="step-form-wrapper">
         <app-chain-finish></app-chain-finish>
       </div>
     </mat-step>
   </mat-horizontal-stepper>
-
-  <div class="sandbox-footer" *ngIf="stepper.selectedIndex != stepper.steps?.length-1">
-    <div class="footer-container">
-      <button mat-button (click)="nextStep(stepper)" class="attention-button">
-        <span class="text">CONTINUE</span>
-        <img class="icon" src="../../../assets/icon/arrow-right.svg" />
-      </button>
+  
+  <!-- Sandbox footer template -->
+  <ng-template #sandboxFooter >
+    <div class="sandbox-footer">
+      <div class="footer-container">
+        <button mat-button (click)="nextStep(stepper)" class="attention-button">
+          <span class="text">CONTINUE</span>
+          <img class="icon" src="../../../assets/icon/arrow-right.svg" />
+        </button>
+      </div>
     </div>
-  </div>
+  </ng-template>
 </div>

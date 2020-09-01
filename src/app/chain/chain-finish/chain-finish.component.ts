@@ -8,18 +8,18 @@ import { Store } from '@ngrx/store';
   styleUrls: ['./chain-finish.component.scss']
 })
 export class ChainFinishComponent implements OnInit {
-  chainFinish: FormGroup;
+  formGroup: FormGroup;
   
   constructor(private store: Store<any>, private fb: FormBuilder) { }
 
   ngOnInit(): void {
-    this.chainFinish = this.fb.group({
+    this.formGroup = this.fb.group({
       googleAnalytics: ['', [Validators.required]], 
     });
   }
 
   submitChain(){
-    // TODO
+    this.store.dispatch({ type: 'SANDBOX_NODE_START' });
   }
 
 }

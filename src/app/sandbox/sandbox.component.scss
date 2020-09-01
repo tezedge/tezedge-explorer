@@ -48,9 +48,10 @@
     }
   }
 
-  .sandbox-footer{
+  .sandbox-footer {
     position: fixed;
     bottom: 0;
+    left: 0;
     width: 100%;
     background-color: #3F3F43;
     z-index: 9999;
@@ -64,9 +65,13 @@
       padding-top: 6px;
       padding-bottom: 6px;
 
-      ::ng-deep .mat-button-wrapper {
-        .text {
-          margin-right: 10px;
+      ::ng-deep .mat-button{
+        margin-right: 24px;
+
+        .mat-button-wrapper {
+          .text {
+            margin-right: 8px;
+          }
         }
       }
     }

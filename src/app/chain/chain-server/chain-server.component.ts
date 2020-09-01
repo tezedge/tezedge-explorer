@@ -8,13 +8,13 @@ import { Store } from '@ngrx/store';
 	styleUrls: ['./chain-server.component.scss'],
 })
 export class ChainServerComponent implements OnInit {
-	chainServer: FormGroup;
+	formGroup: FormGroup;
 
 	constructor(private store: Store<any>, private fb: FormBuilder) {}
 
 	ngOnInit(): void {
 		// create form group
-		this.chainServer = this.fb.group({
+		this.formGroup = this.fb.group({
 			hostname: [{ value: '', disabled: true }, [Validators.required]],
 			bootstrapDbPath: ['', [Validators.required]],
 			maxThreads: [''],

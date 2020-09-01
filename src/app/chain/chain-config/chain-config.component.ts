@@ -8,13 +8,13 @@ import { Store } from '@ngrx/store';
 	styleUrls: ['./chain-config.component.scss'],
 })
 export class ChainConfigComponent implements OnInit {
-	chainConfig: FormGroup;
+	formGroup: FormGroup;
 
 	constructor(private store: Store<any>, private fb: FormBuilder) {}
 
 	ngOnInit(): void {
 		// create form group
-		this.chainConfig = this.fb.group({
+		this.formGroup = this.fb.group({
 			preservedCycles: ['', [Validators.required]],
 
 			blocksPerCycle: ['', [Validators.required]],

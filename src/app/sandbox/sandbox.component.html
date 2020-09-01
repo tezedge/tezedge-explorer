@@ -48,9 +48,9 @@
     </mat-step>
   </mat-horizontal-stepper>
 
-  <div class="sandbox-footer">
+  <div class="sandbox-footer" *ngIf="stepper.selectedIndex != stepper.steps?.length-1">
     <div class="footer-container">
-      <button mat-button (click)="nextStep(stepper)" class="continue-btn">
+      <button mat-button (click)="nextStep(stepper)" class="attention-button">
         <span class="text">CONTINUE</span>
         <img class="icon" src="../../../assets/icon/arrow-right.svg" />
       </button>

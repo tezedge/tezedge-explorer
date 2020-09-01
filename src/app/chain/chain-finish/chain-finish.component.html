@@ -6,8 +6,8 @@
         <span class="text">Warning</span>
       </mat-panel-title>
     </mat-expansion-panel-header>
-    <p>Data stored in local cache, when clean history data lost</p>
-    <p>Please, save your config , so you can restore your settings later</p>
+    <p style="margin-bottom: 0">Data stored in local cache, when clean history data lost</p>
+    <p style="margin-top: 8px">Please, save your config , so you can restore your settings later</p>
 
     <button mat-button>
       <img class="icon" src="../../../assets/icon/file-download-regular.svg" />
@@ -24,4 +24,9 @@
       <p class="from-field-description">{{ googleAnalytics.checked ? 'ENABLED' : 'DISABLED' }}</p>
     </div>
   </div>
+
+  <button mat-button (click)="submitChain()" class="attention-button finish-button">
+    <img class="icon" src="../../../assets/icon/check.svg"/>
+    <span class="text">FINISH</span>
+  </button>
 </div>

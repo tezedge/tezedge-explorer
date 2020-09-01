@@ -18,4 +18,8 @@ export class ChainFinishComponent implements OnInit {
     });
   }
 
+  submitChain(){
+    // TODO
+  }
+
 }

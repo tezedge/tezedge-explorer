@@ -64,16 +64,9 @@
       padding-top: 6px;
       padding-bottom: 6px;
 
-      .continue-btn {
-        background-color: #204e8a;
-        color: #fff;
-        line-height: normal;
-        padding: 6px 8px;
-
-        ::ng-deep .mat-button-wrapper {
-          .text {
-            margin-right: 10px;
-          }
+      ::ng-deep .mat-button-wrapper {
+        .text {
+          margin-right: 10px;
         }
       }
     }

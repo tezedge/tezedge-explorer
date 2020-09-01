@@ -973,7 +973,7 @@ ngx-json-viewer .segment .segment-main .segment-key {
     border-radius: 4px;
 
     .mat-expansion-panel-header{
-        border-bottom: 1px solid $color;
+        border-bottom: 1px solid $color-border;
         border-radius: 0;
         padding: 16px 16px 8px 16px;
         height: 32px !important;
@@ -994,6 +994,7 @@ ngx-json-viewer .segment .segment-main .segment-key {
         border: 1px solid $color;
 
         .mat-expansion-panel-header{
+            border-bottom: 1px solid $color;
             .mat-expansion-panel-header-title {
                 color: #fff;
             }

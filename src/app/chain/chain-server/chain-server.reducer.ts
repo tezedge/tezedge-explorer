@@ -3,7 +3,6 @@ const initialState: any = {
 		hostname: '127.0.0.1',
 		bootstrapDbPath: '/tmp/tezedge',
 		maxThreads: 0,
-		maxOpenFiles: 512,
 		loggingFile: '/tmp/tezedge/tezedge.log',
 		loggingFormat: 'simple',
 		loggingLevel: 'info',
@@ -29,6 +28,12 @@ const initialState: any = {
 		testChain: false,
 		recordingContextActions: true,
 		sandboxContextPatching: './light_node/etc/tezedge_sandbox/sandbox-patch-context.json',
+
+		// TODO - add form fields for these properties
+		identityExpectedPow: 26.0,
+		tezosDataDir: '/tmp/tezedge',
+		identityFile: './light_node/etc/tezedge/identity.json',
+		tokioThreads: 0
 	},
 };
 

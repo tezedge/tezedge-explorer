@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, Validators, FormBuilder } from '@angular/forms';
 import { Store } from '@ngrx/store';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-chain-finish',
@@ -10,7 +11,7 @@ import { Store } from '@ngrx/store';
 export class ChainFinishComponent implements OnInit {
   formGroup: FormGroup;
   
-  constructor(private store: Store<any>, private fb: FormBuilder) { }
+  constructor(private store: Store<any>, private fb: FormBuilder, private router: Router) { }
 
   ngOnInit(): void {
     this.formGroup = this.fb.group({
@@ -20,6 +21,7 @@ export class ChainFinishComponent implements OnInit {
 
   submitChain(){
     this.store.dispatch({ type: 'SANDBOX_NODE_START' });
+    this.router.navigate(['/chain']);
   }
 
 }

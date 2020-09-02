@@ -3,6 +3,7 @@ import { Effect, Actions, ofType } from '@ngrx/effects';
 import { HttpClient } from '@angular/common/http';
 import { Store } from '@ngrx/store';
 import { map, switchMap, withLatestFrom, catchError, tap, filter, takeUntil } from 'rxjs/operators';
+import { forkJoin } from 'rxjs';
 
 @Injectable()
 export class SandboxEffects {
@@ -16,16 +17,10 @@ export class SandboxEffects {
 
         switchMap(({ action, state }) => {
             console.log('[SANDBOX_NODE_START]', state.settingsNode);
-            return this.http.post(state.settingsNode.sandbox + '/start', {
-                config_file: "./light_node/etc/tezedge/tezedge.config",
-                identity_expected_pow: 0,
-                disable_bootstrap_lookup: "",
-                network: "sandbox",
-                peer_thresh_low: 1,
-                peer_thresh_high: 1,
-                sandbox_patch_context_json_file: "./light_node/etc/tezedge_sandbox/sandbox-patch-context.json",
-                protocol_runner: "./target/release/protocol-runner"
-            })
+            return forkJoin(
+                this.http.post(state.settingsNode.sandbox + '/start', state.sandbox.chainServer),
+                this.http.post(state.settingsNode.sandbox + '/activate_protocol', state.sandbox.chainConfig)
+            );
         }),
 
         // dispatch action

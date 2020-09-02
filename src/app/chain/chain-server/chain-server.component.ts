@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { FormBuilder, Validators, FormGroup } from '@angular/forms';
 import { Store } from '@ngrx/store';
 
@@ -8,14 +8,19 @@ import { Store } from '@ngrx/store';
 	styleUrls: ['./chain-server.component.scss'],
 })
 export class ChainServerComponent implements OnInit {
-	formGroup: FormGroup;
+	@Input() isReadonly?: boolean;
+	
+	chainServerForm: FormGroup;
 
 	constructor(private store: Store<any>, private fb: FormBuilder) {}
 
 	ngOnInit(): void {
 		// create form group
-		this.formGroup = this.fb.group({
+		this.chainServerForm = this.fb.group({
 			hostname: [{ value: '', disabled: true }, [Validators.required]],
+			tezosDataDir: ['', [Validators.required]],
+			identityFile: ['', [Validators.required]],
+			identityExpectedPow: ['', [Validators.required]],
 			bootstrapDbPath: ['', [Validators.required]],
 			maxThreads: [''],
 			maxOpenFiles: [''],
@@ -41,9 +46,15 @@ export class ChainServerComponent implements OnInit {
 			ffiPoolUnusedTimeout: ['', [Validators.required]],
 			mempool: ['', [Validators.required]],
 			privateNodeMode: ['', [Validators.required]],
+			tokioThreads: ['', [Validators.required]],
 			testChain: ['', [Validators.required]],
 			recordingContextActions: ['', [Validators.required]],
 			sandboxContextPatching: ['', [Validators.required]],
 		});
+
+		// disable form if isReadonly is passed
+		if(this.isReadonly){
+			this.chainServerForm.disable();
+		}
 	}
 }

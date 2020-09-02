@@ -1,6 +1,9 @@
 const initialState: any = {
 	form: {
 		hostname: '127.0.0.1',
+		tezosDataDir: '/tmp/tezedge',
+		identityFile: './light_node/etc/tezedge/identity.json',
+		identityExpectedPow: 26.0,
 		bootstrapDbPath: '/tmp/tezedge',
 		maxThreads: 0,
 		loggingFile: '/tmp/tezedge/tezedge.log',
@@ -25,15 +28,10 @@ const initialState: any = {
 		ffiPoolUnusedTimeout: 1800,
 		mempool: true,
 		privateNodeMode: false,
+		tokioThreads: 0,
 		testChain: false,
 		recordingContextActions: true,
 		sandboxContextPatching: './light_node/etc/tezedge_sandbox/sandbox-patch-context.json',
-
-		// TODO - add form fields for these properties
-		identityExpectedPow: 26.0,
-		tezosDataDir: '/tmp/tezedge',
-		identityFile: './light_node/etc/tezedge/identity.json',
-		tokioThreads: 0
 	},
 };
 

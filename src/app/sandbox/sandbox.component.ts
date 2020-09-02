@@ -30,20 +30,20 @@ export class SandboxComponent implements OnInit {
     this.toggleSidenavVisibility(false);
   }
 
-  nextStep(stepper: MatStepper){
+  stepChanged(stepper: MatStepper){
     if(!stepper.selected.hasError){
       switch(stepper.selected.label){
         case 'SERVER': {
           this.store.dispatch({
             type: 'CHAIN_SERVER_FORM_SUBMIT',
-            payload: this.chainServer.formGroup.value,
+            payload: this.chainServer.chainServerForm.value,
           });
           break;
         }
         case 'CHAIN': {
           this.store.dispatch({
             type: 'CHAIN_CONFIG_FORM_SUBMIT',
-            payload: this.chainConfig.formGroup.value,
+            payload: this.chainConfig.chainConfigForm.value,
           });
           break;
         }
@@ -53,7 +53,10 @@ export class SandboxComponent implements OnInit {
         // case 'FINISH': { break; }
       }
     }
+    window.scroll(0,0);
+  }
 
+  nextStep(stepper: MatStepper){
     stepper.next();
   }
 

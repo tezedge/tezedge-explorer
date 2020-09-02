@@ -457,6 +457,10 @@ mat-form-field .mat-select-value {
     border-bottom: 1px rgba(255, 255, 255, 0.1) solid;
 }
 
+.mat-select-panel .mat-option {
+    color: $color;
+}
+
 /* remove underline in mat-select */
 mat-form-field .mat-form-field-underline {
     background-color: initial !important;
@@ -506,6 +510,7 @@ mat-form-field .mat-select-arrow {
         .mat-step-label{
             color: $color;
             opacity: 0.6;
+            font-size: 12px;
             &.mat-step-label-active{
                 color: $color;
                 opacity: 1;
@@ -515,6 +520,10 @@ mat-form-field .mat-select-arrow {
             background-color: $color-border;
             color: $color;
             opacity: 0.6;
+            height: 20px;
+            width: 20px;
+            font-size: 12px;
+
             &.mat-step-icon-selected {
                 background: #204e8a;
                 color: $color;
@@ -954,19 +963,37 @@ ngx-json-viewer .segment .segment-main .segment-key {
 .sandbox mat-form-field {
     color: $color;
     background: $color-border;
-    height: 34px;
+    height: 32px;
     border-radius: 4px;
     padding-left: 10px;
+
+    &.ng-invalid.ng-dirty{
+        background: $color-chrome-red;
+    }
 }
 
-.sandbox .mat-button{
+.chain .mat-error,
+.sandbox .mat-error {
+    color: $color-highlight-red;
+    font-size: 12px;
+}
+
+.sandbox .mat-button,
+.chain .mat-button{
     color: $color;
     background: $color-border;
+    font-size: 12px;
 }
 
 .chain .section,
 .sandbox .section{
     border: 1px solid $color-border;
+}
+
+/* Hide input underline */
+.chain .mat-form-field-underline,
+.sandbox .mat-form-field-underline {
+    display: none;
 }
 
 /* mat expansion panel styling */
@@ -1032,12 +1059,12 @@ ngx-json-viewer .segment .segment-main .segment-key {
 }
 
 .form-field {
-    padding: 10px 0px 10px 0px;
+    padding: 8px 0;
 }
 
 input.mat-input-element {
-    margin-top: 10px;
-    font-size: 14px;
+    margin-top: 8px;
+    font-size: 12px;
 }
 
 .mat-form-field-ripple {
@@ -1054,6 +1081,7 @@ input.mat-input-element {
     font-size: 12px;
     opacity: 0.6;
     line-height: 14px;
+    margin: 8px 0;
 }
 
 .app-menu-toggle {

@@ -1,4 +1,4 @@
-<div class="chain-server" [formGroup]="formGroup" ngrxForm="chainServer">
+<div class="chain-server" [formGroup]="chainServerForm" ngrxForm="chainServer">
 
 	<!-- TODO - finish expansion panel design -->
 	<!-- <mat-expansion-panel hideToggle expanded class="info">
@@ -31,6 +31,47 @@
 	<!-- ARGUMENTS SECTION -->
 	<div class="section arguments-section">
 		<h5 class="section-header">ARGUMENTS</h5>
+		<!-- Tezos data directory path -->
+		<div class="form-field">
+			<p class="from-field-title">Tezos data directory path</p>
+			<p class="from-field-description">
+				A directory for Tezos node generated data
+			</p>
+			<mat-form-field class="full-size">
+				<input matInput #tezosDataDir type="text" formControlName="tezosDataDir" />
+			</mat-form-field>
+			<mat-error *ngIf="chainServerForm.controls.tezosDataDir.invalid">
+				<span *ngIf="chainServerForm.controls.tezosDataDir.errors.required">This field is required</span>
+			</mat-error>
+		</div>
+
+		<!-- Identity file -->
+		<div class="form-field">
+			<p class="from-field-title">Identity file</p>
+			<p class="from-field-description">
+				New identity is automatically generated if it does not exist on specified path. In case it starts with "./" or "../", it is relative path to the current dir, otherwise to the --tezos-data-dir
+			</p>
+			<mat-form-field class="full-size">
+				<input matInput #identityFile type="text" formControlName="identityFile" />
+			</mat-form-field>
+			<mat-error *ngIf="chainServerForm.controls.identityFile.invalid">
+				<span *ngIf="chainServerForm.controls.identityFile.errors.required">This field is required</span>
+			</mat-error>
+		</div>
+
+		<!-- Identity expected POW -->
+		<div class="form-field">
+			<p class="from-field-title">Identity expected POW</p>
+			<div class="inline-wrapper">
+				<mat-form-field class="small-size">
+					<input matInput #identityExpectedPow type="number" formControlName="identityExpectedPow" />
+				</mat-form-field>
+				<p class="from-field-description">
+					Expected power of identity for node. It is used to generate new identity. Default: 26.0
+				</p>
+			</div>
+		</div>
+
 		<!-- Bootstrap database path -->
 		<div class="form-field">
 			<p class="from-field-title">Bootstrap database path</p>
@@ -42,6 +83,9 @@
 			<mat-form-field class="full-size">
 				<input matInput #bootstrapDbPath type="text" formControlName="bootstrapDbPath" />
 			</mat-form-field>
+			<mat-error *ngIf="chainServerForm.controls.bootstrapDbPath.invalid">
+				<span *ngIf="chainServerForm.controls.bootstrapDbPath.errors.required">This field is required</span>
+			</mat-error>
 		</div>
 
 		<!-- db cfg max threads -->
@@ -331,6 +375,19 @@
 				<mat-slide-toggle #privateNodeMode formControlName="privateNodeMode"> </mat-slide-toggle>
 				<p class="from-field-description">
 					Enable or disable the private node. Use peers to set the IP addresses of the peers you want to connect to
+				</p>
+			</div>
+		</div>
+
+		<!-- Tokio threads -->
+		<div class="form-field">
+			<p class="from-field-title">Tokio threads</p>
+			<div class="inline-wrapper">
+				<mat-form-field class="small-size">
+					<input matInput #tokioThreads type="number" formControlName="tokioThreads" />
+				</mat-form-field>
+				<p class="from-field-description">
+					Number of threads spawned by a tokio thread pool. If zero, then number of threads equal to CPU cores is spawned.
 				</p>
 			</div>
 		</div>

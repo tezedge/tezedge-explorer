@@ -2,8 +2,8 @@ import { Injectable } from '@angular/core';
 import { Effect, Actions, ofType } from '@ngrx/effects';
 import { HttpClient } from '@angular/common/http';
 import { Store } from '@ngrx/store';
-import { map, switchMap, withLatestFrom, catchError, tap, filter, takeUntil } from 'rxjs/operators';
-import { forkJoin } from 'rxjs';
+import { map, switchMap, withLatestFrom, catchError, tap } from 'rxjs/operators';
+import { Router } from '@angular/router';
 
 @Injectable()
 export class SandboxEffects {
@@ -17,14 +17,14 @@ export class SandboxEffects {
 
         switchMap(({ action, state }) => {
             console.log('[SANDBOX_NODE_START]', state.settingsNode);
-            return forkJoin(
-                this.http.post(state.settingsNode.sandbox + '/start', state.sandbox.chainServer),
-                this.http.post(state.settingsNode.sandbox + '/activate_protocol', state.sandbox.chainConfig)
-            );
+            return this.http.post(state.settingsNode.sandbox + '/start', state.sandbox.endpoints.start);
         }),
 
-        // dispatch action
-        map((payload) => ({ type: 'SANDBOX_NODE_START_SUCCESS', payload: payload })),
+        // dispatch actions
+        switchMap(payload => [
+            { type: 'SANDBOX_NODE_START_SUCCESS', payload: payload },
+            { type: 'SANDBOX_WALLET_INIT', payload: payload }
+        ]),
         catchError((error, caught) => {
             console.error(error)
             this.store.dispatch({
@@ -70,11 +70,14 @@ export class SandboxEffects {
 
         switchMap(({ action, state }) => {
             console.log('[SANDBOX_WALLET_INIT]', state.settingsNode);
-            return this.http.get(state.settingsNode.sandbox + '/init_client')
+            return this.http.post(state.settingsNode.sandbox + '/init_client', state.sandbox.endpoints.initClient)
         }),
 
-        // dispatch action
-        map((payload) => ({ type: 'SANDBOX_WALLET_INIT_SUCCESS', payload: payload })),
+        // dispatch actions
+        switchMap(payload => [
+            { type: 'SANDBOX_WALLET_INIT_SUCCESS', payload: payload },
+            { type: 'SANDBOX_ACTIVATE_PROTOCOL', payload: payload }
+        ]),
         catchError((error, caught) => {
             console.error(error)
             this.store.dispatch({
@@ -94,11 +97,16 @@ export class SandboxEffects {
 
         switchMap(({ action, state }) => {
             console.log('[SANDBOX_ACTIVATE_PROTOCOL]', state.settingsNode);
-            return this.http.get(state.settingsNode.sandbox + '/activate_protocol')
+            return this.http.post(state.settingsNode.sandbox + '/activate_protocol', state.sandbox.endpoints.activateProtocol)
         }),
 
-        // dispatch action
-        map((payload) => ({ type: 'SANDBOX_ACTIVATE_PROTOCOL_SUCCESS', payload: payload })),
+        // dispatch actions
+        switchMap(payload => [
+            { type: 'SANDBOX_ACTIVATE_PROTOCOL_SUCCESS', payload: payload },
+            { type: 'SIDENAV_VISIBILITY_CHANGE', payload: true },
+            { type: 'TOOLBAR_VISIBILITY_CHANGE', payload: true },
+        ]),
+        tap(() => this.router.navigate(['chain'])),
         catchError((error, caught) => {
             console.error(error)
             this.store.dispatch({
@@ -138,6 +146,7 @@ export class SandboxEffects {
         private http: HttpClient,
         private actions$: Actions,
         private store: Store<any>,
+        private router: Router,
     ) { }
 
 }

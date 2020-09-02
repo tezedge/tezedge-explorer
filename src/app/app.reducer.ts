@@ -128,7 +128,7 @@ export function reducer(state = initialState, action) {
             };
         }
 
-        case 'SANDBOX_NODE_START': {
+        case 'SANDBOX_ACTIVATE_PROTOCOL_SUCCESS': {
             return {
                 ...state,
                 statusbar: {

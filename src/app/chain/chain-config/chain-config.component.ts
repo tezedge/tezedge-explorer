@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { FormBuilder, Validators, FormGroup } from '@angular/forms';
 import { Store } from '@ngrx/store';
 
@@ -8,13 +8,15 @@ import { Store } from '@ngrx/store';
 	styleUrls: ['./chain-config.component.scss'],
 })
 export class ChainConfigComponent implements OnInit {
-	formGroup: FormGroup;
+	@Input() isReadonly?: boolean;
+	
+	chainConfigForm: FormGroup;
 
 	constructor(private store: Store<any>, private fb: FormBuilder) {}
 
 	ngOnInit(): void {
 		// create form group
-		this.formGroup = this.fb.group({
+		this.chainConfigForm = this.fb.group({
 			preservedCycles: ['', [Validators.required]],
 
 			blocksPerCycle: ['', [Validators.required]],
@@ -49,5 +51,10 @@ export class ChainConfigComponent implements OnInit {
 			initialEndorsers: ['', [Validators.required]],
 			delayPerMissingEndorsement: ['', [Validators.required]],
 		});
+
+		// disable form if isReadonly is passed
+		if(this.isReadonly){
+			this.chainConfigForm.disable();
+		}
 	}
 }

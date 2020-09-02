@@ -239,7 +239,7 @@
         <mat-sidenav-content class="sidenav-content">
             <div>
                 <!-- menu -->
-                <button mat-icon-button class="app-menu-toggle" *ngIf="isMobile">
+                <button mat-icon-button class="app-menu-toggle" *ngIf="isMobile && app.sidenav.isVisible">
                     <mat-icon (click)="start.toggle()">dehaze</mat-icon>
                 </button>
                 <router-outlet></router-outlet>

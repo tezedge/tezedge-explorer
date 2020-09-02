@@ -31,10 +31,10 @@ export class AppEffects {
             if (action.payload.connected) {
                 if (action.payload.ws === false) {
                     // redirectUrl = 'monitoring';
-                    redirectUrl = 'sandbox';
+                    redirectUrl = 'chain';
                 } else {
                     // redirectUrl = 'monitoring';
-                    redirectUrl = 'sandbox';
+                    redirectUrl = 'chain';
                 }
             } else {
                 redirectUrl = '';

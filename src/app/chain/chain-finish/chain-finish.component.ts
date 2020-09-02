@@ -9,19 +9,17 @@ import { Router } from '@angular/router';
   styleUrls: ['./chain-finish.component.scss']
 })
 export class ChainFinishComponent implements OnInit {
-  formGroup: FormGroup;
+  chainFinishForm: FormGroup;
   
   constructor(private store: Store<any>, private fb: FormBuilder, private router: Router) { }
 
   ngOnInit(): void {
-    this.formGroup = this.fb.group({
+    this.chainFinishForm = this.fb.group({
       googleAnalytics: ['', [Validators.required]], 
     });
   }
 
   submitChain(){
     this.store.dispatch({ type: 'SANDBOX_NODE_START' });
-    this.router.navigate(['/chain']);
   }
-
 }

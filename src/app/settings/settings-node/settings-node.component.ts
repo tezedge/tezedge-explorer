@@ -58,15 +58,7 @@ export class SettingsNodeComponent implements OnInit {
   }
 
   nodeSandboxAdd() {
-
-    // // start new sandbox node 
-    // this.store.dispatch({
-    //   type: 'SANDBOX_NODE_START',
-    //   payload: '',
-    // });
-
     this.router.navigate(['/sandbox']);
-
   }
 
   nodeSandboxStop() {

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 
 @Component({
   selector: 'app-chain-wallets',
@@ -6,10 +6,16 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./chain-wallets.component.css']
 })
 export class ChainWalletsComponent implements OnInit {
-
+  @Input() isReadonly?: boolean;
+  
   constructor() { }
 
   ngOnInit(): void {
+    
+		// disable form if isReadonly is passed
+		if(this.isReadonly){
+			// this.chainWalletsForm.disable();
+		}
   }
 
 }

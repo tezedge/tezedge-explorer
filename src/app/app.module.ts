@@ -156,7 +156,9 @@ import { SandboxStatusBarComponent } from './sandbox/sandbox-status-bar/sandbox-
     RouterModule.forRoot(AppRouting, {
       useHash: true,
       // preload all modules
-      preloadingStrategy: PreloadAllModules
+      preloadingStrategy: PreloadAllModules,
+      // scroll page to top on route change
+      scrollPositionRestoration: 'enabled',
     }),
 
     // load ngrx module

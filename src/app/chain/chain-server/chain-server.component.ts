@@ -21,28 +21,43 @@ export class ChainServerComponent implements OnInit, OnDestroy  {
 	ngOnInit(): void {
 		// create form group
 		this.chainServerForm = this.fb.group({
-			hostname: [{ value: '', readonly: true }],
-			tezosDataDir: [{ value: '', readonly: true }],
-			identityFile: [{ value: '', readonly: true }],
+			hostname: ['', [Validators.required]],
+			tezosDataDir: ['', [Validators.required]],
+			identityFile: ['', [Validators.required]],
 			identityExpectedPow: ['', [Validators.required]],
-			bootstrapDbPath: [{ value: '', readonly: true }],
+			bootstrapDbPath: ['', [Validators.required]],
 			maxThreads: [''],
 			maxOpenFiles: [''],
-			loggingFile: [{ value: '', readonly: true }],
+			loggingFile: ['', [Validators.required]],
 			loggingFormat: ['', [Validators.required]],
 			loggingLevel: ['', [Validators.required]],
 			oCamlLogging: ['', [Validators.required]],
 			network: ['', [Validators.required]],
-			p2pPort: ['', [Validators.required]],
-			rpcPort: ['', [Validators.required]],
-			webSocketAddress: ['', [Validators.required]],
-			monitorPort: ['', [Validators.required]],
+			p2pPort: ['', [
+				Validators.required, 
+				Validators.min(0),
+				Validators.max(65535),
+				]
+			],
+			rpcPort: ['', [
+				Validators.required, 
+				Validators.min(0),
+				Validators.max(65535),
+				]
+			],
+			webSocketAddress: ['', [Validators.required, Validators.pattern(/^([0-9]{1,3}(?:\.[0-9]{1,3}){3}|[a-zA-Z]+):([0-9]{1,5})$/)]],
+			monitorPort: ['', [
+				Validators.required, 
+				Validators.min(0),
+				Validators.max(65535),
+				]
+			],
 			lowerPeerTreshold: ['', [Validators.required]],
 			higherPeerTreshold: ['', [Validators.required]],
 			peers: [''],
 			disableBootstrapDnsLookup: ['', [Validators.required]],
 			bootstrapLookupAddresses: [''],
-			protocolRunner: [{ value: '', readonly: true }],
+			protocolRunner: ['', [Validators.required]],
 			ffiCallsNo: ['', [Validators.required]],
 			ffiMaxConn: ['', [Validators.required]],
 			ffiConnTimeout: ['', [Validators.required]],
@@ -53,29 +68,29 @@ export class ChainServerComponent implements OnInit, OnDestroy  {
 			tokioThreads: ['', [Validators.required]],
 			testChain: ['', [Validators.required]],
 			recordingContextActions: ['', [Validators.required]],
-			sandboxContextPatching: [{ value: '', readonly: true }],
+			sandboxContextPatching: ['', [Validators.required]],
 		});
 
-		// disable form if isReadonly is passed
+		// disable entire form if isReadonly flag is passed
 		if(this.isReadonly){
 			this.chainServerForm.disable();
 		}
 
-		// Subscribe to get form error
+		// Subscribe to store to get form server error
 		this.store.select('chainServer')
 		.pipe(takeUntil(this.onDestroy$))
 		.subscribe(store => {
 			this.error = store.error;
 			if(this.error?.field_name && !this.error?.isShown && this.formHasFieldName(this.error.field_name)) {
 				const control = this.chainServerForm.get(this.error.field_name);
-				setTimeout(() => control.setErrors({ 'backendError': true }) );
+				setTimeout(() => control.setErrors({ 'serverError': true }) );
 
 				// Mark error as shown on form
 				this.store.dispatch({ type: 'CHAIN_SERVER_FORM_ERROR_SHOWN' });
 				
-				// subscribe to field value change (to be able to remove backend error)
+				// subscribe to field value change (to be able to remove server error)
 				control.valueChanges.pipe(take(1)).subscribe(val => {
-					control.setErrors({ 'backendError': null })
+					control.setErrors({ 'serverError': null })
 				});
 			}
 		});

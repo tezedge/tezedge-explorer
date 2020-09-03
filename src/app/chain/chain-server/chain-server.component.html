@@ -19,38 +19,50 @@
 	<!-- ESENTIALS SECTION -->
 	<div class="section essentials-section">
 		<h5 class="section-header">ESENTIALS</h5>
-		<!-- Hostname -->
+		<!-- Hostname (read-only)-->
 		<div class="form-field">
 			<p class="from-field-title">Hostname</p>
 			<mat-form-field class="half-size">
-				<input matInput #hostname type="text" formControlName="hostname"/>
+				<input readonly matInput #hostname type="text" formControlName="hostname"/>
 			</mat-form-field>
+			<mat-error *ngIf="chainServerForm.controls.hostname.invalid">
+				<span *ngIf="chainServerForm.controls.hostname.errors.required">This field is required</span>
+				<span *ngIf="chainServerForm.controls.hostname.errors.serverError">{{error.message}}</span>
+			</mat-error>
 		</div>
 	</div>
 
 	<!-- ARGUMENTS SECTION -->
 	<div class="section arguments-section">
 		<h5 class="section-header">ARGUMENTS</h5>
-		<!-- Tezos data directory path -->
+		<!-- Tezos data directory path (read-only)-->
 		<div class="form-field">
 			<p class="from-field-title">Tezos data directory path</p>
 			<p class="from-field-description">
 				A directory for Tezos node generated data
 			</p>
 			<mat-form-field class="full-size">
-				<input matInput #tezosDataDir type="text" formControlName="tezosDataDir" />
+				<input readonly matInput #tezosDataDir type="text" formControlName="tezosDataDir" />
 			</mat-form-field>
+			<mat-error *ngIf="chainServerForm.controls.tezosDataDir.invalid">
+				<span *ngIf="chainServerForm.controls.tezosDataDir.errors.required">This field is required</span>
+				<span *ngIf="chainServerForm.controls.tezosDataDir.errors.serverError">{{error.message}}</span>
+			</mat-error>
 		</div>
 
-		<!-- Identity file -->
+		<!-- Identity file (read-only)-->
 		<div class="form-field">
 			<p class="from-field-title">Identity file</p>
 			<p class="from-field-description">
 				New identity is automatically generated if it does not exist on specified path. In case it starts with "./" or "../", it is relative path to the current dir, otherwise to the --tezos-data-dir
 			</p>
 			<mat-form-field class="full-size">
-				<input matInput #identityFile type="text" formControlName="identityFile" />
+				<input readonly matInput #identityFile type="text" formControlName="identityFile" />
 			</mat-form-field>
+			<mat-error *ngIf="chainServerForm.controls.identityFile.invalid">
+				<span *ngIf="chainServerForm.controls.identityFile.errors.required">This field is required</span>
+				<span *ngIf="chainServerForm.controls.identityFile.errors.serverError">{{error.message}}</span>
+			</mat-error>
 		</div>
 
 		<!-- Identity expected POW -->
@@ -64,9 +76,13 @@
 					Expected power of identity for node. It is used to generate new identity. Default: 26.0
 				</p>
 			</div>
+			<mat-error *ngIf="chainServerForm.controls.identityExpectedPow.invalid">
+				<span *ngIf="chainServerForm.controls.identityExpectedPow.errors.required">This field is required</span>
+				<span *ngIf="chainServerForm.controls.identityExpectedPow.errors.serverError">{{error.message}}</span>
+			</mat-error>
 		</div>
 
-		<!-- Bootstrap database path -->
+		<!-- Bootstrap database path (read-only)-->
 		<div class="form-field">
 			<p class="from-field-title">Bootstrap database path</p>
 			<p class="from-field-description">
@@ -75,8 +91,12 @@
 				exists, and contains valid database, node will continue in bootstrap process on that database
 			</p>
 			<mat-form-field class="full-size">
-				<input matInput #bootstrapDbPath type="text" formControlName="bootstrapDbPath" />
+				<input readonly matInput #bootstrapDbPath type="text" formControlName="bootstrapDbPath" />
 			</mat-form-field>
+			<mat-error *ngIf="chainServerForm.controls.bootstrapDbPath.invalid">
+				<span *ngIf="chainServerForm.controls.bootstrapDbPath.errors.required">This field is required</span>
+				<span *ngIf="chainServerForm.controls.bootstrapDbPath.errors.serverError">{{error.message}}</span>
+			</mat-error>
 		</div>
 
 		<!-- db cfg max threads -->
@@ -91,11 +111,15 @@
 					the number of CPU cores.
 				</p>
 			</div>
+			<mat-error *ngIf="chainServerForm.controls.maxThreads.invalid">
+				<span *ngIf="chainServerForm.controls.maxThreads.errors.required">This field is required</span>
+				<span *ngIf="chainServerForm.controls.maxThreads.errors.serverError">{{error.message}}</span>
+			</mat-error>
 		</div>
 
-		<!-- Logging file -->
+		<!-- Logging file (read-only) -->
 		<div class="form-field">
-			<p class="from-field-title">Logging file (optional)</p>
+			<p class="from-field-title">Logging file</p>
 			<p class="from-field-description">
 				Path to the logger file. If provided, logs are written to the log file, otherwise displayed in terminal. In case
 				it starts with "./" or "../", it is relative path to the current dir, otherwise to the --tezos-data-dir
@@ -103,6 +127,10 @@
 			<mat-form-field class="full-size">
 				<input matInput #loggingFile type="text" formControlName="loggingFile" />
 			</mat-form-field>
+			<mat-error *ngIf="chainServerForm.controls.loggingFile.invalid">
+				<span *ngIf="chainServerForm.controls.loggingFile.errors.required">This field is required</span>
+				<span *ngIf="chainServerForm.controls.loggingFile.errors.serverError">{{error.message}}</span>
+			</mat-error>
 		</div>
 
 		<!-- Logging format -->
@@ -118,7 +146,11 @@
 					<mat-option value="simple">simple</mat-option>
 					<mat-option value="json">json</mat-option>
 				</mat-select>
-			</mat-form-field>
+			</mat-form-field>			
+			<mat-error *ngIf="chainServerForm.controls.loggingFormat.invalid">
+				<span *ngIf="chainServerForm.controls.loggingFormat.errors.required">This field is required</span>
+				<span *ngIf="chainServerForm.controls.loggingFormat.errors.serverError">{{error.message}}</span>
+			</mat-error>
 		</div>
 
 		<!-- Logging level -->
@@ -136,7 +168,11 @@
 					<mat-option value="debug">debug</mat-option>
 					<mat-option value="trace">trace</mat-option>
 				</mat-select>
-			</mat-form-field>
+			</mat-form-field>		
+			<mat-error *ngIf="chainServerForm.controls.loggingLevel.invalid">
+				<span *ngIf="chainServerForm.controls.loggingLevel.errors.required">This field is required</span>
+				<span *ngIf="chainServerForm.controls.loggingLevel.errors.serverError">{{error.message}}</span>
+			</mat-error>
 		</div>
 
 		<!-- OCaml logging -->
@@ -146,6 +182,10 @@
 				<mat-slide-toggle #oCamlLogging formControlName="oCamlLogging"> </mat-slide-toggle>
 				<p class="from-field-description">Enable OCaml runtime logger.</p>
 			</div>
+			<mat-error *ngIf="chainServerForm.controls.oCamlLogging.invalid">
+				<span *ngIf="chainServerForm.controls.oCamlLogging.errors.required">This field is required</span>
+				<span *ngIf="chainServerForm.controls.oCamlLogging.errors.serverError">{{error.message}}</span>
+			</mat-error>
 		</div>
 
 		<!-- Network -->
@@ -165,6 +205,10 @@
 					<mat-option value="zeronet">zeronet</mat-option>
 				</mat-select>
 			</mat-form-field>
+			<mat-error *ngIf="chainServerForm.controls.network.invalid">
+				<span *ngIf="chainServerForm.controls.network.errors.required">This field is required</span>
+				<span *ngIf="chainServerForm.controls.network.errors.serverError">{{error.message}}</span>
+			</mat-error>
 		</div>
 
 		<!-- P2P Port -->
@@ -178,7 +222,8 @@
 			</div>
 			<mat-error *ngIf="chainServerForm.controls.p2pPort.invalid">
 				<span *ngIf="chainServerForm.controls.p2pPort.errors.required">This field is required</span>
-				<span *ngIf="error && chainServerForm.controls.p2pPort.errors.backendError">{{error.message}}</span>
+				<span *ngIf="chainServerForm.controls.p2pPort.errors.min || chainServerForm.controls.p2pPort.errors.max">Port needs to be a number between 0 and 65535</span>
+				<span *ngIf="chainServerForm.controls.p2pPort.errors.serverError">{{error.message}}</span>
 			</mat-error>
 		</div>
 
@@ -194,6 +239,11 @@
 					which those APIs will be available.
 				</p>
 			</div>
+			<mat-error *ngIf="chainServerForm.controls.rpcPort.invalid">
+				<span *ngIf="chainServerForm.controls.rpcPort.errors.required">This field is required</span>
+				<span *ngIf="chainServerForm.controls.rpcPort.errors.min || chainServerForm.controls.rpcPort.errors.max">Port needs to be a number between 0 and 65535</span>
+				<span *ngIf="chainServerForm.controls.rpcPort.errors.serverError">{{error.message}}</span>
+			</mat-error>
 		</div>
 
 		<!-- WebSocket Access Address -->
@@ -206,6 +256,11 @@
 			<mat-form-field class="half-size">
 				<input matInput #webSocketAddress type="text" formControlName="webSocketAddress" />
 			</mat-form-field>
+			<mat-error *ngIf="chainServerForm.controls.webSocketAddress.invalid">
+				<span *ngIf="chainServerForm.controls.webSocketAddress.errors.required">This field is required</span>
+				<span *ngIf="chainServerForm.controls.webSocketAddress.errors.pattern">Address needs to be in form of 'n.n.n.n:p' where 'n' is a number between 0 and 255 and 'p' a number between 0 and 65535</span>
+				<span *ngIf="chainServerForm.controls.webSocketAddress.errors.serverError">{{error.message}}</span>
+			</mat-error>
 		</div>
 
 		<!-- Monitor port -->
@@ -217,6 +272,11 @@
 				</mat-form-field>
 				<p class="from-field-description">Port on which the Tezedge node monitoring information will be exposed</p>
 			</div>
+			<mat-error *ngIf="chainServerForm.controls.monitorPort.invalid">
+				<span *ngIf="chainServerForm.controls.monitorPort.errors.required">This field is required</span>
+				<span *ngIf="chainServerForm.controls.monitorPort.errors.min || chainServerForm.controls.monitorPort.errors.max">Port needs to be a number between 0 and 65535</span>
+				<span *ngIf="chainServerForm.controls.monitorPort.errors.serverError">{{error.message}}</span>
+			</mat-error>
 		</div>
 
 		<!-- Lower peer treshold -->
@@ -230,6 +290,10 @@
 					Set minimal peer number, if running node does not has enough connected peers, peer discovery is enforced.
 				</p>
 			</div>
+			<mat-error *ngIf="chainServerForm.controls.lowerPeerTreshold.invalid">
+				<span *ngIf="chainServerForm.controls.lowerPeerTreshold.errors.required">This field is required</span>
+				<span *ngIf="chainServerForm.controls.lowerPeerTreshold.errors.serverError">{{error.message}}</span>
+			</mat-error>
 		</div>
 
 		<!-- Higher peer treshold -->
@@ -244,6 +308,10 @@
 					threshold is met.
 				</p>
 			</div>
+			<mat-error *ngIf="chainServerForm.controls.higherPeerTreshold.invalid">
+				<span *ngIf="chainServerForm.controls.higherPeerTreshold.errors.required">This field is required</span>
+				<span *ngIf="chainServerForm.controls.higherPeerTreshold.errors.serverError">{{error.message}}</span>
+			</mat-error>
 		</div>
 
 		<!-- Peers -->
@@ -256,6 +324,10 @@
 			<mat-form-field class="full-size">
 				<input matInput #peers type="text" formControlName="peers" />
 			</mat-form-field>
+			<mat-error *ngIf="chainServerForm.controls.peers.invalid">
+				<span *ngIf="chainServerForm.controls.peers.errors.required">This field is required</span>
+				<span *ngIf="chainServerForm.controls.peers.errors.serverError">{{error.message}}</span>
+			</mat-error>
 		</div>
 
 		<!-- Bootstrap DNS lookup -->
@@ -267,6 +339,10 @@
 					<mat-radio-button [value]="false">Enabled Bootstrap DNS</mat-radio-button>
 				</mat-radio-group>
 			</div>
+			<mat-error *ngIf="chainServerForm.controls.disableBootstrapDnsLookup.invalid">
+				<span *ngIf="chainServerForm.controls.disableBootstrapDnsLookup.errors.required">This field is required</span>
+				<span *ngIf="chainServerForm.controls.disableBootstrapDnsLookup.errors.serverError">{{error.message}}</span>
+			</mat-error>
 		</div>
 
 		<!-- Bootstrap lookup addresses -->
@@ -279,9 +355,13 @@
 			<mat-form-field class="full-size">
 				<input matInput #bootstrapLookupAddresses type="text" formControlName="bootstrapLookupAddresses" />
 			</mat-form-field>
+			<mat-error *ngIf="chainServerForm.controls.bootstrapLookupAddresses.invalid">
+				<span *ngIf="chainServerForm.controls.bootstrapLookupAddresses.errors.required">This field is required</span>
+				<span *ngIf="chainServerForm.controls.bootstrapLookupAddresses.errors.serverError">{{error.message}}</span>
+			</mat-error>
 		</div>
 
-		<!-- Protocol runner -->
+		<!-- Protocol runner (read-only)-->
 		<div class="form-field">
 			<p class="from-field-title">Protocol runner</p>
 			<p class="from-field-description">
@@ -289,8 +369,12 @@
 				`./target/debug/protocol-runner`.
 			</p>
 			<mat-form-field class="half-size">
-				<input matInput #protocolRunner type="text" formControlName="protocolRunner" />
+				<input readonly matInput #protocolRunner type="text" formControlName="protocolRunner" />
 			</mat-form-field>
+			<mat-error *ngIf="chainServerForm.controls.protocolRunner.invalid">
+				<span *ngIf="chainServerForm.controls.protocolRunner.errors.required">This field is required</span>
+				<span *ngIf="chainServerForm.controls.protocolRunner.errors.serverError">{{error.message}}</span>
+			</mat-error>
 		</div>
 
 		<!-- Number of ffi calls -->
@@ -304,6 +388,10 @@
 					Number of ffi (foreign function interface) calls, after which will be Ocaml garbage collector called
 				</p>
 			</div>
+			<mat-error *ngIf="chainServerForm.controls.ffiCallsNo.invalid">
+				<span *ngIf="chainServerForm.controls.ffiCallsNo.errors.required">This field is required</span>
+				<span *ngIf="chainServerForm.controls.ffiCallsNo.errors.serverError">{{error.message}}</span>
+			</mat-error>
 		</div>
 
 		<!-- Ffi connection pool max connections -->
@@ -315,6 +403,10 @@
 				</mat-form-field>
 				<p class="from-field-description">Max number of FFI pool connections, default: 10</p>
 			</div>
+			<mat-error *ngIf="chainServerForm.controls.ffiMaxConn.invalid">
+				<span *ngIf="chainServerForm.controls.ffiMaxConn.errors.required">This field is required</span>
+				<span *ngIf="chainServerForm.controls.ffiMaxConn.errors.serverError">{{error.message}}</span>
+			</mat-error>
 		</div>
 
 		<!-- Ffi connection timeout -->
@@ -326,6 +418,10 @@
 				</mat-form-field>
 				<p class="from-field-description">Number of seconds to wait for connection, default: 60</p>
 			</div>
+			<mat-error *ngIf="chainServerForm.controls.ffiConnTimeout.invalid">
+				<span *ngIf="chainServerForm.controls.ffiConnTimeout.errors.required">This field is required</span>
+				<span *ngIf="chainServerForm.controls.ffiConnTimeout.errors.serverError">{{error.message}}</span>
+			</mat-error>
 		</div>
 
 		<!-- Ffi pool lifetime (seconds) -->
@@ -339,6 +435,10 @@
 					Number of seconds to remove protocol_runner from pool, default: 21600 (6 hours)
 				</p>
 			</div>
+			<mat-error *ngIf="chainServerForm.controls.ffiPoolLifetime.invalid">
+				<span *ngIf="chainServerForm.controls.ffiPoolLifetime.errors.required">This field is required</span>
+				<span *ngIf="chainServerForm.controls.ffiPoolLifetime.errors.serverError">{{error.message}}</span>
+			</mat-error>
 		</div>
 
 		<!-- Ffi pool unused timeout (seconds) -->
@@ -352,6 +452,10 @@
 					Number of seconds to remove unused protocol_runner from pool, default: 1800 (30 minutes)
 				</p>
 			</div>
+			<mat-error *ngIf="chainServerForm.controls.ffiPoolUnusedTimeout.invalid">
+				<span *ngIf="chainServerForm.controls.ffiPoolUnusedTimeout.errors.required">This field is required</span>
+				<span *ngIf="chainServerForm.controls.ffiPoolUnusedTimeout.errors.serverError">{{error.message}}</span>
+			</mat-error>
 		</div>
 
 		<!-- Mempool -->
@@ -361,6 +465,10 @@
 				<mat-slide-toggle #mempool formControlName="mempool"> </mat-slide-toggle>
 				<p class="from-field-description">Enable or disable memopool</p>
 			</div>
+			<mat-error *ngIf="chainServerForm.controls.mempool.invalid">
+				<span *ngIf="chainServerForm.controls.mempool.errors.required">This field is required</span>
+				<span *ngIf="chainServerForm.controls.mempool.errors.serverError">{{error.message}}</span>
+			</mat-error>
 		</div>
 
 		<!-- Private node mode -->
@@ -372,6 +480,10 @@
 					Enable or disable the private node. Use peers to set the IP addresses of the peers you want to connect to
 				</p>
 			</div>
+			<mat-error *ngIf="chainServerForm.controls.privateNodeMode.invalid">
+				<span *ngIf="chainServerForm.controls.privateNodeMode.errors.required">This field is required</span>
+				<span *ngIf="chainServerForm.controls.privateNodeMode.errors.serverError">{{error.message}}</span>
+			</mat-error>
 		</div>
 
 		<!-- Tokio threads -->
@@ -385,6 +497,10 @@
 					Number of threads spawned by a tokio thread pool. If zero, then number of threads equal to CPU cores is spawned.
 				</p>
 			</div>
+			<mat-error *ngIf="chainServerForm.controls.tokioThreads.invalid">
+				<span *ngIf="chainServerForm.controls.tokioThreads.errors.required">This field is required</span>
+				<span *ngIf="chainServerForm.controls.tokioThreads.errors.serverError">{{error.message}}</span>
+			</mat-error>
 		</div>
 
 		<!-- Test chain -->
@@ -396,6 +512,10 @@
 					Flag for enable/disable test chain switching for block applying. Default: false
 				</p>
 			</div>
+			<mat-error *ngIf="chainServerForm.controls.testChain.invalid">
+				<span *ngIf="chainServerForm.controls.testChain.errors.required">This field is required</span>
+				<span *ngIf="chainServerForm.controls.testChain.errors.serverError">{{error.message}}</span>
+			</mat-error>
 		</div>
 
 		<!-- Recording context actions -->
@@ -405,17 +525,25 @@
 				<mat-slide-toggle #recordingContextActions formControlName="recordingContextActions"> </mat-slide-toggle>
 				<p class="from-field-description">Activate recording of context storage actions</p>
 			</div>
+			<mat-error *ngIf="chainServerForm.controls.recordingContextActions.invalid">
+				<span *ngIf="chainServerForm.controls.recordingContextActions.errors.required">This field is required</span>
+				<span *ngIf="chainServerForm.controls.recordingContextActions.errors.serverError">{{error.message}}</span>
+			</mat-error>
 		</div>
 
-		<!-- Sandbox context patching-->
+		<!-- Sandbox context patching (read-only) -->
 		<div class="form-field">
 			<p class="from-field-title">Sandbox context patching</p>
 			<p class="from-field-description">
 				Path to the json file with key-values, which will be added to the empty context on startup and commit genesis
 			</p>
 			<mat-form-field class="full-size">
-				<input matInput #sandboxContextPatching type="text" formControlName="sandboxContextPatching" />
+				<input readonly matInput #sandboxContextPatching type="text" formControlName="sandboxContextPatching" />
 			</mat-form-field>
+			<mat-error *ngIf="chainServerForm.controls.sandboxContextPatching.invalid">
+				<span *ngIf="chainServerForm.controls.sandboxContextPatching.errors.required">This field is required</span>
+				<span *ngIf="chainServerForm.controls.sandboxContextPatching.errors.serverError">{{error.message}}</span>
+			</mat-error>
 		</div>
 	</div>
 </div>

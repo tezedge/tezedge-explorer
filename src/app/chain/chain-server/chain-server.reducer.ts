@@ -63,11 +63,11 @@ export function reducer(state = initialState, action) {
 	}
 }
 
-export function mapError(backendError: any) {
+export function mapError(serverError: any) {
 	//if(error.type === 'validation'){
 		return {
-			...backendError,
-			field_name: mapFieldName(backendError.field_name),
+			...serverError,
+			field_name: mapFieldName(serverError.field_name),
 			isShown: false
 		}
 	// } else {

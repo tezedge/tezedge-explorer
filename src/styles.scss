@@ -1013,9 +1013,9 @@ ngx-json-viewer .segment .segment-main .segment-key {
                 margin-right: 8px;
             }
         }
-        .mat-expansion-panel-body {
-            padding: 0 16px 16px;
-        }
+    }
+    .mat-expansion-panel-body {
+        padding: 0 16px 16px;
     }
 
     &.warning{  
@@ -1024,13 +1024,18 @@ ngx-json-viewer .segment .segment-main .segment-key {
         border: 1px solid $color;
 
         .mat-expansion-panel-header{
-            border-bottom: 1px solid $color;
+            border-bottom: 1px solid fade-out(#fff, 0.9);
             .mat-expansion-panel-header-title {
                 color: #fff;
             }
         }
         .mat-expansion-panel-body{
             color: fade-out(#fff, 0.4);
+            font-size: 12px;
+
+            a {
+                color: fade-out(#fff, 0.6);
+            }
         }
     }
 

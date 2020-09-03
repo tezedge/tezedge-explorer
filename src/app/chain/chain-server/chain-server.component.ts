@@ -81,7 +81,12 @@ export class ChainServerComponent implements OnInit, OnDestroy  {
 		.pipe(takeUntil(this.onDestroy$))
 		.subscribe(store => {
 			this.error = store.error;
-			if(this.error?.field_name && !this.error?.isShown && this.formHasFieldName(this.error.field_name)) {
+			if(
+				this.error?.error_type === 'validation' && 
+				this.error?.field_name && 
+				!this.error?.isShown && 
+				this.formHasFieldName(this.error.field_name)
+				) {
 				const control = this.chainServerForm.get(this.error.field_name);
 				setTimeout(() => control.setErrors({ 'serverError': true }) );
 

@@ -59,8 +59,14 @@
       <div class="footer-container">
         <span *ngIf="showLoading" class="loading-indicator">Loading...</span>
         <button mat-button (click)="submitCurrentStep()" class="attention-button">
-          <span class="text">CONTINUE</span>
-          <img class="icon" src="../../../assets/icon/arrow-right.svg" />
+          <ng-container *ngIf="stepper.selectedIndex < stepper.steps?.length-1">
+            <span class="text">CONTINUE</span>
+            <img class="icon" src="../../../assets/icon/arrow-right.svg" />
+          </ng-container>
+          <ng-container *ngIf="stepper.selectedIndex === stepper.steps?.length-1">
+            <span class="text">FINISH</span>
+            <img class="icon" src="../../../assets/icon/check.svg"/>
+          </ng-container>
         </button>
       </div>
     </div>

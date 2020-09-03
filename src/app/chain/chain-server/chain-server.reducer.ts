@@ -34,7 +34,7 @@ const initialState: any = {
 		sandboxContextPatching: './light_node/etc/tezedge_sandbox/sandbox-patch-context.json',
 	},
 	error: {
-		type: null,
+		error_type: null,
 		field_name: null,
 		message: null,
 		isShown: false
@@ -64,15 +64,15 @@ export function reducer(state = initialState, action) {
 }
 
 export function mapError(serverError: any) {
-	//if(error.type === 'validation'){
+	if(serverError.error_type === 'validation'){
 		return {
 			...serverError,
 			field_name: mapFieldName(serverError.field_name),
 			isShown: false
 		}
-	// } else {
-	// 	return error;
-	// }
+	} else {
+		return serverError;
+	}
 }
 
 // Maps field_name from error into form field name

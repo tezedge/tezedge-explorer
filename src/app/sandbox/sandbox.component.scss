@@ -65,6 +65,14 @@
       padding-top: 6px;
       padding-bottom: 6px;
 
+      .loading-indicator{
+        float: left;
+        margin-left: 24px;
+        margin-top: 8px;
+        color: #fff;
+        font-size: 12px;
+      }
+
       ::ng-deep .mat-button{
         margin-right: 24px;
 

@@ -507,6 +507,8 @@ mat-form-field .mat-select-arrow {
 /* Change color of mat-stepper (sandbox) */
 .mat-horizontal-stepper-header-container{
     .mat-step-header {
+        pointer-events: none !important;
+        
         .mat-step-label{
             color: $color;
             opacity: 0.6;

@@ -40,9 +40,6 @@
 			<mat-form-field class="full-size">
 				<input matInput #tezosDataDir type="text" formControlName="tezosDataDir" />
 			</mat-form-field>
-			<mat-error *ngIf="chainServerForm.controls.tezosDataDir.invalid">
-				<span *ngIf="chainServerForm.controls.tezosDataDir.errors.required">This field is required</span>
-			</mat-error>
 		</div>
 
 		<!-- Identity file -->
@@ -54,9 +51,6 @@
 			<mat-form-field class="full-size">
 				<input matInput #identityFile type="text" formControlName="identityFile" />
 			</mat-form-field>
-			<mat-error *ngIf="chainServerForm.controls.identityFile.invalid">
-				<span *ngIf="chainServerForm.controls.identityFile.errors.required">This field is required</span>
-			</mat-error>
 		</div>
 
 		<!-- Identity expected POW -->
@@ -83,9 +77,6 @@
 			<mat-form-field class="full-size">
 				<input matInput #bootstrapDbPath type="text" formControlName="bootstrapDbPath" />
 			</mat-form-field>
-			<mat-error *ngIf="chainServerForm.controls.bootstrapDbPath.invalid">
-				<span *ngIf="chainServerForm.controls.bootstrapDbPath.errors.required">This field is required</span>
-			</mat-error>
 		</div>
 
 		<!-- db cfg max threads -->
@@ -185,6 +176,10 @@
 				</mat-form-field>
 				<p class="from-field-description">Specify port for peer to peer communication.</p>
 			</div>
+			<mat-error *ngIf="chainServerForm.controls.p2pPort.invalid">
+				<span *ngIf="chainServerForm.controls.p2pPort.errors.required">This field is required</span>
+				<span *ngIf="error && chainServerForm.controls.p2pPort.errors.backendError">{{error.message}}</span>
+			</mat-error>
 		</div>
 
 		<!-- RPC Port -->

@@ -10,25 +10,25 @@ export class SandboxEffects {
 
     @Effect()
     SandboxNodeStart$ = this.actions$.pipe(
-        ofType('SANDBOX_NODE_START'),
+        ofType('CHAIN_SERVER_FORM_SUBMIT'),
 
         // merge state
         withLatestFrom(this.store, (action: any, state) => ({ action, state })),
 
         switchMap(({ action, state }) => {
-            console.log('[SANDBOX_NODE_START]', state.settingsNode);
+            console.log('[CHAIN_SERVER_FORM_SUBMIT]', state.settingsNode);
             return this.http.post(state.settingsNode.sandbox + '/start', state.sandbox.endpoints.start);
         }),
 
         // dispatch actions
         switchMap(payload => [
+            { type: 'CHAIN_SERVER_FORM_SUBMIT_SUCCESS', payload: payload },
             { type: 'SANDBOX_NODE_START_SUCCESS', payload: payload },
-            { type: 'SANDBOX_WALLET_INIT', payload: payload }
         ]),
         catchError((error, caught) => {
             console.error(error)
             this.store.dispatch({
-                type: 'SANDBOX_NODE_START_ERROR',
+                type: 'CHAIN_SERVER_FORM_SUBMIT_ERROR',
                 payload: error,
             });
             return caught;
@@ -63,20 +63,20 @@ export class SandboxEffects {
 
     @Effect()
     SandboxWalletInit$ = this.actions$.pipe(
-        ofType('SANDBOX_WALLET_INIT'),
+        ofType('CHAIN_WALLETS_FORM_SUBMIT'),
 
         // merge state
         withLatestFrom(this.store, (action: any, state) => ({ action, state })),
 
         switchMap(({ action, state }) => {
-            console.log('[SANDBOX_WALLET_INIT]', state.settingsNode);
+            console.log('[CHAIN_WALLETS_FORM_SUBMIT]', state.settingsNode);
             return this.http.post(state.settingsNode.sandbox + '/init_client', state.sandbox.endpoints.initClient)
         }),
 
         // dispatch actions
         switchMap(payload => [
+            { type: 'CHAIN_WALLETS_FORM_SUBMIT_SUCCESS', payload: payload },
             { type: 'SANDBOX_WALLET_INIT_SUCCESS', payload: payload },
-            { type: 'SANDBOX_ACTIVATE_PROTOCOL', payload: payload }
         ]),
         catchError((error, caught) => {
             console.error(error)
@@ -90,18 +90,19 @@ export class SandboxEffects {
 
     @Effect()
     SandboxActivateProtocol$ = this.actions$.pipe(
-        ofType('SANDBOX_ACTIVATE_PROTOCOL'),
+        ofType('CHAIN_CONFIG_FORM_SUBMIT'),
 
         // merge state
         withLatestFrom(this.store, (action: any, state) => ({ action, state })),
 
         switchMap(({ action, state }) => {
-            console.log('[SANDBOX_ACTIVATE_PROTOCOL]', state.settingsNode);
+            console.log('[CHAIN_CONFIG_FORM_SUBMIT]', state.settingsNode);
             return this.http.post(state.settingsNode.sandbox + '/activate_protocol', state.sandbox.endpoints.activateProtocol)
         }),
 
         // dispatch actions
         switchMap(payload => [
+            { type: 'CHAIN_CONFIG_FORM_SUBMIT_SUCCESS', payload: payload },
             { type: 'SANDBOX_ACTIVATE_PROTOCOL_SUCCESS', payload: payload },
             { type: 'SIDENAV_VISIBILITY_CHANGE', payload: true },
             { type: 'TOOLBAR_VISIBILITY_CHANGE', payload: true },

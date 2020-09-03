@@ -15,20 +15,20 @@
     NEW CHAIN CONFIG
   </div>
 
-  <mat-horizontal-stepper [linear]="true" #stepper (selectionChange)="stepChanged(stepper)">
-    <mat-step label="SERVER" [stepControl]="chainServer?.chainServerForm">
+  <mat-horizontal-stepper [linear]="true" #stepper>
+    <mat-step label="SERVER" [stepControl]="chainServer?.chainServerForm" [editable]="false">
       <div class="step-form-wrapper">
         <app-chain-server></app-chain-server>
         <ng-template [ngTemplateOutlet]="sandboxFooter"></ng-template>
       </div>
     </mat-step>
-    <mat-step label="WALLETS">
+    <mat-step label="WALLETS" [editable]="false">
       <div class="step-form-wrapper">
         <app-chain-wallets></app-chain-wallets>
         <ng-template [ngTemplateOutlet]="sandboxFooter"></ng-template>
       </div>
     </mat-step>
-    <mat-step label="CHAIN" [stepControl]="chainConfig?.chainConfigForm">
+    <mat-step label="CHAIN" [stepControl]="chainConfig?.chainConfigForm" [editable]="false">
       <div class="step-form-wrapper">
         <app-chain-config></app-chain-config>
         <ng-template [ngTemplateOutlet]="sandboxFooter"></ng-template>
@@ -46,18 +46,19 @@
         <ng-template [ngTemplateOutlet]="sandboxFooter"></ng-template>
       </div>
     </mat-step> -->
-    <mat-step label="FINISH" [stepControl]="chainFinish?.chainFinishForm">
+    <!-- <mat-step label="FINISH" [stepControl]="chainFinish?.chainFinishForm">
       <div class="step-form-wrapper">
         <app-chain-finish></app-chain-finish>
       </div>
-    </mat-step>
+    </mat-step> -->
   </mat-horizontal-stepper>
   
   <!-- Sandbox footer template -->
   <ng-template #sandboxFooter >
     <div class="sandbox-footer">
       <div class="footer-container">
-        <button mat-button (click)="nextStep(stepper)" class="attention-button">
+        <span *ngIf="showLoading" class="loading-indicator">Loading...</span>
+        <button mat-button (click)="submitCurrentStep()" class="attention-button">
           <span class="text">CONTINUE</span>
           <img class="icon" src="../../../assets/icon/arrow-right.svg" />
         </button>

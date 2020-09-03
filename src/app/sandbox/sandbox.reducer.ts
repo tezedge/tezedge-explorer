@@ -18,29 +18,68 @@ const initialState: any = {
                 "initial_balance": "4000000000000"
             }
         ]
-    }
+    },
+    showLoading: false,
+    showError: false
 };
 
 export function reducer(state = initialState, action) {
     switch (action.type) {
+        // Chain server form submit
         case 'CHAIN_SERVER_FORM_SUBMIT': {
             return {
                 ...state,
                 endpoints: {
                     ...state.endpoints,
                     start: mapChainServerForEndpoint(action.payload)
-                }
+                },
+                showLoading: true,
+                showError: false
             }
         }
+        case 'CHAIN_SERVER_FORM_SUBMIT_SUCCESS': {
+            return {
+                ...state,
+                showLoading: false,
+                showError: false
+            }
+        }
+        case 'CHAIN_SERVER_FORM_SUBMIT_ERROR': {
+            return {
+                ...state,
+                showLoading: false,
+                showError: true
+            }
+        }
+    
+        // Chain config form submit
         case 'CHAIN_CONFIG_FORM_SUBMIT': {
             return {
                 ...state,
                 endpoints: {
                     ...state.endpoints,
                     activateProtocol: mapChainConfigForEndpoint(action.payload)
-                }
+                },
+                showLoading: true,
+                showError: false
             }
-        }        
+        }     
+        case 'CHAIN_CONFIG_FORM_SUBMIT_SUCCESS': {
+            return {
+                ...state,
+                showLoading: false,
+                showError: false
+            }
+        }    
+        case 'CHAIN_CONFIG_FORM_SUBMIT_ERROR': {
+            return {
+                ...state,
+                showLoading: false,
+                showError: true
+            }
+        }
+
+        // Chain wallets form submit
         case 'CHAIN_WALLETS_FORM_SUBMIT': {
             return {
                 ...state,
@@ -48,9 +87,26 @@ export function reducer(state = initialState, action) {
                     ...state.endpoints,
                     // TODO
                     // initClient: mapChainWalletsForEndpoint(action.payload)
-                }
+                },
+                showLoading: true,
+                showError: false
             }
         }
+        case 'CHAIN_WALLETS_FORM_SUBMIT_SUCCESS': {
+            return {
+                ...state,
+                showLoading: false,
+                showError: false
+            }
+        }
+        case 'CHAIN_WALLETS_FORM_SUBMIT_ERROR': {
+            return {
+                ...state,
+                showLoading: false,
+                showError: true
+            }
+        }
+        
         default:
             return state;
     }
@@ -61,8 +117,8 @@ export function mapChainServerForEndpoint(formData: any){
     return {
         identity_expected_pow: formData.identityExpectedPow,
         disable_bootstrap_lookup: formData.disableBootstrapDnsLookup ? formData.disableBootstrapDnsLookup : undefined,
-        // bootstrap_lookup_address:  formData.bootstrapLookupAddresses,
-        // disable_mempool: !formData.mempool,
+        // bootstrap_lookup_address: formData.bootstrapLookupAddresses ? formData.bootstrapLookupAddresses : undefined,
+        disable_mempool: !formData.mempool,
         network: formData.network, 
         peer_thresh_low: formData.lowerPeerTreshold, 
         peer_thresh_high: formData.higherPeerTreshold, 
@@ -71,15 +127,15 @@ export function mapChainServerForEndpoint(formData: any){
         tezos_data_dir: formData.tezosDataDir,
         identity_file: formData.identityFile,
         bootstrap_db_path: formData.bootstrapDbPath, 
-        db_cfg_max_threads: formData.maxThreads.toString(), 
-        // log_file: formData.loggingFile,
+        db_cfg_max_threads: formData.maxThreads ? formData.maxThreads.toString() : undefined, 
+        log_file: formData.loggingFile ? formData.loggingFile : undefined,
         log_format: formData.loggingFormat, 
         log_level: formData.loggingLevel, 
         ocaml_log_enabled: formData.oCamlLogging, 
         p2p_port: formData.p2pPort, 
         rpc_port: formData.rpcPort, 
         monitor_port: formData.monitorPort, 
-        // peers: formData.peers,
+        // peers: formData.peers ? formData.peers : undefined,
         websocket_address: formData.webSocketAddress,
         // private_node: formData.privateNodeMode, 
         ffi_calls_gc_threshold: formData.ffiCallsNo, 

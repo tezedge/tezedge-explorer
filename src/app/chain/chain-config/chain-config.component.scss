@@ -1,6 +1,18 @@
 .chain-config {
 	padding-bottom: 50px;
 
+	::ng-deep .mat-expansion-panel {
+    margin-top: 16px;
+		margin-bottom: 32px;
+		border: none;
+
+    .mat-expansion-panel-body{
+			.text{
+				color: #fff;
+			}
+    }
+  }
+
 	.section {
 		padding: 16px 16px 6px 16px;
 

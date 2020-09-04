@@ -111,7 +111,7 @@ export class SandboxEffects {
         catchError((error, caught) => {
             console.error(error)
             this.store.dispatch({
-                type: 'SANDBOX_ACTIVATE_PROTOCOL_ERROR',
+                type: 'CHAIN_CONFIG_FORM_SUBMIT_ERROR',
                 payload: error,
             });
             return caught;

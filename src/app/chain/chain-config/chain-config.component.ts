@@ -1,16 +1,20 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, OnDestroy } from '@angular/core';
 import { FormBuilder, Validators, FormGroup } from '@angular/forms';
 import { Store } from '@ngrx/store';
+import { Subject } from 'rxjs';
+import { takeUntil, take } from 'rxjs/operators';
 
 @Component({
 	selector: 'app-chain-config',
 	templateUrl: './chain-config.component.html',
 	styleUrls: ['./chain-config.component.scss'],
 })
-export class ChainConfigComponent implements OnInit {
+export class ChainConfigComponent implements OnInit, OnDestroy {
 	@Input() isReadonly?: boolean;
 	
+  onDestroy$ = new Subject();
 	chainConfigForm: FormGroup;
+	error: any;
 
 	constructor(private store: Store<any>, private fb: FormBuilder) {}
 
@@ -23,24 +27,24 @@ export class ChainConfigComponent implements OnInit {
 			blocksPerCommit: ['', [Validators.required]],
 			blocksPerRollSnap: ['', [Validators.required]],
 			blocksPerVotingPeriod: ['', [Validators.required]],
-			timeBetweenBlocks1: ['', [Validators.required]],
-			timeBetweenBlocks2: ['', [Validators.required]],
+			timeBetweenBlocks1: ['', [Validators.required, Validators.pattern(/^-?\d+\.?\d*$/)]],
+			timeBetweenBlocks2: ['', [Validators.required, Validators.pattern(/^-?\d+\.?\d*$/)]],
 			endorsersPerBlock: ['', [Validators.required]],
 
-			hardGasLimitPerOperation: ['', [Validators.required]],
-			hardGasLimitPerBlock: ['', [Validators.required]],
-			proofOfWorkTreshold: ['', [Validators.required]],
-			tokensPerRoll: ['', [Validators.required]],
+			hardGasLimitPerOperation: ['', [Validators.required, Validators.pattern(/^-?\d+\.?\d*$/)]],
+			hardGasLimitPerBlock: ['', [Validators.required, Validators.pattern(/^-?\d+\.?\d*$/)]],
+			proofOfWorkTreshold: ['', [Validators.required, Validators.pattern(/^-?\d+\.?\d*$/)]],
+			tokensPerRoll: ['', [Validators.required, Validators.pattern(/^-?\d+\.?\d*$/)]],
 			michelsonMaxTypeSize: ['', [Validators.required]],
-			seedNonceRevelationTip: ['', [Validators.required]],
+			seedNonceRevelationTip: ['', [Validators.required, Validators.pattern(/^-?\d+\.?\d*$/)]],
 
 			originationSize: ['', [Validators.required]],
 			blockSecurityDeposit: ['', [Validators.required]],
 			endorsementSecurityDeposit: ['', [Validators.required]],
-			bakingRewardPerEndorsement1: ['', [Validators.required]],
-			bakingRewardPerEndorsement2: ['', [Validators.required]],
-			endorsementReward1: ['', [Validators.required]],
-			endorsementReward2: ['', [Validators.required]],
+			bakingRewardPerEndorsement1: ['', [Validators.required, Validators.pattern(/^-?\d+\.?\d*$/)]],
+			bakingRewardPerEndorsement2: ['', [Validators.required, Validators.pattern(/^-?\d+\.?\d*$/)]],
+			endorsementReward1: ['', [Validators.required, Validators.pattern(/^-?\d+\.?\d*$/)]],
+			endorsementReward2: ['', [Validators.required, Validators.pattern(/^-?\d+\.?\d*$/)]],
 			costPerByte: ['', [Validators.required]],
 			storageLimitPerOperation: ['', [Validators.required]],
 			testChainDuration: ['', [Validators.required]],
@@ -56,5 +60,46 @@ export class ChainConfigComponent implements OnInit {
 		if(this.isReadonly){
 			this.chainConfigForm.disable();
 		}
+		
+		// Subscribe to store to get form server error
+		this.store.select('chainConfig')
+		.pipe(takeUntil(this.onDestroy$))
+		.subscribe(store => {
+			this.error = store.error;
+			if(
+				this.error?.error_type === 'validation' && 
+				this.error?.field_name && 
+				!this.error?.isShown && 
+				this.formHasFieldName(this.error.field_name)
+				) {
+				// set error to form control
+				const control = this.chainConfigForm.get(this.error.field_name);
+				setTimeout(() => control.setErrors({ 'serverError': true }) );
+
+				// Mark error as shown on form
+				this.store.dispatch({ type: 'CHAIN_CONFIG_FORM_ERROR_SHOWN' });
+				
+				// subscribe to field value change (to be able to remove server error)
+				control.valueChanges.pipe(take(1)).subscribe(val => {
+					control.setErrors({ 'serverError': null })
+				});
+			} else if(!this.error?.isShown && this.error?.error_type === 'generic'){
+				// scroll to top of page and disable whole form
+				this.store.dispatch({ type: 'CHAIN_CONFIG_FORM_ERROR_SHOWN' });
+				window.scroll(0,0);
+			}
+		});
 	}
+
+	// checks whether form has field
+	formHasFieldName(fieldName: string): boolean {
+    const control = this.chainConfigForm.get(fieldName);
+    return control != null;
+  }
+
+  ngOnDestroy() {
+    // close all observables
+    this.onDestroy$.next();
+    this.onDestroy$.complete();
+  }
 }

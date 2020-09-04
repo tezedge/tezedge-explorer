@@ -63,25 +63,25 @@ export class SandboxEffects {
 
     @Effect()
     SandboxWalletInit$ = this.actions$.pipe(
-        ofType('CHAIN_WALLETS_FORM_SUBMIT'),
+        ofType('CHAIN_WALLETS_SUBMIT'),
 
         // merge state
         withLatestFrom(this.store, (action: any, state) => ({ action, state })),
 
         switchMap(({ action, state }) => {
-            console.log('[CHAIN_WALLETS_FORM_SUBMIT]', state.settingsNode);
+            console.log('[CHAIN_WALLETS_SUBMIT]', state.settingsNode);
             return this.http.post(state.settingsNode.sandbox + '/init_client', state.sandbox.endpoints.initClient)
         }),
 
         // dispatch actions
         switchMap(payload => [
-            { type: 'CHAIN_WALLETS_FORM_SUBMIT_SUCCESS', payload: payload },
-            { type: 'SANDBOX_WALLET_INIT_SUCCESS', payload: payload },
+            { type: 'CHAIN_WALLETS_SUBMIT_SUCCESS', payload: payload },
+            { type: 'SANDBOX_INIT_CLIENT_SUCCESS', payload: payload },
         ]),
         catchError((error, caught) => {
             console.error(error)
             this.store.dispatch({
-                type: 'SANDBOX_WALLET_INIT_ERROR',
+                type: 'CHAIN_WALLETS_SUBMIT_ERROR',
                 payload: error,
             });
             return caught;

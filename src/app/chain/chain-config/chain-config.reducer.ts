@@ -78,7 +78,7 @@ export function mapError(serverError: any) {
 
 // Maps field_name from error into form field name
 export function mapFieldName(field_name: string){
-	field_name = field_name.replace(/-/g, '_').replace(/,/g, '');
+	field_name = field_name.replace(/-/g, '_');
 
 	// define field name mappings
 	const chainConfigFieldNameMappings = {

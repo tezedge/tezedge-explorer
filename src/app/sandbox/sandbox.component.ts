@@ -41,8 +41,8 @@ export class SandboxComponent implements OnInit, OnDestroy{
     this.actions$.pipe(
       ofType(
         'CHAIN_SERVER_FORM_SUBMIT_SUCCESS',
-        'CHAIN_WALLETS_FORM_SUBMIT_SUCCESS',
-        // 'CHAIN_CONFIG_FORM_SUBMIT_SUCCESS'
+        'CHAIN_WALLETS_SUBMIT_SUCCESS',
+        'CHAIN_WALLETS_SUBMIT_SUCCESS'
         ),
       takeUntil(this.onDestroy$),
       tap(() => {
@@ -70,14 +70,10 @@ export class SandboxComponent implements OnInit, OnDestroy{
         break;
       }
       case 'WALLETS': { 
-        // TODO
-        //if(!this.chainWallets.chainWalletsForm.invalid){
-        if(true) {
-          this.store.dispatch({
-            type: 'CHAIN_WALLETS_FORM_SUBMIT',
-            payload: this.chainServer.chainServerForm.value,
-          });
-        }
+        this.store.dispatch({
+          type: 'CHAIN_WALLETS_SUBMIT',
+          payload: this.chainWallets.wallets,
+        });
         break; 
       }
       case 'CHAIN': {

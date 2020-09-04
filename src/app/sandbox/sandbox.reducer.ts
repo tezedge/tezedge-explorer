@@ -2,22 +2,7 @@ const initialState: any = {
     endpoints: {
         start: {},
         activateProtocol: {},
-        initClient: [
-            {
-                "alias": "bootstrap1",
-                "secret_key": "edsk3gUfUPyBSfrS9CCgmCiQsTCHGkviBDusMxDJstFtojtc1zcpsh",
-                "public_key": "edpkuBknW28nW72KG6RoHtYW7p12T6GKc7nAbwYX5m8Wd9sDVC9yav",
-                "public_key_hash": "tz1KqTpEZ7Yob7QbPE4Hy4Wo8fHG8LhKxZSx",
-                "initial_balance": "4000000000000"
-            },
-            {
-                "alias": "bootstrap2",
-                "secret_key": "edsk39qAm1fiMjgmPkw1EgQYkMzkJezLNewd7PLNHTkr6w9XA2zdfo",
-                "public_key": "edpktzNbDAUjUk697W7gYg2CRuBQjyPxbEg8dLccYYwKSKvkPvjtV9",
-                "public_key_hash": "tz1gjaF81ZRRvdzjobyfVNsAeSC6PScjfQwN",
-                "initial_balance": "4000000000000"
-            }
-        ]
+        initClient: []
     },
     showLoading: false,
     showError: false
@@ -80,26 +65,25 @@ export function reducer(state = initialState, action) {
         }
 
         // Chain wallets form submit
-        case 'CHAIN_WALLETS_FORM_SUBMIT': {
+        case 'CHAIN_WALLETS_SUBMIT': {
             return {
                 ...state,
                 endpoints: {
                     ...state.endpoints,
-                    // TODO
-                    // initClient: mapChainWalletsForEndpoint(action.payload)
+                    initClient: mapChainWalletsForEndpoint(action.payload)
                 },
                 showLoading: true,
                 showError: false
             }
         }
-        case 'CHAIN_WALLETS_FORM_SUBMIT_SUCCESS': {
+        case 'CHAIN_WALLETS_SUBMIT_SUCCESS': {
             return {
                 ...state,
                 showLoading: false,
                 showError: false
             }
         }
-        case 'CHAIN_WALLETS_FORM_SUBMIT_ERROR': {
+        case 'CHAIN_WALLETS_SUBMIT_ERROR': {
             return {
                 ...state,
                 showLoading: false,
@@ -147,6 +131,21 @@ export function mapChainServerForEndpoint(formData: any){
         tokio_threads: formData.tokioThreads,
         enable_testchain: formData.testChain, 
     }
+}
+
+export function mapChainWalletsForEndpoint(wallets: any[]){
+    const endpointWallets = [];
+    wallets.forEach((wallet)=>{
+        const endpointWallet = {
+            alias: wallet.alias,
+            secret_key: wallet.secretKey,
+            public_key: wallet.publicKey,
+            public_key_hash: wallet.publicKeyHash,
+            initial_balance: wallet.balance
+        }
+        endpointWallets.push(endpointWallet);
+    });
+    return endpointWallets;
 }
 
 // Map chain config form data for 'activate_protocol' endpoint

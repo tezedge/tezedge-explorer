@@ -16,41 +16,24 @@
   </div>
 
   <mat-horizontal-stepper [linear]="true" #stepper>
-    <mat-step label="SERVER" [stepControl]="chainServer?.chainServerForm" [editable]="false">
-      <div class="step-form-wrapper">
+    <mat-step #server label="SERVER" [stepControl]="chainServer?.chainServerForm" [editable]="false">
+      <div *ngIf="stepper.selected == server" class="step-form-wrapper">
         <app-chain-server></app-chain-server>
         <ng-template [ngTemplateOutlet]="sandboxFooter"></ng-template>
       </div>
     </mat-step>
-    <mat-step label="WALLETS" [editable]="false">
-      <div class="step-form-wrapper">
+    <mat-step #wallets label="WALLETS" [editable]="false">
+      <div *ngIf="stepper.selected == wallets" class="step-form-wrapper">
         <app-chain-wallets></app-chain-wallets>
         <ng-template [ngTemplateOutlet]="sandboxFooter"></ng-template>
       </div>
     </mat-step>
-    <mat-step label="CHAIN" [stepControl]="chainConfig?.chainConfigForm" [editable]="false">
-      <div class="step-form-wrapper">
+    <mat-step #chain label="CHAIN" [stepControl]="chainConfig?.chainConfigForm" [editable]="false">
+      <div *ngIf="stepper.selected == chain" class="step-form-wrapper">
         <app-chain-config></app-chain-config>
         <ng-template [ngTemplateOutlet]="sandboxFooter"></ng-template>
       </div>
     </mat-step>
-    <!-- <mat-step label="BAKING">
-      <div class="step-form-wrapper">
-        <app-chain-baking></app-chain-baking>
-        <ng-template [ngTemplateOutlet]="sandboxFooter"></ng-template>
-      </div>
-    </mat-step>
-    <mat-step label="OTHER">
-      <div class="step-form-wrapper">
-        <app-chain-other></app-chain-other>
-        <ng-template [ngTemplateOutlet]="sandboxFooter"></ng-template>
-      </div>
-    </mat-step> -->
-    <!-- <mat-step label="FINISH" [stepControl]="chainFinish?.chainFinishForm">
-      <div class="step-form-wrapper">
-        <app-chain-finish></app-chain-finish>
-      </div>
-    </mat-step> -->
   </mat-horizontal-stepper>
   
   <!-- Sandbox footer template -->
@@ -58,7 +41,7 @@
     <div class="sandbox-footer">
       <div class="footer-container">
         <span *ngIf="showLoading" class="loading-indicator">Loading...</span>
-        <button mat-button (click)="submitCurrentStep()" class="attention-button">
+        <button mat-button (click)="submitCurrentStep()" [disabled]="showLoading" class="attention-button">
           <ng-container *ngIf="stepper.selectedIndex < stepper.steps?.length-1">
             <span class="text">CONTINUE</span>
             <img class="icon" src="../../../assets/icon/arrow-right.svg" />

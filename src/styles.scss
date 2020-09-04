@@ -964,7 +964,6 @@ ngx-json-viewer .segment .segment-main .segment-key {
     padding-left: 24px;
 }
 
-
 // from fields styles 
 .chain mat-form-field,
 .sandbox mat-form-field {
@@ -972,7 +971,6 @@ ngx-json-viewer .segment .segment-main .segment-key {
     background: $color-border;
     height: 32px;
     border-radius: 4px;
-    padding-left: 10px;
 
     &.mat-form-field-invalid{
         background: $color-chrome-red;
@@ -988,6 +986,11 @@ ngx-json-viewer .segment .segment-main .segment-key {
             color: $color-focus;
         }
     }
+}
+
+.chain .mat-form-field-infix,
+.sandbox .mat-form-field-infix {
+    padding-left: 8px !important;
 }
 
 .sandbox fieldset:disabled{
@@ -1083,6 +1086,59 @@ ngx-json-viewer .segment .segment-main .segment-key {
     }
 }
 
+// Wallets table style
+.chain-wallets {
+    .mat-table {
+        border: 1px solid $color-border;
+        border-radius: 4px;
+
+        .mat-header-row {
+            .mat-header-cell {
+                color: fade-out($color-focus, 0.6) !important;
+                font-weight: 100;
+                font-size: 12px;
+                padding-left: 8px;
+                padding-right: 8px;
+
+                &:first-of-type {
+                    padding-left: 16px;
+                }
+                &:last-of-type {
+                    padding-right: 16px;
+                }
+                &.text-right{
+                    text-align: right;
+                }
+            }
+        }
+        .mat-row {
+            &:nth-child(even){
+                background-color: $color-border;
+            }
+            .mat-cell {
+                color: $color-focus !important;
+                font-weight: 100;
+                font-size: 12px;
+                padding-left: 8px;
+                padding-right: 8px;
+
+                &:first-of-type {
+                    padding-left: 16px;
+                }
+                &:last-of-type {
+                    padding-right: 16px;
+                }
+                &.muted {
+                    color: fade-out($color-focus, 0.4) !important;
+                }
+                &.text-right{
+                    text-align: right;
+                }
+            }
+        }
+    }
+}
+
 .mat-button {
     &.attention-button{
         background-color: $color-content-attention;
@@ -1109,6 +1165,7 @@ input.mat-input-element {
     font-size: 12px;
     line-height: 12px;
     font-weight: 400;
+    margin: 8px 0;
 }
 
 .from-field-description {

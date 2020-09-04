@@ -10,7 +10,7 @@ const initialState: any = {
 		loggingFormat: 'simple',
 		loggingLevel: 'info',
 		oCamlLogging: false,
-		network: 'carthagenet',
+		network: 'sandbox',
 		p2pPort: 9732,
 		rpcPort: 18732,
 		webSocketAddress: '0.0.0.0:4927',

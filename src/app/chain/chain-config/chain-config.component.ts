@@ -39,8 +39,8 @@ export class ChainConfigComponent implements OnInit, OnDestroy {
 			seedNonceRevelationTip: ['', [Validators.required, Validators.pattern(/^-?\d+\.?\d*$/)]],
 
 			originationSize: ['', [Validators.required]],
-			blockSecurityDeposit: ['', [Validators.required]],
-			endorsementSecurityDeposit: ['', [Validators.required]],
+			blockSecurityDeposit: ['', [Validators.required, Validators.pattern(/^-?\d+\.?\d*$/)]],
+			endorsementSecurityDeposit: ['', [Validators.required, Validators.pattern(/^-?\d+\.?\d*$/)]],
 			bakingRewardPerEndorsement1: ['', [Validators.required, Validators.pattern(/^-?\d+\.?\d*$/)]],
 			bakingRewardPerEndorsement2: ['', [Validators.required, Validators.pattern(/^-?\d+\.?\d*$/)]],
 			endorsementReward1: ['', [Validators.required, Validators.pattern(/^-?\d+\.?\d*$/)]],

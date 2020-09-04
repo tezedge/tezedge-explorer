@@ -14,17 +14,17 @@ const initialState: any = {
 		hardGasLimitPerBlock: '1.04',
 		proofOfWorkTreshold: '-1',
 		tokensPerRoll: '8000',
-		michelsonMaxTypeSize: '1000',
+		michelsonMaxTypeSize: 1000,
 		seedNonceRevelationTip: '0.125',
 
 		originationSize: 257,
-		blockSecurityDeposit: 512,
-		endorsementSecurityDeposit: 64,
+		blockSecurityDeposit: '512',
+		endorsementSecurityDeposit: '64',
 		bakingRewardPerEndorsement1: '1250000',
 		bakingRewardPerEndorsement2: '187500',
 		endorsementReward1: '1250000',
 		endorsementReward2: '833333',
-		costPerByte: 1,
+		costPerByte: '1',
 		storageLimitPerOperation: 60000,
 		testChainDuration: 1966080,
 
@@ -78,7 +78,7 @@ export function mapError(serverError: any) {
 
 // Maps field_name from error into form field name
 export function mapFieldName(field_name: string){
-	field_name = field_name.replace(/-/g, '_');
+	field_name = field_name.replace(/-/g, '_').replace(/,/g, '');
 
 	// define field name mappings
 	const chainConfigFieldNameMappings = {

@@ -247,13 +247,14 @@
 			<p class="from-field-title">Block security deposit</p>
 			<div class="inline-wrapper">
 				<mat-form-field class="medium-size">
-					<input matInput #blockSecurityDeposit type="number" formControlName="blockSecurityDeposit" />
+					<input matInput #blockSecurityDeposit type="text" formControlName="blockSecurityDeposit" />
 					<span matSuffix class="input-suffix">XTZ</span>
 				</mat-form-field>
 				<p class="from-field-description">Cost in XTZ, deposit per baked block.</p>
 			</div>
 			<mat-error *ngIf="chainConfigForm.controls.blockSecurityDeposit.invalid">
 				<span *ngIf="chainConfigForm.controls.blockSecurityDeposit.errors.required">This field is required</span>
+				<span *ngIf="chainConfigForm.controls.blockSecurityDeposit.errors.pattern">This field must be a valid number</span>
 				<span *ngIf="chainConfigForm.controls.blockSecurityDeposit.errors.serverError">{{error.message}}</span>
 			</mat-error>
 		</div>
@@ -262,13 +263,14 @@
 			<p class="from-field-title">Endorsement security deposit</p>
 			<div class="inline-wrapper">
 				<mat-form-field class="medium-size">
-					<input matInput #endorsementSecurityDeposit type="number" formControlName="endorsementSecurityDeposit" />
+					<input matInput #endorsementSecurityDeposit type="text" formControlName="endorsementSecurityDeposit" />
 					<span matSuffix class="input-suffix">XTZ</span>
 				</mat-form-field>
 				<p class="from-field-description">Cost in XTZ, deposit per endorsement slot.</p>
 			</div>
 			<mat-error *ngIf="chainConfigForm.controls.endorsementSecurityDeposit.invalid">
 				<span *ngIf="chainConfigForm.controls.endorsementSecurityDeposit.errors.required">This field is required</span>
+				<span *ngIf="chainConfigForm.controls.endorsementSecurityDeposit.errors.pattern">This field must be a valid number</span>
 				<span *ngIf="chainConfigForm.controls.endorsementSecurityDeposit.errors.serverError">{{error.message}}</span>
 			</mat-error>
 		</div>
@@ -313,13 +315,14 @@
 			<p class="from-field-title">Cost per byte</p>
 			<div class="inline-wrapper">
 				<mat-form-field class="medium-size">
-					<input matInput #costPerByte type="number" formControlName="costPerByte" />
+					<input matInput #costPerByte type="text" formControlName="costPerByte" />
 					<span matSuffix class="input-suffix">XTZ</span>
 				</mat-form-field>
 				<p class="from-field-description">Cost in XTZ per bytes used in contracts.</p>
 			</div>
 			<mat-error *ngIf="chainConfigForm.controls.costPerByte.invalid">
 				<span *ngIf="chainConfigForm.controls.costPerByte.errors.required">This field is required</span>
+				<span *ngIf="chainConfigForm.controls.costPerByte.errors.pattern">This field must be a valid number</span>
 				<span *ngIf="chainConfigForm.controls.costPerByte.errors.serverError">{{error.message}}</span>
 			</mat-error>
 		</div>

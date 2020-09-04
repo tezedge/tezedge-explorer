@@ -206,16 +206,10 @@
 			<p class="from-field-title">Network</p>
 			<p class="from-field-description">
 				Specify the Tezos environment for this node.
-				Note:  ‘babylon’ and ‘babylonnet’ refer to same environment.
 			</p>
 			<mat-form-field class="half-size">
 				<mat-select #network formControlName="network">
-					<mat-option value="carthagenet">carthagenet</mat-option>
-					<mat-option value="alphanet">alphanet</mat-option>
-					<mat-option value="babylonnet">babylonnet</mat-option>
-					<mat-option value="babylon">babylon</mat-option>
-					<mat-option value="mainnet">mainnet</mat-option>
-					<mat-option value="zeronet">zeronet</mat-option>
+					<mat-option value="sandbox">sandbox</mat-option>
 				</mat-select>
 			</mat-form-field>
 			<mat-error *ngIf="chainServerForm.controls.network.invalid">

@@ -119,7 +119,7 @@ export function mapChainServerForEndpoint(formData: any){
         disable_bootstrap_lookup: !formData.bootstrapLookupAddresses ? '' : undefined,
         bootstrap_lookup_address: formData.bootstrapLookupAddresses ? formData.bootstrapLookupAddresses : undefined,
         disable_mempool: !formData.mempool,
-        network: formData.network, 
+        network: 'sandbox', 
         peer_thresh_low: formData.lowerPeerTreshold, 
         peer_thresh_high: formData.higherPeerTreshold, 
         sandbox_patch_context_json_file: formData.sandboxContextPatching, 
@@ -166,15 +166,15 @@ export function mapChainConfigForEndpoint(formData: any){
                 formData.timeBetweenBlocks2
             ],
             endorsers_per_block: formData.endorsersPerBlock,
-            hard_gas_limit_per_operation: formData.hardGasLimitPerOperation,
-            hard_gas_limit_per_block: formData.hardGasLimitPerBlock,
+            hard_gas_limit_per_operation: convertXtzToMutez(formData.hardGasLimitPerOperation),
+            hard_gas_limit_per_block: convertXtzToMutez(formData.hardGasLimitPerBlock),
             proof_of_work_threshold: formData.proofOfWorkTreshold,
-            tokens_per_roll: formData.tokensPerRoll,
+            tokens_per_roll: convertXtzToMutez(formData.tokensPerRoll),
             michelson_maximum_type_size: formData.michelsonMaxTypeSize,
-            seed_nonce_revelation_tip: formData.seedNonceRevelationTip,
+            seed_nonce_revelation_tip: convertXtzToMutez(formData.seedNonceRevelationTip),
             origination_size: formData.originationSize,
-            block_security_deposit: formData.blockSecurityDeposit.toString(),
-            endorsement_security_deposit: formData.endorsementSecurityDeposit.toString(),
+            block_security_deposit: convertXtzToMutez(formData.blockSecurityDeposit),
+            endorsement_security_deposit: convertXtzToMutez(formData.endorsementSecurityDeposit),
             baking_reward_per_endorsement: [
                 formData.bakingRewardPerEndorsement1,
                 formData.bakingRewardPerEndorsement2
@@ -183,7 +183,7 @@ export function mapChainConfigForEndpoint(formData: any){
             formData.endorsementReward1,
             formData.endorsementReward2
             ],
-            cost_per_byte: formData.costPerByte.toString(),
+            cost_per_byte: convertXtzToMutez(formData.costPerByte),
             hard_storage_limit_per_operation: formData.storageLimitPerOperation.toString(),
             test_chain_duration: formData.testChainDuration.toString(),
             quorum_min: formData.quorumMin,
@@ -193,4 +193,8 @@ export function mapChainConfigForEndpoint(formData: any){
             delay_per_missing_endorsement: formData.delayPerMissingEndorsement.toString(),
         }
     }
+}
+
+export function convertXtzToMutez(xtz: string){
+    return (Number(xtz) * 1000000).toString();
 }

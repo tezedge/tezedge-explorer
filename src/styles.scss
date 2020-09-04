@@ -543,7 +543,7 @@ mat-form-field .mat-select-arrow {
     display: block !important;
 
     &:not(:last-child){
-        margin-bottom: 16px;    
+        margin-bottom: 8px;    
     }
     .mat-radio-label{
         .mat-radio-container{
@@ -575,6 +575,11 @@ mat-form-field .mat-select-arrow {
                 opacity: 1;
             }
         }
+    }
+
+    &.mat-radio-disabled .mat-radio-label-content{
+        color: $color-focus;
+        opacity: 0.5;
     }
 }
 
@@ -963,14 +968,36 @@ ngx-json-viewer .segment .segment-main .segment-key {
 // from fields styles 
 .chain mat-form-field,
 .sandbox mat-form-field {
-    color: $color;
+    color: $color-focus;
     background: $color-border;
     height: 32px;
     border-radius: 4px;
     padding-left: 10px;
 
-    &.ng-invalid.ng-dirty{
+    &.mat-form-field-invalid{
         background: $color-chrome-red;
+    }
+
+    &.mat-form-field-disabled,
+    &.mat-select-disabled {
+        background: fade-out($color-focus, 0.9);  
+        opacity: 0.5;
+
+        .mat-input-element:disabled,
+        .mat-select-disabled .mat-select-value{
+            color: $color-focus;
+        }
+    }
+}
+
+.sandbox fieldset:disabled{
+    .mat-form-field{
+        background: fade-out($color-focus, 0.9);  
+        opacity: 0.5;
+        .mat-input-element,
+        .mat-select-disabled .mat-select-value{
+            color: $color-focus;
+        }
     }
 }
 
@@ -1089,6 +1116,12 @@ input.mat-input-element {
     opacity: 0.6;
     line-height: 14px;
     margin: 8px 0;
+
+    .action-text{
+        cursor: pointer;
+        color: $color-focus;
+        text-decoration: underline;
+    }
 }
 
 .app-menu-toggle {

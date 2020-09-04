@@ -116,7 +116,7 @@ export function reducer(state = initialState, action) {
 export function mapChainServerForEndpoint(formData: any){
     return {
         identity_expected_pow: formData.identityExpectedPow,
-        disable_bootstrap_lookup: formData.disableBootstrapDnsLookup ? formData.disableBootstrapDnsLookup : undefined,
+        disable_bootstrap_lookup: !formData.bootstrapLookupAddresses ? '' : undefined,
         bootstrap_lookup_address: formData.bootstrapLookupAddresses ? formData.bootstrapLookupAddresses : undefined,
         disable_mempool: !formData.mempool,
         network: formData.network, 
@@ -137,7 +137,7 @@ export function mapChainServerForEndpoint(formData: any){
         monitor_port: formData.monitorPort, 
         peers: formData.peers ? formData.peers : undefined,
         websocket_address: formData.webSocketAddress,
-        private_node: formData.privateNodeMode, 
+        private_node: formData.privateNodeMode ? formData.privateNodeMode : undefined, 
         ffi_calls_gc_threshold: formData.ffiCallsNo, 
         ffi_pool_max_connections: formData.ffiMaxConn, 
         ffi_pool_connection_timeout_in_secs: formData.ffiConnTimeout, 

@@ -25,7 +25,7 @@
 		</mat-expansion-panel-header>
 		<p style="margin-bottom: 0">{{ error.message }}</p>
 		<p style="margin-top: 8px; margin-bottom: 0">
-			Please go back to the previous page and try again. If you think something is broken, report a problem at <a href="mailto:support@tezedge.com">support@tezedge.com</a>
+			Please restart application and try again. If you think something is broken, report a problem at <a href="mailto:support@tezedge.com">support@tezedge.com</a>
 		</p>
 	</mat-expansion-panel>
 	
@@ -327,52 +327,68 @@
 			</mat-error>
 		</div>
 
-		<!-- Peers -->
+		<!-- Private node mode -->
 		<div class="form-field">
-			<p class="from-field-title">Peers (optional)</p>
+			<p class="from-field-title">Private node mode</p>
 			<p class="from-field-description">
-				Allowed network peers to bootstrap from. This argument is good to use in controlled testing environmnet. Each
-				peer is described by its address and port in `IP:PORT` format, delimited by a colon.
+				Enable or disable the private node. Use peers to set the IP addresses of the peers you want to connect to
 			</p>
-			<mat-form-field class="full-size">
-				<input matInput #peers type="text" formControlName="peers" />
-			</mat-form-field>
-			<mat-error *ngIf="chainServerForm.controls.peers.invalid">
-				<span *ngIf="chainServerForm.controls.peers.errors.required">This field is required</span>
-				<span *ngIf="chainServerForm.controls.peers.errors.serverError">{{error.message}}</span>
+			<mat-radio-group #privateNodeMode formControlName="privateNodeMode">
+				<mat-radio-button [value]="true">Enable private node mode</mat-radio-button>
+				<mat-radio-button [value]="false">Disable private node mode</mat-radio-button>
+			</mat-radio-group>
+			<mat-error *ngIf="chainServerForm.controls.privateNodeMode.invalid">
+				<span *ngIf="chainServerForm.controls.privateNodeMode.errors.required">This field is required</span>
+				<span *ngIf="chainServerForm.controls.privateNodeMode.errors.serverError">{{error.message}}</span>
 			</mat-error>
 		</div>
 
-		<!-- Bootstrap DNS lookup -->
-		<div class="form-field">
-			<p class="from-field-title">Bootstrap DNS lookup</p>
-			<div class="inline-wrapper">
-				<mat-radio-group #disableBootstrapDnsLookup formControlName="disableBootstrapDnsLookup">
-					<mat-radio-button [value]="true">Disabled Bootstrap DNS</mat-radio-button>
-					<mat-radio-button [value]="false">Enabled Bootstrap DNS</mat-radio-button>
-				</mat-radio-group>
+		<!-- Peers -->
+		<fieldset [disabled]="!chainServerForm.controls.privateNodeMode.value && chainServerForm.controls.bootstrapLookupAddresses.value">
+			<div class="form-field indented">
+				<p class="from-field-title">
+					Peers 
+					<span *ngIf="!chainServerForm.controls.privateNodeMode.value && chainServerForm.controls.bootstrapLookupAddresses.value">(Disabled)</span>
+					<span *ngIf="!chainServerForm.controls.privateNodeMode.value && !chainServerForm.controls.bootstrapLookupAddresses.value">(optional)</span>
+				</p>
+				<p class="from-field-description">
+					<span *ngIf="!chainServerForm.controls.privateNodeMode.value && chainServerForm.controls.bootstrapLookupAddresses.value">To enable Peers, <span class="action-text" (click)="chainServerForm.controls.bootstrapLookupAddresses.setValue('')">Delete Bootstrap lookup addresses</span><br></span>
+					Allowed network peers to bootstrap from. This argument is good to use in controlled testing environmnet. 
+					Each peer is described by its address and port in `IP:PORT` format, delimited by a colon.
+				</p>
+				<mat-form-field class="full-size">
+					<input matInput #peers type="text" formControlName="peers" />
+				</mat-form-field>
+				<mat-error *ngIf="chainServerForm.controls.peers.invalid">
+					<span *ngIf="chainServerForm.controls.peers.errors.required">This field is required</span>
+					<span *ngIf="chainServerForm.controls.peers.errors.serverError">{{error.message}}</span>
+				</mat-error>
 			</div>
-			<mat-error *ngIf="chainServerForm.controls.disableBootstrapDnsLookup.invalid">
-				<span *ngIf="chainServerForm.controls.disableBootstrapDnsLookup.errors.required">This field is required</span>
-				<span *ngIf="chainServerForm.controls.disableBootstrapDnsLookup.errors.serverError">{{error.message}}</span>
-			</mat-error>
-		</div>
+		</fieldset>
 
 		<!-- Bootstrap lookup addresses -->
-		<div class="form-field">
-			<p class="from-field-title">Bootstrap lookup addresses (Optional)</p>
-			<p class="from-field-description">
-				List of peers to bootstrap the network from. Peers are delimited by a colon. For further information, see
-				--network parameter of OCaml node.
-			</p>
-			<mat-form-field class="full-size">
-				<input matInput #bootstrapLookupAddresses type="text" formControlName="bootstrapLookupAddresses" />
-			</mat-form-field>
-			<mat-error *ngIf="chainServerForm.controls.bootstrapLookupAddresses.invalid">
-				<span *ngIf="chainServerForm.controls.bootstrapLookupAddresses.errors.required">This field is required</span>
-				<span *ngIf="chainServerForm.controls.bootstrapLookupAddresses.errors.serverError">{{error.message}}</span>
-			</mat-error>
-		</div>
+		<fieldset [disabled]="chainServerForm.controls.privateNodeMode.value || chainServerForm.controls.peers.value">
+			<div class="form-field indented">
+				<p class="from-field-title">
+					Bootstrap lookup addresses 
+					<span *ngIf="chainServerForm.controls.privateNodeMode.value || chainServerForm.controls.peers.value">(Disabled)</span>
+					<span *ngIf="!chainServerForm.controls.privateNodeMode.value && !chainServerForm.controls.peers.value">(Optional)</span>
+				</p>
+				<p class="from-field-description">
+					<span *ngIf="chainServerForm.controls.privateNodeMode.value">To enable bootstrap address, <span class="action-text" (click)="chainServerForm.controls.privateNodeMode.setValue(false)">Disable Private Node Mode</span><br></span>
+					<span *ngIf="chainServerForm.controls.peers.value && !chainServerForm.controls.privateNodeMode.value">To enable bootstrap address, <span class="action-text" (click)="chainServerForm.controls.peers.setValue('')">Delete Peers</span><br></span>
+					List of peers to bootstrap the network from. Peers are delimited by a colon. For further information, see
+					--network parameter of OCaml node.
+				</p>
+				<mat-form-field class="full-size">
+					<input matInput #bootstrapLookupAddresses type="text" formControlName="bootstrapLookupAddresses" />
+				</mat-form-field>
+				<mat-error *ngIf="chainServerForm.controls.bootstrapLookupAddresses.invalid">
+					<span *ngIf="chainServerForm.controls.bootstrapLookupAddresses.errors.required">This field is required</span>
+					<span *ngIf="chainServerForm.controls.bootstrapLookupAddresses.errors.serverError">{{error.message}}</span>
+				</mat-error>
+			</div>
+		</fieldset>
 
 		<!-- Protocol runner (read-only)-->
 		<div class="form-field">
@@ -481,21 +497,6 @@
 			<mat-error *ngIf="chainServerForm.controls.mempool.invalid">
 				<span *ngIf="chainServerForm.controls.mempool.errors.required">This field is required</span>
 				<span *ngIf="chainServerForm.controls.mempool.errors.serverError">{{error.message}}</span>
-			</mat-error>
-		</div>
-
-		<!-- Private node mode -->
-		<div class="form-field">
-			<p class="from-field-title">Private node mode</p>
-			<div class="inline-wrapper">
-				<mat-slide-toggle #privateNodeMode formControlName="privateNodeMode"> </mat-slide-toggle>
-				<p class="from-field-description">
-					Enable or disable the private node. Use peers to set the IP addresses of the peers you want to connect to
-				</p>
-			</div>
-			<mat-error *ngIf="chainServerForm.controls.privateNodeMode.invalid">
-				<span *ngIf="chainServerForm.controls.privateNodeMode.errors.required">This field is required</span>
-				<span *ngIf="chainServerForm.controls.privateNodeMode.errors.serverError">{{error.message}}</span>
 			</mat-error>
 		</div>
 

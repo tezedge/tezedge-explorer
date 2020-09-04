@@ -2,7 +2,7 @@ import { Component, OnInit, Input, OnDestroy } from '@angular/core';
 import { FormBuilder, Validators, FormGroup } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import { Subject } from 'rxjs';
-import { takeUntil, take } from 'rxjs/operators';
+import { takeUntil, take, last } from 'rxjs/operators';
 
 @Component({
 	selector: 'app-chain-server',
@@ -87,6 +87,7 @@ export class ChainServerComponent implements OnInit, OnDestroy  {
 				!this.error?.isShown && 
 				this.formHasFieldName(this.error.field_name)
 				) {
+				// set error to form control
 				const control = this.chainServerForm.get(this.error.field_name);
 				setTimeout(() => control.setErrors({ 'serverError': true }) );
 
@@ -97,6 +98,28 @@ export class ChainServerComponent implements OnInit, OnDestroy  {
 				control.valueChanges.pipe(take(1)).subscribe(val => {
 					control.setErrors({ 'serverError': null })
 				});
+			} else if(this.error?.error_type === 'generic'){
+				// scroll to top of page and disable whole form
+				window.scroll(0,0);
+			}
+		});
+
+		// Subscribe to privateMode value changes to reflect correct required fields
+		let lastPrivateModeValue;
+		this.chainServerForm.get('privateNodeMode').valueChanges
+		.pipe(takeUntil(this.onDestroy$))
+		.subscribe(value => {
+			if(value != lastPrivateModeValue){
+				lastPrivateModeValue = value;
+				// clear peers and lookupAddresses when switching private node
+				this.chainServerForm.get('peers').setValue('');
+				this.chainServerForm.get('bootstrapLookupAddresses').setValue('');
+				if(value){
+					// peers are required in private node mode
+					this.chainServerForm.get('peers').setValidators(Validators.required);
+				} else {
+					this.chainServerForm.get('peers').setValidators([]);
+				}
 			}
 		});
 	}

@@ -34,7 +34,17 @@
 		}
 	}
 
+	fieldset{
+		border: none;
+		padding: 0;
+		margin: 0;
+	}
+
 	.form-field {
+		&.indented{
+			padding-left: 32px;
+		}
+
 		::ng-deep .mat-form-field {
 			&.small-size {
 				width: 56px;

@@ -3,8 +3,8 @@ import { MatStepper } from '@angular/material/stepper';
 import { Store } from '@ngrx/store';
 import { Actions, ofType } from '@ngrx/effects';
 import { Router } from '@angular/router';
-import { Subject, Observable } from 'rxjs';
-import { takeUntil, tap } from 'rxjs/operators';
+import { Subject, Observable, fromEvent } from 'rxjs';
+import { takeUntil, tap, debounceTime, take } from 'rxjs/operators';
 
 import { ChainServerComponent } from '../chain/chain-server/chain-server.component';
 import { ChainConfigComponent } from '../chain/chain-config/chain-config.component';
@@ -36,11 +36,12 @@ export class SandboxComponent implements OnInit, OnDestroy{
     private store: Store<any>, 
     private router: Router, 
     private actions$: Actions, 
-    private el: ElementRef) { }
+    private el: ElementRef) {
+      // hide sidenav and toolbar
+      this.toggleSidenavVisibility(false);
+    }
 
   ngOnInit(): void {
-    // hide sidenav and toolbar
-    this.toggleSidenavVisibility(false);
 
     // Subscribe to success actions - to proceed to next step
     this.actions$.pipe(
@@ -131,13 +132,22 @@ export class SandboxComponent implements OnInit, OnDestroy{
 
   scrollToFirstInvalidControl() {
     const firstInvalidControl: HTMLElement = this.el.nativeElement.querySelector(
-      ".form-field .ng-invalid:not(.mat-form-field-invalid)"
+      ".mat-form-field .ng-invalid:not(.mat-form-field-invalid)"
     );
 
     window.scroll({
       top: this.getTopOffset(firstInvalidControl),
       left: 0,
       behavior: "smooth"
+    });
+    
+    // focus on invalid control after scroll
+    fromEvent(window, "scroll")
+    .pipe(
+      debounceTime(100),
+      take(1)
+    ).subscribe(() => { 
+      return firstInvalidControl.focus()
     });
   }
 

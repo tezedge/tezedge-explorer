@@ -16,8 +16,8 @@
   </div>
 
   <mat-horizontal-stepper [linear]="true" #stepper>
-    <mat-step #server label="SERVER" [stepControl]="chainServer?.chainServerForm" [editable]="false">
-      <div *ngIf="stepper.selected == server" class="step-form-wrapper">
+    <mat-step #server label="SERVER" [editable]="false">
+      <div *ngIf="stepper.selected == null || stepper.selected == server" class="step-form-wrapper">
         <app-chain-server></app-chain-server>
         <ng-template [ngTemplateOutlet]="sandboxFooter"></ng-template>
       </div>
@@ -28,7 +28,7 @@
         <ng-template [ngTemplateOutlet]="sandboxFooter"></ng-template>
       </div>
     </mat-step>
-    <mat-step #chain label="CHAIN" [stepControl]="chainConfig?.chainConfigForm" [editable]="false">
+    <mat-step #chain label="CHAIN" [editable]="false">
       <div *ngIf="stepper.selected == chain" class="step-form-wrapper">
         <app-chain-config></app-chain-config>
         <ng-template [ngTemplateOutlet]="sandboxFooter"></ng-template>
@@ -49,7 +49,7 @@
         </button>
         <!-- continue btn -->
         <button mat-button (click)="submitCurrentStep()" [disabled]="showLoading" class="attention-button">
-          <ng-container *ngIf="stepper.selectedIndex < stepper.steps?.length-1">
+          <ng-container *ngIf="stepper.selectedIndex !== stepper.steps?.length-1">
             <span class="text">CONTINUE</span>
             <img class="icon" src="../../../assets/icon/arrow-right.svg" />
           </ng-container>

@@ -38,11 +38,9 @@
 		::ng-deep .mat-form-field {
 			&.small-size {
 				width: 56px;
-				display: inline-block;
 			}
 			&.medium-size {
 				width: 80px;
-				display: inline-block;
 			}
 			&.half-size {
 				width: 50%;
@@ -56,8 +54,6 @@
 			}
 
 			.mat-select {
-				margin-top: 7px;
-
 				.mat-select-arrow {
 					margin: 0 10px;
 					border-left: 5px solid transparent;

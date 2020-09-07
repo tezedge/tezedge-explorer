@@ -424,7 +424,7 @@ input.mat-input-element {
 }
 
 mat-form-field .mat-select-value {
-    color: white;
+    color: $color-focus;
     font-size: 13px;
     font-weight: 300;
 }
@@ -489,14 +489,14 @@ mat-form-field .mat-select-arrow {
 	/* Change color of mat-slide toggle */
 	.mat-slide-toggle {
 		.mat-slide-toggle-bar {
-			background-color: $color-border;
+			background-color: fade-out($color-focus, 0.9);
 		}
 		.mat-slide-toggle-thumb {
 			background-color: #555558;
 		}
 		&.mat-checked {
 			.mat-slide-toggle-bar {
-				background-color: $color-border;
+                background-color: fade-out($color-focus, 0.8);
 			}
 			.mat-slide-toggle-thumb {
 				background-color: $color-focus;
@@ -510,11 +510,11 @@ mat-form-field .mat-select-arrow {
         pointer-events: none !important;
         
         .mat-step-label{
-            color: $color;
+            color: $color-focus;
             opacity: 0.6;
             font-size: 12px;
             &.mat-step-label-active{
-                color: $color;
+                color: $color-focus;
                 opacity: 1;
             }
         }
@@ -527,8 +527,8 @@ mat-form-field .mat-select-arrow {
             font-size: 12px;
 
             &.mat-step-icon-selected {
-                background: #204e8a;
-                color: $color;
+                background: $color-content-attention;
+                color: #fff;
                 opacity: 1;
             }
         }
@@ -548,7 +548,7 @@ mat-form-field .mat-select-arrow {
     .mat-radio-label{
         .mat-radio-container{
             .mat-radio-outer-circle {
-                border-color: $color;
+                border-color: $color-focus;
                 opacity: 0.6;
             }
         }
@@ -556,6 +556,7 @@ mat-form-field .mat-select-arrow {
             font-size: 12px;
             opacity: 0.6;
             line-height: 14px;
+            color: $color-focus;
         }
     }
 
@@ -563,11 +564,11 @@ mat-form-field .mat-select-arrow {
         .mat-radio-label{
             .mat-radio-container{
                 .mat-radio-outer-circle {
-                    border-color: $color;
+                    border-color: $color-focus;
                     opacity: 1;
                 }
                 .mat-radio-inner-circle {
-                    background-color: $color;
+                    background-color: $color-focus;
                     opacity: 1;
                 }
             }
@@ -577,9 +578,11 @@ mat-form-field .mat-select-arrow {
         }
     }
 
-    &.mat-radio-disabled .mat-radio-label-content{
-        color: $color-focus;
-        opacity: 0.5 !important;
+    &.mat-radio-disabled {
+        opacity: 0.6 !important;
+        .mat-radio-label-content{
+            opacity: 0.6 !important;
+        }
     }
 }
 
@@ -938,7 +941,14 @@ ngx-json-viewer .segment .segment-main .segment-key {
 
 .chain, 
 .sandbox {
-    color: $color;
+    color: $color-focus;
+
+    .sandbox-footer {
+        background: $color-border;
+    }
+    .page-title {
+        color: fade-out($color-focus, 0.2);
+    }
 }
 
 .mat-tab-label, .mat-tab-link {
@@ -965,12 +975,21 @@ ngx-json-viewer .segment .segment-main .segment-key {
 }
 
 // from fields styles 
-.chain mat-form-field,
-.sandbox mat-form-field {
+.chain .mat-form-field,
+.sandbox .mat-form-field {
     color: $color-focus;
     background: $color-border;
     height: 32px;
     border-radius: 4px;
+    box-sizing: border-box;
+
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+
+    .mat-input-element {
+        color: $color-focus;
+    }
 
     &.mat-form-field-invalid{
         background: $color-chrome-red;
@@ -990,6 +1009,18 @@ ngx-json-viewer .segment .segment-main .segment-key {
     &.readonly {
         opacity: 0.5;
     }
+
+    &.mat-focused{
+        border: 1px solid $color-focus;
+    }
+
+    &.mat-form-field-invalid.mat-focused{
+        border: 1px solid $color-highlight-red;
+    }
+}
+
+.chain .mat-form-field{
+    opacity: 0.5;
 }
 
 .chain .mat-form-field-infix,
@@ -1024,6 +1055,11 @@ ngx-json-viewer .segment .segment-main .segment-key {
 .chain .section,
 .sandbox .section{
     border: 1px solid $color-border;
+
+    .section-header {
+        font-weight: 300;
+        color: $color-focus;
+    }
 }
 
 /* Hide input underline */
@@ -1157,7 +1193,8 @@ ngx-json-viewer .segment .segment-main .segment-key {
 }
 
 input.mat-input-element {
-    margin-top: 8px;
+    margin-top: 0;
+    margin-bottom: 2px;
     font-size: 12px;
 }
 
@@ -1170,6 +1207,7 @@ input.mat-input-element {
     line-height: 12px;
     font-weight: 400;
     margin: 8px 0;
+    color: $color-focus;
 }
 
 .from-field-description {

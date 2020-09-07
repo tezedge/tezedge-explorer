@@ -128,7 +128,7 @@ export function reducer(state = initialState, action) {
             };
         }
 
-        case 'SANDBOX_NODE_START': {
+        case 'SANDBOX_NODE_START_SUCCESS': {
             return {
                 ...state,
                 statusbar: {
@@ -181,6 +181,27 @@ export function reducer(state = initialState, action) {
             return {
 
             }
+        }
+
+        case 'SIDENAV_VISIBILITY_CHANGE': {
+            return {
+                ...state,
+                sidenav: {
+                    ...state.sidenav,
+                    isVisible: action.payload,
+                }
+            };
+        }
+
+
+        case 'TOOLBAR_VISIBILITY_CHANGE': {
+            return {
+                ...state,
+                toolbar: {
+                    ...state.toolbar,
+                    isVisible: action.payload,
+                }
+            };
         }
 
         default:

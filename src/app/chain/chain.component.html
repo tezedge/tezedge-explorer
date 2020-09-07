@@ -1,31 +1,32 @@
 <div class="chain">
-
     <mat-tab-group animationDuration="0ms">
-
         <mat-tab label="SERVER">
-            <app-chain-server>
-            </app-chain-server>
+            <ng-template matTabContent>
+                <app-chain-server [isReadonly]="true">
+                </app-chain-server>
+            </ng-template>
         </mat-tab>
     
-        <mat-tab label="CONFIG">
-            <app-chain-config>
-            </app-chain-config>
+        <mat-tab label="WALLETS">
+            <ng-template matTabContent>
+                <app-chain-wallets [isReadonly]="true">
+                </app-chain-wallets>
+            </ng-template>
         </mat-tab>
-    
-        <mat-tab label="BAKING">
-            <app-chain-baking>
-            </app-chain-baking>
-        </mat-tab>
-    
-        <mat-tab label="OTHER">
-            <app-chain-other>
-            </app-chain-other>
+        
+        <mat-tab label="CHAIN">
+            <ng-template matTabContent>
+                <app-chain-config [isReadonly]="true">
+                </app-chain-config>
+            </ng-template>
         </mat-tab>
 
-        <mat-tab label="FINISH">
-            <app-chain-finish>
-            </app-chain-finish>
-        </mat-tab>
+        <!-- <mat-tab label="BAKING">
+            <ng-template matTabContent>
+                <app-chain-baking>
+                </app-chain-baking>
+            </ng-template>
+        </mat-tab> -->
 
     </mat-tab-group>
 

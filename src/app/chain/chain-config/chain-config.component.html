@@ -1,1 +1,433 @@
-<p>chain-config works!</p>
+<div class="chain-config" [formGroup]="chainConfigForm" ngrxForm="chainConfig">
+	<!-- GENERAL ERROR PANEL -->
+	<mat-expansion-panel *ngIf="error && error.error_type === 'generic'" hideToggle expanded class="warning">
+		<mat-expansion-panel-header>
+			<mat-panel-title>
+				<span class="text">Error {{ error.code }}</span>
+			</mat-panel-title>
+		</mat-expansion-panel-header>
+		<p style="margin-bottom: 0">{{ error.message }}</p>
+		<p style="margin-top: 8px; margin-bottom: 0">
+			Please restart application and try again. If you think something is broken, report a problem at <a href="mailto:support@tezedge.com">support@tezedge.com</a>
+		</p>
+	</mat-expansion-panel>
+	
+	<!-- CHAIN SECTION -->
+	<div class="section chain-section">
+		<h5 class="section-header">CHAIN</h5>
+		<!-- Preserved Cycles -->
+		<div class="form-field">
+			<p class="from-field-title">Preserved Cycles</p>
+			<div class="inline-wrapper">
+				<mat-form-field class="small-size">
+					<input matInput #preservedCycles type="number" formControlName="preservedCycles" />
+				</mat-form-field>
+				<p class="from-field-description">Number of preserved cycles.</p>
+			</div>
+			<mat-error *ngIf="chainConfigForm.controls.preservedCycles.invalid">
+				<span *ngIf="chainConfigForm.controls.preservedCycles.errors.required">This field is required</span>
+				<span *ngIf="chainConfigForm.controls.preservedCycles.errors.serverError">{{error.message}}</span>
+			</mat-error>
+		</div>
+	</div>
+
+	<!-- BLOCKS SECTION -->
+	<div class="section blocks-section">
+		<h5 class="section-header">BLOCKS</h5>
+		<!-- Blocks per cycle -->
+		<div class="form-field">
+			<p class="from-field-title">Blocks per cycle</p>
+			<div class="inline-wrapper">
+				<mat-form-field class="small-size">
+					<input matInput #blocksPerCycle type="number" formControlName="blocksPerCycle" />
+				</mat-form-field>
+				<p class="from-field-description">Number of blocks in a cycle.</p>
+			</div>
+			<mat-error *ngIf="chainConfigForm.controls.blocksPerCycle.invalid">
+				<span *ngIf="chainConfigForm.controls.blocksPerCycle.errors.required">This field is required</span>
+				<span *ngIf="chainConfigForm.controls.blocksPerCycle.errors.serverError">{{error.message}}</span>
+			</mat-error>
+		</div>
+		<!-- Blocks per commitment -->
+		<div class="form-field">
+			<p class="from-field-title">Blocks per commitment</p>
+			<div class="inline-wrapper">
+				<mat-form-field class="small-size">
+					<input matInput #blocksPerCommit type="number" formControlName="blocksPerCommit" />
+				</mat-form-field>
+				<p class="from-field-description">
+					The number of blocks between 2 nonce-containing blocks for the random seed calculation (commitment == hash of
+					a nonce).
+				</p>
+			</div>
+			<mat-error *ngIf="chainConfigForm.controls.blocksPerCommit.invalid">
+				<span *ngIf="chainConfigForm.controls.blocksPerCommit.errors.required">This field is required</span>
+				<span *ngIf="chainConfigForm.controls.blocksPerCommit.errors.serverError">{{error.message}}</span>
+			</mat-error>
+		</div>
+		<!-- Blocks per roll snapshot -->
+		<div class="form-field">
+			<p class="from-field-title">Blocks per roll snapshot</p>
+			<div class="inline-wrapper">
+				<mat-form-field class="small-size">
+					<input matInput #blocksPerRollSnap type="number" formControlName="blocksPerRollSnap" />
+				</mat-form-field>
+				<p class="from-field-description">Number of blocks between 2 snapshot blocks.</p>
+			</div>
+			<mat-error *ngIf="chainConfigForm.controls.blocksPerRollSnap.invalid">
+				<span *ngIf="chainConfigForm.controls.blocksPerRollSnap.errors.required">This field is required</span>
+				<span *ngIf="chainConfigForm.controls.blocksPerRollSnap.errors.serverError">{{error.message}}</span>
+			</mat-error>
+		</div>
+		<!-- Blocks per voting period -->
+		<div class="form-field">
+			<p class="from-field-title">Blocks per voting period</p>
+			<div class="inline-wrapper">
+				<mat-form-field class="small-size">
+					<input matInput #blocksPerVotingPeriod type="number" formControlName="blocksPerVotingPeriod" />
+				</mat-form-field>
+				<p class="from-field-description">Number of blocks in one voting period.</p>
+			</div>
+			<mat-error *ngIf="chainConfigForm.controls.blocksPerVotingPeriod.invalid">
+				<span *ngIf="chainConfigForm.controls.blocksPerVotingPeriod.errors.required">This field is required</span>
+				<span *ngIf="chainConfigForm.controls.blocksPerVotingPeriod.errors.serverError">{{error.message}}</span>
+			</mat-error>
+		</div>
+		<!-- Time between blocks -->
+		<div class="form-field">
+			<p class="from-field-title">Time between blocks</p>
+			<div class="inline-wrapper">
+				<mat-form-field class="small-size input-list">
+					<input matInput #timeBetweenBlocks1 type="text" formControlName="timeBetweenBlocks1" />
+				</mat-form-field>
+				<mat-form-field class="small-size">
+					<input matInput #timeBetweenBlocks2 type="text" formControlName="timeBetweenBlocks2" />
+				</mat-form-field>
+				<p class="from-field-description">Used for calculating estimated timestamps.</p>
+			</div>
+			<mat-error *ngIf="chainConfigForm.controls.timeBetweenBlocks1.invalid || chainConfigForm.controls.timeBetweenBlocks2.invalid">
+				<span *ngIf="chainConfigForm.controls.timeBetweenBlocks1.errors.required || chainConfigForm.controls.timeBetweenBlocks2.errors.required">This field is required</span>
+				<span *ngIf="chainConfigForm.controls.timeBetweenBlocks1.errors.pattern || chainConfigForm.controls.timeBetweenBlocks2.errors.pattern">This field must be a valid number</span>
+				<span *ngIf="chainConfigForm.controls.timeBetweenBlocks1.errors.serverError || chainConfigForm.controls.timeBetweenBlocks2.errors.serverError">{{error.message}}</span>
+			</mat-error>
+		</div>
+		<!-- Endorsers per block -->
+		<div class="form-field">
+			<p class="from-field-title">Endorsers per block</p>
+			<div class="inline-wrapper">
+				<mat-form-field class="small-size">
+					<input matInput #endorsersPerBlock type="number" formControlName="endorsersPerBlock" />
+				</mat-form-field>
+				<p class="from-field-description">Number of endorser slots per block.</p>
+			</div>
+			<mat-error *ngIf="chainConfigForm.controls.endorsersPerBlock.invalid">
+				<span *ngIf="chainConfigForm.controls.endorsersPerBlock.errors.required">This field is required</span>
+				<span *ngIf="chainConfigForm.controls.endorsersPerBlock.errors.serverError">{{error.message}}</span>
+			</mat-error>
+		</div>
+	</div>
+
+	<!-- SMART CONTRACT (GAS) SECTION -->
+	<div class="section smart-contract-section">
+		<h5 class="section-header">SMART CONTRACT (GAS)</h5>
+		<!-- Hard gas limit per operation -->
+		<div class="form-field">
+			<p class="from-field-title">Hard gas limit per operation</p>
+			<div class="inline-wrapper">
+				<mat-form-field class="medium-size">
+					<input matInput #hardGasLimitPerOperation type="text" formControlName="hardGasLimitPerOperation" />
+					<span matSuffix class="input-suffix">XTZ</span>
+				</mat-form-field>
+				<p class="from-field-description">Cost in XTZ, maximum gas used per operation.</p>
+			</div>
+			<mat-error *ngIf="chainConfigForm.controls.hardGasLimitPerOperation.invalid">
+				<span *ngIf="chainConfigForm.controls.hardGasLimitPerOperation.errors.required">This field is required</span>
+				<span *ngIf="chainConfigForm.controls.hardGasLimitPerOperation.errors.pattern">This field must be a valid number</span>
+				<span *ngIf="chainConfigForm.controls.hardGasLimitPerOperation.errors.serverError">{{error.message}}</span>
+			</mat-error>
+		</div>
+		<!-- Hard gas limit per block -->
+		<div class="form-field">
+			<p class="from-field-title">Hard gas limit per block</p>
+			<div class="inline-wrapper">
+				<mat-form-field class="medium-size">
+					<input matInput #hardGasLimitPerBlock type="text" formControlName="hardGasLimitPerBlock" />
+					<span matSuffix class="input-suffix">XTZ</span>
+				</mat-form-field>
+				<p class="from-field-description">Cost in XTZ, maximum total gas usage of one block.</p>
+			</div>
+			<mat-error *ngIf="chainConfigForm.controls.hardGasLimitPerBlock.invalid">
+				<span *ngIf="chainConfigForm.controls.hardGasLimitPerBlock.errors.required">This field is required</span>
+				<span *ngIf="chainConfigForm.controls.hardGasLimitPerBlock.errors.pattern">This field must be a valid number</span>
+				<span *ngIf="chainConfigForm.controls.hardGasLimitPerBlock.errors.serverError">{{error.message}}</span>
+			</mat-error>
+		</div>
+		<!-- Proof of work treshold -->
+		<div class="form-field">
+			<p class="from-field-title">Proof of work treshold</p>
+			<div class="inline-wrapper">
+				<mat-form-field class="small-size">
+					<input matInput #proofOfWorkTreshold type="text" formControlName="proofOfWorkTreshold" />
+				</mat-form-field>
+				<p class="from-field-description">Maximum total gas usage of one block.</p>
+			</div>
+			<mat-error *ngIf="chainConfigForm.controls.proofOfWorkTreshold.invalid">
+				<span *ngIf="chainConfigForm.controls.proofOfWorkTreshold.errors.required">This field is required</span>
+				<span *ngIf="chainConfigForm.controls.proofOfWorkTreshold.errors.pattern">This field must be a valid number</span>
+				<span *ngIf="chainConfigForm.controls.proofOfWorkTreshold.errors.serverError">{{error.message}}</span>
+			</mat-error>
+		</div>
+		<!-- Tokens per roll -->
+		<div class="form-field">
+			<p class="from-field-title">Tokens per roll</p>
+			<div class="inline-wrapper">
+				<mat-form-field class="medium-size">
+					<input matInput #tokensPerRoll type="text" formControlName="tokensPerRoll" />
+					<span matSuffix class="input-suffix">XTZ</span>
+				</mat-form-field>
+				<p class="from-field-description">Number of XTZ needed for one roll.</p>
+			</div>
+			<mat-error *ngIf="chainConfigForm.controls.tokensPerRoll.invalid">
+				<span *ngIf="chainConfigForm.controls.tokensPerRoll.errors.required">This field is required</span>
+				<span *ngIf="chainConfigForm.controls.tokensPerRoll.errors.pattern">This field must be a valid number</span>
+				<span *ngIf="chainConfigForm.controls.tokensPerRoll.errors.serverError">{{error.message}}</span>
+			</mat-error>
+		</div>
+		<!-- Michelson maximum type size -->
+		<div class="form-field">
+			<p class="from-field-title">Michelson maximum type size</p>
+			<div class="inline-wrapper">
+				<mat-form-field class="small-size">
+					<input matInput #michelsonMaxTypeSize type="number" formControlName="michelsonMaxTypeSize" />
+				</mat-form-field>
+				<p class="from-field-description">Maximum size of a type structure in Michelson.</p>
+			</div>
+			<mat-error *ngIf="chainConfigForm.controls.michelsonMaxTypeSize.invalid">
+				<span *ngIf="chainConfigForm.controls.michelsonMaxTypeSize.errors.required">This field is required</span>
+				<span *ngIf="chainConfigForm.controls.michelsonMaxTypeSize.errors.serverError">{{error.message}}</span>
+			</mat-error>
+		</div>
+		<!-- Seed nonce revelation tip -->
+		<div class="form-field">
+			<p class="from-field-title">Seed nonce revelation tip</p>
+			<div class="inline-wrapper">
+				<mat-form-field class="medium-size">
+					<input matInput #seedNonceRevelationTip type="text" formControlName="seedNonceRevelationTip" />
+					<span matSuffix class="input-suffix">XTZ</span>
+				</mat-form-field>
+				<p class="from-field-description">The amount of XTZ awarded for including a nonce reveal operation.</p>
+			</div>
+			<mat-error *ngIf="chainConfigForm.controls.seedNonceRevelationTip.invalid">
+				<span *ngIf="chainConfigForm.controls.seedNonceRevelationTip.errors.required">This field is required</span>
+				<span *ngIf="chainConfigForm.controls.seedNonceRevelationTip.errors.pattern">This field must be a valid number</span>
+				<span *ngIf="chainConfigForm.controls.seedNonceRevelationTip.errors.serverError">{{error.message}}</span>
+			</mat-error>
+		</div>
+	</div>
+
+	<!-- BAKING SECTION -->
+	<div class="section baking-section">
+		<h5 class="section-header">BAKING</h5>
+		<!-- Origination size -->
+		<div class="form-field">
+			<p class="from-field-title">Origination size</p>
+			<div class="inline-wrapper">
+				<mat-form-field class="small-size">
+					<input matInput #originationSize type="number" formControlName="originationSize" />
+				</mat-form-field>
+				<p class="from-field-description">Size of the contract script of the origination operation.</p>
+			</div>
+			<mat-error *ngIf="chainConfigForm.controls.originationSize.invalid">
+				<span *ngIf="chainConfigForm.controls.originationSize.errors.required">This field is required</span>
+				<span *ngIf="chainConfigForm.controls.originationSize.errors.serverError">{{error.message}}</span>
+			</mat-error>
+		</div>
+		<!-- Block security deposit -->
+		<div class="form-field">
+			<p class="from-field-title">Block security deposit</p>
+			<div class="inline-wrapper">
+				<mat-form-field class="medium-size">
+					<input matInput #blockSecurityDeposit type="text" formControlName="blockSecurityDeposit" />
+					<span matSuffix class="input-suffix">XTZ</span>
+				</mat-form-field>
+				<p class="from-field-description">Cost in XTZ, deposit per baked block.</p>
+			</div>
+			<mat-error *ngIf="chainConfigForm.controls.blockSecurityDeposit.invalid">
+				<span *ngIf="chainConfigForm.controls.blockSecurityDeposit.errors.required">This field is required</span>
+				<span *ngIf="chainConfigForm.controls.blockSecurityDeposit.errors.pattern">This field must be a valid number</span>
+				<span *ngIf="chainConfigForm.controls.blockSecurityDeposit.errors.serverError">{{error.message}}</span>
+			</mat-error>
+		</div>
+		<!-- Endorsement security deposit -->
+		<div class="form-field">
+			<p class="from-field-title">Endorsement security deposit</p>
+			<div class="inline-wrapper">
+				<mat-form-field class="medium-size">
+					<input matInput #endorsementSecurityDeposit type="text" formControlName="endorsementSecurityDeposit" />
+					<span matSuffix class="input-suffix">XTZ</span>
+				</mat-form-field>
+				<p class="from-field-description">Cost in XTZ, deposit per endorsement slot.</p>
+			</div>
+			<mat-error *ngIf="chainConfigForm.controls.endorsementSecurityDeposit.invalid">
+				<span *ngIf="chainConfigForm.controls.endorsementSecurityDeposit.errors.required">This field is required</span>
+				<span *ngIf="chainConfigForm.controls.endorsementSecurityDeposit.errors.pattern">This field must be a valid number</span>
+				<span *ngIf="chainConfigForm.controls.endorsementSecurityDeposit.errors.serverError">{{error.message}}</span>
+			</mat-error>
+		</div>
+		<!-- Baking reward per endorsement -->
+		<div class="form-field">
+			<p class="from-field-title">Baking reward per endorsement</p>
+			<div class="inline-wrapper">
+				<mat-form-field class="medium-size input-list">
+					<input matInput #bakingRewardPerEndorsement1 type="text" formControlName="bakingRewardPerEndorsement1" />
+				</mat-form-field>
+				<mat-form-field class="medium-size">
+					<input matInput #bakingRewardPerEndorsement2 type="text" formControlName="bakingRewardPerEndorsement2" />
+				</mat-form-field>
+				<p class="from-field-description">List of values used for block reward calculation.</p>
+			</div>
+			<mat-error *ngIf="chainConfigForm.controls.bakingRewardPerEndorsement1.invalid || chainConfigForm.controls.bakingRewardPerEndorsement2.invalid">
+				<span *ngIf="chainConfigForm.controls.bakingRewardPerEndorsement1.errors.required || chainConfigForm.controls.bakingRewardPerEndorsement2.errors.required">This field is required</span>
+				<span *ngIf="chainConfigForm.controls.bakingRewardPerEndorsement1.errors.pattern || chainConfigForm.controls.bakingRewardPerEndorsement2.errors.pattern">This field must be a valid number</span>
+				<span *ngIf="chainConfigForm.controls.bakingRewardPerEndorsement1.errors.serverError || chainConfigForm.controls.bakingRewardPerEndorsement2.errors.serverError">{{error.message}}</span>
+			</mat-error>
+		</div>
+		<!-- Endorsement reward -->
+		<div class="form-field">
+			<p class="from-field-title">Endorsement reward</p>
+			<div class="inline-wrapper">
+				<mat-form-field class="medium-size input-list">
+					<input matInput #endorsementReward1 type="text" formControlName="endorsementReward1" />
+				</mat-form-field>
+				<mat-form-field class="medium-size">
+					<input matInput #endorsementReward2 type="text" formControlName="endorsementReward2" />
+				</mat-form-field>
+				<p class="from-field-description">List of values used for endorsement reward calculation.</p>
+			</div>
+			<mat-error *ngIf="chainConfigForm.controls.endorsementReward1.invalid || chainConfigForm.controls.endorsementReward2.invalid">
+				<span *ngIf="chainConfigForm.controls.endorsementReward1.errors.required || chainConfigForm.controls.endorsementReward2.errors.required">This field is required</span>
+				<span *ngIf="chainConfigForm.controls.endorsementReward1.errors.pattern || chainConfigForm.controls.endorsementReward2.errors.pattern">This field must be a valid number</span>
+				<span *ngIf="chainConfigForm.controls.endorsementReward1.errors.serverError || chainConfigForm.controls.endorsementReward2.errors.serverError">{{error.message}}</span>
+			</mat-error>
+		</div>
+		<!-- Cost per byte -->
+		<div class="form-field">
+			<p class="from-field-title">Cost per byte</p>
+			<div class="inline-wrapper">
+				<mat-form-field class="medium-size">
+					<input matInput #costPerByte type="text" formControlName="costPerByte" />
+					<span matSuffix class="input-suffix">XTZ</span>
+				</mat-form-field>
+				<p class="from-field-description">Cost in XTZ per bytes used in contracts.</p>
+			</div>
+			<mat-error *ngIf="chainConfigForm.controls.costPerByte.invalid">
+				<span *ngIf="chainConfigForm.controls.costPerByte.errors.required">This field is required</span>
+				<span *ngIf="chainConfigForm.controls.costPerByte.errors.pattern">This field must be a valid number</span>
+				<span *ngIf="chainConfigForm.controls.costPerByte.errors.serverError">{{error.message}}</span>
+			</mat-error>
+		</div>
+		<!-- Hard storage limit per operation -->
+		<div class="form-field">
+			<p class="from-field-title">Hard storage limit per operation</p>
+			<div class="inline-wrapper">
+				<mat-form-field class="small-size">
+					<input matInput #storageLimitPerOperation type="number" formControlName="storageLimitPerOperation" />
+				</mat-form-field>
+				<p class="from-field-description">Maximum amount of bytes the storage limit of a transaction can be set to.</p>
+			</div>
+			<mat-error *ngIf="chainConfigForm.controls.storageLimitPerOperation.invalid">
+				<span *ngIf="chainConfigForm.controls.storageLimitPerOperation.errors.required">This field is required</span>
+				<span *ngIf="chainConfigForm.controls.storageLimitPerOperation.errors.serverError">{{error.message}}</span>
+			</mat-error>
+		</div>
+		<!-- Test chain duration -->
+		<div class="form-field">
+			<p class="from-field-title">Test chain duration</p>
+			<div class="inline-wrapper">
+				<mat-form-field class="medium-size">
+					<input matInput #testChainDuration type="number" formControlName="testChainDuration" />
+				</mat-form-field>
+				<p class="from-field-description">Lifetime of the testchain in seconds.</p>
+			</div>
+			<mat-error *ngIf="chainConfigForm.controls.testChainDuration.invalid">
+				<span *ngIf="chainConfigForm.controls.testChainDuration.errors.required">This field is required</span>
+				<span *ngIf="chainConfigForm.controls.testChainDuration.errors.serverError">{{error.message}}</span>
+			</mat-error>
+		</div>
+	</div>
+
+	<!-- GOVERNANCE SECTION -->
+	<div class="section governance-section">
+		<h5 class="section-header">GOVERNANCE</h5>
+		<!-- Quorum min. -->
+		<div class="form-field">
+			<p class="from-field-title">Quorum min.</p>
+			<div class="inline-wrapper">
+				<mat-form-field class="small-size">
+					<input matInput #quorumMin type="number" formControlName="quorumMin" />
+				</mat-form-field>
+				<p class="from-field-description">Minimum quorum for a voting period to be successful, expressed in percentage multiplied by 100.</p>
+			</div>
+			<mat-error *ngIf="chainConfigForm.controls.quorumMin.invalid">
+				<span *ngIf="chainConfigForm.controls.quorumMin.errors.required">This field is required</span>
+				<span *ngIf="chainConfigForm.controls.quorumMin.errors.serverError">{{error.message}}</span>
+			</mat-error>
+		</div>
+		<!-- Quorum max. -->
+		<div class="form-field">
+			<p class="from-field-title">Quorum max.</p>
+			<div class="inline-wrapper">
+				<mat-form-field class="small-size">
+					<input matInput #quorumMax type="number" formControlName="quorumMax" />
+				</mat-form-field>
+				<p class="from-field-description">Maximum value a quorum can reach expressed in percentage multiplied by 100.</p>
+			</div>
+			<mat-error *ngIf="chainConfigForm.controls.quorumMax.invalid">
+				<span *ngIf="chainConfigForm.controls.quorumMax.errors.required">This field is required</span>
+				<span *ngIf="chainConfigForm.controls.quorumMax.errors.serverError">{{error.message}}</span>
+			</mat-error>
+		</div>
+		<!-- Min proposal quorum -->
+		<div class="form-field">
+			<p class="from-field-title">Min proposal quorum</p>
+			<div class="inline-wrapper">
+				<mat-form-field class="small-size">
+					<input matInput #minProposalQuorum type="number" formControlName="minProposalQuorum" />
+				</mat-form-field>
+				<p class="from-field-description">Maximum value a quorum can reach expressed in percentage multiplied by 100.</p>
+			</div>
+			<mat-error *ngIf="chainConfigForm.controls.minProposalQuorum.invalid">
+				<span *ngIf="chainConfigForm.controls.minProposalQuorum.errors.required">This field is required</span>
+				<span *ngIf="chainConfigForm.controls.minProposalQuorum.errors.serverError">{{error.message}}</span>
+			</mat-error>
+		</div>
+		<!-- Initial endorsers -->
+		<div class="form-field">
+			<p class="from-field-title">Initial endorsers</p>
+			<div class="inline-wrapper">
+				<mat-form-field class="small-size">
+					<input matInput #initialEndorsers type="number" formControlName="initialEndorsers" />
+				</mat-form-field>
+				<p class="from-field-description">Value used in calculation of the minimal delay between baked blocks.</p>
+			</div>
+			<mat-error *ngIf="chainConfigForm.controls.initialEndorsers.invalid">
+				<span *ngIf="chainConfigForm.controls.initialEndorsers.errors.required">This field is required</span>
+				<span *ngIf="chainConfigForm.controls.initialEndorsers.errors.serverError">{{error.message}}</span>
+			</mat-error>
+		</div>
+		<!-- Delay per missing endorsement -->
+		<div class="form-field">
+			<p class="from-field-title">Delay per missing endorsement</p>
+			<div class="inline-wrapper">
+				<mat-form-field class="small-size">
+					<input matInput #delayPerMissingEndorsement type="number" formControlName="delayPerMissingEndorsement" />
+				</mat-form-field>
+				<p class="from-field-description">Expressed in seconds. Used in calculation of the minimal delay between baked blocks.</p>
+			</div>
+			<mat-error *ngIf="chainConfigForm.controls.delayPerMissingEndorsement.invalid">
+				<span *ngIf="chainConfigForm.controls.delayPerMissingEndorsement.errors.required">This field is required</span>
+				<span *ngIf="chainConfigForm.controls.delayPerMissingEndorsement.errors.serverError">{{error.message}}</span>
+			</mat-error>
+		</div>
+	</div>
+</div>

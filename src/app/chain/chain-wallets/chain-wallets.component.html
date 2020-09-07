@@ -1,1 +1,29 @@
-<p>chain-wallets works!</p>
+<div class="chain-wallets">
+  <div class="header">
+    <h5 class="header-title">BOOTSTRAP WALLETS</h5>
+    <button *ngIf="!isReadonly" mat-button (click)="addWallet()">ADD WALLET</button>
+  </div>
+
+  <table mat-table [dataSource]="wallets">
+    <!-- Public key Column -->
+    <ng-container matColumnDef="publicKey">
+      <th mat-header-cell *matHeaderCellDef> PUBLIC KEY</th>
+      <td mat-cell *matCellDef="let wallet"> {{ wallet.publicKey }} </td>
+    </ng-container>
+  
+    <!-- Baking Column -->
+    <ng-container matColumnDef="baking">
+      <th mat-header-cell *matHeaderCellDef> BAKING </th>
+      <td mat-cell *matCellDef="let wallet"> {{ wallet.bakingEnabled ? 'ENABLED': 'DISABLED' }} </td>
+    </ng-container>
+  
+    <!-- Balance Column -->
+    <ng-container matColumnDef="balance">
+      <th mat-header-cell *matHeaderCellDef class="text-right"> BALANCE </th>
+      <td mat-cell *matCellDef="let wallet" class="muted text-right"> {{ wallet.balance + ' ꜩ'}} </td>
+    </ng-container>
+  
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+  </table>  
+</div>

@@ -1,0 +1,82 @@
+.chain-server {
+	padding-bottom: 50px;
+
+	::ng-deep .mat-expansion-panel {
+    margin-top: 16px;
+		margin-bottom: 32px;
+		border: none;
+
+    .mat-expansion-panel-body{
+			.text{
+				color: #fff;
+			}
+    }
+  }
+
+	.section {
+		padding: 16px 16px 6px 16px;
+
+		&:first-child{
+			border-top-left-radius: 4px;
+			border-top-right-radius: 4px;
+		}
+		&:last-child{
+			border-bottom-left-radius: 4px;
+			border-bottom-right-radius: 4px;
+		}
+		&:not(:last-child){
+			border-bottom: none;
+		}
+
+		.section-header {
+			margin-bottom: 0;
+			margin-top: 0;
+		}
+	}
+
+	fieldset{
+		border: none;
+		padding: 0;
+		margin: 0;
+	}
+
+	.form-field {
+		&.indented{
+			padding-left: 32px;
+		}
+
+		::ng-deep .mat-form-field {
+			&.small-size {
+				width: 56px;
+				display: inline-block;
+			}
+			&.half-size {
+				width: 50%;
+			}
+			&.full-size {
+				width: 100%;
+			}
+
+			.mat-select {
+				margin-top: 7px;
+				
+				.mat-select-arrow {
+					margin: 0 10px;
+					border-left: 5px solid transparent;
+					border-right: 5px solid transparent;
+					border-top: 5px solid;
+				}
+			}
+		}
+
+		.inline-wrapper {
+			display: inline-flex;
+			align-items: center;
+
+			.from-field-description {
+				margin: 0;
+				margin-left: 10px;
+			}
+		}
+	}
+}

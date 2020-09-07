@@ -73,6 +73,19 @@
         font-size: 12px;
       }
 
+      .error-indicator{
+        float: left;
+        margin-left: 24px;
+        color: #fff;
+        font-size: 12px;
+        line-height: normal;
+        padding: 6px 8px;
+
+        .icon{
+          margin-right: 8px;
+        }
+      }
+
       ::ng-deep .mat-button{
         margin-right: 24px;
 

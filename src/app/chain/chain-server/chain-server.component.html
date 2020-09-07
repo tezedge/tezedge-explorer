@@ -35,7 +35,7 @@
 		<!-- Hostname (read-only)-->
 		<div class="form-field">
 			<p class="from-field-title">Hostname</p>
-			<mat-form-field class="half-size">
+			<mat-form-field class="half-size readonly">
 				<input readonly matInput #hostname type="text" formControlName="hostname"/>
 			</mat-form-field>
 			<mat-error *ngIf="chainServerForm.controls.hostname.invalid">
@@ -54,7 +54,7 @@
 			<p class="from-field-description">
 				A directory for Tezos node generated data
 			</p>
-			<mat-form-field class="full-size">
+			<mat-form-field class="full-size readonly">
 				<input readonly matInput #tezosDataDir type="text" formControlName="tezosDataDir" />
 			</mat-form-field>
 			<mat-error *ngIf="chainServerForm.controls.tezosDataDir.invalid">
@@ -69,7 +69,7 @@
 			<p class="from-field-description">
 				New identity is automatically generated if it does not exist on specified path. In case it starts with "./" or "../", it is relative path to the current dir, otherwise to the --tezos-data-dir
 			</p>
-			<mat-form-field class="full-size">
+			<mat-form-field class="full-size readonly">
 				<input readonly matInput #identityFile type="text" formControlName="identityFile" />
 			</mat-form-field>
 			<mat-error *ngIf="chainServerForm.controls.identityFile.invalid">
@@ -103,7 +103,7 @@
 				dir, otherwise to the --tezos-data-dir. If directory does not exists, it will be created. If directory already
 				exists, and contains valid database, node will continue in bootstrap process on that database
 			</p>
-			<mat-form-field class="full-size">
+			<mat-form-field class="full-size readonly">
 				<input readonly matInput #bootstrapDbPath type="text" formControlName="bootstrapDbPath" />
 			</mat-form-field>
 			<mat-error *ngIf="chainServerForm.controls.bootstrapDbPath.invalid">
@@ -137,8 +137,8 @@
 				Path to the logger file. If provided, logs are written to the log file, otherwise displayed in terminal. In case
 				it starts with "./" or "../", it is relative path to the current dir, otherwise to the --tezos-data-dir
 			</p>
-			<mat-form-field class="full-size">
-				<input matInput #loggingFile type="text" formControlName="loggingFile" />
+			<mat-form-field class="full-size readonly">
+				<input matInput readonly #loggingFile type="text" formControlName="loggingFile" />
 			</mat-form-field>
 			<mat-error *ngIf="chainServerForm.controls.loggingFile.invalid">
 				<span *ngIf="chainServerForm.controls.loggingFile.errors.required">This field is required</span>
@@ -391,7 +391,7 @@
 				Path to the protocol runner binary, which is compiled with `tezedge`. For example:
 				`./target/debug/protocol-runner`.
 			</p>
-			<mat-form-field class="half-size">
+			<mat-form-field class="half-size readonly">
 				<input readonly matInput #protocolRunner type="text" formControlName="protocolRunner" />
 			</mat-form-field>
 			<mat-error *ngIf="chainServerForm.controls.protocolRunner.invalid">
@@ -545,7 +545,7 @@
 			<p class="from-field-description">
 				Path to the json file with key-values, which will be added to the empty context on startup and commit genesis
 			</p>
-			<mat-form-field class="full-size">
+			<mat-form-field class="full-size readonly">
 				<input readonly matInput #sandboxContextPatching type="text" formControlName="sandboxContextPatching" />
 			</mat-form-field>
 			<mat-error *ngIf="chainServerForm.controls.sandboxContextPatching.invalid">

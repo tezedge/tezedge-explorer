@@ -40,7 +40,14 @@
   <ng-template #sandboxFooter >
     <div class="sandbox-footer">
       <div class="footer-container">
+        <!-- loading-indicator -->
         <span *ngIf="showLoading" class="loading-indicator">Loading...</span>
+        <!-- error-indicator -->
+        <button mat-button *ngIf="!showLoading && showError" class="error-indicator" (click)="scrollToFirstInvalidControl()">
+          <img class="icon" src="../../../assets/icon/times-circle-solid.svg"/>
+          <span class="text">Validation Errors</span>
+        </button>
+        <!-- continue btn -->
         <button mat-button (click)="submitCurrentStep()" [disabled]="showLoading" class="attention-button">
           <ng-container *ngIf="stepper.selectedIndex < stepper.steps?.length-1">
             <span class="text">CONTINUE</span>

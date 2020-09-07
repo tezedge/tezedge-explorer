@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
+import { Component, OnInit, ViewChild, OnDestroy, ElementRef } from '@angular/core';
 import { MatStepper } from '@angular/material/stepper';
 import { Store } from '@ngrx/store';
 import { Actions, ofType } from '@ngrx/effects';
@@ -30,8 +30,13 @@ export class SandboxComponent implements OnInit, OnDestroy{
   
   onDestroy$ = new Subject();
   showLoading: boolean;
+  showError: boolean;
 
-  constructor(private store: Store<any>, private router: Router, private actions$: Actions) { }
+  constructor(
+    private store: Store<any>, 
+    private router: Router, 
+    private actions$: Actions, 
+    private el: ElementRef) { }
 
   ngOnInit(): void {
     // hide sidenav and toolbar
@@ -55,6 +60,7 @@ export class SandboxComponent implements OnInit, OnDestroy{
     .pipe(takeUntil(this.onDestroy$))
     .subscribe((store) => {
       this.showLoading = store.showLoading;
+      this.showError = store.showError;
     });
   }
 
@@ -66,6 +72,9 @@ export class SandboxComponent implements OnInit, OnDestroy{
             type: 'CHAIN_SERVER_FORM_SUBMIT',
             payload: this.chainServer.chainServerForm.value,
           });
+        } else {
+          // scroll to first invalid control
+          this.scrollToFirstInvalidControl();
         }
         break;
       }
@@ -82,7 +91,10 @@ export class SandboxComponent implements OnInit, OnDestroy{
             type: 'CHAIN_CONFIG_FORM_SUBMIT',
             payload: this.chainConfig.chainConfigForm.value,
           });
-        } 
+        } else {
+          // scroll to first invalid control
+          this.scrollToFirstInvalidControl();
+        }
         break;
       }
       // case 'BAKING': { break; }
@@ -115,6 +127,23 @@ export class SandboxComponent implements OnInit, OnDestroy{
       type: 'TOOLBAR_VISIBILITY_CHANGE',
       payload: isVisible,
     });
+  }
+
+  scrollToFirstInvalidControl() {
+    const firstInvalidControl: HTMLElement = this.el.nativeElement.querySelector(
+      ".form-field .ng-invalid:not(.mat-form-field-invalid)"
+    );
+
+    window.scroll({
+      top: this.getTopOffset(firstInvalidControl),
+      left: 0,
+      behavior: "smooth"
+    });
+  }
+
+  getTopOffset(controlEl: HTMLElement): number {
+    const labelOffset = 50;
+    return controlEl.getBoundingClientRect().top + window.scrollY - labelOffset;
   }
 
   ngOnDestroy() {

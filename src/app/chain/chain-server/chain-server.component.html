@@ -1,27 +1,557 @@
-<div class="chain-server" [formGroup]="chainServer" ngrxForm="chainServer">
+<div class="chain-server" [formGroup]="chainServerForm" ngrxForm="chainServer">
 
-    <div class="form-field">
+	<!-- TODO - finish expansion panel design -->
+	<!-- <mat-expansion-panel hideToggle expanded class="info">
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+        <img class="icon" src="../../assets/icon/question-circle.svg" />
+        <span class="text">Server setup details</span>
+      </mat-panel-title>
+    </mat-expansion-panel-header>
+    <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto</p>
 
-        <p class="from-field-title">PORT</p>
-        <p class="from-field-description">
-            Lorem ipsum dolor, sit amet consectetur adipisicing elit.
-        </p>
+    <button mat-button>
+      <img class="icon" src="../../../assets/icon/file-download-regular.svg" />
+      <span class="text">Open documentation</span>
+    </button>
+	</mat-expansion-panel> -->
 
-        <mat-form-field>
-            <input matInput #port type="text" formControlName="port" />
-        </mat-form-field>
+	<!-- GENERAL ERROR PANEL -->
+	<mat-expansion-panel *ngIf="error && error.error_type === 'generic'" hideToggle expanded class="warning">
+		<mat-expansion-panel-header>
+			<mat-panel-title>
+				<span class="text">Error {{ error.code }}</span>
+			</mat-panel-title>
+		</mat-expansion-panel-header>
+		<p style="margin-bottom: 0">{{ error.message }}</p>
+		<p style="margin-top: 8px; margin-bottom: 0">
+			Please restart application and try again. If you think something is broken, report a problem at <a href="mailto:support@tezedge.com">support@tezedge.com</a>
+		</p>
+	</mat-expansion-panel>
+	
+	<!-- ESENTIALS SECTION -->
+	<div class="section essentials-section">
+		<h5 class="section-header">ESENTIALS</h5>
+		<!-- Hostname (read-only)-->
+		<div class="form-field">
+			<p class="from-field-title">Hostname</p>
+			<mat-form-field class="half-size readonly">
+				<input readonly matInput #hostname type="text" formControlName="hostname"/>
+			</mat-form-field>
+			<mat-error *ngIf="chainServerForm.controls.hostname.invalid">
+				<span *ngIf="chainServerForm.controls.hostname.errors.required">This field is required</span>
+				<span *ngIf="chainServerForm.controls.hostname.errors.serverError">{{error.message}}</span>
+			</mat-error>
+		</div>
+	</div>
 
-    </div>
+	<!-- ARGUMENTS SECTION -->
+	<div class="section arguments-section">
+		<h5 class="section-header">ARGUMENTS</h5>
+		<!-- Tezos data directory path (read-only)-->
+		<div class="form-field">
+			<p class="from-field-title">Tezos data directory path</p>
+			<p class="from-field-description">
+				A directory for Tezos node generated data
+			</p>
+			<mat-form-field class="full-size readonly">
+				<input readonly matInput #tezosDataDir type="text" formControlName="tezosDataDir" />
+			</mat-form-field>
+			<mat-error *ngIf="chainServerForm.controls.tezosDataDir.invalid">
+				<span *ngIf="chainServerForm.controls.tezosDataDir.errors.required">This field is required</span>
+				<span *ngIf="chainServerForm.controls.tezosDataDir.errors.serverError">{{error.message}}</span>
+			</mat-error>
+		</div>
 
-    <div class="form-field">
+		<!-- Identity file (read-only)-->
+		<div class="form-field">
+			<p class="from-field-title">Identity file</p>
+			<p class="from-field-description">
+				New identity is automatically generated if it does not exist on specified path. In case it starts with "./" or "../", it is relative path to the current dir, otherwise to the --tezos-data-dir
+			</p>
+			<mat-form-field class="full-size readonly">
+				<input readonly matInput #identityFile type="text" formControlName="identityFile" />
+			</mat-form-field>
+			<mat-error *ngIf="chainServerForm.controls.identityFile.invalid">
+				<span *ngIf="chainServerForm.controls.identityFile.errors.required">This field is required</span>
+				<span *ngIf="chainServerForm.controls.identityFile.errors.serverError">{{error.message}}</span>
+			</mat-error>
+		</div>
 
-        <p class="from-field-title">CHAIN ID</p>
-        <p class="from-field-description">
-            Lorem ipsum dolor, sit amet consectetur adipisicing elit.
-        </p>
+		<!-- Identity expected POW -->
+		<div class="form-field">
+			<p class="from-field-title">Identity expected POW</p>
+			<div class="inline-wrapper">
+				<mat-form-field class="small-size">
+					<input matInput #identityExpectedPow type="number" step="0.01" formControlName="identityExpectedPow" />
+				</mat-form-field>
+				<p class="from-field-description">
+					Expected power of identity for node. It is used to generate new identity. Default: 26.0
+				</p>
+			</div>
+			<mat-error *ngIf="chainServerForm.controls.identityExpectedPow.invalid">
+				<span *ngIf="chainServerForm.controls.identityExpectedPow.errors.required">This field is required</span>
+				<span *ngIf="chainServerForm.controls.identityExpectedPow.errors.serverError">{{error.message}}</span>
+			</mat-error>
+		</div>
 
-        <mat-form-field>
-            <input matInput #port type="text" formControlName="chainId" />
-        </mat-form-field>
+		<!-- Bootstrap database path (read-only)-->
+		<div class="form-field">
+			<p class="from-field-title">Bootstrap database path</p>
+			<p class="from-field-description">
+				Path to bootstrap database directory. In case it starts with "./" or "../", it is relative path to the current
+				dir, otherwise to the --tezos-data-dir. If directory does not exists, it will be created. If directory already
+				exists, and contains valid database, node will continue in bootstrap process on that database
+			</p>
+			<mat-form-field class="full-size readonly">
+				<input readonly matInput #bootstrapDbPath type="text" formControlName="bootstrapDbPath" />
+			</mat-form-field>
+			<mat-error *ngIf="chainServerForm.controls.bootstrapDbPath.invalid">
+				<span *ngIf="chainServerForm.controls.bootstrapDbPath.errors.required">This field is required</span>
+				<span *ngIf="chainServerForm.controls.bootstrapDbPath.errors.serverError">{{error.message}}</span>
+			</mat-error>
+		</div>
 
-    </div>
+		<!-- db cfg max threads -->
+		<div class="form-field">
+			<p class="from-field-title">db cfg max threads (optional)</p>
+			<div class="inline-wrapper">
+				<mat-form-field class="small-size">
+					<input matInput #maxThreads type="number" formControlName="maxThreads" />
+				</mat-form-field>
+				<p class="from-field-description">
+					Max number of threads used by database configuration. If not specified, then the number of threads is equal to
+					the number of CPU cores.
+				</p>
+			</div>
+			<mat-error *ngIf="chainServerForm.controls.maxThreads.invalid">
+				<span *ngIf="chainServerForm.controls.maxThreads.errors.required">This field is required</span>
+				<span *ngIf="chainServerForm.controls.maxThreads.errors.serverError">{{error.message}}</span>
+			</mat-error>
+		</div>
+
+		<!-- Logging file (read-only) -->
+		<div class="form-field">
+			<p class="from-field-title">Logging file</p>
+			<p class="from-field-description">
+				Path to the logger file. If provided, logs are written to the log file, otherwise displayed in terminal. In case
+				it starts with "./" or "../", it is relative path to the current dir, otherwise to the --tezos-data-dir
+			</p>
+			<mat-form-field class="full-size readonly">
+				<input matInput readonly #loggingFile type="text" formControlName="loggingFile" />
+			</mat-form-field>
+			<mat-error *ngIf="chainServerForm.controls.loggingFile.invalid">
+				<span *ngIf="chainServerForm.controls.loggingFile.errors.required">This field is required</span>
+				<span *ngIf="chainServerForm.controls.loggingFile.errors.serverError">{{error.message}}</span>
+			</mat-error>
+		</div>
+
+		<!-- Logging format -->
+		<div class="form-field">
+			<p class="from-field-title">Logging format</p>
+			<p class="from-field-description">
+				Set format of logger entries, used usually with --logger-format argument. Possible values are either simple or
+				json. Simple format is human-readable format, where JSON produce structured, easily machine consumable log
+				entries.
+			</p>
+			<mat-form-field class="half-size">
+				<mat-select #loggingFormat formControlName="loggingFormat">
+					<mat-option value="simple">simple</mat-option>
+					<mat-option value="json">json</mat-option>
+				</mat-select>
+			</mat-form-field>			
+			<mat-error *ngIf="chainServerForm.controls.loggingFormat.invalid">
+				<span *ngIf="chainServerForm.controls.loggingFormat.errors.required">This field is required</span>
+				<span *ngIf="chainServerForm.controls.loggingFormat.errors.serverError">{{error.message}}</span>
+			</mat-error>
+		</div>
+
+		<!-- Logging level -->
+		<div class="form-field">
+			<p class="from-field-title">Logging level</p>
+			<p class="from-field-description">
+				Set log level. Possible values are: `critical`, `error`, `warn`, `info`, `debug`, `trace`
+			</p>
+			<mat-form-field class="half-size">
+				<mat-select #loggingLevel formControlName="loggingLevel">
+					<mat-option value="critical">critical</mat-option>
+					<mat-option value="error">error</mat-option>
+					<mat-option value="warn">warn</mat-option>
+					<mat-option value="info">info</mat-option>
+					<mat-option value="debug">debug</mat-option>
+					<mat-option value="trace">trace</mat-option>
+				</mat-select>
+			</mat-form-field>		
+			<mat-error *ngIf="chainServerForm.controls.loggingLevel.invalid">
+				<span *ngIf="chainServerForm.controls.loggingLevel.errors.required">This field is required</span>
+				<span *ngIf="chainServerForm.controls.loggingLevel.errors.serverError">{{error.message}}</span>
+			</mat-error>
+		</div>
+
+		<!-- OCaml logging -->
+		<div class="form-field">
+			<p class="from-field-title">OCaml logging</p>
+			<div class="inline-wrapper">
+				<mat-slide-toggle #oCamlLogging formControlName="oCamlLogging"> </mat-slide-toggle>
+				<p class="from-field-description">Enable OCaml runtime logger.</p>
+			</div>
+			<mat-error *ngIf="chainServerForm.controls.oCamlLogging.invalid">
+				<span *ngIf="chainServerForm.controls.oCamlLogging.errors.required">This field is required</span>
+				<span *ngIf="chainServerForm.controls.oCamlLogging.errors.serverError">{{error.message}}</span>
+			</mat-error>
+		</div>
+
+		<!-- Network -->
+		<div class="form-field">
+			<p class="from-field-title">Network</p>
+			<p class="from-field-description">
+				Specify the Tezos environment for this node.
+			</p>
+			<mat-form-field class="half-size">
+				<mat-select #network formControlName="network">
+					<mat-option value="sandbox">sandbox</mat-option>
+				</mat-select>
+			</mat-form-field>
+			<mat-error *ngIf="chainServerForm.controls.network.invalid">
+				<span *ngIf="chainServerForm.controls.network.errors.required">This field is required</span>
+				<span *ngIf="chainServerForm.controls.network.errors.serverError">{{error.message}}</span>
+			</mat-error>
+		</div>
+
+		<!-- P2P Port -->
+		<div class="form-field">
+			<p class="from-field-title">P2P Port</p>
+			<div class="inline-wrapper">
+				<mat-form-field class="small-size">
+					<input matInput #p2pPort type="number" formControlName="p2pPort" />
+				</mat-form-field>
+				<p class="from-field-description">Specify port for peer to peer communication.</p>
+			</div>
+			<mat-error *ngIf="chainServerForm.controls.p2pPort.invalid">
+				<span *ngIf="chainServerForm.controls.p2pPort.errors.required">This field is required</span>
+				<span *ngIf="chainServerForm.controls.p2pPort.errors.min || chainServerForm.controls.p2pPort.errors.max">Port needs to be a number between 0 and 65535</span>
+				<span *ngIf="chainServerForm.controls.p2pPort.errors.serverError">{{error.message}}</span>
+			</mat-error>
+		</div>
+
+		<!-- RPC Port -->
+		<div class="form-field">
+			<p class="from-field-title">RPC Port</p>
+			<div class="inline-wrapper">
+				<mat-form-field class="small-size">
+					<input matInput #rpcPort type="number" formControlName="rpcPort" />
+				</mat-form-field>
+				<p class="from-field-description">
+					Node contains subset of Tezos node REST API, described in further sections. This argument specifies port, on
+					which those APIs will be available.
+				</p>
+			</div>
+			<mat-error *ngIf="chainServerForm.controls.rpcPort.invalid">
+				<span *ngIf="chainServerForm.controls.rpcPort.errors.required">This field is required</span>
+				<span *ngIf="chainServerForm.controls.rpcPort.errors.min || chainServerForm.controls.rpcPort.errors.max">Port needs to be a number between 0 and 65535</span>
+				<span *ngIf="chainServerForm.controls.rpcPort.errors.serverError">{{error.message}}</span>
+			</mat-error>
+		</div>
+
+		<!-- WebSocket Access Address -->
+		<div class="form-field">
+			<p class="from-field-title">WebSocket Access Address</p>
+			<p class="from-field-description">
+				Node expose various metrics and statistics in real-time through websocket. This argument specifies address, on
+				which this websocket will be accessible.
+			</p>
+			<mat-form-field class="half-size">
+				<input matInput #webSocketAddress type="text" formControlName="webSocketAddress" />
+			</mat-form-field>
+			<mat-error *ngIf="chainServerForm.controls.webSocketAddress.invalid">
+				<span *ngIf="chainServerForm.controls.webSocketAddress.errors.required">This field is required</span>
+				<span *ngIf="chainServerForm.controls.webSocketAddress.errors.pattern">Address needs to be in form of 'n.n.n.n:p' where 'n' is a number between 0 and 255 and 'p' a number between 0 and 65535</span>
+				<span *ngIf="chainServerForm.controls.webSocketAddress.errors.serverError">{{error.message}}</span>
+			</mat-error>
+		</div>
+
+		<!-- Monitor port -->
+		<div class="form-field">
+			<p class="from-field-title">Monitor port</p>
+			<div class="inline-wrapper">
+				<mat-form-field class="small-size">
+					<input matInput #monitorPort type="number" formControlName="monitorPort" />
+				</mat-form-field>
+				<p class="from-field-description">Port on which the Tezedge node monitoring information will be exposed</p>
+			</div>
+			<mat-error *ngIf="chainServerForm.controls.monitorPort.invalid">
+				<span *ngIf="chainServerForm.controls.monitorPort.errors.required">This field is required</span>
+				<span *ngIf="chainServerForm.controls.monitorPort.errors.min || chainServerForm.controls.monitorPort.errors.max">Port needs to be a number between 0 and 65535</span>
+				<span *ngIf="chainServerForm.controls.monitorPort.errors.serverError">{{error.message}}</span>
+			</mat-error>
+		</div>
+
+		<!-- Lower peer treshold -->
+		<div class="form-field">
+			<p class="from-field-title">Lower peer treshold</p>
+			<div class="inline-wrapper">
+				<mat-form-field class="small-size">
+					<input matInput #lowerPeerTreshold type="number" formControlName="lowerPeerTreshold" />
+				</mat-form-field>
+				<p class="from-field-description">
+					Set minimal peer number, if running node does not has enough connected peers, peer discovery is enforced.
+				</p>
+			</div>
+			<mat-error *ngIf="chainServerForm.controls.lowerPeerTreshold.invalid">
+				<span *ngIf="chainServerForm.controls.lowerPeerTreshold.errors.required">This field is required</span>
+				<span *ngIf="chainServerForm.controls.lowerPeerTreshold.errors.serverError">{{error.message}}</span>
+			</mat-error>
+		</div>
+
+		<!-- Higher peer treshold -->
+		<div class="form-field">
+			<p class="from-field-title">Higher peer treshold</p>
+			<div class="inline-wrapper">
+				<mat-form-field class="small-size">
+					<input matInput #higherPeerTreshold type="number" formControlName="higherPeerTreshold" />
+				</mat-form-field>
+				<p class="from-field-description">
+					Set maximum number of connected peers, running node will not try to connect to any more peers, if this
+					threshold is met.
+				</p>
+			</div>
+			<mat-error *ngIf="chainServerForm.controls.higherPeerTreshold.invalid">
+				<span *ngIf="chainServerForm.controls.higherPeerTreshold.errors.required">This field is required</span>
+				<span *ngIf="chainServerForm.controls.higherPeerTreshold.errors.serverError">{{error.message}}</span>
+			</mat-error>
+		</div>
+
+		<!-- Private node mode -->
+		<div class="form-field">
+			<p class="from-field-title">Private node mode</p>
+			<p class="from-field-description">
+				Enable or disable the private node. Use peers to set the IP addresses of the peers you want to connect to
+			</p>
+			<mat-radio-group #privateNodeMode formControlName="privateNodeMode">
+				<mat-radio-button [value]="true">Enable private node mode</mat-radio-button>
+				<mat-radio-button [value]="false">Disable private node mode</mat-radio-button>
+			</mat-radio-group>
+			<mat-error *ngIf="chainServerForm.controls.privateNodeMode.invalid">
+				<span *ngIf="chainServerForm.controls.privateNodeMode.errors.required">This field is required</span>
+				<span *ngIf="chainServerForm.controls.privateNodeMode.errors.serverError">{{error.message}}</span>
+			</mat-error>
+		</div>
+
+		<!-- Peers -->
+		<fieldset [disabled]="!chainServerForm.controls.privateNodeMode.value && chainServerForm.controls.bootstrapLookupAddresses.value">
+			<div class="form-field indented">
+				<p class="from-field-title">
+					Peers 
+					<span *ngIf="!chainServerForm.controls.privateNodeMode.value && chainServerForm.controls.bootstrapLookupAddresses.value">(Disabled)</span>
+					<span *ngIf="!chainServerForm.controls.privateNodeMode.value && !chainServerForm.controls.bootstrapLookupAddresses.value">(optional)</span>
+				</p>
+				<p class="from-field-description">
+					<span *ngIf="!chainServerForm.controls.privateNodeMode.value && chainServerForm.controls.bootstrapLookupAddresses.value">To enable Peers, <span class="action-text" (click)="chainServerForm.controls.bootstrapLookupAddresses.setValue('')">Delete Bootstrap lookup addresses</span><br></span>
+					Allowed network peers to bootstrap from. This argument is good to use in controlled testing environmnet. 
+					Each peer is described by its address and port in `IP:PORT` format, delimited by a colon.
+				</p>
+				<mat-form-field class="full-size">
+					<input matInput #peers type="text" formControlName="peers" />
+				</mat-form-field>
+				<mat-error *ngIf="chainServerForm.controls.peers.invalid">
+					<span *ngIf="chainServerForm.controls.peers.errors.required">This field is required</span>
+					<span *ngIf="chainServerForm.controls.peers.errors.serverError">{{error.message}}</span>
+				</mat-error>
+			</div>
+		</fieldset>
+
+		<!-- Bootstrap lookup addresses -->
+		<fieldset [disabled]="chainServerForm.controls.privateNodeMode.value || chainServerForm.controls.peers.value">
+			<div class="form-field indented">
+				<p class="from-field-title">
+					Bootstrap lookup addresses 
+					<span *ngIf="chainServerForm.controls.privateNodeMode.value || chainServerForm.controls.peers.value">(Disabled)</span>
+					<span *ngIf="!chainServerForm.controls.privateNodeMode.value && !chainServerForm.controls.peers.value">(Optional)</span>
+				</p>
+				<p class="from-field-description">
+					<span *ngIf="chainServerForm.controls.privateNodeMode.value">To enable bootstrap address, <span class="action-text" (click)="chainServerForm.controls.privateNodeMode.setValue(false)">Disable Private Node Mode</span><br></span>
+					<span *ngIf="chainServerForm.controls.peers.value && !chainServerForm.controls.privateNodeMode.value">To enable bootstrap address, <span class="action-text" (click)="chainServerForm.controls.peers.setValue('')">Delete Peers</span><br></span>
+					List of peers to bootstrap the network from. Peers are delimited by a colon. For further information, see
+					--network parameter of OCaml node.
+				</p>
+				<mat-form-field class="full-size">
+					<input matInput #bootstrapLookupAddresses type="text" formControlName="bootstrapLookupAddresses" />
+				</mat-form-field>
+				<mat-error *ngIf="chainServerForm.controls.bootstrapLookupAddresses.invalid">
+					<span *ngIf="chainServerForm.controls.bootstrapLookupAddresses.errors.required">This field is required</span>
+					<span *ngIf="chainServerForm.controls.bootstrapLookupAddresses.errors.serverError">{{error.message}}</span>
+				</mat-error>
+			</div>
+		</fieldset>
+
+		<!-- Protocol runner (read-only)-->
+		<div class="form-field">
+			<p class="from-field-title">Protocol runner</p>
+			<p class="from-field-description">
+				Path to the protocol runner binary, which is compiled with `tezedge`. For example:
+				`./target/debug/protocol-runner`.
+			</p>
+			<mat-form-field class="half-size readonly">
+				<input readonly matInput #protocolRunner type="text" formControlName="protocolRunner" />
+			</mat-form-field>
+			<mat-error *ngIf="chainServerForm.controls.protocolRunner.invalid">
+				<span *ngIf="chainServerForm.controls.protocolRunner.errors.required">This field is required</span>
+				<span *ngIf="chainServerForm.controls.protocolRunner.errors.serverError">{{error.message}}</span>
+			</mat-error>
+		</div>
+
+		<!-- Number of ffi calls -->
+		<div class="form-field">
+			<p class="from-field-title">Number of ffi calls</p>
+			<div class="inline-wrapper">
+				<mat-form-field class="small-size">
+					<input matInput #ffiCallsNo type="number" formControlName="ffiCallsNo" />
+				</mat-form-field>
+				<p class="from-field-description">
+					Number of ffi (foreign function interface) calls, after which will be Ocaml garbage collector called
+				</p>
+			</div>
+			<mat-error *ngIf="chainServerForm.controls.ffiCallsNo.invalid">
+				<span *ngIf="chainServerForm.controls.ffiCallsNo.errors.required">This field is required</span>
+				<span *ngIf="chainServerForm.controls.ffiCallsNo.errors.serverError">{{error.message}}</span>
+			</mat-error>
+		</div>
+
+		<!-- Ffi connection pool max connections -->
+		<div class="form-field">
+			<p class="from-field-title">Ffi connection pool max connections</p>
+			<div class="inline-wrapper">
+				<mat-form-field class="small-size">
+					<input matInput #ffiMaxConn type="number" formControlName="ffiMaxConn" />
+				</mat-form-field>
+				<p class="from-field-description">Max number of FFI pool connections, default: 10</p>
+			</div>
+			<mat-error *ngIf="chainServerForm.controls.ffiMaxConn.invalid">
+				<span *ngIf="chainServerForm.controls.ffiMaxConn.errors.required">This field is required</span>
+				<span *ngIf="chainServerForm.controls.ffiMaxConn.errors.serverError">{{error.message}}</span>
+			</mat-error>
+		</div>
+
+		<!-- Ffi connection timeout -->
+		<div class="form-field">
+			<p class="from-field-title">Ffi connection timeout</p>
+			<div class="inline-wrapper">
+				<mat-form-field class="small-size">
+					<input matInput #ffiConnTimeout type="number" formControlName="ffiConnTimeout" />
+				</mat-form-field>
+				<p class="from-field-description">Number of seconds to wait for connection, default: 60</p>
+			</div>
+			<mat-error *ngIf="chainServerForm.controls.ffiConnTimeout.invalid">
+				<span *ngIf="chainServerForm.controls.ffiConnTimeout.errors.required">This field is required</span>
+				<span *ngIf="chainServerForm.controls.ffiConnTimeout.errors.serverError">{{error.message}}</span>
+			</mat-error>
+		</div>
+
+		<!-- Ffi pool lifetime (seconds) -->
+		<div class="form-field">
+			<p class="from-field-title">Ffi pool lifetime (seconds)</p>
+			<div class="inline-wrapper">
+				<mat-form-field class="small-size">
+					<input matInput #ffiPoolLifetime type="number" formControlName="ffiPoolLifetime" />
+				</mat-form-field>
+				<p class="from-field-description">
+					Number of seconds to remove protocol_runner from pool, default: 21600 (6 hours)
+				</p>
+			</div>
+			<mat-error *ngIf="chainServerForm.controls.ffiPoolLifetime.invalid">
+				<span *ngIf="chainServerForm.controls.ffiPoolLifetime.errors.required">This field is required</span>
+				<span *ngIf="chainServerForm.controls.ffiPoolLifetime.errors.serverError">{{error.message}}</span>
+			</mat-error>
+		</div>
+
+		<!-- Ffi pool unused timeout (seconds) -->
+		<div class="form-field">
+			<p class="from-field-title">Ffi pool unused timeout (seconds)</p>
+			<div class="inline-wrapper">
+				<mat-form-field class="small-size">
+					<input matInput #ffiPoolUnusedTimeout type="number" formControlName="ffiPoolUnusedTimeout" />
+				</mat-form-field>
+				<p class="from-field-description">
+					Number of seconds to remove unused protocol_runner from pool, default: 1800 (30 minutes)
+				</p>
+			</div>
+			<mat-error *ngIf="chainServerForm.controls.ffiPoolUnusedTimeout.invalid">
+				<span *ngIf="chainServerForm.controls.ffiPoolUnusedTimeout.errors.required">This field is required</span>
+				<span *ngIf="chainServerForm.controls.ffiPoolUnusedTimeout.errors.serverError">{{error.message}}</span>
+			</mat-error>
+		</div>
+
+		<!-- Mempool -->
+		<div class="form-field">
+			<p class="from-field-title">Mempool</p>
+			<div class="inline-wrapper">
+				<mat-slide-toggle #mempool formControlName="mempool"> </mat-slide-toggle>
+				<p class="from-field-description">Enable or disable memopool</p>
+			</div>
+			<mat-error *ngIf="chainServerForm.controls.mempool.invalid">
+				<span *ngIf="chainServerForm.controls.mempool.errors.required">This field is required</span>
+				<span *ngIf="chainServerForm.controls.mempool.errors.serverError">{{error.message}}</span>
+			</mat-error>
+		</div>
+
+		<!-- Tokio threads -->
+		<div class="form-field">
+			<p class="from-field-title">Tokio threads</p>
+			<div class="inline-wrapper">
+				<mat-form-field class="small-size">
+					<input matInput #tokioThreads type="number" formControlName="tokioThreads" />
+				</mat-form-field>
+				<p class="from-field-description">
+					Number of threads spawned by a tokio thread pool. If zero, then number of threads equal to CPU cores is spawned.
+				</p>
+			</div>
+			<mat-error *ngIf="chainServerForm.controls.tokioThreads.invalid">
+				<span *ngIf="chainServerForm.controls.tokioThreads.errors.required">This field is required</span>
+				<span *ngIf="chainServerForm.controls.tokioThreads.errors.serverError">{{error.message}}</span>
+			</mat-error>
+		</div>
+
+		<!-- Test chain -->
+		<div class="form-field">
+			<p class="from-field-title">Test chain</p>
+			<div class="inline-wrapper">
+				<mat-slide-toggle #testChain formControlName="testChain"> </mat-slide-toggle>
+				<p class="from-field-description">
+					Flag for enable/disable test chain switching for block applying. Default: false
+				</p>
+			</div>
+			<mat-error *ngIf="chainServerForm.controls.testChain.invalid">
+				<span *ngIf="chainServerForm.controls.testChain.errors.required">This field is required</span>
+				<span *ngIf="chainServerForm.controls.testChain.errors.serverError">{{error.message}}</span>
+			</mat-error>
+		</div>
+
+		<!-- Recording context actions -->
+		<div class="form-field">
+			<p class="from-field-title">Recording context actions</p>
+			<div class="inline-wrapper">
+				<mat-slide-toggle #recordingContextActions formControlName="recordingContextActions"> </mat-slide-toggle>
+				<p class="from-field-description">Activate recording of context storage actions</p>
+			</div>
+			<mat-error *ngIf="chainServerForm.controls.recordingContextActions.invalid">
+				<span *ngIf="chainServerForm.controls.recordingContextActions.errors.required">This field is required</span>
+				<span *ngIf="chainServerForm.controls.recordingContextActions.errors.serverError">{{error.message}}</span>
+			</mat-error>
+		</div>
+
+		<!-- Sandbox context patching (read-only) -->
+		<div class="form-field">
+			<p class="from-field-title">Sandbox context patching</p>
+			<p class="from-field-description">
+				Path to the json file with key-values, which will be added to the empty context on startup and commit genesis
+			</p>
+			<mat-form-field class="full-size readonly">
+				<input readonly matInput #sandboxContextPatching type="text" formControlName="sandboxContextPatching" />
+			</mat-form-field>
+			<mat-error *ngIf="chainServerForm.controls.sandboxContextPatching.invalid">
+				<span *ngIf="chainServerForm.controls.sandboxContextPatching.errors.required">This field is required</span>
+				<span *ngIf="chainServerForm.controls.sandboxContextPatching.errors.serverError">{{error.message}}</span>
+			</mat-error>
+		</div>
+	</div>
+</div>

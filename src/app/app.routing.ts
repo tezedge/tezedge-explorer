@@ -11,6 +11,7 @@ import { StorageComponent } from './storage/storage.component';
 import { StorageActionComponent } from './storage/storage-action/storage-action.component';
 import { ChainComponent } from './chain/chain.component';
 import { SettingsComponent } from './settings/settings.component';
+import { SandboxComponent } from './sandbox/sandbox.component';
 
 export const AppRouting: Routes = [
 
@@ -32,6 +33,8 @@ export const AppRouting: Routes = [
   { path: 'chain', component: ChainComponent },
 
   { path: 'settings', component: SettingsComponent },
+
+  { path: 'sandbox', component: SandboxComponent },
 
   // { path: '', redirectTo: '/network', pathMatch: 'full' },
   // { path: '**', component: PageNotFoundComponent }

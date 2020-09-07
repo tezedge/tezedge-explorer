@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store'
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-settings-node',
@@ -16,6 +17,7 @@ export class SettingsNodeComponent implements OnInit {
 
   constructor(
     public store: Store<any>,
+    private router: Router
   ) { }
 
   ngOnInit(): void {
@@ -56,13 +58,7 @@ export class SettingsNodeComponent implements OnInit {
   }
 
   nodeSandboxAdd() {
-
-    // start new sandbox node 
-    this.store.dispatch({
-      type: 'SANDBOX_NODE_START',
-      payload: '',
-    });
-
+    this.router.navigate(['/sandbox']);
   }
 
   nodeSandboxStop() {

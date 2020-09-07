@@ -62,6 +62,9 @@ import { MatChipsModule } from '@angular/material/chips';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { MatStepperModule } from '@angular/material/stepper'; 
+import { MatRadioModule } from '@angular/material/radio';
+import { MatExpansionModule } from '@angular/material/expansion'; 
 
 import { NetworkStatsComponent } from './network/network-stats/network-stats.component';
 import { NetworkHistoryComponent } from './network/network-history/network-history.component';
@@ -153,7 +156,9 @@ import { SandboxStatusBarComponent } from './sandbox/sandbox-status-bar/sandbox-
     RouterModule.forRoot(AppRouting, {
       useHash: true,
       // preload all modules
-      preloadingStrategy: PreloadAllModules
+      preloadingStrategy: PreloadAllModules,
+      // scroll page to top on route change
+      scrollPositionRestoration: 'enabled',
     }),
 
     // load ngrx module
@@ -195,7 +200,7 @@ import { SandboxStatusBarComponent } from './sandbox/sandbox-status-bar/sandbox-
     MatTableModule,
     // MatDatepickerModule,
     // MatDialogModule,
-    // MatExpansionModule,
+    MatExpansionModule,
     MatFormFieldModule,
     // MatGridListModule,
     MatIconModule,
@@ -205,14 +210,14 @@ import { SandboxStatusBarComponent } from './sandbox/sandbox-status-bar/sandbox-
     MatPaginatorModule,
     MatProgressBarModule,
     MatProgressSpinnerModule,
-    // MatRadioModule,
+    MatRadioModule,
     MatSelectModule,
     MatSidenavModule,
     MatSlideToggleModule,
     // MatSliderModule,
     MatSnackBarModule,
     // MatSortModule,
-    // MatStepperModule,
+    MatStepperModule,
     MatTabsModule,
     MatToolbarModule,
     MatTooltipModule,

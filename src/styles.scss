@@ -18,7 +18,7 @@ body {
 
 .mat-drawer-container {
     background-color: $color-background;
-    position: static !important;;
+    position: static !important;
 }
 
 .toolbar {
@@ -31,6 +31,7 @@ body {
     display: flex;
     align-items: center;
     flex-direction: row;
+    z-index: 999;
 
     background: $color-border;
     color: $color;
@@ -263,17 +264,17 @@ tr.mat-row {
     }
     
     .network-peers th.mat-header-cell.cdk-column-averageTransferSpeed.mat-column-averageTransferSpeed {
-        display: none
+        display: none;
     }
     .network-peers .mat-cell.cdk-column-averageTransferSpeed.mat-column-averageTransferSpeed {
-        display: none
+        display: none;
     }
     
     .network-peers th.mat-header-cell.cdk-column-transferredBytes.mat-column-transferredBytes {
-        display: none
+        display: none;
     }
     .network-peers .mat-cell.cdk-column-transferredBytes.mat-column-transferredBytes {
-        display: none
+        display: none;
     }
     
     .network-peers th.mat-header-cell.cdk-column-id.mat-column-id {
@@ -456,6 +457,10 @@ mat-form-field .mat-select-value {
     border-bottom: 1px rgba(255, 255, 255, 0.1) solid;
 }
 
+.mat-select-panel .mat-option {
+    color: $color;
+}
+
 /* remove underline in mat-select */
 mat-form-field .mat-form-field-underline {
     background-color: initial !important;
@@ -469,6 +474,113 @@ mat-form-field .mat-select-arrow {
     color: #c4cfdc !important;
     /* hide arrow in mat select*/
     border: 0px;
+}
+
+	/* hide number input arrows */
+	mat-form-field input::-webkit-outer-spin-button,
+	mat-form-field input::-webkit-inner-spin-button {
+		-webkit-appearance: none;
+		margin: 0;
+	}
+	mat-form-field input[type='number'] {
+		-moz-appearance: textfield;
+	}
+
+	/* Change color of mat-slide toggle */
+	.mat-slide-toggle {
+		.mat-slide-toggle-bar {
+			background-color: $color-border;
+		}
+		.mat-slide-toggle-thumb {
+			background-color: #555558;
+		}
+		&.mat-checked {
+			.mat-slide-toggle-bar {
+				background-color: $color-border;
+			}
+			.mat-slide-toggle-thumb {
+				background-color: $color-focus;
+			}
+		}
+    }
+
+/* Change color of mat-stepper (sandbox) */
+.mat-horizontal-stepper-header-container{
+    .mat-step-header {
+        pointer-events: none !important;
+        
+        .mat-step-label{
+            color: $color;
+            opacity: 0.6;
+            font-size: 12px;
+            &.mat-step-label-active{
+                color: $color;
+                opacity: 1;
+            }
+        }
+        .mat-step-icon {
+            background-color: $color-border;
+            color: $color;
+            opacity: 0.6;
+            height: 20px;
+            width: 20px;
+            font-size: 12px;
+
+            &.mat-step-icon-selected {
+                background: #204e8a;
+                color: $color;
+                opacity: 1;
+            }
+        }
+    }
+    .mat-stepper-horizontal-line{
+        border-top-color: $color-border;
+    }
+}
+
+/* Style for mat-radio-button */
+.mat-radio-button{
+    display: block !important;
+
+    &:not(:last-child){
+        margin-bottom: 8px;    
+    }
+    .mat-radio-label{
+        .mat-radio-container{
+            .mat-radio-outer-circle {
+                border-color: $color;
+                opacity: 0.6;
+            }
+        }
+        .mat-radio-label-content{
+            font-size: 12px;
+            opacity: 0.6;
+            line-height: 14px;
+        }
+    }
+
+    &.mat-radio-checked{
+        .mat-radio-label{
+            .mat-radio-container{
+                .mat-radio-outer-circle {
+                    border-color: $color;
+                    opacity: 1;
+                }
+                .mat-radio-inner-circle {
+                    background-color: $color;
+                    opacity: 1;
+                }
+            }
+            .mat-radio-label-content{
+                opacity: 1;
+            }
+        }
+    }
+
+    &.mat-radio-disabled .mat-radio-label-content{
+        color: $color-focus;
+        opacity: 0.5 !important;
+    }
 }
 
 .mat-form-field-wrapper, .mat-form-field-infix {
@@ -824,7 +936,8 @@ ngx-json-viewer .segment .segment-main .segment-key {
 }
 
 
-.chain {
+.chain, 
+.sandbox {
     color: $color;
 }
 
@@ -851,23 +964,201 @@ ngx-json-viewer .segment .segment-main .segment-key {
     padding-left: 24px;
 }
 
-
 // from fields styles 
-.chain mat-form-field {
+.chain mat-form-field,
+.sandbox mat-form-field {
+    color: $color-focus;
+    background: $color-border;
+    height: 32px;
+    border-radius: 4px;
+
+    &.mat-form-field-invalid{
+        background: $color-chrome-red;
+    }
+
+    &.mat-form-field-disabled,
+    &.mat-select-disabled {
+        background: fade-out($color-focus, 0.9);  
+        opacity: 0.5;
+
+        .mat-input-element:disabled,
+        .mat-select-disabled .mat-select-value{
+            color: $color-focus;
+        }
+    }
+
+    &.readonly {
+        opacity: 0.5;
+    }
+}
+
+.chain .mat-form-field-infix,
+.sandbox .mat-form-field-infix {
+    padding-left: 8px !important;
+}
+
+.sandbox fieldset:disabled{
+    .mat-form-field{
+        background: fade-out($color-focus, 0.9);  
+        opacity: 0.5;
+        .mat-input-element,
+        .mat-select-disabled .mat-select-value{
+            color: $color-focus;
+        }
+    }
+}
+
+.chain .mat-error,
+.sandbox .mat-error {
+    color: $color-highlight-red;
+    font-size: 12px;
+}
+
+.sandbox .mat-button,
+.chain .mat-button{
     color: $color;
     background: $color-border;
-    height: 34px;
+    font-size: 12px;
+}
+
+.chain .section,
+.sandbox .section{
+    border: 1px solid $color-border;
+}
+
+/* Hide input underline */
+.chain .mat-form-field-underline,
+.sandbox .mat-form-field-underline {
+    display: none;
+}
+
+/* mat expansion panel styling */
+.mat-expansion-panel {
     border-radius: 4px;
-    padding-left: 10px;
+
+    .mat-expansion-panel-header{
+        border-bottom: 1px solid $color-border;
+        border-radius: 0;
+        padding: 16px 16px 8px 16px;
+        height: 32px !important;
+
+        .mat-expansion-panel-header-title {
+            .icon{
+                margin-right: 8px;
+            }
+        }
+    }
+    .mat-expansion-panel-body {
+        padding: 0 16px 16px;
+    }
+
+    &.warning{  
+        background-color: fade-out($color-highlight-red, 0.5);  
+        color: #fff;
+        border: 1px solid $color;
+
+        .mat-expansion-panel-header{
+            border-bottom: 1px solid fade-out(#fff, 0.9);
+            .mat-expansion-panel-header-title {
+                color: #fff;
+            }
+        }
+        .mat-expansion-panel-body{
+            color: fade-out(#fff, 0.4);
+            font-size: 12px;
+
+            a {
+                color: fade-out(#fff, 0.6);
+            }
+        }
+    }
+
+    &.info {      
+        background: $color-border;  
+        color: #fff;
+
+        .mat-expansion-panel-header{
+            border-bottom: 1px solid $color;
+            .mat-expansion-panel-header-title {
+                color: #fff;
+                font-weight: 100;
+            }
+        }
+        .mat-expansion-panel-body{
+            font-weight: 100;
+        }
+    }
+}
+
+// Wallets table style
+.chain-wallets {
+    .mat-table {
+        border: 1px solid $color-border;
+        border-radius: 4px;
+
+        .mat-header-row {
+            .mat-header-cell {
+                color: fade-out($color-focus, 0.6) !important;
+                font-weight: 100;
+                font-size: 12px;
+                padding-left: 8px;
+                padding-right: 8px;
+
+                &:first-of-type {
+                    padding-left: 16px;
+                }
+                &:last-of-type {
+                    padding-right: 16px;
+                }
+                &.text-right{
+                    text-align: right;
+                }
+            }
+        }
+        .mat-row {
+            &:nth-child(even){
+                background-color: $color-border;
+            }
+            .mat-cell {
+                color: $color-focus !important;
+                font-weight: 100;
+                font-size: 12px;
+                padding-left: 8px;
+                padding-right: 8px;
+
+                &:first-of-type {
+                    padding-left: 16px;
+                }
+                &:last-of-type {
+                    padding-right: 16px;
+                }
+                &.muted {
+                    color: fade-out($color-focus, 0.4) !important;
+                }
+                &.text-right{
+                    text-align: right;
+                }
+            }
+        }
+    }
+}
+
+.mat-button {
+    &.attention-button{
+        background-color: $color-content-attention;
+        color: #fff;
+        line-height: normal;
+        padding: 6px 8px;
+    }
 }
 
 .form-field {
-    padding: 10px 0px 10px 0px;
+    padding: 8px 0;
 }
 
 input.mat-input-element {
-    margin-top: 10px;
-    font-size: 14px;
+    margin-top: 8px;
+    font-size: 12px;
 }
 
 .mat-form-field-ripple {
@@ -878,12 +1169,20 @@ input.mat-input-element {
     font-size: 12px;
     line-height: 12px;
     font-weight: 400;
+    margin: 8px 0;
 }
 
 .from-field-description {
     font-size: 12px;
     opacity: 0.6;
     line-height: 14px;
+    margin: 8px 0;
+
+    .action-text{
+        cursor: pointer;
+        color: $color-focus;
+        text-decoration: underline;
+    }
 }
 
 .app-menu-toggle {

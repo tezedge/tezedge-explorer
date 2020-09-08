@@ -27,7 +27,7 @@
             "styles": [
               { 
                 "input": "src/styles.light.scss", 
-R                "bundleName": "styles.light",
+                "bundleName": "styles.light",
                 "inject": false
               },
               { 

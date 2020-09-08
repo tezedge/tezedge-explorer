@@ -106,6 +106,8 @@ import { SandboxComponent } from './sandbox/sandbox.component';
 
 import { NgrxFormDirective } from './shared/ngrx-form.directive';
 import { SandboxStatusBarComponent } from './sandbox/sandbox-status-bar/sandbox-status-bar.component';
+import { MempoolComponent } from './mempool/mempool.component';
+import { MempoolActionComponent } from './mempool/mempool-action/mempool-action.component';
 
 @NgModule({
   declarations: [
@@ -142,7 +144,9 @@ import { SandboxStatusBarComponent } from './sandbox/sandbox-status-bar/sandbox-
     ChainOtherComponent,
     NgrxFormDirective,
     SandboxComponent,
-    SandboxStatusBarComponent
+    SandboxStatusBarComponent,
+    MempoolComponent,
+    MempoolActionComponent
   ],
   imports: [
     BrowserModule,

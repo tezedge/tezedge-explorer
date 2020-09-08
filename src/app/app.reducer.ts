@@ -41,6 +41,7 @@ const initialState = {
             synchronization: false,
         },
         explorer: {
+            mempool: false,
             endpoints: false,
             network: false,
             storage: false,
@@ -80,6 +81,7 @@ export function reducer(state = initialState, action) {
 
             // TODO: refactor use app features
             let monitoringSynchronization = false;
+            let explorerMempool = false;
             let explorerEndpoints = false;
             let explorerNetwork = false;
             let explorerStorage = false;
@@ -97,6 +99,7 @@ export function reducer(state = initialState, action) {
             }
 
             if (action.payload.debugger !== false) {
+                explorerMempool = true;
                 explorerEndpoints = true;
                 explorerNetwork = true;
                 explorerLogs = true;
@@ -109,6 +112,7 @@ export function reducer(state = initialState, action) {
                         synchronization: monitoringSynchronization,
                     },
                     explorer: {
+                        mempool: explorerMempool,
                         endpoints: explorerEndpoints,
                         network: explorerNetwork,
                         storage: explorerStorage,

@@ -3,6 +3,7 @@ import { RouterStateSnapshot, Params } from '@angular/router';
 import { RouterStateSerializer } from '@ngrx/router-store';
 
 import { LogsComponent } from './logs/logs.component';
+import { MempoolComponent } from './mempool/mempool.component';
 import { NetworkComponent } from './network/network.component';
 import { NetworkActionDetailComponent } from './network/network-action-detail/network-action-detail.component';
 import { EndpointsComponent } from './endpoints/endpoints.component';
@@ -20,7 +21,7 @@ export const AppRouting: Routes = [
 
   { path: 'monitoring', component: MonitoringComponent },
 
-  { path: 'logs', component: LogsComponent },
+  { path: 'mempool', component: MempoolComponent },
 
   { path: 'network', component: NetworkComponent },
   { path: 'network/:address', component: NetworkComponent },
@@ -29,6 +30,8 @@ export const AppRouting: Routes = [
 
   { path: 'storage', component: StorageComponent },
   { path: 'storage/:search', component: StorageActionComponent },
+
+  { path: 'logs', component: LogsComponent },
 
   { path: 'chain', component: ChainComponent },
 

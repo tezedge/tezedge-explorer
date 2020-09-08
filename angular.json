@@ -181,7 +181,7 @@
   "defaultProject": "tezos-node-explorer",
   "schematics": {
     "@schematics/angular:component": {
-      "styleext": "scss"
+      "style": "scss"
     }
   }
 }

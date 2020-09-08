@@ -1,3 +1,5 @@
 <span style="color:white;">
-    {{ mempoolAction.entities | json }}
+    <li *ngFor="let id of mempoolAction.ids;">
+        {{mempoolAction.entities[id].type }} | {{mempoolAction.entities[id].hash }}
+    </li>
 </span>

@@ -121,6 +121,13 @@
                         EXPLORER
                     </span>
 
+                    <a *ngIf="app.menu.explorer.mempool" mat-list-item routerLink="/mempool" (click)="isMobile && start.toggle()" [style.color]="app.sidenav.color">
+                        <span>
+                            <svg-icon style="margin-right: 7px;" icon="mempool"></svg-icon>
+                            Mempool
+                        </span>
+                    </a> 
+
                     <a *ngIf="app.menu.explorer.storage" mat-list-item routerLink="/storage" (click)="isMobile && start.toggle()" [style.color]="app.sidenav.color">
                         <span>
                             <svg-icon style="margin-right: 7px;" icon="storage"></svg-icon>

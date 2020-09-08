@@ -155,7 +155,7 @@
 				entries.
 			</p>
 			<mat-form-field class="half-size">
-				<mat-select #loggingFormat formControlName="loggingFormat">
+				<mat-select #loggingFormat formControlName="loggingFormat" disableOptionCentering panelClass="chain-select-panel">
 					<mat-option value="simple">simple</mat-option>
 					<mat-option value="json">json</mat-option>
 				</mat-select>
@@ -173,7 +173,7 @@
 				Set log level. Possible values are: `critical`, `error`, `warn`, `info`, `debug`, `trace`
 			</p>
 			<mat-form-field class="half-size">
-				<mat-select #loggingLevel formControlName="loggingLevel">
+				<mat-select #loggingLevel formControlName="loggingLevel" disableOptionCentering panelClass="chain-select-panel">
 					<mat-option value="critical">critical</mat-option>
 					<mat-option value="error">error</mat-option>
 					<mat-option value="warn">warn</mat-option>
@@ -208,7 +208,7 @@
 				Specify the Tezos environment for this node.
 			</p>
 			<mat-form-field class="half-size">
-				<mat-select #network formControlName="network">
+				<mat-select #network formControlName="network" disableOptionCentering panelClass="chain-select-panel">
 					<mat-option value="sandbox">sandbox</mat-option>
 				</mat-select>
 			</mat-form-field>

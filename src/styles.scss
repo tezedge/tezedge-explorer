@@ -1252,6 +1252,11 @@ ngx-json-viewer .segment .segment-main .segment-key {
         color: #fff;
         line-height: normal;
         padding: 6px 8px;
+
+        &[disabled]{
+            color: #fff !important;
+            opacity: 0.5;
+        }
     }
 }
 

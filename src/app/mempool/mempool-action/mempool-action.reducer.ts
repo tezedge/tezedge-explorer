@@ -17,7 +17,7 @@ export function reducer(state = initialState, action) {
 
         case 'MEMPOOL_ACTION_START_SUCCESS':
         case 'MEMPOOL_ACTION_LOAD_SUCCESS': {
-            // console.log('[' + action.type + ']', action.payload);
+            console.log('[' + action.type + ']', action.payload);
             return {
                 ...state,
                 ids: [
@@ -29,6 +29,8 @@ export function reducer(state = initialState, action) {
                         .map(mempoolBranchRefused => mempoolBranchRefused[0]),
                     ...action.payload.branch_delayed
                         .map(mempoolBranchDelayed => mempoolBranchDelayed[0]),
+                    ...action.payload.unprocessed
+                        .map(mempoolUnprocessed => mempoolUnprocessed[0]),
                 ],
                 entities: {
                     ...action.payload.applied
@@ -71,6 +73,17 @@ export function reducer(state = initialState, action) {
                                     type: 'branchDelayyed',
                                     hash: mempoolBranchDelayed[0],
                                     ...mempoolBranchDelayed[1]
+                                }
+                            };
+                        }, {}),
+                    ...action.payload.unprocessed
+                        .reduce((accumulator, mempoolUnprocessed) => {
+                            return {
+                                ...accumulator,
+                                [mempoolUnprocessed[0]]: {
+                                    type: 'unprocessed',
+                                    hash: mempoolUnprocessed[0],
+                                    ...mempoolUnprocessed[1]
                                 }
                             };
                         }, {}),

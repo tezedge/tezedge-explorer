@@ -27,14 +27,12 @@
             "styles": [
               { 
                 "input": "src/styles.light.scss", 
-                "bundleName": "styles.light",
-                "lazy": true,
+R                "bundleName": "styles.light",
                 "inject": false
               },
               { 
                 "input": "src/styles.dark.scss", 
                 "bundleName": "styles.dark",
-                "lazy": true,
                 "inject": false
               }
             ],
@@ -137,13 +135,11 @@
               { 
                 "input": "src/styles.light.scss", 
                 "bundleName": "styles.light",
-                "lazy": true,
                 "inject": false
               },
               { 
                 "input": "src/styles.dark.scss", 
                 "bundleName": "styles.dark",
-                "lazy": true,
                 "inject": false
               }
             ],

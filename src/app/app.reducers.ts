@@ -46,6 +46,7 @@ import * as fromStorageBlock from './storage/storage-block/storage-block.reducer
 import * as fromStorageAction from './storage/storage-action/storage-action.reducer';
 
 import * as fromSandbox from './sandbox/sandbox.reducer';
+import * as fromWallets from './wallets/wallets.reducer';
 
 // state interface
 export interface State {
@@ -70,6 +71,7 @@ export interface State {
     settingsNode: any;
     sandbox: any;
     routerReducer: fromRouter.RouterReducerState<RouterStateUrl>;
+    wallets: any;
 }
 
 // state
@@ -95,6 +97,7 @@ export const reducers: ActionReducerMap<State> = {
     settings: fromSettings.reducer,
     settingsNode: fromSettingsNode.reducer,
     routerReducer: fromRouter.routerReducer,
+    wallets: fromWallets.reducer,
 };
 
 // // log all actions to console for production

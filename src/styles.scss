@@ -8,12 +8,23 @@ body {
 }
 
 .sidenav-content {
-    background-color: $color-background;
-    margin-top: 34px;
+    background-color: $color-table-background;
+    margin-top: 38px;
+    border-top-left-radius: 4px;
+    border-top-right-radius: 4px;
+    min-height: calc(100vh - 38px);
+
+    &.not-visible{
+        margin-top: 0 !important;
+    }
 }
 
 .mat-drawer-container.mat-sidenav-container {
     background-color: $color-background;
+
+    .mat-drawer-side{
+        border-right: none;
+    }
 }
 
 .mat-drawer-container {
@@ -33,7 +44,7 @@ body {
     flex-direction: row;
     z-index: 999;
 
-    background: $color-border;
+    // background: $color-border;
     color: $color;
 
     height: 28px;
@@ -528,9 +539,14 @@ mat-form-field .mat-select-arrow {
             color: $color-focus;
             opacity: 0.6;
             font-size: 12px;
+            font-weight: 300;
+
             &.mat-step-label-active{
                 color: $color-focus;
                 opacity: 1;
+            }
+            &.mat-step-label-selected{
+                font-weight: 300;
             }
         }
         .mat-step-icon {
@@ -963,6 +979,7 @@ ngx-json-viewer .segment .segment-main .segment-key {
     }
     .page-title {
         color: fade-out($color-focus, 0.2);
+        font-weight: 300;
     }
 }
 
@@ -997,6 +1014,7 @@ ngx-json-viewer .segment .segment-main .segment-key {
     height: 32px;
     border-radius: 4px;
     box-sizing: border-box;
+    font-weight: 300;
 
     display: flex;
     justify-content: center;
@@ -1121,14 +1139,38 @@ ngx-json-viewer .segment .segment-main .segment-key {
 
 .chain .section,
 .sandbox .section{
-    border: 1px solid $color-border;
-
     .section-header {
         font-weight: 300;
+        font-size: 12px;
         color: $color-focus;
     }
 }
+.sandbox .section{
+    border: 1px solid $color-border;
+}
+.chain .section:not(:last-child) {
+    border-bottom: 1px solid $color-border !important;
+}
 
+.chain {
+    .mat-tab-body{
+        max-width: 600px;
+    }
+    .mat-tab-body-wrapper,
+    .mat-tab-label-container {
+        padding-left: 0;
+    }
+    .mat-tab-label:first-child {
+        margin-left: 8px;
+    }
+    .mat-tab-label {
+        min-width: unset !important;
+        padding: 0 8px !important;
+    }
+    .mat-ink-bar{
+        visibility: hidden !important;
+    }
+}
 /* Hide input underline */
 .chain .mat-form-field-underline,
 .sandbox .mat-form-field-underline {
@@ -1194,15 +1236,15 @@ ngx-json-viewer .segment .segment-main .segment-key {
 }
 
 // Wallets table style
-.chain-wallets {
+.chain-wallets,
+.wallets{
     .mat-table {
-        border: 1px solid $color-border;
         border-radius: 4px;
 
         .mat-header-row {
             .mat-header-cell {
                 color: fade-out($color-focus, 0.6) !important;
-                font-weight: 100;
+                font-weight: 300;
                 font-size: 12px;
                 padding-left: 8px;
                 padding-right: 8px;
@@ -1219,12 +1261,11 @@ ngx-json-viewer .segment .segment-main .segment-key {
             }
         }
         .mat-row {
-            &:nth-child(even){
+            &:nth-child(odd){
                 background-color: $color-border;
             }
             .mat-cell {
                 color: $color-focus !important;
-                font-weight: 100;
                 font-size: 12px;
                 padding-left: 8px;
                 padding-right: 8px;
@@ -1245,6 +1286,26 @@ ngx-json-viewer .segment .segment-main .segment-key {
         }
     }
 }
+.chain-wallets{
+    .mat-table{
+        border: 1px solid $color-border;
+    }
+}
+
+.wallets {
+    color: $color-focus;
+    font-size: 12px;
+
+    .filters-wrap{
+        border-bottom: 1px solid $color-border;
+    }
+    // .table-flex{
+
+    // }
+    .sidebar-flex{
+        border-left: 1px solid $color-border;
+    }
+}
 
 .mat-button {
     &.attention-button{
@@ -1255,7 +1316,7 @@ ngx-json-viewer .segment .segment-main .segment-key {
 
         &[disabled]{
             color: #fff !important;
-            opacity: 0.5;
+            opacity: 0.35;
         }
     }
 }
@@ -1277,7 +1338,7 @@ input.mat-input-element {
 .from-field-title {
     font-size: 12px;
     line-height: 12px;
-    font-weight: 400;
+    font-weight: 300;
     margin: 8px 0;
     color: $color-focus;
 }

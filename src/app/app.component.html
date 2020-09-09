@@ -215,6 +215,13 @@
                             Settings
                         </span>
                     </a>
+
+                    <a mat-list-item routerLink="/wallets" rel="noreferrer" [style.color]="app.sidenav.color">
+                        <span>
+                            <svg-icon style="margin-right: 7px" icon="chain-wallets"></svg-icon>
+                            Wallets
+                        </span>
+                    </a>
                     <!--
                     <span>
                         <button style="font-size: 12px;line-height: 32px;color:white; background: #323234; " mat-flat-button>
@@ -243,7 +250,7 @@
         </mat-sidenav>
 
         <!-- Content -->
-        <mat-sidenav-content class="sidenav-content">
+        <mat-sidenav-content class="sidenav-content" [class.not-visible]="!app.sidenav.isVisible">
             <div>
                 <!-- menu -->
                 <button mat-icon-button class="app-menu-toggle" *ngIf="isMobile && app.sidenav.isVisible">

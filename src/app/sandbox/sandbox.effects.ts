@@ -88,6 +88,19 @@ export class SandboxEffects {
         })
     );
 
+    @Effect({dispatch: false})
+    SandboxWalletSubmitSuccess$ = this.actions$.pipe(
+        ofType('CHAIN_WALLETS_SUBMIT_SUCCESS'),
+
+        // merge state
+        withLatestFrom(this.store, (action: any, state) => ({ action, state })),
+
+        // persist wallets in localstorage
+        tap(({ action, state }) => {
+            localStorage.setItem('SANDBOX-WALLETS', JSON.stringify(state.chainWallets.wallets))
+        })
+    );
+
     @Effect()
     SandboxActivateProtocol$ = this.actions$.pipe(
         ofType('CHAIN_CONFIG_FORM_SUBMIT'),

@@ -13,6 +13,7 @@ import { StorageActionComponent } from './storage/storage-action/storage-action.
 import { ChainComponent } from './chain/chain.component';
 import { SettingsComponent } from './settings/settings.component';
 import { SandboxComponent } from './sandbox/sandbox.component';
+import { WalletsComponent } from './wallets/wallets.component';
 
 export const AppRouting: Routes = [
 
@@ -38,6 +39,8 @@ export const AppRouting: Routes = [
   { path: 'settings', component: SettingsComponent },
 
   { path: 'sandbox', component: SandboxComponent },
+
+  { path: 'wallets', component: WalletsComponent },
 
   // { path: '', redirectTo: '/network', pathMatch: 'full' },
   // { path: '**', component: PageNotFoundComponent }

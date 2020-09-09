@@ -40,6 +40,7 @@ import { StorageSearchEffects } from './storage/storage-search/storage-search.ef
 import { SettingsEffects } from './settings/settings.effects';
 import { SettingsNodeEffects } from './settings/settings-node/settings-node.effects';
 import { SandboxEffects } from './sandbox/sandbox.effects';
+import { WalletsEffects } from './wallets/wallets.effects';
 
 import { NetworkComponent } from './network/network.component';
 import { NetworkPeersComponent } from './network/network-peers/network-peers.component';
@@ -108,6 +109,7 @@ import { SandboxComponent } from './sandbox/sandbox.component';
 
 import { NgrxFormDirective } from './shared/ngrx-form.directive';
 import { SandboxStatusBarComponent } from './sandbox/sandbox-status-bar/sandbox-status-bar.component';
+import { WalletsComponent } from './wallets/wallets.component';
 import { MempoolComponent } from './mempool/mempool.component';
 import { MempoolActionComponent } from './mempool/mempool-action/mempool-action.component';
 
@@ -147,6 +149,7 @@ import { MempoolActionComponent } from './mempool/mempool-action/mempool-action.
     NgrxFormDirective,
     SandboxComponent,
     SandboxStatusBarComponent,
+    WalletsComponent,
     MempoolComponent,
     MempoolActionComponent
   ],
@@ -193,6 +196,7 @@ import { MempoolActionComponent } from './mempool/mempool-action/mempool-action.
       SettingsEffects,
       SettingsNodeEffects,
       SandboxEffects,
+      WalletsEffects,
     ]),
 
     // https://github.com/zalmoxisus/redux-devtools-extension

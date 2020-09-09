@@ -8,12 +8,23 @@ body {
 }
 
 .sidenav-content {
-    background-color: $color-background;
-    margin-top: 34px;
+    background-color: $color-table-background;
+    margin-top: 38px;
+    border-top-left-radius: 4px;
+    border-top-right-radius: 4px;
+    min-height: calc(100vh - 38px);
+
+    &.not-visible{
+        margin-top: 0 !important;
+    }
 }
 
 .mat-drawer-container.mat-sidenav-container {
     background-color: $color-background;
+
+    .mat-drawer-side{
+        border-right: none;
+    }
 }
 
 .mat-drawer-container {
@@ -33,7 +44,7 @@ body {
     flex-direction: row;
     z-index: 999;
 
-    background: $color-border;
+    // background: $color-border;
     color: $color;
 
     height: 28px;
@@ -1128,14 +1139,38 @@ ngx-json-viewer .segment .segment-main .segment-key {
 
 .chain .section,
 .sandbox .section{
-    border: 1px solid $color-border;
-
     .section-header {
         font-weight: 300;
+        font-size: 12px;
         color: $color-focus;
     }
 }
+.sandbox .section{
+    border: 1px solid $color-border;
+}
+.chain .section:not(:last-child) {
+    border-bottom: 1px solid $color-border !important;
+}
 
+.chain {
+    .mat-tab-body{
+        max-width: 600px;
+    }
+    .mat-tab-body-wrapper,
+    .mat-tab-label-container {
+        padding-left: 0;
+    }
+    .mat-tab-label:first-child {
+        margin-left: 8px;
+    }
+    .mat-tab-label {
+        min-width: unset !important;
+        padding: 0 8px !important;
+    }
+    .mat-ink-bar{
+        visibility: hidden !important;
+    }
+}
 /* Hide input underline */
 .chain .mat-form-field-underline,
 .sandbox .mat-form-field-underline {

@@ -26,7 +26,7 @@ export class WalletsEffects {
         ])
     );
 
-    // get wallet balance 
+    // get wallets 
     @Effect()
     WalletsListLoad$ = this.actions$.pipe(
         ofType('WALLET_LIST_LOAD'),
@@ -34,16 +34,24 @@ export class WalletsEffects {
         // get state from store
         withLatestFrom(this.store, (action, state: any) => state),
 
-        // get all accounts address
         flatMap((state: any) => state.wallets.initWallets
             // TODO: temp comment to see changes fast
             // .filter(id =>
             //     // get balance only if last download is older than 3 mins
             //     (new Date().getTime() - state.tezos.tezosWalletList.entities[id].timestamp) < (5 * 60 * 1000) ? false : true
             // )
-            .map(initWallet=> ({
-                node: state.settingsNode.api,
-                detail: initWallet,
+            .map(initWallet => ({
+                // TODO
+                node: {
+                    display: 'Sandbox',
+                    name: 'sandbox',
+                    url: 'http://sandbox.dev.tezedge.com:18732', 
+                    tzstats: {
+                        url: 'https://tzstats.com/',
+                        api: 'https://api.tzstats.com/',
+                    },
+                },
+                detail: initWallet
             }))
         ),
 
@@ -51,12 +59,10 @@ export class WalletsEffects {
         delay(500),
     
         flatMap((state: any) => of([]).pipe(
-            
             // initialize 
             initializeWallet(stateWallet => ({
                 publicKeyHash: state.detail.publicKeyHash,
-                node: state.node,
-                detail: state.detail,
+                node: state.node
             })),
 
             // get wallet info

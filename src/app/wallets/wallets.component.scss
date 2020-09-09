@@ -1,10 +1,17 @@
 .wallets {
-  padding-top: 19px;
-  height: calc(100vh - 34px - 19px);
+  padding-top: 16px;
+  height: calc(100vh - 38px - 16px);
 
   .filters-wrap{
     padding: 8px 16px;
     min-height: 15px;
+    display: flex;
+    padding-bottom: 15px;
+    padding-top: 0;
+
+    .icon{
+      margin-right: 8px;
+    }
   }
 
   .flex-wrapper {

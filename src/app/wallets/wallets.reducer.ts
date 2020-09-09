@@ -1,6 +1,7 @@
 const initialState: any = {
     initWallets: [],
-    wallets: []
+    ids: [],
+    entities: {},
 };
 
 export function reducer(state = initialState, action) {
@@ -14,7 +15,16 @@ export function reducer(state = initialState, action) {
         case 'WALLET_LIST_LOAD_SUCCESS': {
             return {
                 ...state,
-                wallets: action.payload
+                ids: [
+                    ...action.payload.map(wallet => wallet.publicKeyHash)
+                ],
+                entities: action.payload.reduce((accumulator, wallet) => ({
+                    ...accumulator,
+                    [wallet.publicKeyHash]: {
+                        ...state.entities[wallet.publicKeyHash],
+                        ...wallet
+                    }
+                }), {}),
             }
         }
         

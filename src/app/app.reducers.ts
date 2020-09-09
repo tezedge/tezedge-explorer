@@ -24,6 +24,8 @@ import * as fromSettingsNode from './settings/settings-node/settings-node.reduce
 
 import * as fromMonitoring from './monitoring/monitoring.reducer';
 
+import * as fromMempoolAction from './mempool/mempool-action/mempool-action.reducer';
+
 import * as fromNetworkAction from './network/network-action/network-action.reducer';
 import * as fromNetworkActionDetail from './network/network-action-detail/network-action-detail.reducer';
 import * as fromNetworkPeers from './network/network-peers/network-peers.reducer';
@@ -49,6 +51,7 @@ import * as fromSandbox from './sandbox/sandbox.reducer';
 export interface State {
     app: any;
     monitoring: any;
+    mempoolAction: any;
     networkAction: any;
     networkActionDetail: any;
     networkPeers: any;
@@ -73,6 +76,7 @@ export interface State {
 export const reducers: ActionReducerMap<State> = {
     app: fromApp.reducer,
     monitoring: fromMonitoring.reducer,
+    mempoolAction: fromMempoolAction.reducer,
     networkAction: fromNetworkAction.reducer,
     networkActionDetail: fromNetworkActionDetail.reducer,
     networkPeers: fromNetworkPeers.reducer,

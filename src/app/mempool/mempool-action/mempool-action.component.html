@@ -1,1 +1,5 @@
-<p>mempool-action works!</p>
+<span style="color:white;">
+    <li *ngFor="let id of mempoolAction.ids;">
+        {{mempoolAction.entities[id].type }} | {{mempoolAction.entities[id].hash }}
+    </li>
+</span>

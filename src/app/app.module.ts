@@ -24,6 +24,8 @@ import { AppEffects } from './app.effects';
 
 import { MonitoringEffects } from './monitoring/monitoring.effects';
 
+import { MempoolActionEffects } from './mempool/mempool-action/mempool-action.effects';
+
 import { NetworkActionEffects } from './network/network-action/network-action.effects';
 import { NetworkActionDetailEffects } from './network/network-action-detail/network-action-detail.effects';
 
@@ -71,7 +73,7 @@ import { NetworkHistoryComponent } from './network/network-history/network-histo
 import { SettingsComponent } from './settings/settings.component';
 import { NetworkEndpointComponent } from './network/network-endpoint/network-endpoint.component';
 
-// TODO: replace woth reactive forms
+// TODO: replace with reactive forms
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BandwidthPipe } from './shared/bandwidth.pipe';
 import { StorageComponent } from './storage/storage.component';
@@ -180,6 +182,7 @@ import { MempoolActionComponent } from './mempool/mempool-action/mempool-action.
     EffectsModule.forRoot([
       AppEffects,
       MonitoringEffects,
+      MempoolActionEffects,
       NetworkActionEffects,
       NetworkActionDetailEffects,
       StorageBlockEffects,

@@ -68,6 +68,7 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatStepperModule } from '@angular/material/stepper'; 
 import { MatRadioModule } from '@angular/material/radio';
 import { MatExpansionModule } from '@angular/material/expansion'; 
+import { ClipboardModule } from '@angular/cdk/clipboard';
 
 import { NetworkStatsComponent } from './network/network-stats/network-stats.component';
 import { NetworkHistoryComponent } from './network/network-history/network-history.component';
@@ -232,6 +233,7 @@ import { MempoolActionComponent } from './mempool/mempool-action/mempool-action.
     MatTabsModule,
     MatToolbarModule,
     MatTooltipModule,
+    ClipboardModule,
 
     NgxChartsModule,
 

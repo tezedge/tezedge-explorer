@@ -29,6 +29,54 @@
 
       .sidebar-wrap {      
         padding: 0 8px;
+
+        .details-header {
+          padding: 8px;
+          display: flex;
+          justify-content: space-between;
+
+          .icon{
+            cursor: pointer;
+          }
+        }
+
+        .details-box{
+          margin-bottom: 8px;
+          border-radius: 4px;
+
+          .details-section{
+            padding: 8px;
+
+            .box-header{
+              padding-bottom: 8px;
+            }
+  
+            .box-content {
+              .mat-error{
+                display: inline;
+                margin-left: 8px;
+              }
+              .half-size {
+                width: 50%;
+              }
+              .full-size {
+                width: 100%;
+              }
+              .button-wrapper{
+                .mat-button{
+                  margin-left: 8px;
+                  width: 100%;
+                }
+              }
+              .input-suffix {
+                margin-right: 8px;
+                color: #666;
+                font-weight: 100;
+                font-size: 13px;
+              }
+            }
+          }
+        }
       } 
     }
   }

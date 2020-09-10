@@ -1524,3 +1524,12 @@ input.mat-input-element {
     background-color: $color-table-background;
     border-top-left-radius: 4px;
 }
+
+.mempool {
+    background-color: $color-table-background;
+    border-top-left-radius: 4px;
+    
+    position: absolute;
+    width: 100%;
+    height: 100%;
+}

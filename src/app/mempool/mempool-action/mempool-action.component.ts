@@ -14,6 +14,9 @@ export class MempoolActionComponent implements OnInit, OnDestroy {
   public mempoolAction;
   public mempoolActionList = [];
 
+  public networkAction;
+  public networkActionList = [];
+
   public onDestroy$ = new Subject();
 
   @ViewChild(CdkVirtualScrollViewport) viewPort: CdkVirtualScrollViewport;
@@ -34,6 +37,20 @@ export class MempoolActionComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.onDestroy$))
       .subscribe(data => {
         this.mempoolAction = data;
+      });
+
+    // TODO: temoporary, remove
+    this.store.dispatch({
+      type: 'NETWORK_ACTION_LOAD',
+      payload: '',
+    });
+
+    // TODO: temoporary, remove
+    this.store.select('networkAction')
+      .pipe(takeUntil(this.onDestroy$))
+      .subscribe(data => {
+        this.networkAction = data;
+        this.networkActionList = data.ids.map(id => ({ id, ...data.entities[id] }));
       });
 
   }

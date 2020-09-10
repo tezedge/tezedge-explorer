@@ -181,10 +181,8 @@ export function reducer(state = initialState, action) {
         }
 
 
-        case 'NETWORK_ACTION_LOAD_ERROR':{
-            return {
-
-            }
+        case 'NETWORK_ACTION_LOAD_ERROR': {
+            return { };
         }
 
         case 'SIDENAV_VISIBILITY_CHANGE': {

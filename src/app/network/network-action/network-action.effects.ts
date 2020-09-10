@@ -18,13 +18,18 @@ export class NetworkActionEffects {
         withLatestFrom(this.store, (action: any, state) => ({ action, state })),
 
         switchMap(({ action, state }) => {
-            return this.http.get(state.settingsNode.api.debugger + '/v2/p2p/?' +  networkActionFilter(action, state) + 'limit=30' )
+            return this.http.get(
+                state.settingsNode.api.debugger +
+                '/v2/p2p/?' +
+                networkActionFilter(action, state) +
+                networkActionCursor(action, state)
+            );
         }),
 
         // dispatch action
         map((payload) => ({ type: 'NETWORK_ACTION_LOAD_SUCCESS', payload: payload })),
         catchError((error, caught) => {
-            console.error(error)
+            console.error(error);
             this.store.dispatch({
                 type: 'NETWORK_ACTION_LOAD_ERROR',
                 payload: error,
@@ -48,7 +53,11 @@ export class NetworkActionEffects {
             timer(0, 1000).pipe(
                 takeUntil(networkActionDestroy$),
                 switchMap(() =>
-                    this.http.get(state.settingsNode.api.debugger + '/v2/p2p/?' +  networkActionFilter(action, state) + 'limit=30').pipe(
+                    this.http.get(
+                        state.settingsNode.api.debugger + '/v2/p2p/?' +
+                        networkActionFilter(action, state) +
+                        networkActionCursor(action, state)
+                    ).pipe(
                         map(response => ({ type: 'NETWORK_ACTION_START_SUCCESS', payload: response })),
                         catchError(error => of({ type: 'NETWORK_ACTION_START_ERROR', payload: error })),
                     )
@@ -108,8 +117,8 @@ export class NetworkActionEffects {
 
 // filter network action
 export function networkActionFilter(action, state) {
-    
-    // add type filterType    
+
+    // add type filterType
     let filterType = '';
     const stateFilter = state.networkAction.filter;
 
@@ -126,21 +135,36 @@ export function networkActionFilter(action, state) {
     filterType = stateFilter.currentBranch ? filterType + 'get_current_branch,current_branch,' : filterType;
     filterType = stateFilter.blockHeaders ? filterType + 'get_block_header,block_header,' : filterType;
     filterType = stateFilter.blockOperations ? filterType + 'get_operations_for_blocks,operations_for_blocks,' : filterType;
-    filterType = stateFilter.blockOperationsHashes ? filterType + 'get_operation_hashes_for_blocks,operation_hashes_for_block,' : filterType;
+    filterType = stateFilter.blockOperationsHashes ?
+        filterType + 'get_operation_hashes_for_blocks,operation_hashes_for_block,' : filterType;
 
     // replace last , with &
-    filterType = filterType.length > 0 ?  'types=' + filterType.slice(0, -1) + '&' : '';  
-    
-    // add filter for source 
+    filterType = filterType.length > 0 ? 'types=' + filterType.slice(0, -1) + '&' : '';
+
+    // add filter for source
     let filterIncoming = '';
-    filterIncoming = stateFilter.local && !stateFilter.remote ? 
+    filterIncoming = stateFilter.local && !stateFilter.remote ?
         'source_type=local&' : (!stateFilter.local && stateFilter.remote ? 'source_type=remote&' : '');
-    
-    // add remote_addr filter 
-    let filterRemoteAddr = state.networkAction.urlParams ? 'remote_addr=' + state.networkAction.urlParams + '&': '';
 
-    // console.log("[networkActionFilter] url ", state.settingsNode.api.debugger + '/v2/p2p/?' + filterType + filterIncoming + filterRemoteAddr + 'limit=10');
+    // add remote_addr filter
+    const filterRemoteAddr = state.networkAction.urlParams ? 'remote_addr=' + state.networkAction.urlParams + '&' : '';
 
-    return  filterType + filterIncoming + filterRemoteAddr
+    // console.log("[networkActionFilter] url ",
+    //  state.settingsNode.api.debugger + '/v2/p2p/?' + filterType + filterIncoming + filterRemoteAddr + 'limit=10');
 
+    return filterType + filterIncoming + filterRemoteAddr;
+
+}
+
+
+// use cursor to load previous pages
+export function networkActionCursor(action, state) {
+
+    console.log('[networkActionCursor]', action, state.networkAction);
+
+    // add cursor
+    const cursor = action.payload && action.payload.cursor_id && state.networkAction.ids.length > 0 ?
+        'cursor_id=' + state.networkAction.ids[0] + '&' : '';
+
+    return cursor + 'limit=50';
 }

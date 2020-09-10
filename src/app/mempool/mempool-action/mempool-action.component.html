@@ -4,10 +4,15 @@
     </li>
 </span>
 
+<!-- TODO: remove -->
+
 <br/>
+<button mat-flat-button (click)="networkNextPage()">Previous page</button>
+&nbsp;
+<button mat-flat-button (click)="networkCursorPage()">Cursor page</button>
 
 <span style="color:white;">
     <li *ngFor="let networkAction of networkActionList;">
-        {{networkAction }} | {{ networkAction }}
+        {{ networkAction.id }} | {{ networkAction.timestamp }} - {{ networkAction.type }} 
     </li>
 </span>

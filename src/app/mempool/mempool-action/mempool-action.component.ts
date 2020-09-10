@@ -55,6 +55,21 @@ export class MempoolActionComponent implements OnInit, OnDestroy {
 
   }
 
+  networkNextPage() {
+    console.log('[networkNextPage]');
+
+    this.store.dispatch({
+      type: 'NETWORK_ACTION_LOAD',
+      payload: '',
+    });
+
+  }
+
+  networkCursorPage() {
+    console.log('[networkIndexPage]');
+
+  }
+
   ngOnDestroy() {
 
     // stop streaming actions

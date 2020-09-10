@@ -29,12 +29,12 @@ const initialState: any = {
 export function reducer(state = initialState, action) {
     switch (action.type) {
 
-        // add network url params 
+        // add network url params
         case 'NETWORK_ACTION_LOAD': {
             return {
                 ...state,
-                urlParams: action.payload,
-            }
+                urlParams: action.payload.filter ? action.payload.filter : '',
+            };
         }
 
         case 'NETWORK_ACTION_START_SUCCESS':

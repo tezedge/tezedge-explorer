@@ -60,13 +60,22 @@ export class MempoolActionComponent implements OnInit, OnDestroy {
 
     this.store.dispatch({
       type: 'NETWORK_ACTION_LOAD',
-      payload: '',
+      payload: {
+        previous_page: true
+      },
     });
 
   }
 
   networkCursorPage() {
     console.log('[networkIndexPage]');
+
+    this.store.dispatch({
+      type: 'NETWORK_ACTION_LOAD',
+      payload: {
+        previous_page: true
+      },
+    });
 
   }
 

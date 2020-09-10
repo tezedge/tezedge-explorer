@@ -2,6 +2,12 @@ const initialState: any = {
     initWallets: [],
     ids: [],
     entities: {},
+    selectedWallet: null,
+    form: {
+        to: '',
+        amount: 1,
+        fee: 1,
+    }
 };
 
 export function reducer(state = initialState, action) {
@@ -25,6 +31,12 @@ export function reducer(state = initialState, action) {
                         ...wallet
                     }
                 }), {}),
+            }
+        }
+        case 'SELECT_WALLET': {
+            return {
+                ...state,
+                selectedWallet: action.payload
             }
         }
         

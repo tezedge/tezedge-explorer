@@ -975,7 +975,7 @@ ngx-json-viewer .segment .segment-main .segment-key {
     color: $color-focus;
 
     .sandbox-footer {
-        background: $color-border;
+        background: #3F3F43;
     }
     .page-title {
         color: fade-out($color-focus, 0.2);
@@ -1008,7 +1008,8 @@ ngx-json-viewer .segment .segment-main .segment-key {
 
 // from fields styles 
 .chain .mat-form-field,
-.sandbox .mat-form-field {
+.sandbox .mat-form-field,
+.wallets .mat-form-field {
     color: $color-focus;
     background: $color-border;
     height: 32px;
@@ -1074,6 +1075,10 @@ ngx-json-viewer .segment .segment-main .segment-key {
         border: 1px solid $color-focus;
         background: fade-out($color-focus, 0.8);
     }
+
+    .mat-form-field-infix {
+        padding-left: 8px !important;
+    }
 }
 
 /* style for mat-select dropdown panel */
@@ -1103,11 +1108,6 @@ ngx-json-viewer .segment .segment-main .segment-key {
     opacity: 0.5;
 }
 
-.chain .mat-form-field-infix,
-.sandbox .mat-form-field-infix {
-    padding-left: 8px !important;
-}
-
 .sandbox fieldset:disabled{
     .mat-form-field{
         background: fade-out($color-focus, 0.9);  
@@ -1120,7 +1120,8 @@ ngx-json-viewer .segment .segment-main .segment-key {
 }
 
 .chain .mat-error,
-.sandbox .mat-error {
+.sandbox .mat-error,
+.wallets .mat-error {
     color: $color-highlight-red;
     font-size: 12px;
 }
@@ -1243,7 +1244,7 @@ ngx-json-viewer .segment .segment-main .segment-key {
 
         .mat-header-row {
             .mat-header-cell {
-                color: fade-out($color-focus, 0.6) !important;
+                color: fade-out($color-focus, 0.4) !important;
                 font-weight: 300;
                 font-size: 12px;
                 padding-left: 8px;
@@ -1261,11 +1262,18 @@ ngx-json-viewer .segment .segment-main .segment-key {
             }
         }
         .mat-row {
+            cursor: pointer;
+
             &:nth-child(odd){
                 background-color: $color-border;
             }
+            &.selected {
+                background-color: $color-content-attention;
+                color: #fff;
+            }
             .mat-cell {
                 color: $color-focus !important;
+                border-bottom: none;
                 font-size: 12px;
                 padding-left: 8px;
                 padding-right: 8px;
@@ -1304,6 +1312,32 @@ ngx-json-viewer .segment .segment-main .segment-key {
     // }
     .sidebar-flex{
         border-left: 1px solid $color-border;
+
+        .sidebar-wrap {      
+            .details-box{
+              border: 1px solid $color-border;
+
+              .details-section{
+                &:not(:first-child){
+                    border-top: 1px solid 
+                }
+              }
+
+              .box-header{
+                color: fade-out($color-focus, 0.4) !important;
+              }
+            }
+        }
+    }
+
+    .mat-button {
+        line-height: normal;
+        padding: 4px 8px;
+        color: $color-focus;
+        background: $color-border;
+        font-size: 12px;
+        border-radius: 2px;
+        min-width: unset;
     }
 }
 

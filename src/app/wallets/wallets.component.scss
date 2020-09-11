@@ -33,6 +33,7 @@
 
       .sidebar-wrap {      
         padding: 0 8px;
+        padding-bottom: 36px;
 
         .details-header {
           padding: 8px;
@@ -41,6 +42,18 @@
 
           .icon{
             cursor: pointer;
+          }
+        }
+
+        .transfer-form{
+          .mat-error{
+            min-height: 14.5px;
+          }
+          .box-header{
+            margin-bottom: 16px;
+          }
+          .details-section:first-child{
+            padding-bottom: 8px !important;
           }
         }
 
@@ -91,6 +104,10 @@
               }
               .form-field{
                 padding: 0;
+
+                .from-field-title{
+                  margin-top: 4px;
+                }
               }
             }
 

@@ -2,6 +2,8 @@ import { Component, OnInit, NgZone, ViewChild, HostListener } from '@angular/cor
 import { Router } from '@angular/router';
 import { Store } from '@ngrx/store'
 import { MatSidenav } from "@angular/material/sidenav";
+import { takeUntil } from 'rxjs/operators';
+import { Subject } from 'rxjs';
 
 @Component({
   selector: 'app-root',
@@ -21,6 +23,8 @@ export class AppComponent {
     this.innerWidth = window.innerWidth;
     this.isMobile = window.innerWidth < 600 ? true : false;
   }
+  onDestroy$ = new Subject();
+  pendingTransactions: any[];
 
   constructor(
     public store: Store<any>,
@@ -49,6 +53,12 @@ export class AppComponent {
       },
     });
 
+    // subscribe to mempool to get pending transactions
+    this.store.select('mempoolAction')
+    .pipe(takeUntil(this.onDestroy$))
+    .subscribe((mempool) => {
+      this.pendingTransactions = mempool.ids.filter(id => mempool.entities[id].type == 'applied' || mempool.entities[id].type == 'unprocessed')
+    });
   }
 
   // change app theme
@@ -63,4 +73,17 @@ export class AppComponent {
     (document.getElementById('app-style-theme') as any).href = 'styles.' + theme + '.css';
   }
 
+  sandboxBakeBlock() {
+    if(this.app.statusbar.sandbox){
+      this.store.dispatch({
+        type: 'SANDBOX_BAKE_BLOCK',
+      });
+    }
+  }
+
+  ngOnDestroy() {
+    // close all observables
+    this.onDestroy$.next();
+    this.onDestroy$.complete();
+  }
 }

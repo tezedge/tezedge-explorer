@@ -54,6 +54,28 @@ body {
     // border-radius: 4px;
     // margin: 4px;
     width: 100%;
+    padding: 2px;
+
+    .pending-transactions{
+        color: $color-focus;
+        background-color: fade-out($color-focus, 0.9);
+        line-height: normal;
+        font-weight: 300;
+        padding: 4px 8px;
+        cursor: pointer;
+        margin: 0 2px;
+
+        &:disabled{
+            cursor: default;
+            color: $color-focus;
+            background-color: fade-out($color-focus, 0.9);
+        }
+
+        .action{
+            font-weight: 500;
+            margin-left: 8px;
+        }
+    }
 }
 
 .app-status-bar .mat-form-field-infix {
@@ -1335,7 +1357,7 @@ ngx-json-viewer .segment .segment-main .segment-key {
                 .box-row.error{
                     padding: 8px 0;
                     .error-box{
-                        background-color: $color-highlight-red;
+                        background-color: fade-out($color-highlight-red, 0.5);
                         border-radius: 4px;
                         padding: 8px;
 

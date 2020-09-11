@@ -160,12 +160,9 @@ export function networkActionFilter(action, state) {
 // use cursor to load previous pages
 export function networkActionCursor(action, state) {
 
-    console.log('[networkActionCursor]', action, state.networkAction, action.payload && action.payload.cursor_id );
-    console.log('[networkActionCursor] previous_page', action.payload );
+    const cursor = action.payload && action.payload.cursor_id && state.networkAction.ids.length > 0 ?
+        'cursor_id=' + action.payload.cursor_id + '&' : '';
 
-    // set cursor_id to previous page
-    const cursor = action.payload && action.payload.previous_page && state.networkAction.ids.length > 0 ?
-        'cursor_id=' + state.networkAction.ids[0] + '&' : '';
+    return cursor + 'limit=100';
 
-    return cursor + 'limit=50';
 }

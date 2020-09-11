@@ -3,6 +3,7 @@ import * as moment from 'moment-mini-ts';
 const initialState: any = {
     ids: [],
     entities: {},
+    lastCursorId: 0,
     filter: {
         local: false,
         remote: false,
@@ -61,7 +62,7 @@ export function reducer(state = initialState, action) {
                                     kind: '',
                                     payload: networkAction.message,
                                     // TODO: refactor 
-                                    preview: preview.length > 0 ? preview.substring(0, 100)  : '',
+                                    preview: preview.length > 0 ? preview.substring(0, 100) : '',
                                     datetime: moment.utc(Math.ceil(networkAction.timestamp / 1000000)).format('HH:mm:ss.SSS, DD MMM YY'),
                                 }
                             };
@@ -79,7 +80,7 @@ export function reducer(state = initialState, action) {
                                     category: 'Connection',
                                     kind: '',
                                     payload: networkAction.message,
-                                    // TODO: refactor 
+                                    // TODO: refactor
                                     preview: preview.length > 0 ? preview.substring(0, 100) : '',
                                     datetime: moment.utc(Math.ceil(networkAction.timestamp / 1000000)).format('HH:mm:ss.SSS, DD MMM YY'),
                                 }
@@ -100,7 +101,7 @@ export function reducer(state = initialState, action) {
                                     category: 'P2P',
                                     kind: networkAction.message[0].type,
                                     payload: payload,
-                                    // TODO: refactor 
+                                    // TODO: refactor
                                     preview: preview.length > 0 ? preview.substring(0, 100) : '',
                                     datetime: moment.utc(Math.ceil(networkAction.timestamp / 1000000)).format('HH:mm:ss.SSS, DD MMM YY'),
                                 }
@@ -120,6 +121,8 @@ export function reducer(state = initialState, action) {
                         };
 
                     }, {}),
+                lastCursorId: action.payload.length > 0 && state.lastCursorId < action.payload[0].id ?
+                    action.payload[0].id : state.lastCursorId,
                 stream: true,
             };
         }
@@ -153,66 +156,66 @@ export function reducer(state = initialState, action) {
 // filter network items according to traffic source
 export function networkActionSourceFilter(entity, filter) {
 
-        if (filter.local && filter.remote) {
-            return true;
-        }
+    if (filter.local && filter.remote) {
+        return true;
+    }
 
-        // process all connection messages
-        if (entity.type === 'connection_message' && filter.connection ) {
+    // process all connection messages
+    if (entity.type === 'connection_message' && filter.connection) {
 
-            if (filter.local && !entity.incoming) { return true; }
-            if (filter.remote && entity.incoming) { return true; }
+        if (filter.local && !entity.incoming) { return true; }
+        if (filter.remote && entity.incoming) { return true; }
 
-        }
+    }
 
-        // process all meta messages
-        if (entity.type === 'metadata' && filter.metadata ) {
+    // process all meta messages
+    if (entity.type === 'metadata' && filter.metadata) {
 
-            if (filter.local && !entity.incoming) { return true; }
-            if (filter.remote && entity.incoming) { return true; }
+        if (filter.local && !entity.incoming) { return true; }
+        if (filter.remote && entity.incoming) { return true; }
 
-        }
+    }
 
-        // process all p2p messages
-        if (entity.type === 'p2p_message') {
+    // process all p2p messages
+    if (entity.type === 'p2p_message') {
 
-            if (filter.local) {
+        if (filter.local) {
 
-                if (filter.bootstrap && entity.kind === 'bootstrap' && !entity.incoming) { return true; }
+            if (filter.bootstrap && entity.kind === 'bootstrap' && !entity.incoming) { return true; }
 
-                if (filter.current_head && entity.kind === 'get_current_head' && !entity.incoming) { return true; }
-                if (filter.current_head && entity.kind === 'current_head' && entity.incoming) { return true; }
+            if (filter.current_head && entity.kind === 'get_current_head' && !entity.incoming) { return true; }
+            if (filter.current_head && entity.kind === 'current_head' && entity.incoming) { return true; }
 
-                if (filter.current_branch && entity.kind === 'get_current_branch' && !entity.incoming) { return true; }
-                if (filter.current_branch && entity.kind === 'current_branch' && entity.incoming) { return true; }
+            if (filter.current_branch && entity.kind === 'get_current_branch' && !entity.incoming) { return true; }
+            if (filter.current_branch && entity.kind === 'current_branch' && entity.incoming) { return true; }
 
-                if (filter.block_headers && entity.kind === 'get_block_headers' && !entity.incoming) { return true; }
-                if (filter.block_headers && entity.kind === 'block_header' && entity.incoming) { return true; }
+            if (filter.block_headers && entity.kind === 'get_block_headers' && !entity.incoming) { return true; }
+            if (filter.block_headers && entity.kind === 'block_header' && entity.incoming) { return true; }
 
-                if (filter.block_operations && entity.kind === 'get_operations_for_blocks' && !entity.incoming) { return true; }
-                if (filter.block_operations && entity.kind === 'operations_for_blocks' && entity.incoming) { return true; }
-
-            }
-
-            if (filter.remote) {
-
-                if (filter.bootstrap && entity.kind === 'bootstrap' && entity.incoming) { return true; }
-
-                if (filter.current_head &&  entity.kind === 'get_current_head' && entity.incoming) { return true; }
-                if (filter.current_head &&  entity.kind === 'current_head' && !entity.incoming) { return true; }
-
-                if (filter.current_branch && entity.kind === 'get_current_branch' && entity.incoming) { return true; }
-                if (filter.current_branch && entity.kind === 'current_branch' && !entity.incoming) { return true; }
-
-                if (filter.block_headers && entity.kind === 'get_block_headers' && entity.incoming) { return true; }
-                if (filter.block_headers && entity.kind === 'block_header' && !entity.incoming) { return true; }
-
-                if (filter.block_operations && entity.kind === 'get_operations_for_blocks' && entity.incoming) { return true; }
-                if (filter.block_operations && entity.kind === 'operations_for_blocks' && !entity.incoming) { return true; }
-
-            }
+            if (filter.block_operations && entity.kind === 'get_operations_for_blocks' && !entity.incoming) { return true; }
+            if (filter.block_operations && entity.kind === 'operations_for_blocks' && entity.incoming) { return true; }
 
         }
 
-        return false;
+        if (filter.remote) {
+
+            if (filter.bootstrap && entity.kind === 'bootstrap' && entity.incoming) { return true; }
+
+            if (filter.current_head && entity.kind === 'get_current_head' && entity.incoming) { return true; }
+            if (filter.current_head && entity.kind === 'current_head' && !entity.incoming) { return true; }
+
+            if (filter.current_branch && entity.kind === 'get_current_branch' && entity.incoming) { return true; }
+            if (filter.current_branch && entity.kind === 'current_branch' && !entity.incoming) { return true; }
+
+            if (filter.block_headers && entity.kind === 'get_block_headers' && entity.incoming) { return true; }
+            if (filter.block_headers && entity.kind === 'block_header' && !entity.incoming) { return true; }
+
+            if (filter.block_operations && entity.kind === 'get_operations_for_blocks' && entity.incoming) { return true; }
+            if (filter.block_operations && entity.kind === 'operations_for_blocks' && !entity.incoming) { return true; }
+
+        }
+
+    }
+
+    return false;
 }

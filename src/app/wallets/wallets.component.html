@@ -61,12 +61,40 @@
         </div>
         <!-- wallet details -->
         <div class="details-box">
-          <div class="box-header">WALLET DETAILS</div>
-          <div class="box-content">
-            <!-- public key hash -->
-            <div class="box-row">
-              <span>{{selectedWallet.publicKeyHash}}</span>
-              <button class="mat-button" [cdkCopyToClipboard]="selectedWallet.publicKeyHash">COPY</button>
+          <div class="details-section copy-section">
+            <div class="box-header">WALLET DETAILS</div>
+            <div class="box-content">
+              <!-- balance -->
+              <div class="box-row">
+                <div class="copy-content">
+                  <div>Balance</div>
+                </div>
+                <div class="copy-value" style="padding-right: 8px;">{{ selectedWallet.balance + ' ꜩ'}}</div>
+              </div>
+              <!-- public key hash -->
+              <div class="box-row">
+                <div class="copy-content">
+                  <div>Public Key Hash</div>
+                  <div class="copy-value">{{selectedWallet.publicKeyHash}}</div>
+                </div>
+                <button class="mat-button" [cdkCopyToClipboard]="selectedWallet.publicKeyHash" (click)="openSnackbar('Public Key Hash Copied')">COPY</button>
+              </div>
+              <!-- public key -->
+              <div class="box-row">
+                <div class="copy-content">
+                  <div>Public Key</div>
+                  <div class="copy-value">{{selectedWallet.publicKey}}</div>
+                </div>
+                <button class="mat-button" [cdkCopyToClipboard]="selectedWallet.publicKey" (click)="openSnackbar('Public Key Copied')">COPY</button>
+              </div>
+              <!-- secret key -->
+              <div class="box-row">
+                <div class="copy-content">
+                  <div>Secret Key</div>
+                  <div class="copy-value">{{selectedWallet.secretKey}}</div>
+                </div>
+                <button class="mat-button" [cdkCopyToClipboard]="selectedWallet.secretKey" (click)="openSnackbar('Secret Key Copied')">COPY</button>
+              </div>
             </div>
           </div>
         </div>        
@@ -82,8 +110,8 @@
                   <mat-form-field class="full-size">
                     <input matInput #to type="text" formControlName="to"/>
                   </mat-form-field>
-                  <mat-error *ngIf="transferForm.controls.to.invalid">
-                    <span *ngIf="transferForm.controls.to.errors.required">This field is required</span>
+                  <mat-error *ngIf="transferForm.controls.to.touched && transferForm.controls.to.invalid">
+                    Please enter valid address
                   </mat-error>
                 </div>
                 <!-- Amount -->
@@ -91,9 +119,10 @@
                   <p class="from-field-title">Amount</p>
                   <mat-form-field class="half-size">
                     <input matInput #amount type="text" formControlName="amount"/>
+                    <span matSuffix class="input-suffix">XTZ</span>
                   </mat-form-field>
                   <mat-error *ngIf="transferForm.controls.amount.invalid">
-                    <span *ngIf="transferForm.controls.amount.errors.required">This field is required</span>
+                    Please enter valid amount
                   </mat-error>
                 </div>
                 <!-- Fee -->
@@ -101,15 +130,18 @@
                   <p class="from-field-title">Fee</p>
                   <mat-form-field class="half-size">
                     <input matInput #fee type="text" formControlName="fee"/>
+                    <span matSuffix class="input-suffix">XTZ</span>
                   </mat-form-field>
                   <mat-error *ngIf="transferForm.controls.fee.invalid">
-                    <span *ngIf="transferForm.controls.fee.errors.required">This field is required</span>
+                    Please enter valid fee
                   </mat-error>
                 </div>
               </div>
-              <!-- Send button -->
-              <button class="mat-button full-size" (click)="sendTransaction()">SEND</button>
             </div>
+          </div>
+          <div class="details-section button">
+            <!-- Send button -->
+            <button class="mat-button full-size" (click)="sendTransaction()">SEND</button>
           </div>
         </div>
       </div>

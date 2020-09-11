@@ -1026,7 +1026,7 @@ ngx-json-viewer .segment .segment-main .segment-key {
     }
 
     // form-field invalid
-    &.ng-invalid{
+    &.ng-invalid.ng-touched{
         background: $color-chrome-red;
 
         &:hover{
@@ -1319,7 +1319,10 @@ ngx-json-viewer .segment .segment-main .segment-key {
 
               .details-section{
                 &:not(:first-child){
-                    border-top: 1px solid 
+                    border-top: 1px solid $color-border;
+                }
+                .copy-value{
+                    color: fade-out($color-focus, 0.4);
                 }
               }
 
@@ -1338,6 +1341,23 @@ ngx-json-viewer .segment .segment-main .segment-key {
         font-size: 12px;
         border-radius: 2px;
         min-width: unset;
+    }
+}
+
+.mat-snack-bar-container{
+    padding: 8px !important;
+    margin: 8px !important;
+    min-height: unset !important;
+    min-width: unset !important;
+    background-color: $color-focus !important;
+    color: $color-background !important;
+    font-size: 12px !important;
+
+    .mat-button{
+        line-height: normal;
+        padding: 8px;
+        color: $color-background !important;
+        font-size: 12px !important;
     }
 }
 

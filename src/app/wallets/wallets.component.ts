@@ -2,7 +2,8 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-wallets',
@@ -16,7 +17,7 @@ export class WalletsComponent implements OnInit, OnDestroy {
   selectedWallet: any;
   transferForm: FormGroup;
 
-  constructor(private store: Store<any>, private fb: FormBuilder) { }
+  constructor(private store: Store<any>, private fb: FormBuilder, private snackBar: MatSnackBar) { }
 
   ngOnInit(): void {
     this.store.dispatch({type: 'WALLETS_LIST_INIT'});
@@ -30,9 +31,25 @@ export class WalletsComponent implements OnInit, OnDestroy {
     });
 
     this.transferForm = this.fb.group({
-			to: [''],
-      amount: [''],
-      fee: [''],
+      to: ['', [Validators.required]],
+      amount: new FormControl('', {
+        validators: [
+          Validators.required,
+          Validators.min(0.000001),
+          Validators.max(999999999),
+          Validators.pattern('^[0-9]+(\.[0-9]{0,6})?'),
+        ],
+        updateOn: 'blur'
+      }),
+      fee: new FormControl('', {
+        validators: [
+          Validators.required,
+          Validators.min(0.001),
+          Validators.max(999999999),
+          Validators.pattern('^[0-9]+(\.[0-9]{0,6})?'),
+        ],
+        updateOn: 'blur'
+      }),
     });
   }
 
@@ -50,9 +67,17 @@ export class WalletsComponent implements OnInit, OnDestroy {
   }
 
   sendTransaction(){
-    if(!this.transferForm.invalid){
+    if (!this.transferForm.invalid){
       this.store.dispatch({ type: 'WALLET_TRANSACTION' });
     }
+  }
+
+  openSnackbar(message: string){
+    this.snackBar.open(message, 'DISMISS', {
+      // duration: 10000,
+      verticalPosition: 'bottom',
+      horizontalPosition: 'right'
+    });
   }
 
   ngOnDestroy() {

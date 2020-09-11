@@ -6,7 +6,7 @@ const initialState: any = {
     form: {
         to: '',
         amount: 1,
-        fee: 1,
+        fee: 0.01,
     }
 };
 

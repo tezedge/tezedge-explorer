@@ -7,6 +7,7 @@ import { Router } from '@angular/router';
 import { of, Observable } from 'rxjs';
 import { initializeWallet, getWallet, transaction, confirmOperation } from 'tezos-wallet';
 import { environment } from 'src/environments/environment';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Injectable()
 export class WalletsEffects {
@@ -182,31 +183,49 @@ export class WalletsEffects {
             map(() => ({ action, state }))
         )),
 
-        map(({ action, state }) => ({
-            type: 'WALLET_TRANSACTION_PENDING_SUCCESS',
-            payload: {
-                wallet: {
-                    publicKeyHash: state.wallets.selectedWallet.publicKeyHash
+        // map(({ action, state }) => ({
+        //     type: 'WALLET_TRANSACTION_PENDING_SUCCESS',
+        //     payload: {
+        //         wallet: {
+        //             publicKeyHash: state.wallets.selectedWallet.publicKeyHash
+        //         },
+        //     },
+        // })),
+        switchMap(({ action, state }) => [
+            { type: 'MEMPOOL_ACTION_LOAD' },
+            {
+                type: 'WALLET_TRANSACTION_PENDING_SUCCESS',
+                payload: {
+                    wallet: {
+                        publicKeyHash: state.wallets.selectedWallet.publicKeyHash
+                    },
                 },
             },
-        })),
+        ]),
 
         catchError((error, caught) => {
-            console.error(error)
             this.store.dispatch({
                 type: 'WALLET_TRANSACTION_PENDING_ERROR',
                 payload: error,
             });
             return caught;
         }),
-    )
+
+        // wait for tzstats to process transaction
+        delay(5000),
+        // show success notification
+        tap((action) => {
+            this.snackBar.open('Transaction added to Mempool', 'DISMISS');
+        }),
+    );
 
     constructor(
         private http: HttpClient,
         private actions$: Actions,
         private store: Store<any>,
         private router: Router,
-        private zone: NgZone
+        private zone: NgZone,
+        private snackBar: MatSnackBar
     ) { }
 
 }

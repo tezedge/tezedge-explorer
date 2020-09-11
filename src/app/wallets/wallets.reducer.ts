@@ -6,8 +6,9 @@ const initialState: any = {
     form: {
         to: '',
         amount: 1,
-        fee: 1,
-    }
+        fee: 0.01,
+    },
+    transferError: false
 };
 
 export function reducer(state = initialState, action) {
@@ -31,12 +32,27 @@ export function reducer(state = initialState, action) {
                         ...wallet
                     }
                 }), {}),
+                transferError: false,
             }
         }
         case 'SELECT_WALLET': {
             return {
                 ...state,
-                selectedWallet: action.payload
+                selectedWallet: action.payload,
+                form: initialState.form,
+                transferError: false,
+            }
+        }
+        case 'WALLET_TRANSACTION_SUCCESS':{
+            return {
+                ...state,
+                transferError: false
+            }
+        }
+        case 'WALLET_TRANSACTION_ERROR': {
+            return {
+                ...state,
+                transferError: true
             }
         }
         

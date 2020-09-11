@@ -118,6 +118,10 @@ export function reducer(state = initialState, action) {
                         storage: explorerStorage,
                         logs: explorerLogs,
                     },
+                },
+                statusbar: {
+                    // TODO
+                    sandbox: action.payload.id === 'sandbox-carthage-tezedge',
                 }
             };
         }

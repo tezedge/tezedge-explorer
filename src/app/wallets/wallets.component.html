@@ -103,6 +103,13 @@
           <div class="details-section">
             <div class="box-header">TRANSFER</div>
             <div class="box-content">
+              <div *ngIf="transferError" class="box-row error">
+                <div class="error-box">
+                  <div class="error-header">Error</div>
+                  <div>Something went wrong</div>
+                  <div>Report a problem at <a href="mailto:support@tezedge.com">support@tezedge.com</a></div>
+                </div>
+              </div>
               <div class="box-row">
                 <!-- Send to -->
                 <div class="form-field">

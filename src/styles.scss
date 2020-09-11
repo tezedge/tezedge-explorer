@@ -48,11 +48,12 @@ body {
     color: $color;
 
     height: 28px;
-    width: calc( 100% - 8px );
     font-size: 12px !important;
     
-    border-radius: 4px;
-    margin: 4px;
+    // width: calc( 100% - 8px );
+    // border-radius: 4px;
+    // margin: 4px;
+    width: 100%;
 }
 
 .app-status-bar .mat-form-field-infix {
@@ -1124,6 +1125,7 @@ ngx-json-viewer .segment .segment-main .segment-key {
 .wallets .mat-error {
     color: $color-highlight-red;
     font-size: 12px;
+    margin-top: 4px;
 }
 
 .sandbox .mat-button,
@@ -1315,20 +1317,39 @@ ngx-json-viewer .segment .segment-main .segment-key {
 
         .sidebar-wrap {      
             .details-box{
-              border: 1px solid $color-border;
+                border: 1px solid $color-border;
 
-              .details-section{
-                &:not(:first-child){
-                    border-top: 1px solid $color-border;
+                .details-section{
+                    &:not(:first-child){
+                        border-top: 1px solid $color-border;
+                    }
+                    .copy-value{
+                        color: fade-out($color-focus, 0.4);
+                    }
                 }
-                .copy-value{
-                    color: fade-out($color-focus, 0.4);
-                }
-              }
 
-              .box-header{
-                color: fade-out($color-focus, 0.4) !important;
-              }
+                .box-header{
+                    color: fade-out($color-focus, 0.4) !important;
+                }
+
+                .box-row.error{
+                    padding: 8px 0;
+                    .error-box{
+                        background-color: $color-highlight-red;
+                        border-radius: 4px;
+                        padding: 8px;
+
+                        .error-header{
+                            font-weight: 500;
+                        }
+                        div:not(.error-header){
+                            padding-top: 6px;
+                        }
+                        a{
+                            color: fade-out($color-focus, 0.4);
+                        }
+                    }
+                }
             }
         }
     }
@@ -1351,7 +1372,10 @@ ngx-json-viewer .segment .segment-main .segment-key {
     min-width: unset !important;
     background-color: $color-focus !important;
     color: $color-background !important;
-    font-size: 12px !important;
+    
+    .mat-simple-snackbar {
+        font-size: 12px !important;
+    }
 
     .mat-button{
         line-height: normal;

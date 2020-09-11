@@ -16,6 +16,7 @@ export class WalletsComponent implements OnInit, OnDestroy {
   wallets: any;
   selectedWallet: any;
   transferForm: FormGroup;
+  transferError: boolean;
 
   constructor(private store: Store<any>, private fb: FormBuilder, private snackBar: MatSnackBar) { }
 
@@ -27,7 +28,9 @@ export class WalletsComponent implements OnInit, OnDestroy {
 		.subscribe(store => {
       // TODO replace with real (initialized) wallets
       this.wallets = store.initWallets;
+      
       this.selectedWallet = store.selectedWallet;
+      this.transferError = store.transferError;
     });
 
     this.transferForm = this.fb.group({
@@ -60,6 +63,7 @@ export class WalletsComponent implements OnInit, OnDestroy {
     } else {
       this.store.dispatch({ type: 'SELECT_WALLET', payload: null })
     }
+    this.transferForm.markAsUntouched();
   }
 
   closeDetails(){
@@ -67,6 +71,8 @@ export class WalletsComponent implements OnInit, OnDestroy {
   }
 
   sendTransaction(){
+    this.transferForm.markAllAsTouched();
+
     if (!this.transferForm.invalid){
       this.store.dispatch({ type: 'WALLET_TRANSACTION' });
     }
@@ -74,7 +80,7 @@ export class WalletsComponent implements OnInit, OnDestroy {
 
   openSnackbar(message: string){
     this.snackBar.open(message, 'DISMISS', {
-      // duration: 10000,
+      duration: 5000,
       verticalPosition: 'bottom',
       horizontalPosition: 'right'
     });

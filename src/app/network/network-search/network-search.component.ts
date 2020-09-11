@@ -29,7 +29,9 @@ export class NetworkSearchComponent implements OnInit {
       // load relevant data for search
       this.store.dispatch({
         type: 'NETWORK_ACTION_LOAD',
-        payload: '/' + input,
+        payload: {
+          filter: '/' + input
+        },
       });
 
     }

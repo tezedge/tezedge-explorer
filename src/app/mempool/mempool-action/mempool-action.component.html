@@ -1,5 +1,22 @@
-<span style="color:white;">
-    <li *ngFor="let id of mempoolAction.ids;">
-        {{mempoolAction.entities[id].type }} | {{mempoolAction.entities[id].hash }}
-    </li>
-</span>
+<div style="color:white;">
+
+    <span >
+        <li *ngFor="let id of mempoolAction.ids;">
+            {{mempoolAction.entities[id].type }} | {{mempoolAction.entities[id].hash }}
+        </li>
+    </span>
+
+    <br/>
+
+    <cdk-virtual-scroll-viewport itemSize="20" style="height: 400px;width: 400px;">
+        <div *cdkVirtualFor="let item of networkDataSource" style="height: 20px;">
+            <span *ngIf="item?.id">
+                {{item?.id }} | {{item?.type}}
+            </span>
+            <span *ngIf="!item?.id">
+                ...
+            </span>
+        </div>
+    </cdk-virtual-scroll-viewport>
+
+</div>

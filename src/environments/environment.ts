@@ -22,8 +22,8 @@ export const environment = {
     {
       id: 'rust-carthage-tezedge',
       name: 'rust.carthage.tezedge.com',
-      http: 'https://carthage.tezedge.com:8732',
-      debugger: 'https://carthage.tezedge.com:8733',
+      http: 'https://carthage.tezedge.com:8752',
+      debugger: 'https://carthage.tezedge.com:8753',
       ws: 'wss://carthage.tezedge.com',
     },
     {

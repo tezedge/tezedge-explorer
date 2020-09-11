@@ -1,8 +1,9 @@
 import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { Subject, Observable, Subscription } from 'rxjs';
+import { takeUntil, map, debounceTime, filter } from 'rxjs/operators';
 import { CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
+import { CollectionViewer, DataSource } from '@angular/cdk/collections';
 
 @Component({
   selector: 'app-mempool-action',
@@ -14,7 +15,13 @@ export class MempoolActionComponent implements OnInit, OnDestroy {
   public mempoolAction;
   public mempoolActionList = [];
 
+  public networkAction;
+  public networkActionList = [];
+
   public onDestroy$ = new Subject();
+
+  public networkAction$;
+  public networkDataSource;
 
   @ViewChild(CdkVirtualScrollViewport) viewPort: CdkVirtualScrollViewport;
 
@@ -36,6 +43,18 @@ export class MempoolActionComponent implements OnInit, OnDestroy {
         this.mempoolAction = data;
       });
 
+    // TODO: temporary remove
+
+    // network action start
+    this.store.dispatch({
+      type: 'NETWORK_ACTION_LOAD',
+      payload: {},
+    });
+
+    // create custom network data source
+    this.networkAction$ = this.store.select('networkAction');
+    this.networkDataSource = new NetworkDataSource(this.networkAction$, this.store);
+
   }
 
   ngOnDestroy() {
@@ -50,4 +69,59 @@ export class MempoolActionComponent implements OnInit, OnDestroy {
     this.onDestroy$.complete();
 
   }
+}
+
+
+export class NetworkDataSource extends DataSource<any> {
+
+  private subscription = new Subscription();
+  private dataRange = { start: 0, end: 0 };
+
+  public constructor(
+    private networkAction$: Observable<any>,
+    private store: Store<any>,
+  ) {
+    super();
+  }
+
+  connect(collectionViewer: CollectionViewer): Observable<(string | undefined)[]> {
+
+    this.subscription.add(collectionViewer.viewChange
+      .pipe(
+        // debounceTime(50),
+        filter(range => {
+          return (range.end > this.dataRange.end) || (range.start < this.dataRange.start) ? true : false;
+        })
+      )
+      .subscribe(virtualScrollRange => {
+        // console.log('[NetworkDataSource][viewChange]', virtualScrollRange);
+
+        this.store.dispatch({
+          type: 'NETWORK_ACTION_LOAD',
+          payload: {
+            cursor_id: virtualScrollRange.end
+          },
+        });
+
+      }));
+
+    return this.networkAction$.pipe(
+      filter(data => data.ids.length > 0),
+      map(data => {
+
+        const dataView = new Array(data.lastCursorId);
+        data.ids.map(id => { dataView[id] = data.entities[id]; });
+
+        this.dataRange = { start: data.ids[0], end: data.ids[data.ids.length - 1] };
+
+        return dataView;
+      }),
+
+    );
+  }
+
+  disconnect(): void {
+    this.subscription.unsubscribe();
+  }
+
 }

@@ -109,6 +109,8 @@ import { ChainOtherComponent } from './chain/chain-other/chain-other.component';
 import { SandboxComponent } from './sandbox/sandbox.component';
 
 import { NgrxFormDirective } from './shared/ngrx-form.directive';
+import { NgrxVirtualScroll } from './shared/ngrx-virtual-scroll.directive';
+
 import { SandboxStatusBarComponent } from './sandbox/sandbox-status-bar/sandbox-status-bar.component';
 import { WalletsComponent } from './wallets/wallets.component';
 import { MempoolComponent } from './mempool/mempool.component';
@@ -148,6 +150,7 @@ import { MempoolActionComponent } from './mempool/mempool-action/mempool-action.
     ChainFinishComponent,
     ChainOtherComponent,
     NgrxFormDirective,
+    NgrxVirtualScroll,
     SandboxComponent,
     SandboxStatusBarComponent,
     WalletsComponent,

@@ -1,14 +1,15 @@
-import { Component, OnInit, OnDestroy, AfterViewInit, ViewChild } from '@angular/core';
+import { Component, OnInit, OnDestroy, AfterViewInit, ViewChild, ChangeDetectionStrategy } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { Subject, Observable, Subscription } from 'rxjs';
 import { takeUntil, map, debounceTime, filter } from 'rxjs/operators';
-import { CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
 import { CollectionViewer, DataSource } from '@angular/cdk/collections';
+import { CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
 
 @Component({
   selector: 'app-mempool-action',
   templateUrl: './mempool-action.component.html',
-  styleUrls: ['./mempool-action.component.scss']
+  styleUrls: ['./mempool-action.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class MempoolActionComponent implements OnInit, OnDestroy {
 

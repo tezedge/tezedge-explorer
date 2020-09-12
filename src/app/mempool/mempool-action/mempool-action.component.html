@@ -57,7 +57,7 @@
             TYPE
         </span>
     </div>
-    <cdk-virtual-scroll-viewport itemSize="36" style="height: 440px;width: 100%;" #scrollViewport>
+    <cdk-virtual-scroll-viewport ngrx style="height: 440px;width: 100%;" #scrollViewport>
         <div *cdkVirtualFor="let index = index;let even = even;let item of networkDataSource" 
             class="virtualScrollRow" [class.virtualScrollRowEven]="even">
             <span *ngIf="item?.id" >
@@ -69,6 +69,7 @@
                 </span>
                 <span style="display: inline-block; min-width: 150px;">
                     {{ item?.type }} 
+                    <!-- {{item?.category}}<span *ngIf="item?.kind"> | {{ item?.kind }}</span> -->
                 </span>
             </span>
             <span *ngIf="!item?.id">

@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, AfterViewInit, ViewChild, ChangeDetectionStrategy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild, ChangeDetectionStrategy } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { Subject, Observable, Subscription } from 'rxjs';
 import { takeUntil, map, debounceTime, filter } from 'rxjs/operators';
@@ -139,7 +139,7 @@ export class NetworkDataSource extends DataSource<any> {
         // console.log('[NetworkDataSource] start');
 
         const dataView = new Array(data.lastCursorId);
-        data.ids.map(id => { dataView[id] = data.entities[id]; });
+        // data.ids.map(id => { dataView[id] = data.entities[id]; });
 
         this.dataRange = { start: data.ids[0], end: data.ids[data.ids.length - 1] };
 

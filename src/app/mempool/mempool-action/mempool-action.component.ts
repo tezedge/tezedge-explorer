@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
+import { Component, OnInit, OnDestroy, AfterViewInit, ViewChild } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { Subject, Observable, Subscription } from 'rxjs';
 import { takeUntil, map, debounceTime, filter } from 'rxjs/operators';
@@ -22,6 +22,7 @@ export class MempoolActionComponent implements OnInit, OnDestroy {
 
   public networkAction$;
   public networkDataSource;
+  public networkActionlastCursorId = 0;
 
   @ViewChild(CdkVirtualScrollViewport) viewPort: CdkVirtualScrollViewport;
 
@@ -51,11 +52,36 @@ export class MempoolActionComponent implements OnInit, OnDestroy {
       payload: {},
     });
 
+    // wait for data changes from redux
+    this.store.select('networkAction')
+      .pipe(takeUntil(this.onDestroy$))
+      .subscribe(data => {
+
+
+        if (this.networkActionlastCursorId < data.lastCursorId) {
+
+          console.log('[networkAction]', this.networkActionlastCursorId, data.lastCursorId);
+          this.networkActionlastCursorId = data.lastCursorId;
+
+          setTimeout(() => {
+            this.viewPort.scrollTo({ bottom: 0 });
+          });
+
+        }
+
+      });
+
     // create custom network data source
     this.networkAction$ = this.store.select('networkAction');
     this.networkDataSource = new NetworkDataSource(this.networkAction$, this.store);
 
   }
+
+  scrollToBottom() {
+    console.log('[scrollToBottom]');
+    this.viewPort.scrollTo({ bottom: 0 });
+  }
+
 
   ngOnDestroy() {
 

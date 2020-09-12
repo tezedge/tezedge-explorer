@@ -135,10 +135,14 @@ export class NetworkDataSource extends DataSource<any> {
       filter(data => data.ids.length > 0),
       map(data => {
 
+        // console.log('[NetworkDataSource] start');
+
         const dataView = new Array(data.lastCursorId);
         data.ids.map(id => { dataView[id] = data.entities[id]; });
 
         this.dataRange = { start: data.ids[0], end: data.ids[data.ids.length - 1] };
+
+        // console.log('[NetworkDataSource] dataView', dataView);
 
         return dataView;
       }),

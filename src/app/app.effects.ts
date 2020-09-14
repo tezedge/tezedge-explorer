@@ -30,10 +30,10 @@ export class AppEffects {
             let redirectUrl = '';
             if (action.payload.connected) {
                 if (action.payload.ws === false) {
-                    redirectUrl = 'chain';
+                    redirectUrl = 'monitoring';
                     // redirectUrl = 'mempool';
                 } else {
-                    redirectUrl = 'chain';
+                    redirectUrl = 'monitoring';
                     // redirectUrl = 'mempool';
                 }
             } else {

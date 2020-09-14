@@ -24,8 +24,7 @@ export class SandboxEffects {
         // dispatch actions
         switchMap(payload => [
             { type: 'CHAIN_SERVER_FORM_SUBMIT_SUCCESS', payload: payload },
-            { type: 'SANDBOX_NODE_START_SUCCESS', payload: payload },
-            { type: 'SETTINGS_NODE_CHANGE', payload: { api: { id: 'sandbox-carthage-tezedge' } }},
+            { type: 'SANDBOX_NODE_START_SUCCESS', payload: payload }
         ]),
         catchError((error, caught) => {
             console.error(error)
@@ -54,7 +53,7 @@ export class SandboxEffects {
         // map((payload) => ({ type: 'SANDBOX_NODE_STOP_SUCCESS', payload: payload })),
         switchMap(payload => [
             { type: 'SANDBOX_NODE_STOP_SUCCESS', payload: payload },
-            { type: 'SETTINGS_NODE_LOAD' },
+            { type: 'SETTINGS_NODE_CHANGE', payload: { api: { id: 'ocaml-carthage-tezedge' } }},
         ]),
         catchError((error, caught) => {
             console.error(error)
@@ -102,9 +101,9 @@ export class SandboxEffects {
         withLatestFrom(this.store, (action: any, state) => ({ action, state })),
 
         // persist wallets in localstorage
-        tap(({ action, state }) => {
-            localStorage.setItem('SANDBOX-WALLETS', JSON.stringify(state.chainWallets.wallets))
-        })
+        // tap(({ action, state }) => {
+        //     localStorage.setItem('SANDBOX-WALLETS', JSON.stringify(state.chainWallets.wallets))
+        // })
     );
 
     @Effect()
@@ -124,9 +123,10 @@ export class SandboxEffects {
             { type: 'CHAIN_CONFIG_FORM_SUBMIT_SUCCESS', payload: payload },
             { type: 'SANDBOX_ACTIVATE_PROTOCOL_SUCCESS', payload: payload },
             { type: 'SIDENAV_VISIBILITY_CHANGE', payload: true },
-            { type: 'TOOLBAR_VISIBILITY_CHANGE', payload: true },
+            { type: 'TOOLBAR_VISIBILITY_CHANGE', payload: true },            
+            { type: 'SETTINGS_NODE_CHANGE', payload: { api: { id: 'sandbox-carthage-tezedge' } }},
+            { type: 'SETTINGS_NODE_LOAD', payload: '' }
         ]),
-        tap(() => this.router.navigate(['chain'])),
         catchError((error, caught) => {
             console.error(error)
             this.store.dispatch({
@@ -134,7 +134,8 @@ export class SandboxEffects {
                 payload: error,
             });
             return caught;
-        })
+        }),
+        tap(() => this.router.navigate(['chain'])),
     );
 
     @Effect()
@@ -152,6 +153,8 @@ export class SandboxEffects {
         // dispatch action
         switchMap((payload) => [
             { type: 'MEMPOOL_ACTION_LOAD' },
+            { type: 'STORAGE_BLOCK_LOAD' },
+            { type: 'WALLETS_LIST_INIT' },
             { type: 'SANDBOX_BAKE_BLOCK_SUCCESS', payload: payload },
         ]),
         catchError((error, caught) => {

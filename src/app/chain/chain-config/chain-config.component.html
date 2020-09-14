@@ -1,6 +1,6 @@
 <div class="chain-config" [formGroup]="chainConfigForm" ngrxForm="chainConfig">
 	<!-- GENERAL ERROR PANEL -->
-	<mat-expansion-panel *ngIf="error && error.error_type === 'generic'" hideToggle expanded class="warning">
+	<mat-expansion-panel *ngIf="error && error.error_type === 'generic'" hideToggle expanded class="warning generic-error">
 		<mat-expansion-panel-header>
 			<mat-panel-title>
 				<span class="text">Error {{ error.code }}</span>

@@ -1259,6 +1259,10 @@ ngx-json-viewer .segment .segment-main .segment-key {
     }
 }
 
+.chain .mat-expansion-panel.generic-error { 
+    display: none !important;
+}
+
 // Wallets table style
 .chain-wallets,
 .wallets{

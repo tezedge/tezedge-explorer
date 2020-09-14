@@ -114,6 +114,9 @@ export function reducer(state = initialState, action) {
             if(action.payload.id == 'sandbox-carthage-tezedge'){
                 sandboxChain = true;
                 sandboxWallets = true;
+
+                monitoringSynchronization = false;
+                explorerEndpoints = false;
             }
 
             return {

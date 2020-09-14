@@ -5,7 +5,7 @@ const initialState: any = {
         initClient: []
     },
     showLoading: false,
-    showError: false
+    error: null
 };
 
 export function reducer(state = initialState, action) {
@@ -19,21 +19,21 @@ export function reducer(state = initialState, action) {
                     start: mapChainServerForEndpoint(action.payload)
                 },
                 showLoading: true,
-                showError: false
+                error: null
             }
         }
         case 'CHAIN_SERVER_FORM_SUBMIT_SUCCESS': {
             return {
                 ...state,
                 showLoading: false,
-                showError: false
+                error: null
             }
         }
         case 'CHAIN_SERVER_FORM_SUBMIT_ERROR': {
             return {
                 ...state,
                 showLoading: false,
-                showError: true
+                error: action.payload.error
             }
         }
     
@@ -46,21 +46,21 @@ export function reducer(state = initialState, action) {
                     activateProtocol: mapChainConfigForEndpoint(action.payload)
                 },
                 showLoading: true,
-                showError: false
+                error: null
             }
         }     
         case 'CHAIN_CONFIG_FORM_SUBMIT_SUCCESS': {
             return {
                 ...state,
                 showLoading: false,
-                showError: false
+                error: null
             }
         }    
         case 'CHAIN_CONFIG_FORM_SUBMIT_ERROR': {
             return {
                 ...state,
                 showLoading: false,
-                showError: true
+                error: action.payload.error
             }
         }
 
@@ -73,21 +73,21 @@ export function reducer(state = initialState, action) {
                     initClient: mapChainWalletsForEndpoint(action.payload)
                 },
                 showLoading: true,
-                showError: false
+                error: null
             }
         }
         case 'CHAIN_WALLETS_SUBMIT_SUCCESS': {
             return {
                 ...state,
                 showLoading: false,
-                showError: false
+                error: null
             }
         }
         case 'CHAIN_WALLETS_SUBMIT_ERROR': {
             return {
                 ...state,
                 showLoading: false,
-                showError: true
+                error: action.payload.error
             }
         }
         

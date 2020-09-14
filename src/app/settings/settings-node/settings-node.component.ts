@@ -12,6 +12,7 @@ export class SettingsNodeComponent implements OnInit {
   public app;
   public settingsNodeApi;
   public settingsNodeEntities;
+  public stateEntities;
 
   // public selected = 'node-0';
 
@@ -27,6 +28,7 @@ export class SettingsNodeComponent implements OnInit {
       .subscribe(state => {
         this.settingsNodeApi = state.entities[state.api.id];
         this.settingsNodeEntities = state.ids.map(id => state.entities[id]);
+        this.stateEntities = state.entities;
       });
 
     // select store data

@@ -30,7 +30,7 @@ export class SandboxComponent implements OnInit, OnDestroy{
   
   onDestroy$ = new Subject();
   showLoading: boolean;
-  showError: boolean;
+  error: any;
 
   constructor(
     private store: Store<any>, 
@@ -61,7 +61,7 @@ export class SandboxComponent implements OnInit, OnDestroy{
     .pipe(takeUntil(this.onDestroy$))
     .subscribe((store) => {
       this.showLoading = store.showLoading;
-      this.showError = store.showError;
+      this.error = store.error;
     });
   }
 
@@ -112,7 +112,7 @@ export class SandboxComponent implements OnInit, OnDestroy{
 
   closePage(){
     this.toggleSidenavVisibility(true);
-    this.router.navigate(['/chain']);
+    this.router.navigate(['/monitoring']);
   }
   
   uploadConfig(){
@@ -154,6 +154,10 @@ export class SandboxComponent implements OnInit, OnDestroy{
   getTopOffset(controlEl: HTMLElement): number {
     const labelOffset = 50;
     return controlEl.getBoundingClientRect().top + window.scrollY - labelOffset;
+  }
+
+  scrolToTop(){
+    window.scroll({ top: 0, left: 0, behavior: "smooth" });
   }
 
   ngOnDestroy() {

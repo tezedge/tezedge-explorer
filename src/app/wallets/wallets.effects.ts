@@ -15,19 +15,31 @@ export class WalletsEffects {
     @Effect()
     WalletsListInit$ = this.actions$.pipe(
         ofType('WALLETS_LIST_INIT'),
-        map(() => {
-            // get wallets from localstorage
-            const localstorageWallets = JSON.parse(localStorage.getItem('SANDBOX-WALLETS'))
-            return localstorageWallets ? localstorageWallets : [];
+
+        // merge state
+        withLatestFrom(this.store, (action: any, state) => ({ action, state })),
+
+        switchMap(({ action, state }) => {
+            return this.http.get(state.settingsNode.sandbox + '/wallets');
         }),
-        // get current url + hydrate wallets from localstorage
-        switchMap(payload => [
-            { type: 'HYDRATE_LOCALSTORAGE_WALLETS', payload: payload },
-            { type: 'WALLET_LIST_LOAD', payload: payload },
-        ])
+
+        // dispatch action
+        switchMap((payload) => [
+            { type: 'WALLET_LIST_INIT_SUCCESS', payload: payload },
+            { type: 'WALLET_LIST_LOAD' },
+        ]),
+        catchError((error, caught) => {
+            console.error(error);
+            this.store.dispatch({
+                type: 'WALLET_LIST_LOAD_ERROR',
+                payload: error,
+            });
+            return caught;
+        })
+
     );
 
-    // get wallets 
+    // get wallets (to update ballance)
     @Effect()
     WalletsListLoad$ = this.actions$.pipe(
         ofType('WALLET_LIST_LOAD'),
@@ -35,14 +47,14 @@ export class WalletsEffects {
         // get state from store
         withLatestFrom(this.store, (action, state: any) => state),
 
-        flatMap((state: any) => state.wallets.initWallets
+        // get all accounts address
+        flatMap((state: any) => state.wallets.ids
             // TODO: temp comment to see changes fast
             // .filter(id =>
             //     // get balance only if last download is older than 3 mins
             //     (new Date().getTime() - state.tezos.tezosWalletList.entities[id].timestamp) < (5 * 60 * 1000) ? false : true
             // )
-            .map(initWallet => ({
-                // TODO
+            .map(id => ({
                 node: {
                     display: 'Sandbox',
                     name: 'sandbox',
@@ -53,7 +65,7 @@ export class WalletsEffects {
                         api: 'https://api.tzstats.com/',
                     },
                 },
-                detail: initWallet
+                detail: state.wallets.entities[id],
             }))
         ),
 

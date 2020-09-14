@@ -64,13 +64,15 @@ export class AppComponent {
   // change app theme
   changeTheme(theme) {
 
-    this.store.dispatch({
-      type: 'APP_THEME_CHANGE',
-      payload: theme,
-    });
+    // TODO: enabled once we have white theme ready
+    // this.store.dispatch({
+    //   type: 'APP_THEME_CHANGE',
+    //   payload: theme,
+    // });
 
-    // change theme
-    (document.getElementById('app-style-theme') as any).href = 'styles.' + theme + '.css';
+    // // change theme
+    // (document.getElementById('app-style-theme') as any).href = 'styles.' + theme + '.css';
+
   }
 
   sandboxBakeBlock() {

@@ -59,6 +59,7 @@ body {
         color: $color-focus;
         background-color: fade-out($color-focus, 0.9);
         line-height: normal;
+        font-size: 12px; 
         font-weight: 300;
         padding: 4px 8px;
         cursor: pointer;

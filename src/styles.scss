@@ -50,6 +50,10 @@ body {
     height: 28px;
     font-size: 12px !important;
     
+    width: calc( 100% - 8px );
+    border-radius: 4px;
+    margin: 4px;
+    // width: 100%;
     // width: calc( 100% - 8px );
     // border-radius: 4px;
     // margin: 4px;
@@ -490,7 +494,7 @@ mat-form-field .mat-select-value {
 
 .mat-select-panel .mat-option.mat-selected:not(.mat-option-multiple) {
     color: white;
-    background-color: #1b1b1d;
+    background-color: #2a2b2e;
 }
 
 .mat-select-panel .mat-option.mat-selected:not(.mat-option-multiple):hover {

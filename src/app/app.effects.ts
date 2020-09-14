@@ -59,8 +59,9 @@ export class AppEffects {
         switchMap(({ action, state }) => {
             const appFeaturesActions = [];
 
+            appFeaturesActions.push({ type: 'MEMPOOL_INIT' });
+            appFeaturesActions.push({ type: 'NETWORK_INIT' });
             // appFeaturesActions.push({ type: 'MONITORING_INIT' });
-            // appFeaturesActions.push({ type: 'NETWORK_INIT' });
             // appFeaturesActions.push({ type: 'STORAGE_INIT' });
             // appFeaturesActions.push({ type: 'RPC_INIT' });
             // appFeaturesActions.push({ type: 'LOGS_INIT' });

@@ -30,6 +30,11 @@ const initialState: any = {
 export function reducer(state = initialState, action) {
     switch (action.type) {
 
+        // initialize or reset state
+        case 'NETWORK_INIT': {
+            return initialState;
+        }
+
         // add network url params
         case 'NETWORK_ACTION_LOAD': {
             return {

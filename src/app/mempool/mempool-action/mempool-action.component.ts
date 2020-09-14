@@ -1,14 +1,15 @@
-import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild, ChangeDetectionStrategy } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { Subject, Observable, Subscription } from 'rxjs';
 import { takeUntil, map, debounceTime, filter } from 'rxjs/operators';
-import { CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
 import { CollectionViewer, DataSource } from '@angular/cdk/collections';
+import { CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
 
 @Component({
   selector: 'app-mempool-action',
   templateUrl: './mempool-action.component.html',
-  styleUrls: ['./mempool-action.component.scss']
+  styleUrls: ['./mempool-action.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class MempoolActionComponent implements OnInit, OnDestroy {
 
@@ -22,6 +23,7 @@ export class MempoolActionComponent implements OnInit, OnDestroy {
 
   public networkAction$;
   public networkDataSource;
+  public networkActionlastCursorId = 0;
 
   @ViewChild(CdkVirtualScrollViewport) viewPort: CdkVirtualScrollViewport;
 
@@ -51,11 +53,36 @@ export class MempoolActionComponent implements OnInit, OnDestroy {
       payload: {},
     });
 
+    // wait for data changes from redux
+    this.store.select('networkAction')
+      .pipe(takeUntil(this.onDestroy$))
+      .subscribe(data => {
+
+
+        if (this.networkActionlastCursorId < data.lastCursorId) {
+
+          console.log('[networkAction]', this.networkActionlastCursorId, data.lastCursorId);
+          this.networkActionlastCursorId = data.lastCursorId;
+
+          setTimeout(() => {
+            this.viewPort.scrollTo({ bottom: 0 });
+          });
+
+        }
+
+      });
+
     // create custom network data source
     this.networkAction$ = this.store.select('networkAction');
     this.networkDataSource = new NetworkDataSource(this.networkAction$, this.store);
 
   }
+
+  scrollToBottom() {
+    console.log('[scrollToBottom]');
+    this.viewPort.scrollTo({ bottom: 0 });
+  }
+
 
   ngOnDestroy() {
 
@@ -109,10 +136,14 @@ export class NetworkDataSource extends DataSource<any> {
       filter(data => data.ids.length > 0),
       map(data => {
 
+        // console.log('[NetworkDataSource] start');
+
         const dataView = new Array(data.lastCursorId);
-        data.ids.map(id => { dataView[id] = data.entities[id]; });
+        // data.ids.map(id => { dataView[id] = data.entities[id]; });
 
         this.dataRange = { start: data.ids[0], end: data.ids[data.ids.length - 1] };
+
+        // console.log('[NetworkDataSource] dataView', dataView);
 
         return dataView;
       }),

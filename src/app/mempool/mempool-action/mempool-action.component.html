@@ -1,20 +1,79 @@
+<style>
+    .virtualScrollHeader { 
+        display: flex;
+        align-items: center;
+        color: #a4a4a5;
+
+        height: 34px;
+        font-size: 12px;
+        padding-left: 16px;
+        
+        border-top: 1px #323334 solid;
+        border-bottom: 1px #323334 solid;
+    }
+
+    .virtualScrollRow {
+        display: flex;
+        align-items: center;
+        
+        height: 36px;
+        font-size: 14px;
+        padding-left: 16px;
+
+    }
+
+    .virtualScrollRowEven {
+        background-color: #323334;
+    }
+
+</style>
+
 <div style="color:white;">
 
-    <span >
-        <li *ngFor="let id of mempoolAction.ids;">
-            {{mempoolAction.entities[id].type }} | {{mempoolAction.entities[id].hash }}
-        </li>
-    </span>
+    <!--
+        <span>
+            <li *ngFor="let id of mempoolAction.ids;">
+                {{mempoolAction.entities[id].type }} | {{mempoolAction.entities[id].hash }}
+            </li>
+        </span>
+        <br/>
+    -->
 
-    <br/>
+    <div style="height: 36px;">
+        <button style="font-size:12px; color: #a4a4a5;" mat-button (click)="scrollToBottom()">
+            <!-- <mat-icon style="transform: rotate(90deg)">last_page</mat-icon> -->
+            Scroll to last row
+        </button>
+    </div>
 
-    <cdk-virtual-scroll-viewport itemSize="20" style="height: 400px;width: 400px;">
-        <div *cdkVirtualFor="let item of networkDataSource" style="height: 20px;">
-            <span *ngIf="item?.id">
-                {{item?.id }} | {{item?.type}}
+    <div class="virtualScrollHeader">
+        <span style="display: inline-block; min-width: 100px;">
+            ID 
+        </span>
+        <span style="display: inline-block; min-width: 170px;">
+            ADDRESS
+        </span>
+        <span style="display: inline-block; min-width: 150px;">
+            TYPE
+        </span>
+    </div>
+    <cdk-virtual-scroll-viewport ngrx style="height: 440px;width: 100%;" #scrollViewport>
+        <div *cdkVirtualFor="let index = index;let even = even;let item of networkDataSource" 
+            class="virtualScrollRow" [class.virtualScrollRowEven]="even">
+            <span *ngIf="item?.id" >
+                <span style="display: inline-block; min-width: 100px;">
+                    {{ index }} 
+                </span>
+                <span style="display: inline-block; min-width: 170px;">
+                    {{ item?.remote_addr }}
+                </span>
+                <span style="display: inline-block; min-width: 150px;">
+                    {{ item?.type }} 
+                    <!-- {{item?.category}}<span *ngIf="item?.kind"> | {{ item?.kind }}</span> -->
+                </span>
             </span>
             <span *ngIf="!item?.id">
-                ...
+                {{ index }} 
             </span>
         </div>
     </cdk-virtual-scroll-viewport>

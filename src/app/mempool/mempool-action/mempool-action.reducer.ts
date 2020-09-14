@@ -9,6 +9,11 @@ const initialState: any = {
 export function reducer(state = initialState, action) {
     switch (action.type) {
 
+        // initialize or reset state
+        case 'MEMPOOL_INIT': {
+            return initialState;
+        }
+
         case 'MEMPOOL_ACTION_LOAD': {
             return {
                 ...state,

@@ -47,6 +47,10 @@ const initialState = {
             storage: false,
             logs: false,
         },
+        sandbox: {
+            chain: false,
+            wallets: false,
+        }
     },
     theme: {
         name: 'dark',
@@ -86,6 +90,8 @@ export function reducer(state = initialState, action) {
             let explorerNetwork = false;
             let explorerStorage = false;
             let explorerLogs = false;
+            let sandboxChain = false;
+            let sandboxWallets = false;
 
 
             if (action.payload.connected === true) {
@@ -105,6 +111,14 @@ export function reducer(state = initialState, action) {
                 explorerLogs = true;
             }
 
+            if(action.payload.id == 'sandbox-carthage-tezedge'){
+                sandboxChain = true;
+                sandboxWallets = true;
+
+                monitoringSynchronization = false;
+                explorerEndpoints = false;
+            }
+
             return {
                 ...state,
                 menu: {
@@ -118,6 +132,10 @@ export function reducer(state = initialState, action) {
                         storage: explorerStorage,
                         logs: explorerLogs,
                     },
+                    sandbox: {
+                        chain: sandboxChain,
+                        wallets: sandboxWallets,
+                    }
                 },
                 statusbar: {
                     // TODO

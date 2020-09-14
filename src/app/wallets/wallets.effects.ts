@@ -15,19 +15,31 @@ export class WalletsEffects {
     @Effect()
     WalletsListInit$ = this.actions$.pipe(
         ofType('WALLETS_LIST_INIT'),
-        map(() => {
-            // get wallets from localstorage
-            const localstorageWallets = JSON.parse(localStorage.getItem('SANDBOX-WALLETS'))
-            return localstorageWallets ? localstorageWallets : [];
+
+        // merge state
+        withLatestFrom(this.store, (action: any, state) => ({ action, state })),
+
+        switchMap(({ action, state }) => {
+            return this.http.get(state.settingsNode.sandbox + '/wallets');
         }),
-        // get current url + hydrate wallets from localstorage
-        switchMap(payload => [
-            { type: 'HYDRATE_LOCALSTORAGE_WALLETS', payload: payload },
-            { type: 'WALLET_LIST_LOAD', payload: payload },
-        ])
+
+        // dispatch action
+        switchMap((payload) => [
+            { type: 'WALLET_LIST_INIT_SUCCESS', payload: payload },
+            { type: 'WALLET_LIST_LOAD' },
+        ]),
+        catchError((error, caught) => {
+            console.error(error);
+            this.store.dispatch({
+                type: 'WALLET_LIST_LOAD_ERROR',
+                payload: error,
+            });
+            return caught;
+        })
+
     );
 
-    // get wallets 
+    // get wallets (to update ballance)
     @Effect()
     WalletsListLoad$ = this.actions$.pipe(
         ofType('WALLET_LIST_LOAD'),
@@ -35,14 +47,14 @@ export class WalletsEffects {
         // get state from store
         withLatestFrom(this.store, (action, state: any) => state),
 
-        flatMap((state: any) => state.wallets.initWallets
+        // get all accounts address
+        flatMap((state: any) => state.wallets.ids
             // TODO: temp comment to see changes fast
             // .filter(id =>
             //     // get balance only if last download is older than 3 mins
             //     (new Date().getTime() - state.tezos.tezosWalletList.entities[id].timestamp) < (5 * 60 * 1000) ? false : true
             // )
-            .map(initWallet => ({
-                // TODO
+            .map(id => ({
                 node: {
                     display: 'Sandbox',
                     name: 'sandbox',
@@ -53,7 +65,7 @@ export class WalletsEffects {
                         api: 'https://api.tzstats.com/',
                     },
                 },
-                detail: initWallet
+                detail: state.wallets.entities[id],
             }))
         ),
 
@@ -132,10 +144,17 @@ export class WalletsEffects {
         )),
 
         // dispatch action based on result
-        map((data: any) => ({
-            type: 'WALLET_TRANSACTION_SUCCESS',
-            payload: { injectionOperation: data.injectionOperation }
-        })),
+        // map((data: any) => ({
+        //     type: 'WALLET_TRANSACTION_SUCCESS',
+        //     payload: { injectionOperation: data.injectionOperation }
+        // })),
+        switchMap((data: any) => [
+            { type: 'MEMPOOL_ACTION_LOAD' },
+            {
+                type: 'WALLET_TRANSACTION_SUCCESS',
+                payload: { injectionOperation: data.injectionOperation }
+            },
+        ]),
         catchError((error, caught) => {
             console.error(error)
             this.store.dispatch({
@@ -144,80 +163,15 @@ export class WalletsEffects {
             });
             return caught;
         }),
-
-    )
-
-    // check mempool for operation
-    @Effect()
-    TezosOperationTransactionPending$ = this.actions$.pipe(
-        ofType('WALLET_TRANSACTION_SUCCESS'),
-
-        // add state to effect
-        withLatestFrom(this.store, (action: any, state: any) => ({ action, state })),
-
-        flatMap(({ action, state }) => of([]).pipe(
-
-            // wait until sodium is ready
-            initializeWallet(stateWallet => <any>({
-                // set tezos node
-                node: {
-                    display: 'Sandbox',
-                    name: 'sandbox',
-                    url: 'http://sandbox.dev.tezedge.com:18732', 
-                    // url: state.settingsNode.api.http, 
-                    tzstats: {
-                        url: 'https://tzstats.com/',
-                        api: 'https://api.tzstats.com/',
-                    },
-                },
-            })),
-
-            // wait until operation is confirmed & moved from mempool to head
-            confirmOperation(stateWallet => ({
-                injectionOperation: action.payload.injectionOperation,
-            })),
-
-            // enter back into zone.js so change detection works
-            enterZone(this.zone),
-
-            map(() => ({ action, state }))
-        )),
-
-        // map(({ action, state }) => ({
-        //     type: 'WALLET_TRANSACTION_PENDING_SUCCESS',
-        //     payload: {
-        //         wallet: {
-        //             publicKeyHash: state.wallets.selectedWallet.publicKeyHash
-        //         },
-        //     },
-        // })),
-        switchMap(({ action, state }) => [
-            { type: 'MEMPOOL_ACTION_LOAD' },
-            {
-                type: 'WALLET_TRANSACTION_PENDING_SUCCESS',
-                payload: {
-                    wallet: {
-                        publicKeyHash: state.wallets.selectedWallet.publicKeyHash
-                    },
-                },
-            },
-        ]),
-
-        catchError((error, caught) => {
-            this.store.dispatch({
-                type: 'WALLET_TRANSACTION_PENDING_ERROR',
-                payload: error,
-            });
-            return caught;
-        }),
-
-        // wait for tzstats to process transaction
-        delay(5000),
         // show success notification
         tap((action) => {
-            this.snackBar.open('Transaction added to Mempool', 'DISMISS');
+            this.snackBar.open('Transaction added to Mempool', 'DISMISS', {
+                duration: 5000,
+                verticalPosition: 'bottom',
+                horizontalPosition: 'right'
+            });
         }),
-    );
+    )
 
     constructor(
         private http: HttpClient,

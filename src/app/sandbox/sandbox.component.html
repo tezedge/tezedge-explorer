@@ -42,10 +42,15 @@
       <div class="footer-container">
         <!-- loading-indicator -->
         <span *ngIf="showLoading" class="loading-indicator">Loading...</span>
-        <!-- error-indicator -->
-        <button mat-button *ngIf="!showLoading && showError" class="error-indicator" (click)="scrollToFirstInvalidControl()">
+        <!-- generic error indicator -->
+        <button mat-button *ngIf="!showLoading && error && error.error_type ==='generic'" class="error-indicator" (click)="scrolToTop()">
           <img class="icon" src="../../../assets/icon/times-circle-solid.svg"/>
-          <span class="text">Validation Errors</span>
+          <span class="text">An error occured</span>
+        </button>
+        <!-- validation error indicator -->
+        <button mat-button *ngIf="!showLoading && error && error.error_type ==='validation'" class="error-indicator" (click)="scrollToFirstInvalidControl()">
+          <img class="icon" src="../../../assets/icon/times-circle-solid.svg"/>
+          <span class="text">Validation Error</span>
         </button>
         <!-- continue btn -->
         <button mat-button (click)="submitCurrentStep()" [disabled]="showLoading" class="attention-button">

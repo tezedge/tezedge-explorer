@@ -4,6 +4,7 @@ import { HttpClient } from '@angular/common/http';
 import { Store } from '@ngrx/store';
 import { map, switchMap, withLatestFrom, catchError, tap } from 'rxjs/operators';
 import { Router } from '@angular/router';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Injectable()
 export class SandboxEffects {
@@ -23,7 +24,7 @@ export class SandboxEffects {
         // dispatch actions
         switchMap(payload => [
             { type: 'CHAIN_SERVER_FORM_SUBMIT_SUCCESS', payload: payload },
-            { type: 'SANDBOX_NODE_START_SUCCESS', payload: payload },
+            { type: 'SANDBOX_NODE_START_SUCCESS', payload: payload }
         ]),
         catchError((error, caught) => {
             console.error(error)
@@ -48,8 +49,12 @@ export class SandboxEffects {
             return this.http.get(state.settingsNode.sandbox + '/stop')
         }),
 
-        // dispatch action
-        map((payload) => ({ type: 'SANDBOX_NODE_STOP_SUCCESS', payload: payload })),
+        // dispatch actions
+        // map((payload) => ({ type: 'SANDBOX_NODE_STOP_SUCCESS', payload: payload })),
+        switchMap(payload => [
+            { type: 'SANDBOX_NODE_STOP_SUCCESS', payload: payload },
+            { type: 'SETTINGS_NODE_CHANGE', payload: { api: { id: 'ocaml-carthage-tezedge' } }},
+        ]),
         catchError((error, caught) => {
             console.error(error)
             this.store.dispatch({
@@ -96,9 +101,9 @@ export class SandboxEffects {
         withLatestFrom(this.store, (action: any, state) => ({ action, state })),
 
         // persist wallets in localstorage
-        tap(({ action, state }) => {
-            localStorage.setItem('SANDBOX-WALLETS', JSON.stringify(state.chainWallets.wallets))
-        })
+        // tap(({ action, state }) => {
+        //     localStorage.setItem('SANDBOX-WALLETS', JSON.stringify(state.chainWallets.wallets))
+        // })
     );
 
     @Effect()
@@ -118,9 +123,10 @@ export class SandboxEffects {
             { type: 'CHAIN_CONFIG_FORM_SUBMIT_SUCCESS', payload: payload },
             { type: 'SANDBOX_ACTIVATE_PROTOCOL_SUCCESS', payload: payload },
             { type: 'SIDENAV_VISIBILITY_CHANGE', payload: true },
-            { type: 'TOOLBAR_VISIBILITY_CHANGE', payload: true },
+            { type: 'TOOLBAR_VISIBILITY_CHANGE', payload: true },            
+            { type: 'SETTINGS_NODE_CHANGE', payload: { api: { id: 'sandbox-carthage-tezedge' } }},
+            { type: 'SETTINGS_NODE_LOAD', payload: '' }
         ]),
-        tap(() => this.router.navigate(['chain'])),
         catchError((error, caught) => {
             console.error(error)
             this.store.dispatch({
@@ -128,7 +134,8 @@ export class SandboxEffects {
                 payload: error,
             });
             return caught;
-        })
+        }),
+        tap(() => this.router.navigate(['chain'])),
     );
 
     @Effect()
@@ -144,7 +151,12 @@ export class SandboxEffects {
         }),
 
         // dispatch action
-        map((payload) => ({ type: 'SANDBOX_BAKE_BLOCK_SUCCESS', payload: payload })),
+        switchMap((payload) => [
+            { type: 'MEMPOOL_ACTION_LOAD' },
+            { type: 'STORAGE_BLOCK_LOAD' },
+            { type: 'WALLETS_LIST_INIT' },
+            { type: 'SANDBOX_BAKE_BLOCK_SUCCESS', payload: payload },
+        ]),
         catchError((error, caught) => {
             console.error(error)
             this.store.dispatch({
@@ -152,7 +164,15 @@ export class SandboxEffects {
                 payload: error,
             });
             return caught;
-        })
+        }),
+        // show success notification
+        tap((action) => {
+            this.snackBar.open('Successfully baked', 'DISMISS', {
+                duration: 5000,
+                verticalPosition: 'bottom',
+                horizontalPosition: 'right'
+            });
+        }),
     );
 
 
@@ -161,6 +181,7 @@ export class SandboxEffects {
         private actions$: Actions,
         private store: Store<any>,
         private router: Router,
+        private snackBar: MatSnackBar,
     ) { }
 
 }

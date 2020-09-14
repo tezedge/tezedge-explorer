@@ -12,7 +12,8 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 })
 export class WalletsComponent implements OnInit, OnDestroy {
   onDestroy$ = new Subject();
-  displayedColumns = ['address', 'baking', 'contracts', 'transactions', 'index', 'balance'];
+  // displayedColumns = ['address', 'baking', 'contracts', 'transactions', 'index', 'balance'];
+  displayedColumns = ['address', 'baking', 'balance'];
   wallets: any;
   selectedWallet: any;
   transferForm: FormGroup;
@@ -26,8 +27,7 @@ export class WalletsComponent implements OnInit, OnDestroy {
     this.store.select('wallets')
     .pipe(takeUntil(this.onDestroy$))
 		.subscribe(store => {
-      // TODO replace with real (initialized) wallets
-      this.wallets = store.initWallets;
+      this.wallets = store.ids.map(id => ({ id, ...store.entities[id] }))
       
       this.selectedWallet = store.selectedWallet;
       this.transferError = store.transferError;

@@ -99,7 +99,7 @@
           </div>
         </div>        
         <!-- transfer -->
-        <div class="details-box" [formGroup]="transferForm" ngrxForm="wallets">
+        <div class="details-box transfer-form" [formGroup]="transferForm" ngrxForm="wallets">
           <div class="details-section">
             <div class="box-header">TRANSFER</div>
             <div class="box-content">
@@ -117,8 +117,10 @@
                   <mat-form-field class="full-size">
                     <input matInput #to type="text" formControlName="to"/>
                   </mat-form-field>
-                  <mat-error *ngIf="transferForm.controls.to.touched && transferForm.controls.to.invalid">
-                    Please enter valid address
+                  <mat-error>
+                    <span *ngIf="transferForm.controls.to.touched && transferForm.controls.to.invalid">
+                      Please enter valid address
+                    </span>
                   </mat-error>
                 </div>
                 <!-- Amount -->
@@ -128,8 +130,10 @@
                     <input matInput #amount type="text" formControlName="amount"/>
                     <span matSuffix class="input-suffix">XTZ</span>
                   </mat-form-field>
-                  <mat-error *ngIf="transferForm.controls.amount.invalid">
-                    Please enter valid amount
+                  <mat-error>
+                    <span *ngIf="transferForm.controls.amount.touched && transferForm.controls.amount.invalid">
+                      Please enter valid amount
+                    </span>
                   </mat-error>
                 </div>
                 <!-- Fee -->
@@ -139,8 +143,10 @@
                     <input matInput #fee type="text" formControlName="fee"/>
                     <span matSuffix class="input-suffix">XTZ</span>
                   </mat-form-field>
-                  <mat-error *ngIf="transferForm.controls.fee.invalid">
-                    Please enter valid fee
+                  <mat-error>
+                    <span *ngIf="transferForm.controls.fee.touched && transferForm.controls.fee.invalid">
+                      Please enter valid fee
+                    </span>
                   </mat-error>
                 </div>
               </div>

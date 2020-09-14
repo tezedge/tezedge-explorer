@@ -52,8 +52,30 @@ body {
     
     width: calc( 100% - 8px );
     border-radius: 4px;
-    margin: 4px;
+    margin: 4px 4px 4px 4px;
     // width: 100%;
+
+    .pending-transactions{
+        color: $color-focus;
+        background-color: fade-out($color-focus, 0.9);
+        line-height: normal;
+        font-size: 12px; 
+        font-weight: 300;
+        padding: 4px 8px;
+        cursor: pointer;
+        margin: 0 2px;
+
+        &:disabled{
+            cursor: default;
+            color: $color-focus;
+            background-color: fade-out($color-focus, 0.9);
+        }
+
+        .action{
+            font-weight: 500;
+            margin-left: 8px;
+        }
+    }
 }
 
 .app-status-bar .mat-form-field-infix {
@@ -1238,6 +1260,10 @@ ngx-json-viewer .segment .segment-main .segment-key {
     }
 }
 
+.chain .mat-expansion-panel.generic-error { 
+    display: none !important;
+}
+
 // Wallets table style
 .chain-wallets,
 .wallets{
@@ -1335,7 +1361,7 @@ ngx-json-viewer .segment .segment-main .segment-key {
                 .box-row.error{
                     padding: 8px 0;
                     .error-box{
-                        background-color: $color-highlight-red;
+                        background-color: fade-out($color-highlight-red, 0.5);
                         border-radius: 4px;
                         padding: 8px;
 

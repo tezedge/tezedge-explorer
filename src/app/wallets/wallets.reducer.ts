@@ -13,19 +13,14 @@ const initialState: any = {
 
 export function reducer(state = initialState, action) {
     switch (action.type) {
-        case 'HYDRATE_LOCALSTORAGE_WALLETS': {
-            return {
-                ...state,
-                initWallets: action.payload
-            }
-        }
-        case 'WALLET_LIST_LOAD_SUCCESS': {
+        case 'WALLET_LIST_INIT_SUCCESS': {
+            const wallets = mapWallets(action.payload);
             return {
                 ...state,
                 ids: [
-                    ...action.payload.map(wallet => wallet.publicKeyHash)
+                    ...wallets.map(wallet => wallet.publicKeyHash)
                 ],
-                entities: action.payload.reduce((accumulator, wallet) => ({
+                entities: wallets.reduce((accumulator, wallet) => ({
                     ...accumulator,
                     [wallet.publicKeyHash]: {
                         ...state.entities[wallet.publicKeyHash],
@@ -33,6 +28,19 @@ export function reducer(state = initialState, action) {
                     }
                 }), {}),
                 transferError: false,
+            }
+        }
+        case 'WALLET_LIST_LOAD_SUCCESS': {
+            return {
+                ...state,
+                entities: {
+                    ...state.entities,
+                    [action.payload.wallet.publicKeyHash]: {
+                        ...state.entities[action.payload.wallet.publicKeyHash],
+                        ...action.payload.getWallet,
+                        timestamp: new Date().getTime(),
+                    }
+                }
             }
         }
         case 'SELECT_WALLET': {
@@ -59,4 +67,18 @@ export function reducer(state = initialState, action) {
         default:
             return state;
     }
+}
+
+export function mapWallets(payload: any[]){
+    const wallets = [];
+    payload.forEach((item)=>{
+        const wallet = {
+            alias: item.alias,
+            secretKey: item.secret_key,
+            publicKey: item.public_key,
+            publicKeyHash: item.public_key_hash,
+        }
+        wallets.push(wallet);
+    });
+    return wallets;
 }

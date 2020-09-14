@@ -212,19 +212,19 @@
                     </a>
                 </div> -->
 
-                <div class="app-submenu">
+                <div class="app-submenu" *ngIf="app.menu.sandbox.chain || app.menu.sandbox.wallets">
                     <span>
                         SANDBOX
                     </span>
 
-                    <a mat-list-item routerLink="/chain" rel="noreferrer" [style.color]="app.sidenav.color">
+                    <a *ngIf="app.menu.sandbox.chain" mat-list-item routerLink="/chain" rel="noreferrer" [style.color]="app.sidenav.color">
                         <span>
                             <svg-icon style="margin-right: 7px" icon="chain-settings"></svg-icon>
                             Chain
                         </span>
                     </a>
 
-                    <a mat-list-item routerLink="/wallets" rel="noreferrer" [style.color]="app.sidenav.color">
+                    <a *ngIf="app.menu.sandbox.wallets" mat-list-item routerLink="/wallets" rel="noreferrer" [style.color]="app.sidenav.color">
                         <span>
                             <svg-icon style="margin-right: 7px" icon="chain-wallets"></svg-icon>
                             Wallets

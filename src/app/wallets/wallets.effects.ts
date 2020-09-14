@@ -132,10 +132,17 @@ export class WalletsEffects {
         )),
 
         // dispatch action based on result
-        map((data: any) => ({
-            type: 'WALLET_TRANSACTION_SUCCESS',
-            payload: { injectionOperation: data.injectionOperation }
-        })),
+        // map((data: any) => ({
+        //     type: 'WALLET_TRANSACTION_SUCCESS',
+        //     payload: { injectionOperation: data.injectionOperation }
+        // })),
+        switchMap((data: any) => [
+            { type: 'MEMPOOL_ACTION_LOAD' },
+            {
+                type: 'WALLET_TRANSACTION_SUCCESS',
+                payload: { injectionOperation: data.injectionOperation }
+            },
+        ]),
         catchError((error, caught) => {
             console.error(error)
             this.store.dispatch({
@@ -144,80 +151,15 @@ export class WalletsEffects {
             });
             return caught;
         }),
-
-    )
-
-    // check mempool for operation
-    @Effect()
-    TezosOperationTransactionPending$ = this.actions$.pipe(
-        ofType('WALLET_TRANSACTION_SUCCESS'),
-
-        // add state to effect
-        withLatestFrom(this.store, (action: any, state: any) => ({ action, state })),
-
-        flatMap(({ action, state }) => of([]).pipe(
-
-            // wait until sodium is ready
-            initializeWallet(stateWallet => <any>({
-                // set tezos node
-                node: {
-                    display: 'Sandbox',
-                    name: 'sandbox',
-                    url: 'http://sandbox.dev.tezedge.com:18732', 
-                    // url: state.settingsNode.api.http, 
-                    tzstats: {
-                        url: 'https://tzstats.com/',
-                        api: 'https://api.tzstats.com/',
-                    },
-                },
-            })),
-
-            // wait until operation is confirmed & moved from mempool to head
-            confirmOperation(stateWallet => ({
-                injectionOperation: action.payload.injectionOperation,
-            })),
-
-            // enter back into zone.js so change detection works
-            enterZone(this.zone),
-
-            map(() => ({ action, state }))
-        )),
-
-        // map(({ action, state }) => ({
-        //     type: 'WALLET_TRANSACTION_PENDING_SUCCESS',
-        //     payload: {
-        //         wallet: {
-        //             publicKeyHash: state.wallets.selectedWallet.publicKeyHash
-        //         },
-        //     },
-        // })),
-        switchMap(({ action, state }) => [
-            { type: 'MEMPOOL_ACTION_LOAD' },
-            {
-                type: 'WALLET_TRANSACTION_PENDING_SUCCESS',
-                payload: {
-                    wallet: {
-                        publicKeyHash: state.wallets.selectedWallet.publicKeyHash
-                    },
-                },
-            },
-        ]),
-
-        catchError((error, caught) => {
-            this.store.dispatch({
-                type: 'WALLET_TRANSACTION_PENDING_ERROR',
-                payload: error,
-            });
-            return caught;
-        }),
-
-        // wait for tzstats to process transaction
-        delay(5000),
         // show success notification
         tap((action) => {
-            this.snackBar.open('Transaction added to Mempool', 'DISMISS');
+            this.snackBar.open('Transaction added to Mempool', 'DISMISS', {
+                duration: 5000,
+                verticalPosition: 'bottom',
+                horizontalPosition: 'right'
+            });
         }),
-    );
+    )
 
     constructor(
         private http: HttpClient,

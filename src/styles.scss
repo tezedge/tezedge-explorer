@@ -350,21 +350,7 @@ tr.mat-row {
     }
 }
 
-.storage-block-container {
-    background-color: $color-background;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
 
-
-.storage-action-container {
-    background-color: $color-background;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
-}
 
 
 .mat-list-base .mat-list-item .mat-list-item-content,
@@ -757,14 +743,15 @@ mat-form-field .mat-select-arrow {
 
 /* virtual scroll variable */
 .table-virtual-scroll {
+    position: absolute;
+    width: calc(100% - 10px);
+    height: calc(100% - 25px);
     font-family: Roboto, "Helvetica Neue", sans-serif;
     color: $color-table;
     background-color: $color-table-background;
     border: 1px solid $color-table-border;
     border-radius: 4px;
-    // height: 657px; 
     margin: 15px 0px 0px 0px;
-    width: 1000px;
 }
 
 .table-virtual-scroll-header {
@@ -773,6 +760,10 @@ mat-form-field .mat-select-arrow {
     padding: 10px 10px 10px 20px;
     color: $color-table-header !important;
     border-bottom: 1px solid $color-table-border;
+}
+
+.table-virtual-scroll-panel {
+    height: calc(100% - 80px);
 }
 
 .table-virtual-scroll-footer {
@@ -927,7 +918,7 @@ ngx-json-viewer .segment .segment-main .segment-key {
 .logs-action-container {
     display: flex;
     align-items: center;
-    justify-content: center;
+    // justify-content: center;
     flex-direction: column;
     margin-top: 25px;
 }
@@ -952,7 +943,7 @@ ngx-json-viewer .segment .segment-main .segment-key {
     background-color: $color-background;
     display: flex;
     align-items: center;
-    justify-content: center;
+    // justify-content: center;
     flex-direction: column;
     margin-top: 25px;
 }
@@ -975,8 +966,8 @@ ngx-json-viewer .segment .segment-main .segment-key {
 .storage-block-container {
     background-color: $color-background;
     display: flex;
-    align-items: center;
-    justify-content: center;
+    align-items: flex-start;
+    // justify-content: center;
     flex-direction: column;
     margin-top: 25px;
 }
@@ -984,18 +975,25 @@ ngx-json-viewer .segment .segment-main .segment-key {
 .storage-block-table-viewport {
     overflow-x: hidden;
     /* height: 504px; */ /* 36*14 */
-    width: 700px;
+    width: 60%;
 }
 
 .storage-block-table-detail {
     align-items: flex-end;
-    height: 489px; /* 36 height of item * 14 number of items - 15 padding top*/
+    /* height: 489px; */ /* 36 height of item * 14 number of items - 15 padding top*/
     width: 300px;
     overflow-y: overlay;
     padding: 10px 10px 0px 10px;
     border-left: 1px solid $color-table-border;
 }
 
+.storage-action-container {
+    background-color: $color-background;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
 
 .chain, 
 .sandbox {

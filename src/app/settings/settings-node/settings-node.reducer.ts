@@ -75,6 +75,37 @@ export function reducer(state = initialState, action) {
             };
         }
 
+        case 'SETTINGS_NODE_LOAD_SANDBOX': {
+            return {
+                ...state,
+                entities: {
+                    ...state.entities,
+                    ['sandbox-carthage-tezedge']: {
+                        ...state.entities['sandbox-carthage-tezedge'],
+                        connected: false,
+                        header: {},
+                    },
+                },
+            };
+        }
+
+        case 'SETTINGS_NODE_LOAD_SANDBOX_SUCCESS': {
+            return {
+                ...state,
+                // switch to sandbox
+                api: { ...action.payload.api, connected: true },
+                entities: {
+                    ...state.entities,
+                    [action.payload.api.id]: {
+                        ...action.payload.api,
+                        connected: true,
+                        header: action.payload.response,
+                        relativeDatetime: moment(action.payload.response.timestamp).fromNow(),
+                    },
+                }
+            };
+        }
+
         default:
             return state;
     }

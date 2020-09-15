@@ -16,7 +16,7 @@
 
             <ng-container *ngFor="let node of settingsNodeEntities">
                 <!-- TODO: remove hardcoded 'sandbox-carthage-tezedge' everywhere and use some flag -->
-                <mat-option *ngIf="node.id !== 'sandbox-carthage-tezedge' || node.connected" [value]="node.id"
+                <mat-option *ngIf="node.id !== 'sandbox-carthage-tezedge' || node.connected === true" [value]="node.id"
                     (click)="nodeSelectChange(node.id)" class="settings-node-option">
                     <div style="display: flex;flex-direction:row;align-items:center;">
                         <div style="width: 30px;">

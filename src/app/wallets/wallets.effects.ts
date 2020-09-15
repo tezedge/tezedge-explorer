@@ -46,7 +46,6 @@ export class WalletsEffects {
 
         // get state from store
         withLatestFrom(this.store, (action, state: any) => state),
-
         // get all accounts address
         flatMap((state: any) => state.wallets.ids
             // TODO: temp comment to see changes fast
@@ -58,8 +57,8 @@ export class WalletsEffects {
                 node: {
                     display: 'Sandbox',
                     name: 'sandbox',
-                    url: 'http://sandbox.dev.tezedge.com:18732', 
-                    // url: state.settingsNode.api.http, 
+                    // url: 'http://sandbox.dev.tezedge.com:18732', 
+                    url: state.settingsNode.api.http, 
                     tzstats: {
                         url: 'https://tzstats.com/',
                         api: 'https://api.tzstats.com/',

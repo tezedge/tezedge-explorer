@@ -8,7 +8,7 @@
     <div class="flex-wrapper">
       <!-- TABLE -->
       <div class="table-flex">
-        <table mat-table [dataSource]="mempoolActionList">
+        <table mat-table [dataSource]="mempoolActionList" (mouseleave)="tableMouseLeave()">
           <!-- Hash Column -->
           <ng-container matColumnDef="hash">
             <th mat-header-cell *matHeaderCellDef> HASH</th>
@@ -22,8 +22,9 @@
           </ng-container>
   
           <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-          <tr mat-row *matRowDef="let row; columns: displayedColumns;" 
-            (mouseenter)="tableMouseEnter(row)" [class.selected]="row?.id === mempoolSelectedItem?.id"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns;" (click)="clickWallet(row)" 
+            (mouseenter)="tableMouseEnter(row)" (mouseleave)="tableMouseLeave()" 
+            [class.selected]="row?.id === mempoolClickedItem?.id" [class.hovered]="row?.id === mempoolSelectedItem?.id && mempoolSelectedItem?.id !== mempoolClickedItem?.id"></tr>
         </table>  
       </div>
 

@@ -49,7 +49,7 @@
         <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
         <tr mat-row *matRowDef="let row; columns: displayedColumns;" (click)="clickWallet(row)" 
           (mouseenter)="tableMouseEnter(row)" (mouseleave)="tableMouseLeave()" 
-          [class.selected]="row?.id === clickedWalletId" [class.hovered]="row?.id === selectedWalletId && selectedWalletId !== clickedWalletId "></tr>
+          [class.selected]="row?.id === clickedWalletId" [class.hovered]="row?.id === selectedWalletId && selectedWalletId !== clickedWalletId"></tr>
       </table>  
     </div>
 

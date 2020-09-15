@@ -1,10 +1,10 @@
 const initialState: any = {
 	form: {
 		hostname: '127.0.0.1',
-		tezosDataDir: '/tmp/tezedge',
+		tezosDataDir: '/tmp/tezedge/tezos-data',
 		identityFile: '/tmp/tezedge/identity.json',
 		identityExpectedPow: 0,
-		bootstrapDbPath: '/tmp/tezedge',
+		bootstrapDbPath: '/tmp/tezedge/light-node',
 		maxThreads: 0,
 		// loggingFile: '/tmp/tezedge/tezedge.log',
 		loggingFormat: 'simple',

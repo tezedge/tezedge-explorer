@@ -4,15 +4,23 @@ import { Store } from '@ngrx/store'
 @Component({
   selector: 'app-sandbox-status-bar',
   templateUrl: './sandbox-status-bar.component.html',
-  styleUrls: ['./sandbox-status-bar.component.css']
+  styleUrls: ['./sandbox-status-bar.component.scss']
 })
 export class SandboxStatusBarComponent implements OnInit {
+  settingsNode: any;
+  nodeHeaderLevel: any;
 
   constructor(
     public store: Store<any>,
   ) { }
 
   ngOnInit() {
+
+    this.store.select('settingsNode')
+    .subscribe(state => {
+      this.settingsNode = state;
+      this.nodeHeaderLevel = state.entities[state.api.id]?.header?.level;
+    });
   }
 
   sandboxWalletInit() {

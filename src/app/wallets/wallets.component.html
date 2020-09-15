@@ -9,7 +9,7 @@
   <div class="flex-wrapper">
     <!-- TABLE -->
     <div class="table-flex">
-      <table mat-table [dataSource]="wallets">
+      <table mat-table [dataSource]="wallets" (mouseout)="tableMouseLeave()">
         <!-- Address Column -->
         <ng-container matColumnDef="address">
           <th mat-header-cell *matHeaderCellDef> ADDRESS</th>

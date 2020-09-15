@@ -6,7 +6,7 @@ const initialState: any = {
 		identityExpectedPow: 0,
 		bootstrapDbPath: '/tmp/tezedge',
 		maxThreads: 0,
-		loggingFile: '/tmp/tezedge/tezedge.log',
+		// loggingFile: '/tmp/tezedge/tezedge.log',
 		loggingFormat: 'simple',
 		loggingLevel: 'info',
 		oCamlLogging: false,

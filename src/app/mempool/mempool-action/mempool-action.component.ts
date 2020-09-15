@@ -2,18 +2,17 @@ import { Component, OnInit, OnDestroy, ViewChild, ChangeDetectionStrategy } from
 import { Store } from '@ngrx/store';
 import { Subject, Observable, Subscription } from 'rxjs';
 import { takeUntil, map, debounceTime, filter } from 'rxjs/operators';
-import { VirtualScrollDirective } from '../../shared/virtual-scroll.directive';
 
 @Component({
   selector: 'app-mempool-action',
   templateUrl: './mempool-action.component.html',
   styleUrls: ['./mempool-action.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class MempoolActionComponent implements OnInit, OnDestroy {
 
   public mempoolAction;
   public mempoolActionList = [];
+  public displayedColumns: string[] = ["hash", "type"];
 
   public networkAction;
   public networkActionList = [];
@@ -23,8 +22,6 @@ export class MempoolActionComponent implements OnInit, OnDestroy {
   public networkAction$;
   public networkDataSource;
   public networkActionlastCursorId = 0;
-
-  @ViewChild(VirtualScrollDirective) vrFor: VirtualScrollDirective;
 
   constructor(
     public store: Store<any>,
@@ -37,6 +34,7 @@ export class MempoolActionComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.onDestroy$))
       .subscribe(data => {
         this.mempoolAction = data;
+        this.mempoolActionList = data.ids.map(id => ({ id, ...data.entities[id] }));
       });
 
     // triger action and get mempool data
@@ -62,14 +60,6 @@ export class MempoolActionComponent implements OnInit, OnDestroy {
 
       });
 
-  }
-
-  getVirtulScrollItems($event) {
-    console.log('[getVirtulScrollItems]', $event);
-  }
-
-  scrollToBottom() {
-    this.vrFor.scrollToBottom();
   }
 
   ngOnDestroy() {

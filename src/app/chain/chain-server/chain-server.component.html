@@ -143,7 +143,7 @@
 			<p class="from-field-title">P2P Port</p>
 			<div class="inline-wrapper">
 				<mat-form-field class="small-size">
-					<input matInput #p2pPort type="number" formControlName="p2pPort" />
+					<input matInput readonly #p2pPort type="number" formControlName="p2pPort" />
 				</mat-form-field>
 				<p class="from-field-description">Specify port for peer to peer communication.</p>
 			</div>
@@ -161,7 +161,7 @@
 			<p class="from-field-title">RPC Port</p>
 			<div class="inline-wrapper">
 				<mat-form-field class="small-size">
-					<input matInput #rpcPort type="number" formControlName="rpcPort" />
+					<input matInput readonly #rpcPort type="number" formControlName="rpcPort" />
 				</mat-form-field>
 				<p class="from-field-description">
 					Node contains subset of Tezos node REST API, described in further sections. This argument specifies
@@ -183,7 +183,7 @@
 			<p class="from-field-title">Monitor port</p>
 			<div class="inline-wrapper">
 				<mat-form-field class="small-size">
-					<input matInput #monitorPort type="number" formControlName="monitorPort" />
+					<input matInput readonly #monitorPort type="number" formControlName="monitorPort" />
 				</mat-form-field>
 				<p class="from-field-description">Port on which the Tezedge node monitoring information will be exposed
 				</p>
@@ -206,7 +206,7 @@
 				which this websocket will be accessible.
 			</p>
 			<mat-form-field class="half-size">
-				<input matInput #webSocketAddress type="text" formControlName="webSocketAddress" />
+				<input matInput readonly #webSocketAddress type="text" formControlName="webSocketAddress" />
 			</mat-form-field>
 			<mat-error *ngIf="chainServerForm.controls.webSocketAddress.invalid">
 				<span *ngIf="chainServerForm.controls.webSocketAddress.errors.required">This field is required</span>

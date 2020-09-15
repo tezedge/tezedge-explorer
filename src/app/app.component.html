@@ -253,22 +253,24 @@
                     </span>
                     -->
                 </div>
-                <div class="app-submenu">
-                    <div style="padding: 0px 0px 0px 20px;">
+                <div class="app-submenu" *ngIf="settingsNode.entities['sandbox-carthage-tezedge']?.connected === false">
+                    <span>
+                        SANDBOX
+                    </span>
+                    <div style="padding: 5px 0px 0px 20px;">
                         <button mat-flat-button (click)="nodeSandboxAdd();"
-                            *ngIf="settingsNode.entities['sandbox-carthage-tezedge']?.connected !== true"
                             style="font-size: 12px;line-height: 24px;color:white; background: #8C6141; font-weight:300">
                             ADD SANDBOX NODE
                         </button>
                     </div>
-                    <div style="padding: 0px 0px 0px 20px;">
+
+                    <!-- <div style="padding: 0px 0px 0px 20px;">
                         <button mat-flat-button (click)="odeSandboxStop();"
                             *ngIf="settingsNode.entities['sandbox-carthage-tezedge']?.connected === true"
                             style="font-size: 12px;line-height: 24px;color:white; background: #8C6141; font-weight:300">
                             STOP SANDBOX NODE
                         </button>
-                    </div>
-
+                    </div> -->
                 </div>
 
                 <div class="app-submenu">

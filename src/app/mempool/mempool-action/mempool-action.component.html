@@ -1,43 +1,61 @@
-<style>
-    .virtualScrollHeader { 
-        display: flex;
-        align-items: center;
-        color: #a4a4a5;
-
-        height: 34px;
-        font-size: 12px;
-        padding-left: 16px;
-        
-        border-top: 1px #323334 solid;
-        border-bottom: 1px #323334 solid;
-    }
-
-    .virtualScrollRow {
-        display: flex;
-        align-items: center;
-        
-        height: 36px;
-        font-size: 14px;
-        padding-left: 16px;
-
-    }
-
-    .virtualScrollRowEven {
-        background-color: #323334;
-    }
-
-</style>
-
 <div style="color:white;">
 
-    
-        <span>
-            <li *ngFor="let id of mempoolAction.ids;">
-                {{mempoolAction.entities[id].type }} | {{mempoolAction.entities[id].hash }}
-            </li>
+     <span>
+        <li *ngFor="let id of mempoolAction.ids;">
+            {{ mempoolAction.entities[id].type }} | {{mempoolAction.entities[id].hash }}
+        </li>
+    </span> 
+
+
+<!--
+    <button style="font-size:12px; color: #ffffff99; height: 36px;" mat-button (click)="scrollToBottom()">
+        &nbsp;
+    </button>
+    <div class="virtual-scroll-header">
+        <span style="display: inline-block; min-width: 180px;">
+            DATETIME
         </span>
-        <br/>
-   
+        <span style="display: inline-block; min-width: 180px;">
+            ADDRESS
+        </span>
+        <span style="display: inline-block; min-width: 100px;">
+            SOURCE
+        </span>
+        <span style="display: inline-block; min-width: 180px;">
+            TYPE
+        </span>
+    </div>
+
+    <div style="display:flex;flex-direction: row;">
+
+        <div class="virtual-scroll-container">
+            <ng-template vsFor [vsForOf]="mempoolAction" let-event let-position="position"
+                [class.virtual-scroll-row-even]="event.index % 2" (mouseenter)="tableMouseEnter(event)"
+                [class.hover]="event?.id === networkActionItem?.id"
+                (getItems)="getVirtulScrollItems($event)">
+                <span class="virtual-scroll-item" [style.top.px]="position">
+                    <span style="display: inline-block; min-width: 100px;">
+                        {{ event.index }}
+                    </span>
+                    <span style="display: inline-block; min-width: 100px;">
+                        {{ event.id }}
+                    </span>
+                    <span style="display: inline-block; min-width: 180px; color: #ffffffcc">
+                        {{ event?.datetime }}
+                    </span>
+                </span>
+            </ng-template>
+        </div>
+
+        <div class="virtual-scroll-container-detail">
+            <div *ngIf="networkActionItem?.payload">
+                <ngx-json-viewer [json]="networkActionItem?.payload" [expanded]="false">
+                </ngx-json-viewer>
+            </div> 
+        </div>
+
+    </div>
+-->
 
 
 </div>

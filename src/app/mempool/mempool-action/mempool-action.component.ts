@@ -69,7 +69,6 @@ export class MempoolActionComponent implements OnInit, OnDestroy {
 
   tableMouseEnter(item) {
     this.mempoolSelectedItem = item;
-    console.log(item);
   }
 
   ngOnDestroy() {

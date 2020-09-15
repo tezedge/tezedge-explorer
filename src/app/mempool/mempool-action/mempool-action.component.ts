@@ -13,6 +13,7 @@ export class MempoolActionComponent implements OnInit, OnDestroy {
   public mempoolAction;
   public mempoolActionList = [];
   public displayedColumns: string[] = ["hash", "type"];
+  public mempoolSelectedItem: any;
 
   public networkAction;
   public networkActionList = [];
@@ -35,6 +36,10 @@ export class MempoolActionComponent implements OnInit, OnDestroy {
       .subscribe(data => {
         this.mempoolAction = data;
         this.mempoolActionList = data.ids.map(id => ({ id, ...data.entities[id] }));
+
+        if(this.mempoolActionList.length){
+          this.mempoolSelectedItem = this.mempoolActionList[this.mempoolActionList.length-1];
+        }
       });
 
     // triger action and get mempool data
@@ -60,6 +65,11 @@ export class MempoolActionComponent implements OnInit, OnDestroy {
 
       });
 
+  }
+
+  tableMouseEnter(item) {
+    this.mempoolSelectedItem = item;
+    console.log(item);
   }
 
   ngOnDestroy() {

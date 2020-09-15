@@ -54,11 +54,11 @@
             </ng-container>
 
             <div style="background-color: #2a2b2e;padding:12px 10px 12px 40px;">
-                <button *ngIf="stateEntities['sandbox-carthage-tezedge'].connected !== true" mat-flat-button style="font-size: 12px;line-height: 24px;color:white; background: #8C6141; font-weight:300"
+                <button *ngIf="stateEntities['sandbox-carthage-tezedge']?.connected !== true" mat-flat-button style="font-size: 12px;line-height: 24px;color:white; background: #8C6141; font-weight:300"
                     (click)="nodeSandboxAdd();settingsNode.close()">
                     ADD SANDBOX NODE
                 </button>
-                <button *ngIf="stateEntities['sandbox-carthage-tezedge'].connected === true" mat-flat-button style="font-size: 12px;line-height: 24px;color:white; background: #8C6141; font-weight:300"
+                <button *ngIf="stateEntities['sandbox-carthage-tezedge']?.connected === true" mat-flat-button style="font-size: 12px;line-height: 24px;color:white; background: #8C6141; font-weight:300"
                     (click)="nodeSandboxStop();settingsNode.close()">
                     STOP SANDBOX NODE
                 </button>

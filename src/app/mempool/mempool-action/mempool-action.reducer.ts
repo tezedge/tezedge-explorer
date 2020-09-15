@@ -3,6 +3,7 @@ import * as moment from 'moment-mini-ts';
 const initialState: any = {
     ids: [],
     entities: {},
+    lastCursorId: 0,
     stream: false,
 };
 
@@ -22,7 +23,7 @@ export function reducer(state = initialState, action) {
 
         case 'MEMPOOL_ACTION_START_SUCCESS':
         case 'MEMPOOL_ACTION_LOAD_SUCCESS': {
-            console.log('[' + action.type + ']', action.payload);
+            // console.log('[' + action.type + ']', action.payload);
             return {
                 ...state,
                 ids: [
@@ -93,6 +94,7 @@ export function reducer(state = initialState, action) {
                             };
                         }, {}),
                 },
+                lastCursorId: getMempoolActionLength(state, action),
                 stream: true,
             };
         }
@@ -107,4 +109,15 @@ export function reducer(state = initialState, action) {
         default:
             return state;
     }
+}
+
+// get mempool items count
+export function getMempoolActionLength(state, action) {
+
+    return length = action.payload.applied.length +
+        action.payload.refused.length +
+        action.payload.branch_refused.length +
+        action.payload.branch_delayed.length +
+        action.payload.unprocessed.length;
+
 }

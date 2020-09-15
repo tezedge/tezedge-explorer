@@ -2,8 +2,7 @@ import { Component, OnInit, OnDestroy, ViewChild, ChangeDetectionStrategy } from
 import { Store } from '@ngrx/store';
 import { Subject, Observable, Subscription } from 'rxjs';
 import { takeUntil, map, debounceTime, filter } from 'rxjs/operators';
-import { CollectionViewer, DataSource } from '@angular/cdk/collections';
-import { CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
+import { VirtualScrollDirective } from '../../shared/virtual-scroll.directive';
 
 @Component({
   selector: 'app-mempool-action',
@@ -25,18 +24,13 @@ export class MempoolActionComponent implements OnInit, OnDestroy {
   public networkDataSource;
   public networkActionlastCursorId = 0;
 
-  @ViewChild(CdkVirtualScrollViewport) viewPort: CdkVirtualScrollViewport;
+  @ViewChild(VirtualScrollDirective) vrFor: VirtualScrollDirective;
 
   constructor(
     public store: Store<any>,
   ) { }
 
   ngOnInit(): void {
-
-    // triger action and get mempool data
-    this.store.dispatch({
-      type: 'MEMPOOL_ACTION_LOAD',
-    });
 
     // wait for data changes from redux
     this.store.select('mempoolAction')
@@ -45,12 +39,9 @@ export class MempoolActionComponent implements OnInit, OnDestroy {
         this.mempoolAction = data;
       });
 
-    // TODO: temporary remove
-
-    // network action start
+    // triger action and get mempool data
     this.store.dispatch({
-      type: 'NETWORK_ACTION_LOAD',
-      payload: {},
+      type: 'MEMPOOL_ACTION_LOAD',
     });
 
     // wait for data changes from redux
@@ -58,31 +49,28 @@ export class MempoolActionComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.onDestroy$))
       .subscribe(data => {
 
-
         if (this.networkActionlastCursorId < data.lastCursorId) {
 
-          console.log('[networkAction]', this.networkActionlastCursorId, data.lastCursorId);
+          // console.log('[networkAction]', this.networkActionlastCursorId, data.lastCursorId);
           this.networkActionlastCursorId = data.lastCursorId;
 
           setTimeout(() => {
-            this.viewPort.scrollTo({ bottom: 0 });
+            // this.viewPort.scrollTo({ bottom: 0 });
           });
 
         }
 
       });
 
-    // create custom network data source
-    this.networkAction$ = this.store.select('networkAction');
-    this.networkDataSource = new NetworkDataSource(this.networkAction$, this.store);
+  }
 
+  getVirtulScrollItems($event) {
+    console.log('[getVirtulScrollItems]', $event);
   }
 
   scrollToBottom() {
-    console.log('[scrollToBottom]');
-    this.viewPort.scrollTo({ bottom: 0 });
+    this.vrFor.scrollToBottom();
   }
-
 
   ngOnDestroy() {
 
@@ -95,64 +83,6 @@ export class MempoolActionComponent implements OnInit, OnDestroy {
     this.onDestroy$.next();
     this.onDestroy$.complete();
 
-  }
-}
-
-
-export class NetworkDataSource extends DataSource<any> {
-
-  private subscription = new Subscription();
-  private dataRange = { start: 0, end: 0 };
-
-  public constructor(
-    private networkAction$: Observable<any>,
-    private store: Store<any>,
-  ) {
-    super();
-  }
-
-  connect(collectionViewer: CollectionViewer): Observable<(string | undefined)[]> {
-
-    this.subscription.add(collectionViewer.viewChange
-      .pipe(
-        // debounceTime(50),
-        filter(range => {
-          return (range.end > this.dataRange.end) || (range.start < this.dataRange.start) ? true : false;
-        })
-      )
-      .subscribe(virtualScrollRange => {
-        // console.log('[NetworkDataSource][viewChange]', virtualScrollRange);
-
-        this.store.dispatch({
-          type: 'NETWORK_ACTION_LOAD',
-          payload: {
-            cursor_id: virtualScrollRange.end
-          },
-        });
-
-      }));
-
-    return this.networkAction$.pipe(
-      filter(data => data.ids.length > 0),
-      map(data => {
-
-        // console.log('[NetworkDataSource] start');
-
-        const dataView = new Array(data.lastCursorId);
-        // data.ids.map(id => { dataView[id] = data.entities[id]; });
-
-        this.dataRange = { start: data.ids[0], end: data.ids[data.ids.length - 1] };
-
-        // console.log('[NetworkDataSource] dataView', dataView);
-
-        return dataView;
-      }),
-
-    );
-  }
-
-  disconnect(): void {
-    this.subscription.unsubscribe();
   }
 
 }

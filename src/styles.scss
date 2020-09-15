@@ -1603,3 +1603,68 @@ input.mat-input-element {
     width: 100%;
     height: 100%;
 }
+
+/* virtual scroll */
+.virtual-scroll-header {
+    display: flex;
+    align-items: center;
+    color: #a4a4a5;
+
+    height: 34px;
+    font-size: 12px;
+    padding-left: 16px;
+
+    border-top: 1px #323334 solid;
+    border-bottom: 1px #323334 solid;
+}
+
+.virtual-scroll-row {
+    display: flex;
+    align-items: center;
+
+    height: 36px;
+    font-size: 14px;
+    padding-left: 16px;
+
+}
+
+.virtual-scroll-row-even {
+    background-color: #323334;
+}
+
+.virtual-scroll-container {
+    position: relative;
+    width: 60%;
+    height: calc(95vh - 74px);
+    /* must be multiple of itemSize*/
+    /* height: 500px; */
+    overflow: auto;
+    z-index: 999;
+}
+
+.virtual-scroll-item {
+    position: absolute;
+    width: calc(100% - 16px);
+
+    display: flex;
+    align-items: center;
+
+    height: 36px;
+    font-size: 14px;
+    padding-left: 16px;
+
+    color: white;
+}
+
+.virtual-scroll-item:hover {
+    background-color: #8C6141;
+    /* #204E8A; */
+}
+
+.virtual-scroll-container-detail {
+    align-items: flex-end;
+    width: 40%;
+    overflow-y: overlay;
+    padding: 10px 10px 0px 20px;
+    border-left: 1px solid #333334;
+}

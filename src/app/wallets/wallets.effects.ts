@@ -110,10 +110,10 @@ export class WalletsEffects {
 
             // wait until sodium is ready
             initializeWallet(stateWallet => ({
-                secretKey: state.wallets.selectedWallet.secretKey,
-                publicKey: state.wallets.selectedWallet.publicKey,
+                secretKey: state.wallets.entities[state.wallets.selectedWalletId].secretKey,
+                publicKey: state.wallets.entities[state.wallets.selectedWalletId].publicKey,
                 // for smart contract use manager address
-                publicKeyHash: state.wallets.selectedWallet.publicKeyHash,
+                publicKeyHash: state.wallets.entities[state.wallets.selectedWalletId].publicKeyHash,
                 // set tezos node
                 node: {
                     display: 'Sandbox',

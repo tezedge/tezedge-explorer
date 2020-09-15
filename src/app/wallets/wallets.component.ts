@@ -14,8 +14,13 @@ export class WalletsComponent implements OnInit, OnDestroy {
   onDestroy$ = new Subject();
   // displayedColumns = ['address', 'baking', 'contracts', 'transactions', 'index', 'balance'];
   displayedColumns = ['address', 'baking', 'balance'];
+  
   wallets: any;
-  selectedWallet: any;
+  walletEntities: any;
+
+  selectedWalletId: any;
+  clickedWalletId: any;
+
   transferForm: FormGroup;
   transferError: boolean;
 
@@ -28,8 +33,10 @@ export class WalletsComponent implements OnInit, OnDestroy {
     .pipe(takeUntil(this.onDestroy$))
 		.subscribe(store => {
       this.wallets = store.ids.map(id => ({ id, ...store.entities[id] }))
-      
-      this.selectedWallet = store.selectedWallet;
+      this.walletEntities = store.entities;
+
+      this.selectedWalletId = store.selectedWalletId;
+      this.clickedWalletId = this.clickedWalletId ? this.clickedWalletId : store.selectedWalletId;
       this.transferError = store.transferError;
     });
 
@@ -56,18 +63,44 @@ export class WalletsComponent implements OnInit, OnDestroy {
     });
   }
 
-  selectWallet(wallet: any){
+  // dispatch wallet select
+  selectWallet(walletId: any){
     // mark wallet as selected and show details
-    if(this.selectedWallet?.publicKeyHash !== wallet.publicKeyHash){
-      this.store.dispatch({ type: 'SELECT_WALLET', payload: wallet })
+    if(this.selectedWalletId !== walletId){
+      this.store.dispatch({ type: 'SELECT_WALLET', payload: walletId });
     } else {
-      this.store.dispatch({ type: 'SELECT_WALLET', payload: null })
+      this.store.dispatch({ type: 'SELECT_WALLET', payload: null });
     }
     this.transferForm.markAsUntouched();
   }
 
+  // save clicked wallet id
+  clickWallet(wallet: any){    
+    if(this.selectedWalletId !== wallet.id){
+      this.clickedWalletId = wallet.id;
+    } else {
+      this.clickedWalletId = null;
+    }
+    this.selectWallet(wallet.id)
+  }
+
+  // set temporary select wallet on hover
+  tableMouseEnter(wallet: any){
+    if(wallet.id !== this.selectedWalletId){
+      this.selectWallet(wallet.id);
+    }
+  }
+
+  // set clicked wallet again as selected wallet on hover leave
+  tableMouseLeave(){
+    if(this.clickedWalletId !== this.selectedWalletId){
+      this.selectWallet(this.clickedWalletId);
+    }
+  }
+
   closeDetails(){
-    this.store.dispatch({ type: 'SELECT_WALLET', payload: null })
+    this.store.dispatch({ type: 'SELECT_WALLET', payload: null });
+    this.clickedWalletId = null;
   }
 
   sendTransaction(){

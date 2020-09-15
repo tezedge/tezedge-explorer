@@ -3,7 +3,7 @@ const initialState: any = {
 		hostname: '127.0.0.1',
 		tezosDataDir: '/tmp/tezedge',
 		identityFile: './light_node/etc/tezedge/identity.json',
-		identityExpectedPow: 26.0,
+		identityExpectedPow: 0,
 		bootstrapDbPath: '/tmp/tezedge',
 		maxThreads: 0,
 		loggingFile: '/tmp/tezedge/tezedge.log',

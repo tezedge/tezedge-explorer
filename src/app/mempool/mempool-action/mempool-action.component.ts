@@ -39,6 +39,8 @@ export class MempoolActionComponent implements OnInit, OnDestroy {
 
         if(this.mempoolActionList.length){
           this.mempoolSelectedItem = this.mempoolActionList[this.mempoolActionList.length-1];
+        } else {
+          this.mempoolSelectedItem = null;
         }
       });
 
@@ -69,7 +71,6 @@ export class MempoolActionComponent implements OnInit, OnDestroy {
 
   tableMouseEnter(item) {
     this.mempoolSelectedItem = item;
-    console.log(item);
   }
 
   ngOnDestroy() {

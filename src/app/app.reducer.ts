@@ -139,7 +139,7 @@ export function reducer(state = initialState, action) {
                 },
                 statusbar: {
                     // TODO
-                    sandbox: action.payload.id === 'sandbox-carthage-tezedge',
+                    sandbox: action.payload.id === 'sandbox-carthage-tezedge' && action.payload.connected === true,
                 }
             };
         }

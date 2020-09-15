@@ -9,3 +9,15 @@
 .mat-button:hover {
     background:  #ffffff20;
 }
+
+.node-info{
+    padding-left: 16px;
+
+    .label{
+        color: fade-out(#fff, 0.4);
+    }
+    .value{
+        color: #fff;
+        margin-left: 4px;
+    }
+}

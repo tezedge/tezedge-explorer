@@ -9,7 +9,7 @@
   <div class="flex-wrapper">
     <!-- TABLE -->
     <div class="table-flex">
-      <table mat-table [dataSource]="wallets">
+      <table mat-table [dataSource]="wallets" (mouseout)="tableMouseLeave()">
         <!-- Address Column -->
         <ng-container matColumnDef="address">
           <th mat-header-cell *matHeaderCellDef> ADDRESS</th>
@@ -43,17 +43,18 @@
         <!-- Balance Column -->
         <ng-container matColumnDef="balance">
           <th mat-header-cell *matHeaderCellDef class="text-right"> BALANCE </th>
-          <td mat-cell *matCellDef="let wallet" class="muted text-right"> {{ (wallet.balance | number:'1.2-6') + ' ꜩ'}} </td>
+          <td mat-cell *matCellDef="let wallet" class="muted text-right"> {{ wallet.balance ? ((wallet.balance | number:'1.2-6') + ' ꜩ') : ''}} </td>
         </ng-container>
       
         <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-        <tr mat-row *matRowDef="let row; columns: displayedColumns;" 
-          (click)="selectWallet(row)" [class.selected]="row?.publicKeyHash === selectedWallet?.publicKeyHash"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;" (click)="clickWallet(row)" 
+          (mouseover)="tableMouseEnter(row)" (mouseout)="tableMouseLeave()" 
+          [class.selected]="row?.id === clickedWalletId" [class.hovered]="row?.id === selectedWalletId && selectedWalletId !== clickedWalletId "></tr>
       </table>  
     </div>
 
     <!-- DETAILS SIDEBAR -->
-    <div class="sidebar-flex" *ngIf="selectedWallet != null">
+    <div class="sidebar-flex" *ngIf="selectedWalletId">
       <div class="sidebar-wrap">
         <div class="details-header">
           <span>DETAIL</span>
@@ -69,31 +70,31 @@
                 <div class="copy-content">
                   <div>Balance</div>
                 </div>
-                <div class="copy-value" style="padding-right: 8px;">{{ (selectedWallet.balance | number:'1.2-6') + ' ꜩ'}}</div>
+                <div class="copy-value" style="padding-right: 8px;">{{ walletEntities[selectedWalletId].balance ? ((walletEntities[selectedWalletId].balance | number:'1.2-6') + ' ꜩ') : ''}}</div>
               </div>
               <!-- public key hash -->
               <div class="box-row">
                 <div class="copy-content">
                   <div>Public Key Hash</div>
-                  <div class="copy-value">{{selectedWallet.publicKeyHash}}</div>
+                  <div class="copy-value">{{walletEntities[selectedWalletId].publicKeyHash}}</div>
                 </div>
-                <button class="mat-button" [cdkCopyToClipboard]="selectedWallet.publicKeyHash" (click)="openSnackbar('Public Key Hash Copied')">COPY</button>
+                <button class="mat-button" [cdkCopyToClipboard]="walletEntities[selectedWalletId].publicKeyHash" (click)="openSnackbar('Public Key Hash Copied')">COPY</button>
               </div>
               <!-- public key -->
               <div class="box-row">
                 <div class="copy-content">
                   <div>Public Key</div>
-                  <div class="copy-value">{{selectedWallet.publicKey}}</div>
+                  <div class="copy-value">{{walletEntities[selectedWalletId].publicKey}}</div>
                 </div>
-                <button class="mat-button" [cdkCopyToClipboard]="selectedWallet.publicKey" (click)="openSnackbar('Public Key Copied')">COPY</button>
+                <button class="mat-button" [cdkCopyToClipboard]="walletEntities[selectedWalletId].publicKey" (click)="openSnackbar('Public Key Copied')">COPY</button>
               </div>
               <!-- secret key -->
               <div class="box-row">
                 <div class="copy-content">
                   <div>Secret Key</div>
-                  <div class="copy-value">{{selectedWallet.secretKey}}</div>
+                  <div class="copy-value">{{walletEntities[selectedWalletId].secretKey}}</div>
                 </div>
-                <button class="mat-button" [cdkCopyToClipboard]="selectedWallet.secretKey" (click)="openSnackbar('Secret Key Copied')">COPY</button>
+                <button class="mat-button" [cdkCopyToClipboard]="walletEntities[selectedWalletId].secretKey" (click)="openSnackbar('Secret Key Copied')">COPY</button>
               </div>
             </div>
           </div>

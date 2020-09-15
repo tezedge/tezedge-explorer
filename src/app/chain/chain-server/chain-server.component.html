@@ -78,15 +78,15 @@
 			</mat-error>
 		</div>
 
-		<!-- Identity expected POW -->
+		<!-- Identity expected POW (readonly) -->
 		<div class="form-field">
 			<p class="from-field-title">Identity expected POW</p>
 			<div class="inline-wrapper">
-				<mat-form-field class="small-size">
-					<input matInput #identityExpectedPow type="number" step="0.01" formControlName="identityExpectedPow" />
+				<mat-form-field class="small-size readonly">
+					<input matInput readonly #identityExpectedPow type="number" step="0.01" formControlName="identityExpectedPow" />
 				</mat-form-field>
 				<p class="from-field-description">
-					Expected power of identity for node. It is used to generate new identity. Default: 26.0
+					Expected power of identity for node. It is used to generate new identity. Default: 0
 				</p>
 			</div>
 			<mat-error *ngIf="chainServerForm.controls.identityExpectedPow.invalid">
@@ -130,15 +130,15 @@
 			</mat-error>
 		</div>
 
-		<!-- Logging file (read-only) -->
+		<!-- Logging file -->
 		<div class="form-field">
-			<p class="from-field-title">Logging file</p>
+			<p class="from-field-title">Logging file (optional)</p>
 			<p class="from-field-description">
 				Path to the logger file. If provided, logs are written to the log file, otherwise displayed in terminal. In case
 				it starts with "./" or "../", it is relative path to the current dir, otherwise to the --tezos-data-dir
 			</p>
-			<mat-form-field class="full-size readonly">
-				<input matInput readonly #loggingFile type="text" formControlName="loggingFile" />
+			<mat-form-field class="full-size">
+				<input matInput #loggingFile type="text" formControlName="loggingFile" />
 			</mat-form-field>
 			<mat-error *ngIf="chainServerForm.controls.loggingFile.invalid">
 				<span *ngIf="chainServerForm.controls.loggingFile.errors.required">This field is required</span>

@@ -85,6 +85,10 @@ body {
 .app-status-bar-sanbox {
     background: #8C6141;
     color: white;
+
+    app-settings-node{
+        border-right: 1px solid fade-out(#fff, 0.9);
+    }
 }
 
 .mat-button-focus-overlay {
@@ -1293,10 +1297,16 @@ ngx-json-viewer .segment .segment-main .segment-key {
 
             &:nth-child(odd){
                 background-color: $color-border;
+                &.hovered {
+                    background-color: fade-in($color-border, 0.1);
+                }
             }
             &.selected {
                 background-color: $color-content-attention;
                 color: #fff;
+            }
+            &.hovered {
+                background-color: fade-out($color-focus, 0.8);
             }
             .mat-cell {
                 color: $color-focus !important;

@@ -29,7 +29,10 @@ export class AppEffects {
 
             let redirectUrl = '';
             if (action.payload.connected) {
-                if (action.payload.ws === false) {
+                if(action.payload.id === 'sandbox-carthage-tezedge'){
+                    redirectUrl = 'wallets';
+                }
+                else if (action.payload.ws === false) {
                     redirectUrl = 'monitoring';
                     // redirectUrl = 'mempool';
                 } else {

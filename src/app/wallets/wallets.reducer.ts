@@ -2,7 +2,7 @@ const initialState: any = {
     initWallets: [],
     ids: [],
     entities: {},
-    selectedWallet: null,
+    selectedWalletId: null,
     form: {
         to: '',
         amount: 1,
@@ -40,13 +40,14 @@ export function reducer(state = initialState, action) {
                         ...action.payload.getWallet,
                         timestamp: new Date().getTime(),
                     }
-                }
+                },
+                selectedWalletId: state.selectedWalletId ? state.selectedWalletId : state.ids[0],
             }
         }
         case 'SELECT_WALLET': {
             return {
                 ...state,
-                selectedWallet: action.payload,
+                selectedWalletId: action.payload,
                 form: initialState.form,
                 transferError: false,
             }

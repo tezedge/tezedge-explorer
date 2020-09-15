@@ -57,7 +57,8 @@ export class AppComponent {
     this.store.select('mempoolAction')
     .pipe(takeUntil(this.onDestroy$))
     .subscribe((mempool) => {
-      this.pendingTransactions = mempool.ids.filter(id => mempool.entities[id].type == 'applied' || mempool.entities[id].type == 'unprocessed')
+      this.pendingTransactions = mempool.ids;
+      // this.pendingTransactions = mempool.ids.filter(id => mempool.entities[id].type == 'applied' || mempool.entities[id].type == 'unprocessed')
     });
   }
 

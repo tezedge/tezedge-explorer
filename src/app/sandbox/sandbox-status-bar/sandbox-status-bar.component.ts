@@ -16,11 +16,11 @@ export class SandboxStatusBarComponent implements OnInit {
 
   ngOnInit() {
 
-    this.store.select('settingsNode')
-    .subscribe(state => {
-      this.settingsNode = state;
-      this.nodeHeaderLevel = state.entities[state.api.id]?.header?.level;
-    });
+    // this.store.select('settingsNode')
+    // .subscribe(state => {
+    //   this.settingsNode = state;
+    //   this.nodeHeaderLevel = state.entities[state.api.id]?.header?.level;
+    // });
   }
 
   sandboxWalletInit() {

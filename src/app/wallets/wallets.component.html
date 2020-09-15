@@ -9,7 +9,7 @@
   <div class="flex-wrapper">
     <!-- TABLE -->
     <div class="table-flex">
-      <table mat-table [dataSource]="wallets" (mouseout)="tableMouseLeave()">
+      <table mat-table [dataSource]="wallets" (mouseleave)="tableMouseLeave()">
         <!-- Address Column -->
         <ng-container matColumnDef="address">
           <th mat-header-cell *matHeaderCellDef> ADDRESS</th>
@@ -17,10 +17,10 @@
         </ng-container>
       
         <!-- Baking Column -->
-        <ng-container matColumnDef="baking">
+        <!-- <ng-container matColumnDef="baking">
           <th mat-header-cell *matHeaderCellDef> BAKING </th>
           <td mat-cell *matCellDef="let wallet" [class.muted]="!wallet.bakingEnabled"> {{ wallet.bakingEnabled ? 'ENABLED': 'DISABLED' }} </td>
-        </ng-container>
+        </ng-container> -->
 
         <!-- Contracts Column -->
         <ng-container matColumnDef="contracts">
@@ -48,13 +48,13 @@
       
         <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
         <tr mat-row *matRowDef="let row; columns: displayedColumns;" (click)="clickWallet(row)" 
-          (mouseover)="tableMouseEnter(row)" (mouseout)="tableMouseLeave()" 
+          (mouseenter)="tableMouseEnter(row)" (mouseleave)="tableMouseLeave()" 
           [class.selected]="row?.id === clickedWalletId" [class.hovered]="row?.id === selectedWalletId && selectedWalletId !== clickedWalletId "></tr>
       </table>  
     </div>
 
     <!-- DETAILS SIDEBAR -->
-    <div class="sidebar-flex" *ngIf="selectedWalletId">
+    <div class="sidebar-flex" *ngIf="selectedWalletId && walletEntities[selectedWalletId]">
       <div class="sidebar-wrap">
         <div class="details-header">
           <span>DETAIL</span>

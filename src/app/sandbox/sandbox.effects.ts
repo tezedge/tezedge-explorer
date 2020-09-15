@@ -156,7 +156,6 @@ export class SandboxEffects {
             { type: 'STORAGE_BLOCK_LOAD' },
             { type: 'WALLETS_LIST_INIT' },
             { type: 'SANDBOX_BAKE_BLOCK_SUCCESS', payload: payload },
-            { type: 'SETTINGS_NODE_LOAD' },
         ]),
         catchError((error, caught) => {
             console.error(error)

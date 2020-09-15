@@ -1,5 +1,13 @@
 <div class="chain">
     <mat-tab-group animationDuration="0ms">
+        
+        <mat-tab label="CHAIN">
+            <ng-template matTabContent>
+                <app-chain-config [isReadonly]="true">
+                </app-chain-config>
+            </ng-template>
+        </mat-tab>
+        
         <mat-tab label="SERVER">
             <ng-template matTabContent>
                 <app-chain-server [isReadonly]="true">
@@ -14,13 +22,6 @@
             </ng-template>
         </mat-tab> -->
         
-        <mat-tab label="CHAIN">
-            <ng-template matTabContent>
-                <app-chain-config [isReadonly]="true">
-                </app-chain-config>
-            </ng-template>
-        </mat-tab>
-
         <!-- <mat-tab label="BAKING">
             <ng-template matTabContent>
                 <app-chain-baking>

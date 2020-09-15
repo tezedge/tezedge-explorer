@@ -55,7 +55,36 @@ export class SettingsNodeEffects {
         }),
     );
 
+    @Effect()
+    SettingsNodeLoadSandboxEffect$ = this.actions$.pipe(
+        ofType('SETTINGS_NODE_LOAD_SANDBOX'),
 
+        // merge state
+        withLatestFrom(this.store, (action: any, state) => ({ action, state })),
+
+        // check if api is available
+        flatMap(({ action, state }) => {
+            const sandbox = state.settingsNode.entities['sandbox-carthage-tezedge'];
+            return this.http.get(sandbox.http + '/chains/main/blocks/head/header').pipe(
+                // dispatch action
+                map((response) => ({ type: 'SETTINGS_NODE_LOAD_SANDBOX_SUCCESS', payload: { api: sandbox, response: response } })),
+                // dispatch error
+                catchError((error) => of({ type: 'SETTINGS_NODE_LOAD_SANDBOX_ERROR', payload: { api: sandbox, response: error } })),
+            );
+        }),
+    );
+
+    @Effect()
+    SettingsNodeSandboxSuccessEffect$ = this.actions$.pipe(
+        ofType('SETTINGS_NODE_LOAD_SANDBOX_SUCCESS'),
+
+        // merge state
+        withLatestFrom(this.store, (action: any, state) => ({ action, state })),
+
+        flatMap(({ action, state }) => {
+            return of({ type: 'APP_INIT', payload: state.settingsNode.entities['sandbox-carthage-tezedge'] });
+        }),
+    );
 
 constructor(
     private http: HttpClient,

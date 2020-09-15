@@ -24,7 +24,7 @@ export class SandboxEffects {
         // dispatch actions
         switchMap(payload => [
             { type: 'CHAIN_SERVER_FORM_SUBMIT_SUCCESS', payload: payload },
-            { type: 'SANDBOX_NODE_START_SUCCESS', payload: payload }
+            { type: 'SANDBOX_NODE_START_SUCCESS', payload: payload },
         ]),
         catchError((error, caught) => {
             console.error(error)
@@ -54,6 +54,7 @@ export class SandboxEffects {
         switchMap(payload => [
             { type: 'SANDBOX_NODE_STOP_SUCCESS', payload: payload },
             { type: 'SETTINGS_NODE_CHANGE', payload: { api: { id: 'ocaml-carthage-tezedge' } }},
+            { type: 'SETTINGS_NODE_LOAD', payload: '' }
         ]),
         catchError((error, caught) => {
             console.error(error)
@@ -123,9 +124,8 @@ export class SandboxEffects {
             { type: 'CHAIN_CONFIG_FORM_SUBMIT_SUCCESS', payload: payload },
             { type: 'SANDBOX_ACTIVATE_PROTOCOL_SUCCESS', payload: payload },
             { type: 'SIDENAV_VISIBILITY_CHANGE', payload: true },
-            { type: 'TOOLBAR_VISIBILITY_CHANGE', payload: true },            
-            { type: 'SETTINGS_NODE_CHANGE', payload: { api: { id: 'sandbox-carthage-tezedge' } }},
-            { type: 'SETTINGS_NODE_LOAD', payload: '' }
+            { type: 'TOOLBAR_VISIBILITY_CHANGE', payload: true },     
+            { type: 'SETTINGS_NODE_LOAD_SANDBOX', payload: '' },       
         ]),
         catchError((error, caught) => {
             console.error(error)
@@ -162,6 +162,11 @@ export class SandboxEffects {
             this.store.dispatch({
                 type: 'SANDBOX_BAKE_BLOCK_ERROR',
                 payload: error,
+            });
+            this.snackBar.open('Baking failed', 'DISMISS', {
+                verticalPosition: 'bottom',
+                horizontalPosition: 'right',
+                panelClass: 'snackbar-error'
             });
             return caught;
         }),

@@ -1266,7 +1266,8 @@ ngx-json-viewer .segment .segment-main .segment-key {
 
 // Wallets table style
 .chain-wallets,
-.wallets{
+.wallets,
+.mempool {
     .mat-table {
         border-radius: 4px;
 
@@ -1328,7 +1329,8 @@ ngx-json-viewer .segment .segment-main .segment-key {
     }
 }
 
-.wallets {
+.wallets,
+.mempool {
     color: $color-focus;
     font-size: 12px;
 
@@ -1392,6 +1394,15 @@ ngx-json-viewer .segment .segment-main .segment-key {
 }
 
 .mat-snack-bar-container{
+
+    &.snackbar-error{
+        background-color: $color-highlight-red !important;
+        color: #fff !important;
+        .mat-button{
+            color: #fff !important;
+        }
+    }
+
     padding: 8px !important;
     margin: 8px !important;
     min-height: unset !important;
@@ -1602,6 +1613,13 @@ input.mat-input-element {
     position: absolute;
     width: 100%;
     height: 100%;
+
+    color: $color-focus;
+    font-size: 12px;
+
+    .filters-wrap{
+        border-bottom: 1px solid $color-border;
+    }
 }
 
 /* virtual scroll */

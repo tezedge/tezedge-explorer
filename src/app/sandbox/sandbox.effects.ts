@@ -163,6 +163,11 @@ export class SandboxEffects {
                 type: 'SANDBOX_BAKE_BLOCK_ERROR',
                 payload: error,
             });
+            this.snackBar.open('Baking failed', 'DISMISS', {
+                verticalPosition: 'bottom',
+                horizontalPosition: 'right',
+                panelClass: 'snackbar-error'
+            });
             return caught;
         }),
         // show success notification

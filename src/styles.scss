@@ -1393,6 +1393,15 @@ ngx-json-viewer .segment .segment-main .segment-key {
 }
 
 .mat-snack-bar-container{
+
+    &.snackbar-error{
+        background-color: $color-highlight-red !important;
+        color: #fff !important;
+        .mat-button{
+            color: #fff !important;
+        }
+    }
+
     padding: 8px !important;
     margin: 8px !important;
     min-height: unset !important;

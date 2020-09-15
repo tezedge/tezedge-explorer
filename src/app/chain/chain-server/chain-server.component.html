@@ -35,57 +35,6 @@
 	<div class="section node-section">
 		<h5 class="section-header">NODE</h5>
 
-		<!-- Identity file (read-only)-->
-		<div class="form-field">
-			<p class="from-field-title">Identity file</p>
-			<p class="from-field-description">
-				New identity is automatically generated if it does not exist on specified path. In case it starts with
-				"./" or "../", it is relative path to the current dir, otherwise to the --tezos-data-dir
-			</p>
-			<mat-form-field class="full-size readonly">
-				<input readonly matInput #identityFile type="text" formControlName="identityFile" />
-			</mat-form-field>
-			<mat-error *ngIf="chainServerForm.controls.identityFile.invalid">
-				<span *ngIf="chainServerForm.controls.identityFile.errors.required">This field is required</span>
-				<span *ngIf="chainServerForm.controls.identityFile.errors.serverError">{{error.message}}</span>
-			</mat-error>
-		</div>
-
-		<!-- Identity expected POW (readonly) -->
-		<div class="form-field">
-			<p class="from-field-title">Identity expected POW</p>
-			<div class="inline-wrapper">
-				<mat-form-field class="small-size readonly">
-					<input matInput readonly #identityExpectedPow type="number" step="0.01"
-						formControlName="identityExpectedPow" />
-				</mat-form-field>
-				<p class="from-field-description">
-					Expected power of identity for node. It is used to generate new identity. Default: 0
-				</p>
-			</div>
-			<mat-error *ngIf="chainServerForm.controls.identityExpectedPow.invalid">
-				<span *ngIf="chainServerForm.controls.identityExpectedPow.errors.required">This field is required</span>
-				<span *ngIf="chainServerForm.controls.identityExpectedPow.errors.serverError">{{error.message}}</span>
-			</mat-error>
-		</div>
-
-		<!-- Network -->
-		<div class="form-field">
-			<p class="from-field-title">Network</p>
-			<p class="from-field-description">
-				Specify the Tezos environment for this node.
-			</p>
-			<mat-form-field class="half-size">
-				<mat-select #network formControlName="network" disableOptionCentering panelClass="chain-select-panel">
-					<mat-option value="sandbox">sandbox</mat-option>
-				</mat-select>
-			</mat-form-field>
-			<mat-error *ngIf="chainServerForm.controls.network.invalid">
-				<span *ngIf="chainServerForm.controls.network.errors.required">This field is required</span>
-				<span *ngIf="chainServerForm.controls.network.errors.serverError">{{error.message}}</span>
-			</mat-error>
-		</div>
-
 		<!-- Mempool -->
 		<div class="form-field">
 			<p class="from-field-title">Mempool</p>
@@ -114,6 +63,23 @@
 			</mat-error>
 		</div>
 
+		<!-- Identity expected POW (readonly) -->
+		<div class="form-field">
+			<p class="from-field-title">Identity expected POW</p>
+			<div class="inline-wrapper">
+				<mat-form-field class="small-size readonly">
+					<input matInput readonly #identityExpectedPow type="number" step="0.01"
+						formControlName="identityExpectedPow" />
+				</mat-form-field>
+				<p class="from-field-description">
+					Expected power of identity for node. It is used to generate new identity. Default: 0
+				</p>
+			</div>
+			<mat-error *ngIf="chainServerForm.controls.identityExpectedPow.invalid">
+				<span *ngIf="chainServerForm.controls.identityExpectedPow.errors.required">This field is required</span>
+				<span *ngIf="chainServerForm.controls.identityExpectedPow.errors.serverError">{{error.message}}</span>
+			</mat-error>
+		</div>
 
 		<!-- Tokio threads -->
 		<div class="form-field">
@@ -133,22 +99,45 @@
 			</mat-error>
 		</div>
 
+		<!-- Network -->
+		<div class="form-field">
+			<p class="from-field-title">Network</p>
+			<p class="from-field-description">
+				Specify the Tezos environment for this node.
+			</p>
+			<mat-form-field class="half-size">
+				<mat-select #network formControlName="network" disableOptionCentering panelClass="chain-select-panel">
+					<mat-option value="sandbox">sandbox</mat-option>
+				</mat-select>
+			</mat-form-field>
+			<mat-error *ngIf="chainServerForm.controls.network.invalid">
+				<span *ngIf="chainServerForm.controls.network.errors.required">This field is required</span>
+				<span *ngIf="chainServerForm.controls.network.errors.serverError">{{error.message}}</span>
+			</mat-error>
+		</div>
+
+		<!-- Identity file (read-only)-->
+		<div class="form-field">
+			<p class="from-field-title">Identity file</p>
+			<p class="from-field-description">
+				New identity is automatically generated if it does not exist on specified path. In case it starts with
+				"./" or "../", it is relative path to the current dir, otherwise to the --tezos-data-dir
+			</p>
+			<mat-form-field class="full-size readonly">
+				<input readonly matInput #identityFile type="text" formControlName="identityFile" />
+			</mat-form-field>
+			<mat-error *ngIf="chainServerForm.controls.identityFile.invalid">
+				<span *ngIf="chainServerForm.controls.identityFile.errors.required">This field is required</span>
+				<span *ngIf="chainServerForm.controls.identityFile.errors.serverError">{{error.message}}</span>
+			</mat-error>
+		</div>
+
 	</div>
 
 	<!-- NETWORKING SECTION -->
 	<div class="section networking-section">
 		<h5 class="section-header">NETWORKING</h5>
-		<!-- Hostname (read-only)-->
-		<div class="form-field">
-			<p class="from-field-title">Hostname</p>
-			<mat-form-field class="half-size readonly">
-				<input readonly matInput #hostname type="text" formControlName="hostname" />
-			</mat-form-field>
-			<mat-error *ngIf="chainServerForm.controls.hostname.invalid">
-				<span *ngIf="chainServerForm.controls.hostname.errors.required">This field is required</span>
-				<span *ngIf="chainServerForm.controls.hostname.errors.serverError">{{error.message}}</span>
-			</mat-error>
-		</div>
+
 		<!-- P2P Port -->
 		<div class="form-field">
 			<p class="from-field-title">P2P Port</p>
@@ -224,6 +213,18 @@
 				<span *ngIf="chainServerForm.controls.webSocketAddress.errors.pattern">Address needs to be in form of
 					'n.n.n.n:p' where 'n' is a number between 0 and 255 and 'p' a number between 0 and 65535</span>
 				<span *ngIf="chainServerForm.controls.webSocketAddress.errors.serverError">{{error.message}}</span>
+			</mat-error>
+		</div>
+
+		<!-- Hostname (read-only)-->
+		<div class="form-field">
+			<p class="from-field-title">Hostname</p>
+			<mat-form-field class="half-size readonly">
+				<input readonly matInput #hostname type="text" formControlName="hostname" />
+			</mat-form-field>
+			<mat-error *ngIf="chainServerForm.controls.hostname.invalid">
+				<span *ngIf="chainServerForm.controls.hostname.errors.required">This field is required</span>
+				<span *ngIf="chainServerForm.controls.hostname.errors.serverError">{{error.message}}</span>
 			</mat-error>
 		</div>
 
@@ -622,7 +623,7 @@
 		</div>
 
 		<!-- Logging file -->
-		<div class="form-field">
+		<!-- <div class="form-field">
 			<p class="from-field-title">Logging file (optional)</p>
 			<p class="from-field-description">
 				Path to the logger file. If provided, logs are written to the log file, otherwise displayed in terminal.
@@ -636,7 +637,7 @@
 				<span *ngIf="chainServerForm.controls.loggingFile.errors.required">This field is required</span>
 				<span *ngIf="chainServerForm.controls.loggingFile.errors.serverError">{{error.message}}</span>
 			</mat-error>
-		</div>
+		</div> -->
 
 	</div>
 

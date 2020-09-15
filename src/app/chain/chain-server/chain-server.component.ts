@@ -28,7 +28,7 @@ export class ChainServerComponent implements OnInit, OnDestroy  {
 			bootstrapDbPath: ['', [Validators.required]],
 			maxThreads: [''],
 			maxOpenFiles: [''],
-			loggingFile: ['', [Validators.required]],
+			loggingFile: [''],
 			loggingFormat: ['', [Validators.required]],
 			loggingLevel: ['', [Validators.required]],
 			oCamlLogging: ['', [Validators.required]],

@@ -73,7 +73,7 @@ export class WalletsComponent implements OnInit, OnDestroy {
     }
     this.transferForm.markAsUntouched();
   }
-  
+
   // save clicked wallet id
   clickWallet(wallet: any){    
     if(this.selectedWalletId !== wallet.id){
@@ -93,7 +93,6 @@ export class WalletsComponent implements OnInit, OnDestroy {
 
   // set clicked wallet again as selected wallet on hover leave
   tableMouseLeave(){
-    console.log('leave', this.clickedWalletId, this.selectedWalletId);
     if(this.clickedWalletId !== this.selectedWalletId){
       this.selectWallet(this.clickedWalletId);
     }

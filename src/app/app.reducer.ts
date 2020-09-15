@@ -117,6 +117,7 @@ export function reducer(state = initialState, action) {
 
                 monitoringSynchronization = false;
                 explorerEndpoints = false;
+                explorerNetwork = false;
             }
 
             return {

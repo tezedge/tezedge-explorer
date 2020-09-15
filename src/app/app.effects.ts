@@ -63,6 +63,7 @@ export class AppEffects {
             const appFeaturesActions = [];
 
             appFeaturesActions.push({ type: 'MEMPOOL_INIT' });
+            appFeaturesActions.push({ type: 'MEMPOOL_ACTION_LOAD' });
             appFeaturesActions.push({ type: 'NETWORK_INIT' });
             // appFeaturesActions.push({ type: 'MONITORING_INIT' });
             // appFeaturesActions.push({ type: 'STORAGE_INIT' });

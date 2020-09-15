@@ -14,6 +14,7 @@ export class MempoolActionComponent implements OnInit, OnDestroy {
   public mempoolActionList = [];
   public displayedColumns: string[] = ["hash", "type"];
   public mempoolSelectedItem: any;
+  public mempoolClickedItem: any;
 
   public networkAction;
   public networkActionList = [];
@@ -39,8 +40,13 @@ export class MempoolActionComponent implements OnInit, OnDestroy {
 
         if(this.mempoolActionList.length){
           this.mempoolSelectedItem = this.mempoolActionList[this.mempoolActionList.length-1];
+
+          if(!this.mempoolClickedItem || !data.entities[this.mempoolClickedItem.id]){
+            this.mempoolClickedItem = this.mempoolSelectedItem;
+          }
         } else {
           this.mempoolSelectedItem = null;
+          this.mempoolClickedItem = null;
         }
       });
 
@@ -69,8 +75,20 @@ export class MempoolActionComponent implements OnInit, OnDestroy {
 
   }
 
-  tableMouseEnter(item) {
+  // set clicked mempool item
+  clickWallet(item: any){    
+    this.mempoolClickedItem = item;
+    this.mempoolSelectedItem = this.mempoolClickedItem;
+  }
+
+  // set temporary select item on hover
+  tableMouseEnter(item: any){
     this.mempoolSelectedItem = item;
+  }
+
+  // set clicked item again as selected on hover leave
+  tableMouseLeave(){
+    this.mempoolSelectedItem = this.mempoolClickedItem;
   }
 
   ngOnDestroy() {

@@ -47,9 +47,9 @@ export class SettingsNodeEffects {
         withLatestFrom(this.store, (action: any, state) => ({ action, state })),
 
         flatMap(({ action, state }) => {
-
+            console.log('[]', state.settingsNode);
             // dispatch action only for current api
-            return action.payload.api.id === state.settingsNode.api.id ?
+            return state.settingsNode && state.settingsNode.api && action.payload.api.id === state.settingsNode.api.id ?
                 of({ type: 'APP_INIT', payload: state.settingsNode.api }) : empty();
 
         }),

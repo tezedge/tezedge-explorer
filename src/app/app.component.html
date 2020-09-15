@@ -239,7 +239,17 @@
                     -->
                 </div>
 
-
+                <div style="padding:12px 10px 12px 20px;">
+                    <button *ngIf="settingsNode.entities['sandbox-carthage-tezedge']?.connected !== true" mat-flat-button style="font-size: 12px;line-height: 24px;color:white; background: #8C6141; font-weight:300"
+                        (click)="nodeSandboxAdd();">
+                        ADD SANDBOX NODE
+                    </button>
+                    <button *ngIf="settingsNode.entities['sandbox-carthage-tezedge']?.connected === true" mat-flat-button style="font-size: 12px;line-height: 24px;color:white; background: #8C6141; font-weight:300"
+                        (click)="nodeSandboxStop();">
+                        STOP SANDBOX NODE
+                    </button>
+                </div>
+                
                 <div class="app-submenu">
                     <span>
                         LEARN

@@ -14,7 +14,7 @@ export function reducer(state = initialState, action) {
         case 'SETTINGS_NODE_LOAD': {
             // console.log("[SETTINGS_NODE_LOAD][reducer]", environment, action, environment.api);
             return {
-                api: state.api.connected ? state.api : environment.api[0],
+                api: state.api && state.api.connected ? state.api : environment.api[0],
                 ids: environment.api.map(node => node.id),
                 entities: environment.api.reduce((accumulator, node) => ({
                     ...accumulator,

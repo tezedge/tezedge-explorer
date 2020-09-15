@@ -15,6 +15,7 @@ export class AppComponent {
   public app;
   public innerWidth;
   public isMobile = false;
+  public settingsNode;
 
   @ViewChild('sidenav') sidenav: MatSidenav;
 
@@ -43,7 +44,7 @@ export class AppComponent {
     this.store.select('app')
       .subscribe(data => {
         this.app = data;
-    });
+      });
 
     // dispatch inner width
     this.store.dispatch({
@@ -55,10 +56,29 @@ export class AppComponent {
 
     // subscribe to mempool to get pending transactions
     this.store.select('mempoolAction')
-    .pipe(takeUntil(this.onDestroy$))
-    .subscribe((mempool) => {
-      this.pendingTransactions = mempool.ids;
-      // this.pendingTransactions = mempool.ids.filter(id => mempool.entities[id].type == 'applied' || mempool.entities[id].type == 'unprocessed')
+      .pipe(takeUntil(this.onDestroy$))
+      .subscribe((mempool) => {
+        this.pendingTransactions = mempool.ids;
+        // this.pendingTransactions = mempool.ids.filter(id => mempool.entities[id].type == 'applied' || mempool.entities[id].type == 'unprocessed')
+      });
+
+    // wait for data changes from redux
+    this.store.select('settingsNode')
+      .subscribe(state => {
+        this.settingsNode = state;
+      });
+
+  }
+
+  nodeSandboxAdd() {
+    this.router.navigate(['/sandbox']);
+  }
+
+  nodeSandboxStop() {
+    // stop sandbox node
+    this.store.dispatch({
+      type: 'SANDBOX_NODE_STOP',
+      payload: '',
     });
   }
 
@@ -77,7 +97,7 @@ export class AppComponent {
   }
 
   sandboxBakeBlock() {
-    if(this.app.statusbar.sandbox){
+    if (this.app.statusbar.sandbox) {
       this.store.dispatch({
         type: 'SANDBOX_BAKE_BLOCK',
       });

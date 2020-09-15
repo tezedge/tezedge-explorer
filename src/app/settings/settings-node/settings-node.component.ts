@@ -26,9 +26,11 @@ export class SettingsNodeComponent implements OnInit {
     // wait for data changes from redux
     this.store.select('settingsNode')
       .subscribe(state => {
-        this.settingsNodeApi = state.entities[state.api.id];
-        this.settingsNodeEntities = state.ids.map(id => state.entities[id]);
-        this.stateEntities = state.entities;
+        if (state.api && state.api.id) {
+          this.settingsNodeApi = state.entities[state.api.id];
+          this.settingsNodeEntities = state.ids.map(id => state.entities[id]);
+          this.stateEntities = state.entities;
+        }
       });
 
     // select store data

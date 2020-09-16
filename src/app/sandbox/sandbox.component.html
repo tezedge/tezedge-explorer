@@ -41,7 +41,9 @@
     <div class="sandbox-footer">
       <div class="footer-container">
         <!-- loading-indicator -->
-        <span *ngIf="showLoading" class="loading-indicator">Loading...</span>
+        <span *ngIf="showLoading" class="loading-indicator">
+          loading...
+        </span>
         <!-- generic error indicator -->
         <button mat-button *ngIf="!showLoading && error && error.error_type ==='generic'" class="error-indicator" (click)="scrolToTop()">
           <img class="icon" src="../../../assets/icon/times-circle-solid.svg"/>

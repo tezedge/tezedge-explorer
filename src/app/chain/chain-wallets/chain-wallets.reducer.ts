@@ -12,7 +12,7 @@ export function reducer(state = initialState, action) {
 						{
 							...action.payload,
 							alias: `bootstrap${state.wallets.length+1}`,
-							balance: "4000000000000",
+							balance: "1000000000000",
 							bakingEnabled: true
 						}
 					]

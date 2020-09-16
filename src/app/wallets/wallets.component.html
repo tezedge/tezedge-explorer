@@ -43,7 +43,7 @@
         <!-- Balance Column -->
         <ng-container matColumnDef="balance">
           <th mat-header-cell *matHeaderCellDef class="text-right"> BALANCE </th>
-          <td mat-cell *matCellDef="let wallet" class="muted text-right"> {{ wallet.balance ? ((wallet.balance | number:'1.2-6') + ' ꜩ') : ''}} </td>
+          <td mat-cell *matCellDef="let wallet" class="muted text-right"> {{ wallet.balance ? ((wallet.balance/100000 | number:'1.6') + ' ꜩ') : ''}} </td>
         </ng-container>
       
         <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
@@ -127,7 +127,7 @@
                 <!-- Amount -->
                 <div class="form-field">
                   <p class="from-field-title">Amount</p>
-                  <mat-form-field class="half-size">
+                  <mat-form-field class="full-size">
                     <input matInput #amount type="text" formControlName="amount"/>
                     <span matSuffix class="input-suffix">XTZ</span>
                   </mat-form-field>
@@ -140,7 +140,7 @@
                 <!-- Fee -->
                 <div class="form-field">
                   <p class="from-field-title">Fee</p>
-                  <mat-form-field class="half-size">
+                  <mat-form-field class="full-size">
                     <input matInput #fee type="text" formControlName="fee"/>
                     <span matSuffix class="input-suffix">XTZ</span>
                   </mat-form-field>

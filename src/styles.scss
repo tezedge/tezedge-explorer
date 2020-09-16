@@ -1243,7 +1243,7 @@ ngx-json-viewer .segment .segment-main .segment-key {
             &:nth-child(odd){
                 background-color: $color-border;
                 &.hovered {
-                    background-color: fade-in($color-border, 0.1);
+                    background-color: #456896; //fade-in($color-border, 0.1);
                 }
             }
             &.selected {
@@ -1251,7 +1251,7 @@ ngx-json-viewer .segment .segment-main .segment-key {
                 color: #fff;
             }
             &.hovered {
-                background-color: fade-out($color-focus, 0.8);
+                background-color: #456896; //fade-out($color-focus, 0.8);
             }
             .mat-cell {
                 color: #ffffffcc !important; //#ffffffcc $color-focus !important;

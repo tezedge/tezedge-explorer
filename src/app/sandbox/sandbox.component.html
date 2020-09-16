@@ -1,9 +1,9 @@
 <div class="sandbox">
   <div class="sandbox-header">
     <div class="header-container">
-      <button mat-button class="left" (click)="closePage()">
+      <button mat-button class="left" (click)="closePage()" style="margin-top: 14px;">
         <img class="icon" src="../../../assets/icon/times.svg" />
-        <span class="text">CLOSE</span>
+        <span class="text" style="padding: 4px 0px 4px 0px;">CLOSE</span>
       </button>
       <!-- <button mat-button class="right" (click)="uploadConfig()">
         <span class="text">UPLOAD CONFIG FILE</span>
@@ -12,7 +12,7 @@
   </div>
 
   <div class="page-title">
-    NEW CHAIN CONFIG
+    SANDBOX CONFIGURATION
   </div>
 
   <mat-horizontal-stepper [linear]="true" #stepper>
@@ -56,11 +56,11 @@
         <button mat-button (click)="submitCurrentStep()" [disabled]="showLoading" class="attention-button">
           <ng-container *ngIf="stepper.selectedIndex !== stepper.steps?.length-1">
             <span class="text">CONTINUE</span>
-            <img class="icon" src="../../../assets/icon/arrow-right.svg" />
+            <!-- <img class="icon" src="../../../assets/icon/arrow-right.svg" /> -->
           </ng-container>
           <ng-container *ngIf="stepper.selectedIndex === stepper.steps?.length-1">
             <span class="text">FINISH</span>
-            <img class="icon" src="../../../assets/icon/check.svg"/>
+            <!-- <img class="icon" src="../../../assets/icon/check.svg"/> -->
           </ng-container>
         </button>
       </div>

@@ -3,25 +3,29 @@
         
         <mat-tab label="CHAIN">
             <ng-template matTabContent>
-                <app-chain-config [isReadonly]="true">
-                </app-chain-config>
+                <div style="padding: 16px;">
+                    <app-chain-config [isReadonly]="true">
+                    </app-chain-config>
+                </div>
             </ng-template>
         </mat-tab>
-        
+
         <mat-tab label="SERVER">
             <ng-template matTabContent>
-                <app-chain-server [isReadonly]="true">
-                </app-chain-server>
+                <div style="padding: 16px;">
+                    <app-chain-server [isReadonly]="true">
+                    </app-chain-server>
+                </div>
             </ng-template>
         </mat-tab>
-    
+
         <!-- <mat-tab label="WALLETS">
             <ng-template matTabContent>
                 <app-chain-wallets [isReadonly]="true">
                 </app-chain-wallets>
             </ng-template>
         </mat-tab> -->
-        
+
         <!-- <mat-tab label="BAKING">
             <ng-template matTabContent>
                 <app-chain-baking>

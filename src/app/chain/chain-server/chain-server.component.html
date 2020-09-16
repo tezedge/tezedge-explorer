@@ -31,6 +31,102 @@
 		</p>
 	</mat-expansion-panel>
 
+	<!-- NETWORKING SECTION -->
+	<div class="section networking-section">
+		<h5 class="section-header">NETWORKING</h5>
+
+		<!-- P2P Port -->
+		<div class="form-field">
+			<p class="from-field-title">P2P Port</p>
+			<div class="inline-wrapper">
+				<mat-form-field class="small-size">
+					<input matInput readonly #p2pPort type="number" formControlName="p2pPort" />
+				</mat-form-field>
+				<p class="from-field-description">Specify port for peer to peer communication.</p>
+			</div>
+			<mat-error *ngIf="chainServerForm.controls.p2pPort.invalid">
+				<span *ngIf="chainServerForm.controls.p2pPort.errors.required">This field is required</span>
+				<span
+					*ngIf="chainServerForm.controls.p2pPort.errors.min || chainServerForm.controls.p2pPort.errors.max">Port
+					needs to be a number between 0 and 65535</span>
+				<span *ngIf="chainServerForm.controls.p2pPort.errors.serverError">{{error.message}}</span>
+			</mat-error>
+		</div>
+
+		<!-- RPC Port -->
+		<div class="form-field">
+			<p class="from-field-title">RPC Port</p>
+			<div class="inline-wrapper">
+				<mat-form-field class="small-size">
+					<input matInput readonly #rpcPort type="number" formControlName="rpcPort" />
+				</mat-form-field>
+				<p class="from-field-description">
+					Node contains subset of Tezos node REST API, described in further sections. This argument specifies
+					port, on
+					which those APIs will be available.
+				</p>
+			</div>
+			<mat-error *ngIf="chainServerForm.controls.rpcPort.invalid">
+				<span *ngIf="chainServerForm.controls.rpcPort.errors.required">This field is required</span>
+				<span
+					*ngIf="chainServerForm.controls.rpcPort.errors.min || chainServerForm.controls.rpcPort.errors.max">Port
+					needs to be a number between 0 and 65535</span>
+				<span *ngIf="chainServerForm.controls.rpcPort.errors.serverError">{{error.message}}</span>
+			</mat-error>
+		</div>
+
+		<!-- Monitor port -->
+		<div class="form-field">
+			<p class="from-field-title">Monitor port</p>
+			<div class="inline-wrapper">
+				<mat-form-field class="small-size">
+					<input matInput readonly #monitorPort type="number" formControlName="monitorPort" />
+				</mat-form-field>
+				<p class="from-field-description">Port on which the Tezedge node monitoring information will be exposed
+				</p>
+			</div>
+			<mat-error *ngIf="chainServerForm.controls.monitorPort.invalid">
+				<span *ngIf="chainServerForm.controls.monitorPort.errors.required">This field is required</span>
+				<span
+					*ngIf="chainServerForm.controls.monitorPort.errors.min || chainServerForm.controls.monitorPort.errors.max">Port
+					needs to be a number between 0 and 65535</span>
+				<span *ngIf="chainServerForm.controls.monitorPort.errors.serverError">{{error.message}}</span>
+			</mat-error>
+		</div>
+
+		<!-- WebSocket Access Address -->
+		<div class="form-field">
+			<p class="from-field-title">WebSocket Access Address</p>
+			<p class="from-field-description">
+				Node expose various metrics and statistics in real-time through websocket. This argument specifies
+				address, on
+				which this websocket will be accessible.
+			</p>
+			<mat-form-field class="half-size">
+				<input matInput readonly #webSocketAddress type="text" formControlName="webSocketAddress" />
+			</mat-form-field>
+			<mat-error *ngIf="chainServerForm.controls.webSocketAddress.invalid">
+				<span *ngIf="chainServerForm.controls.webSocketAddress.errors.required">This field is required</span>
+				<span *ngIf="chainServerForm.controls.webSocketAddress.errors.pattern">Address needs to be in form of
+					'n.n.n.n:p' where 'n' is a number between 0 and 255 and 'p' a number between 0 and 65535</span>
+				<span *ngIf="chainServerForm.controls.webSocketAddress.errors.serverError">{{error.message}}</span>
+			</mat-error>
+		</div>
+
+		<!-- Hostname (read-only)-->
+		<div class="form-field">
+			<p class="from-field-title">Hostname</p>
+			<mat-form-field class="half-size readonly">
+				<input readonly matInput #hostname type="text" formControlName="hostname" />
+			</mat-form-field>
+			<mat-error *ngIf="chainServerForm.controls.hostname.invalid">
+				<span *ngIf="chainServerForm.controls.hostname.errors.required">This field is required</span>
+				<span *ngIf="chainServerForm.controls.hostname.errors.serverError">{{error.message}}</span>
+			</mat-error>
+		</div>
+
+	</div>
+
 	<!-- NODE SECTION -->
 	<div class="section node-section">
 		<h5 class="section-header">NODE</h5>
@@ -129,102 +225,6 @@
 			<mat-error *ngIf="chainServerForm.controls.identityFile.invalid">
 				<span *ngIf="chainServerForm.controls.identityFile.errors.required">This field is required</span>
 				<span *ngIf="chainServerForm.controls.identityFile.errors.serverError">{{error.message}}</span>
-			</mat-error>
-		</div>
-
-	</div>
-
-	<!-- NETWORKING SECTION -->
-	<div class="section networking-section">
-		<h5 class="section-header">NETWORKING</h5>
-
-		<!-- P2P Port -->
-		<div class="form-field">
-			<p class="from-field-title">P2P Port</p>
-			<div class="inline-wrapper">
-				<mat-form-field class="small-size">
-					<input matInput readonly #p2pPort type="number" formControlName="p2pPort" />
-				</mat-form-field>
-				<p class="from-field-description">Specify port for peer to peer communication.</p>
-			</div>
-			<mat-error *ngIf="chainServerForm.controls.p2pPort.invalid">
-				<span *ngIf="chainServerForm.controls.p2pPort.errors.required">This field is required</span>
-				<span
-					*ngIf="chainServerForm.controls.p2pPort.errors.min || chainServerForm.controls.p2pPort.errors.max">Port
-					needs to be a number between 0 and 65535</span>
-				<span *ngIf="chainServerForm.controls.p2pPort.errors.serverError">{{error.message}}</span>
-			</mat-error>
-		</div>
-
-		<!-- RPC Port -->
-		<div class="form-field">
-			<p class="from-field-title">RPC Port</p>
-			<div class="inline-wrapper">
-				<mat-form-field class="small-size">
-					<input matInput readonly #rpcPort type="number" formControlName="rpcPort" />
-				</mat-form-field>
-				<p class="from-field-description">
-					Node contains subset of Tezos node REST API, described in further sections. This argument specifies
-					port, on
-					which those APIs will be available.
-				</p>
-			</div>
-			<mat-error *ngIf="chainServerForm.controls.rpcPort.invalid">
-				<span *ngIf="chainServerForm.controls.rpcPort.errors.required">This field is required</span>
-				<span
-					*ngIf="chainServerForm.controls.rpcPort.errors.min || chainServerForm.controls.rpcPort.errors.max">Port
-					needs to be a number between 0 and 65535</span>
-				<span *ngIf="chainServerForm.controls.rpcPort.errors.serverError">{{error.message}}</span>
-			</mat-error>
-		</div>
-
-		<!-- Monitor port -->
-		<div class="form-field">
-			<p class="from-field-title">Monitor port</p>
-			<div class="inline-wrapper">
-				<mat-form-field class="small-size">
-					<input matInput readonly #monitorPort type="number" formControlName="monitorPort" />
-				</mat-form-field>
-				<p class="from-field-description">Port on which the Tezedge node monitoring information will be exposed
-				</p>
-			</div>
-			<mat-error *ngIf="chainServerForm.controls.monitorPort.invalid">
-				<span *ngIf="chainServerForm.controls.monitorPort.errors.required">This field is required</span>
-				<span
-					*ngIf="chainServerForm.controls.monitorPort.errors.min || chainServerForm.controls.monitorPort.errors.max">Port
-					needs to be a number between 0 and 65535</span>
-				<span *ngIf="chainServerForm.controls.monitorPort.errors.serverError">{{error.message}}</span>
-			</mat-error>
-		</div>
-
-		<!-- WebSocket Access Address -->
-		<div class="form-field">
-			<p class="from-field-title">WebSocket Access Address</p>
-			<p class="from-field-description">
-				Node expose various metrics and statistics in real-time through websocket. This argument specifies
-				address, on
-				which this websocket will be accessible.
-			</p>
-			<mat-form-field class="half-size">
-				<input matInput readonly #webSocketAddress type="text" formControlName="webSocketAddress" />
-			</mat-form-field>
-			<mat-error *ngIf="chainServerForm.controls.webSocketAddress.invalid">
-				<span *ngIf="chainServerForm.controls.webSocketAddress.errors.required">This field is required</span>
-				<span *ngIf="chainServerForm.controls.webSocketAddress.errors.pattern">Address needs to be in form of
-					'n.n.n.n:p' where 'n' is a number between 0 and 255 and 'p' a number between 0 and 65535</span>
-				<span *ngIf="chainServerForm.controls.webSocketAddress.errors.serverError">{{error.message}}</span>
-			</mat-error>
-		</div>
-
-		<!-- Hostname (read-only)-->
-		<div class="form-field">
-			<p class="from-field-title">Hostname</p>
-			<mat-form-field class="half-size readonly">
-				<input readonly matInput #hostname type="text" formControlName="hostname" />
-			</mat-form-field>
-			<mat-error *ngIf="chainServerForm.controls.hostname.invalid">
-				<span *ngIf="chainServerForm.controls.hostname.errors.required">This field is required</span>
-				<span *ngIf="chainServerForm.controls.hostname.errors.serverError">{{error.message}}</span>
 			</mat-error>
 		</div>
 

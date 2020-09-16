@@ -945,7 +945,7 @@ ngx-json-viewer .segment .segment-main .segment-key {
     color: $color-focus;
 
     .sandbox-footer {
-        background: #3F3F43;
+        background: $color-table-border;
     }
     .page-title {
         color: fade-out($color-focus, 0.2);
@@ -1100,8 +1100,9 @@ ngx-json-viewer .segment .segment-main .segment-key {
 .sandbox .mat-button,
 .chain .mat-button{
     color: $color-focus;
-    background: $color-border;
+    // background: $color-border;
     font-size: 12px;
+    font-weight: 300;
 
     .mat-button-wrapper {
         display: flex;
@@ -1118,10 +1119,10 @@ ngx-json-viewer .segment .segment-main .segment-key {
     }
 }
 .sandbox .section{
-    border: 1px solid $color-border;
+    // border: 1px solid $color-border;
 }
 .chain .section:not(:last-child) {
-    border-bottom: 1px solid $color-border !important;
+    // border-bottom: 1px solid $color-border !important;
 }
 
 .chain {
@@ -1247,7 +1248,7 @@ ngx-json-viewer .segment .segment-main .segment-key {
                 }
             }
             &.selected {
-                background-color: $color-content-attention;
+                background-color: $color-highlight-blue;
                 color: #fff;
             }
             &.hovered {
@@ -1381,7 +1382,7 @@ ngx-json-viewer .segment .segment-main .segment-key {
         background-color: $color-content-attention;
         color: #fff;
         line-height: normal;
-        padding: 6px 8px;
+        padding: 6px 6px 6px 12px;
 
         &[disabled]{
             color: #fff !important;
@@ -1551,7 +1552,7 @@ input.mat-input-element {
 }
 
 .sandbox {
-    background-color: $color-table-background;
+    // background-color: $color-table-background;
     border-top-left-radius: 4px;
 }
 

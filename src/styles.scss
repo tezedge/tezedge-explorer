@@ -1301,9 +1301,9 @@ ngx-json-viewer .segment .segment-main .segment-key {
                 // border: 1px solid $color-border;
 
                 .details-section{
-                    &:not(:first-child){
-                        border-top: 1px solid $color-border;
-                    }
+                    // &:not(:first-child){
+                    //     border-top: 1px solid $color-border;
+                    // }
                     .copy-value{
                         font-size: 14px;
                         color: fade-out($color-focus, 0.4);

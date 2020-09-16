@@ -73,8 +73,7 @@
               padding: 0;
 
               .mat-button{
-                width: 100%;
-                padding: 8px;
+                padding: 8px 16px;
                 border-top-left-radius: 0;
                 border-top-right-radius: 0;
                 background: none;
@@ -119,6 +118,7 @@
 
               .box-header{
                 padding: 8px;
+                padding-bottom: 14px;
               }
 
               .copy-content{
@@ -134,7 +134,7 @@
               }
 
               .mat-button{
-                align-self: start;
+                // align-self: start;
                 background: none;
                 padding: 8px;
               }

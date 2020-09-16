@@ -24,12 +24,12 @@
 
     .network-action-table-datetime {
         display: inline-block;
-        min-width: 170px;
+        min-width: 180px;
     }
 
     .network-action-table-address {
         display: inline-block;
-        min-width: 150px;
+        min-width: 160px;
     }
 
     .network-action-table-address a {
@@ -38,7 +38,7 @@
 
     .network-action-table-source {
         display: inline-block;
-        min-width: 70px;
+        min-width: 80px;
     }
 
     .network-action-table-type {
@@ -50,6 +50,8 @@
         display: inline-block;
         min-width: 200px;
     }
+
+
 </style>
 
 <div class="network-action-container">
@@ -152,8 +154,9 @@
             <cdk-virtual-scroll-viewport style="align-items: flex-start;" class="table-virtual-scroll-viewport"
                 (scrolledIndexChange)="onScroll($event)" [itemSize]="36" [maxBufferPx]="288" [minBufferPx]="288">
 
-                <div *cdkVirtualFor="let item of networkActionList" class="table-virtual-scroll-item" 
+                <div *cdkVirtualFor="let even = even;let item of networkActionList" class="table-virtual-scroll-item" 
                     [class.hover]="item?.id === networkActionItem?.id"
+                    [class.even]="even"
                     (mouseenter)="tableMouseEnter(item)">
                     <span class="network-action-table-datetime">
                         {{item?.datetime}}

@@ -31,8 +31,9 @@
                 (scrolledIndexChange)="onScroll($event)" 
                 [itemSize]="36" [maxBufferPx]="288" [minBufferPx]="288">
                 
-                <div *cdkVirtualFor="let item of logsActionList"  class="table-virtual-scroll-item"
+                <div *cdkVirtualFor="let even=even;let item of logsActionList"  class="table-virtual-scroll-item"
                     (mouseenter)="tableMouseEnter(item)"
+                    [class.even]="even"
                     [class.hover]="item?.id === logsActionItem?.id">
 
                     <span class="logs-action-table-datetime">{{item?.datetime}}</span>

@@ -802,6 +802,10 @@ mat-form-field .mat-select-arrow {
     background: $color-table-item-select;
 }
 
+.table-virtual-scroll-item.even {
+    background-color: #323334;
+}
+
 /* changed toolbar styles  */
 ::-webkit-scrollbar-track {
     background-color: rgba(0, 0, 0, 0.2); //  $color-table-background;
@@ -844,7 +848,7 @@ mat-form-field .mat-select-arrow {
 .network-action-table-detail {
     align-items: flex-end;
     height: 489px; /* 36 height of item * 14 number of items - 15 padding top*/
-    width: 350px;
+    width: 40%;
     overflow-y: overlay;
     padding: 10px 10px 0px 20px;
     border-left: 1px solid $color-table-border;
@@ -877,8 +881,8 @@ ngx-json-viewer .segment .segment-main .segment-key {
 
 .logs-action-table-detail {
     align-items: flex-end;
-    height: 489px; /* 36 height of item * 14 number of items - 15 padding top*/
-    width: 250px;
+    height: 100%; /* 36 height of item * 14 number of items - 15 padding top*/
+    width: 30%;
     overflow-y: overlay;
     padding: 10px 10px 0px 0px;
     border-left: 1px solid $color-table-border;
@@ -926,7 +930,7 @@ ngx-json-viewer .segment .segment-main .segment-key {
 .storage-block-table-detail {
     align-items: flex-end;
     /* height: 489px; */ /* 36 height of item * 14 number of items - 15 padding top*/
-    width: 300px;
+    width: 45%;
     overflow-y: overlay;
     padding: 10px 10px 0px 10px;
     border-left: 1px solid $color-table-border;
@@ -1640,4 +1644,8 @@ input.mat-input-element {
     overflow-y: overlay;
     padding: 10px 10px 0px 20px;
     border-left: 1px solid #333334;
+}
+
+.virtual-scroll-item-even {
+    background-color: #323334;
 }

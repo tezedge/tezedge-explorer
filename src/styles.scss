@@ -124,11 +124,11 @@ td.mat-cell {
 }
 
 tr.mat-header-row {
-    height: 38px !important;
+    height: 36px !important;
 }
 
 .mat-paginator-container {
-    min-height: 38px !important;
+    min-height: 36px !important;
 }
 
 tr.mat-footer-row,
@@ -744,26 +744,26 @@ mat-form-field .mat-select-arrow {
 /* virtual scroll variable */
 .table-virtual-scroll {
     position: absolute;
-    width: calc(100% - 10px);
-    height: calc(100% - 25px);
+    width: calc(100%);
+    height: calc(100%);
     font-family: Roboto, "Helvetica Neue", sans-serif;
     color: $color-table;
     background-color: $color-table-background;
-    border: 1px solid $color-table-border;
-    border-radius: 4px;
-    margin: 15px 0px 0px 0px;
+    // border: 1px solid $color-table-border;
+    border-top-left-radius: 4px;
 }
 
 .table-virtual-scroll-header {
     font-size: 12px;
-    font-weight: 500;
+    font-weight: 300;
     padding: 10px 10px 10px 20px;
     color: $color-table-header !important;
     border-bottom: 1px solid $color-table-border;
+    border-top: 1px solid $color-table-border;
 }
 
 .table-virtual-scroll-panel {
-    height: calc(100% - 80px);
+    height: calc(100% - 115px);
 }
 
 .table-virtual-scroll-footer {
@@ -1227,7 +1227,7 @@ ngx-json-viewer .segment .segment-main .segment-key {
                 padding-right: 8px;
 
                 &:first-of-type {
-                    padding-left: 16px;
+                    padding-left: 20px;
                 }
                 &:last-of-type {
                     padding-right: 16px;
@@ -1254,14 +1254,14 @@ ngx-json-viewer .segment .segment-main .segment-key {
                 background-color: #a4a4a540; //fade-out($color-focus, 0.8);
             }
             .mat-cell {
-                color: #ffffffcc !important; //#ffffffcc $color-focus !important;
+                color: #ffffffe6 !important; //#ffffffcc $color-focus !important;
                 border-bottom: none;
                 font-size: 14px;
                 padding-left: 8px;
                 padding-right: 8px;
 
                 &:first-of-type {
-                    padding-left: 16px;
+                    padding-left: 20px;
                 }
                 &:last-of-type {
                     padding-right: 16px;

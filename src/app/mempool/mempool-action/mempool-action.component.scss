@@ -29,11 +29,11 @@
     }
 
     .sidebar-flex{
-      flex: 0 0 344px;
+      flex: 0 0 45%;
       overflow: auto;
 
       .sidebar-wrap {      
-        padding: 0 8px;
+        padding: 4px 8px;
         padding-bottom: 36px;
 
         .details-header {
@@ -64,6 +64,7 @@
             &.copy-section{
               padding: 0;
               padding-bottom: 8px;
+              padding-top: 4px;
 
               .box-header{
                 padding: 8px;

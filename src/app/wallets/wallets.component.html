@@ -56,22 +56,22 @@
     <!-- DETAILS SIDEBAR -->
     <div class="sidebar-flex" *ngIf="selectedWalletId && walletEntities[selectedWalletId]">
       <div class="sidebar-wrap">
-        <div class="details-header">
+        <!-- <div class="details-header">
           <span>DETAIL</span>
           <img class="icon" (click)="closeDetails()" src="../assets/icon/times.svg" />
-        </div>
+        </div> -->
         <!-- wallet details -->
         <div class="details-box">
           <div class="details-section copy-section">
             <div class="box-header">WALLET DETAILS</div>
             <div class="box-content">
               <!-- balance -->
-              <div class="box-row">
+              <!-- <div class="box-row">
                 <div class="copy-content">
                   <div>Balance</div>
                 </div>
                 <div class="copy-value" style="padding-right: 8px;">{{ walletEntities[selectedWalletId].balance ? ((walletEntities[selectedWalletId].balance | number:'1.2-6') + ' ꜩ') : ''}}</div>
-              </div>
+              </div> -->
               <!-- public key hash -->
               <div class="box-row">
                 <div class="copy-content">

@@ -802,101 +802,17 @@ mat-form-field .mat-select-arrow {
     background: $color-table-item-select;
 }
 
-.table-flex::-webkit-scrollbar-track {
-    background-color: $color-table-background;
+/* changed toolbar styles  */
+::-webkit-scrollbar-track {
+    background-color: rgba(0, 0, 0, 0.2); //  $color-table-background;
 }
 
-.table-flex::-webkit-scrollbar {
+::-webkit-scrollbar {
     width: 12px;
     background-color: $color-table-border; //#F5F5F5;
 }
 
-.table-flex::-webkit-scrollbar-thumb {
-    height: 80px;
-    background-color: $color-border;
-}
-
-
-.mat-drawer-inner-container::-webkit-scrollbar-track {
-    background-color: $color-table-background;
-}
-
-.mat-drawer-inner-container::-webkit-scrollbar {
-    width: 12px;
-    background-color: $color-table-border; //#F5F5F5;
-}
-
-.mat-drawer-inner-container::-webkit-scrollbar-thumb {
-    height: 80px;
-    background-color: $color-border;
-}
-
-cdk-virtual-scroll-viewport::-webkit-scrollbar-track {
-    background-color: $color-table-background;
-}
-
-cdk-virtual-scroll-viewport::-webkit-scrollbar {
-    width: 12px;
-    background-color: $color-table-border; //#F5F5F5;
-}
-
-cdk-virtual-scroll-viewport::-webkit-scrollbar-thumb {
-    height: 80px;
-    background-color: $color-border;
-}
-
-.network-action-table-detail::-webkit-scrollbar-track {
-    background-color: $color-table-background;
-}
-
-.network-action-table-detail::-webkit-scrollbar {
-    width: 12px;
-    background-color: $color-table-border; //#F5F5F5;
-}
-
-.network-action-table-detail::-webkit-scrollbar-thumb {
-    height: 80px;
-    background-color: $color-border;
-}
-
-.logs-action-table-detail::-webkit-scrollbar-track {
-    background-color: $color-table-background;
-}
-
-.logs-action-table-detail::-webkit-scrollbar {
-    width: 12px;
-    background-color: $color-table-border; //#F5F5F5;
-}
-
-.logs-action-table-detail::-webkit-scrollbar-thumb {
-    height: 80px;
-    background-color: $color-border;
-}
-
-.endpoints-action-table-detail::-webkit-scrollbar-track {
-    background-color: $color-table-background;
-}
-
-.endpoints-action-table-detail::-webkit-scrollbar {
-    width: 12px;
-    background-color: $color-table-border; //#F5F5F5;
-}
-
-.endpoints-action-table-detail::-webkit-scrollbar-thumb {
-    height: 80px;
-    background-color: $color-border;
-}
-
-.storage-block-table-detail::-webkit-scrollbar-track {
-    background-color: $color-table-background;
-}
-
-.storage-block-table-detail::-webkit-scrollbar {
-    width: 12px;
-    background-color: $color-table-border; //#F5F5F5;
-}
-
-.storage-block-table-detail::-webkit-scrollbar-thumb {
+::-webkit-scrollbar-thumb {
     height: 80px;
     background-color: $color-border;
 }
@@ -1389,6 +1305,7 @@ ngx-json-viewer .segment .segment-main .segment-key {
                         border-top: 1px solid $color-border;
                     }
                     .copy-value{
+                        font-size: 14px;
                         color: fade-out($color-focus, 0.4);
                     }
                 }

@@ -40,9 +40,10 @@
   <ng-template #sandboxFooter >
     <div class="sandbox-footer">
       <div class="footer-container">
-        <!-- loading-indicator -->
-        <span *ngIf="showLoading" class="loading-indicator">
-          loading...
+        <!-- loading-indicator  -->
+        <span class="loading-indicator" *ngIf="showLoading">
+          <img class="icon" src="../../../assets/icon/spinner.svg" />
+          <span style="margin-left:10px;">loading ...</span>  
         </span>
         <!-- generic error indicator -->
         <button mat-button *ngIf="!showLoading && error && error.error_type ==='generic'" class="error-indicator" (click)="scrolToTop()">

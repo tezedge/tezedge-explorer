@@ -66,9 +66,11 @@
       padding-bottom: 6px;
 
       .loading-indicator{
+        display: flex;
+        align-items: center;
         float: left;
         margin-left: 24px;
-        margin-top: 8px;
+        // margin-top: 8px;
         color: #fff;
         font-size: 12px;
       }

@@ -48,7 +48,7 @@ export const environment = {
     //   ws: false,
     // }
   ],
-  sandbox: 'http://carthage.tezedge.com:3030',
+  sandbox: 'https://carthage.tezedge.com:3030',
 };
 
 /*

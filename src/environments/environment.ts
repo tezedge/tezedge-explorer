@@ -35,7 +35,7 @@ export const environment = {
     // },
     {
       id: 'sandbox-carthage-tezedge',
-      name: 'sandbox.carthage.tezedge.com',
+      name: 'sandbox.tezedge.com',
       http: 'https://carthage.tezedge.com:3032',
       debugger: 'https://sandbox.dev.tezedge.com:3031',
       ws: 'wss://sandbox.carthage.tezedge.com',

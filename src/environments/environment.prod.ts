@@ -16,13 +16,6 @@ export const environment = {
     //   ws: 'wss://carthage.tezedge.com',
     // },
     {
-      id: 'sandbox-carthage-tezedge',
-      name: 'sandbox.dev.tezedge.com',
-      http: 'http://sandbox.dev.tezedge.com:18732',
-      debugger: 'http://sandbox.dev.tezedge.com:8732',
-      ws: 'ws://sandbox.dev.tezedge.com:4927',
-    },
-    {
       id: 'rust-carthage-tezedge',
       name: 'rust.carthage.tezedge.com',
       http: 'https://carthage.tezedge.com:8752',
@@ -35,6 +28,13 @@ export const environment = {
       http: 'https://carthage.tezedge.com:8742',
       debugger: 'https://carthage.tezedge.com:8743',
       ws: false,
+    },
+    {
+      id: 'sandbox-carthage-tezedge',
+      name: 'sandbox.dev.tezedge.com',
+      http: 'http://sandbox.dev.tezedge.com:18732',
+      debugger: 'http://sandbox.dev.tezedge.com:8732',
+      ws: 'ws://sandbox.dev.tezedge.com:4927',
     },
     // {
     //   id: 'ocaml-carthage-tezedge-debuger',

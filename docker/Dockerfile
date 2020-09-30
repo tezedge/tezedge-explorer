@@ -11,7 +11,7 @@ RUN npm install http-server -g
 
 # clone & install deps for repo
 ARG node_explorer_git="https://github.com/simplestaking/tezedge-explorer"
-ARG node_explorer_commit_hash="5859d2a13fb2aeada11f653dadf6a3b1375925f5"
+ARG node_explorer_commit_hash="b4fc59086d6e90e199d1043d18fdb62b159e81d5"
 RUN git clone ${node_explorer_git} && \
     cd tezedge-explorer && \
     # git checkout ${node_explorer_commit_hash} && \

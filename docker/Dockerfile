@@ -5,7 +5,7 @@ FROM node:12.2.0
 WORKDIR /app
 
 # install angular cli
-RUN npm install -g @angular/cli@9.1.3
+RUN npm install -g @angular/cli@10.1.0
 # install static server 
 RUN npm install http-server -g
 

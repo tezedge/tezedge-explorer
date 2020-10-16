@@ -106,7 +106,7 @@ export function mapChainServerForEndpoint(formData: any){
         network: 'sandbox',
         peer_thresh_low: formData.lowerPeerTreshold,
         peer_thresh_high: formData.higherPeerTreshold,
-        sandbox_patch_context_json_file: formData.sandboxContextPatching,
+        sandbox_patch_context_json: JSON.parse(formData.sandboxContextPatching),
         tezos_data_dir: formData.tezosDataDir,
         identity_file: formData.identityFile,
         bootstrap_db_path: formData.bootstrapDbPath,

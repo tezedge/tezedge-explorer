@@ -29,7 +29,7 @@ const initialState: any = {
 		tokioThreads: 0,
 		testChain: false,
 		recordingContextActions: true,
-		sandboxContextPatching: './light_node/etc/tezedge_sandbox/sandbox-patch-context.json',
+		sandboxContextPatching: '{ \"genesis_pubkey\": \"edpkuSLWfVU1Vq7Jg9FucPyKmma6otcMHac9zG4oU1KMHSTBpJuGQ2\" }',
 	},
 	error: {
 		error_type: null,
@@ -86,7 +86,7 @@ export function mapFieldName(field_name: string){
 		network: 'network',
 		peer_thresh_low: 'lowerPeerTreshold',
 		peer_thresh_high: 'higherPeerTreshold',
-		sandbox_patch_context_json_file: 'sandboxContextPatching',
+		sandbox_patch_context_json: 'sandboxContextPatching',
 		tezos_data_dir: 'tezosDataDir',
 		identity_file: 'identityFile',
 		bootstrap_db_path: 'bootstrapDbPath',

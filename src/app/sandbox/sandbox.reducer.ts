@@ -36,7 +36,7 @@ export function reducer(state = initialState, action) {
                 error: action.payload.error
             }
         }
-    
+
         // Chain config form submit
         case 'CHAIN_CONFIG_FORM_SUBMIT': {
             return {
@@ -48,14 +48,14 @@ export function reducer(state = initialState, action) {
                 showLoading: true,
                 error: null
             }
-        }     
+        }
         case 'CHAIN_CONFIG_FORM_SUBMIT_SUCCESS': {
             return {
                 ...state,
                 showLoading: false,
                 error: null
             }
-        }    
+        }
         case 'CHAIN_CONFIG_FORM_SUBMIT_ERROR': {
             return {
                 ...state,
@@ -90,7 +90,7 @@ export function reducer(state = initialState, action) {
                 error: action.payload.error
             }
         }
-        
+
         default:
             return state;
     }
@@ -103,32 +103,31 @@ export function mapChainServerForEndpoint(formData: any){
         disable_bootstrap_lookup: !formData.bootstrapLookupAddresses ? '' : undefined,
         bootstrap_lookup_address: formData.bootstrapLookupAddresses ? formData.bootstrapLookupAddresses : undefined,
         disable_mempool: !formData.mempool,
-        network: 'sandbox', 
-        peer_thresh_low: formData.lowerPeerTreshold, 
-        peer_thresh_high: formData.higherPeerTreshold, 
-        sandbox_patch_context_json_file: formData.sandboxContextPatching, 
-        protocol_runner: formData.protocolRunner, 
+        network: 'sandbox',
+        peer_thresh_low: formData.lowerPeerTreshold,
+        peer_thresh_high: formData.higherPeerTreshold,
+        sandbox_patch_context_json_file: formData.sandboxContextPatching,
         tezos_data_dir: formData.tezosDataDir,
         identity_file: formData.identityFile,
-        bootstrap_db_path: formData.bootstrapDbPath, 
-        db_cfg_max_threads: formData.maxThreads ? formData.maxThreads.toString() : undefined, 
+        bootstrap_db_path: formData.bootstrapDbPath,
+        db_cfg_max_threads: formData.maxThreads ? formData.maxThreads.toString() : undefined,
         log_file: formData.loggingFile ? formData.loggingFile : undefined,
-        log_format: formData.loggingFormat, 
-        log_level: formData.loggingLevel, 
-        ocaml_log_enabled: formData.oCamlLogging, 
-        p2p_port: formData.p2pPort, 
-        rpc_port: formData.rpcPort, 
+        log_format: formData.loggingFormat,
+        log_level: formData.loggingLevel,
+        ocaml_log_enabled: formData.oCamlLogging,
+        p2p_port: formData.p2pPort,
+        rpc_port: formData.rpcPort,
         peers: formData.peers ? formData.peers : undefined,
         websocket_address: formData.webSocketAddress,
-        private_node: formData.privateNodeMode ? formData.privateNodeMode : undefined, 
-        ffi_calls_gc_threshold: formData.ffiCallsNo, 
-        ffi_pool_max_connections: formData.ffiMaxConn, 
-        ffi_pool_connection_timeout_in_secs: formData.ffiConnTimeout, 
-        ffi_pool_max_lifetime_in_secs: formData.ffiPoolLifetime, 
-        ffi_pool_idle_timeout_in_secs: formData.ffiPoolUnusedTimeout, 
-        store_context_actions: formData.recordingContextActions, 
+        private_node: formData.privateNodeMode ? formData.privateNodeMode : undefined,
+        ffi_calls_gc_threshold: formData.ffiCallsNo,
+        ffi_pool_max_connections: formData.ffiMaxConn,
+        ffi_pool_connection_timeout_in_secs: formData.ffiConnTimeout,
+        ffi_pool_max_lifetime_in_secs: formData.ffiPoolLifetime,
+        ffi_pool_idle_timeout_in_secs: formData.ffiPoolUnusedTimeout,
+        store_context_actions: formData.recordingContextActions,
         tokio_threads: formData.tokioThreads,
-        enable_testchain: formData.testChain, 
+        enable_testchain: formData.testChain,
     }
 }
 
@@ -152,7 +151,7 @@ export function mapChainConfigForEndpoint(formData: any){
     return {
         timestamp: (new Date).toISOString(),
         protocol_hash: 'PsCARTHAGazKbHtnKfLzQg3kms52kSRpgnDY982a9oYsSXRLQEb',
-        protocol_parameters: 
+        protocol_parameters:
         {
             preserved_cycles: formData.preservedCycles,
             blocks_per_cycle: formData.blocksPerCycle,
@@ -160,7 +159,7 @@ export function mapChainConfigForEndpoint(formData: any){
             blocks_per_roll_snapshot: formData.blocksPerRollSnap,
             blocks_per_voting_period: formData.blocksPerVotingPeriod,
             time_between_blocks: [
-                formData.timeBetweenBlocks1, 
+                formData.timeBetweenBlocks1,
                 formData.timeBetweenBlocks2
             ],
             endorsers_per_block: formData.endorsersPerBlock,

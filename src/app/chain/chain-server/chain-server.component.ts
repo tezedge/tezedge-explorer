@@ -11,7 +11,7 @@ import { takeUntil, take, last } from 'rxjs/operators';
 })
 export class ChainServerComponent implements OnInit, OnDestroy  {
 	@Input() isReadonly?: boolean;
-	
+
   onDestroy$ = new Subject();
 	chainServerForm: FormGroup;
 	error: any;
@@ -34,13 +34,13 @@ export class ChainServerComponent implements OnInit, OnDestroy  {
 			oCamlLogging: ['', [Validators.required]],
 			network: ['', [Validators.required]],
 			p2pPort: ['', [
-				Validators.required, 
+				Validators.required,
 				Validators.min(0),
 				Validators.max(65535),
 				]
 			],
 			rpcPort: ['', [
-				Validators.required, 
+				Validators.required,
 				Validators.min(0),
 				Validators.max(65535),
 				]
@@ -51,7 +51,6 @@ export class ChainServerComponent implements OnInit, OnDestroy  {
 			peers: [''],
 			disableBootstrapDnsLookup: ['', [Validators.required]],
 			bootstrapLookupAddresses: [''],
-			protocolRunner: ['', [Validators.required]],
 			ffiCallsNo: ['', [Validators.required]],
 			ffiMaxConn: ['', [Validators.required]],
 			ffiConnTimeout: ['', [Validators.required]],
@@ -76,9 +75,9 @@ export class ChainServerComponent implements OnInit, OnDestroy  {
 		.subscribe(store => {
 			this.error = store.error;
 			if(
-				this.error?.error_type === 'validation' && 
-				this.error?.field_name && 
-				!this.error?.isShown && 
+				this.error?.error_type === 'validation' &&
+				this.error?.field_name &&
+				!this.error?.isShown &&
 				this.formHasFieldName(this.error.field_name)
 				) {
 				// set error to form control
@@ -87,7 +86,7 @@ export class ChainServerComponent implements OnInit, OnDestroy  {
 
 				// Mark error as shown on form
 				this.store.dispatch({ type: 'CHAIN_SERVER_FORM_ERROR_SHOWN' });
-				
+
 				// subscribe to field value change (to be able to remove server error)
 				control.valueChanges.pipe(take(1)).subscribe(val => {
 					control.setErrors({ 'serverError': null })

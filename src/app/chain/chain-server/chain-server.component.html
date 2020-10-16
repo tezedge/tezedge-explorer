@@ -75,25 +75,6 @@
 			</mat-error>
 		</div>
 
-		<!-- Monitor port -->
-		<div class="form-field">
-			<p class="from-field-title">Monitor port</p>
-			<div class="inline-wrapper">
-				<mat-form-field class="small-size">
-					<input matInput readonly #monitorPort type="number" formControlName="monitorPort" />
-				</mat-form-field>
-				<p class="from-field-description">Port on which the Tezedge node monitoring information will be exposed
-				</p>
-			</div>
-			<mat-error *ngIf="chainServerForm.controls.monitorPort.invalid">
-				<span *ngIf="chainServerForm.controls.monitorPort.errors.required">This field is required</span>
-				<span
-					*ngIf="chainServerForm.controls.monitorPort.errors.min || chainServerForm.controls.monitorPort.errors.max">Port
-					needs to be a number between 0 and 65535</span>
-				<span *ngIf="chainServerForm.controls.monitorPort.errors.serverError">{{error.message}}</span>
-			</mat-error>
-		</div>
-
 		<!-- WebSocket Access Address -->
 		<div class="form-field">
 			<p class="from-field-title">WebSocket Access Address</p>

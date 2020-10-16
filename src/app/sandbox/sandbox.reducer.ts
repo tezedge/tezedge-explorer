@@ -118,7 +118,6 @@ export function mapChainServerForEndpoint(formData: any){
         ocaml_log_enabled: formData.oCamlLogging, 
         p2p_port: formData.p2pPort, 
         rpc_port: formData.rpcPort, 
-        monitor_port: formData.monitorPort, 
         peers: formData.peers ? formData.peers : undefined,
         websocket_address: formData.webSocketAddress,
         private_node: formData.privateNodeMode ? formData.privateNodeMode : undefined, 

@@ -46,12 +46,6 @@ export class ChainServerComponent implements OnInit, OnDestroy  {
 				]
 			],
 			webSocketAddress: ['', [Validators.required, Validators.pattern(/^([0-9]{1,3}(?:\.[0-9]{1,3}){3}|[a-zA-Z]+):([0-9]{1,5})$/)]],
-			monitorPort: ['', [
-				Validators.required, 
-				Validators.min(0),
-				Validators.max(65535),
-				]
-			],
 			lowerPeerTreshold: ['', [Validators.required]],
 			higherPeerTreshold: ['', [Validators.required]],
 			peers: [''],

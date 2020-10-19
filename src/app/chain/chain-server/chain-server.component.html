@@ -75,25 +75,6 @@
 			</mat-error>
 		</div>
 
-		<!-- Monitor port -->
-		<div class="form-field">
-			<p class="from-field-title">Monitor port</p>
-			<div class="inline-wrapper">
-				<mat-form-field class="small-size">
-					<input matInput readonly #monitorPort type="number" formControlName="monitorPort" />
-				</mat-form-field>
-				<p class="from-field-description">Port on which the Tezedge node monitoring information will be exposed
-				</p>
-			</div>
-			<mat-error *ngIf="chainServerForm.controls.monitorPort.invalid">
-				<span *ngIf="chainServerForm.controls.monitorPort.errors.required">This field is required</span>
-				<span
-					*ngIf="chainServerForm.controls.monitorPort.errors.min || chainServerForm.controls.monitorPort.errors.max">Port
-					needs to be a number between 0 and 65535</span>
-				<span *ngIf="chainServerForm.controls.monitorPort.errors.serverError">{{error.message}}</span>
-			</mat-error>
-		</div>
-
 		<!-- WebSocket Access Address -->
 		<div class="form-field">
 			<p class="from-field-title">WebSocket Access Address</p>
@@ -518,22 +499,6 @@
 			</mat-error>
 		</div>
 
-		<!-- Protocol runner (read-only)-->
-		<div class="form-field">
-			<p class="from-field-title">Protocol runner</p>
-			<p class="from-field-description">
-				Path to the protocol runner binary, which is compiled with `tezedge`. For example:
-				`./target/debug/protocol-runner`.
-			</p>
-			<mat-form-field class="half-size readonly">
-				<input readonly matInput #protocolRunner type="text" formControlName="protocolRunner" />
-			</mat-form-field>
-			<mat-error *ngIf="chainServerForm.controls.protocolRunner.invalid">
-				<span *ngIf="chainServerForm.controls.protocolRunner.errors.required">This field is required</span>
-				<span *ngIf="chainServerForm.controls.protocolRunner.errors.serverError">{{error.message}}</span>
-			</mat-error>
-		</div>
-
 	</div>
 
 	<!-- SANDBOX SECTION -->
@@ -544,8 +509,7 @@
 		<div class="form-field">
 			<p class="from-field-title">Sandbox context patching</p>
 			<p class="from-field-description">
-				Path to the json file with key-values, which will be added to the empty context on startup and commit
-				genesis
+				Json with key-values, which will be added to the empty context on startup and commit genesis
 			</p>
 			<mat-form-field class="full-size readonly">
 				<input readonly matInput #sandboxContextPatching type="text" formControlName="sandboxContextPatching" />

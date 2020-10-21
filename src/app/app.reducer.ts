@@ -80,6 +80,12 @@ export function reducer(state = initialState, action) {
             };
         }
 
+        case 'APP_INIT_DEFAULT': {
+            return {
+                ...state,
+                menu: initialState.menu,
+            };
+        }
 
         case 'APP_INIT': {
 
@@ -111,7 +117,7 @@ export function reducer(state = initialState, action) {
                 explorerLogs = true;
             }
 
-            if(action.payload.id == 'sandbox-carthage-tezedge'){
+            if (action.payload.id === 'sandbox-carthage-tezedge') {
                 sandboxChain = true;
                 sandboxWallets = true;
 
@@ -139,7 +145,6 @@ export function reducer(state = initialState, action) {
                     }
                 },
                 statusbar: {
-                    // TODO
                     sandbox: action.payload.id === 'sandbox-carthage-tezedge' && action.payload.connected === true,
                 }
             };
@@ -205,7 +210,7 @@ export function reducer(state = initialState, action) {
 
 
         case 'NETWORK_ACTION_LOAD_ERROR': {
-            return { };
+            return {};
         }
 
         case 'SIDENAV_VISIBILITY_CHANGE': {

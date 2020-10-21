@@ -1,7 +1,7 @@
 import { Injectable, NgZone } from '@angular/core';
 import { Effect, Actions, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
-import { tap, map, switchMap,  withLatestFrom } from 'rxjs/operators';
+import { tap, map, switchMap, withLatestFrom } from 'rxjs/operators';
 import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 
@@ -12,7 +12,7 @@ export class AppEffects {
     @Effect()
     SettingsNodeLoadEffect$ = this.actions$.pipe(
         ofType('@ngrx/effects/init'),
-        // get current url 
+        // get current url
         map(() => ({ type: 'SETTINGS_NODE_LOAD', payload: window.location.hostname }))
     );
 
@@ -29,7 +29,7 @@ export class AppEffects {
 
             let redirectUrl = '';
             if (action.payload.connected) {
-                if(action.payload.id === 'sandbox-carthage-tezedge'){
+                if (action.payload.id === 'sandbox-carthage-tezedge') {
                     redirectUrl = 'wallets';
                 }
                 else if (action.payload.ws === false) {
@@ -51,6 +51,34 @@ export class AppEffects {
         }),
         map(() => ({ type: 'APP_INIT_SUCCESS' }))
     );
+
+
+    // initialize empty app
+    @Effect()
+    AppInitDefaultEffect$ = this.actions$.pipe(
+        ofType('APP_INIT_DEFAULT'),
+
+        // merge state
+        withLatestFrom(this.store, (action: any, state) => ({ action, state })),
+
+        // TODO: refactor and add checks for every featured api (node, debugger, monitoring )
+        tap(({ action, state }) => {
+
+            // force url reload
+            this.router.navigateByUrl('/', { skipLocationChange: false }).then(() =>
+                this.router.navigate([''])
+            );
+
+        }),
+        map(() => ({ type: 'APP_INIT_DEFAULT_SUCCESS' }))
+    );
+
+    @Effect()
+    AppInitDefaultSuccessEffect$ = this.actions$.pipe(
+        ofType('APP_INIT_DEFAULT_SUCCESS'),
+        map(() => ({ type: 'SETTINGS_NODE_LOAD' }))
+    );
+
 
     // initialize app features
     @Effect()

@@ -2,7 +2,8 @@ import { Injectable } from '@angular/core';
 import { Effect, Actions, ofType } from '@ngrx/effects';
 import { HttpClient } from '@angular/common/http';
 import { Store } from '@ngrx/store';
-import { map, switchMap, withLatestFrom, catchError, tap } from 'rxjs/operators';
+import { map, delay, switchMap, withLatestFrom, catchError, tap } from 'rxjs/operators';
+import { empty, of } from 'rxjs';
 import { Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
@@ -46,18 +47,16 @@ export class SandboxEffects {
 
         switchMap(({ action, state }) => {
             console.log('[SANDBOX_NODE_STOP]', state.settingsNode);
-            return this.http.get(state.settingsNode.sandbox + '/stop')
+            return this.http.get(state.settingsNode.sandbox + '/stop');
         }),
 
+        // TODO: replace 
+        delay(8000),
+
         // dispatch actions
-        // map((payload) => ({ type: 'SANDBOX_NODE_STOP_SUCCESS', payload: payload })),
-        switchMap(payload => [
-            { type: 'SANDBOX_NODE_STOP_SUCCESS', payload: payload },
-            { type: 'SETTINGS_NODE_CHANGE', payload: { api: { id: 'ocaml-carthage-tezedge' } }},
-            { type: 'SETTINGS_NODE_LOAD', payload: '' }
-        ]),
+        map((payload) => ({ type: 'SANDBOX_NODE_STOP_SUCCESS', payload: payload })),
         catchError((error, caught) => {
-            console.error(error)
+            console.error(error);
             this.store.dispatch({
                 type: 'SANDBOX_NODE_STOP_ERROR',
                 payload: error,
@@ -65,6 +64,33 @@ export class SandboxEffects {
             return caught;
         })
     );
+
+    // reset application applications
+    @Effect()
+    SandboxNodeStopSuccess$ = this.actions$.pipe(
+        ofType('SANDBOX_NODE_STOP_SUCCESS'),
+
+        // merge state
+        withLatestFrom(this.store, (action: any, state) => ({ action, state })),
+
+        switchMap(({ action, state }) => {
+            console.log('[SANDBOX_NODE_STOP_SUCCESS]', state.settingsNode);
+
+            // dispatch APP_INIT_DEFAULT if we have only sandbox node
+            return (state.settingsNode.entities.hasOwnProperty('sandbox-carthage-tezedge') && state.settingsNode.ids.length === 1) ?
+                of({ type: 'APP_INIT_DEFAULT', payload: '' }) : of({ type: 'SETTINGS_NODE_LOAD', payload: '' });
+        }),
+
+        catchError((error, caught) => {
+            console.error(error);
+            this.store.dispatch({
+                type: 'SANDBOX_NODE_STOP_SUCCESS_ERROR',
+                payload: error,
+            });
+            return caught;
+        })
+    );
+
 
 
     @Effect()
@@ -94,7 +120,7 @@ export class SandboxEffects {
         })
     );
 
-    @Effect({dispatch: false})
+    @Effect({ dispatch: false })
     SandboxWalletSubmitSuccess$ = this.actions$.pipe(
         ofType('CHAIN_WALLETS_SUBMIT_SUCCESS'),
 
@@ -124,8 +150,8 @@ export class SandboxEffects {
             { type: 'CHAIN_CONFIG_FORM_SUBMIT_SUCCESS', payload: payload },
             { type: 'SANDBOX_ACTIVATE_PROTOCOL_SUCCESS', payload: payload },
             { type: 'SIDENAV_VISIBILITY_CHANGE', payload: true },
-            { type: 'TOOLBAR_VISIBILITY_CHANGE', payload: true },     
-            { type: 'SETTINGS_NODE_LOAD_SANDBOX', payload: '' },       
+            { type: 'TOOLBAR_VISIBILITY_CHANGE', payload: true },
+            { type: 'SETTINGS_NODE_LOAD_SANDBOX', payload: '' },
         ]),
         catchError((error, caught) => {
             console.error(error)

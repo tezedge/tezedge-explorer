@@ -2,10 +2,12 @@ import { Injectable } from '@angular/core';
 import { Effect, Actions, ofType } from '@ngrx/effects';
 import { HttpClient } from '@angular/common/http';
 import { Store } from '@ngrx/store';
-import { map, delay, switchMap, withLatestFrom, catchError, tap } from 'rxjs/operators';
-import { empty, of } from 'rxjs';
+import { map, switchMap, flatMap, takeUntil, withLatestFrom, catchError, tap } from 'rxjs/operators';
+import { of, interval, Subject, empty } from 'rxjs';
 import { Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
+
+const sandboxStopPending$ = new Subject();
 
 @Injectable()
 export class SandboxEffects {
@@ -50,11 +52,8 @@ export class SandboxEffects {
             return this.http.get(state.settingsNode.sandbox + '/stop');
         }),
 
-        // TODO: replace 
-        delay(8000),
-
         // dispatch actions
-        map((payload) => ({ type: 'SANDBOX_NODE_STOP_SUCCESS', payload: payload })),
+        map((payload) => ({ type: 'SANDBOX_NODE_STOP_PENDING', payload: payload })),
         catchError((error, caught) => {
             console.error(error);
             this.store.dispatch({
@@ -64,6 +63,41 @@ export class SandboxEffects {
             return caught;
         })
     );
+
+
+    @Effect({dispatch: false})
+    SandboxNodeStopPending$ = this.actions$.pipe(
+        ofType('SANDBOX_NODE_STOP_PENDING'),
+
+        // merge state
+        withLatestFrom(this.store, (action: any, state) => ({ action, state })),
+
+        switchMap(({ action, state }) =>
+
+            // get header data every second
+            interval(100).pipe(
+                takeUntil(sandboxStopPending$),
+                switchMap(() => {
+                    console.log('[SANDBOX_NODE_STOP_PENDING]', state.settingsNode.api.http + '/chains/main/blocks/head/header');
+
+                    return this.http.get(state.settingsNode.api.http + '/chains/main/blocks/head/header').pipe(
+                        catchError((error, caught) => {
+                            console.warn('[SANDBOX_NODE_STOP_PENDING] error ', error);
+
+                            sandboxStopPending$.next();
+                            this.store.dispatch({
+                                type: 'SANDBOX_NODE_STOP_SUCCESS',
+                                payload: error,
+                            });
+                            return empty();
+                        }),
+                    );
+
+                })
+            )
+        )
+    );
+
 
     // reset application applications
     @Effect()
@@ -111,7 +145,7 @@ export class SandboxEffects {
             { type: 'SANDBOX_INIT_CLIENT_SUCCESS', payload: payload },
         ]),
         catchError((error, caught) => {
-            console.error(error)
+            console.error(error);
             this.store.dispatch({
                 type: 'CHAIN_WALLETS_SUBMIT_ERROR',
                 payload: error,

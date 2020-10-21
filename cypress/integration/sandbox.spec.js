@@ -18,6 +18,9 @@ context('sandbox', () => {
 
     // start sandbox
     cy.get('.ng-star-inserted > div > .mat-focus-indicator').click()
+    cy.location().should((location) => {
+      expect(location.hash).to.eq('#/sandbox')
+    });
 
     // config sandbox server
     cy.get('.footer-container > .mat-focus-indicator').click()

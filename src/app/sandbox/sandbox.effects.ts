@@ -75,7 +75,7 @@ export class SandboxEffects {
         switchMap(({ action, state }) =>
 
             // get header data every second
-            interval(100).pipe(
+            interval(1000).pipe(
                 takeUntil(sandboxStopPending$),
                 switchMap(() => {
                     console.log('[SANDBOX_NODE_STOP_PENDING]', state.settingsNode.api.http + '/chains/main/blocks/head/header');

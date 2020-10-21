@@ -84,6 +84,7 @@ export function reducer(state = initialState, action) {
             return {
                 ...state,
                 menu: initialState.menu,
+                statusbar: initialState.statusbar,
             };
         }
 
@@ -145,7 +146,7 @@ export function reducer(state = initialState, action) {
                     }
                 },
                 statusbar: {
-                    sandbox: action.payload.id === 'sandbox-carthage-tezedge' && action.payload.connected === true,
+                    sandbox: action.payload.id === 'sandbox-carthage-tezedge',
                 }
             };
         }

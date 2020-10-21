@@ -1,3 +1,4 @@
+import { StateObservable } from '@ngrx/store';
 import * as moment from 'moment-mini-ts';
 import { environment } from '../../../environments/environment';
 
@@ -103,6 +104,21 @@ export function reducer(state = initialState, action) {
                         relativeDatetime: moment(action.payload.response.timestamp).fromNow(),
                     },
                 }
+            };
+        }
+
+        case 'SANDBOX_NODE_STOP_PENDING': {
+            return {
+                ...state,
+                api: state.api.id === 'sandbox-carthage-tezedge' ?
+                    { ...state.api, connected: 'pending' } : { ...state.api },
+                entities: {
+                    ...state.entities,
+                    ['sandbox-carthage-tezedge']: {
+                        ...state.entities['sandbox-carthage-tezedge'],
+                        connected: 'pending',
+                    },
+                },
             };
         }
 

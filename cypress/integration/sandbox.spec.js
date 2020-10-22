@@ -50,6 +50,9 @@ context('sandbox', () => {
     cy.server()
     cy.route({ method: 'GET', url: '/bake', }).as('sandbox_bake')
   
+    // wait for page to fully load 
+    cy.wait(3000);
+    
     // sellect wallet 
     cy.get(':nth-child(2) > .cdk-column-address').click();
 

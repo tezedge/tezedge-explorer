@@ -2,7 +2,7 @@ export const environment = {
   production: true,
   api: [
     {
-      id: 'sandbox-carthage-tezedge',
+      id: 'node-carthage-tezedge',
       name: 'rust.carthage.node',
       http: 'http://127.0.0.1:18732',
       debugger: false,

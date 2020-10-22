@@ -7,7 +7,7 @@ context('sandbox', () => {
 
   // https://on.cypress.io/interacting-with-elements
 
-  it('[sandbox] add node', () => {
+  it('[sandbox] start node', () => {
     
     cy.server()
     cy.route({ method: 'POST', url: '/start', }).as('sandbox_server')
@@ -15,9 +15,8 @@ context('sandbox', () => {
     cy.route({ method: 'POST', url: '/activate_protocol', }).as('sandbox_chain')
     cy.route({ method: 'GET', url: '/wallets', }).as('wallets')
 
-
-    // start sandbox
-    cy.get('.ng-star-inserted > div > .mat-focus-indicator').click()
+   // start sandbox
+    cy.get('#menu-add-sandbox-node').click()
     cy.location().should((location) => {
       expect(location.hash).to.eq('#/sandbox')
     });
@@ -44,7 +43,22 @@ context('sandbox', () => {
       expect(xhr.status).to.equal(200);
     });
 
+  })
 
+  it('[sandbox] stop node', () => {
+    
+    cy.server()
+    cy.route({ method: 'GET', url: '/stop', }).as('sandbox_stop')
+  
+    // open setting node menu 
+    cy.get('app-settings-node').click()
+
+    // stop sandbox
+    cy.get('#settings-node-stop-sandbox').click()
+    cy.wait('@sandbox_stop').then((xhr) => {
+      expect(xhr.status).to.equal(200);
+    });
+  
   })
 
 })

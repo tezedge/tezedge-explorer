@@ -49,19 +49,24 @@ context('sandbox', () => {
     
     cy.server()
     cy.route({ method: 'GET', url: '/bake', }).as('sandbox_bake')
-  
+    cy.route({ method: 'POST', url: '/injection/operation', }).as('sandbox_inject_operation')
+    cy.route({ method: 'GET', url: '/chains/main/mempool/pending_operations', }).as('sandbox_mempool')
+
     // wait for page to fully load 
     cy.wait(3000);
     
-    // sellect wallet 
-    cy.get(':nth-child(2) > .cdk-column-address').click();
-
     // enter wallet
     cy.get('.box-row > :nth-child(1) > .mat-form-field').type('tz1MDcUP3WhkpfDJ14pBNcmmJnQFfKtgeDr2');
 
     // create transaction
     cy.get('.button > .mat-button').click();
-    
+    cy.wait('@sandbox_inject_operation').then((xhr) => {
+      expect(xhr.status).to.equal(200);
+    });
+    cy.wait('@sandbox_mempool').then((xhr) => {
+      expect(xhr.status).to.equal(200);
+    });
+
     // bake transaction
     cy.get('.pending-transactions').click();
     cy.wait('@sandbox_bake').then((xhr) => {

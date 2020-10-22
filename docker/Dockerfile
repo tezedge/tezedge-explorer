@@ -9,7 +9,7 @@ RUN npm install -g @angular/cli@10.1.0
 
 # clone & install deps for repo
 ARG node_explorer_git="https://github.com/simplestaking/tezedge-explorer"
-ARG node_explorer_commit_hash="b74cb47bb51ec06e18ea91e5fceaf02c0cf08d3d"
+ARG node_explorer_commit_hash="bd04cf2eee9a9c405d1cb6aa5b22f1437e16480b"
 RUN git clone ${node_explorer_git} && \
     cd tezedge-explorer && \
     # git checkout ${node_explorer_commit_hash} && \

@@ -45,6 +45,28 @@ context('sandbox', () => {
 
   })
 
+  it('[sandbox] create transaction', () => {
+    
+    cy.server()
+    cy.route({ method: 'GET', url: '/bake', }).as('sandbox_bake')
+  
+    // sellect wallet 
+    cy.get(':nth-child(2) > .cdk-column-address').click();
+
+    // enter wallet
+    cy.get('.box-row > :nth-child(1) > .mat-form-field').type('tz1MDcUP3WhkpfDJ14pBNcmmJnQFfKtgeDr2');
+
+    // create transaction
+    cy.get('.button > .mat-button').click();
+    
+    // bake transaction
+    cy.get('.pending-transactions').click();
+    cy.wait('@sandbox_bake').then((xhr) => {
+       expect(xhr.status).to.equal(200);
+    });
+  
+  })
+
   it('[sandbox] stop node', () => {
     
     cy.server()

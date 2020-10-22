@@ -1,7 +1,6 @@
-docker login --username=jurajselep
-sudo docker build -t simplestakingcom/tezedge-explorer . --no-cache=true
-sudo docker push simplestakingcom/tezedge-explorer
+sudo docker login --username=jurajselep
+sudo docker build -t simplestakingcom/tezedge-explorer:sandbox-v0.6.0 . --no-cache=true
+sudo docker push simplestakingcom/tezedge-explorer:sandbox-v0.6.0
 
-# docker login --username=jurajselep
-# sudo docker build -t simplestakingcom/tezedge-explorer-ocaml . --no-cache=true
-# sudo docker push simplestakingcom/tezedge-explorer-ocaml
+sudo docker build -t simplestakingcom/tezedge-explorer:sandbox-latest .
+sudo docker push simplestakingcom/tezedge-explorer:sandbox-latest

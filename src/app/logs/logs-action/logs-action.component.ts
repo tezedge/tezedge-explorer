@@ -2,7 +2,7 @@ import {Component, OnInit, OnDestroy, ViewChild, ChangeDetectionStrategy, Change
 import {CdkVirtualScrollViewport} from '@angular/cdk/scrolling';
 import {Store} from '@ngrx/store';
 import {Observable, Subject, Subscription} from 'rxjs';
-import {map, takeUntil} from 'rxjs/operators';
+import {filter, map, takeUntil} from 'rxjs/operators';
 import {VirtualScrollDirective} from '../../shared/virtual-scroll.directive';
 import {CollectionViewer, DataSource} from '@angular/cdk/collections';
 
@@ -79,17 +79,17 @@ export class LogsActionComponent implements OnInit, OnDestroy {
   }
 
   onScroll(index) {
-    if (this.logsActionList.length - index > 15) {
-      this.store.dispatch({
-        type: 'LOGS_ACTION_STOP',
-        payload: event,
-      });
-    } else {
-      this.store.dispatch({
-        type: 'LOGS_ACTION_START',
-        payload: event,
-      });
-    }
+    // if (this.logsActionList.length - index > 15) {
+    //   this.store.dispatch({
+    //     type: 'LOGS_ACTION_STOP',
+    //     payload: event,
+    //   });
+    // } else {
+    //   this.store.dispatch({
+    //     type: 'LOGS_ACTION_START',
+    //     payload: event,
+    //   });
+    // }
   }
 
   scrollStart() {
@@ -146,39 +146,31 @@ export class LogsDataSource extends DataSource<any> {
   connect(collectionViewer: CollectionViewer): Observable<(string | undefined)[]> {
 //
     this.subscription.add(collectionViewer.viewChange
-      //       .pipe(
-      //         // debounceTime(50),
-      //         filter(range => {
-      //           return (range.end > this.dataRange.end) || (range.start < this.dataRange.start) ? true : false;
-      //         })
-      //       )
+      .pipe(
+        filter(range => {
+          return range.end > this.dataRange.end || range.start < this.dataRange.start;
+        })
+      )
       .subscribe(vsRange => {
-        // console.log('[NetworkDataSource][viewChange]', virtualScrollRange);
-        debugger;
         console.log(vsRange);
         this.store.dispatch({
-          type: 'LOGS_ACTION_LOAD'
-          // payload: {
-          //   cursor_id: vsRange.end
-          // },
+          type: 'LOGS_ACTION_LOAD',
+          payload: {
+            cursorId: vsRange.end
+          }
         });
 
       }));
-//
+
     return this.logsAction$.pipe(
-//       filter(data => data.ids.length > 0),
+      filter(data => data.ids.length > 0),
       map(data => {
-
-        // console.log('[NetworkDataSource] start');
-
         const logsActionList = data.ids.map(id => ({id, ...data.entities[id]}));
 
-        // const dataView = new Array(data.lastCursorId);
-        // data.ids.map(id => { dataView[id] = data.entities[id]; });
-
-        this.dataRange = {start: data.ids[0], end: data.ids[data.ids.length - 1]};
-
-        // console.log('[NetworkDataSource] dataView', dataView);
+        this.dataRange = {
+          start: data.ids[0],
+          end: data.ids[data.ids.length - 1]
+        };
 
         return logsActionList;
       })

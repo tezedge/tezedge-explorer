@@ -1,4 +1,5 @@
 {
   "/v2/p2p/?remote_addr=:addr&limit=:l": "/v2-p2p?remote_addr=:addr&_limit=l",
-  "/v2/log/?limit=:l": "/v2-log?_limit=:l"
+  "/v2/log/?limit=:l": "/v2-log?_limit=:l",
+  "/v2/log/?cursor_id=:c&limit=:l": "/v2-log?_start=:c&_limit=:l"
 }

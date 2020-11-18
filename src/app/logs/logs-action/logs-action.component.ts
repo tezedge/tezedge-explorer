@@ -1,39 +1,39 @@
-import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
-import { MatPaginator } from '@angular/material/paginator';
-import { MatTableDataSource } from '@angular/material/table';
-import { ActivatedRoute } from '@angular/router';
-import { CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
-
-import { Store } from '@ngrx/store';
-import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import {Component, OnInit, OnDestroy, ViewChild, ChangeDetectionStrategy, ChangeDetectorRef} from '@angular/core';
+import {CdkVirtualScrollViewport} from '@angular/cdk/scrolling';
+import {Store} from '@ngrx/store';
+import {Observable, Subject, Subscription} from 'rxjs';
+import {map, takeUntil} from 'rxjs/operators';
+import {VirtualScrollDirective} from '../../shared/virtual-scroll.directive';
+import {CollectionViewer, DataSource} from '@angular/cdk/collections';
 
 @Component({
   selector: 'app-logs-action',
   templateUrl: './logs-action.component.html',
-  styleUrls: ['./logs-action.component.scss']
+  styleUrls: ['./logs-action.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class LogsActionComponent implements OnInit, OnDestroy {
 
-  public logsAction;
-  public logsActionList = [];
-  public logsActionItem
-  public logsActionShow;
+  logsDataSource: LogsDataSource;
+  private logsAction$: Observable<any>;
+  virtualScrollItems;
+  logsActionList: Array<any> = [];
+  logsActionItem; // TODO type log - define an interface for log
+  logsActionShow: boolean;
+  ITEM_SIZE = 36;
 
-  public onDestroy$ = new Subject();
-
-  public ITEM_SIZE = 36;
+  onDestroy$ = new Subject();
 
   @ViewChild(CdkVirtualScrollViewport) viewPort: CdkVirtualScrollViewport;
+  @ViewChild(VirtualScrollDirective) vrFor: VirtualScrollDirective;
 
   constructor(
     public store: Store<any>,
-    private activeRoute: ActivatedRoute
-  ) { }
+    private changeDetector: ChangeDetectorRef
+  ) {
+  }
 
   ngOnInit() {
-
-    // triger action and get logs data
     this.store.dispatch({
       type: 'LOGS_ACTION_LOAD',
     });
@@ -42,88 +42,77 @@ export class LogsActionComponent implements OnInit, OnDestroy {
     this.store.select('logsAction')
       .pipe(takeUntil(this.onDestroy$))
       .subscribe(data => {
+        this.virtualScrollItems = data;
+        this.logsActionShow = data.ids.length > 0;
 
-        this.logsAction = data;
-        this.logsActionShow = data.ids.length > 0 ? true : false;
-        
-        this.logsActionList = data.ids.map(id => ({ id, ...data.entities[id] }));
-        
+        // this.logsActionList = data.ids.map(id => ({id, ...data.entities[id]}));
+
         // set viewport at the end
-        if (this.logsActionShow) {
-
-          const viewPortRange = this.viewPort && this.viewPort.getRenderedRange() ?
-            this.viewPort.getRenderedRange() : { start: 0, end: 0 };
-          const viewPortItemLength = this.logsActionList.length;
-
-          // set hover
-          this.logsActionItem = this.logsActionList[this.logsActionList.length - 1];
-
-          // trigger only if we are streaming and not at the end of page
-          if (data.stream && viewPortItemLength > 0 && (viewPortRange.end !== viewPortItemLength) &&
-            (viewPortRange.start !== viewPortRange.end)) {
-            // console.log('[set][scrollToOffset] ', data.stream, this.logsActionList.length, viewPortItemLength, viewPortRange);
-
-            setTimeout(() => {
-              const offset = this.ITEM_SIZE * this.logsActionList.length;
-              // set scroll
-              this.viewPort.scrollToOffset(offset);
-
-            });
-
-          }
-
-        }
+        // if (this.logsActionShow) {
+        //
+        //   const viewPortRange = this.viewPort && this.viewPort.getRenderedRange() ?
+        //     this.viewPort.getRenderedRange() : {start: 0, end: 0};
+        //   const viewPortItemLength = this.logsActionList.length;
+        //
+        //   // set hover
+        //   this.logsActionItem = this.logsActionList[this.logsActionList.length - 1];
+        //
+        //   // trigger only if we are streaming and not at the end of page
+        //   if (data.stream && viewPortItemLength > 0 && (viewPortRange.end !== viewPortItemLength) &&
+        //     (viewPortRange.start !== viewPortRange.end)) {
+        //     // console.log('[set][scrollToOffset] ', data.stream, this.logsActionList.length, viewPortItemLength, viewPortRange);
+        //
+        //     setTimeout(() => {
+        //       const offset = this.ITEM_SIZE * this.logsActionList.length;
+        //       // set scroll
+        //       this.viewPort.scrollToOffset(offset);
+        //
+        //     });
+        //
+        //   }
+        //
+        // }
       });
 
+    this.logsAction$ = this.store.select('logsAction');
+    this.logsDataSource = new LogsDataSource(this.logsAction$, this.store);
   }
-  
-  onScroll(index) {
 
+  onScroll(index) {
     if (this.logsActionList.length - index > 15) {
-      // stop log actions stream
       this.store.dispatch({
         type: 'LOGS_ACTION_STOP',
         payload: event,
       });
     } else {
-      // start log actions stream
       this.store.dispatch({
         type: 'LOGS_ACTION_START',
         payload: event,
       });
     }
-
   }
 
   scrollStart() {
-
-    // triger action and get logs data
+    // trigger action and get logs data
     this.store.dispatch({
       type: 'LOGS_ACTION_START',
     });
-
   }
 
   scrollStop() {
-
-    // stop streaming logs actions
     this.store.dispatch({
       type: 'LOGS_ACTION_STOP',
     });
-
   }
-  
+
   scrollToEnd() {
-
-    const offset = this.ITEM_SIZE * this.logsActionList.length;
-    this.viewPort.scrollToOffset(offset);
-  
+    this.vrFor.scrollToBottom();
+    // const offset = this.ITEM_SIZE * this.logsActionList.length;
+    // this.viewPort.scrollToOffset(offset);
   }
-  
+
   tableMouseEnter(item) {
-
-    this.logsActionItem = item
-
+    this.logsActionItem = item;
   }
 
   ngOnDestroy() {
@@ -138,6 +127,65 @@ export class LogsActionComponent implements OnInit, OnDestroy {
     this.onDestroy$.complete();
 
   }
+}
 
-  
+//
+export class LogsDataSource extends DataSource<any> {
+
+  private subscription = new Subscription();
+  private dataRange = {start: 0, end: 0};
+
+  constructor(
+    private logsAction$: Observable<any>,
+    private store: Store<any>,
+  ) {
+    super();
+  }
+
+
+  connect(collectionViewer: CollectionViewer): Observable<(string | undefined)[]> {
+//
+    this.subscription.add(collectionViewer.viewChange
+      //       .pipe(
+      //         // debounceTime(50),
+      //         filter(range => {
+      //           return (range.end > this.dataRange.end) || (range.start < this.dataRange.start) ? true : false;
+      //         })
+      //       )
+      .subscribe(vsRange => {
+        // console.log('[NetworkDataSource][viewChange]', virtualScrollRange);
+        debugger;
+        console.log(vsRange);
+        this.store.dispatch({
+          type: 'LOGS_ACTION_LOAD'
+          // payload: {
+          //   cursor_id: vsRange.end
+          // },
+        });
+
+      }));
+//
+    return this.logsAction$.pipe(
+//       filter(data => data.ids.length > 0),
+      map(data => {
+
+        // console.log('[NetworkDataSource] start');
+
+        const logsActionList = data.ids.map(id => ({id, ...data.entities[id]}));
+
+        // const dataView = new Array(data.lastCursorId);
+        // data.ids.map(id => { dataView[id] = data.entities[id]; });
+
+        this.dataRange = {start: data.ids[0], end: data.ids[data.ids.length - 1]};
+
+        // console.log('[NetworkDataSource] dataView', dataView);
+
+        return logsActionList;
+      })
+    );
+  }
+
+  disconnect(): void {
+    this.subscription.unsubscribe();
+  }
 }

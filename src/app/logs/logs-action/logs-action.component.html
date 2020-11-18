@@ -28,10 +28,10 @@
         <div class="table-virtual-scroll-panel" style="display:flex;flex-direction: row;">
 
             <cdk-virtual-scroll-viewport style="align-items: flex-start;" class="logs-action-table-viewport"
-                (scrolledIndexChange)="onScroll($event)" 
+                (scrolledIndexChange)="onScroll($event)"
                 [itemSize]="36" [maxBufferPx]="288" [minBufferPx]="288">
-                
-                <div *cdkVirtualFor="let even=even;let item of logsActionList"  class="table-virtual-scroll-item"
+
+                <div *cdkVirtualFor="let even=even;let item of logsDataSource"  class="table-virtual-scroll-item"
                     (mouseenter)="tableMouseEnter(item)"
                     [class.even]="even"
                     [class.hover]="item?.id === logsActionItem?.id">
@@ -54,10 +54,10 @@
         </div>
         <div class="table-virtual-scroll-footer">
             <span>
-                <button mat-icon-button matTooltip="Start" (click)="scrollStart()" *ngIf="!logsAction?.stream">
+                <button mat-icon-button matTooltip="Start" (click)="scrollStart()" *ngIf="!virtualScrollItems?.stream">
                     <mat-icon>play_arrow_outline</mat-icon>
                 </button>
-                <button mat-icon-button matTooltip="Stop" (click)="scrollStop()" *ngIf="logsAction?.stream">
+                <button mat-icon-button matTooltip="Stop" (click)="scrollStop()" *ngIf="virtualScrollItems?.stream">
                     <mat-icon>stop_outline</mat-icon>
                 </button>
                 <button mat-icon-button style="transform: rotate(90deg)" matTooltip="Last page" (click)="scrollToEnd()">

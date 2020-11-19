@@ -15,6 +15,37 @@
     }
 </style>
 
+<!--testing purposes-->
+
+<style>
+    .virtual-scroll-container {
+        position: relative;
+        width: 60%;
+        height: calc(95vh - 74px);
+        /* must be multiple of itemSize*/
+        /* height: 500px; */
+        overflow: auto;
+        z-index: 999;
+    }
+
+    .item {
+        position: absolute;
+        min-width: calc(100% - 16px);
+
+        display: flex;
+        align-items: center;
+
+        height: 36px;
+        font-size: 14px;
+        padding-left: 16px;
+
+        color: white;
+    }
+
+</style>
+
+<!---->
+
 <div class="logs-action-container">
 
     <div class="table-virtual-scroll">
@@ -25,6 +56,25 @@
             <span class="logs-action-table-message">MESSAGE</span>
         </div>
 
+        <div style="display:flex;flex-direction: row;">
+
+            <div class="virtual-scroll-container">
+                <ng-template vsFor let-event [vsForOf]="virtualScrollItems" let-position="position"
+                             (getItems)="getItems($event)">
+                    <span class="item" [style.transform]="'translate(0px,' + position + 'px)'"
+                          [class.virtualScrollRowEven]="event.index % 2">
+
+                        <span class="logs-action-table-datetime">{{event?.datetime}}</span>
+                        <span class="logs-action-table-level">{{event?.level}}</span>
+                        <span class="logs-action-table-message" style="white-space: nowrap; text-overflow: ellipsis;font-size:14px !important;">{{event?.preview}}</span>
+
+                    </span>
+                </ng-template>
+            </div>
+
+        </div>
+
+        <!--
         <div class="table-virtual-scroll-panel" style="display:flex;flex-direction: row;">
 
             <cdk-virtual-scroll-viewport style="align-items: flex-start;" class="logs-action-table-viewport"
@@ -52,6 +102,8 @@
             </div>
 
         </div>
+
+        -->
         <div class="table-virtual-scroll-footer">
             <span>
                 <button mat-icon-button matTooltip="Start" (click)="scrollStart()" *ngIf="!virtualScrollItems?.stream">

@@ -12,6 +12,7 @@ import { throttleTime } from 'rxjs/operators';
 })
 export class VirtualScrollDirective implements AfterViewInit, OnDestroy, OnChanges, DoCheck {
 
+    debugger;
     private itemHeight = 36;
     private maxScrollHeight = 0;
     private scrollPositionStart = 0;
@@ -46,7 +47,7 @@ export class VirtualScrollDirective implements AfterViewInit, OnDestroy, OnChang
 
     ngOnChanges(changes: SimpleChanges) {
         // console.log('[ngOnChanges]', changes);
-
+        debugger;
         if (this.virtualScrollItemsCount > 0) {
             // render items
             this.viewContainer.clear();
@@ -56,7 +57,7 @@ export class VirtualScrollDirective implements AfterViewInit, OnDestroy, OnChang
     }
 
     ngDoCheck() {
-        // console.log('[ngDoCheck]', this.vsForOf);
+        console.log('[ngDoCheck]', this.vsForOf);
     }
 
     ngAfterViewInit() {
@@ -108,9 +109,9 @@ export class VirtualScrollDirective implements AfterViewInit, OnDestroy, OnChang
 
 
             // get offset so we can set correct possition for items
-            this.virtualScrollItemsOffset = (this.vsForOf.lastCursorId - this.virtualScrollItemsCount);
+            this.virtualScrollItemsOffset = (this.getCursorId() - this.virtualScrollItemsCount);
             console.log('[onScroll] this.virtualScrollItemsCount=' + this.virtualScrollItemsCount
-                + ' this.vsForOf.lastCursorId=' + this.vsForOf.lastCursorId);
+                + ' lastCursorId=' + this.getCursorId());
 
 
             // check if we have new scroll event
@@ -164,9 +165,9 @@ export class VirtualScrollDirective implements AfterViewInit, OnDestroy, OnChang
         this.itemHeight = 36;
 
         // get number of items in virtual scroll
-        console.warn('[load] vsForOf.lastCursorId=', this.vsForOf.lastCursorId);
-        this.virtualScrollItemsCount = (this.vsForOf.lastCursorId * this.itemHeight) > this.maxScrollHeight
-            ? Math.floor(this.maxScrollHeight / this.itemHeight) : this.vsForOf.lastCursorId;
+        console.warn('[load] lastCursorId=', this.getCursorId());
+        this.virtualScrollItemsCount = (this.getCursorId() * this.itemHeight) > this.maxScrollHeight
+            ? Math.floor(this.maxScrollHeight / this.itemHeight) : this.getCursorId();
 
         // set virtual scroll height in pixels
         this.virtualScrollHeight = this.virtualScrollItemsCount * this.itemHeight;
@@ -238,6 +239,10 @@ export class VirtualScrollDirective implements AfterViewInit, OnDestroy, OnChang
             return this.maxScrollHeight;
         }
 
+    }
+
+    private getCursorId(): number {
+        return this.vsForOf.lastCursorId || this.vsForOf.ids[this.vsForOf.ids.length - 1];
     }
 
     ngOnDestroy() {

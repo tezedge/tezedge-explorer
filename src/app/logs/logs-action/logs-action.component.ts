@@ -5,6 +5,7 @@ import {Observable, Subject, Subscription} from 'rxjs';
 import {filter, map, takeUntil} from 'rxjs/operators';
 import {VirtualScrollDirective} from '../../shared/virtual-scroll.directive';
 import {CollectionViewer, DataSource} from '@angular/cdk/collections';
+import { setTimeout } from 'timers';
 
 @Component({
   selector: 'app-logs-action',
@@ -17,7 +18,6 @@ export class LogsActionComponent implements OnInit, OnDestroy {
   logsDataSource: LogsDataSource;
   private logsAction$: Observable<any>;
   virtualScrollItems;
-  logsActionList: Array<any> = [];
   logsActionItem; // TODO type log - define an interface for log
   logsActionShow: boolean;
   ITEM_SIZE = 36;
@@ -36,6 +36,7 @@ export class LogsActionComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.store.dispatch({
       type: 'LOGS_ACTION_LOAD',
+      payload: {}
     });
 
     // wait for data changes from redux
@@ -43,7 +44,14 @@ export class LogsActionComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.onDestroy$))
       .subscribe(data => {
         this.virtualScrollItems = data;
+        debugger;
+        this.changeDetector.markForCheck();
+
         this.logsActionShow = data.ids.length > 0;
+
+        setTimeout(() => {
+          this.vrFor.scrollToBottom();
+        });
 
         // this.logsActionList = data.ids.map(id => ({id, ...data.entities[id]}));
 
@@ -76,6 +84,16 @@ export class LogsActionComponent implements OnInit, OnDestroy {
 
     this.logsAction$ = this.store.select('logsAction');
     this.logsDataSource = new LogsDataSource(this.logsAction$, this.store);
+  }
+
+  getItems($event) {
+    this.store.dispatch({
+      type: 'LOGS_ACTION_LOAD',
+      payload: {
+        cursor_id: $event.end
+      },
+    });
+
   }
 
   onScroll(index) {

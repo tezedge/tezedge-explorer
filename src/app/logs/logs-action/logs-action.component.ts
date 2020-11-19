@@ -1,10 +1,10 @@
-import {Component, OnInit, OnDestroy, ViewChild, ChangeDetectionStrategy, ChangeDetectorRef} from '@angular/core';
-import {CdkVirtualScrollViewport} from '@angular/cdk/scrolling';
-import {Store} from '@ngrx/store';
-import {Observable, Subject, Subscription} from 'rxjs';
-import {filter, map, takeUntil} from 'rxjs/operators';
-import {VirtualScrollDirective} from '../../shared/virtual-scroll.directive';
-import {CollectionViewer, DataSource} from '@angular/cdk/collections';
+import { Component, OnInit, OnDestroy, ViewChild, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
+import { CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
+import { Store } from '@ngrx/store';
+import { Observable, Subject, Subscription } from 'rxjs';
+import { filter, map, takeUntil } from 'rxjs/operators';
+import { VirtualScrollDirective } from '../../shared/virtual-scroll.directive';
+import { CollectionViewer, DataSource } from '@angular/cdk/collections';
 import { setTimeout } from 'timers';
 
 @Component({
@@ -15,7 +15,7 @@ import { setTimeout } from 'timers';
 })
 export class LogsActionComponent implements OnInit, OnDestroy {
 
-  logsDataSource: LogsDataSource;
+  // logsDataSource: LogsDataSource;
   private logsAction$: Observable<any>;
   virtualScrollItems;
   logsActionItem; // TODO type log - define an interface for log
@@ -51,7 +51,7 @@ export class LogsActionComponent implements OnInit, OnDestroy {
 
         setTimeout(() => {
           this.vrFor.scrollToBottom();
-        });
+        }, 0);
 
         // this.logsActionList = data.ids.map(id => ({id, ...data.entities[id]}));
 
@@ -83,7 +83,7 @@ export class LogsActionComponent implements OnInit, OnDestroy {
       });
 
     this.logsAction$ = this.store.select('logsAction');
-    this.logsDataSource = new LogsDataSource(this.logsAction$, this.store);
+    // this.logsDataSource = new LogsDataSource(this.logsAction$, this.store);
   }
 
   getItems($event) {
@@ -91,7 +91,7 @@ export class LogsActionComponent implements OnInit, OnDestroy {
       type: 'LOGS_ACTION_LOAD',
       payload: {
         cursor_id: $event.end
-      },
+      }
     });
 
   }
@@ -113,13 +113,13 @@ export class LogsActionComponent implements OnInit, OnDestroy {
   scrollStart() {
     // trigger action and get logs data
     this.store.dispatch({
-      type: 'LOGS_ACTION_START',
+      type: 'LOGS_ACTION_START'
     });
   }
 
   scrollStop() {
     this.store.dispatch({
-      type: 'LOGS_ACTION_STOP',
+      type: 'LOGS_ACTION_STOP'
     });
   }
 
@@ -137,65 +137,12 @@ export class LogsActionComponent implements OnInit, OnDestroy {
 
     // stop logs stream
     this.store.dispatch({
-      type: 'LOGS_ACTION_STOP',
+      type: 'LOGS_ACTION_STOP'
     });
 
     // close all observables
     this.onDestroy$.next();
     this.onDestroy$.complete();
 
-  }
-}
-
-//
-export class LogsDataSource extends DataSource<any> {
-
-  private subscription = new Subscription();
-  private dataRange = {start: 0, end: 0};
-
-  constructor(
-    private logsAction$: Observable<any>,
-    private store: Store<any>,
-  ) {
-    super();
-  }
-
-
-  connect(collectionViewer: CollectionViewer): Observable<(string | undefined)[]> {
-//
-    this.subscription.add(collectionViewer.viewChange
-      .pipe(
-        filter(range => {
-          return range.end > this.dataRange.end || range.start < this.dataRange.start;
-        })
-      )
-      .subscribe(vsRange => {
-        console.log(vsRange);
-        this.store.dispatch({
-          type: 'LOGS_ACTION_LOAD',
-          payload: {
-            cursorId: vsRange.end
-          }
-        });
-
-      }));
-
-    return this.logsAction$.pipe(
-      filter(data => data.ids.length > 0),
-      map(data => {
-        const logsActionList = data.ids.map(id => ({id, ...data.entities[id]}));
-
-        this.dataRange = {
-          start: data.ids[0],
-          end: data.ids[data.ids.length - 1]
-        };
-
-        return logsActionList;
-      })
-    );
-  }
-
-  disconnect(): void {
-    this.subscription.unsubscribe();
   }
 }

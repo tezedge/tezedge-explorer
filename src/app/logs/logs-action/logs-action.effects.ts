@@ -20,8 +20,8 @@ export class LogsActionEffects {
     switchMap(({action, state}) => {
       // console.log('[LOGS_ACTION_LOAD]', action);
       debugger;
-      const cursorParam = action.payload && action.payload.cursorId ?
-        'cursor_id=' + action.payload.cursorId + '&' :
+      const cursorParam = action.payload && action.payload.cursor_id ?
+        'cursor_id=' + action.payload.cursor_id + '&' :
         '';
       return this.http.get(state.settingsNode.api.debugger + '/v2/log/?' + cursorParam + 'limit=30');
     }),

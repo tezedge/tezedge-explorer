@@ -16,7 +16,7 @@ import { setTimeout } from 'timers';
 export class LogsActionComponent implements OnInit, OnDestroy {
 
   // logsDataSource: LogsDataSource;
-  private logsAction$: Observable<any>;
+  // private logsAction$: Observable<any>;
   virtualScrollItems;
   logsActionItem; // TODO type log - define an interface for log
   logsActionShow: boolean;
@@ -34,20 +34,23 @@ export class LogsActionComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.store.dispatch({
-      type: 'LOGS_ACTION_LOAD',
-      payload: {}
-    });
+    // this.store.dispatch({
+    //   type: 'LOGS_ACTION_LOAD',
+    //   payload: {}
+    // });
+    this.getItems(null);
 
     // wait for data changes from redux
     this.store.select('logsAction')
       .pipe(takeUntil(this.onDestroy$))
       .subscribe(data => {
-        this.virtualScrollItems = data;
-        debugger;
+        // this.virtualScrollItems = data;
+        // TODO remove this when mock data will be improved or when we have BE
+        this.virtualScrollItems = this.getRidOfFirst({ ...data });
+
         this.changeDetector.markForCheck();
 
-        this.logsActionShow = data.ids.length > 0;
+        this.logsActionShow = this.virtualScrollItems.ids.length > 0;
 
         setTimeout(() => {
           this.vrFor.scrollToBottom();
@@ -82,7 +85,7 @@ export class LogsActionComponent implements OnInit, OnDestroy {
         // }
       });
 
-    this.logsAction$ = this.store.select('logsAction');
+    // this.logsAction$ = this.store.select('logsAction');
     // this.logsDataSource = new LogsDataSource(this.logsAction$, this.store);
   }
 
@@ -90,10 +93,9 @@ export class LogsActionComponent implements OnInit, OnDestroy {
     this.store.dispatch({
       type: 'LOGS_ACTION_LOAD',
       payload: {
-        cursor_id: $event.end
+        cursor_id: $event?.end
       }
     });
-
   }
 
   onScroll(index) {
@@ -133,8 +135,21 @@ export class LogsActionComponent implements OnInit, OnDestroy {
     this.logsActionItem = item;
   }
 
-  ngOnDestroy() {
+  getRidOfFirst(data) {
+    // TODO remove this function when mock data is improved or when we have BE
+    const customData = data;
+    if (data.ids.length) {
+      const removedProperty = customData.ids[0];
+      const { [removedProperty]: remove, ...rest } = customData.entities;
 
+      customData.entities = {...rest};
+      customData.ids = [...customData.ids].splice(1);
+    }
+
+    return customData;
+  }
+
+  ngOnDestroy() {
     // stop logs stream
     this.store.dispatch({
       type: 'LOGS_ACTION_STOP'
@@ -143,6 +158,5 @@ export class LogsActionComponent implements OnInit, OnDestroy {
     // close all observables
     this.onDestroy$.next();
     this.onDestroy$.complete();
-
   }
 }

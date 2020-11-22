@@ -12,7 +12,6 @@ import { throttleTime } from 'rxjs/operators';
 })
 export class VirtualScrollDirective implements AfterViewInit, OnDestroy, OnChanges, DoCheck {
 
-  debugger;
   private itemHeight = 36;
   private maxScrollHeight = 0;
   private scrollPositionStart = 0;
@@ -46,7 +45,6 @@ export class VirtualScrollDirective implements AfterViewInit, OnDestroy, OnChang
 
   ngOnChanges(changes: SimpleChanges) {
     // console.log('[ngOnChanges]', changes);
-    debugger;
     if (this.virtualScrollItemsCount > 0) {
       // render items
       this.viewContainer.clear();
@@ -111,39 +109,39 @@ export class VirtualScrollDirective implements AfterViewInit, OnDestroy, OnChang
         + ' lastCursorId=' + this.getCursorId());
 
       // check if we have new scroll event
-      // if (this.scrollPositionStart !== start && this.scrollPositionEnd !== end) {
+      if (this.scrollPositionStart !== start && this.scrollPositionEnd !== end ||
+        this.scrollPositionStart === 0 && this.scrollPositionEnd === 0) {
 
-      // save scroll position
-      this.scrollPositionStart = start;
-      this.scrollPositionEnd = end;
+        // save scroll position
+        this.scrollPositionStart = start;
+        this.scrollPositionEnd = end;
 
-      // cache request postion
-      const requestPositionOffset =
-        Math.round((this.virtualScrollItemsOffset + (this.scrollPositionStart)) / 20) * 20;
-      // if (this.cacheRequestIds[requestPositionOffset] !== 'pending') {
-      //     this.cacheRequestIds[requestPositionOffset] = 'pending';
+        // cache request postion
+        const requestPositionOffset =
+          Math.round((this.virtualScrollItemsOffset + (this.scrollPositionStart)) / 20) * 20;
+        // if (this.cacheRequestIds[requestPositionOffset] !== 'pending') {
+        //     this.cacheRequestIds[requestPositionOffset] = 'pending';
 
-      console.warn('[onScroll] cacheRequestIds=', requestPositionOffset);
+        console.warn('[onScroll] cacheRequestIds=', requestPositionOffset);
 
-      // emit event to load data for virtual scroll
-      this.getItems.emit({
-        start: this.virtualScrollItemsOffset + this.scrollPositionStart,
-        end: this.virtualScrollItemsOffset + this.scrollPositionEnd
-      });
+        // emit event to load data for virtual scroll
+        this.getItems.emit({
+          start: this.virtualScrollItemsOffset + this.scrollPositionStart,
+          end: this.virtualScrollItemsOffset + this.scrollPositionEnd
+        });
 
-      // }
-      // }
+      }
 
       this.viewContainer.clear();
       this.renderViewportItems();
+      // }
 
     });
 
   }
 
   private clear() {
-    // console.log('[clear]');
-
+    console.log('[clear]');
     // clear cache
     this.cacheRequestIds = {};
     this.cacheItemsIds = new Set();
@@ -163,7 +161,7 @@ export class VirtualScrollDirective implements AfterViewInit, OnDestroy, OnChang
     // get number of items in virtual scroll
     console.warn('[load] lastCursorId=', this.getCursorId());
     this.virtualScrollItemsCount = (this.getCursorId() * this.itemHeight) > this.maxScrollHeight
-      ? Math.floor(this.maxScrollHeight / this.itemHeight) : this.getCursorId();
+      ? Math.floor(this.maxScrollHeight / this.itemHeight) : this.getCursorId() || 0;
 
     // set virtual scroll height in pixels
     this.virtualScrollHeight = this.virtualScrollItemsCount * this.itemHeight;
@@ -173,6 +171,7 @@ export class VirtualScrollDirective implements AfterViewInit, OnDestroy, OnChang
     // console.log('[load] this.virtualScrollHeight=' + this.virtualScrollHeight + ' this.maxScrollHeight=' + this.maxScrollHeight);
 
     // this.$viewport.dispatchEvent(new Event('scroll'));
+    // this.renderViewportItems();
 
   }
 
@@ -184,26 +183,26 @@ export class VirtualScrollDirective implements AfterViewInit, OnDestroy, OnChang
     // prepare items for render
     for (let index = 0; index < (this.scrollPositionEnd - this.scrollPositionStart); index++) {
 
-      const virutalScroollPosition = this.virtualScrollItemsOffset + index + this.scrollPositionStart;
+      const virtualScrollPosition = this.virtualScrollItemsOffset + index + this.scrollPositionStart;
 
       // cache value
-      // if (this.vsForOf.entities[virutalScroollPosition] && !this.cacheItemsIds.has(virutalScroollPosition)) {
-      //     this.cacheItemsEntities = {
-      //         ...this.cacheItemsEntities,
-      //         [virutalScroollPosition]: this.vsForOf.entities[virutalScroollPosition],
-      //     };
-      //     this.cacheItemsIds.add(virutalScroollPosition);
-      //     // console.log('[cache] miss', virutalScroollPosition);
-      // }
+      if (this.getElementToRender(virtualScrollPosition) && !this.cacheItemsIds.has(virtualScrollPosition)) {
+        this.cacheItemsEntities = {
+          ...this.cacheItemsEntities,
+          [virtualScrollPosition]: this.getElementToRender(virtualScrollPosition)
+        };
+        this.cacheItemsIds.add(virtualScrollPosition);
+        // console.log('[cache] miss', virtualScrollPosition);
+      }
 
-      console.log('[renderViewportItems]', virutalScroollPosition, this.vsForOf.entities[virutalScroollPosition]);
+      console.log('[renderViewportItems]', virtualScrollPosition, this.getElementToRender(virtualScrollPosition));
 
       const view = this.viewContainer.createEmbeddedView(this.template);
       view.context.position = (index + this.scrollPositionStart) * this.itemHeight;
       view.context.$implicit = {
-        index: virutalScroollPosition,
-        ...this.vsForOf.entities[virutalScroollPosition]
-        // ...this.cacheItemsEntities[virutalScroollPosition],
+        index: virtualScrollPosition,
+        // ...this.getElementToRender(virtualScrollPosition)
+        ...this.cacheItemsEntities[virtualScrollPosition]
       };
       view.context.start = this.scrollPositionStart;
       view.context.end = this.scrollPositionEnd;
@@ -239,6 +238,10 @@ export class VirtualScrollDirective implements AfterViewInit, OnDestroy, OnChang
 
   private getCursorId(): number {
     return this.vsForOf.lastCursorId || this.vsForOf.ids[this.vsForOf.ids.length - 1];
+  }
+
+  private getElementToRender(position) {
+    return this.vsForOf.entities[position];
   }
 
   ngOnDestroy() {

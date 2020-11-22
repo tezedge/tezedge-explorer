@@ -19,7 +19,6 @@ export class LogsActionEffects {
 
     switchMap(({action, state}) => {
       // console.log('[LOGS_ACTION_LOAD]', action);
-      debugger;
       const cursorParam = action.payload && action.payload.cursor_id ?
         'cursor_id=' + action.payload.cursor_id + '&' :
         '';

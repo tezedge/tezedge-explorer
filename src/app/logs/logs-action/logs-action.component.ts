@@ -44,13 +44,10 @@ export class LogsActionComponent implements OnInit, OnDestroy {
     this.store.select('logsAction')
       .pipe(takeUntil(this.onDestroy$))
       .subscribe(data => {
-        // this.virtualScrollItems = data;
-        // TODO remove this when mock data will be improved or when we have BE
-        this.virtualScrollItems = this.getRidOfFirst({ ...data });
+        this.virtualScrollItems = data;
+        this.logsActionShow = this.virtualScrollItems.ids.length > 0;
 
         this.changeDetector.markForCheck();
-
-        this.logsActionShow = this.virtualScrollItems.ids.length > 0;
 
         setTimeout(() => {
           this.vrFor.scrollToBottom();
@@ -93,7 +90,7 @@ export class LogsActionComponent implements OnInit, OnDestroy {
     this.store.dispatch({
       type: 'LOGS_ACTION_LOAD',
       payload: {
-        cursor_id: $event?.end
+        cursor_id: $event?.cursorId + 1 // TODO remove +1 when mock data will be improved or when we have BE
       }
     });
   }
@@ -127,26 +124,10 @@ export class LogsActionComponent implements OnInit, OnDestroy {
 
   scrollToEnd() {
     this.vrFor.scrollToBottom();
-    // const offset = this.ITEM_SIZE * this.logsActionList.length;
-    // this.viewPort.scrollToOffset(offset);
   }
 
   tableMouseEnter(item) {
     this.logsActionItem = item;
-  }
-
-  getRidOfFirst(data) {
-    // TODO remove this function when mock data is improved or when we have BE
-    const customData = data;
-    if (data.ids.length) {
-      const removedProperty = customData.ids[0];
-      const { [removedProperty]: remove, ...rest } = customData.entities;
-
-      customData.entities = {...rest};
-      customData.ids = [...customData.ids].splice(1);
-    }
-
-    return customData;
   }
 
   ngOnDestroy() {

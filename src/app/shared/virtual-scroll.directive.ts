@@ -86,46 +86,64 @@ export class VirtualScrollDirective implements AfterViewInit, OnDestroy, OnChang
 
     // load all virtual scroll date
     this.load();
+    this.drawNewItems();
 
     console.log('[scrollToBottom] this.virtualScrollItemsCount=' + this.virtualScrollItemsCount);
 
     // set scroll to latest item in list
-    this.$viewport.scrollTop = this.virtualScrollItemsCount * this.itemHeight;
+    // this.$viewport.scrollTop = this.virtualScrollItemsCount * this.itemHeight;
 
   }
 
   onScroll() {
-
     // update virtual scroll before next repaint
     window.requestAnimationFrame(() => {
+      this.drawNewItems();
 
-      console.log('[onScroll] this.$viewport.scrollTop=' + this.$viewport.scrollTop + ' this.viewportHeight=' + this.viewportHeight);
-
-      // use current scroll position to get start and end item index
-      let start = Math.floor((this.$viewport.scrollTop - this.viewportHeight) / this.itemHeight);
-      let end = Math.ceil((this.$viewport.scrollTop + (this.viewportHeight * 2)) / this.itemHeight);
-      start = Math.max(0, start);
-      end = Math.min(this.virtualScrollHeight / this.itemHeight, end);
-      console.warn('[onScroll] start=' + start + ' end=' + end
-        + ' this.scrollPositionStart=' + this.scrollPositionStart + ' this.scrollPositionEnd=' + this.scrollPositionEnd);
-
-      // get offset so we can set correct position for items
-      this.virtualScrollItemsOffset = (this.getCursorId() - this.virtualScrollItemsCount);
-      console.log('[onScroll] this.virtualScrollItemsCount=' + this.virtualScrollItemsCount
-        + ' lastCursorId=' + this.getCursorId());
-
-      this.scrollPositionStart = start;
-      this.scrollPositionEnd = end;
-
-      // emit event to load data for virtual scroll
-      this.fetchNewData();
-
-      this.viewContainer.clear();
-      this.renderViewportItems();
-      // }
-
+      // // use current scroll position to get start and end item index
+      // let start = Math.floor((this.$viewport.scrollTop - this.viewportHeight) / this.itemHeight);
+      // let end = Math.ceil((this.$viewport.scrollTop + (this.viewportHeight * 2)) / this.itemHeight);
+      // start = Math.max(0, start);
+      // end = Math.min(this.virtualScrollHeight / this.itemHeight, end);
+      // console.warn('[onScroll] start=' + start + ' end=' + end
+      //   + ' this.scrollPositionStart=' + this.scrollPositionStart + ' this.scrollPositionEnd=' + this.scrollPositionEnd);
+      //
+      // // get offset so we can set correct position for items
+      // this.virtualScrollItemsOffset = (this.getCursorId() - this.virtualScrollItemsCount);
+      // console.log('[onScroll] this.virtualScrollItemsCount=' + this.virtualScrollItemsCount
+      //   + ' lastCursorId=' + this.getCursorId());
+      //
+      // this.scrollPositionStart = start;
+      // this.scrollPositionEnd = end;
+      //
+      // // emit event to load data for virtual scroll
+      // this.fetchNewData();
+      //
+      // this.viewContainer.clear();
+      // this.renderViewportItems();
     });
+  }
 
+  private drawNewItems() {
+    // use current scroll position to get start and end item index
+    let start = Math.floor((this.$viewport.scrollTop - this.viewportHeight) / this.itemHeight);
+    let end = Math.ceil((this.$viewport.scrollTop + (this.viewportHeight * 2)) / this.itemHeight);
+    start = Math.max(0, start);
+    end = Math.min(this.virtualScrollHeight / this.itemHeight, end);
+    console.warn('[onScroll] start=' + start + ' end=' + end
+      + ' this.scrollPositionStart=' + this.scrollPositionStart + ' this.scrollPositionEnd=' + this.scrollPositionEnd);
+
+    // get offset so we can set correct position for items
+    this.virtualScrollItemsOffset = this.getRenderedItemsNumber() - this.virtualScrollItemsCount;
+
+    this.scrollPositionStart = start;
+    this.scrollPositionEnd = end;
+
+    // emit event to load data for virtual scroll
+    // this.fetchNewData();
+
+    this.viewContainer.clear();
+    this.renderViewportItems();
   }
 
   private fetchNewData() {
@@ -157,12 +175,8 @@ export class VirtualScrollDirective implements AfterViewInit, OnDestroy, OnChang
   }
 
   private load() {
-    // console.log('[load]');
 
     this.clear();
-
-    // set row height in virtual scroll
-    // console.log('[load] this.itemHeight=' + this.itemHeight);
     this.itemHeight = 36;
 
     // get number of items in virtual scroll
@@ -178,7 +192,7 @@ export class VirtualScrollDirective implements AfterViewInit, OnDestroy, OnChang
     this.$scroller.style.height = `${this.maxScrollHeight}px`;
   }
 
-  private getRenderedItemsNumber() {
+  private getRenderedItemsNumber(): number {
     const pages = Object.keys(this.displayHistory);
     let sum = 0;
 
@@ -193,8 +207,8 @@ export class VirtualScrollDirective implements AfterViewInit, OnDestroy, OnChang
     return sum;
   }
 
-  private renderViewportItems() {
-    this.virtualScrollItemsOffset = (this.getCursorId() - this.virtualScrollItemsCount);
+  private renderViewportItems(): void {
+    // this.virtualScrollItemsOffset = (this.getCursorId() - this.virtualScrollItemsCount);
 
     console.warn('[renderViewportItems] this.vsForOf=', this.vsForOf.ids);
     console.warn('[renderViewportItems]  this.scrollPositionStart=' + this.scrollPositionStart

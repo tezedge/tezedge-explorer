@@ -34,13 +34,8 @@ export class LogsActionComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    // this.store.dispatch({
-    //   type: 'LOGS_ACTION_LOAD',
-    //   payload: {}
-    // });
     this.getItems(null);
 
-    // wait for data changes from redux
     this.store.select('logsAction')
       .pipe(takeUntil(this.onDestroy$))
       .subscribe(data => {
@@ -90,7 +85,7 @@ export class LogsActionComponent implements OnInit, OnDestroy {
     this.store.dispatch({
       type: 'LOGS_ACTION_LOAD',
       payload: {
-        cursor_id: $event?.cursorId + 1 // TODO remove +1 when mock data will be improved or when we have BE
+        cursor_id: $event?.start
       }
     });
   }

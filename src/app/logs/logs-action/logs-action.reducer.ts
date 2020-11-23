@@ -4,7 +4,8 @@ const initialState: any = {
   ids: [],
   idsFilter: [],
   entities: {},
-  stream: false,
+  lastCursorId: 0,
+  stream: false
 };
 
 export function reducer(state = initialState, action) {
@@ -29,6 +30,8 @@ export function reducer(state = initialState, action) {
               }
             };
           }, {}),
+        lastCursorId: action.payload.length > 0 && state.lastCursorId < action.payload[0].id ?
+          action.payload[0].id : state.lastCursorId,
         stream: true,
       };
     }

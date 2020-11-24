@@ -28,6 +28,8 @@ export class VirtualScrollDirective implements AfterViewInit, OnDestroy, OnChang
 
   private viewportHeight = 0;
 
+  private maximumScrollTop = 0;
+
   // private cacheRequestIds = {};
   private cacheRequestStart = 0;
   private cacheRequestEnd = 0;
@@ -99,18 +101,25 @@ export class VirtualScrollDirective implements AfterViewInit, OnDestroy, OnChang
       + ' this.itemHeight=' + this.itemHeight);
 
     // set scroll to latest item in list
-    this.$viewport.scrollTop = this.virtualScrollItemsCount * this.itemHeight;
+    if (this.vsForOf.ids[this.vsForOf.ids.length - 1] >= this.vsForOf.lastCursorId) {
+      this.$viewport.scrollTop = this.virtualScrollItemsCount * this.itemHeight;
+      this.maximumScrollTop = this.$viewport.scrollTop;
+    }
 
   }
 
-
-  onScroll() {
+  onScroll(event) {
 
     // update virtual scroll before next repaint
     // window.requestAnimationFrame(() => {
     // this.ngZone.runOutsideAngular(() => {
     //   requestAnimationFrame(() => {
-
+    if (this.$viewport.scrollTop > this.maximumScrollTop) {
+      this.$viewport.scrollTop = this.maximumScrollTop;
+      event.stopPropagation();
+      event.preventDefault();
+      return;
+    }
     // trigger only if user scrolled vertically
     if (this.prevScrollTop !== this.$viewport.scrollTop) {
       // console.log('[onScroll]');
@@ -121,16 +130,15 @@ export class VirtualScrollDirective implements AfterViewInit, OnDestroy, OnChang
       let start = Math.floor((this.$viewport.scrollTop - this.viewportHeight) / this.itemHeight);
       let end = Math.ceil((this.$viewport.scrollTop + (this.viewportHeight * 1.2)) / this.itemHeight);
       start = Math.max(0, start);
+      // end = Math.min(this.virtualScrollHeight * 1.2 / this.itemHeight, end);
       end = Math.min(Math.min(this.virtualScrollHeight * 1.2 / this.itemHeight, end), this.vsForOf.lastCursorId);
       // console.log('[onScroll] start=' + start + ' end=' + end
       // + ' this.scrollPositionStart=' + this.scrollPositionStart + ' this.scrollPositionEnd=' + this.scrollPositionEnd);
-
 
       // get offset so we can set correct possition for items
       this.virtualScrollItemsOffset = (this.vsForOf.lastCursorId - this.virtualScrollItemsCount);
       // console.log('[onScroll] this.virtualScrollItemsCount=' + this.virtualScrollItemsCount
       //     + ' this.vsForOf.lastCursorId=' + this.vsForOf.lastCursorId);
-
 
       // check if we have new scroll event
       // if (this.scrollPositionStart !== start && this.scrollPositionEnd !== end) {
@@ -140,7 +148,7 @@ export class VirtualScrollDirective implements AfterViewInit, OnDestroy, OnChang
       this.scrollPositionEnd = end;
 
       // get request postion
-      const requestPositionOffset = this.getRequestPositionOffset();
+      // const requestPositionOffset = this.getRequestPositionOffset();
 
       // if current request position not in cached positions
       // if (!this.cacheRequestIds.hasOwnProperty(requestPositionOffset)) {
@@ -150,7 +158,7 @@ export class VirtualScrollDirective implements AfterViewInit, OnDestroy, OnChang
 
       // emit event to load data
       if ((this.cacheRequestStart > this.scrollPositionEnd) ||
-        (this.cacheRequestEnd   < this.scrollPositionStart)) {
+        (this.cacheRequestEnd < this.scrollPositionStart)) {
 
         // console.warn('[onScroll] run');
         // console.log('[onScroll] cacheRequestStart=' + this.cacheRequestStart + ' scrollPositionEnd=' + this.scrollPositionEnd);
@@ -229,7 +237,7 @@ export class VirtualScrollDirective implements AfterViewInit, OnDestroy, OnChang
     if (!this.viewContainer.length) {
       // Initialize viewContainer with all need views (rows)
       console.warn(`[renderViewportItems] viewContainer init (${this.scrollPositionEnd - this.scrollPositionStart} views)`);
-      for (let index = 0; index < (this.scrollPositionEnd - this.scrollPositionStart); index++) {
+      for (let index = 0; index < (this.scrollPositionEnd - this.scrollPositionStart + 1); index++) {
         const view = this.viewContainer.createEmbeddedView(this.template);
         this.embeddedViews.push(view);
       }
@@ -238,7 +246,6 @@ export class VirtualScrollDirective implements AfterViewInit, OnDestroy, OnChang
     // console.warn('[renderViewportItems] this.vsForOf=', this.vsForOf.ids);
     // console.log('[renderViewportItems]  this.scrollPositionStart=' + this.scrollPositionStart
     //     + ' this.scrollPositionEnd=' + this.scrollPositionEnd);
-
 
     // mark current scroll position as cached
     // const requestPositionOffset = this.getRequestPositionOffset();
@@ -284,7 +291,8 @@ export class VirtualScrollDirective implements AfterViewInit, OnDestroy, OnChang
 
     // schedule change detection to run at the start of the frame.
     requestAnimationFrame(() => {
-      this.ngZone.run(() => { });
+      this.ngZone.run(() => {
+      });
     });
 
     // })

@@ -26,13 +26,13 @@ export function reducer(state = initialState, action) {
                 ...logsAction,
                 preview: logsAction.message,
                 // preview: logsAction.message.length > 20 ? logsAction.message.substring(0, 80) + '...' : '',
-                datetime: moment.utc(Math.ceil(logsAction.timestamp / 1000000)).format('HH:mm:ss.SSS, DD MMM YY'),
+                datetime: moment.utc(Math.ceil(logsAction.timestamp / 1000000)).format('HH:mm:ss.SSS, DD MMM YY')
               }
             };
           }, {}),
         lastCursorId: action.payload.length > 0 && state.lastCursorId < action.payload[0].id ?
           action.payload[0].id : state.lastCursorId,
-        stream: true,
+        stream: true
       };
     }
 

@@ -107,7 +107,7 @@ export class VirtualScrollDirective implements AfterViewInit, OnDestroy, OnChang
   onScroll() {
 
     // update virtual scroll before next repaint
-    //window.requestAnimationFrame(() => {
+    // window.requestAnimationFrame(() => {
     // this.ngZone.runOutsideAngular(() => {
     //   requestAnimationFrame(() => {
 
@@ -121,7 +121,7 @@ export class VirtualScrollDirective implements AfterViewInit, OnDestroy, OnChang
       let start = Math.floor((this.$viewport.scrollTop - this.viewportHeight) / this.itemHeight);
       let end = Math.ceil((this.$viewport.scrollTop + (this.viewportHeight * 1.2)) / this.itemHeight);
       start = Math.max(0, start);
-      end = Math.min(this.virtualScrollHeight * 1.2 / this.itemHeight, end);
+      end = Math.min(Math.min(this.virtualScrollHeight * 1.2 / this.itemHeight, end), this.vsForOf.lastCursorId);
       // console.log('[onScroll] start=' + start + ' end=' + end
       // + ' this.scrollPositionStart=' + this.scrollPositionStart + ' this.scrollPositionEnd=' + this.scrollPositionEnd);
 
@@ -246,19 +246,19 @@ export class VirtualScrollDirective implements AfterViewInit, OnDestroy, OnChang
 
     // loop through embedded views and change their contents
     for (let index = 0; index < this.embeddedViews.length; index++) {
-      const virutalScrollPosition = this.virtualScrollItemsOffset + index + this.scrollPositionStart;
+      const virtualScrollPosition = this.virtualScrollItemsOffset + index + this.scrollPositionStart;
 
       // cache value
-      // if (this.vsForOf.entities.hasOwnProperty(virutalScrollPosition) && !this.cacheItemsIds.has(virutalScrollPosition)) {
+      // if (this.vsForOf.entities.hasOwnProperty(virtualScrollPosition) && !this.cacheItemsIds.has(virtualScrollPosition)) {
       //     this.cacheItemsEntities = {
       //         ...this.cacheItemsEntities,
-      //         [virutalScrollPosition]: this.vsForOf.entities[virutalScrollPosition],
+      //         [virtualScrollPosition]: this.vsForOf.entities[virtualScrollPosition],
       //     };
-      //     this.cacheItemsIds.add(virutalScrollPosition);
+      //     this.cacheItemsIds.add(virtualScrollPosition);
       // }
 
       // If needed entity not present anywhere
-      // if (!this.vsForOf.entities.hasOwnProperty(virutalScrollPosition) && !this.cacheItemsIds.has(virutalScrollPosition)) {
+      // if (!this.vsForOf.entities.hasOwnProperty(virtualScrollPosition) && !this.cacheItemsIds.has(virtualScrollPosition)) {
       //     // remove this position from cached positions
       //     const requestPositionOffset = this.getRequestPositionOffset();
       //     delete this.cacheRequestIds[requestPositionOffset];
@@ -274,9 +274,9 @@ export class VirtualScrollDirective implements AfterViewInit, OnDestroy, OnChang
       view.context.end = this.scrollPositionEnd;
       view.context.index = index + this.scrollPositionStart;
       view.context.$implicit = {
-        index: virutalScrollPosition,
-        ...this.vsForOf.entities[virutalScrollPosition]
-        // ...this.cacheItemsEntities[virutalScrollPosition],
+        index: virtualScrollPosition,
+        ...this.vsForOf.entities[virtualScrollPosition]
+        // ...this.cacheItemsEntities[virtualScrollPosition],
       };
 
       view.markForCheck();
@@ -298,14 +298,14 @@ export class VirtualScrollDirective implements AfterViewInit, OnDestroy, OnChang
   //         // requestAnimationFrame(() => {
   //             console.warn('[renderBlankViewportItems]');
   //             for (let index = 0; index < this.embeddedViews.length; index++) {
-  //                 const virutalScrollPosition = this.virtualScrollItemsOffset + index + this.scrollPositionStart;
+  //                 const virtualScrollPosition = this.virtualScrollItemsOffset + index + this.scrollPositionStart;
   //                 // change view content
   //                 const view = this.embeddedViews[index];
   //                 view.context.position = (index + this.scrollPositionStart) * this.itemHeight;
   //                 view.context.start = this.scrollPositionStart;
   //                 view.context.end = this.scrollPositionEnd;
   //                 view.context.index = index + this.scrollPositionStart;
-  //                 view.context.$implicit = { index: virutalScrollPosition };
+  //                 view.context.$implicit = { index: virtualScrollPosition };
   //                 view.markForCheck();
   //             }
   //         // })

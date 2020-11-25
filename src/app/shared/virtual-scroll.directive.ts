@@ -147,6 +147,8 @@ export class VirtualScrollDirective implements AfterViewInit, OnDestroy, OnChang
       this.scrollPositionStart = start;
       this.scrollPositionEnd = end;
 
+      // TODO investigate if this can be moved in some init function - it depends on scrollPositionStart and scrollPositionEnd
+      this.createViewElements();
       // get request postion
       // const requestPositionOffset = this.getRequestPositionOffset();
 
@@ -159,24 +161,7 @@ export class VirtualScrollDirective implements AfterViewInit, OnDestroy, OnChang
       // emit event to load data
       if ((this.cacheRequestStart > this.scrollPositionEnd) ||
         (this.cacheRequestEnd < this.scrollPositionStart)) {
-
-        // console.warn('[onScroll] run');
-        // console.log('[onScroll] cacheRequestStart=' + this.cacheRequestStart + ' scrollPositionEnd=' + this.scrollPositionEnd);
-        // console.log('[onScroll] cacheRequestEnd='   + this.cacheRequestEnd   + ' scrollPositionEnd=' + this.scrollPositionStart);
-
-        this.ngZone.run(() => {
-
-          // cache request position
-          this.cacheRequestStart = this.scrollPositionStart;
-          this.cacheRequestEnd = this.scrollPositionEnd;
-
-          this.getItems.emit({
-            start: this.virtualScrollItemsOffset + this.scrollPositionStart,
-            end: this.virtualScrollItemsOffset + this.scrollPositionEnd
-          });
-
-        });
-
+        this.fetchData();
       }
 
       // } else {
@@ -202,6 +187,21 @@ export class VirtualScrollDirective implements AfterViewInit, OnDestroy, OnChang
     this.cacheItemsIds = new Set();
     this.cacheItemsEntities = {};
     // this.viewContainer.clear();
+  }
+
+  private fetchData(): void {
+    this.ngZone.run(() => {
+
+      // cache request position
+      this.cacheRequestStart = this.scrollPositionStart;
+      this.cacheRequestEnd = this.scrollPositionEnd;
+
+      this.getItems.emit({
+        start: this.virtualScrollItemsOffset + this.scrollPositionStart,
+        end: this.virtualScrollItemsOffset + this.scrollPositionEnd
+      });
+
+    });
   }
 
   private load() {
@@ -231,17 +231,6 @@ export class VirtualScrollDirective implements AfterViewInit, OnDestroy, OnChang
   private renderViewportItems() {
     // this.ngZone.runOutsideAngular(() => {
     // requestAnimationFrame(() => {
-
-    // console.warn('[renderViewportItems]');
-    // TODO: move this from here into some init function (needs to be after scrollPositionStart and End are set)
-    if (!this.viewContainer.length) {
-      // Initialize viewContainer with all need views (rows)
-      console.warn(`[renderViewportItems] viewContainer init (${this.scrollPositionEnd - this.scrollPositionStart} views)`);
-      for (let index = 0; index < (this.scrollPositionEnd - this.scrollPositionStart + 1); index++) {
-        const view = this.viewContainer.createEmbeddedView(this.template);
-        this.embeddedViews.push(view);
-      }
-    }
 
     // console.warn('[renderViewportItems] this.vsForOf=', this.vsForOf.ids);
     // console.log('[renderViewportItems]  this.scrollPositionStart=' + this.scrollPositionStart
@@ -342,11 +331,22 @@ export class VirtualScrollDirective implements AfterViewInit, OnDestroy, OnChang
 
   }
 
-  getRequestPositionOffset() {
-    return Math.round((this.virtualScrollItemsOffset + (this.scrollPositionStart)) / 20) * 20;
+  private createViewElements(): void {
+    if (!this.viewContainer.length) {
+      // Initialize viewContainer with all need views (rows)
+      // console.warn(`[renderViewportItems] viewContainer init (${this.scrollPositionEnd - this.scrollPositionStart} views)`);
+      for (let index = 0; index < (this.scrollPositionEnd - this.scrollPositionStart + 1); index++) {
+        const view = this.viewContainer.createEmbeddedView(this.template);
+        this.embeddedViews.push(view);
+      }
+    }
   }
 
-  ngOnDestroy() {
+  // getRequestPositionOffset(): number {
+  //   return Math.round((this.virtualScrollItemsOffset + (this.scrollPositionStart)) / 20) * 20;
+  // }
+
+  ngOnDestroy(): void {
     if (this.scrollListener) {
       this.scrollListener();
     }

@@ -1,108 +1,3 @@
-<style>
-    .logs-action-table-datetime {
-        display: inline-block;
-        min-width: 170px;
-    }
-
-    .logs-action-table-level {
-        display: inline-block;
-        min-width: 60px;
-    }
-
-    .logs-action-table-message {
-        display: inline-block;
-        min-width: 725px;
-    }
-</style>
-
-<!--testing purposes-->
-
-<style>
-    .virtualScrollHeader {
-        display: flex;
-        align-items: center;
-        color: #ffffff99;
-
-        height: 34px;
-        font-size: 12px;
-        padding-left: 16px;
-
-        border-top: 1px #323334 solid;
-        border-bottom: 1px #323334 solid;
-    }
-
-    .virtualScrollRow {
-        display: flex;
-        align-items: center;
-
-        height: 36px;
-        font-size: 14px;
-        padding-left: 16px;
-    }
-
-    .virtualScrollRowEven {
-        background-color: #323334;
-    }
-</style>
-
-<style>
-    .virtual-scroll-container {
-        position: relative;
-        width: 60%;
-        height: calc(95vh - 74px);
-        /* must be multiple of itemSize*/
-        /* height: 500px; */
-        overflow: auto;
-        z-index: 999;
-    }
-
-    .item {
-        position: absolute;
-        min-width: calc(100% - 16px);
-
-        display: flex;
-        align-items: center;
-
-        height: 36px;
-        font-size: 14px;
-        padding-left: 16px;
-
-        color: white;
-    }
-
-
-</style>
-
-
-<!--<style>-->
-<!--    .virtual-scroll-container {-->
-<!--        position: relative;-->
-<!--        width: 60%;-->
-<!--        height: calc(95vh - 74px);-->
-<!--        /* must be multiple of itemSize*/-->
-<!--        /* height: 500px; */-->
-<!--        overflow: auto;-->
-<!--        z-index: 999;-->
-<!--    }-->
-
-<!--    .item {-->
-<!--        position: absolute;-->
-<!--        min-width: calc(100% - 16px);-->
-
-<!--        display: flex;-->
-<!--        align-items: center;-->
-
-<!--        height: 36px;-->
-<!--        font-size: 14px;-->
-<!--        padding-left: 16px;-->
-
-<!--        color: white;-->
-<!--    }-->
-
-<!--</style>-->
-
-<!---->
-
 <div class="logs-action-container">
 
     <div class="table-virtual-scroll">
@@ -120,6 +15,9 @@
                              (getItems)="getItems($event)">
                     <span class="item virtualScrollRow" [style.transform]="'translate(0px,' + position + 'px)'"
                           [class.virtualScrollRowEven]="event.index % 2">
+<!--                          (mouseenter)="tableMouseEnter(event)">-->
+
+                        <span [class.item-loading]="!event?.datetime">&nbsp;</span>
 
                         <span class="logs-action-table-datetime">{{event?.datetime}}</span>
                         <span class="logs-action-table-level">{{event?.level}}</span>
@@ -129,12 +27,12 @@
                 </ng-template>
             </div>
 
-<!--            <div class="logs-action-table-detail">-->
-<!--                <div *ngIf="logsActionItem?.message">-->
-<!--                    <ngx-json-viewer [json]="{message:logsActionItem?.message}" [expanded]="true">-->
-<!--                    </ngx-json-viewer>-->
-<!--                </div>-->
-<!--            </div>-->
+            <div class="logs-action-table-detail">
+                <div *ngIf="logsActionItem?.message">
+                    <ngx-json-viewer [json]="{message:logsActionItem?.message}" [expanded]="true">
+                    </ngx-json-viewer>
+                </div>
+            </div>
         </div>
 
         <!--

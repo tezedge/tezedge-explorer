@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, ViewChild, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild, ChangeDetectionStrategy, ChangeDetectorRef, NgZone } from '@angular/core';
 import { CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
 import { Store } from '@ngrx/store';
 import { Observable, Subject, Subscription } from 'rxjs';
@@ -29,7 +29,8 @@ export class LogsActionComponent implements OnInit, OnDestroy {
 
   constructor(
     public store: Store<any>,
-    private changeDetector: ChangeDetectorRef
+    private changeDetector: ChangeDetectorRef,
+    // private ngZone: NgZone
   ) {
   }
 
@@ -85,7 +86,7 @@ export class LogsActionComponent implements OnInit, OnDestroy {
     this.store.dispatch({
       type: 'LOGS_ACTION_LOAD',
       payload: {
-        cursor_id: $event?.end
+        cursor_id: $event?.nextCursorId
       }
     });
   }
@@ -122,7 +123,15 @@ export class LogsActionComponent implements OnInit, OnDestroy {
   }
 
   tableMouseEnter(item) {
-    this.logsActionItem = item;
+    // this.ngZone.runOutsideAngular(() => {
+    //   if (this.logsActionItem && this.logsActionItem.id === item.id) {
+    //     return;
+    //   }
+    //
+    //   this.ngZone.run(() => {
+    //     this.logsActionItem = item;
+    //   });
+    // });
   }
 
   ngOnDestroy() {

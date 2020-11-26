@@ -198,7 +198,8 @@ export class VirtualScrollDirective implements AfterViewInit, OnDestroy, OnChang
 
       this.getItems.emit({
         start: this.virtualScrollItemsOffset + this.scrollPositionStart,
-        end: this.virtualScrollItemsOffset + this.scrollPositionEnd
+        end: this.virtualScrollItemsOffset + this.scrollPositionEnd,
+        nextCursorId: Math.min(this.virtualScrollItemsOffset + this.scrollPositionEnd + 40, this.vsForOf.lastCursorId)
       });
 
     });

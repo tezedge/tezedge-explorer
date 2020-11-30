@@ -206,7 +206,7 @@ import { MempoolActionComponent } from './mempool/mempool-action/mempool-action.
     ]),
 
     // https://github.com/zalmoxisus/redux-devtools-extension
-    !environment.production ? StoreDevtoolsModule.instrument({ maxAge: 50 }) : [],
+    // !environment.production ? StoreDevtoolsModule.instrument({ maxAge: 50 }) : [],
 
     MatAutocompleteModule,
     MatButtonModule,

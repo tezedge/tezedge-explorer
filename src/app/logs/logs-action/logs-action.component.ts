@@ -45,10 +45,11 @@ export class LogsActionComponent implements OnInit, OnDestroy {
 
         this.changeDetector.markForCheck();
 
-        setTimeout(() => {
-          this.vrFor.scrollToBottom();
-        }, 0);
-
+        if (this.virtualScrollItems.ids.length > 0) {
+          setTimeout(() => {
+            this.vrFor.scrollToBottom();
+          }, 0);
+        }
         // this.logsActionList = data.ids.map(id => ({id, ...data.entities[id]}));
 
         // set viewport at the end

@@ -24,8 +24,8 @@ export function reducer(state = initialState, action) {
               ...accumulator,
               [logsAction.id]: {
                 ...logsAction,
-                preview: logsAction.message,
-                // preview: logsAction.message.length > 20 ? logsAction.message.substring(0, 80) + '...' : '',
+                // preview: logsAction.message,
+                preview: logsAction.message.length < 100 ? logsAction.message : logsAction.message.substring(0, 100) + '...',
                 datetime: moment.utc(Math.ceil(logsAction.timestamp / 1000000)).format('HH:mm:ss.SSS, DD MMM YY')
               }
             };

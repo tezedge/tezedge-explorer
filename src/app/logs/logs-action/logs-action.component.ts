@@ -35,7 +35,6 @@ export class LogsActionComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.getItems(null);
 
     this.store.select('logsAction')
       .pipe(takeUntil(this.onDestroy$))
@@ -45,10 +44,8 @@ export class LogsActionComponent implements OnInit, OnDestroy {
 
         this.changeDetector.markForCheck();
 
-        if (this.virtualScrollItems.ids.length > 0) {
-          setTimeout(() => {
+        if (this.virtualScrollItems.ids.length > 0 && this.vrFor) {
             this.vrFor.scrollToBottom();
-          }, 0);
         }
         // this.logsActionList = data.ids.map(id => ({id, ...data.entities[id]}));
 

@@ -81,6 +81,8 @@ export class VirtualScrollDirective implements AfterViewInit, OnDestroy, OnChang
     this.renderer.appendChild(this.$viewport, this.$scroller);
     this.viewportHeight = this.$viewport.getBoundingClientRect().height;
 
+    this.fetchData(true);
+
     // we can attach the event with passive option
     // this.ngZone.runOutsideAngular(() => {
     //     document.addEventListener("mousewheel", this.onScroll.bind(this), { passive: true });
@@ -198,17 +200,18 @@ export class VirtualScrollDirective implements AfterViewInit, OnDestroy, OnChang
     // this.viewContainer.clear();
   }
 
-  private fetchData(): void {
+  private fetchData(reset: boolean = false): void {
     this.ngZone.run(() => {
 
-      // cache request position
-      this.cacheRequestStart = this.scrollPositionStart;
-      this.cacheRequestEnd = this.scrollPositionEnd;
-
+      if (!reset) {
+        // cache request position
+        this.cacheRequestStart = this.scrollPositionStart;
+        this.cacheRequestEnd = this.scrollPositionEnd;
+      }
       this.getItems.emit({
-        start: this.virtualScrollItemsOffset + this.scrollPositionStart,
-        end: this.virtualScrollItemsOffset + this.scrollPositionEnd,
-        nextCursorId: Math.min(this.virtualScrollItemsOffset + this.scrollPositionEnd + 40, this.vsForOf.lastCursorId)
+        // start: this.virtualScrollItemsOffset + this.scrollPositionStart,
+        // end: this.virtualScrollItemsOffset + this.scrollPositionEnd,
+        nextCursorId: reset ? null : Math.min(this.virtualScrollItemsOffset + this.scrollPositionEnd + 40, this.vsForOf.lastCursorId)
       });
 
     });

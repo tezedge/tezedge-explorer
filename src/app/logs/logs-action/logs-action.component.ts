@@ -1,11 +1,8 @@
 import { Component, OnInit, OnDestroy, ViewChild, ChangeDetectionStrategy, ChangeDetectorRef, NgZone } from '@angular/core';
-import { CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
 import { Store } from '@ngrx/store';
-import { Observable, Subject, Subscription } from 'rxjs';
-import { filter, map, takeUntil } from 'rxjs/operators';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 import { VirtualScrollDirective } from '../../shared/virtual-scroll.directive';
-import { CollectionViewer, DataSource } from '@angular/cdk/collections';
-import { setTimeout } from 'timers';
 
 @Component({
   selector: 'app-logs-action',
@@ -15,8 +12,6 @@ import { setTimeout } from 'timers';
 })
 export class LogsActionComponent implements OnInit, OnDestroy {
 
-  // logsDataSource: LogsDataSource;
-  // private logsAction$: Observable<any>;
   virtualScrollItems;
   logsActionItem; // TODO type log - define an interface for log
   logsActionShow: boolean;
@@ -24,12 +19,11 @@ export class LogsActionComponent implements OnInit, OnDestroy {
 
   onDestroy$ = new Subject();
 
-  @ViewChild(CdkVirtualScrollViewport) viewPort: CdkVirtualScrollViewport;
   @ViewChild(VirtualScrollDirective) vrFor: VirtualScrollDirective;
 
   constructor(
     public store: Store<any>,
-    private changeDetector: ChangeDetectorRef,
+    private changeDetector: ChangeDetectorRef
     // private ngZone: NgZone
   ) {
   }
@@ -45,7 +39,7 @@ export class LogsActionComponent implements OnInit, OnDestroy {
         this.changeDetector.markForCheck();
 
         if (this.virtualScrollItems.ids.length > 0 && this.vrFor) {
-            this.vrFor.scrollToBottom();
+          this.vrFor.afterReceivingData();
         }
         // this.logsActionList = data.ids.map(id => ({id, ...data.entities[id]}));
 

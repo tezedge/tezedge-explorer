@@ -1,10 +1,10 @@
 import {
-  Directive, AfterViewInit, DoCheck, OnChanges, ViewRef,
+  Directive, AfterViewInit, DoCheck, OnChanges,
   Input, Output, EventEmitter, ElementRef, ViewContainerRef,
   Renderer2, TemplateRef, SimpleChanges, OnDestroy, NgZone
 } from '@angular/core';
-import { of, fromEvent, Subject } from 'rxjs';
-import { takeUntil, throttleTime } from 'rxjs/operators';
+import { fromEvent, Subject, Observable, Subscription } from 'rxjs';
+import { debounceTime } from 'rxjs/operators';
 
 // tslint:disable-next-line: no-conflicting-lifecycle
 @Directive({
@@ -41,6 +41,9 @@ export class VirtualScrollDirective implements AfterViewInit, OnDestroy, OnChang
   private $viewport: HTMLElement;
   private scrollListener: () => void;
 
+  private resizeObservable$: Observable<Event>;
+  private resizeSubscription$: Subscription;
+
   public onDestroy$ = new Subject();
 
   @Input() vsForOf: any;
@@ -70,32 +73,23 @@ export class VirtualScrollDirective implements AfterViewInit, OnDestroy, OnChang
   ngAfterViewInit() {
     // console.log('[ngAfterViewInit]');
 
-    this.maxScrollHeight = this.getMaxBrowserScrollSize();
-
-    this.$viewport = this.element.nativeElement.parentElement;
-    this.$viewport.style.position = 'relative';
-    this.$scroller.style.position = 'absolute';
-    this.$scroller.style.top = '0px';
-    this.$scroller.style.width = '1px';
-
-    this.renderer.appendChild(this.$viewport, this.$scroller);
-    this.viewportHeight = this.$viewport.getBoundingClientRect().height;
-
+    this.initDimensions();
     this.fetchData(true);
-
-    // we can attach the event with passive option
-    // this.ngZone.runOutsideAngular(() => {
-    //     document.addEventListener("mousewheel", this.onScroll.bind(this), { passive: true });
-    // });
 
     this.ngZone.runOutsideAngular(() => {
       this.scrollListener = this.renderer.listen(this.$viewport, 'scroll', this.onScroll.bind(this));
+
+      this.resizeObservable$ = fromEvent(window, 'resize');
+      this.resizeSubscription$ = this.resizeObservable$.pipe(debounceTime(500)).subscribe(event => {
+        this.initDimensions(event);
+        this.scrollToBottom();
+      });
     });
 
     // console.log('[ngAfterViewInit] this.maxScrollHeight=' + this.maxScrollHeight + ' this.viewportHeight=' + this.viewportHeight);
   }
 
-  scrollToBottom() {
+  afterReceivingData() {
 
     // load all virtual scroll date
     this.load();
@@ -106,10 +100,7 @@ export class VirtualScrollDirective implements AfterViewInit, OnDestroy, OnChang
     // set scroll to latest item in list
     if (this.vsForOf.ids[this.vsForOf.ids.length - 1] >= this.vsForOf.lastCursorId &&
       this.maximumScrollTop - this.$viewport.scrollTop < 15 * this.itemHeight) {
-
-      this.previousLastCursorId = this.vsForOf.lastCursorId;
-      this.$viewport.scrollTop = Math.ceil((this.virtualScrollItemsCount + 1) * this.itemHeight - this.viewportHeight);
-      this.maximumScrollTop = this.$viewport.scrollTop;
+      this.scrollToBottom();
     }
     // if (this.previousLastCursorId !== this.vsForOf.lastCursorId) {
     //   this.previousLastCursorId = this.vsForOf.lastCursorId;
@@ -117,6 +108,12 @@ export class VirtualScrollDirective implements AfterViewInit, OnDestroy, OnChang
     //   this.maximumScrollTop = this.$viewport.scrollTop;
     // }
 
+  }
+
+  scrollToBottom(): void {
+    this.previousLastCursorId = this.vsForOf.lastCursorId;
+    this.$viewport.scrollTop = Math.ceil((this.virtualScrollItemsCount + 1) * this.itemHeight - this.viewportHeight);
+    this.maximumScrollTop = this.$viewport.scrollTop;
   }
 
   onScroll(event) {
@@ -188,6 +185,24 @@ export class VirtualScrollDirective implements AfterViewInit, OnDestroy, OnChang
     // })
     // });
 
+  }
+
+  private initDimensions(event?): void {
+
+    if (event) {
+      console.log(event);
+    }
+
+    this.maxScrollHeight = this.getMaxBrowserScrollSize();
+
+    this.$viewport = this.element.nativeElement.parentElement;
+    this.$viewport.style.position = 'relative';
+    this.$scroller.style.position = 'absolute';
+    this.$scroller.style.top = '0px';
+    this.$scroller.style.width = '1px';
+
+    this.renderer.appendChild(this.$viewport, this.$scroller);
+    this.viewportHeight = this.$viewport.getBoundingClientRect().height;
   }
 
   private clear() {
@@ -355,16 +370,21 @@ export class VirtualScrollDirective implements AfterViewInit, OnDestroy, OnChang
     }
   }
 
+  private removeListeners(): void {
+    if (this.scrollListener) {
+      this.scrollListener();
+    }
+
+    this.resizeSubscription$.unsubscribe();
+  }
+
   // getRequestPositionOffset(): number {
   //   return Math.round((this.virtualScrollItemsOffset + (this.scrollPositionStart)) / 20) * 20;
   // }
 
   ngOnDestroy(): void {
-    if (this.scrollListener) {
-      this.scrollListener();
-    }
+    this.removeListeners();
 
-    // close all observables
     this.onDestroy$.next();
     this.onDestroy$.complete();
   }

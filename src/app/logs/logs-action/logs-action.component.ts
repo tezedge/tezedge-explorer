@@ -78,7 +78,8 @@ export class LogsActionComponent implements OnInit, OnDestroy {
     this.store.dispatch({
       type: 'LOGS_ACTION_LOAD',
       payload: {
-        cursor_id: $event?.nextCursorId
+        cursor_id: $event?.nextCursorId,
+        limit: $event?.limit
       }
     });
   }

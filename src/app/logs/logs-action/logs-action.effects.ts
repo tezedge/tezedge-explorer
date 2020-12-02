@@ -22,7 +22,8 @@ export class LogsActionEffects {
       const cursorParam = action.payload && action.payload.cursor_id ?
         'cursor_id=' + action.payload.cursor_id + '&' :
         '';
-      return this.http.get(state.settingsNode.api.debugger + '/v2/log/?' + cursorParam + 'limit=120');
+      const limitNr = action.payload && action.payload.limit ? action.payload.limit : '120';
+      return this.http.get(state.settingsNode.api.debugger + '/v2/log/?' + cursorParam + 'limit=' + limitNr);
     }),
 
     // dispatch action

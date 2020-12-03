@@ -1,59 +1,59 @@
-.item {
-  position: absolute;
-  min-width: calc(100% - 16px);
-  display: flex;
-  align-items: center;
+.table-virtual-scroll-header {
+  display: grid;
+  grid-template-columns: 170px 60px 1fr;
+  padding: 0 16px;
   height: 36px;
+  line-height: 35px;
+}
+
+.virtualScrollRow {
+  position: absolute;
+  width: 100%;
+  height: 36px !important;
+  line-height: 35px !important;
   font-size: 14px;
-  padding-left: 16px;
-  color: white;
+  display: grid;
+  grid-template-columns: 170px 60px 1fr;
+  padding: 0 16px;
+  box-sizing: border-box;
 
   .item-loading {
-    display: flex;
+    position: absolute;
+    top: 8px;
+    left: 6px;
     background-color: #323334;
-    min-width: calc(100% - 15px) !important;
-    animation: hintloading 2s ease-in-out 0s infinite reverse;
-    -webkit-animation: hintloading 2s ease-in-out 0s infinite reverse;
-  }
+    width: 0;
 
-  &.virtualScrollRow {
-    display: flex;
-    align-items: center;
-    height: 36px;
-    font-size: 14px;
-    padding-left: 16px;
-
-    &.virtualScrollRowEven {
-      background-color: #323334;
-
-      .item-loading {
-        background-color: #2a2a2e !important;
-      }
+    &.displayed {
+      height: 20px;
+      display: flex;
+      min-width: calc(100% - 15px) !important;
+      animation: hintloading 2s ease-in-out 0s infinite reverse;
+      -webkit-animation: hintloading 2s ease-in-out 0s infinite reverse;
     }
   }
+
+  &.virtualScrollRowEven {
+    background-color: #323334;
+
+    .item-loading {
+      background-color: #2a2a2e !important;
+    }
+  }
+
 }
 
-.logs-action-table-datetime {
-  display: inline-block;
-  min-width: 170px;
+.truncate {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
-.logs-action-table-level {
-  display: inline-block;
-  min-width: 60px;
-}
-
-.logs-action-table-message {
-  display: inline-block;
-  min-width: 325px;
-}
-
-@keyframes hintloading
-{
+@keyframes hintloading {
   0% {
     opacity: 0.1;
   }
-  50%  {
+  50% {
     opacity: 0.5;
   }
   100% {
@@ -61,12 +61,11 @@
   }
 }
 
-@-webkit-keyframes hintloading
-{
+@-webkit-keyframes hintloading {
   0% {
     opacity: 0.1;
   }
-  50%  {
+  50% {
     opacity: 0.5;
   }
   100% {

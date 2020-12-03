@@ -29,6 +29,7 @@ export class LogsActionComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    this.scrollStart(null);
 
     this.store.select('logsAction')
       .pipe(takeUntil(this.onDestroy$))
@@ -84,24 +85,29 @@ export class LogsActionComponent implements OnInit, OnDestroy {
     });
   }
 
-  onScroll(index) {
-    // if (this.logsActionList.length - index > 15) {
-    //   this.store.dispatch({
-    //     type: 'LOGS_ACTION_STOP',
-    //     payload: event,
-    //   });
-    // } else {
-    //   this.store.dispatch({
-    //     type: 'LOGS_ACTION_START',
-    //     payload: event,
-    //   });
-    // }
+  startStopDataStream(event) {
+    if (event.stop) {
+      this.store.dispatch({
+        type: 'LOGS_ACTION_STOP',
+      });
+    } else {
+      this.store.dispatch({
+        type: 'LOGS_ACTION_START',
+        payload: {
+          limit: event?.limit
+        }
+      });
+    }
   }
 
-  scrollStart() {
+  scrollStart($event) {
     // trigger action and get logs data
     this.store.dispatch({
-      type: 'LOGS_ACTION_START'
+      type: 'LOGS_ACTION_START',
+      payload: {
+        cursor_id: $event?.nextCursorId ? $event?.nextCursorId : null,
+        limit: $event?.limit ? $event.limit : 120
+      }
     });
   }
 

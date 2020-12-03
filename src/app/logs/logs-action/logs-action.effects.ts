@@ -47,12 +47,11 @@ export class LogsActionEffects {
     withLatestFrom(this.store, (action: any, state) => ({action, state})),
 
     switchMap(({action, state}) =>
-
       // get header data every second
       timer(0, 1000).pipe(
         takeUntil(logActionDestroy$),
         switchMap(() =>
-          this.http.get(state.settingsNode.api.debugger + '/v2/log/?limit=30').pipe(
+          this.http.get(state.settingsNode.api.debugger + '/v2/log/?limit=' + (action.payload && action.payload.limit ? action.payload.limit : '120')).pipe(
             map(response => ({type: 'LOGS_ACTION_START_SUCCESS', payload: response})),
             catchError(error => of({type: 'LOGS_ACTION_START_ERROR', payload: error})),
           )

@@ -203,7 +203,6 @@ export class VirtualScrollDirective implements AfterViewInit, OnDestroy, OnChang
   }
 
   private ssDataStream(): void {
-    debugger;
     const stop = this.maximumScrollTop > this.$viewport.scrollTop;
     const limit = Math.floor(this.viewportHeight / this.itemHeight * 3);
 
@@ -240,8 +239,6 @@ export class VirtualScrollDirective implements AfterViewInit, OnDestroy, OnChang
       const limit = nextCursorId ? nextCursorId - (this.scrollPositionStart - 40) : Math.floor(this.viewportHeight / this.itemHeight * 3);
 
       this.getItems.emit({
-        // start: this.virtualScrollItemsOffset + this.scrollPositionStart,
-        // end: this.virtualScrollItemsOffset + this.scrollPositionEnd,
         nextCursorId,
         limit
       });

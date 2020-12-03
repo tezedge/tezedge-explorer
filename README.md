@@ -23,7 +23,7 @@ You can check the version of Node and NPM by entering the following commads in t
 To install `angular-cli` enter the following command in terminal:
 
 ```
-npm -i -g angular-cli
+npm i -g angular-cli
 ```
 
 ## Quick start

@@ -5,6 +5,16 @@ const initialState: any = {
   idsFilter: [],
   entities: {},
   lastCursorId: 0,
+  filter: {
+    trace: false,
+    debug: false,
+    info: false,
+    notice: false,
+    warn: false,
+    warning: false,
+    error: false,
+    fatal: false
+  },
   stream: false
 };
 
@@ -54,6 +64,19 @@ export function reducer(state = initialState, action) {
         lastCursorId: action.payload.length > 0 && state.lastCursorId < action.payload[0].id ?
           action.payload[0].id : state.lastCursorId,
         stream: false
+      };
+    }
+
+    case 'LOGS_ACTION_FILTER': {
+
+      const stateFilter = {
+        ...state.filter,
+        [action.payload]: !state.filter[action.payload]
+      };
+
+      return {
+        ...state,
+        filter: stateFilter
       };
     }
 

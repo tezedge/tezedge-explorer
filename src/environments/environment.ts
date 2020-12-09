@@ -1,13 +1,13 @@
 export const environment = {
   production: false,
   api: [
-    {
-      id: 'localhost',
-      name: 'localhost',
-      http: 'http://127.0.0.1:3001',
-      debugger: 'http://127.0.0.1:3002',
-      ws: false
-    },
+    // {
+    //   id: 'localhost',
+    //   name: 'localhost',
+    //   http: 'http://127.0.0.1:3001',
+    //   debugger: 'http://127.0.0.1:3002',
+    //   ws: false
+    // },
     {
       id: 'master.dev.tezedge',
       name: 'master.dev.tezedge',

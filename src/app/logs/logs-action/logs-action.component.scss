@@ -1,3 +1,11 @@
+
+//.logs-filters,
+.table-virtual-scroll-footer {
+  box-sizing: border-box;
+  border-top: 1px solid #333334;
+  width: 100%;
+}
+
 .table-virtual-scroll-header {
   display: grid;
   grid-template-columns: 170px 60px 1fr;

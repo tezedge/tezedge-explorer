@@ -3,6 +3,8 @@ import { Store } from '@ngrx/store';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { VirtualScrollDirective } from '../../shared/virtual-scroll.directive';
+import { MatAccordion } from '@angular/material/expansion';
+import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 
 @Component({
   selector: 'app-logs-action',
@@ -16,10 +18,15 @@ export class LogsActionComponent implements OnInit, OnDestroy {
   logsActionItem; // TODO type log - define an interface for log
   logsActionShow: boolean;
   ITEM_SIZE = 36;
+  filtersState = {
+    open: false,
+    availableFields: ['trace', 'debug', 'info', 'notice', 'warn', 'warning', 'error', 'fatal']
+  };
 
   onDestroy$ = new Subject();
 
   @ViewChild(VirtualScrollDirective) vrFor: VirtualScrollDirective;
+  @ViewChild(MatAccordion) accordion: MatAccordion;
 
   constructor(
     public store: Store<any>,
@@ -88,7 +95,7 @@ export class LogsActionComponent implements OnInit, OnDestroy {
   startStopDataStream(event) {
     if (event.stop) {
       this.store.dispatch({
-        type: 'LOGS_ACTION_STOP',
+        type: 'LOGS_ACTION_STOP'
       });
     } else {
       this.store.dispatch({
@@ -98,6 +105,16 @@ export class LogsActionComponent implements OnInit, OnDestroy {
         }
       });
     }
+  }
+
+  filterType(filterType) {
+    debugger;
+    // dispatch action
+    this.store.dispatch({
+      type: 'LOGS_ACTION_FILTER',
+      payload: filterType
+    });
+
   }
 
   scrollStart($event) {

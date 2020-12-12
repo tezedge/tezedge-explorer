@@ -3,8 +3,7 @@ import { Effect, Actions, ofType } from '@ngrx/effects';
 import { HttpClient } from '@angular/common/http';
 import { Store } from '@ngrx/store';
 import { map, switchMap, withLatestFrom, catchError, tap, filter, takeUntil } from 'rxjs/operators';
-import { of, Subject, empty, timer } from 'rxjs';
-import { networkActionFilter } from '../../network/network-action/network-action.effects';
+import { of, Subject, timer } from 'rxjs';
 
 const logActionDestroy$ = new Subject();
 
@@ -19,7 +18,7 @@ export class LogsActionEffects {
     withLatestFrom(this.store, (action: any, state) => ({ action, state })),
 
     switchMap(({ action, state }) => {
-      return this.http.get(state.settingsNode.api.debugger + '/v2/log/?' +
+      return this.http.get(state.settingsNode.api.debugger + '/v2/log/' +
         logsActionLimit(action, state) +
         logsActionCursor(action, state) +
         logsActionFilter(action, state)
@@ -132,7 +131,6 @@ export function logsActionCursor(action, state) {
 // filter logs action
 export function logsActionFilter(action, state) {
   let filterType = '';
-  debugger;
 
   if (state.logsAction && state.logsAction.filter) {
     const stateFilter = state.logsAction.filter;

@@ -18,11 +18,7 @@ export class LogsActionEffects {
     withLatestFrom(this.store, (action: any, state) => ({ action, state })),
 
     switchMap(({ action, state }) => {
-      return this.http.get(state.settingsNode.api.debugger + '/v2/log/' +
-        logsActionLimit(action, state) +
-        logsActionCursor(action, state) +
-        logsActionFilter(action, state)
-      );
+      return this.http.get(setUrl(action, state));
     }),
 
     // dispatch action
@@ -74,11 +70,7 @@ export class LogsActionEffects {
       timer(0, 1000).pipe(
         takeUntil(logActionDestroy$),
         switchMap(() =>
-          this.http.get(state.settingsNode.api.debugger + '/v2/log/' +
-            logsActionLimit(action, state) +
-            logsActionCursor(action, state) +
-            logsActionFilter(action, state)
-          ).pipe(
+          this.http.get(setUrl(action, state)).pipe(
             map(response => ({ type: 'LOGS_ACTION_START_SUCCESS', payload: response })),
             catchError(error => of({ type: 'LOGS_ACTION_START_ERROR', payload: error }))
           )
@@ -112,19 +104,28 @@ export class LogsActionEffects {
 
 }
 
+export function setUrl(action, state) {
+  const url = state.settingsNode.api.debugger + '/v2/log/?';
+  const cursor = logsActionCursor(action);
+  const filters = logsActionFilter(action, state);
+  const limit = logsActionLimit(action);
+
+  return `${url}${filters.length ? `${filters}&` : ''}${cursor.length ? `${cursor}&` : ''}${limit}`;
+}
+
 // use limit to load just the necessary number of records
-export function logsActionLimit(action, state) {
+export function logsActionLimit(action) {
   const limitNr = action.payload && action.payload.limit ?
     action.payload.limit :
     '120';
 
-  return `?limit=${limitNr}`;
+  return `limit=${limitNr}`;
 }
 
 // use cursor to load previous pages
-export function logsActionCursor(action, state) {
+export function logsActionCursor(action) {
   return action.payload && action.payload.cursor_id ?
-    `&cursor_id=${action.payload.cursor_id}` :
+    `cursor_id=${action.payload.cursor_id}` :
     '';
 }
 
@@ -145,7 +146,7 @@ export function logsActionFilter(action, state) {
     filterType = stateFilter.fatal ? filterType + 'fatal,' : filterType;
 
     // remove the last ,
-    filterType = filterType.length > 0 ? '&level=' + filterType.slice(0, -1) : '';
+    filterType = filterType.length > 0 ? 'level=' + filterType.slice(0, -1) : '';
   }
 
   return filterType;

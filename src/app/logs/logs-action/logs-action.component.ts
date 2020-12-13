@@ -4,7 +4,6 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { VirtualScrollDirective } from '../../shared/virtual-scroll.directive';
 import { MatAccordion } from '@angular/material/expansion';
-import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 
 @Component({
   selector: 'app-logs-action',
@@ -19,7 +18,7 @@ export class LogsActionComponent implements OnInit, OnDestroy {
   logsActionShow: boolean;
   ITEM_SIZE = 36;
   filtersState = {
-    open: false,
+    open: true,
     availableFields: ['trace', 'debug', 'info', 'notice', 'warn', 'warning', 'error', 'fatal']
   };
 
@@ -94,41 +93,30 @@ export class LogsActionComponent implements OnInit, OnDestroy {
 
   startStopDataStream(event) {
     if (event.stop) {
-      this.store.dispatch({
-        type: 'LOGS_ACTION_STOP'
-      });
+      this.scrollStop();
     } else {
-      this.store.dispatch({
-        type: 'LOGS_ACTION_START',
-        payload: {
-          limit: event?.limit
-        }
-      });
+      this.scrollStart(event);
     }
   }
 
-  filterType(filterType) {
-    debugger;
-    // dispatch action
-    this.store.dispatch({
-      type: 'LOGS_ACTION_FILTER',
-      payload: filterType
-    });
-
-  }
-
   scrollStart($event) {
-    // trigger action and get logs data
+    if (this.virtualScrollItems && this.virtualScrollItems.stream) {
+      return;
+    }
+
     this.store.dispatch({
       type: 'LOGS_ACTION_START',
       payload: {
-        cursor_id: $event?.nextCursorId ? $event?.nextCursorId : null,
         limit: $event?.limit ? $event.limit : 120
       }
     });
   }
 
   scrollStop() {
+    if (!this.virtualScrollItems.stream) {
+      return;
+    }
+
     this.store.dispatch({
       type: 'LOGS_ACTION_STOP'
     });
@@ -136,6 +124,15 @@ export class LogsActionComponent implements OnInit, OnDestroy {
 
   scrollToEnd() {
     this.vrFor.scrollToBottom();
+  }
+
+  filterType(filterType) {
+    // dispatch action
+    this.store.dispatch({
+      type: 'LOGS_ACTION_FILTER',
+      payload: filterType
+    });
+
   }
 
   tableMouseEnter(item) {

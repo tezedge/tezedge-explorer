@@ -41,6 +41,7 @@ export function reducer(state = initialState, action) {
 
       return {
         ...state,
+        lastCursorId: 0,
         filter: stateFilter
       };
     }

@@ -159,7 +159,7 @@ export class VirtualScrollDirective implements AfterViewInit, OnDestroy, OnChang
         this.scrollPositionStart < this.vsForOf.ids[0]) {
         this.fetchData();
       } else {
-        this.ssDataStream();
+        this.startStopStream();
       }
 
       // } else {
@@ -202,7 +202,7 @@ export class VirtualScrollDirective implements AfterViewInit, OnDestroy, OnChang
     // this.viewContainer.clear();
   }
 
-  private ssDataStream(): void {
+  private startStopStream(): void {
     const stop = this.maximumScrollTop > this.$viewport.scrollTop;
     const limit = Math.floor(this.viewportHeight / this.itemHeight * 3);
 

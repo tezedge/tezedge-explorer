@@ -1,8 +1,8 @@
-import { Injectable, NgZone } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { Effect, Actions, ofType } from '@ngrx/effects';
 import { HttpClient } from '@angular/common/http';
 import { Store } from '@ngrx/store';
-import { map, switchMap, withLatestFrom, catchError, tap, filter, takeUntil } from 'rxjs/operators';
+import { map, switchMap, withLatestFrom, catchError, tap, takeUntil } from 'rxjs/operators';
 import { of, Subject, timer } from 'rxjs';
 
 const logActionDestroy$ = new Subject();

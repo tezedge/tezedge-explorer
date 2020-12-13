@@ -1,9 +1,9 @@
-import { Injectable, NgZone } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { Effect, Actions, ofType } from '@ngrx/effects';
 import { HttpClient } from '@angular/common/http';
 import { Store } from '@ngrx/store';
-import { map, switchMap, withLatestFrom, catchError, tap, filter, takeUntil } from 'rxjs/operators';
-import { of, Subject, empty, timer } from 'rxjs';
+import { map, switchMap, withLatestFrom, catchError, tap, takeUntil } from 'rxjs/operators';
+import { of, Subject, timer } from 'rxjs';
 
 const networkActionDestroy$ = new Subject();
 
@@ -18,20 +18,39 @@ export class NetworkActionEffects {
     withLatestFrom(this.store, (action: any, state) => ({ action, state })),
 
     switchMap(({ action, state }) => {
-      return this.http.get(
-        state.settingsNode.api.debugger +
-        '/v2/p2p/?' +
-        networkActionFilter(action, state) +
-        networkActionCursor(action, state)
-      );
+      return this.http.get(setUrl(action, state));
     }),
 
     // dispatch action
-    map((payload) => ({ type: 'NETWORK_ACTION_LOAD_SUCCESS', payload: payload })),
+    map((payload) => ({ type: 'NETWORK_ACTION_LOAD_SUCCESS', payload })),
     catchError((error, caught) => {
       console.error(error);
       this.store.dispatch({
         type: 'NETWORK_ACTION_LOAD_ERROR',
+        payload: error
+      });
+      return caught;
+    })
+  );
+
+  @Effect()
+  NetworkActionFilter$ = this.actions$.pipe(
+    ofType('NETWORK_ACTION_FILTER'),
+
+    // merge state
+    withLatestFrom(this.store, (action: any, state) => ({ action, state })),
+
+    tap(response => {
+      networkActionDestroy$.next();
+      networkActionFilter(response.action, response.state);
+    }),
+
+    // dispatch action
+    map((payload) => ({ type: 'NETWORK_ACTION_START', payload })),
+    catchError((error, caught) => {
+      console.error(error);
+      this.store.dispatch({
+        type: 'NETWORK_ACTION_FILTER_ERROR',
         payload: error
       });
       return caught;
@@ -47,16 +66,11 @@ export class NetworkActionEffects {
     withLatestFrom(this.store, (action: any, state) => ({ action, state })),
 
     switchMap(({ action, state }) =>
-
       // get header data every second
       timer(0, 1000).pipe(
         takeUntil(networkActionDestroy$),
         switchMap(() =>
-          this.http.get(
-            state.settingsNode.api.debugger + '/v2/p2p/?' +
-            networkActionFilter(action, state) +
-            networkActionCursor(action, state)
-          ).pipe(
+          this.http.get(setUrl(action, state)).pipe(
             map(response => ({ type: 'NETWORK_ACTION_START_SUCCESS', payload: response })),
             catchError(error => of({ type: 'NETWORK_ACTION_START_ERROR', payload: error }))
           )
@@ -81,30 +95,6 @@ export class NetworkActionEffects {
     })
   );
 
-  @Effect()
-  NetworkActionFilter$ = this.actions$.pipe(
-    ofType('NETWORK_ACTION_FILTER'),
-
-    // merge state
-    withLatestFrom(this.store, (action: any, state) => ({ action, state })),
-
-    tap(response => {
-      networkActionDestroy$.next();
-      networkActionFilter(response.action, response.state);
-    }),
-
-    // dispatch action
-    map((payload) => ({ type: 'NETWORK_ACTION_START', payload: payload })),
-    catchError((error, caught) => {
-      console.error(error);
-      this.store.dispatch({
-        type: 'NETWORK_ACTION_FILTER_ERROR',
-        payload: error
-      });
-      return caught;
-    })
-  );
-
   constructor(
     private http: HttpClient,
     private actions$: Actions,
@@ -114,53 +104,64 @@ export class NetworkActionEffects {
 
 }
 
-// filter network action
-export function networkActionFilter(action, state) {
+export function setUrl(action, state) {
+  const url = state.settingsNode.api.debugger + '/v2/p2p/?';
+  const cursor = networkActionCursor(action);
+  const filters = networkActionFilter(action, state);
+  const limit = networkActionLimit(action);
 
-  // add type filterType
-  let filterType = '';
-  const stateFilter = state.networkAction.filter;
+  return `${url}${filters.length ? `${filters}&` : ''}${cursor.length ? `${cursor}&` : ''}${limit}`;
+}
 
-  filterType = stateFilter.meta ? filterType + 'metadata,' : filterType;
-  filterType = stateFilter.connection ? filterType + 'connection_message,' : filterType;
-  filterType = stateFilter.bootstrap ? filterType + 'bootstrap,' : filterType;
-  filterType = stateFilter.advertise ? filterType + 'advertise,' : filterType;
-  filterType = stateFilter.swap ? filterType + 'swap_request,swap_ack,' : filterType;
-  filterType = stateFilter.deactivate ? filterType + 'deactivate,' : filterType;
+// use limit to load just the necessary number of records
+export function networkActionLimit(action) {
+  const limitNr = action.payload && action.payload.limit ?
+    action.payload.limit :
+    '120';
 
-  filterType = stateFilter.protocol ? filterType + 'get_protocols,protocol,' : filterType;
-  filterType = stateFilter.operation ? filterType + 'get_operations,operation,' : filterType;
-  filterType = stateFilter.currentHead ? filterType + 'get_current_head,current_head,' : filterType;
-  filterType = stateFilter.currentBranch ? filterType + 'get_current_branch,current_branch,' : filterType;
-  filterType = stateFilter.blockHeaders ? filterType + 'get_block_header,block_header,' : filterType;
-  filterType = stateFilter.blockOperations ? filterType + 'get_operations_for_blocks,operations_for_blocks,' : filterType;
-  filterType = stateFilter.blockOperationsHashes ?
-    filterType + 'get_operation_hashes_for_blocks,operation_hashes_for_block,' : filterType;
-
-  // replace last , with &
-  filterType = filterType.length > 0 ? 'types=' + filterType.slice(0, -1) + '&' : '';
-
-  // add filter for source
-  let filterIncoming = '';
-  filterIncoming = stateFilter.local && !stateFilter.remote ?
-    'source_type=local&' : (!stateFilter.local && stateFilter.remote ? 'source_type=remote&' : '');
-
-  // add remote_addr filter
-  const filterRemoteAddr = state.networkAction.urlParams ? 'remote_addr=' + state.networkAction.urlParams + '&' : '';
-
-  // console.log("[networkActionFilter] url ",
-  //  state.settingsNode.api.debugger + '/v2/p2p/?' + filterType + filterIncoming + filterRemoteAddr + 'limit=10');
-
-  return filterType + filterIncoming + filterRemoteAddr;
-
+  return `limit=${limitNr}`;
 }
 
 // use cursor to load previous pages
-export function networkActionCursor(action, state) {
+export function networkActionCursor(action) {
+  return action.payload && action.payload.cursor_id ?
+    `cursor_id=${action.payload.cursor_id}` :
+    '';
+}
 
-  const cursor = action.payload && action.payload.cursor_id && state.networkAction.ids.length > 0 ?
-    'cursor_id=' + action.payload.cursor_id + '&' : '';
+// filter network action
+export function networkActionFilter(action, state) {
+  let filterType = '';
 
-  return cursor + 'limit=100';
+  if (state.logsAction && state.logsAction.filter) {
+    const stateFilter = state.networkAction.filter;
 
+    filterType = stateFilter.meta ? filterType + 'metadata,' : filterType;
+    filterType = stateFilter.connection ? filterType + 'connection_message,' : filterType;
+    filterType = stateFilter.bootstrap ? filterType + 'bootstrap,' : filterType;
+    filterType = stateFilter.advertise ? filterType + 'advertise,' : filterType;
+    filterType = stateFilter.swap ? filterType + 'swap_request,swap_ack,' : filterType;
+    filterType = stateFilter.deactivate ? filterType + 'deactivate,' : filterType;
+
+    filterType = stateFilter.protocol ? filterType + 'get_protocols,protocol,' : filterType;
+    filterType = stateFilter.operation ? filterType + 'get_operations,operation,' : filterType;
+    filterType = stateFilter.currentHead ? filterType + 'get_current_head,current_head,' : filterType;
+    filterType = stateFilter.currentBranch ? filterType + 'get_current_branch,current_branch,' : filterType;
+    filterType = stateFilter.blockHeaders ? filterType + 'get_block_header,block_header,' : filterType;
+    filterType = stateFilter.blockOperations ? filterType + 'get_operations_for_blocks,operations_for_blocks,' : filterType;
+    filterType = stateFilter.blockOperationsHashes ? filterType + 'get_operation_hashes_for_blocks,operation_hashes_for_block,' : filterType;
+
+    // remove the last ,
+    filterType = filterType.length > 0 ? 'types=' + filterType.slice(0, -1) : '';
+
+    filterType = filterType + (stateFilter.local && !stateFilter.remote ?
+      (filterType.length > 0 ? '&source_type=local' : 'source_type=local') :
+      !stateFilter.local && stateFilter.remote ? filterType.length > 0 ? '&source_type=remote' : 'source_type=remote' : '');
+  }
+  // add remote_addr filter
+  filterType = filterType + (state.networkAction.urlParams.length ?
+    ((filterType.length > 0 ? '&remote_addr=' : 'remote_addr=') + state.networkAction.urlParams) :
+    '');
+
+  return filterType;
 }

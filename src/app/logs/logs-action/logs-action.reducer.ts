@@ -2,7 +2,6 @@ import * as moment from 'moment-mini-ts';
 
 const initialState: any = {
   ids: [],
-  idsFilter: [],
   entities: {},
   lastCursorId: 0,
   filter: {
@@ -61,7 +60,7 @@ export function reducer(state = initialState, action) {
 
 export function setIds(action) {
   return action.payload
-    .map(logsAction => logsAction.id)
+    .map(item => item.id)
     .sort((a, b) => a - b);
 }
 

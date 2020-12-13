@@ -98,7 +98,7 @@ export class NetworkActionComponent implements OnInit, OnDestroy {
 
   getItems($event) {
     this.store.dispatch({
-      type: 'NETWORK__ACTION_LOAD',
+      type: 'NETWORK_ACTION_LOAD',
       payload: {
         cursor_id: $event?.nextCursorId,
         limit: $event?.limit

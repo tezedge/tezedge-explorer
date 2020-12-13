@@ -393,8 +393,28 @@ export class VirtualScrollDirective implements AfterViewInit, OnDestroy, OnChang
   //   return Math.round((this.virtualScrollItemsOffset + (this.scrollPositionStart)) / 20) * 20;
   // }
 
+  private reset(): void {
+    this.maxScrollHeight = 0;
+    this.scrollPositionStart = 0;
+    this.scrollPositionEnd = 0;
+    this.virtualScrollHeight = 0;
+
+    this.virtualScrollItemsCount = 0;
+    this.virtualScrollItemsOffset = 0;
+
+    this.prevScrollTop = 0;
+    this.viewportHeight = 0;
+    this.maximumScrollTop = 0;
+
+    this.previousLastCursorId = 0;
+
+    this.viewContainer.clear();
+  }
+
   ngOnDestroy(): void {
     this.removeListeners();
+
+    this.reset();
 
     this.onDestroy$.next();
     this.onDestroy$.complete();

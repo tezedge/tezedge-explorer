@@ -45,7 +45,6 @@ export function reducer(state = initialState, action) {
 
     case 'NETWORK_ACTION_START_SUCCESS':
     case 'NETWORK_ACTION_LOAD_SUCCESS': {
-      // console.log('['+ action.type +']', action.payload[0])
       return {
         ...state,
         ids: setIds(action),
@@ -150,6 +149,7 @@ export function setEntities(action) {
           [networkAction.id]: {
             ...networkAction,
             payload: networkAction.message,
+            preview: JSON.stringify(networkAction.message), // needs to remain or not ???
             datetime: moment.utc(Math.ceil(networkAction.timestamp / 1000000)).format('HH:mm:ss.SSS, DD MMM YY')
 
           }

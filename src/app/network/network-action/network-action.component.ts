@@ -15,7 +15,7 @@ import { MatAccordion } from '@angular/material/expansion';
 export class NetworkActionComponent implements OnInit, OnDestroy {
 
   virtualScrollItems;
-  networkActionShow;
+  networkActionShow: boolean;
   networkActionItem;
   ITEM_SIZE = 36;
   filtersState = {

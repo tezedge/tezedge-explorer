@@ -1632,12 +1632,20 @@ input.mat-input-element {
 .virtual-scroll-container {
   position: relative;
   width: 60%;
-  //height: calc(95vh - 74px);
   height: calc(100vh - 154px);
+  //height: calc(95vh - 74px);
   /* must be multiple of itemSize*/
   /* height: 500px; */
   overflow: auto;
   z-index: 999;
+
+  &.logs-filters-expanded {
+    height: calc(100vh - 190px); //154
+  }
+
+  &.network-filters-expanded {
+    height: calc(100vh - 261px);
+  }
 }
 
 .virtual-scroll-item {

@@ -285,35 +285,22 @@
 
     <div style="display:flex;flex-direction: row;">
 
-      <div class="virtual-scroll-container">
-        <ng-template vsFor let-event [vsForOf]="virtualScrollItems" let-position="position"
+      <div class="virtual-scroll-container" [class.network-filters-expanded]="filtersState.open">
+        <ng-template vsFor [vsForOf]="virtualScrollItems" let-event let-position="position"
                      (getItems)="getItems($event)" (startStopDataStream)="startStopDataStream($event)">
-          <span class="virtualScrollRow network-row" [style.transform]="'translate(0px,' + position + 'px)'" [class.virtualScrollRowEven]="event.index % 2">
+          <span class="virtualScrollRow network-row" [style.transform]="'translate(0px,' + position + 'px)'" [class.virtualScrollRowEven]="event?.index % 2">
             <!-- (mouseenter)="tableMouseEnter(event)">-->
 
             <span class="item-loading" [class.displayed]="!event?.datetime">&nbsp;</span>
 
             <span class="truncate">{{event?.datetime}}</span>
-            <span class="truncate network-action-table-address"><a href="#/network/{{ event?.remote_addr }}"> {{ event?.remote_addr }}</a></span>
+            <span class="network-action-table-address"><a href="#/network/{{ event?.remote_addr }}"> {{ event?.remote_addr }}</a></span>
             <span>
               <span *ngIf="event?.source_type==='local' || event?.source_type==='remote'">
                 <svg-icon icon="{{event?.source_type==='local' ? 'local' : 'remote'}}"></svg-icon>
                 <svg-icon icon="{{event?.source_type==='local' && !event?.incoming  || event?.source_type==='remote' && event?.incoming ? 'arrow-right' : 'arrow-right'}}"></svg-icon>
                 <svg-icon icon="{{event?.source_type==='local' ? 'remote' : 'local'}}"></svg-icon>
               </span>
-
-<!--              <span *ngIf="event?.source_type==='local'">-->
-<!--                <svg-icon icon="local"></svg-icon>-->
-<!--                <svg-icon *ngIf="!event?.incoming" icon="arrow-right"></svg-icon>-->
-<!--                <svg-icon *ngIf="event?.incoming" icon="arrow-left"></svg-icon>-->
-<!--                <svg-icon icon="remote"></svg-icon>-->
-<!--              </span>-->
-<!--              <span *ngIf="event?.source_type==='remote'">-->
-<!--                <svg-icon icon="remote"></svg-icon>-->
-<!--                <svg-icon *ngIf="event?.incoming" icon="arrow-right"></svg-icon>-->
-<!--                <svg-icon *ngIf="!event?.incoming" icon="arrow-left"></svg-icon>-->
-<!--                <svg-icon icon="local"></svg-icon>-->
-<!--              </span>-->
             </span>
             <span class="truncate">
               {{event?.category}}<span *ngIf="event?.kind"> | {{ event?.kind }}</span>

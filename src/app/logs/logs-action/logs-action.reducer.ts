@@ -3,6 +3,7 @@ import * as moment from 'moment-mini-ts';
 const initialState: any = {
   ids: [],
   entities: {},
+  positions: {},
   lastCursorId: 0,
   filter: {
     trace: false,
@@ -26,6 +27,7 @@ export function reducer(state = initialState, action) {
         ...state,
         ids: setIds(action),
         entities: setEntities(action),
+        positions: setPositions(action, state),
         lastCursorId: setLastCursorId(action, state),
         stream: action.type === 'LOGS_ACTION_START_SUCCESS'
       };
@@ -41,6 +43,7 @@ export function reducer(state = initialState, action) {
       return {
         ...state,
         lastCursorId: 0,
+        positions: {},
         filter: stateFilter
       };
     }
@@ -56,7 +59,6 @@ export function reducer(state = initialState, action) {
       return state;
   }
 }
-
 
 export function setIds(action) {
   return action.payload
@@ -82,3 +84,26 @@ export function setLastCursorId(action, state) {
     action.payload[0].id : state.lastCursorId;
 }
 
+export function setPositions(action, state) {
+  const newPositions = {};
+
+  for (let index = 0; index < action.payload.length; index++) {
+    if (index === 0) {
+      newPositions[action.payload[index].id] = state && Object.keys(state.positions).length !== 0 ?
+        state.positions[action.payload[index].id] ? state.positions[action.payload[index].id] : state.positions[state.ids[state.ids.length - 1]] :
+        action.payload[index].id;
+    } else {
+      newPositions[action.payload[index].id] = newPositions[action.payload[index - 1].id] - 1;
+    }
+  }
+
+  console.log({
+    ...state.positions,
+    ...newPositions
+  });
+
+  return {
+    ...state.positions,
+    ...newPositions
+  };
+}

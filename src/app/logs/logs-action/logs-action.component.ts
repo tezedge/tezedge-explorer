@@ -126,6 +126,13 @@ export class LogsActionComponent implements OnInit, OnDestroy {
     this.vrFor.scrollToBottom();
   }
 
+  setFiltersVisibility(show): void {
+    this.filtersState.open = show;
+    setTimeout(() => {
+      this.vrFor.onResize();
+    }, 100);
+  }
+
   filterType(filterType) {
     // dispatch action
     this.store.dispatch({

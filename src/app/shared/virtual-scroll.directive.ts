@@ -79,8 +79,7 @@ export class VirtualScrollDirective implements AfterViewInit, OnDestroy, OnChang
 
       this.resizeObservable$ = fromEvent(window, 'resize');
       this.resizeSubscription$ = this.resizeObservable$.pipe(debounceTime(500)).subscribe(event => {
-        this.initDimensions(event);
-        this.scrollToBottom();
+        this.onResize();
       });
     });
   }
@@ -96,7 +95,7 @@ export class VirtualScrollDirective implements AfterViewInit, OnDestroy, OnChang
 
   scrollToBottom(): void {
     this.previousLastCursorId = this.vsForOf.lastCursorId;
-    this.$viewport.scrollTop = this.virtualScrollItemsCount * this.itemHeight - this.viewportHeight;
+    this.$viewport.scrollTop = (this.virtualScrollItemsCount + 1) * this.itemHeight - this.viewportHeight;
     this.maximumScrollTop = this.$viewport.scrollTop;
     console.log(this.maximumScrollTop);
   }
@@ -130,9 +129,12 @@ export class VirtualScrollDirective implements AfterViewInit, OnDestroy, OnChang
       // TODO investigate if this can be moved in some init function - it depends on scrollPositionStart and scrollPositionEnd
       this.createViewElements();
 
+      // if (this.vsForOf.ids.length === 0 ||
+      //   (this.virtualScrollItemsOffset + this.scrollPositionEnd) > this.vsForOf.ids[this.vsForOf.ids.length - 1] ||
+      //   (this.virtualScrollItemsOffset + this.scrollPositionStart) < this.vsForOf.ids[0]) {
       if (this.vsForOf.ids.length === 0 ||
-        (this.virtualScrollItemsOffset + this.scrollPositionEnd) > this.vsForOf.ids[this.vsForOf.ids.length - 1] ||
-        (this.virtualScrollItemsOffset + this.scrollPositionStart) < this.vsForOf.ids[0]) {
+        (this.virtualScrollItemsOffset + this.scrollPositionEnd) > this.vsForOf.positions[this.vsForOf.ids[this.vsForOf.ids.length - 1]] ||
+        (this.virtualScrollItemsOffset + this.scrollPositionStart) < this.vsForOf.positions[this.vsForOf.ids[0]]) {
         this.fetchData();
       } else {
         this.startStopStream();
@@ -144,7 +146,12 @@ export class VirtualScrollDirective implements AfterViewInit, OnDestroy, OnChang
 
   }
 
-  private initDimensions(event?): void {
+  onResize(): void {
+    this.initDimensions();
+    this.scrollToBottom();
+  }
+
+  private initDimensions(): void {
 
     this.viewContainer.clear();
     this.embeddedViews.length = 0;
@@ -205,7 +212,7 @@ export class VirtualScrollDirective implements AfterViewInit, OnDestroy, OnChang
         this.cacheRequestEnd = this.scrollPositionEnd;
       }
 
-      const nextCursorId = reset ? null : Math.min(this.virtualScrollItemsOffset + this.scrollPositionEnd + 40, this.vsForOf.lastCursorId);
+      const nextCursorId = reset ? null : Math.min(this.vsForOf.positions[this.virtualScrollItemsOffset + this.scrollPositionEnd + 40] || this.vsForOf.lastCursorId, this.vsForOf.lastCursorId);
       const limit = nextCursorId ? nextCursorId - (this.virtualScrollItemsOffset + this.scrollPositionStart - 40) : Math.floor(this.viewportHeight / this.itemHeight * 3);
 
       this.getItems.emit({
@@ -227,13 +234,14 @@ export class VirtualScrollDirective implements AfterViewInit, OnDestroy, OnChang
     // this.virtualScrollItemsCount = this.maxScrollHeight <= 0 ? this.vsForOf.lastCursorId : (this.vsForOf.lastCursorId * this.itemHeight) > this.maxScrollHeight
     //   ? Math.floor(this.maxScrollHeight / this.itemHeight) : this.vsForOf.lastCursorId;
     this.virtualScrollItemsCount = this.vsForOf.lastCursorId > 0 ?
-      Math.min(this.vsForOf.lastCursorId, Math.floor(this.maxScrollHeight / this.itemHeight)) :
-      this.maxVirtualScrollElements;
+      Math.min(this.vsForOf.lastCursorId, this.maxVirtualScrollElements) :
+      0;
 
     // set virtual scroll height in pixels
     this.virtualScrollHeight = this.virtualScrollItemsCount * this.itemHeight;
     // this.maxScrollHeight = this.maxScrollHeight > this.virtualScrollHeight || this.maxScrollHeight === 0 ? this.virtualScrollHeight : this.maxScrollHeight;
-    this.$scroller.style.height = `${this.maxScrollHeight}px`;
+    this.$scroller.style.height = `${this.virtualScrollHeight}px`;
+    // this.$scroller.style.height = `${this.maxScrollHeight}px`;
 
     // console.log('[load] this.virtualScrollHeight=' + this.virtualScrollHeight + ' this.maxScrollHeight=' + this.maxScrollHeight);
 
@@ -274,6 +282,8 @@ export class VirtualScrollDirective implements AfterViewInit, OnDestroy, OnChang
 
       // const view = this.viewContainer.createEmbeddedView(this.template);
       // const view = this.viewContainer.get(index);
+      // debugger;
+      const idToRender = this.getFirstMatching(this.vsForOf.positions, virtualScrollPosition);
 
       // change view content
       const view = this.embeddedViews[index];
@@ -283,7 +293,8 @@ export class VirtualScrollDirective implements AfterViewInit, OnDestroy, OnChang
       view.context.index = index + this.scrollPositionStart;
       view.context.$implicit = {
         index: virtualScrollPosition,
-        ...this.vsForOf.entities[virtualScrollPosition]
+        ...this.vsForOf.entities[idToRender]
+        // ...this.vsForOf.entities[virtualScrollPosition]
         // ...this.cacheItemsEntities[virtualScrollPosition],
       };
 
@@ -298,6 +309,17 @@ export class VirtualScrollDirective implements AfterViewInit, OnDestroy, OnChang
 
     // })
     // });
+  }
+
+  private getFirstMatching(obj, value) {
+    let result;
+    Object.getOwnPropertyNames(obj).some(key => {
+      if (obj[key] === value) {
+        result = key;
+        return true;
+      }
+    });
+    return result;
   }
 
   // Renders blank rows while content is loading

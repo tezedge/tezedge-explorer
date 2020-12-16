@@ -4,6 +4,6 @@
   "/v2/p2p/?remote_addr=:addr&cursor_id=:c&limit=:l": "/v2-p2p?remote_addr=:addr&id_lte=:c&_limit=:l",
   "/v2/log/?limit=:l": "/v2-log?_limit=:l",
   "/v2/log/?cursor_id=:c&limit=:l": "/v2-log?id_lte=:c&_limit=:l",
-  "/v2/log/?level=warn&limit=:l": "/v2-log-filter-warn?_limit=:l",
-  "/v2/log/?level=warn&cursor_id=:c&limit=:l": "/v2-log-filter-warn?id_lte=:c&_limit=:l"
+  "/v2/log/?level=:le&limit=:l": "/v2-log?level_like=:le&_limit=:l",
+  "/v2/log/?level=:le&cursor_id=:c&limit=:l": "/v2-log?level_like=:le&id_lte=:c&_limit=:l"
 }

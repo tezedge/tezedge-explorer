@@ -97,11 +97,6 @@ export function setPositions(action, state) {
     }
   }
 
-  console.log({
-    ...state.positions,
-    ...newPositions
-  });
-
   return {
     ...state.positions,
     ...newPositions

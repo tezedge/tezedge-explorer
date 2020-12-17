@@ -128,9 +128,9 @@ export class LogsActionComponent implements OnInit, OnDestroy {
 
   setFiltersVisibility(show): void {
     this.filtersState.open = show;
-    setTimeout(() => {
-      this.vrFor.onResize();
-    }, 100);
+
+    // Trigger resize event so the virtual scroll directive adjust the values for the new height of the list
+    window.dispatchEvent(new Event('resize'));
   }
 
   filterType(filterType) {

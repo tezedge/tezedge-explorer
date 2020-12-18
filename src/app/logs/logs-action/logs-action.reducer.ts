@@ -36,7 +36,6 @@ export function reducer(state = initialState, action) {
     }
 
     case 'LOGS_ACTION_FILTER': {
-
       const stateFilter = {
         ...state.filter,
         [action.payload]: !state.filter[action.payload]

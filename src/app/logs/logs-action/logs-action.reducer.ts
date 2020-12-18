@@ -28,8 +28,8 @@ export function reducer(state = initialState, action) {
         ...state,
         ids: setIds(action),
         entities: setEntities(action),
-        idsToPositions: setPositions(action, state),
-        positionsToIds: {},
+        idsToPositions: setIdsToPositions(action, state),
+        positionsToIds: setPositionsToIds(action, state),
         lastCursorId: setLastCursorId(action, state),
         stream: action.type === 'LOGS_ACTION_START_SUCCESS'
       };
@@ -87,25 +87,43 @@ export function setLastCursorId(action, state) {
     action.payload[0].id : state.lastCursorId;
 }
 
-export function setPositions(action, state) {
-  const newPositions = {};
+export function setIdsToPositions(action, state) {
+  const newIdsToPositions = {};
 
   for (let index = 0; index < action.payload.length; index++) {
     if (index === 0) {
-      newPositions[action.payload[index].id] = state && Object.keys(state.idsToPositions).length !== 0 ?
+      newIdsToPositions[action.payload[index].id] = state && Object.keys(state.idsToPositions).length !== 0 ?
         state.idsToPositions[action.payload[index].id] ? state.idsToPositions[action.payload[index].id] : state.idsToPositions[state.ids[state.ids.length - 1]] :
         action.payload[index].id;
     } else {
-      newPositions[action.payload[index].id] = newPositions[action.payload[index - 1].id] - 1;
+      newIdsToPositions[action.payload[index].id] = newIdsToPositions[action.payload[index - 1].id] - 1;
     }
   }
 
-  if (!action.payload.length) {
-    debugger;
-    console.log(action, state);
+  return action.payload && action.payload[0].id > state.lastCursorId ?
+    { ...newIdsToPositions } :
+    { ...state.idsToPositions, ...newIdsToPositions };
+}
+
+export function setPositionsToIds(action, state) {
+  const newPositionsToIds = {};
+  let currentPosition = null;
+
+  for (let index = 0; index < action.payload.length; index++) {
+    if (index === 0) {
+      currentPosition = state && Object.keys(state.idsToPositions).length !== 0 ?
+        state.idsToPositions[action.payload[index].id] ? state.idsToPositions[action.payload[index].id] : state.idsToPositions[state.ids[state.ids.length - 1]] :
+        action.payload[index].id;
+      newPositionsToIds[currentPosition] = action.payload[index].id;
+    } else {
+      currentPosition--;
+      newPositionsToIds[currentPosition] = action.payload[index].id;
+    }
   }
 
+  console.log({ ...state.positionsToIds, ...newPositionsToIds });
+
   return action.payload && action.payload[0].id > state.lastCursorId ?
-    { ...newPositions } :
-    { ...state.idsToPositions, ...newPositions };
+    { ...newPositionsToIds } :
+    { ...state.positionsToIds, ...newPositionsToIds };
 }

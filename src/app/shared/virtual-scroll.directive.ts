@@ -142,6 +142,8 @@ export class VirtualScrollDirective implements AfterViewInit, OnDestroy, OnChang
       // TODO investigate if this can be moved in some init function - it depends on scrollPositionStart and scrollPositionEnd
       this.createViewElements();
 
+      this.startStopStream();
+
       // if (this.vsForOf.ids.length === 0 ||
       //   this.getScrollPositionEndWithOffset() > this.vsForOf.ids[this.vsForOf.ids.length - 1] ||
       //   this.getScrollPositionStartWithOffset() < this.vsForOf.ids[0]) {
@@ -149,8 +151,6 @@ export class VirtualScrollDirective implements AfterViewInit, OnDestroy, OnChang
         this.getScrollPositionEndWithOffset() > this.vsForOf.idsToPositions[this.vsForOf.ids[this.vsForOf.ids.length - 1]] ||
         this.getScrollPositionStartWithOffset() < this.vsForOf.idsToPositions[this.vsForOf.ids[0]]) {
         this.fetchData();
-      } else {
-        this.startStopStream();
       }
 
       this.renderViewportItems();
@@ -226,7 +226,7 @@ export class VirtualScrollDirective implements AfterViewInit, OnDestroy, OnChang
       // const limit = nextCursorId ? nextCursorId - (this.getScrollPositionStartWithOffset() - 40) : Math.floor(this.viewportHeight / this.itemHeight * 3);
       const nextCursorId = reset ?
         null :
-        Math.min(this.getFirstMatching(this.vsForOf.idsToPositions, this.getScrollPositionEndWithOffset() + this.elementsBufferUpAndDown) ||
+        Math.min( this.vsForOf.positionsToIds[this.getScrollPositionEndWithOffset() + this.elementsBufferUpAndDown] ||
           this.vsForOf.lastCursorId, this.vsForOf.lastCursorId);
 
       const limit = nextCursorId ?
@@ -274,7 +274,7 @@ export class VirtualScrollDirective implements AfterViewInit, OnDestroy, OnChang
   private renderViewportItems() {
     for (let index = 0; index < this.embeddedViews.length; index++) {
       const virtualScrollPosition = this.virtualScrollItemsOffset + index + this.scrollPositionStart;
-      const idToRender = this.getFirstMatching(this.vsForOf.idsToPositions, virtualScrollPosition);
+      const idToRender = this.vsForOf.positionsToIds[virtualScrollPosition];
 
       // change view content
       const view = this.embeddedViews[index];
@@ -296,17 +296,6 @@ export class VirtualScrollDirective implements AfterViewInit, OnDestroy, OnChang
       this.ngZone.run(() => {
       });
     });
-  }
-
-  private getFirstMatching(obj, value) {
-    let result;
-    Object.getOwnPropertyNames(obj).some(key => {
-      if (obj[key] === value) {
-        result = key;
-        return true;
-      }
-    });
-    return result;
   }
 
   // Renders blank rows while content is loading

@@ -1859,6 +1859,10 @@ input.mat-input-element {
   a {
     text-decoration: none !important;
   }
+
+  &.hover {
+    background: $color-table-item-hover;
+  }
 }
 
 .truncate {

@@ -61,8 +61,8 @@
         <ng-template vsFor let-event [vsForOf]="virtualScrollItems" let-position="position"
                      (getItems)="getItems($event)" (startStopDataStream)="startStopDataStream($event)">
           <span class="virtualScrollRow logs-row" [style.transform]="'translate(0px,' + position + 'px)'"
-                [class.virtualScrollRowEven]="event?.index % 2">
-            <!--                          (mouseenter)="tableMouseEnter(event)">-->
+                [class.virtualScrollRowEven]="event?.index % 2" (mouseenter)="tableMouseEnter(event)"
+                [class.hover]="logsActionItem.id===event?.id">
 
             <span class="item-loading" [class.displayed]="!event?.datetime">&nbsp;</span>
 

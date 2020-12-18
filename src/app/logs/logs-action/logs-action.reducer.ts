@@ -120,8 +120,6 @@ export function setPositionsToIds(action, state) {
     }
   }
 
-  console.log({ ...state.positionsToIds, ...newPositionsToIds });
-
   return action.payload && action.payload[0].id > state.lastCursorId ?
     { ...newPositionsToIds } :
     { ...state.positionsToIds, ...newPositionsToIds };

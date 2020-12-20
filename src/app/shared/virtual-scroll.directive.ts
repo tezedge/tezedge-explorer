@@ -132,7 +132,7 @@ export class VirtualScrollDirective implements AfterViewInit, OnDestroy, OnChang
       // end = Math.min(this.virtualScrollHeight * 1.2 / this.itemHeight, end);
       end = Math.min(Math.min(this.virtualScrollHeight * 1.2 / this.itemHeight, end), this.vsForOf.lastCursorId);
 
-      // get offset so we can set correct possition for items
+      // get offset so we can set correct position for items
       this.virtualScrollItemsOffset = Math.max(this.vsForOf.lastCursorId - this.virtualScrollItemsCount, 0);
 
       // save scroll position
@@ -148,8 +148,8 @@ export class VirtualScrollDirective implements AfterViewInit, OnDestroy, OnChang
       //   this.getScrollPositionEndWithOffset() > this.vsForOf.ids[this.vsForOf.ids.length - 1] ||
       //   this.getScrollPositionStartWithOffset() < this.vsForOf.ids[0]) {
       if (this.vsForOf.ids.length === 0 ||
-        this.getScrollPositionEndWithOffset() > this.vsForOf.idsToPositions[this.vsForOf.ids[this.vsForOf.ids.length - 1]] ||
-        this.getScrollPositionStartWithOffset() < this.vsForOf.idsToPositions[this.vsForOf.ids[0]]) {
+        this.getScrollPositionEndWithOffset() > this.vsForOf.ids[this.vsForOf.ids.length - 1] ||
+        this.getScrollPositionStartWithOffset() < this.vsForOf.ids[0]) {
         this.fetchData();
       }
 
@@ -226,21 +226,20 @@ export class VirtualScrollDirective implements AfterViewInit, OnDestroy, OnChang
       // const limit = nextCursorId ? nextCursorId - (this.getScrollPositionStartWithOffset() - 40) : Math.floor(this.viewportHeight / this.itemHeight * 3);
       const nextCursorId = reset ?
         null :
-        Math.min( this.vsForOf.positionsToIds[this.getScrollPositionEndWithOffset() + this.elementsBufferUpAndDown] ||
-          this.vsForOf.lastCursorId, this.vsForOf.lastCursorId);
+        Math.min( this.getScrollPositionEndWithOffset() + this.elementsBufferUpAndDown, this.vsForOf.lastCursorId);
 
       const limit = nextCursorId ?
-        this.vsForOf.idsToPositions[nextCursorId] - (this.getScrollPositionStartWithOffset() - this.elementsBufferUpAndDown) :
+        nextCursorId - (this.getScrollPositionStartWithOffset() - this.elementsBufferUpAndDown) :
         Math.floor(this.viewportHeight / this.itemHeight * 3);
 
-      if (limit > this.maximumLimitThatCanBeUsed) {
-        this.$viewport.scrollTop = this.maximumScrollTop - this.itemHeight * (this.vsForOf.lastCursorId - this.vsForOf.idsToPositions[this.vsForOf.ids[0]]);
-
-        this.forceTheScrollBecauseOfLimitExceeded = true;
-        this.prevScrollTop = this.$viewport.scrollTop;
-        console.log('!!!!   maximum limit was about to be exceeded   !!!!');
-        return;
-      }
+      // if (limit > this.maximumLimitThatCanBeUsed) {
+      //   this.$viewport.scrollTop = this.maximumScrollTop - this.itemHeight * (this.vsForOf.lastCursorId - this.vsForOf.idsToPositions[this.vsForOf.ids[0]]);
+      //
+      //   this.forceTheScrollBecauseOfLimitExceeded = true;
+      //   this.prevScrollTop = this.$viewport.scrollTop;
+      //   console.log('!!!!   maximum limit was about to be exceeded   !!!!');
+      //   return;
+      // }
 
       this.getItems.emit({
         nextCursorId,
@@ -274,7 +273,6 @@ export class VirtualScrollDirective implements AfterViewInit, OnDestroy, OnChang
   private renderViewportItems() {
     for (let index = 0; index < this.embeddedViews.length; index++) {
       const virtualScrollPosition = this.virtualScrollItemsOffset + index + this.scrollPositionStart;
-      const idToRender = this.vsForOf.positionsToIds[virtualScrollPosition];
 
       // change view content
       const view = this.embeddedViews[index];
@@ -284,8 +282,7 @@ export class VirtualScrollDirective implements AfterViewInit, OnDestroy, OnChang
       view.context.index = index + this.scrollPositionStart;
       view.context.$implicit = {
         index: virtualScrollPosition,
-        ...this.vsForOf.entities[idToRender]
-        // ...this.vsForOf.entities[virtualScrollPosition]
+        ...this.vsForOf.entities[virtualScrollPosition]
       };
 
       view.markForCheck();
@@ -319,7 +316,7 @@ export class VirtualScrollDirective implements AfterViewInit, OnDestroy, OnChang
   //     });
   // }
 
-  // get useable scroll size, so we can stack multiple pages for very large list
+  // get usable scroll size, so we can stack multiple pages for very large list
   // https://stackoverflow.com/questions/34931732/height-limitations-for-browser-vertical-scroll-bar
   private getMaxBrowserScrollSize(): number {
     if (!this.maxScrollHeight) {

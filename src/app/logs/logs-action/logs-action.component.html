@@ -2,51 +2,53 @@
 
   <div class="table-virtual-scroll">
 
+
     <div class="filters-container logs-filters ">
-      <div class="active-filters-row">
-        <button class="add-filters" mat-flat-button (click)="setFiltersVisibility(true)" [disabled]="filtersState.open">
-          <span>
-            <svg-icon icon="filter"></svg-icon>
-            {{filtersState.open ? 'Active Filters' : 'ADD FILTER'}}
-          </span>
-        </button>
+      <!--
+         <div class="active-filters-row">
+           <button class="add-filters" mat-flat-button (click)="setFiltersVisibility(true)" [disabled]="filtersState.open">
+             <span>
+               <svg-icon icon="filter"></svg-icon>
+               {{filtersState.open ? 'Active Filters' : 'ADD FILTER'}}
+             </span>
+           </button>
 
-        <button *ngFor="let filter of filtersState.availableFields" class="filters-field-btn"
-                mat-flat-button (click)="filterType(filter)" [hidden]="!virtualScrollItems.filter[filter]"> <!--(click)="selectFilter(availableField)"-->
-          <span>
-            {{filter}}
-            <svg-icon icon="close"></svg-icon>
-          </span>
-        </button>
-      </div>
+           <button *ngFor="let filter of filtersState.availableFields" class="filters-field-btn"
+                   mat-flat-button (click)="filterType(filter)" [hidden]="!virtualScrollItems.filter[filter]">
+             <span>
+               {{filter}}
+               <svg-icon icon="close"></svg-icon>
+             </span>
+           </button>
+         </div>
 
-      <mat-accordion class="filters-accordion">
-        <mat-expansion-panel [expanded]="filtersState.open" hideToggle="true">
-          <ng-template matExpansionPanelContent class="filters-content">
-            <div class="filters-row">
-              <button class="close-filters-btn" mat-flat-button (click)="setFiltersVisibility(false)">
-                <span>
-                  <svg-icon icon="close"></svg-icon>
-                </span>
-              </button>
+         <mat-accordion class="filters-accordion">
+           <mat-expansion-panel [expanded]="filtersState.open" hideToggle="true">
+             <ng-template matExpansionPanelContent class="filters-content">
+               <div class="filters-row">
+                 <button class="close-filters-btn" mat-flat-button (click)="setFiltersVisibility(false)">
+                   <span>
+                     <svg-icon icon="close"></svg-icon>
+                   </span>
+                 </button>
 
-              <span class="filters-label">
-                Available Filters
-              </span>
+                 <span class="filters-label">
+                   Available Filters
+                 </span>
 
-              <button *ngFor="let filter of filtersState.availableFields" class="filters-field-btn"
-                      mat-flat-button (click)="filterType(filter)"
-                      [class.active]="virtualScrollItems.filter[filter]">
-                <span>
-                  {{filter}}
-                  <svg-icon icon="{{virtualScrollItems.filter[filter] ? 'close' : 'add-circle'}}"></svg-icon>
-                </span>
-              </button>
-            </div>
-          </ng-template>
-        </mat-expansion-panel>
-      </mat-accordion>
-
+                 <button *ngFor="let filter of filtersState.availableFields" class="filters-field-btn"
+                         mat-flat-button (click)="filterType(filter)"
+                         [class.active]="virtualScrollItems.filter[filter]">
+                   <span>
+                     {{filter}}
+                     <svg-icon icon="{{virtualScrollItems.filter[filter] ? 'close' : 'add-circle'}}"></svg-icon>
+                   </span>
+                 </button>
+               </div>
+             </ng-template>
+           </mat-expansion-panel>
+         </mat-accordion>
+   -->
     </div>
 
     <div class="table-virtual-scroll-header logs-header">
@@ -62,7 +64,7 @@
                      (getItems)="getItems($event)" (startStopDataStream)="startStopDataStream($event)">
           <span class="virtualScrollRow logs-row" [style.transform]="'translate(0px,' + position + 'px)'"
                 [class.virtualScrollRowEven]="event?.index % 2" (mouseenter)="tableMouseEnter(event)"
-                [class.hover]="logsActionItem.id===event?.id">
+                [class.hover]="event?.datetime && logsActionItem.id===event?.id">
 
             <span class="item-loading" [class.displayed]="!event?.datetime">&nbsp;</span>
 

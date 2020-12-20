@@ -18,7 +18,7 @@ export class LogsActionComponent implements OnInit, OnDestroy {
   logsActionShow: boolean;
   ITEM_SIZE = 36;
   filtersState = {
-    open: true,
+    open: false,
     availableFields: ['trace', 'debug', 'info', 'notice', 'warn', 'warning', 'error', 'fatal']
   };
 

@@ -19,8 +19,8 @@ export class NetworkActionComponent implements OnInit, OnDestroy {
   networkActionItem;
   ITEM_SIZE = 36;
   filtersState = {
-    open: true,
-    availableFields: ['trace', 'debug', 'info', 'notice', 'warn', 'warning', 'error', 'fatal']
+    open: false,
+    availableFields: []
   };
 
   onDestroy$ = new Subject();

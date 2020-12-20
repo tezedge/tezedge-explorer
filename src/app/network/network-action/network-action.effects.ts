@@ -67,7 +67,7 @@ export class NetworkActionEffects {
 
     switchMap(({ action, state }) =>
       // get header data every second
-      timer(0, 5000).pipe(
+      timer(0, 1000).pipe(
         takeUntil(networkActionDestroy$),
         switchMap(() =>
           this.http.get(setUrl(action, state)).pipe(

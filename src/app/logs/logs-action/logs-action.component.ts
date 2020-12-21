@@ -3,7 +3,6 @@ import { Store } from '@ngrx/store';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { VirtualScrollDirective } from '../../shared/virtual-scroll.directive';
-import { MatAccordion } from '@angular/material/expansion';
 
 @Component({
   selector: 'app-logs-action',
@@ -14,9 +13,8 @@ import { MatAccordion } from '@angular/material/expansion';
 export class LogsActionComponent implements OnInit, OnDestroy {
 
   virtualScrollItems;
-  logsActionItem; // TODO type log - define an interface for log
+  logsActionItem;
   logsActionShow: boolean;
-  ITEM_SIZE = 36;
   filtersState = {
     open: false,
     availableFields: ['trace', 'debug', 'info', 'notice', 'warn', 'warning', 'error', 'fatal']
@@ -25,7 +23,7 @@ export class LogsActionComponent implements OnInit, OnDestroy {
   onDestroy$ = new Subject();
 
   @ViewChild(VirtualScrollDirective) vrFor: VirtualScrollDirective;
-  @ViewChild(MatAccordion) accordion: MatAccordion;
+  // @ViewChild(MatAccordion) accordion: MatAccordion;
 
   constructor(
     public store: Store<any>,

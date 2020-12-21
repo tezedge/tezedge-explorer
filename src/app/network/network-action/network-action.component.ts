@@ -17,7 +17,6 @@ export class NetworkActionComponent implements OnInit, OnDestroy {
   virtualScrollItems;
   networkActionShow: boolean;
   networkActionItem;
-  ITEM_SIZE = 36;
   filtersState = {
     open: false,
     availableFields: []

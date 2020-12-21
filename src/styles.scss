@@ -964,7 +964,7 @@ ngx-json-viewer .segment .segment-main .segment-key {
   padding-left: 24px;
 }
 
-// from fields styles 
+// from fields styles
 .chain .mat-form-field,
 .sandbox .mat-form-field,
 .wallets .mat-form-field {
@@ -1794,8 +1794,9 @@ input.mat-input-element {
   height: 36px;
   line-height: 35px;
 
-  &.logs-header {
-    grid-template-columns: 180px 60px 1fr;
+  &.logs-header,
+  &.storage-header {
+    grid-template-columns: 180px 70px 1fr;
   }
 
   &.network-header {

@@ -57,7 +57,7 @@
       <span>MESSAGE</span>
     </div>
 
-    <div style="display:flex;flex-direction: row;">
+    <div class="table-virtual-scroll-body">
 
       <div class="virtual-scroll-container" [class.logs-filters-expanded]="filtersState.open">
         <ng-template vsFor let-event [vsForOf]="virtualScrollItems" let-position="position"
@@ -76,7 +76,7 @@
         </ng-template>
       </div>
 
-      <div class="logs-action-table-detail">
+      <div class="action-table-detail">
         <div *ngIf="logsActionItem?.message">
           <ngx-json-viewer [json]="{message:logsActionItem?.message}" [expanded]="true">
           </ngx-json-viewer>
@@ -84,36 +84,6 @@
       </div>
     </div>
 
-    <!--
-    <div class="table-virtual-scroll-panel" style="display:flex;flex-direction: row;">
-
-        <cdk-virtual-scroll-viewport style="align-items: flex-start;" class="logs-action-table-viewport"
-            (scrolledIndexChange)="onScroll($event)"
-            [itemSize]="36" [maxBufferPx]="288" [minBufferPx]="288">
-
-            <div *cdkVirtualFor="let even=even;let item of logsDataSource"  class="table-virtual-scroll-item"
-                (mouseenter)="tableMouseEnter(item)"
-                [class.even]="even"
-                [class.hover]="item?.id === logsActionItem?.id">
-
-                <span class="logs-action-table-datetime">{{item?.datetime}}</span>
-                <span class="logs-action-table-level">{{item?.level}}</span>
-                <span class="logs-action-table-message" style="white-space: nowrap; text-overflow: ellipsis;font-size:14px !important;">{{item?.preview}}</span>
-            </div>
-        </cdk-virtual-scroll-viewport>
-
-        <div class="logs-action-table-detail">
-            <div *ngIf="logsActionItem?.message">
-
-                <ngx-json-viewer [json]="{message:logsActionItem?.message}" [expanded]="true">
-                </ngx-json-viewer>
-
-            </div>
-        </div>
-
-    </div>
-
-    -->
     <div class="table-virtual-scroll-footer">
       <span>
         <button mat-icon-button matTooltip="Start" (click)="scrollStart(null)" *ngIf="!virtualScrollItems?.stream">

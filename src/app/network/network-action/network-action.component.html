@@ -119,13 +119,14 @@
       <span>MESSAGE</span> <!--class="network-action-table-message"-->
     </div>
 
-    <div style="display:flex;flex-direction: row;">
+    <div class="table-virtual-scroll-body">
 
       <div class="virtual-scroll-container" [class.network-filters-expanded]="filtersState.open">
         <ng-template vsFor [vsForOf]="virtualScrollItems" let-event let-position="position"
                      (getItems)="getItems($event)" (startStopDataStream)="startStopDataStream($event)">
-          <span class="virtualScrollRow network-row" [style.transform]="'translate(0px,' + position + 'px)'" [class.virtualScrollRowEven]="event?.index % 2">
-            <!-- (mouseenter)="tableMouseEnter(event)">-->
+          <span class="virtualScrollRow network-row" [style.transform]="'translate(0px,' + position + 'px)'"
+                [class.virtualScrollRowEven]="event?.index % 2" (mouseenter)="tableMouseEnter(event)"
+                [class.hover]="event?.datetime && networkActionItem.id===event?.id">
 
             <span class="item-loading" [class.displayed]="!event?.datetime">&nbsp;</span>
 
@@ -148,61 +149,13 @@
         </ng-template>
       </div>
 
-      <div class="network-action-table-detail">
+      <div class="action-table-detail">
         <div *ngIf="networkActionItem?.payload">
           <ngx-json-viewer [json]="networkActionItem?.payload" [expanded]="false">
           </ngx-json-viewer>
         </div>
       </div>
     </div>
-
-    <!--        <div class="table-virtual-scroll-panel" style="display:flex;flex-direction: row;">-->
-
-    <!--            <cdk-virtual-scroll-viewport style="align-items: flex-start;" class="table-virtual-scroll-viewport"-->
-    <!--                (scrolledIndexChange)="onScroll($event)" [itemSize]="36" [maxBufferPx]="288" [minBufferPx]="288">-->
-
-    <!--                <div *cdkVirtualFor="let even = even;let item of networkActionList" class="table-virtual-scroll-item" -->
-    <!--                    [class.hover]="item?.id === networkActionItem?.id"-->
-    <!--                    [class.even]="even"-->
-    <!--                    (mouseenter)="tableMouseEnter(item)">-->
-    <!--                    <span class="network-action-table-datetime">-->
-    <!--                        {{item?.datetime}}-->
-    <!--                    </span>-->
-    <!--                    <span class="network-action-table-address">-->
-    <!--                        <a href="#/network/{{ item?.remote_addr }}"> {{ item?.remote_addr }}</a>-->
-    <!--                    </span>-->
-    <!--                    <span class="network-action-table-source">-->
-    <!--                        <span *ngIf="item?.source_type==='local'">-->
-    <!--                            <svg-icon icon="local"></svg-icon>-->
-    <!--                            <svg-icon *ngIf="!item?.incoming" icon="arrow-right"></svg-icon>-->
-    <!--                            <svg-icon *ngIf="item?.incoming" icon="arrow-left"></svg-icon>-->
-    <!--                            <svg-icon icon="remote"></svg-icon>-->
-    <!--                        </span>-->
-    <!--                        <span *ngIf="item?.source_type==='remote'">-->
-    <!--                            <svg-icon icon="remote"></svg-icon>-->
-    <!--                            <svg-icon *ngIf="item?.incoming" icon="arrow-right"></svg-icon>-->
-    <!--                            <svg-icon *ngIf="!item?.incoming" icon="arrow-left"></svg-icon>-->
-    <!--                            <svg-icon icon="local"></svg-icon>-->
-    <!--                        </span> -->
-    <!--                    </span>-->
-    <!--                    <span class="network-action-table-type" style="white-space: nowrap; text-overflow: ellipsis;font-size:14px !important;">-->
-    <!--                        {{item?.category}}<span *ngIf="item?.kind"> | {{ item?.kind }}</span>-->
-    <!--                    </span>-->
-    <!--                    &lt;!&ndash; <span class="network-action-table-message">-->
-    <!--                    {{item?.preview}}-->
-    <!--                </span> &ndash;&gt;-->
-    <!--                </div>-->
-    <!--            </cdk-virtual-scroll-viewport>-->
-
-    <!--            <div class="network-action-table-detail">-->
-
-    <!--                <div *ngIf="networkActionItem?.payload">-->
-    <!--                    <ngx-json-viewer [json]="networkActionItem?.payload" [expanded]="false">-->
-    <!--                    </ngx-json-viewer>-->
-    <!--                </div>-->
-    <!--            </div>-->
-
-    <!--        </div>-->
 
     <div class="table-virtual-scroll-footer">
       <span>

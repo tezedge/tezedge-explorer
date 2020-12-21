@@ -7,6 +7,10 @@ body {
   font-weight: 300 !important;
 }
 
+* {
+  box-sizing: border-box;
+}
+
 .sidenav-content {
   // background-color: $color-table-background;
   margin-top: 38px;
@@ -864,15 +868,6 @@ ngx-json-viewer .segment .segment-main .segment-key {
   width: 750px;
 }
 
-.logs-action-table-detail {
-  align-items: flex-end;
-  height: 100%; /* 36 height of item * 14 number of items - 15 padding top*/
-  width: 30%;
-  overflow-y: overlay;
-  padding: 10px 10px 0px 0px;
-  border-left: 1px solid $color-table-border;
-}
-
 .endpoints-action-container {
   background-color: $color-background;
   display: flex;
@@ -1498,15 +1493,6 @@ input.mat-input-element {
     display: none !important;
   }
 
-  .network-action-table-detail {
-    // display: none;
-    width: 90vw;
-    height: 150px;
-    padding: 20px 10px 0px 10px;
-    border-top: 1px solid $color-border;
-    border-left: initial;
-  }
-
   /*  storage blocks */
   .storage-block-table-viewport {
     width: 95vw;
@@ -1559,15 +1545,6 @@ input.mat-input-element {
   .logs-action-table-message {
     min-width: 50px !important;
   }
-
-  .logs-action-table-detail {
-    width: 90vw;
-    height: 150px;
-    padding: 20px 10px 0px 10px;
-    border-top: 1px solid $color-border;
-    border-left: initial;
-  }
-
 }
 
 .chain {
@@ -1629,25 +1606,6 @@ input.mat-input-element {
   background-color: #323334;
 }
 
-.virtual-scroll-container {
-  position: relative;
-  width: 60%;
-  height: calc(100vh - 154px);
-  //height: calc(95vh - 74px);
-  /* must be multiple of itemSize*/
-  /* height: 500px; */
-  overflow: auto;
-  z-index: 999;
-
-  &.logs-filters-expanded {
-    height: calc(100vh - 190px); //154
-  }
-
-  &.network-filters-expanded {
-    height: calc(100vh - 261px);
-  }
-}
-
 .virtual-scroll-item {
   position: absolute;
   width: calc(100% - 16px);
@@ -1670,7 +1628,6 @@ input.mat-input-element {
 .virtual-scroll-container-detail {
   align-items: flex-end;
   width: 40%;
-  overflow-y: overlay;
   padding: 10px 10px 0px 20px;
   border-left: 1px solid #333334;
 }
@@ -1791,6 +1748,39 @@ input.mat-input-element {
 //    border-left: 1px solid $color-table-border;
 //
 //}
+
+.table-virtual-scroll-body {
+  display:flex;
+  flex-direction: row;
+
+  .virtual-scroll-container,
+  .action-table-detail {
+    position: relative;
+    height: calc(100vh - 154px);
+    overflow-x: hidden;
+    overflow-y: auto;
+    z-index: 999;
+
+    &.logs-filters-expanded {
+      height: calc(100vh - 190px); //154
+    }
+
+    &.network-filters-expanded {
+      height: calc(100vh - 261px);
+    }
+  }
+
+  .virtual-scroll-container {
+    width: 60%;
+  }
+
+  .action-table-detail {
+    width: 40%;
+    padding: 10px 10px 0 0;
+    border-left: 1px solid $color-table-border;
+  }
+
+}
 
 .table-virtual-scroll-footer {
   box-sizing: border-box;

@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Component, NgZone, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { Router, ActivatedRoute, Params } from '@angular/router';
 
 import { Store } from '@ngrx/store';
@@ -31,7 +31,8 @@ export class NetworkActionComponent implements OnInit, OnDestroy {
   constructor(
     public store: Store<any>,
     private activeRoute: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private ngZone: NgZone
   ) {
   }
 
@@ -60,6 +61,10 @@ export class NetworkActionComponent implements OnInit, OnDestroy {
         // this.networkAction = data;
         this.virtualScrollItems = data;
         this.networkActionShow = this.virtualScrollItems.ids.length > 0;
+
+        if (this.networkActionShow && !this.networkActionItem) {
+          this.networkActionItem = this.virtualScrollItems.entities[this.virtualScrollItems.ids[this.virtualScrollItems.ids.length - 1]];
+        }
 
         if (this.virtualScrollItems.ids.length > 0 && this.vrFor) {
           this.vrFor.afterReceivingData();
@@ -159,9 +164,15 @@ export class NetworkActionComponent implements OnInit, OnDestroy {
   }
 
   tableMouseEnter(item) {
+    this.ngZone.runOutsideAngular(() => {
+      if (this.networkActionItem && this.networkActionItem.id === item.id) {
+        return;
+      }
 
-    // this.networkActionItem = item;
-
+      this.ngZone.run(() => {
+        this.networkActionItem = item;
+      });
+    });
   }
 
   ngOnDestroy() {

@@ -92,40 +92,40 @@ export function setEntities(action) {
     {} :
     action.payload
       .reduce((accumulator, networkAction) => {
+        // if (networkAction.type === 'metadata') {
+        //
+        //   return {
+        //     ...accumulator,
+        //     [networkAction.id]: {
+        //       ...networkAction,
+        //       category: 'Meta',
+        //       kind: '',
+        //       payload: networkAction.message,
+        //       preview: JSON.stringify(networkAction.message),
+        //       datetime: moment.utc(Math.ceil(networkAction.timestamp / 1000000)).format('HH:mm:ss.SSS, DD MMM YY')
+        //     }
+        //   };
+        // }
+        //
+        // if (networkAction.type === 'connection_message') {
+        //
+        //   return {
+        //     ...accumulator,
+        //     [networkAction.id]: {
+        //       ...networkAction,
+        //       category: 'Connection',
+        //       kind: '',
+        //       payload: networkAction.message,
+        //       preview: JSON.stringify(networkAction.message),
+        //       datetime: moment.utc(Math.ceil(networkAction.timestamp / 1000000)).format('HH:mm:ss.SSS, DD MMM YY')
+        //     }
+        //   };
+        // }
 
-        if (networkAction.type === 'metadata') {
+        // if (networkAction.type === 'p2p_message') {
 
-          return {
-            ...accumulator,
-            [networkAction.id]: {
-              ...networkAction,
-              category: 'Meta',
-              kind: '',
-              payload: networkAction.message,
-              preview: JSON.stringify(networkAction.message),
-              datetime: moment.utc(Math.ceil(networkAction.timestamp / 1000000)).format('HH:mm:ss.SSS, DD MMM YY')
-            }
-          };
-        }
-
-        if (networkAction.type === 'connection_message') {
-
-          return {
-            ...accumulator,
-            [networkAction.id]: {
-              ...networkAction,
-              category: 'Connection',
-              kind: '',
-              payload: networkAction.message,
-              preview: JSON.stringify(networkAction.message),
-              datetime: moment.utc(Math.ceil(networkAction.timestamp / 1000000)).format('HH:mm:ss.SSS, DD MMM YY')
-            }
-          };
-        }
-
-        if (networkAction.type === 'p2p_message') {
-
-          const payload = { ...networkAction.message[0] };
+        if (networkAction.message && networkAction.message.length && networkAction.message[0].type) {
+          const payload = {...networkAction.message[0]};
           delete payload.type;
 
           return {
@@ -139,20 +139,28 @@ export function setEntities(action) {
               datetime: moment.utc(Math.ceil(networkAction.timestamp / 1000000)).format('HH:mm:ss.SSS, DD MMM YY')
             }
           };
+        } else {
+          return {
+            ...accumulator,
+            [networkAction.id]: {
+              ...networkAction,
+              payload: networkAction.message,
+              datetime: moment.utc(Math.ceil(networkAction.timestamp / 1000000)).format('HH:mm:ss.SSS, DD MMM YY')
+            }
+          };
         }
+        // }
 
-        // console.log("[default]", networkAction);
-
-        return {
-          ...accumulator,
-          [networkAction.id]: {
-            ...networkAction,
-            payload: networkAction.message,
-            preview: JSON.stringify(networkAction.message), // needs to remain or not ???
-            datetime: moment.utc(Math.ceil(networkAction.timestamp / 1000000)).format('HH:mm:ss.SSS, DD MMM YY')
-
-          }
-        };
+        // return {
+        //   ...accumulator,
+        //   [networkAction.id]: {
+        //     ...networkAction,
+        //     payload: networkAction.message,
+        //     preview: JSON.stringify(networkAction.message), // needs to remain or not ???
+        //     datetime: moment.utc(Math.ceil(networkAction.timestamp / 1000000)).format('HH:mm:ss.SSS, DD MMM YY')
+        //
+        //   }
+        // };
 
       }, {});
 }

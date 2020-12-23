@@ -38,19 +38,19 @@ export class NetworkActionComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.scrollStart(null);
 
-    this.activeRoute.params
-      .pipe(takeUntil(this.onDestroy$))
-      .subscribe((params) => {
-
-        // triger action and get network data
-        this.store.dispatch({
-          type: 'NETWORK_ACTION_LOAD',
-          payload: {
-            filter: params.address ? params.address : ''
-          }
-        });
-
-      });
+    // this.activeRoute.params
+    //   .pipe(takeUntil(this.onDestroy$))
+    //   .subscribe((params) => {
+    //
+    //     // triger action and get network data
+    //     this.store.dispatch({
+    //       type: 'NETWORK_ACTION_LOAD',
+    //       payload: {
+    //         filter: params.address ? params.address : ''
+    //       }
+    //     });
+    //
+    //   });
 
     // wait for data changes from redux
     this.store.select('networkAction')

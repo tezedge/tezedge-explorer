@@ -124,18 +124,18 @@
       <div class="virtual-scroll-container" [class.network-filters-expanded]="filtersState.open">
         <ng-template vsFor [vsForOf]="virtualScrollItems" let-event let-position="position"
                      (getItems)="getItems($event)" (startStopDataStream)="startStopDataStream($event)">
-          <span class="virtualScrollRow network-row" [style.transform]="'translate(0px,' + position + 'px)'"
-                [class.virtualScrollRowEven]="event?.index % 2" (mouseenter)="tableMouseEnter(event)"
+          <span class="virtualScrollRow network-row" [style.transform]="position !== undefined ? 'translate(0px,' + position + 'px)' : ''"
+                [class.virtualScrollRowEven]="event?.index % 2" (mouseenter)="event ? tableMouseEnter(event) : null"
                 [class.hover]="event?.datetime && networkActionItem.id===event?.id">
 
             <span class="item-loading" [class.displayed]="!event?.datetime">&nbsp;</span>
 
             <span class="truncate">{{event?.datetime}}</span>
-            <span class="network-action-table-address"><a href="#/network/{{ event?.remote_addr }}"> {{ event?.remote_addr }}</a></span>
+            <span class="network-action-table-address truncate"><a href="#/network/{{ event?.remote_addr }}"> {{ event?.remote_addr }}</a></span>
             <span>
               <span *ngIf="event?.datetime && (event?.source_type==='local' || event?.source_type==='remote')">
                 <svg-icon icon="{{event?.source_type==='local' ? 'local' : 'remote'}}"></svg-icon>
-                <svg-icon icon="{{event?.source_type==='local' && !event?.incoming  || event?.source_type==='remote' && event?.incoming ? 'arrow-right' : 'arrow-right'}}"></svg-icon>
+                <svg-icon icon="{{event?.source_type==='local' && !event?.incoming  || event?.source_type==='remote' && event?.incoming ? 'arrow-right' : 'arrow-left'}}"></svg-icon>
                 <svg-icon icon="{{event?.source_type==='local' ? 'remote' : 'local'}}"></svg-icon>
               </span>
             </span>
@@ -150,10 +150,37 @@
       </div>
 
       <div class="action-table-detail">
-        <div *ngIf="networkActionItem?.payload">
-          <ngx-json-viewer [json]="networkActionItem?.payload" [expanded]="false">
-          </ngx-json-viewer>
-        </div>
+        <mat-tab-group>
+          <mat-tab *ngIf="showTab('JSON')">
+            <ng-template mat-tab-label>
+              <span>JSON</span>
+            </ng-template>
+            <ng-template matTabContent>
+              <ngx-json-viewer *ngIf="networkActionItem?.payload" [json]="networkActionItem?.payload" [expanded]="false">
+              </ngx-json-viewer>
+            </ng-template>
+          </mat-tab>
+          <mat-tab *ngIf="showTab('HEX')">
+            <ng-template mat-tab-label>
+              <span>Hex Values</span>
+            </ng-template>
+            <ng-template matTabContent>
+              <div class="justify-inter-work">{{networkActionItem?.hexValues}}</div>
+            </ng-template>
+          </mat-tab>
+          <mat-tab *ngIf="showTab('ERROR')">
+            <ng-template mat-tab-label>
+              <span>Error</span>
+            </ng-template>
+            <ng-template matTabContent>
+              <div>{{networkActionItem?.error[0]}}</div>
+            </ng-template>
+          </mat-tab>
+        </mat-tab-group>
+
+<!--        <div *ngIf="networkActionItem?.payload">-->
+<!--          -->
+<!--        </div>-->
       </div>
     </div>
 

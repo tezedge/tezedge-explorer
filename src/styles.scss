@@ -1778,6 +1778,15 @@ input.mat-input-element {
     width: 40%;
     padding: 10px 10px 0 0;
     border-left: 1px solid $color-table-border;
+
+    .mat-tab-header {
+      height: 36px !important;
+    }
+
+    .justify-inter-work {
+      text-align: justify;
+      text-justify: inter-word;
+    }
   }
 
 }

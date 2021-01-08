@@ -123,6 +123,7 @@ export function setEntities(action) {
         // }
 
         // if (networkAction.type === 'p2p_message') {
+        const hexValues = setHexValues(networkAction.original_bytes);
 
         if (networkAction.message && networkAction.message.length && networkAction.message[0].type) {
           const payload = {...networkAction.message[0]};
@@ -132,6 +133,7 @@ export function setEntities(action) {
             ...accumulator,
             [networkAction.id]: {
               ...networkAction,
+              hexValues,
               category: 'P2P',
               kind: networkAction.message[0].type,
               payload,
@@ -144,6 +146,7 @@ export function setEntities(action) {
             ...accumulator,
             [networkAction.id]: {
               ...networkAction,
+              hexValues,
               payload: networkAction.message,
               datetime: moment.utc(Math.ceil(networkAction.timestamp / 1000000)).format('HH:mm:ss.SSS, DD MMM YY')
             }
@@ -168,6 +171,20 @@ export function setEntities(action) {
 export function setLastCursorId(action, state) {
   return action.payload.length > 0 && state.lastCursorId < action.payload[0].id ?
     action.payload[0].id : state.lastCursorId;
+}
+
+export function setHexValues(bytes): string {
+  if (!bytes || !bytes.length) {
+    return;
+  }
+
+  let hex = '';
+
+  for (const item of bytes) {
+    hex += `${item} `;
+  }
+
+  return hex;
 }
 
 // filter network items according to traffic source

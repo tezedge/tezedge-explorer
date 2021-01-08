@@ -2,12 +2,26 @@ export const environment = {
   production: false,
   api: [
     {
-      id: 'local-carthage-tezedge',
-      name: 'ocaml.localhost.node',
-      http: 'http://127.0.0.1:11100',
-      debugger: 'http://127.0.0.1:17732',
-      ws: 'ws://127.0.0.1:4927',
+      id: 'master.dev.tezedge',
+      name: 'master.dev.tezedge',
+      http: 'http://master.dev.tezedge.com:18732',
+      debugger: 'http://master.dev.tezedge.com:17732',
+      ws: false
     },
+    // {
+    //   id: 'local-carthage-tezedge',
+    //   name: 'ocaml.localhost.node',
+    //   http: 'http://116.202.128.230:11100',
+    //   debugger: 'http://116.202.128.230:17732',
+    //   ws: 'ws://127.0.0.1:4927',
+    // },
+    // {
+    //   id: 'local-carthage-tezedge',
+    //   name: 'ocaml.localhost.node',
+    //   http: 'http://127.0.0.1:11100',
+    //   debugger: 'http://127.0.0.1:17732',
+    //   ws: 'ws://127.0.0.1:4927',
+    // },
     // {
     //   id: 'localhost',
     //   name: 'localhost',

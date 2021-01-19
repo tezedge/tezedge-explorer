@@ -126,7 +126,8 @@
                      (getItems)="getItems($event)" (startStopDataStream)="startStopDataStream($event)">
           <span class="virtualScrollRow network-row" [style.transform]="position !== undefined ? 'translate(0px,' + position + 'px)' : ''"
                 [class.virtualScrollRowEven]="event?.index % 2" (mouseenter)="event ? tableMouseEnter(event) : null"
-                [class.hover]="event?.datetime && networkActionItem.id===event?.id">
+                [class.hover]="event?.datetime && networkActionItem.id===event?.id"
+                [class.used]="event?.datetime">
 
             <span class="item-loading" [class.displayed]="!event?.datetime">&nbsp;</span>
 
@@ -149,7 +150,7 @@
         </ng-template>
       </div>
 
-      <div class="action-table-detail">
+      <div class="action-table-detail" id="virtualScrollTableDetails">
         <mat-tab-group>
           <mat-tab *ngIf="showTab('JSON')">
             <ng-template mat-tab-label>
@@ -186,10 +187,10 @@
 
     <div class="table-virtual-scroll-footer">
       <span>
-        <button mat-icon-button matTooltip="Start" (click)="scrollStart(null)" *ngIf="!virtualScrollItems?.stream">
+        <button id="startStreaming" mat-icon-button matTooltip="Start" (click)="scrollStart(null)" *ngIf="!virtualScrollItems?.stream">
           <mat-icon>play_arrow_outline</mat-icon>
         </button>
-        <button mat-icon-button matTooltip="Stop" (click)="scrollStop()" *ngIf="virtualScrollItems?.stream">
+        <button id="stopStreaming" mat-icon-button matTooltip="Stop" (click)="scrollStop()" *ngIf="virtualScrollItems?.stream">
           <mat-icon>stop_outline</mat-icon>
         </button>
         <button mat-icon-button matTooltip="Last page" (click)="scrollToEnd()">

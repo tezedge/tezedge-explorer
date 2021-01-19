@@ -36,7 +36,7 @@ export class StorageBlockComponent implements OnInit, OnDestroy {
 
         this.virtualScrollItems = data;
         this.storageBlockShow = data.ids.length > 0;
-        this.storageBlockList = data.ids.map(id => ({ id, ...data.entities[id] }));
+        // this.storageBlockList = data.ids.map(id => ({ id, ...data.entities[id] }));
 
         // set viewport at the end
         // if (this.storageBlockShow) {

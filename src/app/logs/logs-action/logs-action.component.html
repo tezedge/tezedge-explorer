@@ -64,20 +64,21 @@
                      (getItems)="getItems($event)" (startStopDataStream)="startStopDataStream($event)">
           <span class="virtualScrollRow logs-row" [style.transform]="'translate(0px,' + position + 'px)'"
                 [class.virtualScrollRowEven]="event?.index % 2" (mouseenter)="tableMouseEnter(event)"
-                [class.hover]="event?.datetime && logsActionItem.id===event?.id">
+                [class.hover]="event?.datetime && logsActionItem.id===event?.id"
+                [class.used]="event?.datetime">
 
             <span class="item-loading" [class.displayed]="!event?.datetime">&nbsp;</span>
 
             <span class="truncate">{{event?.datetime}}</span>
             <span class="truncate">{{event?.level}}</span>
-            <span class="truncate">{{event?.message}}</span>
+            <span class="log-message truncate">{{event?.message}}</span>
 
           </span>
         </ng-template>
       </div>
 
       <div class="action-table-detail">
-        <div *ngIf="logsActionItem?.message">
+        <div *ngIf="logsActionItem?.message" id="virtualScrollTableDetails">
           <ngx-json-viewer [json]="{message:logsActionItem?.message}" [expanded]="true">
           </ngx-json-viewer>
         </div>
@@ -86,10 +87,10 @@
 
     <div class="table-virtual-scroll-footer">
       <span>
-        <button mat-icon-button matTooltip="Start" (click)="scrollStart(null)" *ngIf="!virtualScrollItems?.stream">
+        <button id="startStreaming" mat-icon-button matTooltip="Start" (click)="scrollStart(null)" *ngIf="!virtualScrollItems?.stream">
           <mat-icon>play_arrow_outline</mat-icon>
         </button>
-        <button mat-icon-button matTooltip="Stop" (click)="scrollStop()" *ngIf="virtualScrollItems?.stream">
+        <button id="stopStreaming" mat-icon-button matTooltip="Stop" (click)="scrollStop()" *ngIf="virtualScrollItems?.stream">
           <mat-icon>stop_outline</mat-icon>
         </button>
         <button mat-icon-button style="transform: rotate(90deg)" matTooltip="Last page" (click)="scrollToEnd()">

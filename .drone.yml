@@ -1,0 +1,18 @@
+kind: pipeline
+name: docker-deploy-develop
+
+steps:
+  - name: build-tezedge-explorer-image
+    image: plugins/docker
+    settings:
+      repo: simplestakingcom/tezedge-explorer
+      tag: latest
+      dockerfile: Dockerfile
+      username:
+        from_secret: docker_hub_username
+      password:
+        from_secret: docker_hub_pswd
+
+trigger:
+  branch: develop
+  event: push

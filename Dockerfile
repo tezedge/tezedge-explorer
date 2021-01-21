@@ -1,6 +1,8 @@
 # base image
 FROM node:latest AS BUILD_IMAGE
 
+ARG source=develop
+
 # set working directory
 WORKDIR /app
 
@@ -9,7 +11,7 @@ RUN npm install -g @angular/cli@10.1.0
 
 # clone & install deps for repo
 ARG node_explorer_git="https://github.com/simplestaking/tezedge-explorer"
-ARG node_explorer_commit_hash="1f98f55af680b0b48b0a3d0ce58abe22b91ddbf7"
+ARG node_explorer_commit_hash="${source}"
 RUN git clone ${node_explorer_git} && \
     cd tezedge-explorer && \
     git checkout ${node_explorer_commit_hash} && \

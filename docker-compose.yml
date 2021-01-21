@@ -1,0 +1,16 @@
+version: '3'
+services:
+  tezedge-explorer:
+    image: simplestakingcom/tezedge-explorer:v0.6.0
+    build:
+      context: docker
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    environment:
+#      - SANDBOX=${SANDBOX}
+#      - API=${API}
+      - SANDBOX=https://carthage.tezedge.com:3030
+      - API=[{"id":"master","name":"master.dev.tezedge","http":"http://master.dev.tezedge.com:18732","debugger":"http://master.dev.tezedge.com:17732","ws":false}]
+    hostname: tezedge-explorer
+    # network_mode: host

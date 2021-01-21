@@ -1,14 +1,14 @@
-<style>    
+<style>
     .network-stats-panel {
         display: flex;
         justify-content: space-between;
         padding: 20px 0px 0px 0px;
     }
-    
+
     .network-stats-left {
         align-self: flex-start;
     }
-    
+
     .network-stats-right {
         display: flex;
         align-self: center;
@@ -16,25 +16,26 @@
         justify-content: center;
         flex-direction: column;
     }
-    
+
     .network-stats-card-content {
         display: flex;
         justify-content: space-between;
         padding: 15px 15px;
         height: 50px;
+        box-sizing: content-box;
     }
-    
+
     .network-stats-card-left {
         align-self: flex-start;
     }
-    
+
     .network-stats-card-number {
         font-size: 40px;
         font-family: Roboto;
         font-style: normal;
         font-weight: 300;
     }
-    
+
     .network-stats-card-right {
         display: flex;
         align-self: center;
@@ -43,14 +44,14 @@
         flex-direction: column;
         width: 120px;
     }
-    
+
     .network-stats-card-right-content {
         font-family: Roboto;
         font-style: normal;
         font-weight: 300;
         font-size: 12px;
     }
-    
+
     .network-stats-row {
         display: flex;
         /* justify-content: space-between; */
@@ -58,7 +59,7 @@
         padding-top: 35px;
         /* height: 300px; */
     }
-    
+
     @media (max-width: 600px) {
         .network-stats-row {
             display: block !important;
@@ -68,12 +69,12 @@
             margin: 15px;
         }
     }
-    
+
     .network-stats-chart-x-label {
         opacity: 0.6;
         font-size: 14px;
     }
-    
+
     .network-stats-chart-y-label {
         opacity: 0.6;
         font-size: 14px;
@@ -126,7 +127,7 @@
             <div class="network-stats-card-content">
 
                 <div class="network-stats-card-left">
-                    <span class="network-stats-card-number" style="color: #00DBC6;" 
+                    <span class="network-stats-card-number" style="color: #00DBC6;"
                         *ngIf="networkStats?.currentBlockCount > 0 && networkStats?.lastAppliedBlock?.level<=networkStats?.currentBlockCount">
                         {{ (networkStats?.lastAppliedBlock?.level/(networkStats?.currentBlockCount*0.01)) | number:'1.1-1'}}%
                     </span>
@@ -146,12 +147,12 @@
 
 
                     <!-- <div class="network-stats-card-third">
-    
+
                         {{ networkStats?.lastAppliedBlock?.level}} |
                         {{ networkStats.currentApplicationSpeed / 60 | number:'1.1-1' }} |
                         {{ networkStats?.downloadedBlocks}} |
                         {{ networkStats?.currentBlockCount}}
-    
+
                     </div> -->
 
                 </div>

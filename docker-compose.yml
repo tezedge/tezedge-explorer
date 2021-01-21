@@ -1,7 +1,7 @@
 version: '3'
 services:
   tezedge-explorer:
-    image: simplestakingcom/tezedge-explorer:v0.6.0
+    image: simplestakingcom/tezedge-explorer:latest
     build:
       context: docker
       dockerfile: Dockerfile
@@ -11,6 +11,6 @@ services:
 #      - SANDBOX=${SANDBOX}
 #      - API=${API}
       - SANDBOX=https://carthage.tezedge.com:3030
-      - API=[{"id":"master","name":"master.dev.tezedge","http":"http://master.dev.tezedge.com:18732","debugger":"http://master.dev.tezedge.com:17732","ws":false}]
+      - API=[{"id":"rust","name":"rust.master.dev.tezedge","http":"http://master.dev.tezedge.com:18732","debugger":"http://master.dev.tezedge.com:17732","ws":"ws://master.dev.tezedge.com:4927"}]
     hostname: tezedge-explorer
     # network_mode: host

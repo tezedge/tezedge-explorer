@@ -41,7 +41,7 @@ Install the `npm` packages described in the `package.json` and verify that it wo
 npm install
 npm run start
 ```
-By running `npm run start` you will start a devopment server. Navigate to `http://localhost:4200/`.
+By running `npm run start` you will start a development server. Navigate to `http://localhost:4200/`.
 
 You can shut it down with `Ctrl-C`.
 
@@ -76,10 +76,32 @@ docker-compose -f docker/docker-compose-dev.yml up
 ```
 
 The app will be available under `http://localhost:4200/`and any changes to source files will
-be reflected immediatelly.
+be reflected immediately.
 
 ## Mock server
-Run `npm run server:json` for a json dev server.
-Navigate to `http://localhost:3000/`.
 
-Please view/edit `db.json` file according to your needs.
+Run `npm run start:mock` for starting the json servers and the application. 
+
+If having problem with this one (depending on your terminal, it may stop after starting the first server), you can run each command in a different terminal:
+
+a. Run `npm run mock:http` to start the http server on port `3001`;
+
+b. Run `npm run mock:debugger` to start the debugger server on port `3002`;
+
+c. Go to `src/environments/environment.ts` and create a local node using the http and debugger servers from above:
+```
+export const environment = {
+  production: false,
+  api: [
+    {
+      id: 'localhost',
+      name: 'localhost',
+      http: 'http://127.0.0.1:3001',
+      debugger: 'http://127.0.0.1:3002',
+      ws: false
+    }
+  ]
+};
+```
+
+Please open `mock` folder to view/edit each server files.

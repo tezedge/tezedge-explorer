@@ -1,0 +1,7 @@
+{
+  "/chains/main/blocks/head/header": "/chains-main-blocks-head-header",
+  "/chains/main/mempool/pending_operations": "/chains-main-mempool-pending_operations",
+  "/dev/chains/main/blocks?limit=:l": "/dev-chains-main-blocks?_limit=:l",
+  "/dev/chains/main/actions/blocks/:h": "/dev-chains-main-blocks?hash=:h",
+  "/network/peers": "/network-peers"
+}

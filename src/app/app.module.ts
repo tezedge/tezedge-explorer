@@ -45,9 +45,9 @@ import { WalletsEffects } from './wallets/wallets.effects';
 import { NetworkComponent } from './network/network.component';
 import { NetworkPeersComponent } from './network/network-peers/network-peers.component';
 
-import { MatAutocompleteModule } from '@angular/material/autocomplete'; 
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatButtonModule } from '@angular/material/button';
-import { MatButtonToggleModule  } from '@angular/material/button-toggle';
+import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
@@ -65,9 +65,9 @@ import { MatChipsModule } from '@angular/material/chips';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
-import { MatStepperModule } from '@angular/material/stepper'; 
+import { MatStepperModule } from '@angular/material/stepper';
 import { MatRadioModule } from '@angular/material/radio';
-import { MatExpansionModule } from '@angular/material/expansion'; 
+import { MatExpansionModule } from '@angular/material/expansion';
 import { ClipboardModule } from '@angular/cdk/clipboard';
 
 import { NetworkStatsComponent } from './network/network-stats/network-stats.component';
@@ -173,7 +173,7 @@ import { MempoolActionComponent } from './mempool/mempool-action/mempool-action.
       // preload all modules
       preloadingStrategy: PreloadAllModules,
       // scroll page to top on route change
-      scrollPositionRestoration: 'enabled',
+      scrollPositionRestoration: 'enabled'
     }),
 
     // load ngrx module
@@ -183,7 +183,7 @@ import { MempoolActionComponent } from './mempool/mempool-action/mempool-action.
         strictStateImmutability: true,
         strictActionImmutability: true,
         strictActionWithinNgZone: true,
-        strictStateSerializability: true,
+        strictStateSerializability: true
       }
     }),
 
@@ -202,7 +202,7 @@ import { MempoolActionComponent } from './mempool/mempool-action/mempool-action.
       SettingsEffects,
       SettingsNodeEffects,
       SandboxEffects,
-      WalletsEffects,
+      WalletsEffects
     ]),
 
     // https://github.com/zalmoxisus/redux-devtools-extension
@@ -246,10 +246,11 @@ import { MempoolActionComponent } from './mempool/mempool-action/mempool-action.
     ReactiveFormsModule,
     // ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production }),
 
-    NgxJsonViewerModule,
+    NgxJsonViewerModule
 
   ],
   providers: [],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {
+}

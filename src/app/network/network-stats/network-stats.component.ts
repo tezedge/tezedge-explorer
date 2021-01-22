@@ -1,16 +1,15 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
 
-import { Store } from '@ngrx/store'
-import { Subject } from 'rxjs'
-import { takeUntil } from 'rxjs/operators'
-
-import { NgxChartsModule } from '@swimlane/ngx-charts';
+import { Store } from '@ngrx/store';
+import { Subject } from 'rxjs';
+import { debounceTime, takeUntil } from 'rxjs/operators';
 import * as shape from 'd3-shape';
 
 @Component({
   selector: 'app-network-stats',
   templateUrl: './network-stats.component.html',
-  styleUrls: ['./network-stats.component.scss']
+  styleUrls: ['./network-stats.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class NetworkStatsComponent implements OnInit {
 
@@ -54,17 +53,20 @@ export class NetworkStatsComponent implements OnInit {
 
   public onDestroy$ = new Subject()
 
-  constructor(
-    public store: Store<any>,
-  ) { }
+  constructor(public store: Store<any>,
+              private cdRef: ChangeDetectorRef) { }
 
   ngOnInit() {
 
     // wait for data changes from redux    
     this.store.select('networkStats')
-      .pipe(takeUntil(this.onDestroy$))
+      .pipe(
+        debounceTime(200),
+        takeUntil(this.onDestroy$)
+      )
       .subscribe(data => {
         this.networkStats = data;
+        this.cdRef.detectChanges();
       })
 
     // wait for data changes from redux    
@@ -72,12 +74,14 @@ export class NetworkStatsComponent implements OnInit {
       .pipe(takeUntil(this.onDestroy$))
       .subscribe(data => {
         this.networkPeersMetrics = data.metrics;
-
       })
 
     // wait for data changes from redux    
     this.store.select('networkHistory')
-      .pipe(takeUntil(this.onDestroy$))
+      .pipe(
+        debounceTime(200),
+        takeUntil(this.onDestroy$)
+      )
       .subscribe(data => {
         this.networkHistoryDurationSeries = [
           ...data.downloadDurationSeries,

@@ -1,6 +1,8 @@
 <div class="network-peers">
 
-    <table mat-table [dataSource]="tableDataSource">
+    <table mat-table
+           [dataSource]="tableDataSource"
+           [trackBy]="trackByPeerId">
 
         <ng-container matColumnDef="id">
             <th mat-header-cell *matHeaderCellDef> Address </th>

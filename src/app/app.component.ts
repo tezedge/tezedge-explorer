@@ -25,7 +25,7 @@ export class AppComponent implements OnInit, OnDestroy {
   @HostListener('window:resize', ['$event'])
   onResize(event) {
     this.innerWidth = window.innerWidth;
-    this.isMobile = window.innerWidth < 600 ? true : false;
+    this.isMobile = window.innerWidth < 600;
   }
 
   constructor(
@@ -42,7 +42,7 @@ export class AppComponent implements OnInit, OnDestroy {
 
     // get inner windows width
     this.innerWidth = window.innerWidth;
-    this.isMobile = window.innerWidth < 600 ? true : false;
+    this.isMobile = window.innerWidth < 600;
   }
 
   ngOnInit() {

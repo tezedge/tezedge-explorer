@@ -5,9 +5,8 @@ steps:
   - name: test
     image: node
     commands:
-      - npm install
-      - npm run start
-      - npm run test:run
+      - npm install --quiet
+      - npm run test
 
   - name: build-tezedge-explorer-image
     image: plugins/docker

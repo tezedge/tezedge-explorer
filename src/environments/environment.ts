@@ -4,10 +4,10 @@ export const environment = {
     {
       id: 'master.dev.tezedge',
       name: 'master.dev.tezedge',
-      http: 'http://master.dev.tezedge.com:18732',
-      debugger: 'http://master.dev.tezedge.com:17732',
+      http: 'http://master.dev.tezedge.com:18733',
+      debugger: 'http://master.dev.tezedge.com:17733',
       ws: false
-    },
+    }
     // {
     //   id: 'local-carthage-tezedge',
     //   name: 'ocaml.localhost.node',

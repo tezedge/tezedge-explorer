@@ -6,3 +6,4 @@
 .gitignore
 *.zip
 *.md
+docker_cache

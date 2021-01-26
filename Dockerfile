@@ -1,8 +1,6 @@
 # base image
 FROM node:latest AS BUILD_IMAGE
 
-ARG source=develop
-
 # set working directory
 WORKDIR /app
 
@@ -10,19 +8,28 @@ WORKDIR /app
 RUN npm install -g @angular/cli@10.1.0
 
 # clone & install deps for repo
+ARG source=develop
 ARG node_explorer_git="https://github.com/simplestaking/tezedge-explorer"
-ARG node_explorer_commit_hash="${source}"
+#ARG node_explorer_commit_hash="${source}"
 RUN git clone ${node_explorer_git} && \
     cd tezedge-explorer && \
-    git checkout ${node_explorer_commit_hash} && \
+    git checkout ${source} && \
     npm install && \
     node path.js
 
 # change dir to angular app
 WORKDIR /app/tezedge-explorer
 
+# test
+#RUN npm install
+
 # buid app
 RUN ng build --prod --output-path=/dist
+
+#RUN npm install http-server -g
+#CMD http-server ./dist/tezedge-explorer/
+#RUN npm run test:run
+
 # remove development dependencies
 RUN npm prune --production
 

@@ -12,7 +12,7 @@ steps:
   - name: test
     image: cypress/included:6.2.1
     depends_on:
-      - build
+      - dev-build
     environment:
       CYPRESS_baseUrl: http://dev-build:4200
 

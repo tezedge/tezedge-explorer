@@ -1,18 +1,18 @@
 kind: pipeline
 name: docker-deploy-develop
 
-services:
-  - name: dev-build
+steps:
+  - name: build
     image: node
+    detach: true
     command:
       - npm install --quiet
       - npm run start
 
-steps:
   - name: test
     image: cypress/included:6.2.1
     depends_on:
-      - dev-build
+      - build
     environment:
       CYPRESS_baseUrl: http://dev-build:4200
 

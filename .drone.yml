@@ -12,7 +12,7 @@ steps:
   - name: build-tezedge-explorer-image
     image: plugins/docker
     depends_on:
-      -test
+      - test
     settings:
       repo: simplestakingcom/tezedge-explorer
       tag: latest

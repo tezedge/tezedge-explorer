@@ -2,7 +2,7 @@ kind: pipeline
 name: docker-deploy-develop
 
 steps:
-  - name: build
+  - name: test
     image: node
     command:
       - npm ci

@@ -1,13 +1,14 @@
 kind: pipeline
 name: docker-deploy-develop
 
-steps:
+services:
   - name: dev-build
     image: node
-    commands:
+    command:
       - npm install --quiet
       - npm run start
 
+steps:
   - name: test
     image: cypress/included:6.2.1
     depends_on:
@@ -15,7 +16,7 @@ steps:
     environment:
       CYPRESS_baseUrl: http://dev-build:4200
 
-  - name: build-tezedge-explorer-image
+  - name: publish-tezedge-explorer-image
     image: plugins/docker
     depends_on:
       - test

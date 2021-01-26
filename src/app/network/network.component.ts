@@ -1,28 +1,21 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 
-import { Store } from '@ngrx/store'
-import { Subject } from 'rxjs'
+import { Subject } from 'rxjs';
+
 @Component({
   selector: 'app-network',
   templateUrl: './network.component.html',
   styleUrls: ['./network.component.scss']
 })
-export class NetworkComponent implements OnInit {
+export class NetworkComponent implements OnInit, OnDestroy {
 
-  public onDestroy$ = new Subject()
-
-  constructor(
-    public store: Store<any>,
-  ) { }
+  private onDestroy$ = new Subject();
 
   ngOnInit() {
   }
 
-  ngOnDestroy() {
-
-    // close all observables
+  ngOnDestroy(): void {
     this.onDestroy$.next();
     this.onDestroy$.complete();
-
   }
 }

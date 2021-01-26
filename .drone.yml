@@ -13,7 +13,7 @@ steps:
     depends_on:
       - build
     environment:
-      - CYPRESS_baseUrl=http://dev-build:4200
+      CYPRESS_baseUrl: http://dev-build:4200
 
   - name: build-tezedge-explorer-image
     image: plugins/docker

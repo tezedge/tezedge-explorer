@@ -1,39 +1,41 @@
 kind: pipeline
 name: docker-deploy-develop
 
+globals:
+  - &docker_credentials
+    username:
+      from_secret: docker_hub_username
+    password:
+      from_secret: docker_hub_pswd
+  - &container_config
+      SANDBOX=https://carthage:tezedge:com:3030
+      API=[{"id":"rust","name":"rust.master.dev.tezedge","http":"http://master.dev.tezedge.com:18733","debugger":"http://master.dev.tezedge.com:17733","ws":"ws://master.dev.tezedge.com:4927"}]
+
 steps:
-  - name: build
-    image: node
-    volumes:
-      - name: cache
-        path: /drone/src/node_modules
-    commands:
-      - npm install
+  - name: build #build the frontend docker image
+    image: plugins/docker
+    settings:
+      repo: simplestakingcom/tezedge-explorer
+      tags: ["${DRONE_COMMIT_SHA:0:7}", "latest"]
+      dockerfile: Dockerfile
+      <<: *docker_credentials
+
+  - name: frontend-server #detach it to access it inside tests
+    image: simplestakingcom/tezedge-explorer
+    detach: true
+    environment:
+      <<: *container_config
+    ports:
+      - 8080
+    depends_on:
+      - build
 
   - name: test
     image: cypress/included:6.2.1
+    environment:
+      CYPRESS_baseUrl=http://frontend-server:8080
     depends_on:
-      - build
-    commands:
-      - npm test
-
-  - name: publish-tezedge-explorer-image
-    image: plugins/docker
-    depends_on:
-      - test
-    settings:
-      repo: simplestakingcom/tezedge-explorer
-      tag: latest
-      dockerfile: Dockerfile
-      username:
-        from_secret: docker_hub_username
-      password:
-        from_secret: docker_hub_pswd
-
-volumes:
-  - name: cache
-    host:
-      path: /tmp/drone/cache/node_modules
+      - frontend-server
 
 trigger:
   branch: develop

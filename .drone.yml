@@ -40,6 +40,11 @@ steps:
       password:
         from_secret: docker_hub_pswd
 
+volumes:
+  - name: docker_sock
+    host:
+      path: /var/run/docker.sock
+
 trigger:
   branch: develop
   event: push

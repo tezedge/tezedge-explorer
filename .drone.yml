@@ -11,11 +11,11 @@ steps:
       - npm install
 
   - name: test
-      image: cypress/included:6.2.1
-      depends_on:
-        - build
-      commands:
-        - npm test
+    image: cypress/included:6.2.1
+    depends_on:
+      - build
+    commands:
+      - npm test
 
   - name: publish-tezedge-explorer-image
     image: plugins/docker

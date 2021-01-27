@@ -18,13 +18,13 @@ steps:
       repo: simplestakingcom/tezedge-explorer
       tags: ["${DRONE_COMMIT_SHA:0:7}", "latest"]
       dockerfile: Dockerfile
-      <<: *docker_credentials
+      "<<": *docker_credentials
 
   - name: frontend-server #detach it to access it inside tests
     image: simplestakingcom/tezedge-explorer
     detach: true
     environment:
-      <<: *container_config
+      "<<": *container_config
     ports:
       - 8080
     depends_on:

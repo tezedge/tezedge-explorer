@@ -33,7 +33,7 @@ steps:
   - name: test
     image: cypress/included:6.2.1
     environment:
-      CYPRESS_baseUrl=http://frontend-server:8080
+      CYPRESS_baseUrl: http://frontend-server:8080
     depends_on:
       - frontend-server
 

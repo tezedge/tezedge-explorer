@@ -14,9 +14,8 @@ steps:
     image: drone-tezedge-explorer:${DRONE_COMMIT}
     detach: true
     privileged: true
-    ports:
-      - 8080
     environment:
+      DOCKER_HOST: "tcp://localhost:8080"
       SANDBOX: 'https://carthage.tezedge.com:3030'
       API: '[{"id":"master","name":"master.dev.tezedge","http":"http://master.dev.tezedge.com:18733","debugger":"http://master.dev.tezedge.com:17733","ws":false}]'
     depends_on:
@@ -25,7 +24,7 @@ steps:
   - name: test
     image: cypress/included:6.2.1
     environment:
-      CYPRESS_baseUrl: http://frontend-server:8080
+      CYPRESS_baseUrl: tcp://localhost:2375
     depends_on:
       - frontend-server
 

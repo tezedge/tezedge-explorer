@@ -3,24 +3,20 @@ name: docker-deploy-develop
 
 steps:
   - name: build #build the frontend docker image
-    image: plugins/docker
-    settings:
-      repo: simplestakingcom/tezedge-explorer
-      tags: ["${DRONE_COMMIT_SHA:0:7}", "latest"]
-      dockerfile: Dockerfile
-      username:
-        from_secret: docker_hub_username
-      password:
-        from_secret: docker_hub_pswd
+    image: docker:latest
+    commands:
+      - sleep 10
+      - docker build --no-cache -t drone-tezedge-explorer:${DRONE_COMMIT} -f Dockerfile .
+    volumes:
+      - name: docker_sock
+        path: /var/run/docker.sock
 
   - name: frontend-server #detach it to access it inside test step
-    image: simplestakingcom/tezedge-explorer
+    image: drone-tezedge-explorer:${DRONE_COMMIT}
     detach: true
-    environment:
-      SANDBOX: https://carthage:tezedge:com:3030
-      API: '[{"id":"rust","name":"rust.master.dev.tezedge","http":"http://master.dev.tezedge.com:18733","debugger":"http://master.dev.tezedge.com:17733","ws":"ws://master.dev.tezedge.com:4927"}]'
-    ports:
-      - 8080
+    commands:
+      - sleep 10
+      - docker run --env SANDBOX='https://carthage.tezedge.com:3030' --env API='[{"id":"master","name":"master.dev.tezedge","http":"http://master.dev.tezedge.com:18733","debugger":"http://master.dev.tezedge.com:17733","ws":false}]' -p 8080:80 drone-tezedge-explorer:${DRONE_COMMIT}
     depends_on:
       - build
 
@@ -30,6 +26,19 @@ steps:
       CYPRESS_baseUrl: http://frontend-server:8080
     depends_on:
       - frontend-server
+
+  - name: publish
+    image: plugins/docker
+    depends_on:
+      - test
+    settings:
+      repo: simplestakingcom/tezedge-explorer
+      tags: latest
+      dockerfile: Dockerfile
+      username:
+        from_secret: docker_hub_username
+      password:
+        from_secret: docker_hub_pswd
 
 trigger:
   branch: develop

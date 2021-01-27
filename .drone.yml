@@ -24,7 +24,7 @@ steps:
   - name: test
     image: cypress/included:6.2.1
     environment:
-      CYPRESS_baseUrl: tcp://localhost:2375
+      CYPRESS_baseUrl: tcp://localhost:8080
     depends_on:
       - frontend-server
 

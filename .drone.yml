@@ -2,11 +2,20 @@ kind: pipeline
 name: docker-deploy-develop
 
 steps:
-  - name: test
+  - name: build
     image: node
-    command:
-      - npm ci
-      - npm run test
+    volumes:
+      - name: cache
+        path: /drone/src/node_modules
+    commands:
+      - npm install
+
+  - name: test
+      image: cypress/included:6.2.1
+      depends_on:
+        - build
+      commands:
+        - npm test
 
   - name: publish-tezedge-explorer-image
     image: plugins/docker
@@ -20,6 +29,11 @@ steps:
         from_secret: docker_hub_username
       password:
         from_secret: docker_hub_pswd
+
+volumes:
+  - name: cache
+    host:
+      path: /tmp/drone/cache/node_modules
 
 trigger:
   branch: develop

@@ -12,7 +12,7 @@ steps:
 
   - name: frontend-server
     image: drone-tezedge-explorer:latest
-    pull: always
+    pull: if-not-exists
     detach: true
     privileged: true
     environment:

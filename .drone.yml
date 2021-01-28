@@ -5,13 +5,14 @@ steps:
   - name: build #build the frontend docker image
     image: docker:latest
     commands:
-      - docker build -t drone-tezedge-explorer:${DRONE_COMMIT} -f Dockerfile --build-arg branch=${DRONE_BRANCH} --no-cache .
+      - docker build --no-cache --build-arg branch=${DRONE_BRANCH} -t drone-tezedge-explorer:latest -f Dockerfile .
     volumes:
       - name: docker_sock
         path: /var/run/docker.sock
 
-  - name: frontend-server #detach it to access it inside test step
-    image: drone-tezedge-explorer:${DRONE_COMMIT}
+  - name: frontend-server
+    image: drone-tezedge-explorer:latest
+    pull: always
     detach: true
     privileged: true
     environment:
@@ -63,13 +64,14 @@ steps:
   - name: build #build the frontend docker image
     image: docker:latest
     commands:
-      - docker build -t drone-tezedge-explorer:${DRONE_TAG} -f Dockerfile --build-arg branch=master --no-cache .
+      - docker build --no-cache --build-arg branch=master -t drone-tezedge-explorer:latest -f Dockerfile .
     volumes:
       - name: docker_sock
         path: /var/run/docker.sock
 
   - name: frontend-server #detach it to access it inside test step
-    image: drone-tezedge-explorer:${DRONE_TAG}
+    image: drone-tezedge-explorer:latest
+    pull: always
     detach: true
     privileged: true
     environment:

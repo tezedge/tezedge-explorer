@@ -1,17 +1,75 @@
 kind: pipeline
-name: docker-deploy-develop
+name: development-ci
 
 steps:
   - name: build #build the frontend docker image
     image: docker:latest
     commands:
-      - docker build --no-cache -t drone-tezedge-explorer:${DRONE_COMMIT} -f Dockerfile .
+      - docker build -t drone-tezedge-explorer:${DRONE_COMMIT} -f Dockerfile --build-arg source=${DRONE_BRANCH} --no-cache .
     volumes:
       - name: docker_sock
         path: /var/run/docker.sock
 
   - name: frontend-server #detach it to access it inside test step
     image: drone-tezedge-explorer:${DRONE_COMMIT}
+    detach: true
+    privileged: true
+    environment:
+      SANDBOX: 'https://carthage.tezedge.com:3030'
+      API: '[{"id":"master","name":"master.dev.tezedge","http":"http://master.dev.tezedge.com:18733","debugger":"http://master.dev.tezedge.com:17733","ws":false}]'
+    depends_on:
+      - build
+
+  - name: test
+    image: cypress/included:6.2.1
+    environment:
+      CYPRESS_baseUrl: http://frontend-server:80
+    depends_on:
+      - frontend-server
+
+  - name: publish
+    image: plugins/docker
+    when:
+      branch:
+        - develop
+    depends_on:
+      - test
+    settings:
+      repo: simplestakingcom/tezedge-explorer
+      tags: latest
+      dockerfile: Dockerfile
+      username:
+        from_secret: docker_hub_username
+      password:
+        from_secret: docker_hub_pswd
+
+volumes:
+  - name: docker_sock
+    host:
+      path: /var/run/docker.sock
+
+trigger:
+  branch:
+    - develop
+    - master # same process, without the publish step
+  event: push
+
+---
+
+kind: pipeline
+name: deployment-ci
+
+steps:
+  - name: build #build the frontend docker image
+    image: docker:latest
+    commands:
+      - docker build -t drone-tezedge-explorer:${DRONE_TAG} -f Dockerfile --build-arg source=master --no-cache .
+    volumes:
+      - name: docker_sock
+        path: /var/run/docker.sock
+
+  - name: frontend-server #detach it to access it inside test step
+    image: drone-tezedge-explorer:${DRONE_TAG}
     detach: true
     privileged: true
     environment:
@@ -46,5 +104,5 @@ volumes:
       path: /var/run/docker.sock
 
 trigger:
-  branch: develop
-  event: push
+  ref: refs/tags/**
+  event: tag

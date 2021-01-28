@@ -8,12 +8,11 @@ WORKDIR /app
 RUN npm install -g @angular/cli@10.1.0
 
 # clone & install deps for repo
-ARG source=develop
+ARG branch=develop
 ARG node_explorer_git="https://github.com/simplestaking/tezedge-explorer"
-#ARG node_explorer_commit_hash="${source}"
 RUN git clone ${node_explorer_git} && \
     cd tezedge-explorer && \
-    git checkout ${source} && \
+    git checkout ${branch} && \
     npm install && \
     node path.js
 

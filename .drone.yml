@@ -16,7 +16,7 @@ steps:
     detach: true
     privileged: true
     environment:
-      SANDBOX: 'https://carthage.tezedge.com:3030'
+      SANDBOX: 'https://master.dev.tezedge.com:3030'
       API: '[{"id":"master","name":"master.dev.tezedge","http":"http://master.dev.tezedge.com:18733","debugger":"http://master.dev.tezedge.com:17733","ws":false}]'
     depends_on:
       - build
@@ -43,6 +43,9 @@ steps:
         from_secret: docker_hub_username
       password:
         from_secret: docker_hub_pswd
+
+image_pull_secrets:
+  - docker_pull_secret
 
 volumes:
   - name: docker_sock
@@ -103,6 +106,9 @@ steps:
         from_secret: docker_hub_username
       password:
         from_secret: docker_hub_pswd
+
+image_pull_secrets:
+  - docker_pull_secret
 
 volumes:
   - name: docker_sock

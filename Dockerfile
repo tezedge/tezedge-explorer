@@ -31,8 +31,8 @@ RUN npm prune --production
 FROM nginx:alpine
 COPY --from=BUILD_IMAGE /dist /usr/share/nginx/html
 
-ARG COMMIT=local
-ENV COMMIT=$COMMIT
+ARG commit=local
+ENV COMMIT=$commit
 
 # When the container starts, replace the env.js with values from environment variables
 CMD ["/bin/sh",  "-c",  "envsubst < /usr/share/nginx/html/assets/env.template.js > /usr/share/nginx/html/assets/env.js && exec nginx -g 'daemon off;'"]

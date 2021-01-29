@@ -39,6 +39,9 @@ steps:
       repo: simplestakingcom/tezedge-explorer
       tags: latest
       dockerfile: Dockerfile
+      build_args:
+        - branch=develop
+        - commit=${DRONE_COMMIT}
       username:
         from_secret: docker_hub_username
       password:
@@ -102,6 +105,7 @@ steps:
       dockerfile: Dockerfile
       build_args:
         - branch=master
+        - commit=${DRONE_COMMIT}
       username:
         from_secret: docker_hub_username
       password:

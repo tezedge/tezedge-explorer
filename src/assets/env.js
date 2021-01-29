@@ -1,6 +1,7 @@
 (function(window) {
   window["env"] = window["env"] || {};
 
+  window["env"]["commit"] = 'local-not-replaced'
   window["env"]["sandbox"] = 'https://carthage.tezedge.com:3030';
   window["env"]["api"] = [
     {

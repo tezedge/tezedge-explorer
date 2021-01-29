@@ -19,15 +19,8 @@ RUN git clone ${node_explorer_git} && \
 # change dir to angular app
 WORKDIR /app/tezedge-explorer
 
-# test
-#RUN npm install
-
 # buid app
 RUN ng build --prod --output-path=/dist
-
-#RUN npm install http-server -g
-#CMD http-server ./dist/tezedge-explorer/
-#RUN npm run test:run
 
 # remove development dependencies
 RUN npm prune --production
@@ -37,6 +30,9 @@ RUN npm prune --production
 ################
 FROM nginx:alpine
 COPY --from=BUILD_IMAGE /dist /usr/share/nginx/html
+
+ARG COMMIT=local
+ENV COMMIT=$COMMIT
 
 # When the container starts, replace the env.js with values from environment variables
 CMD ["/bin/sh",  "-c",  "envsubst < /usr/share/nginx/html/assets/env.template.js > /usr/share/nginx/html/assets/env.js && exec nginx -g 'daemon off;'"]

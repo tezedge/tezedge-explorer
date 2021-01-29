@@ -6,6 +6,7 @@ export const environment = {
   production: true,
   sandbox: window['env']['sandbox'] || false,
   api: window['env']['api'] || [],
+  commit: window['env']['commit'] || ''
   //   [
   //   // {
   //   //   id: 'localhost',

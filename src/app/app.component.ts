@@ -4,6 +4,7 @@ import {Store} from '@ngrx/store';
 import {MatSidenav} from '@angular/material/sidenav';
 import {takeUntil} from 'rxjs/operators';
 import {Subject} from 'rxjs';
+import {environment} from '../environments/environment';
 
 @Component({
   selector: 'app-root',
@@ -12,10 +13,11 @@ import {Subject} from 'rxjs';
 })
 export class AppComponent implements OnInit, OnDestroy {
 
-  public app;
-  public innerWidth;
-  public isMobile = false;
-  public settingsNode;
+  app;
+  innerWidth;
+  isMobile = false;
+  settingsNode;
+  commit = environment.commit;
 
   onDestroy$ = new Subject();
   pendingTransactions: any[];

@@ -1,0 +1,124 @@
+kind: pipeline
+name: development-ci
+
+steps:
+  - name: build #build the frontend docker image
+    image: docker:latest
+    commands:
+      - docker build --no-cache --build-arg branch=${DRONE_BRANCH} -t drone-tezedge-explorer:latest -f Dockerfile .
+    volumes:
+      - name: docker_sock
+        path: /var/run/docker.sock
+
+  - name: frontend-server
+    image: drone-tezedge-explorer:latest
+    pull: if-not-exists
+    detach: true
+    privileged: true
+    environment:
+      SANDBOX: 'https://master.dev.tezedge.com:3030'
+      API: '[{"id":"master","name":"master.dev.tezedge","http":"http://master.dev.tezedge.com:18733","debugger":"http://master.dev.tezedge.com:17733","ws":false}]'
+    depends_on:
+      - build
+
+  - name: test
+    image: cypress/included:6.2.1
+    environment:
+      CYPRESS_baseUrl: http://frontend-server:80
+    depends_on:
+      - frontend-server
+
+  - name: publish
+    image: plugins/docker
+    when:
+      branch:
+        - develop
+    depends_on:
+      - test
+    settings:
+      repo: simplestakingcom/tezedge-explorer
+      tags: latest
+      dockerfile: Dockerfile
+      build_args:
+        - branch=develop
+        - commit=${DRONE_COMMIT}
+      username:
+        from_secret: docker_hub_username
+      password:
+        from_secret: docker_hub_pswd
+
+image_pull_secrets:
+  - docker_pull_secret
+
+volumes:
+  - name: docker_sock
+    host:
+      path: /var/run/docker.sock
+
+trigger:
+  branch:
+    - develop
+    - master # same process, without the publish step
+  event: push
+
+---
+
+kind: pipeline
+name: deployment-ci
+
+steps:
+  - name: build #build the frontend docker image
+    image: docker:latest
+    commands:
+      - docker build --no-cache --build-arg branch=master -t drone-tezedge-explorer:latest -f Dockerfile .
+    volumes:
+      - name: docker_sock
+        path: /var/run/docker.sock
+
+  - name: frontend-server #detach it to access it inside test step
+    image: drone-tezedge-explorer:latest
+    pull: always
+    detach: true
+    privileged: true
+    environment:
+      SANDBOX: 'https://carthage.tezedge.com:3030'
+      API: '[{"id":"master","name":"master.dev.tezedge","http":"http://master.dev.tezedge.com:18733","debugger":"http://master.dev.tezedge.com:17733","ws":false}]'
+    depends_on:
+      - build
+
+  - name: test
+    image: cypress/included:6.2.1
+    environment:
+      CYPRESS_baseUrl: http://frontend-server:80
+    depends_on:
+      - frontend-server
+
+  - name: publish
+    image: plugins/docker
+    depends_on:
+      - test
+    settings:
+      repo: simplestakingcom/tezedge-explorer
+      tags:
+        - ${DRONE_TAG}
+        - latest-release
+      dockerfile: Dockerfile
+      build_args:
+        - branch=master
+        - commit=${DRONE_COMMIT}
+      username:
+        from_secret: docker_hub_username
+      password:
+        from_secret: docker_hub_pswd
+
+image_pull_secrets:
+  - docker_pull_secret
+
+volumes:
+  - name: docker_sock
+    host:
+      path: /var/run/docker.sock
+
+trigger:
+  ref: refs/tags/**
+  event: tag

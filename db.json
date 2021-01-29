@@ -1,607 +1,607 @@
 {
-    "p2p": [
-        [
+  "p2p": [
+    [
+      {
+        "type": "connection_message",
+        "incoming": false,
+        "ts": "2020-03-25T11:40:38Z",
+        "index": 21,
+        "remote_addr": "0.0.0.0:0",
+        "message": {
+          "port": 39732,
+          "versions": [
             {
-                "type": "connection_message",
-                "incoming": false,
-                "ts": "2020-03-25T11:40:38Z",
-                "index": 21,
-                "remote_addr": "0.0.0.0:0",
-                "message": {
-                    "port": 39732,
-                    "versions": [
-                        {
-                            "name": "TEZOS_ALPHANET_BABYLON_2019-09-27T07:43:32Z",
-                            "major": 0,
-                            "minor": 0
-                        }
-                    ],
-                    "public_key": "bb5bbb4dd5bf6ef68a5fc38987252c8e42e80ec5a2991b5a1eea0ef53f377625",
-                    "proof_of_work_stamp": "1931453e0e6ee5fcaf8c06b338b3ffd8c3a3cab1aac6fe3c",
-                    "message_nonce": "6f8f6e72bf25c9314adc67b646104c337eb0d915534a2d3d"
-                }
-            },
-            {
-                "type": "connection_message",
-                "incoming": false,
-                "ts": "2020-03-25T10:40:38Z",
-                "index": 20,
-                "remote_addr": "0.0.0.0:0",
-                "message": {
-                    "port": 9732,
-                    "versions": [
-                        {
-                            "name": "TEZOS_ALPHANET_BABYLON_2019-09-27T07:43:32Z",
-                            "major": 0,
-                            "minor": 1
-                        }
-                    ],
-                    "public_key": "ed6effaaf1d9ff41e9792d942383f03d3077bdf1c390da5b1da2478a9511054c",
-                    "proof_of_work_stamp": "844e59f45131936a432ac31368a643e883cd5ef604f2b23a",
-                    "message_nonce": "a38308da8bf39631d2ad4387531441fcc429df4e686e7bea"
-                }
-            },
-            {
-                "type": "metadata",
-                "incoming": false,
-                "ts": "2020-03-25T7:40:38Z",
-                "index": 19,
-                "remote_addr": "0.0.0.0:0",
-                "message": {
-                    "disable_mempool": false,
-                    "private_node": false
-                }
-            },
-            {
-                "type": "connection_message",
-                "incoming": false,
-                "ts": "2020-03-25T6:40:38Z",
-                "index": 18,
-                "remote_addr": "0.0.0.0:0",
-                "message": {
-                    "port": 39732,
-                    "versions": [
-                        {
-                            "name": "TEZOS_ALPHANET_BABYLON_2019-09-27T07:43:32Z",
-                            "major": 0,
-                            "minor": 0
-                        }
-                    ],
-                    "public_key": "bb5bbb4dd5bf6ef68a5fc38987252c8e42e80ec5a2991b5a1eea0ef53f377625",
-                    "proof_of_work_stamp": "1931453e0e6ee5fcaf8c06b338b3ffd8c3a3cab1aac6fe3c",
-                    "message_nonce": "6ee587eb71ee3dbc6a3ea036a7308248ff1ee00ab3aecbe8"
-                }
-            },
-            {
-                "type": "connection_message",
-                "incoming": false,
-                "ts": "2020-03-25T8:40:38Z",
-                "index": 17,
-                "remote_addr": "0.0.0.0:0",
-                "message": {
-                    "port": 39732,
-                    "versions": [
-                        {
-                            "name": "TEZOS_ALPHANET_BABYLON_2019-09-27T07:43:32Z",
-                            "major": 0,
-                            "minor": 0
-                        }
-                    ],
-                    "public_key": "bb5bbb4dd5bf6ef68a5fc38987252c8e42e80ec5a2991b5a1eea0ef53f377625",
-                    "proof_of_work_stamp": "1931453e0e6ee5fcaf8c06b338b3ffd8c3a3cab1aac6fe3c",
-                    "message_nonce": "69ed2da513d877b13472b24706ea3552c23ffec498266553"
-                }
-            },
-            {
-                "type": "metadata",
-                "incoming": false,
-                "ts": "2020-03-25T8:30:38Z",
-                "index": 16,
-                "remote_addr": "0.0.0.0:0",
-                "message": {
-                    "disable_mempool": false,
-                    "private_node": false
-                }
-            },
-            {
-                "type": "connection_message",
-                "incoming": false,
-                "ts": "2020-03-25T6:30:38Z",
-                "index": 15,
-                "remote_addr": "0.0.0.0:0",
-                "message": {
-                    "port": 9732,
-                    "versions": [
-                        {
-                            "name": "TEZOS_ALPHANET_BABYLON_2019-09-27T07:43:32Z",
-                            "major": 0,
-                            "minor": 1
-                        }
-                    ],
-                    "public_key": "ed6effaaf1d9ff41e9792d942383f03d3077bdf1c390da5b1da2478a9511054c",
-                    "proof_of_work_stamp": "844e59f45131936a432ac31368a643e883cd5ef604f2b23a",
-                    "message_nonce": "0508a1cd686bffb727297b47d227bd52c2a39186476ef2bf"
-                }
-            },
-            {
-                "type": "metadata",
-                "incoming": false,
-                "ts": "2020-03-25T4:30:38Z",
-                "index": 14,
-                "remote_addr": "0.0.0.0:0",
-                "message": {
-                    "disable_mempool": false,
-                    "private_node": false
-                }
-            },
-            {
-                "type": "p2p_message",
-                "incoming": false,
-                "ts": 0,
-                "index": 13,
-                "remote_addr": "0.0.0.0:0",
-                "message": [
-                    {
-                        "type": "get_current_branch",
-                        "chain_id": "NetXUdfLh6Gm88t"
-                    }
-                ]
-            },
-            {
-                "type": "metadata",
-                "incoming": false,
-                "ts": 2,
-                "index": 12,
-                "remote_addr": "0.0.0.0:0",
-                "message": {
-                    "disable_mempool": false,
-                    "private_node": false
-                }
-            },
-            {
-                "type": "p2p_message",
-                "incoming": false,
-                "ts": 0,
-                "index": 11,
-                "remote_addr": "0.0.0.0:0",
-                "message": [
-                    {
-                        "type": "get_current_branch",
-                        "chain_id": "NetXUdfLh6Gm88t"
-                    }
-                ]
-            },
-            {
-                "type": "p2p_message",
-                "incoming": false,
-                "ts": 0,
-                "index": 10,
-                "remote_addr": "0.0.0.0:0",
-                "message": [
-                    {
-                        "type": "current_branch",
-                        "chain_id": "NetXUdfLh6Gm88t",
-                        "current_branch": {
-                            "current_head": {
-                                "level": 0,
-                                "proto": 0,
-                                "predecessor": "BLockGenesisGenesisGenesisGenesisGenesisd1f7bcGMoXy",
-                                "timestamp": 1569570212,
-                                "validation_pass": 0,
-                                "operations_hash": "LLoZS2LW3rEi7KYU4ouBQtorua37aWWCtpDmv1n2x3xoKi6sVXLWp",
-                                "fitness": [],
-                                "context": "CoWBHRZfjizfoKGz7bPVBJcYHfqbMYfU63Z2KZ8ghso2HwxUX8Y6",
-                                "protocol_data": ""
-                            },
-                            "history": []
-                        }
-                    }
-                ]
-            },
-            {
-                "type": "p2p_message",
-                "incoming": false,
-                "ts": 0,
-                "index": 9,
-                "remote_addr": "0.0.0.0:0",
-                "message": [
-                    {
-                        "type": "get_current_branch",
-                        "chain_id": "NetXUdfLh6Gm88t"
-                    }
-                ]
-            },
-            {
-                "type": "p2p_message",
-                "incoming": false,
-                "ts": 0,
-                "index": 8,
-                "remote_addr": "0.0.0.0:0",
-                "message": [
-                    {
-                        "type": "current_branch",
-                        "chain_id": "NetXUdfLh6Gm88t",
-                        "current_branch": {
-                            "current_head": {
-                                "level": 0,
-                                "proto": 0,
-                                "predecessor": "BLockGenesisGenesisGenesisGenesisGenesisd1f7bcGMoXy",
-                                "timestamp": 1569570212,
-                                "validation_pass": 0,
-                                "operations_hash": "LLoZS2LW3rEi7KYU4ouBQtorua37aWWCtpDmv1n2x3xoKi6sVXLWp",
-                                "fitness": [],
-                                "context": "CoWBHRZfjizfoKGz7bPVBJcYHfqbMYfU63Z2KZ8ghso2HwxUX8Y6",
-                                "protocol_data": ""
-                            },
-                            "history": []
-                        }
-                    }
-                ]
-            },
-            {
-                "type": "p2p_message",
-                "incoming": false,
-                "ts": 0,
-                "index": 7,
-                "remote_addr": "0.0.0.0:0",
-                "message": [
-                    {
-                        "type": "current_branch",
-                        "chain_id": "NetXUdfLh6Gm88t",
-                        "current_branch": {
-                            "current_head": {
-                                "level": 400685,
-                                "proto": 1,
-                                "predecessor": "BM9bLzLaHwsvp7GNMoQwts4n12qLYapqaT7YkgS5wEFLLCQmxDf",
-                                "timestamp": 1585580006,
-                                "validation_pass": 4,
-                                "operations_hash": "LLoaTkxkXokQSBGF9PPm3rPi1HmCCne4e9E6bFQcnLKsXVh6Qc4Fe",
-                                "fitness": [
-                                    [
-                                        1
-                                    ],
-                                    [
-                                        0,
-                                        0,
-                                        0,
-                                        0,
-                                        0,
-                                        6,
-                                        29,
-                                        44
-                                    ]
-                                ],
-                                "context": "CoWD8TT1KGncfMSEhgSv9KDkEf19gs31CUx3hPyToRSwFfpxKdGR",
-                                "protocol_data": "00004c53f3fa58b4010000d5e8fef9b1c20b5acac0320706cb72fdfb65b794f7598e72909309606bff070db1d00bfe8536ac239e5ad69f0ddd8d2dde6dc00afa3d09f336cfd0adccdd950e"
-                            },
-                            "history": [
-                                "BM9bLzLaHwsvp7GNMoQwts4n12qLYapqaT7YkgS5wEFLLCQmxDf",
-                                "BMPxFkMChWEtnznfsW6a8YbN1ikX6ujemwUaXmVVD63rcfFBVSa",
-                                "BM4B1Kjj3xR9RY4uu86SX5PtuFbGzW9zjnqR3mJzj3KjGnwcAp1",
-                                "BL1kEAKFBNo5JRVvAKqL5gJftZrHijBxXEbZuB5m9apKjuGnYNh",
-                                "BM3xwb3qRAL9EfFX7kTpnKwQd2W9hzaoJDDLUm8LCHfAa4b9HDx",
-                                "BL2Js4GrzGJwKHptzNbsFr6zUSE3maMVCAD22oNRiHADbhdUqBC",
-                                "BLpRLSsr9ZLhJ3bUDv9yBHmDYURnwDepPmnDCNvYV7kq3uH6o9S",
-                                "BLRXEdvU9W1XiFq547RRMAfgDyDPzS8Y97LX55tnwSbFvjH9QnG",
-                                "BM3KDymXeko9HnX21MczCphx1e5iSXSfpivcsNma7L9iz7h2yt6",
-                                "BMR8xBtLYDFDEN4AeeFTnwJ2HnJMmQrwoe2GRZb218MuNvTZPbs",
-                                "BLhvPiX5JVtBSp3ivGVAn6D1qCQSqbZPs9vS4dVNaFZ9UUcMrkN",
-                                "BLjPNBWCHgdj3oXyNqQbJkrCjvaWvZjZd6B911KmrYjbr7XU4RE",
-                                "BL8CPe2kot5tU9uhS5eYBonpAY5QHnrcH6awxTFadwPFFzEcm7E",
-                                "BMNq2FtsoRkVnVyF9dLg53oZ1UJWfF6XmwdLjm41Epz4t8V2z4R",
-                                "BLjz7i4HBvxfa43tsVD9kbNFhDF4dVMv9xpEwc6wjwC6Yws2RT8",
-                                "BMCukFAXMnU9fh3JMKZbnxy1bq3QyQYF7d3ycA4o4GwFYerYMTJ",
-                                "BM5NoCsNURmcF8xHiLGjQMB9aECfdNozqwiGEMRdA5ANWdwuWi9",
-                                "BKqBYbHrWNWxKe21V3BTuPzocgg6tcgVhcK7aibHhHZNBfWAieq",
-                                "BMXV9tn62PmrqfwDxacDsZvhQacuNi6YDG31pGNpBMMVa44Rw7o",
-                                "BLTuvLcdjZCzm6tDVAKh726tm3VZy37BPYoEqHDHzehrwPQg4GW",
-                                "BLk8fJSsmRk49JxJyMf1AWSj7QnhSJ8YKN9e3RQv4ADN8VXLtTc",
-                                "BMT4UZJymicgcYLA8YYYMcEQSH8kE6auguK7BMsZFtv246pCwP3",
-                                "BMdbjJKtBZe9seJqhxnvifyNy9pD7yV4HpCphm7YojF7mrBLYMB",
-                                "BLKWgNzAzKs5Q9fRnR8kr6sSexCtSbTKQVSs4ZYtbmvmzFEY3Ut",
-                                "BLQK73t3M1MqdTjPh5Z1X15TxK6pzjq4BtW1Rmp2ad3udne8RDK",
-                                "BME8HtSe3M7BwSEkqtrJt3Kwq89M1vnNK4ah1yJLeU2A28gkoQx",
-                                "BLpNZgg8yAmMvYkYAmDvroZy7rsjV9cpEZQv945292AJMvP4cHp",
-                                "BLRqf4VJ1LWaueFaajBG61Vj4SHjayW9uXW32hr6L6MhUDXXZ1F",
-                                "BLjXWo8uyeTm2fVRp8Rm4NXTAc3XcR12SyfBJdxwfDVqrbizQj3",
-                                "BMRQfAMDeM9rURS4Jwz2XhLHdgUfK1BMQogMW8WjyJXPKZzCnKy",
-                                "BMZFx3T9Noqs1xyfHTs49Qxpwz5qWedxyQXNULaf6Edius5h83x",
-                                "BMbKbUXLrKsv4bt7s7zQVqX7TwMARfCdbEUkzQkyXrFCTTdw2a3",
-                                "BL89HdDCH81JCrioTMJgQFYi6iKpfa9tMAS1pBAVTr1iXxTJqee",
-                                "BLxk6aFXSFKY9Vmx8JtMbqoAa1CJ1ib1Zx1oDeXRPPQFELjzK58",
-                                "BLy9ic81aeCSy1pSE2JKGdmEqbgKQoNatZdYLJAXcs6tWyceLCx",
-                                "BMKKvsvd7dEU6rj85bZanQsTUsTEgmDH1zrsXwxyE4stT8YD3Zb",
-                                "BMUWEZi8ca39XhvYJZ7apwpj1XpWWa3VjArXQGoaUH7BcGdhzt9",
-                                "BMB3GrEZzooMVvn54HyohvutgviXbVpfw5SSUzRQZQEQ13sq5dH",
-                                "BMNfzJCgCufKNVGY8hFgiFrxJQvPyijdCyvLUac2fiY88VM4mV1",
-                                "BLJ77EiwYYHG57w4Lyvy28hzfoUZ7Rvim32Ma2RPrjuy5sWqbpZ",
-                                "BLXADG9gWaKHDS5vfbywKTZEoffm2ujwLcqMpiRt57RuynVMR3N",
-                                "BMXvGo7JofTHbPTUSBvu6hBJBco7KVpBjKv9X9NzrFJjoqLyCA2",
-                                "BL9EWEhyBKmseChZCVeuAwM5PZZySoFWQ25KFrCauTqGS1CupCY",
-                                "BLrccFwwnqkgyKXbrwReLhPUWTeK4UZ581ES84xCYEZWaUVWWYp",
-                                "BLjgoVdHfRP98zrqNDritHib3uaZjLrLX4Rnvb4pZqjVmT2ZHP3",
-                                "BM3C6SDJYpZE3KG4D12omNhshea8ZcYwS8L8CWX4qkjbxpmgeYv",
-                                "BL1MaGkRjjs73mJpjxKm4Rdr3nPYeFaTx38SHLK9o4CQ8NuRkMK",
-                                "BLCbsaP9fbzwoJZYb5pfD2B9mVpnNLDncgFUR14M683pNDbDFmw",
-                                "BLEgj3k3n6AYK9q2PT6RVgaUSdRG1UJuGsxHpC9fCF7HoSxikMa",
-                                "BMcqtxn4aWDPJSQv9SyeevTQGQUzVHjVPdrk8Q21AYxitDm4eWV",
-                                "BLd726gGHUoqKGvx16R3adY2GFEXBz1URtX8mD61oSXYTpkQ5Ky",
-                                "BLFgrJdqLtdgidXEjj1zb87jmUnaxDYwkmG23GCHF4C2pRikbc6",
-                                "BL1C9scuPLBFRGSUEMwFctPk47DmPSyTMrKtQz5uF1jysXqiSg3",
-                                "BLFGhLezqhmBYtUxu918cj8EhroWSKuzceLagD7m31f8SjCS36f",
-                                "BLqYh6icvFr2K7wur1g5nGZ9b5kfxLZqdu45oxRNQGk8hKkF2MB",
-                                "BLt79AAsbbxweAYjT8TBjq28tB9Q4buS4nBeQ1EKMdb6H3STdrm",
-                                "BLFMDaiw9KwAwbrrhLTeM2GbR4XjAXYrVrYTuVHKih6M9wRrzg8",
-                                "BLTYRAb8EjeGE5trPT61o5CdCAXs844NDaxCdsQWkKYTT7RFdR7",
-                                "BLfz81SLgauyzSXMFEFrkQSrsbC6mkKeV95JtQkXWoCZdBFTBMF",
-                                "BLge91HPRUd5h3PSfxTPPYSfiDMhkhC5b9SyN7RbrU7fLH7Xo4q",
-                                "BMaRjfRgsCPzWDt2kaqXk4qvV7m1Hrb6hpftse4XNwKDDGeysTs",
-                                "BLtJRfUjR33iDLz97jJCUdRFecVARcPmXorNWBM6j25PQYy7a9g",
-                                "BMf2U8sVrQ9GDDKH5U9qv1RroUjQCnUuyHccg9R9C5Yx6iRyV8d",
-                                "BLVkofa7zWn8d14hFBncyDPmHp9eTCXqfLucFXeE7fnkeGhtixi",
-                                "BLR34kpBsmmEGHVnHhuG3YucN219fwtJUSxPCBftSTRpBmGB9rZ",
-                                "BLpFeUR1G5JNbLR7Vim6KqXjHSeURV6pyS2Y6emVXNr8wW542ht",
-                                "BLBEoiy8C1CKEvgKCEp5Wg17qBTG2Fp6ED7y8ZyvJgF9FfhjXMp",
-                                "BLFEuhGd9s4zQbu3iMyc5BR3Z33bCGHyoemahqQ7UAep1s3Q59k",
-                                "BLXEFT9Q3jehUkJ8b5Z3mE7xCu7HCqmpSRu1j82w7pUx43jkU5q",
-                                "BL5wT3eAvTaJuhcnainFA1fcPctmbhYkDyXPePwGNxGAs9DGbSQ",
-                                "BLV7dxqMv5fzH2TwDatf7fQEU8CViYufXTp9HnCBmcN1ekxVfrr",
-                                "BLPpo6FF6YDiTtM6sXWbHhSp7QiwuF8BQknUAewzUdLCa6Z8GUg",
-                                "BLSgHYF3hTYJfwuzby4fo54ddkhyzEDHSvNYjab7RuejzVjCsrC",
-                                "BLyHv7pdFFfhMzKvGjzq4mjn2tKjXxY2NigxivaTDcuMitzwMLP",
-                                "BLQVXWQdYegmskqw4efAdNFJmdL4FfB89E5JFbvyWVWounRCr3M",
-                                "BLvhxmgsXCAGTeETJSgEoQnWC4teKjyEqFNoLWdPf4gaPfWqBwR",
-                                "BLVBsy755LtVFpBz3mXX56adLY1zuthyDrvAPTPTEqmamUn7HgP",
-                                "BMFa1tZo4zXLKdFJY81zFLARiVRFKckb4R4utW8gsAMMgsvjeAp",
-                                "BMDeKS97hrpoSgVqcnYVEGLt8aWDVRGjFmW3Akwb46r5XE6UcQT",
-                                "BKr2eSxh5ffahXrhLpHMzmx5VYARbRa2TYUExKWpkKtkJcrnKqT",
-                                "BMdz6EkUB1ttQibic3vYv8iomn549SNhUATarv4t69Ae31mFM7M",
-                                "BMJWxL4nuFJ7RXv3xgyYYaVufbRSxt1yFz1EuXCqWEiXqy5VwZz",
-                                "BLwTbbGWBVSByfduaBHraf9v8iJUSRyGGxhjh9p4AdYGgwdXaHu",
-                                "BLgpZSQQn2iUFXnzGNP5FCSKQur4rBygkP43E4eAxqBQqxRfiR9",
-                                "BLy2JwhRcsW4RBzRnc4UgfheJTaqfdW2uCuLUeVA6cspCxAkUSc",
-                                "BLXPsPV823c84UiZazN9HdMTKRbCYDvWeLhP11BCFG8FNoSMSoV",
-                                "BLY7WGkZGNjw1fpNoGG1eyYFYPVkv2vY4rhihqSiCUDKSVVEkCL",
-                                "BMbN582bnQmsGVmJ1A2gJLZjYA271gYAqvRkP1uYnHCPa5QKDqY",
-                                "BLfuUPdkhe7wmQVtwKfWav3Rnfb6Bvas9odcBTHbbyeGP4kJHYu",
-                                "BML1vDqAzocm6ic1Zz9VnXcy82w6dMwLRrkBe2xw8gSJqw7M5Vm",
-                                "BLzpAr2bPs9Jh4RXzqoYaMVVSh986A4NFM2iUtERbdLvF1sYmnX",
-                                "BL4aMkcCLT4RkeAW2snNsoL4Z6kgQ5pshLpARetFMMzJx5xG7uM",
-                                "BLiaVQuLG4Qe8vVpaUmds8G2oHSFvP3eHAPXBigEHGwKRYokvxh",
-                                "BL3gvSqvLPPNNXXWN9qeVn3VnWxeVYHmToymGraoauRtGeVVFGH",
-                                "BLywkMj4dzUyRupeDvebjrfT2d38Rh6S4z8oPB8okXSgd7r5VBL",
-                                "BMBcjwDeFYBqmfv1tzFgQwtYMxz5ro1xQGJDNFjBBZZYfc2M5DM",
-                                "BLxA9ccyWiVT72eCRVTixoy2vTcEvDn8XPAyTskyLNDDdFRpgrX",
-                                "BMGsfnWZri5a6n5BPaf6u58y2nLPgTfDXMC2Y3acWSMEZKh9hw7",
-                                "BLURvMDPTrKWM93dsKpXZ3BxEEb8udDxtT9tdEdRQi9QQEvWvUP",
-                                "BMWzjnQzAsg4dLBrgNHFMdGfJs9b7fDDjEitYaB4DNFQ7PCoXcm",
-                                "BM8uhKT4HPAjjikG2b71AnMBbpMvYJr32QcBAQv27EkuFHp4Db7",
-                                "BM78zPBGnnjJcPaJSxaS91XTadr9LtbiZ3w9pYYJ4a2FsYW6vaY",
-                                "BKtb1Vaz4HGdH5r41UZK2NPHMg4txrjrkXvNh7Yb9BJ4Jk9CdvH",
-                                "BMbfZyFoNnH2kjsaLs3vWrjDSmFBqbszL6bqUJh4KYWbMU17XsS",
-                                "BMLbQo5TkLnii9yHP3wy3RbEgCaX7aFSYTMD5mzLB7c8h7SfE59",
-                                "BKo1ts2gm6v6Zscg7WZBeMpR9uES5HtNWcRBniHr3Yi6VVYBg1V",
-                                "BLTg8nfUAzM4w6PSbG3gBf18QPeCyhcWpzmYxptG8oHbLKyCuUE",
-                                "BLqMThuorhgNTpTunQxt3LPRkhzaqzxDyuCnWKzxv3URYjqtLQU",
-                                "BMEPDaVfe1FEBS4H8A4KxmTBXEv2swbs8fj2yocELLFSWecqKca",
-                                "BL8xPjSSYuvEVEDU3V5LVUHQ7Ai9oo41WDD1pCmZCHrPb9EFjMW",
-                                "BMcBKz2X2xa5eKebJAReSjas5acXYea5HtiM1jEhVr63MnwgLKr",
-                                "BLaUfVKEndDusGbu1BToVStsyGJuR9n1wx7Q8xMMzNBhkuk9jbV",
-                                "BMarmqUXnSF4becGPeAsDzxr2CH5MHzZnP3nJHTYzL3CbdtK6uc",
-                                "BMUqtiScGAkkKqrKWUe1hDHKxxubnuWXzpCnLQ1Qv5ggGJhYysL",
-                                "BKxyxHznDyoAbu5mHJHYgLjHFghyRyuiSxtP5QybjkYWnLux9cZ",
-                                "BLC1jutHS94vfijm1xrV8cj9vxjwpeQxeqSoGH3cy2DBrtB6HRG",
-                                "BKj5z5RmGJZshpn8tkzeWKipYRYURwYZCD3etBULZVuB4qWTvA2",
-                                "BMaxc77gHe3KPt7X5CKV74ipEFJPgQs5avU4oyXP4FpGXqeLQuB",
-                                "BKtzNeNcVKaVM7HYedjdsRZMhTB46tWthsvs6Rm2QTae3jMM5r9",
-                                "BL1eSD1L8urv6iehfVuQtye1nJwPknxMWgwKJCUdcQ3UjUSknCx",
-                                "BL21zRGbiXW4t3gY8Bsnm74uSqUGAhtZ8kHPPY7L4216KyX8qt8",
-                                "BMH4YcL2eaU1FNjaPqoBvEwjSzfEC36wRfBSfGYtz4v7moqLdUM",
-                                "BLdaZrLvTDzoqFvrottWyxtYC3AZUGRf33yb66p9imRFFfxsGxs",
-                                "BLcjZeyM97bHvscAhKF5o1WrkvefG2fQvG6Kv7Jpq7LtDeFsNUm",
-                                "BL4vUqpMyybQnYMFvGxu5mAmf12BurE2gKC944hF2bwZUKCCAoz",
-                                "BL1LDf1uodFykCMWQezMopv4mpMPh1Uucrb2yCvsm49rLwkEXx1",
-                                "BMHRQ9ycDQHoUqNtg5qKMaNDo5E3qmY9k4NBc6TNyZgwfMBvEtp",
-                                "BLV55925TKzabwjpe3AmHqKg8roqgCdyhHNRuLqp5Vjp5C77Vxi",
-                                "BKkts4TA3amXzdrxpCW3zUgWtBRsofHpRbwSpiDzP7e16ETtgv5",
-                                "BLWs5JsRdCCyZtyXDqo2HAxEJ6v4AaN8VJMBpZoaVWTFa2mzykw",
-                                "BLcTmK6VE9xJKGbkB6d8cZ1dEUPfmEfJc6Ha4JqiCwkgmWgGpTo",
-                                "BLSPkxPH33Nykyigh8axHyqEfZSjbQEJCTEmRxR4HvbWUoCHjJg",
-                                "BLxiUjNZsRzmJAx4LumENpaei6sTSnZzDknq6JnyPBxVuEWLDQR",
-                                "BL5FiryLxAs4LVS2JQPttahqW1GbnHVut6ADUxhzeM9BUrAXBfh",
-                                "BLRLEku5sSDMHVQP515RbxX73RC512SWpXViWNhBdBEcvP3gVow",
-                                "BLcxsTM1yGt8zUsFzcrvhCzCMoNyoUBuinDPBsMeZHoPS7VuuRB",
-                                "BLkJweY7zKfHgnxBTAKnZ4qSFmyJWdicgfoApMKVifLtgS32oXy",
-                                "BLf3Q8LhpRpXLxtF9G6P1GJCVSahGJuRaQoimxaXPzQNYD5HiWe",
-                                "BLTNdBaeLrEtuvtMEvid1dctA6RwGMamsdNfi7d6a5cemsgPQs2",
-                                "BLn3f8qUX7fQPmtaXKJ74toLD9Kh3kEha2Nb4LuQWA1JjQqbpDC",
-                                "BMefNL7YWX2WFJ99pRMK7g1oFkhgasjafZRQXpRtuCXf5kc5Son",
-                                "BMYHmxWap1JJdpXY3XrVR6Zk5qpCgU4NqyWPWjjzD92FiQu4DtU",
-                                "BKyKUB2w9mA7CSfRSZrWqcQRUCdPHecFBsPJHWqcXSb6oAWhJjQ",
-                                "BMTtXwvpYB2eFHi77GFZVq96GrQcRxmM6D9SUevBgBEJJJwnwEN",
-                                "BLh625BwD6Crp82otMDj7sSjyASmSX6zdv8oqsnwnsAJg59V3X2",
-                                "BL1RvHHDiETCGyxWDDySZR424NhrYuTvo5q6aZHs7AoQukW5YNk",
-                                "BMNRH4aD1PMbM8o38CDKtf1Cne23WpskRgnUnrYrpsV3Q2RSodV",
-                                "BLx9kEXkraiqGouYH2j8sKPkySE85VGF6hpk8R8rTwP2YdUUJM6",
-                                "BMM551GoruXTMqAVqAv4csYtyQnEkokR252Kpr8Mmf8bgpqSKyT",
-                                "BLRchJcX1r888gXvMfdHvEddKWk3G3WiCRPHZdAJxcX97Vk5qvw",
-                                "BLb7NC1qUB7D6FEADWXPdzJPYynRYrVTHHVDwpTwiKt3Z7u79fR",
-                                "BLockGenesisGenesisGenesisGenesisGenesisd1f7bcGMoXy"
-                            ]
-                        }
-                    }
-                ]
-            },
-            {
-                "type": "p2p_message",
-                "incoming": false,
-                "ts": 0,
-                "index": 6,
-                "remote_addr": "0.0.0.0:0",
-                "message": [
-                    {
-                        "type": "get_block_headers",
-                        "get_block_headers": [
-                            "BKj5z5RmGJZshpn8tkzeWKipYRYURwYZCD3etBULZVuB4qWTvA2",
-                            "BKkts4TA3amXzdrxpCW3zUgWtBRsofHpRbwSpiDzP7e16ETtgv5",
-                            "BKo1ts2gm6v6Zscg7WZBeMpR9uES5HtNWcRBniHr3Yi6VVYBg1V",
-                            "BKqBYbHrWNWxKe21V3BTuPzocgg6tcgVhcK7aibHhHZNBfWAieq",
-                            "BKr2eSxh5ffahXrhLpHMzmx5VYARbRa2TYUExKWpkKtkJcrnKqT",
-                            "BKtb1Vaz4HGdH5r41UZK2NPHMg4txrjrkXvNh7Yb9BJ4Jk9CdvH",
-                            "BKtzNeNcVKaVM7HYedjdsRZMhTB46tWthsvs6Rm2QTae3jMM5r9",
-                            "BKxyxHznDyoAbu5mHJHYgLjHFghyRyuiSxtP5QybjkYWnLux9cZ",
-                            "BKyKUB2w9mA7CSfRSZrWqcQRUCdPHecFBsPJHWqcXSb6oAWhJjQ",
-                            "BL1C9scuPLBFRGSUEMwFctPk47DmPSyTMrKtQz5uF1jysXqiSg3"
-                        ]
-                    }
-                ]
-            },
-            {
-                "type": "p2p_message",
-                "incoming": false,
-                "ts": 0,
-                "index": 5,
-                "remote_addr": "0.0.0.0:0",
-                "message": [
-                    {
-                        "type": "block_header",
-                        "block_header": {
-                            "level": 366282,
-                            "proto": 1,
-                            "predecessor": "BLY4fiVYRNqoYLWqdF8KDv66abEbfHRkm7ezASH9oN8xGi5AcAV",
-                            "timestamp": 1584380084,
-                            "validation_pass": 4,
-                            "operations_hash": "LLoaprYY7bR3R3Gh4Hzc3MbFcRw3JzZSiuAmaYW5fvwqnZkBWb1PM",
-                            "fitness": [
-                                [
-                                    1
-                                ],
-                                [
-                                    0,
-                                    0,
-                                    0,
-                                    0,
-                                    0,
-                                    5,
-                                    150,
-                                    201
-                                ]
-                            ],
-                            "context": "CoWDxoXqpeXV7WN3HFuf1zowFudRiYFbAmhAwVr93BQX4kRumta8",
-                            "protocol_data": "00001db34e40c82128790046290bdf1dbc7657f8c584b9994185a539e0a35712658332475b1ead92b8a1177d9e8d992bc9196a229d01351d223f815dbfed481faf2a7476b97768b8a77b0b"
-                        }
-                    }
-                ]
-            },
-            {
-                "type": "p2p_message",
-                "incoming": false,
-                "ts": 0,
-                "index": 4,
-                "remote_addr": "0.0.0.0:0",
-                "message": [
-                    {
-                        "type": "get_block_headers",
-                        "get_block_headers": [
-                            "BL1LDf1uodFykCMWQezMopv4mpMPh1Uucrb2yCvsm49rLwkEXx1"
-                        ]
-                    }
-                ]
-            },
-            {
-                "type": "p2p_message",
-                "incoming": false,
-                "ts": 0,
-                "index": 3,
-                "remote_addr": "0.0.0.0:0",
-                "message": [
-                    {
-                        "type": "get_operations_for_blocks",
-                        "get_operations_for_blocks": [
-                            {
-                                "hash": "BKj5z5RmGJZshpn8tkzeWKipYRYURwYZCD3etBULZVuB4qWTvA2",
-                                "validation_pass": 2
-                            },
-                            {
-                                "hash": "BKj5z5RmGJZshpn8tkzeWKipYRYURwYZCD3etBULZVuB4qWTvA2",
-                                "validation_pass": 1
-                            },
-                            {
-                                "hash": "BKj5z5RmGJZshpn8tkzeWKipYRYURwYZCD3etBULZVuB4qWTvA2",
-                                "validation_pass": 3
-                            },
-                            {
-                                "hash": "BKj5z5RmGJZshpn8tkzeWKipYRYURwYZCD3etBULZVuB4qWTvA2",
-                                "validation_pass": 0
-                            }
-                        ]
-                    }
-                ]
-            },
-            {
-                "type": "p2p_message",
-                "incoming": false,
-                "ts": 0,
-                "index": 2,
-                "remote_addr": "0.0.0.0:0",
-                "message": [
-                    {
-                        "type": "block_header",
-                        "block_header": {
-                            "level": 321074,
-                            "proto": 1,
-                            "predecessor": "BKmWgHpXbYSY2q2uoRnZTHsCUMEVM25BgtubhMGb7baN1NsQ7MK",
-                            "timestamp": 1582673558,
-                            "validation_pass": 4,
-                            "operations_hash": "LLob7zH5hEUq31g5HKd9eygwUJRTjxmbFneEvVRgXmtZox9nzQMAZ",
-                            "fitness": [
-                                [
-                                    1
-                                ],
-                                [
-                                    0,
-                                    0,
-                                    0,
-                                    0,
-                                    0,
-                                    4,
-                                    230,
-                                    49
-                                ]
-                            ],
-                            "context": "CoUoU8aLhPBHANBCgR9vy1tCYQdoTXqNuYZZHeDMHGpQVVJzSjau",
-                            "protocol_data": "0000756e6b6f3c46ce7e00801788bad7eb5ec8a37372f3b572cec413cf42d1bb3384f8b5e4cfd90b27861826f258d797cadda3b2c2771fc37ec58656bb10be206eb7d270897bcc0325e7c4"
-                        }
-                    }
-                ]
+              "name": "TEZOS_ALPHANET_BABYLON_2019-09-27T07:43:32Z",
+              "major": 0,
+              "minor": 0
             }
-        ]
-    ],
-    "p2p-schema": [
-        {
-            "id": "1",
-            "timestamp": "2020-03-25T11:40:38Z",
-            "peer": "idsqS42wWjY9cfPHmqHzCU4TeWjqAb",
-            "source": "8.8.8.8",
-            "destination": "localhost",
-            "from": "Mempool",
-            "to": "Network",
-            "type": "Advertise",
-            "message": "70 32 70 20 74 65 73 74 20 6d 65 73 73 61 67 65 20"
-        },
-        {
-            "id": "2",
-            "timestamp": "2020-03-25T11:40:36Z",
-            "peer": "idsqS42wWjY9cfPHmqHzCU4TeWjqAb",
-            "source": "localhost",
-            "destination": "8.8.8.8",
-            "from": "Network",
-            "to": "Protocol",
-            "type": "Bootstrap",
-            "message": "70 32 70 20 74 65 73 74 20 6d 65 73 73 61 67 65 20"
+          ],
+          "public_key": "bb5bbb4dd5bf6ef68a5fc38987252c8e42e80ec5a2991b5a1eea0ef53f377625",
+          "proof_of_work_stamp": "1931453e0e6ee5fcaf8c06b338b3ffd8c3a3cab1aac6fe3c",
+          "message_nonce": "6f8f6e72bf25c9314adc67b646104c337eb0d915534a2d3d"
         }
-    ],
-    "p2p-detail": [
-        {}
+      },
+      {
+        "type": "connection_message",
+        "incoming": false,
+        "ts": "2020-03-25T10:40:38Z",
+        "index": 20,
+        "remote_addr": "0.0.0.0:0",
+        "message": {
+          "port": 9732,
+          "versions": [
+            {
+              "name": "TEZOS_ALPHANET_BABYLON_2019-09-27T07:43:32Z",
+              "major": 0,
+              "minor": 1
+            }
+          ],
+          "public_key": "ed6effaaf1d9ff41e9792d942383f03d3077bdf1c390da5b1da2478a9511054c",
+          "proof_of_work_stamp": "844e59f45131936a432ac31368a643e883cd5ef604f2b23a",
+          "message_nonce": "a38308da8bf39631d2ad4387531441fcc429df4e686e7bea"
+        }
+      },
+      {
+        "type": "metadata",
+        "incoming": false,
+        "ts": "2020-03-25T7:40:38Z",
+        "index": 19,
+        "remote_addr": "0.0.0.0:0",
+        "message": {
+          "disable_mempool": false,
+          "private_node": false
+        }
+      },
+      {
+        "type": "connection_message",
+        "incoming": false,
+        "ts": "2020-03-25T6:40:38Z",
+        "index": 18,
+        "remote_addr": "0.0.0.0:0",
+        "message": {
+          "port": 39732,
+          "versions": [
+            {
+              "name": "TEZOS_ALPHANET_BABYLON_2019-09-27T07:43:32Z",
+              "major": 0,
+              "minor": 0
+            }
+          ],
+          "public_key": "bb5bbb4dd5bf6ef68a5fc38987252c8e42e80ec5a2991b5a1eea0ef53f377625",
+          "proof_of_work_stamp": "1931453e0e6ee5fcaf8c06b338b3ffd8c3a3cab1aac6fe3c",
+          "message_nonce": "6ee587eb71ee3dbc6a3ea036a7308248ff1ee00ab3aecbe8"
+        }
+      },
+      {
+        "type": "connection_message",
+        "incoming": false,
+        "ts": "2020-03-25T8:40:38Z",
+        "index": 17,
+        "remote_addr": "0.0.0.0:0",
+        "message": {
+          "port": 39732,
+          "versions": [
+            {
+              "name": "TEZOS_ALPHANET_BABYLON_2019-09-27T07:43:32Z",
+              "major": 0,
+              "minor": 0
+            }
+          ],
+          "public_key": "bb5bbb4dd5bf6ef68a5fc38987252c8e42e80ec5a2991b5a1eea0ef53f377625",
+          "proof_of_work_stamp": "1931453e0e6ee5fcaf8c06b338b3ffd8c3a3cab1aac6fe3c",
+          "message_nonce": "69ed2da513d877b13472b24706ea3552c23ffec498266553"
+        }
+      },
+      {
+        "type": "metadata",
+        "incoming": false,
+        "ts": "2020-03-25T8:30:38Z",
+        "index": 16,
+        "remote_addr": "0.0.0.0:0",
+        "message": {
+          "disable_mempool": false,
+          "private_node": false
+        }
+      },
+      {
+        "type": "connection_message",
+        "incoming": false,
+        "ts": "2020-03-25T6:30:38Z",
+        "index": 15,
+        "remote_addr": "0.0.0.0:0",
+        "message": {
+          "port": 9732,
+          "versions": [
+            {
+              "name": "TEZOS_ALPHANET_BABYLON_2019-09-27T07:43:32Z",
+              "major": 0,
+              "minor": 1
+            }
+          ],
+          "public_key": "ed6effaaf1d9ff41e9792d942383f03d3077bdf1c390da5b1da2478a9511054c",
+          "proof_of_work_stamp": "844e59f45131936a432ac31368a643e883cd5ef604f2b23a",
+          "message_nonce": "0508a1cd686bffb727297b47d227bd52c2a39186476ef2bf"
+        }
+      },
+      {
+        "type": "metadata",
+        "incoming": false,
+        "ts": "2020-03-25T4:30:38Z",
+        "index": 14,
+        "remote_addr": "0.0.0.0:0",
+        "message": {
+          "disable_mempool": false,
+          "private_node": false
+        }
+      },
+      {
+        "type": "p2p_message",
+        "incoming": false,
+        "ts": 0,
+        "index": 13,
+        "remote_addr": "0.0.0.0:0",
+        "message": [
+          {
+            "type": "get_current_branch",
+            "chain_id": "NetXUdfLh6Gm88t"
+          }
+        ]
+      },
+      {
+        "type": "metadata",
+        "incoming": false,
+        "ts": 2,
+        "index": 12,
+        "remote_addr": "0.0.0.0:0",
+        "message": {
+          "disable_mempool": false,
+          "private_node": false
+        }
+      },
+      {
+        "type": "p2p_message",
+        "incoming": false,
+        "ts": 0,
+        "index": 11,
+        "remote_addr": "0.0.0.0:0",
+        "message": [
+          {
+            "type": "get_current_branch",
+            "chain_id": "NetXUdfLh6Gm88t"
+          }
+        ]
+      },
+      {
+        "type": "p2p_message",
+        "incoming": false,
+        "ts": 0,
+        "index": 10,
+        "remote_addr": "0.0.0.0:0",
+        "message": [
+          {
+            "type": "current_branch",
+            "chain_id": "NetXUdfLh6Gm88t",
+            "current_branch": {
+              "current_head": {
+                "level": 0,
+                "proto": 0,
+                "predecessor": "BLockGenesisGenesisGenesisGenesisGenesisd1f7bcGMoXy",
+                "timestamp": 1569570212,
+                "validation_pass": 0,
+                "operations_hash": "LLoZS2LW3rEi7KYU4ouBQtorua37aWWCtpDmv1n2x3xoKi6sVXLWp",
+                "fitness": [],
+                "context": "CoWBHRZfjizfoKGz7bPVBJcYHfqbMYfU63Z2KZ8ghso2HwxUX8Y6",
+                "protocol_data": ""
+              },
+              "history": []
+            }
+          }
+        ]
+      },
+      {
+        "type": "p2p_message",
+        "incoming": false,
+        "ts": 0,
+        "index": 9,
+        "remote_addr": "0.0.0.0:0",
+        "message": [
+          {
+            "type": "get_current_branch",
+            "chain_id": "NetXUdfLh6Gm88t"
+          }
+        ]
+      },
+      {
+        "type": "p2p_message",
+        "incoming": false,
+        "ts": 0,
+        "index": 8,
+        "remote_addr": "0.0.0.0:0",
+        "message": [
+          {
+            "type": "current_branch",
+            "chain_id": "NetXUdfLh6Gm88t",
+            "current_branch": {
+              "current_head": {
+                "level": 0,
+                "proto": 0,
+                "predecessor": "BLockGenesisGenesisGenesisGenesisGenesisd1f7bcGMoXy",
+                "timestamp": 1569570212,
+                "validation_pass": 0,
+                "operations_hash": "LLoZS2LW3rEi7KYU4ouBQtorua37aWWCtpDmv1n2x3xoKi6sVXLWp",
+                "fitness": [],
+                "context": "CoWBHRZfjizfoKGz7bPVBJcYHfqbMYfU63Z2KZ8ghso2HwxUX8Y6",
+                "protocol_data": ""
+              },
+              "history": []
+            }
+          }
+        ]
+      },
+      {
+        "type": "p2p_message",
+        "incoming": false,
+        "ts": 0,
+        "index": 7,
+        "remote_addr": "0.0.0.0:0",
+        "message": [
+          {
+            "type": "current_branch",
+            "chain_id": "NetXUdfLh6Gm88t",
+            "current_branch": {
+              "current_head": {
+                "level": 400685,
+                "proto": 1,
+                "predecessor": "BM9bLzLaHwsvp7GNMoQwts4n12qLYapqaT7YkgS5wEFLLCQmxDf",
+                "timestamp": 1585580006,
+                "validation_pass": 4,
+                "operations_hash": "LLoaTkxkXokQSBGF9PPm3rPi1HmCCne4e9E6bFQcnLKsXVh6Qc4Fe",
+                "fitness": [
+                  [
+                    1
+                  ],
+                  [
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    6,
+                    29,
+                    44
+                  ]
+                ],
+                "context": "CoWD8TT1KGncfMSEhgSv9KDkEf19gs31CUx3hPyToRSwFfpxKdGR",
+                "protocol_data": "00004c53f3fa58b4010000d5e8fef9b1c20b5acac0320706cb72fdfb65b794f7598e72909309606bff070db1d00bfe8536ac239e5ad69f0ddd8d2dde6dc00afa3d09f336cfd0adccdd950e"
+              },
+              "history": [
+                "BM9bLzLaHwsvp7GNMoQwts4n12qLYapqaT7YkgS5wEFLLCQmxDf",
+                "BMPxFkMChWEtnznfsW6a8YbN1ikX6ujemwUaXmVVD63rcfFBVSa",
+                "BM4B1Kjj3xR9RY4uu86SX5PtuFbGzW9zjnqR3mJzj3KjGnwcAp1",
+                "BL1kEAKFBNo5JRVvAKqL5gJftZrHijBxXEbZuB5m9apKjuGnYNh",
+                "BM3xwb3qRAL9EfFX7kTpnKwQd2W9hzaoJDDLUm8LCHfAa4b9HDx",
+                "BL2Js4GrzGJwKHptzNbsFr6zUSE3maMVCAD22oNRiHADbhdUqBC",
+                "BLpRLSsr9ZLhJ3bUDv9yBHmDYURnwDepPmnDCNvYV7kq3uH6o9S",
+                "BLRXEdvU9W1XiFq547RRMAfgDyDPzS8Y97LX55tnwSbFvjH9QnG",
+                "BM3KDymXeko9HnX21MczCphx1e5iSXSfpivcsNma7L9iz7h2yt6",
+                "BMR8xBtLYDFDEN4AeeFTnwJ2HnJMmQrwoe2GRZb218MuNvTZPbs",
+                "BLhvPiX5JVtBSp3ivGVAn6D1qCQSqbZPs9vS4dVNaFZ9UUcMrkN",
+                "BLjPNBWCHgdj3oXyNqQbJkrCjvaWvZjZd6B911KmrYjbr7XU4RE",
+                "BL8CPe2kot5tU9uhS5eYBonpAY5QHnrcH6awxTFadwPFFzEcm7E",
+                "BMNq2FtsoRkVnVyF9dLg53oZ1UJWfF6XmwdLjm41Epz4t8V2z4R",
+                "BLjz7i4HBvxfa43tsVD9kbNFhDF4dVMv9xpEwc6wjwC6Yws2RT8",
+                "BMCukFAXMnU9fh3JMKZbnxy1bq3QyQYF7d3ycA4o4GwFYerYMTJ",
+                "BM5NoCsNURmcF8xHiLGjQMB9aECfdNozqwiGEMRdA5ANWdwuWi9",
+                "BKqBYbHrWNWxKe21V3BTuPzocgg6tcgVhcK7aibHhHZNBfWAieq",
+                "BMXV9tn62PmrqfwDxacDsZvhQacuNi6YDG31pGNpBMMVa44Rw7o",
+                "BLTuvLcdjZCzm6tDVAKh726tm3VZy37BPYoEqHDHzehrwPQg4GW",
+                "BLk8fJSsmRk49JxJyMf1AWSj7QnhSJ8YKN9e3RQv4ADN8VXLtTc",
+                "BMT4UZJymicgcYLA8YYYMcEQSH8kE6auguK7BMsZFtv246pCwP3",
+                "BMdbjJKtBZe9seJqhxnvifyNy9pD7yV4HpCphm7YojF7mrBLYMB",
+                "BLKWgNzAzKs5Q9fRnR8kr6sSexCtSbTKQVSs4ZYtbmvmzFEY3Ut",
+                "BLQK73t3M1MqdTjPh5Z1X15TxK6pzjq4BtW1Rmp2ad3udne8RDK",
+                "BME8HtSe3M7BwSEkqtrJt3Kwq89M1vnNK4ah1yJLeU2A28gkoQx",
+                "BLpNZgg8yAmMvYkYAmDvroZy7rsjV9cpEZQv945292AJMvP4cHp",
+                "BLRqf4VJ1LWaueFaajBG61Vj4SHjayW9uXW32hr6L6MhUDXXZ1F",
+                "BLjXWo8uyeTm2fVRp8Rm4NXTAc3XcR12SyfBJdxwfDVqrbizQj3",
+                "BMRQfAMDeM9rURS4Jwz2XhLHdgUfK1BMQogMW8WjyJXPKZzCnKy",
+                "BMZFx3T9Noqs1xyfHTs49Qxpwz5qWedxyQXNULaf6Edius5h83x",
+                "BMbKbUXLrKsv4bt7s7zQVqX7TwMARfCdbEUkzQkyXrFCTTdw2a3",
+                "BL89HdDCH81JCrioTMJgQFYi6iKpfa9tMAS1pBAVTr1iXxTJqee",
+                "BLxk6aFXSFKY9Vmx8JtMbqoAa1CJ1ib1Zx1oDeXRPPQFELjzK58",
+                "BLy9ic81aeCSy1pSE2JKGdmEqbgKQoNatZdYLJAXcs6tWyceLCx",
+                "BMKKvsvd7dEU6rj85bZanQsTUsTEgmDH1zrsXwxyE4stT8YD3Zb",
+                "BMUWEZi8ca39XhvYJZ7apwpj1XpWWa3VjArXQGoaUH7BcGdhzt9",
+                "BMB3GrEZzooMVvn54HyohvutgviXbVpfw5SSUzRQZQEQ13sq5dH",
+                "BMNfzJCgCufKNVGY8hFgiFrxJQvPyijdCyvLUac2fiY88VM4mV1",
+                "BLJ77EiwYYHG57w4Lyvy28hzfoUZ7Rvim32Ma2RPrjuy5sWqbpZ",
+                "BLXADG9gWaKHDS5vfbywKTZEoffm2ujwLcqMpiRt57RuynVMR3N",
+                "BMXvGo7JofTHbPTUSBvu6hBJBco7KVpBjKv9X9NzrFJjoqLyCA2",
+                "BL9EWEhyBKmseChZCVeuAwM5PZZySoFWQ25KFrCauTqGS1CupCY",
+                "BLrccFwwnqkgyKXbrwReLhPUWTeK4UZ581ES84xCYEZWaUVWWYp",
+                "BLjgoVdHfRP98zrqNDritHib3uaZjLrLX4Rnvb4pZqjVmT2ZHP3",
+                "BM3C6SDJYpZE3KG4D12omNhshea8ZcYwS8L8CWX4qkjbxpmgeYv",
+                "BL1MaGkRjjs73mJpjxKm4Rdr3nPYeFaTx38SHLK9o4CQ8NuRkMK",
+                "BLCbsaP9fbzwoJZYb5pfD2B9mVpnNLDncgFUR14M683pNDbDFmw",
+                "BLEgj3k3n6AYK9q2PT6RVgaUSdRG1UJuGsxHpC9fCF7HoSxikMa",
+                "BMcqtxn4aWDPJSQv9SyeevTQGQUzVHjVPdrk8Q21AYxitDm4eWV",
+                "BLd726gGHUoqKGvx16R3adY2GFEXBz1URtX8mD61oSXYTpkQ5Ky",
+                "BLFgrJdqLtdgidXEjj1zb87jmUnaxDYwkmG23GCHF4C2pRikbc6",
+                "BL1C9scuPLBFRGSUEMwFctPk47DmPSyTMrKtQz5uF1jysXqiSg3",
+                "BLFGhLezqhmBYtUxu918cj8EhroWSKuzceLagD7m31f8SjCS36f",
+                "BLqYh6icvFr2K7wur1g5nGZ9b5kfxLZqdu45oxRNQGk8hKkF2MB",
+                "BLt79AAsbbxweAYjT8TBjq28tB9Q4buS4nBeQ1EKMdb6H3STdrm",
+                "BLFMDaiw9KwAwbrrhLTeM2GbR4XjAXYrVrYTuVHKih6M9wRrzg8",
+                "BLTYRAb8EjeGE5trPT61o5CdCAXs844NDaxCdsQWkKYTT7RFdR7",
+                "BLfz81SLgauyzSXMFEFrkQSrsbC6mkKeV95JtQkXWoCZdBFTBMF",
+                "BLge91HPRUd5h3PSfxTPPYSfiDMhkhC5b9SyN7RbrU7fLH7Xo4q",
+                "BMaRjfRgsCPzWDt2kaqXk4qvV7m1Hrb6hpftse4XNwKDDGeysTs",
+                "BLtJRfUjR33iDLz97jJCUdRFecVARcPmXorNWBM6j25PQYy7a9g",
+                "BMf2U8sVrQ9GDDKH5U9qv1RroUjQCnUuyHccg9R9C5Yx6iRyV8d",
+                "BLVkofa7zWn8d14hFBncyDPmHp9eTCXqfLucFXeE7fnkeGhtixi",
+                "BLR34kpBsmmEGHVnHhuG3YucN219fwtJUSxPCBftSTRpBmGB9rZ",
+                "BLpFeUR1G5JNbLR7Vim6KqXjHSeURV6pyS2Y6emVXNr8wW542ht",
+                "BLBEoiy8C1CKEvgKCEp5Wg17qBTG2Fp6ED7y8ZyvJgF9FfhjXMp",
+                "BLFEuhGd9s4zQbu3iMyc5BR3Z33bCGHyoemahqQ7UAep1s3Q59k",
+                "BLXEFT9Q3jehUkJ8b5Z3mE7xCu7HCqmpSRu1j82w7pUx43jkU5q",
+                "BL5wT3eAvTaJuhcnainFA1fcPctmbhYkDyXPePwGNxGAs9DGbSQ",
+                "BLV7dxqMv5fzH2TwDatf7fQEU8CViYufXTp9HnCBmcN1ekxVfrr",
+                "BLPpo6FF6YDiTtM6sXWbHhSp7QiwuF8BQknUAewzUdLCa6Z8GUg",
+                "BLSgHYF3hTYJfwuzby4fo54ddkhyzEDHSvNYjab7RuejzVjCsrC",
+                "BLyHv7pdFFfhMzKvGjzq4mjn2tKjXxY2NigxivaTDcuMitzwMLP",
+                "BLQVXWQdYegmskqw4efAdNFJmdL4FfB89E5JFbvyWVWounRCr3M",
+                "BLvhxmgsXCAGTeETJSgEoQnWC4teKjyEqFNoLWdPf4gaPfWqBwR",
+                "BLVBsy755LtVFpBz3mXX56adLY1zuthyDrvAPTPTEqmamUn7HgP",
+                "BMFa1tZo4zXLKdFJY81zFLARiVRFKckb4R4utW8gsAMMgsvjeAp",
+                "BMDeKS97hrpoSgVqcnYVEGLt8aWDVRGjFmW3Akwb46r5XE6UcQT",
+                "BKr2eSxh5ffahXrhLpHMzmx5VYARbRa2TYUExKWpkKtkJcrnKqT",
+                "BMdz6EkUB1ttQibic3vYv8iomn549SNhUATarv4t69Ae31mFM7M",
+                "BMJWxL4nuFJ7RXv3xgyYYaVufbRSxt1yFz1EuXCqWEiXqy5VwZz",
+                "BLwTbbGWBVSByfduaBHraf9v8iJUSRyGGxhjh9p4AdYGgwdXaHu",
+                "BLgpZSQQn2iUFXnzGNP5FCSKQur4rBygkP43E4eAxqBQqxRfiR9",
+                "BLy2JwhRcsW4RBzRnc4UgfheJTaqfdW2uCuLUeVA6cspCxAkUSc",
+                "BLXPsPV823c84UiZazN9HdMTKRbCYDvWeLhP11BCFG8FNoSMSoV",
+                "BLY7WGkZGNjw1fpNoGG1eyYFYPVkv2vY4rhihqSiCUDKSVVEkCL",
+                "BMbN582bnQmsGVmJ1A2gJLZjYA271gYAqvRkP1uYnHCPa5QKDqY",
+                "BLfuUPdkhe7wmQVtwKfWav3Rnfb6Bvas9odcBTHbbyeGP4kJHYu",
+                "BML1vDqAzocm6ic1Zz9VnXcy82w6dMwLRrkBe2xw8gSJqw7M5Vm",
+                "BLzpAr2bPs9Jh4RXzqoYaMVVSh986A4NFM2iUtERbdLvF1sYmnX",
+                "BL4aMkcCLT4RkeAW2snNsoL4Z6kgQ5pshLpARetFMMzJx5xG7uM",
+                "BLiaVQuLG4Qe8vVpaUmds8G2oHSFvP3eHAPXBigEHGwKRYokvxh",
+                "BL3gvSqvLPPNNXXWN9qeVn3VnWxeVYHmToymGraoauRtGeVVFGH",
+                "BLywkMj4dzUyRupeDvebjrfT2d38Rh6S4z8oPB8okXSgd7r5VBL",
+                "BMBcjwDeFYBqmfv1tzFgQwtYMxz5ro1xQGJDNFjBBZZYfc2M5DM",
+                "BLxA9ccyWiVT72eCRVTixoy2vTcEvDn8XPAyTskyLNDDdFRpgrX",
+                "BMGsfnWZri5a6n5BPaf6u58y2nLPgTfDXMC2Y3acWSMEZKh9hw7",
+                "BLURvMDPTrKWM93dsKpXZ3BxEEb8udDxtT9tdEdRQi9QQEvWvUP",
+                "BMWzjnQzAsg4dLBrgNHFMdGfJs9b7fDDjEitYaB4DNFQ7PCoXcm",
+                "BM8uhKT4HPAjjikG2b71AnMBbpMvYJr32QcBAQv27EkuFHp4Db7",
+                "BM78zPBGnnjJcPaJSxaS91XTadr9LtbiZ3w9pYYJ4a2FsYW6vaY",
+                "BKtb1Vaz4HGdH5r41UZK2NPHMg4txrjrkXvNh7Yb9BJ4Jk9CdvH",
+                "BMbfZyFoNnH2kjsaLs3vWrjDSmFBqbszL6bqUJh4KYWbMU17XsS",
+                "BMLbQo5TkLnii9yHP3wy3RbEgCaX7aFSYTMD5mzLB7c8h7SfE59",
+                "BKo1ts2gm6v6Zscg7WZBeMpR9uES5HtNWcRBniHr3Yi6VVYBg1V",
+                "BLTg8nfUAzM4w6PSbG3gBf18QPeCyhcWpzmYxptG8oHbLKyCuUE",
+                "BLqMThuorhgNTpTunQxt3LPRkhzaqzxDyuCnWKzxv3URYjqtLQU",
+                "BMEPDaVfe1FEBS4H8A4KxmTBXEv2swbs8fj2yocELLFSWecqKca",
+                "BL8xPjSSYuvEVEDU3V5LVUHQ7Ai9oo41WDD1pCmZCHrPb9EFjMW",
+                "BMcBKz2X2xa5eKebJAReSjas5acXYea5HtiM1jEhVr63MnwgLKr",
+                "BLaUfVKEndDusGbu1BToVStsyGJuR9n1wx7Q8xMMzNBhkuk9jbV",
+                "BMarmqUXnSF4becGPeAsDzxr2CH5MHzZnP3nJHTYzL3CbdtK6uc",
+                "BMUqtiScGAkkKqrKWUe1hDHKxxubnuWXzpCnLQ1Qv5ggGJhYysL",
+                "BKxyxHznDyoAbu5mHJHYgLjHFghyRyuiSxtP5QybjkYWnLux9cZ",
+                "BLC1jutHS94vfijm1xrV8cj9vxjwpeQxeqSoGH3cy2DBrtB6HRG",
+                "BKj5z5RmGJZshpn8tkzeWKipYRYURwYZCD3etBULZVuB4qWTvA2",
+                "BMaxc77gHe3KPt7X5CKV74ipEFJPgQs5avU4oyXP4FpGXqeLQuB",
+                "BKtzNeNcVKaVM7HYedjdsRZMhTB46tWthsvs6Rm2QTae3jMM5r9",
+                "BL1eSD1L8urv6iehfVuQtye1nJwPknxMWgwKJCUdcQ3UjUSknCx",
+                "BL21zRGbiXW4t3gY8Bsnm74uSqUGAhtZ8kHPPY7L4216KyX8qt8",
+                "BMH4YcL2eaU1FNjaPqoBvEwjSzfEC36wRfBSfGYtz4v7moqLdUM",
+                "BLdaZrLvTDzoqFvrottWyxtYC3AZUGRf33yb66p9imRFFfxsGxs",
+                "BLcjZeyM97bHvscAhKF5o1WrkvefG2fQvG6Kv7Jpq7LtDeFsNUm",
+                "BL4vUqpMyybQnYMFvGxu5mAmf12BurE2gKC944hF2bwZUKCCAoz",
+                "BL1LDf1uodFykCMWQezMopv4mpMPh1Uucrb2yCvsm49rLwkEXx1",
+                "BMHRQ9ycDQHoUqNtg5qKMaNDo5E3qmY9k4NBc6TNyZgwfMBvEtp",
+                "BLV55925TKzabwjpe3AmHqKg8roqgCdyhHNRuLqp5Vjp5C77Vxi",
+                "BKkts4TA3amXzdrxpCW3zUgWtBRsofHpRbwSpiDzP7e16ETtgv5",
+                "BLWs5JsRdCCyZtyXDqo2HAxEJ6v4AaN8VJMBpZoaVWTFa2mzykw",
+                "BLcTmK6VE9xJKGbkB6d8cZ1dEUPfmEfJc6Ha4JqiCwkgmWgGpTo",
+                "BLSPkxPH33Nykyigh8axHyqEfZSjbQEJCTEmRxR4HvbWUoCHjJg",
+                "BLxiUjNZsRzmJAx4LumENpaei6sTSnZzDknq6JnyPBxVuEWLDQR",
+                "BL5FiryLxAs4LVS2JQPttahqW1GbnHVut6ADUxhzeM9BUrAXBfh",
+                "BLRLEku5sSDMHVQP515RbxX73RC512SWpXViWNhBdBEcvP3gVow",
+                "BLcxsTM1yGt8zUsFzcrvhCzCMoNyoUBuinDPBsMeZHoPS7VuuRB",
+                "BLkJweY7zKfHgnxBTAKnZ4qSFmyJWdicgfoApMKVifLtgS32oXy",
+                "BLf3Q8LhpRpXLxtF9G6P1GJCVSahGJuRaQoimxaXPzQNYD5HiWe",
+                "BLTNdBaeLrEtuvtMEvid1dctA6RwGMamsdNfi7d6a5cemsgPQs2",
+                "BLn3f8qUX7fQPmtaXKJ74toLD9Kh3kEha2Nb4LuQWA1JjQqbpDC",
+                "BMefNL7YWX2WFJ99pRMK7g1oFkhgasjafZRQXpRtuCXf5kc5Son",
+                "BMYHmxWap1JJdpXY3XrVR6Zk5qpCgU4NqyWPWjjzD92FiQu4DtU",
+                "BKyKUB2w9mA7CSfRSZrWqcQRUCdPHecFBsPJHWqcXSb6oAWhJjQ",
+                "BMTtXwvpYB2eFHi77GFZVq96GrQcRxmM6D9SUevBgBEJJJwnwEN",
+                "BLh625BwD6Crp82otMDj7sSjyASmSX6zdv8oqsnwnsAJg59V3X2",
+                "BL1RvHHDiETCGyxWDDySZR424NhrYuTvo5q6aZHs7AoQukW5YNk",
+                "BMNRH4aD1PMbM8o38CDKtf1Cne23WpskRgnUnrYrpsV3Q2RSodV",
+                "BLx9kEXkraiqGouYH2j8sKPkySE85VGF6hpk8R8rTwP2YdUUJM6",
+                "BMM551GoruXTMqAVqAv4csYtyQnEkokR252Kpr8Mmf8bgpqSKyT",
+                "BLRchJcX1r888gXvMfdHvEddKWk3G3WiCRPHZdAJxcX97Vk5qvw",
+                "BLb7NC1qUB7D6FEADWXPdzJPYynRYrVTHHVDwpTwiKt3Z7u79fR",
+                "BLockGenesisGenesisGenesisGenesisGenesisd1f7bcGMoXy"
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "type": "p2p_message",
+        "incoming": false,
+        "ts": 0,
+        "index": 6,
+        "remote_addr": "0.0.0.0:0",
+        "message": [
+          {
+            "type": "get_block_headers",
+            "get_block_headers": [
+              "BKj5z5RmGJZshpn8tkzeWKipYRYURwYZCD3etBULZVuB4qWTvA2",
+              "BKkts4TA3amXzdrxpCW3zUgWtBRsofHpRbwSpiDzP7e16ETtgv5",
+              "BKo1ts2gm6v6Zscg7WZBeMpR9uES5HtNWcRBniHr3Yi6VVYBg1V",
+              "BKqBYbHrWNWxKe21V3BTuPzocgg6tcgVhcK7aibHhHZNBfWAieq",
+              "BKr2eSxh5ffahXrhLpHMzmx5VYARbRa2TYUExKWpkKtkJcrnKqT",
+              "BKtb1Vaz4HGdH5r41UZK2NPHMg4txrjrkXvNh7Yb9BJ4Jk9CdvH",
+              "BKtzNeNcVKaVM7HYedjdsRZMhTB46tWthsvs6Rm2QTae3jMM5r9",
+              "BKxyxHznDyoAbu5mHJHYgLjHFghyRyuiSxtP5QybjkYWnLux9cZ",
+              "BKyKUB2w9mA7CSfRSZrWqcQRUCdPHecFBsPJHWqcXSb6oAWhJjQ",
+              "BL1C9scuPLBFRGSUEMwFctPk47DmPSyTMrKtQz5uF1jysXqiSg3"
+            ]
+          }
+        ]
+      },
+      {
+        "type": "p2p_message",
+        "incoming": false,
+        "ts": 0,
+        "index": 5,
+        "remote_addr": "0.0.0.0:0",
+        "message": [
+          {
+            "type": "block_header",
+            "block_header": {
+              "level": 366282,
+              "proto": 1,
+              "predecessor": "BLY4fiVYRNqoYLWqdF8KDv66abEbfHRkm7ezASH9oN8xGi5AcAV",
+              "timestamp": 1584380084,
+              "validation_pass": 4,
+              "operations_hash": "LLoaprYY7bR3R3Gh4Hzc3MbFcRw3JzZSiuAmaYW5fvwqnZkBWb1PM",
+              "fitness": [
+                [
+                  1
+                ],
+                [
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  5,
+                  150,
+                  201
+                ]
+              ],
+              "context": "CoWDxoXqpeXV7WN3HFuf1zowFudRiYFbAmhAwVr93BQX4kRumta8",
+              "protocol_data": "00001db34e40c82128790046290bdf1dbc7657f8c584b9994185a539e0a35712658332475b1ead92b8a1177d9e8d992bc9196a229d01351d223f815dbfed481faf2a7476b97768b8a77b0b"
+            }
+          }
+        ]
+      },
+      {
+        "type": "p2p_message",
+        "incoming": false,
+        "ts": 0,
+        "index": 4,
+        "remote_addr": "0.0.0.0:0",
+        "message": [
+          {
+            "type": "get_block_headers",
+            "get_block_headers": [
+              "BL1LDf1uodFykCMWQezMopv4mpMPh1Uucrb2yCvsm49rLwkEXx1"
+            ]
+          }
+        ]
+      },
+      {
+        "type": "p2p_message",
+        "incoming": false,
+        "ts": 0,
+        "index": 3,
+        "remote_addr": "0.0.0.0:0",
+        "message": [
+          {
+            "type": "get_operations_for_blocks",
+            "get_operations_for_blocks": [
+              {
+                "hash": "BKj5z5RmGJZshpn8tkzeWKipYRYURwYZCD3etBULZVuB4qWTvA2",
+                "validation_pass": 2
+              },
+              {
+                "hash": "BKj5z5RmGJZshpn8tkzeWKipYRYURwYZCD3etBULZVuB4qWTvA2",
+                "validation_pass": 1
+              },
+              {
+                "hash": "BKj5z5RmGJZshpn8tkzeWKipYRYURwYZCD3etBULZVuB4qWTvA2",
+                "validation_pass": 3
+              },
+              {
+                "hash": "BKj5z5RmGJZshpn8tkzeWKipYRYURwYZCD3etBULZVuB4qWTvA2",
+                "validation_pass": 0
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "p2p_message",
+        "incoming": false,
+        "ts": 0,
+        "index": 2,
+        "remote_addr": "0.0.0.0:0",
+        "message": [
+          {
+            "type": "block_header",
+            "block_header": {
+              "level": 321074,
+              "proto": 1,
+              "predecessor": "BKmWgHpXbYSY2q2uoRnZTHsCUMEVM25BgtubhMGb7baN1NsQ7MK",
+              "timestamp": 1582673558,
+              "validation_pass": 4,
+              "operations_hash": "LLob7zH5hEUq31g5HKd9eygwUJRTjxmbFneEvVRgXmtZox9nzQMAZ",
+              "fitness": [
+                [
+                  1
+                ],
+                [
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  4,
+                  230,
+                  49
+                ]
+              ],
+              "context": "CoUoU8aLhPBHANBCgR9vy1tCYQdoTXqNuYZZHeDMHGpQVVJzSjau",
+              "protocol_data": "0000756e6b6f3c46ce7e00801788bad7eb5ec8a37372f3b572cec413cf42d1bb3384f8b5e4cfd90b27861826f258d797cadda3b2c2771fc37ec58656bb10be206eb7d270897bcc0325e7c4"
+            }
+          }
+        ]
+      }
     ]
+  ],
+  "p2p-schema": [
+    {
+      "id": "1",
+      "timestamp": "2020-03-25T11:40:38Z",
+      "peer": "idsqS42wWjY9cfPHmqHzCU4TeWjqAb",
+      "source": "8.8.8.8",
+      "destination": "localhost",
+      "from": "Mempool",
+      "to": "Network",
+      "type": "Advertise",
+      "message": "70 32 70 20 74 65 73 74 20 6d 65 73 73 61 67 65 20"
+    },
+    {
+      "id": "2",
+      "timestamp": "2020-03-25T11:40:36Z",
+      "peer": "idsqS42wWjY9cfPHmqHzCU4TeWjqAb",
+      "source": "localhost",
+      "destination": "8.8.8.8",
+      "from": "Network",
+      "to": "Protocol",
+      "type": "Bootstrap",
+      "message": "70 32 70 20 74 65 73 74 20 6d 65 73 73 61 67 65 20"
+    }
+  ],
+  "p2p-detail": [
+    {}
+  ]
 }

@@ -42,6 +42,15 @@
         color: green;
     }
 
+    .app-github-version {
+      position: absolute;
+      bottom: 0;
+      width: 150px;
+      color: #c4cfdc7a;
+      font-size: 12px;
+      padding: 12px 0px 12px 0px;
+    }
+
     list-option:focus,
     .mat-list-option:hover,
     .mat-nav-list .mat-list-item:focus,
@@ -121,7 +130,7 @@
                         MONITORING
                     </span>
 
-                    <a mat-list-item *ngIf="app.menu.monitoring.synchronization" routerLink="/monitoring"
+                    <a mat-list-item routerLink="/monitoring"
                         (click)="isMobile && start.toggle()" [style.color]="app.sidenav.color">
                         <span>
                             <svg-icon style="margin-right: 7px;" icon="history"></svg-icon>
@@ -160,7 +169,7 @@
                             Network
                         </span>
                     </a>
-                    <!-- 
+                    <!--
                     <a *ngIf="app.menu.explorer.endpoints" mat-list-item routerLink="/endpoints"
                         (click)="isMobile && start.toggle()" [style.color]="app.sidenav.color">
                         <span>
@@ -178,7 +187,7 @@
                         </span>
                     </a>
 
-                    <!-- 
+                    <!--
 
                     <a mat-list-item routerLink="/mempool" (click)="isMobile && start.toggle()"
                         [style.color]="app.sidenav.color">
@@ -283,6 +292,16 @@
                         <span>
                             <svg-icon style="margin-right: 7px" icon="documentation"></svg-icon>
                             Documentation
+                        </span>
+                    </a>
+                </div>
+
+                <div class="app-github-version truncate">
+                    <a href="{{'https://github.com/simplestaking/tezedge-explorer/commit/' + commit}}" target="_blank" rel="noreferrer"
+                        [style.color]="app.sidenav.color">
+                        <span>
+                            <svg-icon style="margin-right: 7px; margin-left: 7px" icon="github"></svg-icon>
+                            {{commit}}
                         </span>
                     </a>
                 </div>

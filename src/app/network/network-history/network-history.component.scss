@@ -1,0 +1,65 @@
+.network-history {
+  display: flex;
+}
+
+.history-cycle-panel {
+  display: flex;
+  flex-wrap: wrap;
+  width: 726px;
+  padding-top: 20px;
+}
+
+.history-voting-period-row {
+  display: flex;
+  flex-direction: row;
+  /* align-self: flex-start; */
+  margin: 0px 8px 0px 6px;
+}
+
+.history-voting-period-panel {
+  display: flex;
+  flex-direction: row;
+}
+
+.history-cycle {
+  background-color: #00DBC6;
+  margin: 2px;
+  border-radius: 2px;
+  height: 16px;
+  width: 16px;
+}
+
+/* #163940 */
+
+.history-cycle-headers {
+  background-color: #537880;
+  margin: 2px 2px 0px 2px;
+  border-top-left-radius: 2px;
+  border-top-right-radius: 2px;
+  height: 6px;
+  width: 16px;
+}
+
+.history-cycle-operations {
+  background-color: #537880;
+  margin: 0px 2px 2px 2px;
+  border-bottom-left-radius: 2px;
+  border-bottom-right-radius: 2px;
+  height: 10px;
+  width: 16px;
+}
+
+.network-history {
+  display: flex;
+}
+
+@media (max-width: 600px) {
+  .history-cycle-panel {
+    width: initial;
+  }
+
+  .history-voting-period {
+    margin: 6px -2px 6px 12px;
+    padding: 4px;
+  }
+}

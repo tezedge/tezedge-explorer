@@ -1,226 +1,255 @@
 import * as moment from 'moment-mini-ts';
 
 const initialState: any = {
-    ids: [],
-    entities: {},
-    lastCursorId: 0,
-    filter: {
-        local: false,
-        remote: false,
+  ids: [],
+  entities: {},
+  lastCursorId: 0,
+  filter: {
+    local: false,
+    remote: false,
 
-        meta: false,
-        connection: false,
-        bootstrap: false,
-        advertise: false,
-        swap: false,
-        deactivate: false,
+    meta: false,
+    connection: false,
+    bootstrap: false,
+    advertise: false,
+    swap: false,
+    deactivate: false,
 
-        currentHead: false,
-        currentBranch: false,
-        operation: false,
-        protocol: false,
-        blockHeaders: false,
-        blockOperations: false,
-        blockOperationsHashes: false
-    },
-    stream: false,
-    urlParams: '',
+    currentHead: false,
+    currentBranch: false,
+    operation: false,
+    protocol: false,
+    blockHeaders: false,
+    blockOperations: false,
+    blockOperationsHashes: false
+  },
+  stream: false,
+  urlParams: ''
 };
 
 export function reducer(state = initialState, action) {
-    switch (action.type) {
+  switch (action.type) {
 
-        // initialize or reset state
-        case 'NETWORK_INIT': {
-            return initialState;
-        }
-
-        // add network url params
-        case 'NETWORK_ACTION_LOAD': {
-            return {
-                ...state,
-                urlParams: action.payload.filter ? action.payload.filter : '',
-            };
-        }
-
-        case 'NETWORK_ACTION_START_SUCCESS':
-        case 'NETWORK_ACTION_LOAD_SUCCESS': {
-            // console.log('['+ action.type +']', action.payload[0])
-            return {
-                ...state,
-                ids: action.payload.length === 0 ? [] : action.payload
-                    .map(networkAction => networkAction.id)
-                    .sort((a, b) => a - b),
-                entities: action.payload.length === 0 ? {} : action.payload
-                    .reduce((accumulator, networkAction) => {
-
-                        if (networkAction.type === 'metadata') {
-
-                            // console.log("[metadata]", networkAction);
-                            const preview = JSON.stringify(networkAction.message);
-
-                            return {
-                                ...accumulator,
-                                [networkAction.id]: {
-                                    ...networkAction,
-                                    category: 'Meta',
-                                    kind: '',
-                                    payload: networkAction.message,
-                                    // TODO: refactor 
-                                    preview: preview.length > 0 ? preview.substring(0, 100) : '',
-                                    datetime: moment.utc(Math.ceil(networkAction.timestamp / 1000000)).format('HH:mm:ss.SSS, DD MMM YY'),
-                                }
-                            };
-                        }
-
-                        if (networkAction.type === 'connection_message') {
-
-                            // console.log("[connection_message]", networkAction);
-                            const preview = JSON.stringify(networkAction.message);
-
-                            return {
-                                ...accumulator,
-                                [networkAction.id]: {
-                                    ...networkAction,
-                                    category: 'Connection',
-                                    kind: '',
-                                    payload: networkAction.message,
-                                    // TODO: refactor
-                                    preview: preview.length > 0 ? preview.substring(0, 100) : '',
-                                    datetime: moment.utc(Math.ceil(networkAction.timestamp / 1000000)).format('HH:mm:ss.SSS, DD MMM YY'),
-                                }
-                            };
-                        }
-
-                        if (networkAction.type === 'p2p_message') {
-
-                            // console.log("[p2p_message]", networkAction);
-
-                            const payload = { ...networkAction.message[0] };
-                            delete payload.type;
-                            const preview = JSON.stringify(payload);
-                            return {
-                                ...accumulator,
-                                [networkAction.id]: {
-                                    ...networkAction,
-                                    category: 'P2P',
-                                    kind: networkAction.message[0].type,
-                                    payload: payload,
-                                    // TODO: refactor
-                                    preview: preview.length > 0 ? preview.substring(0, 100) : '',
-                                    datetime: moment.utc(Math.ceil(networkAction.timestamp / 1000000)).format('HH:mm:ss.SSS, DD MMM YY'),
-                                }
-                            };
-                        }
-
-                        // console.log("[default]", networkAction);
-
-                        return {
-                            ...accumulator,
-                            [networkAction.id]: {
-                                ...networkAction,
-                                payload: networkAction.message,
-                                datetime: moment.utc(Math.ceil(networkAction.timestamp / 1000000)).format('HH:mm:ss.SSS, DD MMM YY'),
-
-                            }
-                        };
-
-                    }, {}),
-                lastCursorId: action.payload.length > 0 && state.lastCursorId < action.payload[0].id ?
-                    action.payload[0].id : state.lastCursorId,
-                stream: true,
-            };
-        }
-
-        case 'NETWORK_ACTION_STOP': {
-            return {
-                ...state,
-                stream: false
-            };
-        }
-
-        // filter network items according to traffic source
-        case 'NETWORK_ACTION_FILTER': {
-
-            const stateFilter = {
-                ...state.filter,
-                [action.payload]: state.filter[action.payload] ? false : true,
-            };
-
-            return {
-                ...state,
-                filter: stateFilter,
-            };
-        }
-
-        default:
-            return state;
+    // initialize or reset state
+    case 'NETWORK_INIT': {
+      return initialState;
     }
+
+    // add network url params
+    case 'NETWORK_ACTION_LOAD': {
+      return {
+        ...state,
+        urlParams: action.payload.filter ? action.payload.filter : ''
+      };
+    }
+
+    case 'NETWORK_ACTION_START_SUCCESS':
+    case 'NETWORK_ACTION_LOAD_SUCCESS': {
+      return {
+        ...state,
+        ids: setIds(action),
+        entities: setEntities(action),
+        lastCursorId: setLastCursorId(action, state),
+        stream: action.type === 'NETWORK_ACTION_START_SUCCESS'
+      };
+    }
+
+    case 'NETWORK_ACTION_FILTER': {
+      const stateFilter = {
+        ...state.filter,
+        [action.payload]: !state.filter[action.payload]
+      };
+
+      return {
+        ...state,
+        lastCursorId: 0,
+        filter: stateFilter
+      };
+    }
+
+    case 'NETWORK_ACTION_STOP': {
+      return {
+        ...state,
+        stream: false
+      };
+    }
+
+    default:
+      return state;
+  }
+}
+
+export function setIds(action) {
+  return action.payload.length === 0 ?
+    [] :
+    action.payload
+      .map(item => item.id)
+      .sort((a, b) => a - b);
+}
+
+export function setEntities(action) {
+  return action.payload.length === 0 ?
+    {} :
+    action.payload
+      .reduce((accumulator, networkAction) => {
+        // if (networkAction.type === 'metadata') {
+        //
+        //   return {
+        //     ...accumulator,
+        //     [networkAction.id]: {
+        //       ...networkAction,
+        //       category: 'Meta',
+        //       kind: '',
+        //       payload: networkAction.message,
+        //       preview: JSON.stringify(networkAction.message),
+        //       datetime: moment.utc(Math.ceil(networkAction.timestamp / 1000000)).format('HH:mm:ss.SSS, DD MMM YY')
+        //     }
+        //   };
+        // }
+        //
+        // if (networkAction.type === 'connection_message') {
+        //
+        //   return {
+        //     ...accumulator,
+        //     [networkAction.id]: {
+        //       ...networkAction,
+        //       category: 'Connection',
+        //       kind: '',
+        //       payload: networkAction.message,
+        //       preview: JSON.stringify(networkAction.message),
+        //       datetime: moment.utc(Math.ceil(networkAction.timestamp / 1000000)).format('HH:mm:ss.SSS, DD MMM YY')
+        //     }
+        //   };
+        // }
+
+        // if (networkAction.type === 'p2p_message') {
+        const hexValues = setHexValues(networkAction.original_bytes);
+
+        if (networkAction.message && networkAction.message.length && networkAction.message[0].type) {
+          const payload = {...networkAction.message[0]};
+          delete payload.type;
+
+          return {
+            ...accumulator,
+            [networkAction.id]: {
+              ...networkAction,
+              hexValues,
+              category: 'P2P',
+              kind: networkAction.message[0].type,
+              payload,
+              preview: JSON.stringify(networkAction.message),
+              datetime: moment.utc(Math.ceil(networkAction.timestamp / 1000000)).format('HH:mm:ss.SSS, DD MMM YY')
+            }
+          };
+        } else {
+          return {
+            ...accumulator,
+            [networkAction.id]: {
+              ...networkAction,
+              hexValues,
+              payload: networkAction.message,
+              datetime: moment.utc(Math.ceil(networkAction.timestamp / 1000000)).format('HH:mm:ss.SSS, DD MMM YY')
+            }
+          };
+        }
+        // }
+
+        // return {
+        //   ...accumulator,
+        //   [networkAction.id]: {
+        //     ...networkAction,
+        //     payload: networkAction.message,
+        //     preview: JSON.stringify(networkAction.message), // needs to remain or not ???
+        //     datetime: moment.utc(Math.ceil(networkAction.timestamp / 1000000)).format('HH:mm:ss.SSS, DD MMM YY')
+        //
+        //   }
+        // };
+
+      }, {});
+}
+
+export function setLastCursorId(action, state) {
+  return action.payload.length > 0 && state.lastCursorId < action.payload[0].id ?
+    action.payload[0].id : state.lastCursorId;
+}
+
+export function setHexValues(bytes): string {
+  if (!bytes || !bytes.length) {
+    return;
+  }
+
+  let hex = '';
+
+  for (const item of bytes) {
+    hex += `${item} `;
+  }
+
+  return hex;
 }
 
 // filter network items according to traffic source
-export function networkActionSourceFilter(entity, filter) {
-
-    if (filter.local && filter.remote) {
-        return true;
-    }
-
-    // process all connection messages
-    if (entity.type === 'connection_message' && filter.connection) {
-
-        if (filter.local && !entity.incoming) { return true; }
-        if (filter.remote && entity.incoming) { return true; }
-
-    }
-
-    // process all meta messages
-    if (entity.type === 'metadata' && filter.metadata) {
-
-        if (filter.local && !entity.incoming) { return true; }
-        if (filter.remote && entity.incoming) { return true; }
-
-    }
-
-    // process all p2p messages
-    if (entity.type === 'p2p_message') {
-
-        if (filter.local) {
-
-            if (filter.bootstrap && entity.kind === 'bootstrap' && !entity.incoming) { return true; }
-
-            if (filter.current_head && entity.kind === 'get_current_head' && !entity.incoming) { return true; }
-            if (filter.current_head && entity.kind === 'current_head' && entity.incoming) { return true; }
-
-            if (filter.current_branch && entity.kind === 'get_current_branch' && !entity.incoming) { return true; }
-            if (filter.current_branch && entity.kind === 'current_branch' && entity.incoming) { return true; }
-
-            if (filter.block_headers && entity.kind === 'get_block_headers' && !entity.incoming) { return true; }
-            if (filter.block_headers && entity.kind === 'block_header' && entity.incoming) { return true; }
-
-            if (filter.block_operations && entity.kind === 'get_operations_for_blocks' && !entity.incoming) { return true; }
-            if (filter.block_operations && entity.kind === 'operations_for_blocks' && entity.incoming) { return true; }
-
-        }
-
-        if (filter.remote) {
-
-            if (filter.bootstrap && entity.kind === 'bootstrap' && entity.incoming) { return true; }
-
-            if (filter.current_head && entity.kind === 'get_current_head' && entity.incoming) { return true; }
-            if (filter.current_head && entity.kind === 'current_head' && !entity.incoming) { return true; }
-
-            if (filter.current_branch && entity.kind === 'get_current_branch' && entity.incoming) { return true; }
-            if (filter.current_branch && entity.kind === 'current_branch' && !entity.incoming) { return true; }
-
-            if (filter.block_headers && entity.kind === 'get_block_headers' && entity.incoming) { return true; }
-            if (filter.block_headers && entity.kind === 'block_header' && !entity.incoming) { return true; }
-
-            if (filter.block_operations && entity.kind === 'get_operations_for_blocks' && entity.incoming) { return true; }
-            if (filter.block_operations && entity.kind === 'operations_for_blocks' && !entity.incoming) { return true; }
-
-        }
-
-    }
-
-    return false;
-}
+// export function networkActionSourceFilter(entity, filter) {
+//
+//     if (filter.local && filter.remote) {
+//         return true;
+//     }
+//
+//     // process all connection messages
+//     if (entity.type === 'connection_message' && filter.connection) {
+//
+//         if (filter.local && !entity.incoming) { return true; }
+//         if (filter.remote && entity.incoming) { return true; }
+//
+//     }
+//
+//     // process all meta messages
+//     if (entity.type === 'metadata' && filter.metadata) {
+//
+//         if (filter.local && !entity.incoming) { return true; }
+//         if (filter.remote && entity.incoming) { return true; }
+//
+//     }
+//
+//     // process all p2p messages
+//     if (entity.type === 'p2p_message') {
+//
+//         if (filter.local) {
+//
+//             if (filter.bootstrap && entity.kind === 'bootstrap' && !entity.incoming) { return true; }
+//
+//             if (filter.current_head && entity.kind === 'get_current_head' && !entity.incoming) { return true; }
+//             if (filter.current_head && entity.kind === 'current_head' && entity.incoming) { return true; }
+//
+//             if (filter.current_branch && entity.kind === 'get_current_branch' && !entity.incoming) { return true; }
+//             if (filter.current_branch && entity.kind === 'current_branch' && entity.incoming) { return true; }
+//
+//             if (filter.block_headers && entity.kind === 'get_block_headers' && !entity.incoming) { return true; }
+//             if (filter.block_headers && entity.kind === 'block_header' && entity.incoming) { return true; }
+//
+//             if (filter.block_operations && entity.kind === 'get_operations_for_blocks' && !entity.incoming) { return true; }
+//             if (filter.block_operations && entity.kind === 'operations_for_blocks' && entity.incoming) { return true; }
+//
+//         }
+//
+//         if (filter.remote) {
+//
+//             if (filter.bootstrap && entity.kind === 'bootstrap' && entity.incoming) { return true; }
+//
+//             if (filter.current_head && entity.kind === 'get_current_head' && entity.incoming) { return true; }
+//             if (filter.current_head && entity.kind === 'current_head' && !entity.incoming) { return true; }
+//
+//             if (filter.current_branch && entity.kind === 'get_current_branch' && entity.incoming) { return true; }
+//             if (filter.current_branch && entity.kind === 'current_branch' && !entity.incoming) { return true; }
+//
+//             if (filter.block_headers && entity.kind === 'get_block_headers' && entity.incoming) { return true; }
+//             if (filter.block_headers && entity.kind === 'block_header' && !entity.incoming) { return true; }
+//
+//             if (filter.block_operations && entity.kind === 'get_operations_for_blocks' && entity.incoming) { return true; }
+//             if (filter.block_operations && entity.kind === 'operations_for_blocks' && !entity.incoming) { return true; }
+//
+//         }
+//
+//     }
+//
+//     return false;
+// }

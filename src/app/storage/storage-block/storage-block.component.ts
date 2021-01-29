@@ -14,15 +14,12 @@ import { CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
 })
 export class StorageBlockComponent implements OnInit, OnDestroy {
 
-  public storageBlock;
-  public storageBlockList;
-  public storageBlockShow;
-  public storageBlockItem;
-  public tableDataSource;
+  virtualScrollItems;
+  storageBlockList;
+  storageBlockShow;
+  storageBlockItem;
 
-  public onDestroy$ = new Subject();
-
-  public ITEM_SIZE = 36;
+  onDestroy$ = new Subject();
 
   @ViewChild(CdkVirtualScrollViewport) viewPort: CdkVirtualScrollViewport;
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
@@ -33,37 +30,36 @@ export class StorageBlockComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
 
-    // wait for data changes from redux
     this.store.select('storageBlock')
       .pipe(takeUntil(this.onDestroy$))
       .subscribe(data => {
 
-        this.storageBlock = data;
-        this.storageBlockShow = data.ids.length > 0 ? true : false;
-        this.storageBlockList = data.ids.map(id => ({ id, ...data.entities[id] }));
+        this.virtualScrollItems = data;
+        this.storageBlockShow = data.ids.length > 0;
+        // this.storageBlockList = data.ids.map(id => ({ id, ...data.entities[id] }));
 
         // set viewport at the end
-        if (this.storageBlockShow) {
-
-          this.tableDataSource = new MatTableDataSource<any>(this.storageBlockList);
-          this.tableDataSource.paginator = this.paginator;
-
-          const viewPortRange = this.viewPort && this.viewPort.getRenderedRange() ?
-            this.viewPort.getRenderedRange() : { start: 0, end: 0 };
-          const viewPortItemLength = this.storageBlockList.length;
-
-          // trigger only if we are streaming and not at the end of page
-          if (data.stream && viewPortItemLength > 0 && (viewPortRange.end !== viewPortItemLength) &&
-            (viewPortRange.start !== viewPortRange.end)) {
-
-            setTimeout(() => {
-              const offset = this.ITEM_SIZE * this.storageBlockList.length;
-              this.viewPort.scrollToOffset(offset);
-            });
-
-          }
-
-        }
+        // if (this.storageBlockShow) {
+        //
+        //   this.tableDataSource = new MatTableDataSource<any>(this.storageBlockList);
+        //   this.tableDataSource.paginator = this.paginator;
+        //
+        //   const viewPortRange = this.viewPort && this.viewPort.getRenderedRange() ?
+        //     this.viewPort.getRenderedRange() : { start: 0, end: 0 };
+        //   const viewPortItemLength = this.storageBlockList.length;
+        //
+        //   // trigger only if we are streaming and not at the end of page
+        //   if (data.stream && viewPortItemLength > 0 && (viewPortRange.end !== viewPortItemLength) &&
+        //     (viewPortRange.start !== viewPortRange.end)) {
+        //
+        //     setTimeout(() => {
+        //       const offset = this.ITEM_SIZE * this.storageBlockList.length;
+        //       this.viewPort.scrollToOffset(offset);
+        //     });
+        //
+        //   }
+        //
+        // }
 
       });
 
@@ -111,10 +107,6 @@ export class StorageBlockComponent implements OnInit, OnDestroy {
   }
 
   scrollToEnd() {
-
-    const offset = this.ITEM_SIZE * this.storageBlockList.length;
-    this.viewPort.scrollToOffset(offset);
-
   }
 
   tableMouseEnter(item) {
@@ -124,7 +116,6 @@ export class StorageBlockComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-
     // stop streaming actions
     this.store.dispatch({
       type: 'STORAGE_BLOCK_STOP'
@@ -133,7 +124,6 @@ export class StorageBlockComponent implements OnInit, OnDestroy {
     // close all observables
     this.onDestroy$.next();
     this.onDestroy$.complete();
-
   }
 
 }

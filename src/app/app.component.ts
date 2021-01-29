@@ -1,41 +1,50 @@
-import { Component, OnInit, NgZone, ViewChild, HostListener } from '@angular/core'
-import { Router } from '@angular/router';
-import { Store } from '@ngrx/store'
-import { MatSidenav } from "@angular/material/sidenav";
-import { takeUntil } from 'rxjs/operators';
-import { Subject } from 'rxjs';
+import {Component, OnInit, NgZone, ViewChild, HostListener, OnDestroy} from '@angular/core';
+import {Router} from '@angular/router';
+import {Store} from '@ngrx/store';
+import {MatSidenav} from '@angular/material/sidenav';
+import {takeUntil} from 'rxjs/operators';
+import {Subject} from 'rxjs';
+import {environment} from '../environments/environment';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
-export class AppComponent {
+export class AppComponent implements OnInit, OnDestroy {
 
-  public app;
-  public innerWidth;
-  public isMobile = false;
-  public settingsNode;
+  app;
+  innerWidth;
+  isMobile = false;
+  settingsNode;
+  commit = environment.commit;
+
+  onDestroy$ = new Subject();
+  pendingTransactions: any[];
 
   @ViewChild('sidenav') sidenav: MatSidenav;
 
   @HostListener('window:resize', ['$event'])
   onResize(event) {
     this.innerWidth = window.innerWidth;
-    this.isMobile = window.innerWidth < 600 ? true : false;
+    this.isMobile = window.innerWidth < 600;
   }
-  onDestroy$ = new Subject();
-  pendingTransactions: any[];
 
   constructor(
     public store: Store<any>,
     public router: Router,
     public zone: NgZone
   ) {
+    // when inside Cypress testing environment, put the store on window so Cypress have access to it
+    // @ts-ignore
+    if (window.Cypress) {
+      // @ts-ignore
+      window.store = this.store;
+    }
 
     // get inner windows width
     this.innerWidth = window.innerWidth;
-    this.isMobile = window.innerWidth < 600 ? true : false;
+    this.isMobile = window.innerWidth < 600;
   }
 
   ngOnInit() {

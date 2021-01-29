@@ -26,14 +26,18 @@ context('logs', () => {
           .then((store) => {
             store.select('logsAction')
               .subscribe((data) => {
-                const lastRecord = data.entities[data.ids[data.ids.length - 1]];
+                if (!data.stream) {
+                  const lastRecord = data.entities[data.ids[data.ids.length - 1]];
 
-                cy.get('.virtual-scroll-container .virtualScrollRow.used')
-                  .last()
-                  .find('.log-message')
-                  .should(($span) => {
-                    expect($span.text().trim()).to.equal(lastRecord.message);
-                  })
+                  cy.get('.virtual-scroll-container .virtualScrollRow.used')
+                    .last()
+                    .find('.log-message')
+                    .should(($span) => {
+                      expect($span.text().trim()).to.equal(lastRecord.message);
+                    })
+                } else {
+                  cy.get('#stopStreaming').click();
+                }
               })
 
           })
@@ -51,11 +55,14 @@ context('logs', () => {
           .then((store) => {
             store.select('logsAction')
               .subscribe((data) => {
-                console.log(data);
-                const lastRecord = data.entities[data.ids[data.ids.length - 1]];
+                if (!data.stream) {
+                  const lastRecord = data.entities[data.ids[data.ids.length - 1]];
 
-                cy.get('#virtualScrollTableDetails .ngx-json-viewer')
-                  .contains(lastRecord.message);
+                  cy.get('#virtualScrollTableDetails .ngx-json-viewer')
+                    .contains(lastRecord.message);
+                } else {
+                  cy.get('#stopStreaming').click();
+                }
               })
 
           })
@@ -73,15 +80,18 @@ context('logs', () => {
           .then((store) => {
             store.select('logsAction')
               .subscribe((data) => {
-                console.log(data);
-                const secondLastRecord = data.entities[data.ids[data.ids.length - 2]];
+                if (!data.stream) {
+                  const secondLastRecord = data.entities[data.ids[data.ids.length - 2]];
 
-                cy.get('.virtual-scroll-container .virtualScrollRow.used')
-                  .eq(-2)
-                  .trigger('mouseenter');
+                  cy.get('.virtual-scroll-container .virtualScrollRow.used')
+                    .eq(-2)
+                    .trigger('mouseenter');
 
-                cy.get('#virtualScrollTableDetails .ngx-json-viewer')
-                  .contains(secondLastRecord.message);
+                  cy.get('#virtualScrollTableDetails .ngx-json-viewer')
+                    .contains(secondLastRecord.message);
+                } else {
+                  cy.get('#stopStreaming').click();
+                }
               })
 
           })
@@ -89,32 +99,43 @@ context('logs', () => {
 
   })
 
-  // it('[logs] change the value of the virtual scroll element when scrolling', () => {
-  //   let beforeScrollValue;
-  //
-  //   cy.wait(1000)
-  //     .then(() => {
-  //       cy.get('#stopStreaming').click();
-  //       cy.wait(500);
-  //
-  //       cy.get('.virtual-scroll-container .virtualScrollRow.used')
-  //         .last()
-  //         .find('.log-message')
-  //         .then(($span) => {
-  //           beforeScrollValue = $span.text();
-  //         });
-  //
-  //       cy.wait(500);
-  //
-  //       cy.get('.virtual-scroll-container').scrollTo('top');
-  //
-  //       cy.get('.virtual-scroll-container .virtualScrollRow.used')
-  //         .last()
-  //         .find('.log-message')
-  //         .should(($span) => {
-  //           expect($span.text()).to.not.equal(beforeScrollValue);
-  //         });
-  //     })
-  //
-  // })
+it('[logs] change the value of the virtual scroll element when scrolling', () => {
+  let beforeScrollValue;
+
+  cy.wait(1000)
+    .then(() => {
+      cy.get('#stopStreaming').click();
+
+      cy.window()
+        .its('store')
+        .then((store) => {
+          store.select('logsAction')
+            .subscribe((data) => {
+              if (!data.stream) {
+                cy.get('.virtual-scroll-container .virtualScrollRow.used')
+                  .last()
+                  .find('.log-message')
+                  .then(($span) => {
+                    beforeScrollValue = $span.text();
+                  });
+
+                cy.wait(500);
+                cy.get('.virtual-scroll-container').scrollTo('top');
+
+                cy.get('.virtual-scroll-container .virtualScrollRow.used')
+                  .last()
+                  .find('.log-message')
+                  .should(($span) => {
+                    expect($span.text()).to.not.equal(beforeScrollValue);
+                  });
+              } else {
+                cy.get('#stopStreaming').click();
+              }
+            })
+
+        })
+
+    })
+
+})
 })

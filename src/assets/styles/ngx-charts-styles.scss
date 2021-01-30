@@ -1,0 +1,37 @@
+app-tezedge-line-chart {
+  color: rgba(255, 255, 255, 0.6);
+  fill: rgba(255, 255, 255, 0.6);
+}
+
+.ngx-charts-tooltip-content {
+  padding: 0 !important;
+
+  .tooltip-template {
+    padding: 5px;
+  }
+
+  .ngx-series-tooltip {
+    .time {
+      padding: 7px 12px;
+      text-align: left;
+      font-size: 14px;
+      border-bottom: 1px solid #444;
+    }
+
+    .data-wrapper {
+      padding: 10px 12px;
+
+      .color-square {
+        height: 13px;
+        width: 13px;
+        border-radius: 1px;
+        margin-right: 10px;
+      }
+
+      .series-value {
+        font-size: 13px;
+        text-shadow: 0 1px #fff;
+      }
+    }
+  }
+}

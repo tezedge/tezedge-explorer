@@ -1,0 +1,22 @@
+.details-container {
+  padding: 10px;
+  font-family: 'Inter', sans-serif;
+
+  .list-group {
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 10px;
+    font-size: 12px;
+
+    .faded-text {
+      color: rgba(255, 255, 255, 0.75) !important;
+    }
+
+    table {
+      border-spacing: 0;
+
+      tr {
+        padding-bottom: 6px;
+      }
+    }
+  }
+}

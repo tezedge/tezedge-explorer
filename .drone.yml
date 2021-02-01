@@ -77,7 +77,7 @@ steps:
 
   - name: frontend-server #detach it to access it inside test step
     image: drone-tezedge-explorer:latest
-    pull: always
+    pull: if-not-exists
     detach: true
     privileged: true
     environment:

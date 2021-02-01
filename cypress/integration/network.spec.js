@@ -93,8 +93,6 @@ context('network', () => {
 
   })
 
-   */
-
   it('[network] change the value of the virtual scroll element when scrolling', () => {
     let beforeScrollValue;
 
@@ -133,5 +131,5 @@ context('network', () => {
       })
 
   })
-
+*/
 })

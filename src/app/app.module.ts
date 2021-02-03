@@ -116,6 +116,8 @@ import { SandboxStatusBarComponent } from './sandbox/sandbox-status-bar/sandbox-
 import { WalletsComponent } from './wallets/wallets.component';
 import { MempoolComponent } from './mempool/mempool.component';
 import { MempoolActionComponent } from './mempool/mempool-action/mempool-action.component';
+import { CommitNumberComponent } from './monitoring/commit-number/commit-number.component';
+import { CommitNumberEffects } from './monitoring/commit-number/commit-number.effects';
 
 @NgModule({
   declarations: [
@@ -157,7 +159,8 @@ import { MempoolActionComponent } from './mempool/mempool-action/mempool-action.
     SandboxStatusBarComponent,
     WalletsComponent,
     MempoolComponent,
-    MempoolActionComponent
+    MempoolActionComponent,
+    CommitNumberComponent
   ],
   imports: [
     BrowserModule,
@@ -202,7 +205,8 @@ import { MempoolActionComponent } from './mempool/mempool-action/mempool-action.
       SettingsEffects,
       SettingsNodeEffects,
       SandboxEffects,
-      WalletsEffects
+      WalletsEffects,
+      CommitNumberEffects
     ]),
 
     // https://github.com/zalmoxisus/redux-devtools-extension

@@ -4,8 +4,8 @@ export const environment = {
     {
       id: 'master.dev.tezedge',
       name: 'master.dev.tezedge',
-      http: 'http://master.dev.tezedge.com:18733',
-      debugger: 'http://master.dev.tezedge.com:17733',
+      http: 'http://master.dev.tezedge.com:18732',
+      debugger: 'http://master.dev.tezedge.com:17732',
       ws: false
     }
     // {
@@ -59,5 +59,5 @@ export const environment = {
     // },
   ],
   sandbox: 'http://127.0.0.1:3030',
-  commit: ''
+  commit: 'local-test-text'
 };

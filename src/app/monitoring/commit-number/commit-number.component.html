@@ -1,0 +1,28 @@
+<div class="">
+  <div class="app-github-version truncate" id="nodeCommit">
+    <a href="{{githubRepositories.node + commitNumber.nodeCommit}}" target="_blank" rel="noreferrer">
+      <span>
+        <svg-icon style="margin-right: 3px; margin-left: 7px" icon="github"></svg-icon>
+        {{'Node: ' + commitNumber.nodeCommit}}
+      </span>
+    </a>
+  </div>
+
+  <div class="app-github-version truncate" id="debuggerCommit">
+    <a href="{{githubRepositories.debugger + commitNumber.debuggerCommit}}" target="_blank" rel="noreferrer">
+      <span>
+        <svg-icon style="margin-right: 3px; margin-left: 7px" icon="github"></svg-icon>
+        {{'Debugger: ' + commitNumber.debuggerCommit}}
+      </span>
+    </a>
+  </div>
+
+  <div class="app-github-version truncate" id="explorerCommit">
+    <a href="{{githubRepositories.explorer + commitNumber.explorerCommit}}" target="_blank" rel="noreferrer">
+      <span>
+        <svg-icon style="margin-right: 3px; margin-left: 7px" icon="github"></svg-icon>
+        {{'Explorer: ' + commitNumber.explorerCommit}}
+      </span>
+    </a>
+  </div>
+</div>

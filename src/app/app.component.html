@@ -296,15 +296,7 @@
                     </a>
                 </div>
 
-                <div class="app-github-version truncate">
-                    <a href="{{'https://github.com/simplestaking/tezedge-explorer/commit/' + commit}}" target="_blank" rel="noreferrer"
-                        [style.color]="app.sidenav.color">
-                        <span>
-                            <svg-icon style="margin-right: 7px; margin-left: 7px" icon="github"></svg-icon>
-                            {{commit}}
-                        </span>
-                    </a>
-                </div>
+                <app-commit-number class="app-github-version"></app-commit-number>
 
             </mat-nav-list>
 

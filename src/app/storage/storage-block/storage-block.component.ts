@@ -1,118 +1,120 @@
-import { Component, OnInit, OnDestroy, ViewChild, ChangeDetectionStrategy } from '@angular/core';
-import { MatPaginator } from '@angular/material/paginator';
-import { MatTableDataSource } from '@angular/material/table';
-
+import { Component, OnInit, OnDestroy, ViewChild, ChangeDetectionStrategy, NgZone, ChangeDetectorRef } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
+import { VirtualScrollDirective } from '../../shared/virtual-scroll.directive';
 
 @Component({
   selector: 'app-storage-block',
   templateUrl: './storage-block.component.html',
-  styleUrls: ['./storage-block.component.scss']
+  styleUrls: ['./storage-block.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class StorageBlockComponent implements OnInit, OnDestroy {
 
   virtualScrollItems;
-  storageBlockList;
-  storageBlockShow;
+  storageBlockShow: boolean;
   storageBlockItem;
+  filtersState = {
+    open: false,
+    availableFields: []
+  };
 
   onDestroy$ = new Subject();
 
-  @ViewChild(CdkVirtualScrollViewport) viewPort: CdkVirtualScrollViewport;
-  @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
+  @ViewChild(VirtualScrollDirective) vrFor: VirtualScrollDirective;
+
+  // @ViewChild(MatAccordion) accordion: MatAccordion;
 
   constructor(
     public store: Store<any>,
-  ) { }
+    private ngZone: NgZone,
+    private changeDetector: ChangeDetectorRef
+  ) {
+  }
 
   ngOnInit() {
+    this.scrollStart(null);
 
     this.store.select('storageBlock')
       .pipe(takeUntil(this.onDestroy$))
       .subscribe(data => {
-
+        console.log(data);
         this.virtualScrollItems = data;
         this.storageBlockShow = data.ids.length > 0;
-        // this.storageBlockList = data.ids.map(id => ({ id, ...data.entities[id] }));
 
-        // set viewport at the end
-        // if (this.storageBlockShow) {
-        //
-        //   this.tableDataSource = new MatTableDataSource<any>(this.storageBlockList);
-        //   this.tableDataSource.paginator = this.paginator;
-        //
-        //   const viewPortRange = this.viewPort && this.viewPort.getRenderedRange() ?
-        //     this.viewPort.getRenderedRange() : { start: 0, end: 0 };
-        //   const viewPortItemLength = this.storageBlockList.length;
-        //
-        //   // trigger only if we are streaming and not at the end of page
-        //   if (data.stream && viewPortItemLength > 0 && (viewPortRange.end !== viewPortItemLength) &&
-        //     (viewPortRange.start !== viewPortRange.end)) {
-        //
-        //     setTimeout(() => {
-        //       const offset = this.ITEM_SIZE * this.storageBlockList.length;
-        //       this.viewPort.scrollToOffset(offset);
-        //     });
-        //
-        //   }
-        //
-        // }
+        if (this.storageBlockShow && !this.storageBlockItem) {
+          this.tableMouseEnter(this.virtualScrollItems.entities[this.virtualScrollItems.ids[this.virtualScrollItems.ids.length - 1]]);
+        }
 
+        this.changeDetector.markForCheck();
+
+        if (this.virtualScrollItems.ids.length > 0 && this.vrFor) {
+          this.vrFor.afterReceivingData();
+        }
       });
 
-    // triger action and get blocks data
+  }
+
+  getItems($event) {
     this.store.dispatch({
       type: 'STORAGE_BLOCK_LOAD',
+      payload: {
+        cursor_id: $event?.nextCursorId,
+        limit: $event?.limit
+      }
     });
-
   }
 
-  onScroll(index) {
-
-    if (this.storageBlockList.length - index > 15) {
-      // stop log actions stream
-      this.store.dispatch({
-        type: 'STORAGE_BLOCK_STOP',
-        payload: event,
-      });
+  startStopDataStream(event) {
+    if (event.stop) {
+      this.scrollStop();
     } else {
-      // start log actions stream
-      this.store.dispatch({
-        type: 'STORAGE_BLOCK_START',
-        payload: event,
-      });
+      this.scrollStart(event);
+    }
+  }
+
+  scrollStart($event) {
+    if (this.virtualScrollItems && this.virtualScrollItems.stream) {
+      return;
     }
 
-  }
-
-  scrollStart() {
-
-    // triger action and get block data
     this.store.dispatch({
-      type: 'STORAGE_BLOCK_START'
+      type: 'STORAGE_BLOCK_START',
+      payload: {
+        limit: $event?.limit ? $event.limit : 120
+      }
     });
-
   }
 
   scrollStop() {
+    if (!this.virtualScrollItems.stream) {
+      return;
+    }
 
-    // stop streaming actions
     this.store.dispatch({
       type: 'STORAGE_BLOCK_STOP'
     });
-
   }
 
   scrollToEnd() {
+    this.vrFor.scrollToBottom();
   }
 
   tableMouseEnter(item) {
+    this.ngZone.runOutsideAngular(() => {
+      // check by hash because the id is not present on this.storageBlockItem
+      if (this.storageBlockItem && this.storageBlockItem.hash === item.hash) {
+        return;
+      }
 
-    this.storageBlockItem = item;
-
+      this.ngZone.run(() => {
+        this.storageBlockItem = {...item};
+        // id and index are information not needed for user
+        delete this.storageBlockItem.id;
+        delete this.storageBlockItem.index;
+      });
+    });
   }
 
   ngOnDestroy() {

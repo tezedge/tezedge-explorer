@@ -2,7 +2,7 @@ context('storage-block', () => {
 	beforeEach(() => {
 		cy.intercept('GET', '/dev/chains/main/blocks/*').as('getStorageBlockRequest');
 		cy.visit(Cypress.config().baseUrl);
-		cy.wait(1000);
+		cy.wait(5000);
 		cy.visit(Cypress.config().baseUrl + '/#/storage', {timeout: 10000});
 		cy.wait(1000);
 	})

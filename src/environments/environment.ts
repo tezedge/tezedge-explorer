@@ -2,10 +2,10 @@ export const environment = {
   production: false,
   api: [
     {
-      id: 'master.dev.tezedge',
-      name: 'master.dev.tezedge',
-      http: 'http://master.dev.tezedge.com:18732',
-      debugger: 'http://master.dev.tezedge.com:17732',
+      id: 'develop.dev.tezedge',
+      name: 'develop.dev.tezedge',
+      http: 'http://develop.dev.tezedge.com:18732',
+      debugger: 'http://develop.dev.tezedge.com:17732',
       ws: false
     }
     // {

@@ -18,7 +18,6 @@ context('storage-block', () => {
 				cy.get('.virtual-scroll-container')
 					.find('.virtualScrollRow');
 			})
-
 	})
 
 	it('[storage-block] fill the last row of the table with the last value received', () => {

@@ -16,7 +16,7 @@ export class CommitNumberEffects {
     withLatestFrom(this.store, (action: any, state) => ({ action, state })),
 
     switchMap(({ action, state }) => {
-      return this.http.get(setNodeUrl(state));
+      return this.http.get(setNodeCommitUrl(state));
     }),
 
     // dispatch action
@@ -39,7 +39,7 @@ export class CommitNumberEffects {
     withLatestFrom(this.store, (action: any, state) => ({ action, state })),
 
     switchMap(({ action, state }) => {
-      return this.http.get(setDebuggerUrl(state));
+      return this.http.get(setDebuggerCommitUrl(state));
     }),
 
     // dispatch action
@@ -48,6 +48,29 @@ export class CommitNumberEffects {
       console.error(error);
       this.store.dispatch({
         type: 'VERSION_DEBUGGER_LOAD_ERROR',
+        payload: error
+      });
+      return caught;
+    })
+  );
+
+  @Effect()
+  VersionNodeTagLoad$ = this.actions$.pipe(
+    ofType('VERSION_NODE_LOAD'),
+
+    // merge state
+    withLatestFrom(this.store, (action: any, state) => ({ action, state })),
+
+    switchMap(({ action, state }) => {
+      return this.http.get(setNodeTagUrl(state));
+    }),
+
+    // dispatch action
+    map((payload) => ({ type: 'VERSION_NODE_TAG_LOAD_SUCCESS', payload })),
+    catchError((error, caught) => {
+      console.error(error);
+      this.store.dispatch({
+        type: 'VERSION_NODE_TAG_LOAD_ERROR',
         payload: error
       });
       return caught;
@@ -63,10 +86,14 @@ export class CommitNumberEffects {
 
 }
 
-export function setNodeUrl(state) {
+export function setNodeCommitUrl(state) {
   return state.settingsNode.api.http + '/monitor/commit_hash/';
 }
 
-export function setDebuggerUrl(state) {
+export function setNodeTagUrl(state) {
+  return state.settingsNode.api.http + '/dev/version/';
+}
+
+export function setDebuggerCommitUrl(state) {
   return state.settingsNode.api.debugger + '/v2/version/';
 }

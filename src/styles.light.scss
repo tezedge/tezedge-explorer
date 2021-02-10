@@ -27,4 +27,9 @@ $color-toolbar-border: rgba(0, 0, 0, 0.1);
 
 $color-json-field: black;
 
+// TODO: to be updated for the light theme
+$color-node-tag-active: rgba(255, 255, 255, 0.1);
+$color-commit-container: rgba(63, 63, 67, 1);
+$color-commit-item-hovered: rgba(80, 80, 88, 1);
+
 @import 'styles.scss';

@@ -1,0 +1,42 @@
+// TODO: find a general solution when refactoring the styles
+@import "src/styles.dark";
+
+.node-tag-number {
+  position: relative;
+}
+
+.node-tag-number-and-icon {
+  cursor: pointer;
+  border-radius: 4px;
+  font-size: 12px;
+  line-height: 14px;
+  padding: 6px 8px;
+
+  &.active {
+    background-color: $color-node-tag-active;
+  }
+}
+
+svg-icon {
+  margin-left: -2px;
+}
+
+.commit-numbers-container {
+  //position: absolute;
+  bottom: 25px;
+  //background-color: #3F3F43;
+  background-color: $color-commit-container;
+  border-radius: 4px;
+  color: white;
+  margin-bottom: 5px;
+
+  .commit-numbers-container-item {
+    padding: 8px;
+    font-size: 12px;
+    width: 128px;
+
+    &:hover {
+      background-color: $color-commit-item-hovered;
+    }
+  }
+}

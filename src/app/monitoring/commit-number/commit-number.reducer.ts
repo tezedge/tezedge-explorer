@@ -3,7 +3,8 @@ import { environment } from '../../../environments/environment';
 const initialState: any = {
   explorerCommit: environment.commit,
   nodeCommit: '',
-  debuggerCommit: ''
+  debuggerCommit: '',
+  nodeTag: ''
 };
 
 export function reducer(state = initialState, action) {
@@ -25,6 +26,13 @@ export function reducer(state = initialState, action) {
       return {
         ...state,
         debuggerCommit: action.payload
+      };
+    }
+
+    case 'VERSION_NODE_TAG_LOAD_SUCCESS': {
+      return {
+        ...state,
+        nodeTag: action.payload
       };
     }
 

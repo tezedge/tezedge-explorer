@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, HostListener, OnDestroy, OnInit } from '@angular/core';
 import { Subject } from 'rxjs';
 import { Store } from '@ngrx/store';
 import { takeUntil } from 'rxjs/operators';
@@ -17,6 +17,16 @@ export class CommitNumberComponent implements OnInit, OnDestroy {
     node: 'https://github.com/simplestaking/tezedge/commit/',
     debugger: 'https://github.com/simplestaking/tezedge-debugger/commit/'
   };
+  showCommitNumbers = false;
+
+  @HostListener('mouseenter')
+  mouseenter() {
+    this.showCommitNumbers = true;
+  }
+  @HostListener('mouseleave')
+  mouseleave() {
+    this.showCommitNumbers = false;
+  }
 
   constructor(
     public store: Store<any>
@@ -24,6 +34,7 @@ export class CommitNumberComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    this.store.dispatch({ type: 'VERSION_NODE_TAG_LOAD' });
     this.store.dispatch({ type: 'VERSION_NODE_LOAD' });
     this.store.dispatch({ type: 'VERSION_DEBUGGER_LOAD' });
 
@@ -35,7 +46,6 @@ export class CommitNumberComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    // close all observables
     this.onDestroy$.next();
     this.onDestroy$.complete();
   }

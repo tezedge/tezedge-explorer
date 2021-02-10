@@ -18,7 +18,8 @@
           <span class="virtualScrollRow storage-block-row" [style.transform]="position !== undefined ? 'translate(0px,' + position + 'px)' : ''"
                 [class.virtualScrollRowEven]="event?.index % 2" (mouseenter)="event ? tableMouseEnter(event) : null"
                 [class.hover]="event?.datetime && storageBlockItem.hash===event?.hash"
-                [class.used]="event?.datetime">
+                [class.used]="event?.datetime"
+                [routerLink]="['/storage',event?.hash]">
 
             <span class="item-loading" [class.displayed]="!event?.datetime">&nbsp;</span>
 

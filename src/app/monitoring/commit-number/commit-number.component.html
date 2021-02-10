@@ -1,4 +1,42 @@
-<div class="">
+<div class="node-tag-number hide-details">
+  <div class="commit-numbers-container" *ngIf="showCommitNumbers">
+    <div class="commit-numbers-container-item truncate" id="nodeCommit">
+      <a href="{{githubRepositories.node + commitNumber.nodeCommit}}" target="_blank" rel="noreferrer">
+        <span>
+          <svg-icon icon="github" scale="0.8"></svg-icon>
+          Node
+        </span>
+      </a>
+    </div>
+
+    <div class="commit-numbers-container-item truncate" id="debuggerCommit">
+      <a href="{{githubRepositories.debugger + commitNumber.debuggerCommit}}" target="_blank" rel="noreferrer">
+        <span>
+          <svg-icon icon="github" scale="0.8"></svg-icon>
+          Debugger
+        </span>
+      </a>
+    </div>
+
+    <div class="commit-numbers-container-item truncate" id="explorerCommit">
+      <a href="{{githubRepositories.explorer + commitNumber.explorerCommit}}" target="_blank" rel="noreferrer">
+        <span>
+          <svg-icon icon="github" scale="0.8"></svg-icon>
+          Explorer
+        </span>
+      </a>
+    </div>
+  </div>
+
+  <span class="node-tag-number-and-icon" [class.active]="showCommitNumbers">
+    {{commitNumber.nodeTag}}
+    <svg-icon class="node-tag-icon" icon="caret-down" scale="0.5"></svg-icon>
+  </span>
+
+</div>
+
+
+<!--
   <div class="app-github-version truncate" id="nodeCommit">
     <a href="{{githubRepositories.node + commitNumber.nodeCommit}}" target="_blank" rel="noreferrer">
       <span>
@@ -25,4 +63,6 @@
       </span>
     </a>
   </div>
-</div>
+  -->
+
+

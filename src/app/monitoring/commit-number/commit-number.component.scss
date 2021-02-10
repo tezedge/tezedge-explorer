@@ -1,5 +1,7 @@
-// TODO: find a general solution when refactoring the styles
-@import "src/styles.dark";
+// TODO: find a general solution to add this to variables when refactoring the scss
+$color-node-tag-active: rgba(255, 255, 255, 0.1);
+$color-commit-container: rgba(63, 63, 67, 1);
+$color-commit-item-hovered: rgba(80, 80, 88, 1);
 
 .node-tag-number {
   position: relative;

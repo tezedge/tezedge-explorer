@@ -44,11 +44,9 @@
 
     .app-github-version {
       position: absolute;
-      bottom: 0;
-      width: 150px;
+      bottom: 10px;
       color: #c4cfdc7a;
-      font-size: 12px;
-      padding: 12px 0px 12px 0px;
+      margin-left: 12px;
     }
 
     list-option:focus,
@@ -296,15 +294,7 @@
                     </a>
                 </div>
 
-                <div class="app-github-version truncate">
-                    <a href="{{'https://github.com/simplestaking/tezedge-explorer/commit/' + commit}}" target="_blank" rel="noreferrer"
-                        [style.color]="app.sidenav.color">
-                        <span>
-                            <svg-icon style="margin-right: 7px; margin-left: 7px" icon="github"></svg-icon>
-                            {{commit}}
-                        </span>
-                    </a>
-                </div>
+                <app-commit-number class="app-github-version"></app-commit-number>
 
             </mat-nav-list>
 

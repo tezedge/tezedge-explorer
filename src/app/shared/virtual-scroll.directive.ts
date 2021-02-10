@@ -70,7 +70,7 @@ export class VirtualScrollDirective implements AfterViewInit, OnDestroy, OnChang
 
   ngAfterViewInit() {
     this.initDimensions();
-    this.fetchData(true);
+    // this.fetchData(true);
 
     this.ngZone.runOutsideAngular(() => {
       this.scrollListener = this.renderer.listen(this.$viewport, 'scroll', this.onScroll.bind(this));

@@ -1803,13 +1803,16 @@ input.mat-input-element {
   height: 36px;
   line-height: 35px;
 
-  &.logs-header,
-  &.storage-header {
+  &.logs-header {
     grid-template-columns: 180px 70px 1fr;
   }
 
   &.network-header {
     grid-template-columns: 180px 160px 80px 180px 1fr; // initial it was 260px before 1fr
+  }
+
+  &.storage-block-header {
+    grid-template-columns: 180px 70px 1fr;
   }
 
 }
@@ -1830,6 +1833,10 @@ input.mat-input-element {
 
   &.network-row {
     grid-template-columns: 180px 160px 80px 180px 1fr;
+  }
+
+  &.storage-block-row {
+    grid-template-columns: 180px 80px 1fr;
   }
 
   .item-loading {

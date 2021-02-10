@@ -1,5 +1,5 @@
-import {Component, NgZone, OnDestroy, OnInit, ViewChild} from '@angular/core';
-import {Router, ActivatedRoute, Params} from '@angular/router';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, NgZone, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import {Router, ActivatedRoute} from '@angular/router';
 
 import {Store} from '@ngrx/store';
 import {Subject} from 'rxjs';
@@ -10,7 +10,8 @@ import {MatAccordion} from '@angular/material/expansion';
 @Component({
   selector: 'app-network-action',
   templateUrl: './network-action.component.html',
-  styleUrls: ['./network-action.component.scss']
+  styleUrls: ['./network-action.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class NetworkActionComponent implements OnInit, OnDestroy {
 
@@ -31,7 +32,8 @@ export class NetworkActionComponent implements OnInit, OnDestroy {
     public store: Store<any>,
     private activeRoute: ActivatedRoute,
     private router: Router,
-    private ngZone: NgZone
+    private ngZone: NgZone,
+    private changeDetector: ChangeDetectorRef
   ) {
   }
 
@@ -65,37 +67,11 @@ export class NetworkActionComponent implements OnInit, OnDestroy {
           this.networkActionItem = this.virtualScrollItems.entities[this.virtualScrollItems.ids[this.virtualScrollItems.ids.length - 1]];
         }
 
+        this.changeDetector.markForCheck();
+
         if (this.virtualScrollItems.ids.length > 0 && this.vrFor) {
           this.vrFor.afterReceivingData();
         }
-
-        // this.networkActionList = data.ids.map(id => ({ id, ...data.entities[id] }));
-        //
-        // // set viewport at the end
-        // if (this.networkActionShow) {
-        //
-        //   const viewPortRange = this.viewPort && this.viewPort.getRenderedRange() ?
-        //     this.viewPort.getRenderedRange() : { start: 0, end: 0 };
-        //   const viewPortItemLength = this.networkActionList.length;
-        //
-        //   // set hover
-        //   this.networkActionItem = this.networkActionList[this.networkActionList.length - 1];
-        //
-        //   // trigger only if we are streaming and not at the end of page
-        //   if (data.stream && viewPortItemLength > 0 && (viewPortRange.end !== viewPortItemLength) &&
-        //     (viewPortRange.start !== viewPortRange.end)) {
-        //     // console.log('[set][scrollToOffset] ', data.stream, this.networkActionList.length, viewPortItemLength, viewPortRange);
-        //
-        //     setTimeout(() => {
-        //       const offset = this.ITEM_SIZE * this.networkActionList.length;
-        //       // set scroll
-        //       this.viewPort.scrollToOffset(offset);
-        //     });
-        //
-        //   }
-        //
-        // }
-
       });
 
   }
@@ -156,7 +132,6 @@ export class NetworkActionComponent implements OnInit, OnDestroy {
   }
 
   filterAddress() {
-
     // remove address and route to default network url
     this.router.navigate(['network']);
 

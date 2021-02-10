@@ -2,10 +2,10 @@ export const environment = {
   production: false,
   api: [
     {
-      id: 'master.dev.tezedge',
-      name: 'master.dev.tezedge',
-      http: 'http://master.dev.tezedge.com:18733',
-      debugger: 'http://master.dev.tezedge.com:17733',
+      id: 'develop.dev.tezedge',
+      name: 'develop.dev.tezedge',
+      http: 'http://develop.dev.tezedge.com:18732',
+      debugger: 'http://develop.dev.tezedge.com:17732',
       ws: false
     }
     // {
@@ -59,5 +59,5 @@ export const environment = {
     // },
   ],
   sandbox: 'http://127.0.0.1:3030',
-  commit: ''
+  commit: 'local-test-text'
 };

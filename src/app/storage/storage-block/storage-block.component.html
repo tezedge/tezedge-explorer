@@ -1,57 +1,65 @@
 <div class="storage-block-container">
-    <div class="table-virtual-scroll">
-        <div class="filters-container storage-filters">
-        </div>
 
-        <div class="table-virtual-scroll-header storage-header">
-            <span class="storage-block-table-datetime">DATETIME</span>
-            <span class="storage-block-table-level">LEVEL</span>
-            <span class="storage-block-table-hash">HASH</span>
-        </div>
-
-        <div class="table-virtual-scroll-panel" style="display:flex;flex-direction: row;">
-
-<!--            <cdk-virtual-scroll-viewport style="align-items: flex-start;" class="storage-block-table-viewport"-->
-<!--                (scrolledIndexChange)="onScroll($event)" [itemSize]="36" [maxBufferPx]="288" [minBufferPx]="288">-->
-
-<!--                <div *cdkVirtualFor="let even = even;let item of storageBlockList" class="table-virtual-scroll-item"-->
-<!--                    (mouseenter)="tableMouseEnter(item)" [routerLink]="['/storage',item?.hash]" [class.even]="even"-->
-<!--                    [class.hover]="item?.id === storageBlockItem?.id">-->
-<!--                    <span class="storage-block-table-datetime">-->
-<!--                        {{item?.datetime}}-->
-<!--                    </span>-->
-<!--                    <span class="storage-block-table-level">-->
-<!--                        {{item?.header?.level}}-->
-<!--                    </span>-->
-<!--                    <span class="storage-block-table-hash">-->
-<!--                        {{item?.hash}}-->
-<!--                    </span>-->
-<!--                </div>-->
-<!--            </cdk-virtual-scroll-viewport>-->
-
-<!--            <div class="storage-block-table-detail">-->
-<!--                <div *ngIf="storageBlockItem">-->
-
-<!--                    <ngx-json-viewer [json]="storageBlockItem" [expanded]="false">-->
-<!--                    </ngx-json-viewer>-->
-
-<!--                </div>-->
-<!--            </div>-->
-
-        </div>
-        <div class="table-virtual-scroll-footer">
-            <span>
-                <button mat-icon-button matTooltip="Start" (click)="scrollStart()" *ngIf="!virtualScrollItems?.stream">
-                    <mat-icon>play_arrow_outline</mat-icon>
-                </button>
-                <button mat-icon-button matTooltip="Stop" (click)="scrollStop()" *ngIf="virtualScrollItems?.stream">
-                    <mat-icon>stop_outline</mat-icon>
-                </button>
-                <button mat-icon-button style="transform: rotate(90deg)" matTooltip="Last page" (click)="scrollToEnd()">
-                    <mat-icon>last_page</mat-icon>
-                </button>
-            </span>
-        </div>
+  <div class="table-virtual-scroll">
+    <div class="filters-container storage-filters">
     </div>
+
+    <div class="table-virtual-scroll-header storage-block-header">
+      <span>DATETIME</span> <!--storage-block-table-datetime-->
+      <span>LEVEL</span> <!--storage-block-table-level-->
+      <span>HASH</span> <!--storage-block-table-hash-->
+    </div>
+
+    <div class="table-virtual-scroll-body">
+
+      <div class="virtual-scroll-container" [class.storage-block-filters-expanded]="filtersState.open">
+        <ng-template vsFor [vsForOf]="virtualScrollItems" let-event let-position="position"
+                     (getItems)="getItems($event)" (startStopDataStream)="startStopDataStream($event)">
+          <span class="virtualScrollRow storage-block-row" [style.transform]="position !== undefined ? 'translate(0px,' + position + 'px)' : ''"
+                [class.virtualScrollRowEven]="event?.index % 2" (mouseenter)="event ? tableMouseEnter(event) : null"
+                [class.hover]="event?.datetime && storageBlockItem.hash===event?.hash"
+                [class.used]="event?.datetime"
+                [routerLink]="['/storage',event?.hash]">
+
+            <span class="item-loading" [class.displayed]="!event?.datetime">&nbsp;</span>
+
+            <span class="truncate">{{event?.datetime}}</span>
+            <span class="truncate storage-block-level">{{event?.id}}</span>
+            <span class="truncate">{{event?.hash}}</span>
+
+          </span>
+        </ng-template>
+      </div>
+
+      <div class="action-table-detail" id="virtualScrollTableDetails">
+        <mat-tab-group>
+          <mat-tab *ngIf="storageBlockItem?.hash">
+            <ng-template mat-tab-label>
+              <span>JSON</span>
+            </ng-template>
+            <ng-template matTabContent>
+              <ngx-json-viewer *ngIf="storageBlockItem?.hash" [json]="storageBlockItem" [expanded]="false">
+              </ngx-json-viewer>
+            </ng-template>
+          </mat-tab>
+        </mat-tab-group>
+        <!-- TODO: add the Hex and Error tabs if needed  -->
+      </div>
+    </div>
+
+    <div class="table-virtual-scroll-footer">
+      <span>
+        <button id="startStreaming" mat-icon-button matTooltip="Start" (click)="scrollStart(null)" *ngIf="!virtualScrollItems?.stream">
+          <mat-icon>play_arrow_outline</mat-icon>
+        </button>
+        <button id="stopStreaming" mat-icon-button matTooltip="Stop" (click)="scrollStop()" *ngIf="virtualScrollItems?.stream">
+          <mat-icon>stop_outline</mat-icon>
+        </button>
+        <button mat-icon-button matTooltip="Last page" (click)="scrollToEnd()">
+          <mat-icon style="transform: rotate(90deg)">last_page</mat-icon>
+        </button>
+      </span>
+    </div>
+  </div>
 
 </div>

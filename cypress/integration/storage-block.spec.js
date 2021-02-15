@@ -38,7 +38,7 @@ context('storage-block', () => {
 										.last()
 										.find('.storage-block-level')
 										.should(($span) => {
-											expect($span.text().trim()).to.equal(lastRecord.id);
+											expect($span.text().trim()).to.equal(lastRecord.id.toString());
 										})
 								} else {
 									cy.get('#stopStreaming').click();

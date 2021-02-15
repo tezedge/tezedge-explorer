@@ -68,10 +68,10 @@ export class NetworkActionComponent implements OnInit, OnDestroy {
         }
 
         this.changeDetector.markForCheck();
-
-        if (this.virtualScrollItems.ids.length > 0 && this.vrFor) {
-          this.vrFor.afterReceivingData();
-        }
+        //
+        // if (this.virtualScrollItems.ids.length > 0 && this.vrFor) {
+        //   this.vrFor.afterReceivingData();
+        // }
       });
 
   }

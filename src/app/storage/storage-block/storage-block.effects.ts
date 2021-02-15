@@ -42,8 +42,8 @@ export class StorageBlockEffects {
 
     switchMap(({ action, state }) =>
 
-      // get header data every second
-      timer(0, 1000).pipe(
+      // get header data every 30 seconds
+      timer(0, 30000).pipe(
         takeUntil(storageBlockDestroy$),
         switchMap(() =>
           this.http.get(setUrl(action, state)).pipe(

@@ -83,7 +83,7 @@ export class LogsActionComponent implements OnInit, OnDestroy {
     this.store.dispatch({
       type: 'LOGS_ACTION_START',
       payload: {
-        limit: $event?.limit ? $event.limit : 120
+        limit: $event?.limit ? $event.limit : 60
       }
     });
   }

@@ -34,7 +34,7 @@ export class VirtualScrollDirective implements AfterViewInit, OnDestroy, OnChang
   private cacheRequestStart = 0;
   private cacheRequestEnd = 0;
   private previousLastCursorId = 0;
-  private elementsBufferUpAndDown = 40;
+  private elementsBufferUpAndDown = 10;
 
   private $scroller: HTMLDivElement = document.createElement('div');
   private $viewport: HTMLElement;
@@ -60,9 +60,10 @@ export class VirtualScrollDirective implements AfterViewInit, OnDestroy, OnChang
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    if (this.virtualScrollItemsCount > 0 && this.previousLastCursorId === this.vsForOf.lastCursorId) {
-      this.renderViewportItems();
-    }
+    // if (this.virtualScrollItemsCount > 0 && this.previousLastCursorId === this.vsForOf.lastCursorId) {
+    //   this.renderViewportItems();
+    // }
+    this.afterReceivingData();
   }
 
   ngDoCheck() {
@@ -80,6 +81,8 @@ export class VirtualScrollDirective implements AfterViewInit, OnDestroy, OnChang
         this.onResize();
       });
     });
+
+    // this.afterReceivingData();
   }
 
   afterReceivingData() {
@@ -187,7 +190,7 @@ export class VirtualScrollDirective implements AfterViewInit, OnDestroy, OnChang
 
   private startStopStream(): void {
     const stop = this.maximumScrollTop > this.$viewport.scrollTop;
-    const limit = Math.floor(this.viewportHeight / this.itemHeight * 3);
+    const limit = Math.floor(this.viewportHeight / this.itemHeight * 2);
 
     this.ngZone.run(() => {
       this.startStopDataStream.emit({
@@ -229,7 +232,7 @@ export class VirtualScrollDirective implements AfterViewInit, OnDestroy, OnChang
 
       const limit = nextCursorId ?
         nextCursorId - (this.getScrollPositionStartWithOffset() - this.elementsBufferUpAndDown) :
-        Math.floor(this.viewportHeight / this.itemHeight * 3);
+        Math.floor(this.viewportHeight / this.itemHeight * 2);
 
       // if (limit > this.maximumLimitThatCanBeUsed) {
       //   this.$viewport.scrollTop = this.maximumScrollTop - this.itemHeight * (this.vsForOf.lastCursorId - this.vsForOf.idsToPositions[this.vsForOf.ids[0]]);

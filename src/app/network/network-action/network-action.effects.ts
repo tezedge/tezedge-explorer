@@ -117,7 +117,7 @@ export function setUrl(action, state) {
 export function networkActionLimit(action) {
   const limitNr = action.payload && action.payload.limit ?
     action.payload.limit :
-    '120';
+    '60';
 
   return `limit=${limitNr}`;
 }

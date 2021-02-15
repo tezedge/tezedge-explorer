@@ -102,7 +102,7 @@ export class NetworkActionComponent implements OnInit, OnDestroy {
     this.store.dispatch({
       type: 'NETWORK_ACTION_START',
       payload: {
-        limit: $event?.limit ? $event.limit : 120
+        limit: $event?.limit ? $event.limit : 60
       }
     });
   }

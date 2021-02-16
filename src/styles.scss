@@ -1878,6 +1878,10 @@ input.mat-input-element {
   text-overflow: ellipsis;
 }
 
+.pointer {
+  cursor: pointer;
+}
+
 @keyframes hintloading {
   0% {
     opacity: 0.1;

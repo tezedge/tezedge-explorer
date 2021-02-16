@@ -18,14 +18,13 @@
           <span class="virtualScrollRow storage-block-row" [style.transform]="position !== undefined ? 'translate(0px,' + position + 'px)' : ''"
                 [class.virtualScrollRowEven]="event?.index % 2" (mouseenter)="event ? tableMouseEnter(event) : null"
                 [class.hover]="event?.datetime && storageBlockItem.hash===event?.hash"
-                [class.used]="event?.datetime"
-                [routerLink]="['/storage',event?.hash]">
+                [class.used]="event?.datetime">
 
             <span class="item-loading" [class.displayed]="!event?.datetime">&nbsp;</span>
 
             <span class="truncate">{{event?.datetime}}</span>
             <span class="truncate storage-block-level">{{event?.id}}</span>
-            <span class="truncate">{{event?.hash}}</span>
+            <span class="truncate pointer" [routerLink]="['/storage',event?.hash]">{{event?.hash}}</span>
 
           </span>
         </ng-template>

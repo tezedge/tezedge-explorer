@@ -86,6 +86,9 @@ export class VirtualScrollDirective implements AfterViewInit, OnDestroy, OnChang
   }
 
   afterReceivingData() {
+    if (!this.$viewport) {
+      return;
+    }
     const newLastCursorIdYN = this.previousLastCursorId < this.vsForOf.lastCursorId;
 
     if (newLastCursorIdYN) {
@@ -104,13 +107,16 @@ export class VirtualScrollDirective implements AfterViewInit, OnDestroy, OnChang
   }
 
   scrollToBottom(): void {
+    if (!this.$viewport) {
+      return;
+    }
     this.previousLastCursorId = this.vsForOf.lastCursorId;
     this.$viewport.scrollTop = this.virtualScrollItemsCount * this.itemHeight - this.viewportHeight;
     this.maximumScrollTop = this.$viewport.scrollTop;
+
   }
 
   onScroll(event) {
-
     if (this.$viewport.scrollTop > this.maximumScrollTop) {
       this.$viewport.scrollTop = this.maximumScrollTop;
       this.startStopStream();
@@ -137,6 +143,10 @@ export class VirtualScrollDirective implements AfterViewInit, OnDestroy, OnChang
   }
 
   private preparePositionsAndCreateViewElements() {
+
+    if (!this.$viewport) {
+      return;
+    }
     // use current scroll position to get start and end item index
     let start = Math.floor((this.$viewport.scrollTop - this.viewportHeight) / this.itemHeight);
     let end = Math.ceil((this.$viewport.scrollTop + (this.viewportHeight)) / this.itemHeight);

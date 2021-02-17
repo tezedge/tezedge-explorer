@@ -43,18 +43,21 @@ export class StorageBlockComponent implements OnInit, OnDestroy {
         this.storageBlockShow = data.ids.length > 0;
 
         if (this.storageBlockShow && !this.storageBlockItem) {
-          this.tableMouseEnter(this.virtualScrollItems.entities[this.virtualScrollItems.ids[this.virtualScrollItems.ids.length - 1]]);
+          // this.tableMouseEnter(this.virtualScrollItems.entities[this.virtualScrollItems.ids[this.virtualScrollItems.ids.length - 1]]);
         }
 
         this.changeDetector.markForCheck();
-
-        // setTimeout(() => {
-        //   if (this.virtualScrollItems.ids.length > 0 && this.vrFor) {
-        //     this.vrFor.afterReceivingData();
-        //   }
-        // });
       });
 
+  }
+
+  getItemDetails($event) {
+    this.store.dispatch({
+      type: 'STORAGE_BLOCK_DETAILS_LOAD',
+      payload: {
+        hash: $event?.hash
+      }
+    });
   }
 
   getItems($event) {
@@ -111,9 +114,6 @@ export class StorageBlockComponent implements OnInit, OnDestroy {
 
       this.ngZone.run(() => {
         this.storageBlockItem = { ...item };
-        // id and index are information not needed for user
-        delete this.storageBlockItem.id;
-        delete this.storageBlockItem.index;
       });
     });
   }

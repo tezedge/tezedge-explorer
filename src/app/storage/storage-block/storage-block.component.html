@@ -16,8 +16,8 @@
         <ng-template vsFor [vsForOf]="virtualScrollItems" let-event let-position="position"
                      (getItems)="getItems($event)" (startStopDataStream)="startStopDataStream($event)">
           <span class="virtualScrollRow storage-block-row" [style.transform]="position !== undefined ? 'translate(0px,' + position + 'px)' : ''"
-                [class.virtualScrollRowEven]="event?.index % 2" (mouseenter)="event ? tableMouseEnter(event) : null"
-                [class.hover]="event?.datetime && storageBlockItem.hash===event?.hash"
+                [class.virtualScrollRowEven]="event?.index % 2" (mouseenter)="event ? getItemDetails(event) : null"
+                [class.hover]="event?.datetime && virtualScrollItems?.selected?.hash===event?.hash"
                 [class.used]="event?.datetime">
 
             <span class="item-loading" [class.displayed]="!event?.datetime">&nbsp;</span>
@@ -32,12 +32,12 @@
 
       <div class="action-table-detail" id="virtualScrollTableDetails">
         <mat-tab-group>
-          <mat-tab *ngIf="storageBlockItem?.hash">
+          <mat-tab *ngIf="virtualScrollItems?.selected?.hash">
             <ng-template mat-tab-label>
               <span>JSON</span>
             </ng-template>
             <ng-template matTabContent>
-              <ngx-json-viewer *ngIf="storageBlockItem?.hash" [json]="storageBlockItem" [expanded]="false">
+              <ngx-json-viewer *ngIf="virtualScrollItems?.selected?.hash" [json]="virtualScrollItems.selected" [expanded]="false">
               </ngx-json-viewer>
             </ng-template>
           </mat-tab>

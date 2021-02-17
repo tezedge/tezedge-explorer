@@ -4,7 +4,8 @@ const initialState: any = {
   ids: [],
   entities: {},
   lastCursorId: 0,
-  stream: false
+  stream: false,
+  selected: {}
 };
 
 export function reducer(state = initialState, action) {
@@ -35,6 +36,13 @@ export function reducer(state = initialState, action) {
       };
     }
 
+    case 'STORAGE_BLOCK_DETAILS_LOAD_SUCCESS': {
+      return {
+        ...state,
+        selected: action.payload
+      };
+    }
+
     default:
       return state;
   }
@@ -42,7 +50,7 @@ export function reducer(state = initialState, action) {
 
 export function setIds(action) {
   return action.payload
-    .map(item => item.header.level)
+    .map(item => item.level)
     .sort((a, b) => a - b);
 
 }
@@ -51,12 +59,11 @@ export function setEntities(state, action) {
   return action.payload
     .reduce((accumulator, block) => ({
       ...accumulator,
-      [block.header.level]: {
-        // ...state.entities[block.hash],
-        ...block,
-        id: block.header.level,
-        datetime: moment.utc(block.header.timestamp).format('HH:mm:ss.SSS, DD MMM YY')
-        // datetime: moment(block.header.timestamp).format('HH:mm:ss,  DD MMM YYYY')
+      [block.level]: {
+        hash: block.block_hash,
+        id: block.level,
+        datetime: moment.utc(Number(block.timestamp)).format('HH:mm:ss.SSS, DD MMM YY')
+        // datetime: moment(block.timestamp).format('HH:mm:ss,  DD MMM YYYY')
       }
     }), {});
 
@@ -73,6 +80,6 @@ export function setEntities(state, action) {
 }
 
 export function setLastCursorId(action, state) {
-  return action.payload.length > 0 && state.lastCursorId < action.payload[0].header.level ?
-    action.payload[0].header.level : state.lastCursorId;
+  return action.payload.length > 0 && state.lastCursorId < action.payload[0].level ?
+    action.payload[0].level : state.lastCursorId;
 }

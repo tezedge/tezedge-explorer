@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { map } from 'rxjs/operators';
 import { Resource } from '../models/resource';
@@ -15,7 +15,8 @@ export class ResourcesService {
   constructor(private http: HttpClient) {}
 
   getResources(endpoint: string): Observable<Resource[]> {
-    return this.http.get<Resource[]>(endpoint).pipe(map(response => ResourcesService.mapGetResourcesResponse(response)));
+    return this.http.get<Resource[]>(endpoint)
+      .pipe(map(response => ResourcesService.mapGetResourcesResponse(response)));
   }
 
   private static mapGetResourcesResponse(response: any): Resource[] {

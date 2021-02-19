@@ -1,11 +1,15 @@
 $faded-white: rgba(255, 255, 255, 0.1);
+$text-color: rgb(164, 164, 165);
 
 .resources-wizard {
   background-color: #2A2A2E;
-  font-family: 'Inter', sans-serif;
   border-top-left-radius: 5px;
 
   .main-resources-container {
+    > div:last-child {
+      border-top: 1px solid $faded-white;
+    }
+
     .tabs {
       border-bottom: 1px solid $faded-white;
       padding: 9px 15px;
@@ -13,12 +17,11 @@ $faded-white: rgba(255, 255, 255, 0.1);
       .tab {
         color: rgba(255, 255, 255, 0.6);
         font-size: 12px;
-        font-weight: 600;
         cursor: pointer;
 
         &:hover,
         &.selected {
-          color: #fff;
+          color: $text-color;
         }
       }
     }
@@ -26,29 +29,33 @@ $faded-white: rgba(255, 255, 255, 0.1);
     .resources-container {
       margin-left: auto;
       margin-right: auto;
-      padding: 10px;
       width: 100%;
+      overflow: auto;
+      padding: 10px 10px 0;
 
       .centered-container {
         width: 100%;
-        height: 100%;
         margin: 0 auto;
+        max-height: unset !important;
 
         .resource-category-block {
           position: relative;
+          margin-bottom: 10px;
           opacity: 0;
           height: 32%;
           padding: 20px 10px 40px 40px;
           transition: opacity 1s;
           border-radius: 5px;
           background-color: $faded-white;
+          min-height: 250px;
+          max-height: 400px;
 
           &.fade {
             opacity: 1;
           }
 
           .graph-title {
-            color: #fff;
+            color: $text-color;
             font-size: 12px;
             text-align: center;
           }
@@ -58,8 +65,7 @@ $faded-white: rgba(255, 255, 255, 0.1);
             left: 10px;
             top: 50%;
             transform: rotate(-90deg);
-            color: #fff;
-            font-weight: 500;
+            color: $text-color;
             font-size: 12px;
           }
         }
@@ -68,21 +74,24 @@ $faded-white: rgba(255, 255, 255, 0.1);
   }
 
   .info-container {
-    min-width: 340px;
-    border-left: 1px solid $faded-white;
+    min-width: 20vw;
     background-color: #2A2A2E;
 
     .info-header {
       border-bottom: 1px solid $faded-white;
-      padding-right: 10px;
+    }
 
-      .info-container-title {
-        margin: 0;
-        padding: 11px;
-        font-size: 12px;
-        color: #fff;
-        font-weight: 400;
-      }
+    .info-content-container {
+      border-left: 1px solid $faded-white;
+    }
+
+    .info-container-title {
+      border-top: 1px solid $faded-white;
+      margin: 0;
+      padding: 11px;
+      font-size: 12px;
+      color: $text-color;
+      font-weight: 400;
     }
 
     .additional-info {

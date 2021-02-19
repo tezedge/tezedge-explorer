@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
-import { curveCardinal, CurveCardinalFactory } from 'd3-shape';
+import { curveCardinal, curveLinear } from 'd3-shape';
 import { select, Store } from '@ngrx/store';
 import { Resource } from '../../models/resource';
 import { Observable } from 'rxjs';
@@ -60,7 +60,7 @@ export class ResourcesComponent implements OnInit, OnDestroy {
 
   chartData$: Observable<ChartData>;
 
-  readonly curve: CurveCardinalFactory = curveCardinal;
+  readonly curve = curveCardinal;
   readonly colorScheme = {
     domain: ['#46afe3', '#df80ff', '#5aa454', '#ff8c00', '#ffe600', '#ff1c91']
   };
@@ -92,6 +92,7 @@ export class ResourcesComponent implements OnInit, OnDestroy {
   }
 
   private createChartData(resources: Array<Resource>): ChartData {
+    resources = [...new Map(resources.map(entry => [entry.timestamp, entry])).values()].reverse(); // create a unique time based list of entries
     this.lastMeasurement = resources[0].timestamp;
     this.additionalInfo = this.createAdditionalInfoData(resources);
 
@@ -140,16 +141,16 @@ export class ResourcesComponent implements OnInit, OnDestroy {
         series: ResourcesComponent.getSeries(resources, 'disk.contextActions')
       });
     }
-    chartData.xTicksValues = ResourcesComponent.getFilteredXTicks(resources, 15);
-
+    chartData.xTicksValues = ResourcesComponent.getFilteredXTicks(resources, Math.min(resources.length, 15));
     return chartData;
   }
 
   private static getSeries(resources: Array<Resource>, pathToProperty: string): Array<SeriesEntry> {
-    return resources.map(resource => ({
-      name: resource.timestamp,
-      value: ResourcesComponent.getValueFromNestedResourceProperty(resource, pathToProperty)
-    })).reverse();
+    return resources
+      .map(resource => ({
+        name: resource.timestamp,
+        value: ResourcesComponent.getValueFromNestedResourceProperty(resource, pathToProperty)
+      }));
   }
 
   private static getValueFromNestedResourceProperty(resource: Resource, pathToProperty: string): number {
@@ -172,7 +173,7 @@ export class ResourcesComponent implements OnInit, OnDestroy {
 
   private createAdditionalInfoData(resources: Array<Resource>): ResourcesAdditionalInfo {
     const info = new ResourcesAdditionalInfo();
-    const lastResource = resources[0]; // last value is first in array (should have been sent reversed)
+    const lastResource = resources[resources.length - 1];
     info.cpu.push(new ResourcesAdditionalInfoBlock('Load', lastResource.cpu.node, this.colorScheme.domain[0], '%'));
     info.memory.push(new ResourcesAdditionalInfoBlock('Usage', lastResource.memory.node.resident / 1000000000, this.colorScheme.domain[0], 'GB'));
     info.disk.push(

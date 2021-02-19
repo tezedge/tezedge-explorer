@@ -1,0 +1,17 @@
+<div class="details-container">
+  <div class="list-group"
+       fxLayout="column"
+       fxLayoutGap="8px">
+    <div class="faded-text">Summary</div>
+    <table>
+      <tbody>
+      <tr *ngFor="let info of additionalInfo">
+        <td><span [style.color]="info.color">{{ info.name }}</span></td>
+        <td class="faded-text">
+          <span>{{ info.value | number: info.label === 'GB' ? '1.2-2' : '' }} {{ info.label }}</span>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

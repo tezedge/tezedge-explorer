@@ -1,11 +1,9 @@
-import { Routes } from '@angular/router'
-import { RouterStateSnapshot, Params } from '@angular/router';
+import { Params, RouterStateSnapshot, Routes } from '@angular/router';
 import { RouterStateSerializer } from '@ngrx/router-store';
 
 import { LogsComponent } from './logs/logs.component';
 import { MempoolComponent } from './mempool/mempool.component';
 import { NetworkComponent } from './network/network.component';
-import { NetworkActionDetailComponent } from './network/network-action-detail/network-action-detail.component';
 import { EndpointsComponent } from './endpoints/endpoints.component';
 import { MonitoringComponent } from './monitoring/monitoring.component';
 import { StorageComponent } from './storage/storage.component';
@@ -21,6 +19,10 @@ export const AppRouting: Routes = [
   //   { path: 'network', loadChildren: 'app/network/network.module#networkModule' },
 
   { path: 'monitoring', component: MonitoringComponent },
+  {
+    path: 'resources',
+    loadChildren: () => import('./resources/resources.module').then(m => m.ResourcesModule)
+  },
 
   { path: 'mempool', component: MempoolComponent },
 
@@ -54,8 +56,7 @@ export interface RouterStateUrl {
 }
 
 // create custom router
-export class CustomRouterStateSerializer
-  implements RouterStateSerializer<RouterStateUrl> {
+export class CustomRouterStateSerializer implements RouterStateSerializer<RouterStateUrl> {
   serialize(routerState: RouterStateSnapshot): RouterStateUrl {
     const { url } = routerState;
     const queryParams = routerState.root.queryParams;

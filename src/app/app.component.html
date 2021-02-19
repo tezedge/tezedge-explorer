@@ -129,10 +129,18 @@
                     </span>
 
                     <a mat-list-item routerLink="/monitoring"
-                        (click)="isMobile && start.toggle()" [style.color]="app.sidenav.color">
+                       (click)="isMobile && start.toggle()" [style.color]="app.sidenav.color">
                         <span>
                             <svg-icon style="margin-right: 7px;" icon="history"></svg-icon>
                             Synchronization
+                        </span>
+                    </a>
+
+                    <a mat-list-item routerLink="/resources"
+                       (click)="isMobile && start.toggle()" [style.color]="app.sidenav.color">
+                        <span>
+                            <svg-icon style="margin-right: 7px;" icon="resources"></svg-icon>
+                            Resources
                         </span>
                     </a>
 
@@ -302,7 +310,7 @@
 
         <!-- Content -->
         <mat-sidenav-content class="sidenav-content" [class.not-visible]="!app.sidenav.isVisible">
-            <div>
+            <div fxFlexFill>
                 <!-- menu -->
                 <button mat-icon-button class="app-menu-toggle" *ngIf="isMobile && app.sidenav.isVisible">
                     <mat-icon (click)="start.toggle()">dehaze</mat-icon>

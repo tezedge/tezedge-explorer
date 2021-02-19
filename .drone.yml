@@ -18,7 +18,7 @@ steps:
     privileged: true
     environment:
       SANDBOX: 'https://${DRONE_BRANCH}.dev.tezedge.com:3030'
-      API: '[{"id":"${DRONE_BRANCH}","name":"${DRONE_BRANCH}.dev.tezedge","http":"http://${DRONE_BRANCH}.dev.tezedge.com:18732","monitoring":"http://${DRONE_BRANCH}.dev.tezedge.com:38732","debugger":"http://${DRONE_BRANCH}.dev.tezedge.com:17732","ws":false}]'
+      API: '[{"id":"${DRONE_BRANCH}","name":"${DRONE_BRANCH}.dev.tezedge","http":"http://${DRONE_BRANCH}.dev.tezedge.com:18732","monitoring":"http://${DRONE_BRANCH}.dev.tezedge.com:38732/resources/tezedge","debugger":"http://${DRONE_BRANCH}.dev.tezedge.com:17732","ws":false}]'
     depends_on:
       - build
 
@@ -84,7 +84,7 @@ steps:
     privileged: true
     environment:
       SANDBOX: 'https://carthage.tezedge.com:3030'
-      API: '[{"id":"master","name":"master.dev.tezedge","http":"http://master.dev.tezedge.com:18732","monitoring":"http://master.dev.tezedge.com:38732","debugger":"http://master.dev.tezedge.com:17732","ws":false}]'
+      API: '[{"id":"master","name":"master.dev.tezedge","http":"http://master.dev.tezedge.com:18732","monitoring":"http://master.dev.tezedge.com:38732/resources/tezedge","debugger":"http://master.dev.tezedge.com:17732","ws":false}]'
     depends_on:
       - build
 

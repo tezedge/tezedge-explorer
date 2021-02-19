@@ -9,7 +9,7 @@ services:
       - "8080:80"
     environment:
       - SANDBOX=https://carthage.tezedge.com:3030
-      - API=[{"id":"rust","name":"rust.master.dev.tezedge","http":"http://master.dev.tezedge.com:18733","monitoring":"http://master.dev.tezedge.com:38733","debugger":"http://master.dev.tezedge.com:17733","ws":"ws://master.dev.tezedge.com:4927"}]
+      - API=[{"id":"rust","name":"rust.master.dev.tezedge","http":"http://master.dev.tezedge.com:18733","monitoring":"http://master.dev.tezedge.com:38733/resources/tezedge","debugger":"http://master.dev.tezedge.com:17733","ws":"ws://master.dev.tezedge.com:4927"}]
     hostname: tezedge-explorer
     # network_mode: host
   cypress:

@@ -38,4 +38,4 @@ ENV COMMIT=$commit
 CMD ["/bin/sh",  "-c",  "envsubst < /usr/share/nginx/html/assets/env.template.js > /usr/share/nginx/html/assets/env.js && exec nginx -g 'daemon off;'"]
 
 # Example of how to run
-# docker run --env SANDBOX='https://carthage.tezedge.com:3030' --env API='[{"id":"master","name":"master.dev.tezedge","http":"http://master.dev.tezedge.com:18733","debugger":"http://master.dev.tezedge.com:17733","ws":false}]'  -p 8080:80  tezedge-explorer:latest
+# docker run --env SANDBOX='https://carthage.tezedge.com:3030' --env API='[{"id":"master","name":"master.dev.tezedge","http":"http://master.dev.tezedge.com:18733","monitoring":"http://master.dev.tezedge.com:38733/resources/tezedge","debugger":"http://master.dev.tezedge.com:17733","ws":false}]'  -p 8080:80  tezedge-explorer:latest

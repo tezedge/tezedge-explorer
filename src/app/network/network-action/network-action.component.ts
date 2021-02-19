@@ -68,10 +68,10 @@ export class NetworkActionComponent implements OnInit, OnDestroy {
         }
 
         this.changeDetector.markForCheck();
-
-        if (this.virtualScrollItems.ids.length > 0 && this.vrFor) {
-          this.vrFor.afterReceivingData();
-        }
+        //
+        // if (this.virtualScrollItems.ids.length > 0 && this.vrFor) {
+        //   this.vrFor.afterReceivingData();
+        // }
       });
 
   }
@@ -102,7 +102,7 @@ export class NetworkActionComponent implements OnInit, OnDestroy {
     this.store.dispatch({
       type: 'NETWORK_ACTION_START',
       payload: {
-        limit: $event?.limit ? $event.limit : 120
+        limit: $event?.limit ? $event.limit : 60
       }
     });
   }

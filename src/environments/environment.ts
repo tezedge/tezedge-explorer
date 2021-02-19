@@ -6,6 +6,7 @@ export const environment = {
       name: 'develop.dev.tezedge',
       http: 'http://develop.dev.tezedge.com:18732',
       debugger: 'http://develop.dev.tezedge.com:17732',
+      monitoring: 'http://develop.dev.tezedge.com:38732/resources/tezedge',
       ws: false
     }
     // {
@@ -34,6 +35,7 @@ export const environment = {
     //   name: 'master.dev.tezedge',
     //   http: 'http://master.dev.tezedge.com:18732',
     //   debugger: 'http://master.dev.tezedge.com:17732',
+    //   monitoring: 'http://master.dev.tezedge.com:38732/resources/tezedge',
     //   ws: false
     // },
     // {
@@ -41,15 +43,17 @@ export const environment = {
     //   name: 'rust.carthage.tezedge.com',
     //   http: 'https://carthage.tezedge.com:8752',
     //   debugger: 'https://carthage.tezedge.com:8753',
+    //   monitoring: 'https://carthage.tezedge.com:38732/resources/tezedge',
     //   ws: 'wss://carthage.tezedge.com',
     // },
     // {
-    //   id: 'ocaml-carthage-tezedge',
-    //   name: 'ocaml.carthage.tezedge.com',
-    //   http: 'https://carthage.tezedge.com:8742',
-    //   debugger: 'https://carthage.tezedge.com:8743',
-    //   ws: false,
-    // },
+    //    id: 'ocaml-carthage-tezedge',
+    //    name: 'ocaml.carthage.tezedge.com',
+    //    http: 'https://carthage.tezedge.com:8742',
+    //    debugger: 'https://carthage.tezedge.com:8743',
+    //    monitoring: 'https://carthage.tezedge.com:38732/resources/ocaml',
+    //    ws: false,
+    //  },
     // {
     //   id: 'sandbox-carthage-tezedge',
     //   name: 'rust.localhost.node',

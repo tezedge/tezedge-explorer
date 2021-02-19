@@ -24,7 +24,6 @@
       "camelCase"
     ],
     "component-selector": [
-      true,
       "element",
       "app",
       "kebab-case"
@@ -47,17 +46,6 @@
       180
     ],
     "member-access": false,
-    "member-ordering": [
-      true,
-      {
-        "order": [
-          "static-field",
-          "instance-field",
-          "static-method",
-          "instance-method"
-        ]
-      }
-    ],
     "no-consecutive-blank-lines": false,
     "no-console": [
       true,
@@ -68,10 +56,6 @@
       "trace"
     ],
     "no-empty": false,
-    "no-inferrable-types": [
-      true,
-      "ignore-params"
-    ],
     "no-non-null-assertion": true,
     "no-redundant-jsdoc": true,
     "no-switch-case-fall-through": true,

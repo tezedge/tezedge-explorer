@@ -48,6 +48,9 @@ import * as fromStorageAction from './storage/storage-action/storage-action.redu
 import * as fromSandbox from './sandbox/sandbox.reducer';
 import * as fromWallets from './wallets/wallets.reducer';
 import * as fromVersion from './monitoring/commit-number/commit-number.reducer';
+import * as fromResource from './resources/state/resources.reducer';
+
+import { ResourcesState } from './resources/state/resources.reducer';
 
 // state interface
 export interface State {
@@ -74,6 +77,7 @@ export interface State {
     routerReducer: fromRouter.RouterReducerState<RouterStateUrl>;
     wallets: any;
     commitNumber: any;
+    resources: ResourcesState;
 }
 
 // state
@@ -100,7 +104,8 @@ export const reducers: ActionReducerMap<State> = {
     settingsNode: fromSettingsNode.reducer,
     routerReducer: fromRouter.routerReducer,
     wallets: fromWallets.reducer,
-    commitNumber: fromVersion.reducer
+    commitNumber: fromVersion.reducer,
+    resources: fromResource.reducer,
 };
 
 // // log all actions to console for production

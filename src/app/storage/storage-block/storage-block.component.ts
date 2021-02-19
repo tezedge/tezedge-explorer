@@ -39,21 +39,25 @@ export class StorageBlockComponent implements OnInit, OnDestroy {
     this.store.select('storageBlock')
       .pipe(takeUntil(this.onDestroy$))
       .subscribe(data => {
-        console.log(data);
         this.virtualScrollItems = data;
         this.storageBlockShow = data.ids.length > 0;
 
         if (this.storageBlockShow && !this.storageBlockItem) {
-          this.tableMouseEnter(this.virtualScrollItems.entities[this.virtualScrollItems.ids[this.virtualScrollItems.ids.length - 1]]);
+          // this.tableMouseEnter(this.virtualScrollItems.entities[this.virtualScrollItems.ids[this.virtualScrollItems.ids.length - 1]]);
         }
 
         this.changeDetector.markForCheck();
-
-        if (this.virtualScrollItems.ids.length > 0 && this.vrFor) {
-          this.vrFor.afterReceivingData();
-        }
       });
 
+  }
+
+  getItemDetails($event) {
+    this.store.dispatch({
+      type: 'STORAGE_BLOCK_DETAILS_LOAD',
+      payload: {
+        hash: $event?.hash
+      }
+    });
   }
 
   getItems($event) {
@@ -82,7 +86,7 @@ export class StorageBlockComponent implements OnInit, OnDestroy {
     this.store.dispatch({
       type: 'STORAGE_BLOCK_START',
       payload: {
-        limit: $event?.limit ? $event.limit : 120
+        limit: $event?.limit ? $event.limit : 60
       }
     });
   }
@@ -109,10 +113,7 @@ export class StorageBlockComponent implements OnInit, OnDestroy {
       }
 
       this.ngZone.run(() => {
-        this.storageBlockItem = {...item};
-        // id and index are information not needed for user
-        delete this.storageBlockItem.id;
-        delete this.storageBlockItem.index;
+        this.storageBlockItem = { ...item };
       });
     });
   }

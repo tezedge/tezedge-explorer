@@ -1,9 +1,9 @@
-import { Injectable, NgZone } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { Effect, Actions, ofType } from '@ngrx/effects';
 import { HttpClient } from '@angular/common/http';
 import { Store } from '@ngrx/store';
 import { tap, map, switchMap, withLatestFrom, catchError, takeUntil } from 'rxjs/operators';
-import { of, Subject, empty, timer } from 'rxjs';
+import { of, Subject, timer } from 'rxjs';
 
 const storageBlockDestroy$ = new Subject();
 
@@ -32,7 +32,6 @@ export class StorageBlockEffects {
     })
   );
 
-  // load storage actions
   @Effect()
   StorageBlockStartEffect$ = this.actions$.pipe(
     ofType('STORAGE_BLOCK_START'),
@@ -42,8 +41,8 @@ export class StorageBlockEffects {
 
     switchMap(({ action, state }) =>
 
-      // get header data every second
-      timer(0, 1000).pipe(
+      // get header data every 30 seconds
+      timer(0, 30000).pipe(
         takeUntil(storageBlockDestroy$),
         switchMap(() =>
           this.http.get(setUrl(action, state)).pipe(
@@ -64,6 +63,28 @@ export class StorageBlockEffects {
     // init app modules
     tap(({ action, state }) => {
       storageBlockDestroy$.next();
+    })
+  );
+
+  @Effect()
+  StorageBlockDetailsLoad$ = this.actions$.pipe(
+    ofType('STORAGE_BLOCK_DETAILS_LOAD'),
+
+    // merge state
+    withLatestFrom(this.store, (action: any, state) => ({ action, state })),
+    switchMap(({ action, state }) => {
+      return this.http.get(setDetailsUrl(action, state));
+    }),
+
+    // dispatch action
+    map((payload) => ({ type: 'STORAGE_BLOCK_DETAILS_LOAD_SUCCESS', payload })),
+    catchError((error, caught) => {
+      console.error(error);
+      this.store.dispatch({
+        type: 'STORAGE_BLOCK_DETAILS_LOAD_ERROR',
+        payload: error
+      });
+      return caught;
     })
   );
 
@@ -99,4 +120,9 @@ export function storageBlockCursor(action) {
   return action.payload && action.payload.cursor_id ?
     `from_block_id=${action.payload.cursor_id}` :
     '';
+}
+
+export function setDetailsUrl(action, state) {
+  return state.settingsNode.api.http + '/chains/main/blocks/' + action.payload.hash;
+
 }

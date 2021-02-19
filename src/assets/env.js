@@ -9,6 +9,7 @@
       name: 'master.dev.tezedge',
       http: 'http://master.dev.tezedge.com:18732',
       debugger: 'http://master.dev.tezedge.com:17732',
+      monitoring: 'http://master.dev.tezedge.com:38732',
       ws: false
     }
   ];

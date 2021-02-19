@@ -22,9 +22,7 @@ export class ResourcesEffects {
       return timer(0, 30000).pipe(
         takeUntil(this.resourcesDestroy$),
         switchMap(() => {
-          const apiUrl = state.settingsNode.api.monitoring;
-          const endpoint = `${apiUrl}/resources/${apiUrl.includes('ocaml') ? 'ocaml' : 'tezedge'}`;
-          return this.resourcesService.getResources(endpoint)
+          return this.resourcesService.getResources(state.settingsNode.api.monitoring)
             .pipe(
               map((resources: Resource[]) => ({ type: ResourcesActionTypes.ResourcesLoadSuccess, payload: resources })),
               catchError(error => of({ type: ResourcesActionTypes.ResourcesLoadError, payload: error }))

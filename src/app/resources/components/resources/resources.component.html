@@ -16,7 +16,6 @@
       <div fxFlex="grow"
            fxLayout="column"
            fxLayoutAlign="start stretch"
-           fxLayoutGap="10px"
            class="centered-container">
         <div fxLayout="column"
              fxLayoutGap="20px"
@@ -31,6 +30,7 @@
                                     [startWithYGridLine]="true"
                                     [yAxisTickFormatting]="yAxisPercentageConversion"
                                     [xAxisTicks]="chartData.xTicksValues"
+                                    [rotateXAxisTicks]="false"
                                     [results]="chartData.cpu"
                                     [circleAtTheEnd]="true"
                                     [scheme]="colorScheme"
@@ -64,6 +64,7 @@
             <app-tezedge-line-chart *ngIf="chartData?.memory[0].series.length"
                                     [startWithYGridLine]="true"
                                     [results]="chartData.memory"
+                                    [rotateXAxisTicks]="false"
                                     [yAxisTickFormatting]="yAxisGigaBytesConversion"
                                     [xAxisTicks]="chartData.xTicksValues"
                                     [circleAtTheEnd]="true"
@@ -99,6 +100,7 @@
                                     [startWithYGridLine]="true"
                                     [results]="chartData.disk"
                                     [yAxisTickFormatting]="yAxisGigaBytesConversion"
+                                    [rotateXAxisTicks]="false"
                                     [xAxisTicks]="chartData.xTicksValues"
                                     [circleAtTheEnd]="true"
                                     [scheme]="colorScheme"
@@ -122,16 +124,24 @@
         </div>
       </div>
     </div>
+    <div fxFlex="38px">
+    </div>
   </div>
-  <div class="info-container">
-    <div class="info-header">
-      <h5 class="info-container-title">Additional info - {{ activeAdditionalInfo.toUpperCase() }} - {{ lastMeasurement }}</h5>
+  <div class="info-container"
+       fxLayout="column">
+    <div class="info-header"
+         fxFlex="38px"></div>
+    <div class="info-content-container"
+         fxFlex="grow"
+         fxLayout="column"
+         fxLayoutAlign="space-between">
+      <div class="additional-info"
+           [class.fade]="chartData"
+           [style.transition-delay.s]="0.8">
+        <app-resources-additional-info [additionalInfo]="additionalInfo[activeAdditionalInfo]"></app-resources-additional-info>
+      </div>
     </div>
-    <div class="additional-info"
-         [class.fade]="chartData"
-         [style.transition-delay.s]="0.8">
-      <app-resources-additional-info [additionalInfo]="additionalInfo[activeAdditionalInfo]"></app-resources-additional-info>
-    </div>
+    <h5 class="info-container-title">Additional info - {{ activeAdditionalInfo.toUpperCase() }} - {{ lastMeasurement }}</h5>
   </div>
 </div>
 

@@ -32,7 +32,6 @@ export class StorageBlockEffects {
     })
   );
 
-  // load storage actions
   @Effect()
   StorageBlockStartEffect$ = this.actions$.pipe(
     ofType('STORAGE_BLOCK_START'),

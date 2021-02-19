@@ -1,243 +1,323 @@
-<style>
-    .storage-action-filter {
-        width: 100%;
-        background-color: white;
-        padding-top: 2px;
-        height: 48px;
-
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
-
-    .mat-chip {
-        font-weight: 300;
-    }
-
-    .mat-chip.mat-standard-chip {
-        background-color: #f5f9fc !important;
-    }
-
-    .mat-chip.mat-standard-chip .mat-chip-remove {
-        opacity: .3;
-    }
-
-    .mat-standard-chip {
-        min-height: 30px;
-    }
-
-    .mat-standard-chip.mat-chip-with-trailing-icon {
-        /* padding-top: 8px; */
-    }
-</style>
-
 <!-- <app-storage-search>
 </app-storage-search> -->
 
+<div class="storage-action-block-link">
+  <span>
+    <b>Storage:</b> {{ virtualScrollItems?.debug?.totalTimeStorage / 1000 }} ms |
+    <b>Protocol:</b> {{ virtualScrollItems?.debug?.totalTimeProtocol / 1000 }} ms |
+    <b>Hash:</b>
+  </span>
+  <span mat-button style="font-weight: 300;max-width: 450px;min-width: 450px;"> <!--matTooltip="Block Hash" matTooltipPosition="above" routerLink="/storage/{{block}}" -->
+    {{ block }}
+  </span>
+</div>
+
 <div class="storage-action-container">
 
-    <!--
-    <div class="storage-action-filter">
-        <mat-form-field style="width: 800px;">
-            <mat-chip-list #chipList aria-label="Filter">
-                <mat-chip *ngFor="let filter of filters" (removed)="remove(filter)">
-                    {{ filter }}
-                    <mat-icon matChipRemove>clear</mat-icon>
-                </mat-chip>
+  <!--
+  <div class="storage-action-filter">
+      <mat-form-field style="width: 800px;">
+          <mat-chip-list #chipList aria-label="Filter">
+              <mat-chip *ngFor="let filter of filters" (removed)="remove(filter)">
+                  {{ filter }}
+                  <mat-icon matChipRemove>clear</mat-icon>
+              </mat-chip>
 
-                <input #storageActionInput [formControl]="storageActionInputForm" [matAutocomplete]="auto"
-                    [matChipInputFor]="chipList" (matChipInputTokenEnd)="add($event)">
+              <input #storageActionInput [formControl]="storageActionInputForm" [matAutocomplete]="auto"
+                  [matChipInputFor]="chipList" (matChipInputTokenEnd)="add($event)">
 
-                <button mat-icon-button (click)="openFilter()">
-                    <mat-icon>add</mat-icon>
-                </button>
+              <button mat-icon-button (click)="openFilter()">
+                  <mat-icon>add</mat-icon>
+              </button>
 
-            </mat-chip-list>
+          </mat-chip-list>
 
-            <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)">
-                <mat-option>
-                    GET
-                </mat-option>
-                <mat-option>
-                    SET
-                </mat-option>
-                <mat-option>
-                    MEM
-                </mat-option>
-                <mat-option>
-                    DEL
-                </mat-option>
-            </mat-autocomplete>
-        </mat-form-field>    
+          <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)">
+              <mat-option>
+                  GET
+              </mat-option>
+              <mat-option>
+                  SET
+              </mat-option>
+              <mat-option>
+                  MEM
+              </mat-option>
+              <mat-option>
+                  DEL
+              </mat-option>
+          </mat-autocomplete>
+      </mat-form-field>
+  </div>
+  -->
+
+  <!--New version by TJHN-->
+
+  <div class="table-virtual-scroll">
+    <div class="filters-container storage-filters">
     </div>
-    -->
 
-    <div class="storage-action" *ngFor="let block of storageActionBlocks">
+    <div class="table-virtual-scroll-header storage-action-header">
+      <span>TYPE</span>
+      <span>TIME (μs)</span>
+      <span>PATH</span>
+<!--      <span>VALUE</span>-->
+    </div>
 
-        <div>
+    <div class="table-virtual-scroll-body">
 
-            <!-- <div style="font-size: 14px;padding: 6px 0px 6px 12px;border-bottom: 1px solid rgba(0,0,0,.12);"
-                *ngIf="storageBlock.entities[blockId]?.header?.predecessor">
-                
-                <button matTooltip="Previous Block" matTooltipPosition="above" routerLink="/storage/{{ storageBlock.entities[blockId]?.header?.predecessor }}" mat-icon-button>
-                    <mat-icon>chevron_left</mat-icon>
-                </button>
-                <button matTooltip="Next Block" matTooltipPosition="above" routerLink="/storage/" *ngIf="storageBlock.entities[blockId]?.header?.predecessor" mat-icon-button>
-                    <mat-icon>chevron_right</mat-icon>
-                </button>
-                
-                <span *ngIf="storageBlock.entities[blockId]">
-                    <button mat-button matTooltip="Block Level" matTooltipPosition="above" style="font-weight: 300;">
-                        {{ storageBlock.entities[blockId]?.header?.level }}
-                    </button>
-                    <button mat-button matTooltip="Block Hash" matTooltipPosition="above"
-                        style="font-weight: 300;max-width: 450px;min-width: 450px;">
-                        {{ storageBlock.entities[blockId]?.hash }}
-                    </button>
+      <div class="virtual-scroll-container" [class.storage-block-filters-expanded]="filtersState.open">
+        <ng-template vsFor [vsForOf]="virtualScrollItems" let-event let-position="position"
+                     (getItems)="getItems($event)" (startStopDataStream)="startStopDataStream($event)">
+          <span class="virtualScrollRow storage-action-row"
+                [style.transform]="position !== undefined ? 'translate(0px,' + position + 'px)' : ''"
+                [class.virtualScrollRowEven]="event?.index % 2" (mouseenter)="event ? tableMouseEnter(event) : null"
+                [class.hover]="event?.start_time && storageActionItem?.id===event?.id"
+                [class.used]="event?.start_time">
 
-                    <button mat-button matTooltip="Cycle" matTooltipPosition="above" style="font-weight: 300;">
-                        {{ storageBlock.entities[blockId]?.metadata?.level?.cycle }}
-                    </button>
+            <span class="item-loading" [class.displayed]="!event?.start_time">&nbsp;</span>
 
-                    <button mat-button matTooltip="Cycle Position" matTooltipPosition="above" style="font-weight: 300;">
-                        {{ storageBlock.entities[blockId]?.metadata?.level?.cycle_position }}
-                    </button>
-                    <button mat-button matTooltip="Voting Period" matTooltipPosition="above" style="font-weight: 300;">
-                        {{ storageBlock.entities[blockId]?.metadata?.level?.voting_period }}
-                    </button>
-                    <button mat-button matTooltip="Voting Period Position" matTooltipPosition="above"
-                        style="margin:0px 20px 0px 0px;" style="font-weight: 300;">
-                        {{ storageBlock.entities[blockId]?.metadata?.level?.voting_period_position  }}
-                    </button>
-                </span> 
-            </div> -->
+            <span class="truncate">{{event?.type }}</span>
 
-            <div class="storage-action-block-link">
-                <span *ngIf="viewLast=='block'">
-                    <b>Storage:</b> {{ storageAction.debug.totalTimeStorage / 1000 }} ms | <b>Protocol:</b> {{ storageAction.debug.totalTimeProtocol / 1000 }} ms | <b>Hash:</b>
-                </span>    
-                <span routerLink="/storage/{{block}}" mat-button matTooltip="Block Hash" matTooltipPosition="above"
-                    style="font-weight: 300;max-width: 450px;min-width: 450px;">
-                    {{ block }}
+            <div class="truncate" style="text-align:left;width:80px;">
+              <span *ngIf="(event?.timeStorage<=100)">
+                {{event?.timeStorage }}
+              </span>
+              <span style="color:#8b0000" *ngIf="(event?.timeStorage>100 && event?.timeStorage<1000)">
+                {{event?.timeStorage }}
+              </span>
+              <span style="color:red" *ngIf="(event?.timeStorage>=1000)">
+                {{event?.timeStorage }}
+              </span>
+              <span *ngIf="viewLast=='block'">|
+                <span *ngIf="(event?.timeProtocol<=100)">
+                  {{event?.timeProtocol }}
                 </span>
+                <span style="color:darkred"
+                      *ngIf="(event?.timeProtocol>100 && event?.timeProtocol<1000)">
+                  {{event?.timeProtocol }}
+                </span>
+                <span style="color:red" *ngIf="(event?.timeProtocol>=1000)">
+                  {{event?.timeProtocol }}
+                </span>
+              </span>
             </div>
 
+            <span class="truncate">
+              <span [style.color]="event?.color">{{event?.category}}</span>
+              <span *ngIf="event && event?.category !='contracts'">{{event?.path}}</span>
+              <span *ngIf="event && event?.category =='contracts'" >{{event?.path}}</span> <!--routerLink="/storage/{{event?.address}}"-->
+              <span [style.color]="event?.color"
+                    *ngIf="event?.lastKey">/{{ event?.lastKey }}</span>
+            </span>
+          </span>
+        </ng-template>
+      </div>
 
-            <table mat-table [dataSource]="tableDataSource[block]" multiTemplateDataRows>
-
-                <ng-container matColumnDef="type">
-                    <th mat-header-cell *matHeaderCellDef>Type</th>
-                    <td mat-cell *matCellDef="let action">
-                        <span>{{action.type }}</span>
-                    </td>
-                </ng-container>
-
-                <ng-container matColumnDef="time">
-                    <th mat-header-cell *matHeaderCellDef>Time (μs)</th>
-                    <td mat-cell *matCellDef="let action">
-                        <!-- {{ action.start_time }} -->
-                        <!-- style="display:inline-block;text-align:right;" -->
-                        <div style="text-align:left;width:80px;">
-                            <span *ngIf="(action.timeStorage<=100)">
-                                {{action.timeStorage }}
-                            </span>
-                            <span style="color:darkred" *ngIf="(action.timeStorage>100 && action.timeStorage<1000)">
-                                {{action.timeStorage }}
-                            </span>
-                            <span style="color:red" *ngIf="(action.timeStorage>=1000)">
-                                {{action.timeStorage }}
-                            </span>
-                            <span *ngIf="viewLast=='block'">
-                                |
-                                <span *ngIf="(action.timeProtocol<=100)">
-                                    {{action.timeProtocol }}
-                                </span>
-                                <span style="color:darkred"
-                                    *ngIf="(action.timeProtocol>100 && action.timeProtocol<1000)">
-                                    {{action.timeProtocol }}
-                                </span>
-                                <span style="color:red" *ngIf="(action.timeProtocol>=1000)">
-                                    {{action.timeProtocol }}
-                                </span>
-                            </span>
-                        </div>
-
-                    </td>
-                </ng-container>
-
-                <ng-container matColumnDef="category">
-                    <th mat-header-cell *matHeaderCellDef>Category</th>
-                    <td mat-cell *matCellDef="let action">
-
-                    </td>
-                </ng-container>
-
-                <ng-container matColumnDef="path">
-                    <th mat-header-cell *matHeaderCellDef>
-                        <span>Path</span>
-                    </th>
-                    <td mat-cell *matCellDef="let action">
-                        <span>
-                            <span [style.color]="action.color">{{action.category}}</span>
-                            <span *ngIf="action && action.category !='contracts'">{{action.path}}</span>
-                            <span *ngIf="action && action.category =='contracts'" style="cursor:pointer;"
-                                routerLink="/storage/{{action.address}}">{{action.path}}</span>
-                            <span [style.color]="action.color" *ngIf="action.lastKey">/{{ action.lastKey }}</span>
-                        </span>
-                    </td>
-                </ng-container>
-
-                <ng-container matColumnDef="value">
-                    <th mat-header-cell *matHeaderCellDef>Value</th>
-                    <td mat-cell *matCellDef="let action">
-                        <span *ngIf="action" style="text-align: left; cursor: pointer;"
-                            (click)="expandedElement = action">
-                            <span *ngIf="action.json">
-                                {{action.json}}
-                            </span>
-                            <span *ngIf="!action.json && action.hex" style="height: 100px !important;color:#b0b0b0;">
-                                Ox{{action.hex}}
-                                <!-- {{action.text}} -->
-                            </span>
-                        </span>
-                    </td>
-                </ng-container>
-
-                <ng-container matColumnDef="expandedDetail">
-                    <td mat-cell *matCellDef="let action" [attr.colspan]="4" class="expanded-detail-cell">
-                        
-                        <div class="storage-action-detail-type">
-                            {{action.type}}   
-                            <span style="margin-left: 12px;">
-                                {{action.timeStorage }}
-                            </span>
-                        </div>
-
-                        <div class="storage-action-detail-key">
-                            {{action.key}}
-                        </div>
-                        <div class="storage-action-detail-value" >
-                            {{action.json}}
-                        </div>
-
-                    </td>
-                </ng-container>
-
-                <tr mat-header-row *matHeaderRowDef="['type','time','path','value']"></tr>
-                <tr mat-row *matRowDef="let row; columns: ['type','time','path','value'];"
-                    [class.row-expanded]="expandedElement == row" [class.row-colapsed]="expandedElement != row">
-                </tr>
-
-                <tr mat-row *matRowDef="let row; columns: ['expandedDetail']"
-                    [class.detail-expanded]="expandedElement == row" [class.detail-colapsed]="expandedElement != row">
-                </tr>
-
-            </table>
-
-            <mat-paginator [attr.id]="block" [pageSizeOptions]="[15]"></mat-paginator>
-        </div>
+      <div class="action-table-detail" id="virtualScrollTableDetails">
+        <mat-tab-group>
+          <mat-tab *ngIf="storageActionItem?.id">
+            <ng-template mat-tab-label>
+              <span>JSON</span>
+            </ng-template>
+            <ng-template matTabContent>
+              <ngx-json-viewer *ngIf="storageActionItem?.id" [json]="storageActionItem" [expanded]="false">
+              </ngx-json-viewer>
+            </ng-template>
+          </mat-tab>
+        </mat-tab-group>
+        <!-- TODO: add the Hex and Error tabs if needed  -->
+      </div>
     </div>
 
+    <div class="table-virtual-scroll-footer">
+      <span>
+<!--        <button id="startStreaming" mat-icon-button matTooltip="Start" (click)="scrollStart(null)"-->
+<!--                *ngIf="!virtualScrollItems?.stream">-->
+<!--          <mat-icon>play_arrow_outline</mat-icon>-->
+<!--        </button>-->
+        <button id="stopStreaming" mat-icon-button matTooltip="Stop" (click)="scrollStop()"
+                *ngIf="virtualScrollItems?.stream">
+          <mat-icon>stop_outline</mat-icon>
+        </button>
+        <button mat-icon-button matTooltip="Last page" (click)="scrollToEnd()">
+          <mat-icon style="transform: rotate(90deg)">last_page</mat-icon>
+        </button>
+      </span>
+    </div>
+  </div>
+
+  <!--End of new version-->
+
+
+  <!--    TODO: remove this div-->
+  <!--  <div class="storage-action" *ngFor="let block of storageActionBlocks">-->
+  <!--    &lt;!&ndash;style="position:absolute; right: 0; top: 1px;"&ndash;&gt;-->
+
+  <!--    <div>-->
+
+  <!--      &lt;!&ndash; <div style="font-size: 14px;padding: 6px 0px 6px 12px;border-bottom: 1px solid rgba(0,0,0,.12);"-->
+  <!--          *ngIf="storageBlock.entities[blockId]?.header?.predecessor">-->
+
+  <!--          <button matTooltip="Previous Block" matTooltipPosition="above" routerLink="/storage/{{ storageBlock.entities[blockId]?.header?.predecessor }}" mat-icon-button>-->
+  <!--              <mat-icon>chevron_left</mat-icon>-->
+  <!--          </button>-->
+  <!--          <button matTooltip="Next Block" matTooltipPosition="above" routerLink="/storage/" *ngIf="storageBlock.entities[blockId]?.header?.predecessor" mat-icon-button>-->
+  <!--              <mat-icon>chevron_right</mat-icon>-->
+  <!--          </button>-->
+
+  <!--          <span *ngIf="storageBlock.entities[blockId]">-->
+  <!--              <button mat-button matTooltip="Block Level" matTooltipPosition="above" style="font-weight: 300;">-->
+  <!--                  {{ storageBlock.entities[blockId]?.header?.level }}-->
+  <!--              </button>-->
+  <!--              <button mat-button matTooltip="Block Hash" matTooltipPosition="above"-->
+  <!--                  style="font-weight: 300;max-width: 450px;min-width: 450px;">-->
+  <!--                  {{ storageBlock.entities[blockId]?.hash }}-->
+  <!--              </button>-->
+
+  <!--              <button mat-button matTooltip="Cycle" matTooltipPosition="above" style="font-weight: 300;">-->
+  <!--                  {{ storageBlock.entities[blockId]?.metadata?.level?.cycle }}-->
+  <!--              </button>-->
+
+  <!--              <button mat-button matTooltip="Cycle Position" matTooltipPosition="above" style="font-weight: 300;">-->
+  <!--                  {{ storageBlock.entities[blockId]?.metadata?.level?.cycle_position }}-->
+  <!--              </button>-->
+  <!--              <button mat-button matTooltip="Voting Period" matTooltipPosition="above" style="font-weight: 300;">-->
+  <!--                  {{ storageBlock.entities[blockId]?.metadata?.level?.voting_period }}-->
+  <!--              </button>-->
+  <!--              <button mat-button matTooltip="Voting Period Position" matTooltipPosition="above"-->
+  <!--                  style="margin:0px 20px 0px 0px;" style="font-weight: 300;">-->
+  <!--                  {{ storageBlock.entities[blockId]?.metadata?.level?.voting_period_position  }}-->
+  <!--              </button>-->
+  <!--          </span>-->
+  <!--      </div> &ndash;&gt;-->
+
+  <!--      <div class="storage-action-block-link">-->
+  <!--                <span *ngIf="viewLast=='block'">-->
+  <!--                    <b>Storage:</b> {{ storageAction.debug.totalTimeStorage / 1000 }}-->
+  <!--                  ms | <b>Protocol:</b> {{ storageAction.debug.totalTimeProtocol / 1000 }} ms | <b>Hash:</b>-->
+  <!--                </span>-->
+  <!--        <span routerLink="/storage/{{block}}" mat-button matTooltip="Block Hash" matTooltipPosition="above"-->
+  <!--              style="font-weight: 300;max-width: 450px;min-width: 450px;">-->
+  <!--                    {{ block }}-->
+  <!--                </span>-->
+  <!--      </div>-->
+
+
+  <!--      <table mat-table [dataSource]="tableDataSource[block]" multiTemplateDataRows>-->
+
+  <!--        <ng-container matColumnDef="type">-->
+  <!--          <th mat-header-cell *matHeaderCellDef>Type</th>-->
+  <!--          <td mat-cell *matCellDef="let action">-->
+  <!--            <span>{{action.type }}</span>-->
+  <!--          </td>-->
+  <!--        </ng-container>-->
+
+  <!--        <ng-container matColumnDef="time">-->
+  <!--          <th mat-header-cell *matHeaderCellDef>Time (μs)</th>-->
+  <!--          <td mat-cell *matCellDef="let action">-->
+  <!--            &lt;!&ndash; {{ action.start_time }} &ndash;&gt;-->
+  <!--            &lt;!&ndash; style="display:inline-block;text-align:right;" &ndash;&gt;-->
+  <!--            <div style="text-align:left;width:80px;">-->
+  <!--                            <span *ngIf="(action.timeStorage<=100)">-->
+  <!--                                {{action.timeStorage }}-->
+  <!--                            </span>-->
+  <!--              <span style="color:#8b0000" *ngIf="(action.timeStorage>100 && action.timeStorage<1000)">-->
+  <!--                                {{action.timeStorage }}-->
+  <!--                            </span>-->
+  <!--              <span style="color:red" *ngIf="(action.timeStorage>=1000)">-->
+  <!--                                {{action.timeStorage }}-->
+  <!--                            </span>-->
+  <!--              <span *ngIf="viewLast=='block'">-->
+  <!--                                |-->
+  <!--                                <span *ngIf="(action.timeProtocol<=100)">-->
+  <!--                                    {{action.timeProtocol }}-->
+  <!--                                </span>-->
+  <!--                                <span style="color:darkred"-->
+  <!--                                      *ngIf="(action.timeProtocol>100 && action.timeProtocol<1000)">-->
+  <!--                                    {{action.timeProtocol }}-->
+  <!--                                </span>-->
+  <!--                                <span style="color:red" *ngIf="(action.timeProtocol>=1000)">-->
+  <!--                                    {{action.timeProtocol }}-->
+  <!--                                </span>-->
+  <!--                            </span>-->
+  <!--            </div>-->
+
+  <!--          </td>-->
+  <!--        </ng-container>-->
+
+  <!--        <ng-container matColumnDef="category">-->
+  <!--          <th mat-header-cell *matHeaderCellDef>Category</th>-->
+  <!--          <td mat-cell *matCellDef="let action">-->
+
+  <!--          </td>-->
+  <!--        </ng-container>-->
+
+  <!--        <ng-container matColumnDef="path">-->
+  <!--          <th mat-header-cell *matHeaderCellDef>-->
+  <!--            <span>Path</span>-->
+  <!--          </th>-->
+  <!--          <td mat-cell *matCellDef="let action">-->
+  <!--                        <span>-->
+  <!--                            <span [style.color]="action.color">{{action.category}}</span>-->
+  <!--                            <span *ngIf="action && action.category !='contracts'">{{action.path}}</span>-->
+  <!--                            <span *ngIf="action && action.category =='contracts'" style="cursor:pointer;"-->
+  <!--                                  routerLink="/storage/{{action.address}}">{{action.path}}</span>-->
+  <!--                            <span [style.color]="action.color" *ngIf="action.lastKey">/{{ action.lastKey }}</span>-->
+  <!--                        </span>-->
+  <!--          </td>-->
+  <!--        </ng-container>-->
+
+  <!--        <ng-container matColumnDef="value">-->
+  <!--          <th mat-header-cell *matHeaderCellDef>Value</th>-->
+  <!--          <td mat-cell *matCellDef="let action">-->
+  <!--                        <span *ngIf="action" style="text-align: left; cursor: pointer;"-->
+  <!--                              (click)="expandedElement = action">-->
+  <!--                            <span *ngIf="action.json">-->
+  <!--                                {{action.json}}-->
+  <!--                            </span>-->
+  <!--                            <span *ngIf="!action.json && action.hex" style="height: 100px !important;color:#b0b0b0;">-->
+  <!--                                Ox{{action.hex}}-->
+  <!--                              &lt;!&ndash; {{action.text}} &ndash;&gt;-->
+  <!--                            </span>-->
+  <!--                        </span>-->
+  <!--          </td>-->
+  <!--        </ng-container>-->
+
+  <!--        <ng-container matColumnDef="expandedDetail">-->
+  <!--          <td mat-cell *matCellDef="let action" [attr.colspan]="4" class="expanded-detail-cell">-->
+
+  <!--            <div class="storage-action-detail-type">-->
+  <!--              {{action.type}}-->
+  <!--              <span style="margin-left: 12px;">-->
+  <!--                                {{action.timeStorage }}-->
+  <!--                            </span>-->
+  <!--            </div>-->
+
+  <!--            <div class="storage-action-detail-key">-->
+  <!--              {{action.key}}-->
+  <!--            </div>-->
+  <!--            <div class="storage-action-detail-value">-->
+  <!--              {{action.json}}-->
+  <!--            </div>-->
+
+  <!--          </td>-->
+  <!--        </ng-container>-->
+
+  <!--        <tr mat-header-row *matHeaderRowDef="['type','time','path','value']"></tr>-->
+  <!--        <tr mat-row *matRowDef="let row; columns: ['type','time','path','value'];"-->
+  <!--            [class.row-expanded]="expandedElement == row" [class.row-colapsed]="expandedElement != row">-->
+  <!--        </tr>-->
+
+  <!--        <tr mat-row *matRowDef="let row; columns: ['expandedDetail']"-->
+  <!--            [class.detail-expanded]="expandedElement == row" [class.detail-colapsed]="expandedElement != row">-->
+  <!--        </tr>-->
+
+  <!--      </table>-->
+
+  <!--      <mat-paginator [attr.id]="block" [pageSizeOptions]="[15]"></mat-paginator>-->
+  <!--    </div>-->
+  <!--  </div>-->
+  <!--  remove until here -->
 </div>
 
 

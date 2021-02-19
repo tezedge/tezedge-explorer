@@ -719,6 +719,9 @@ mat-form-field input[type='number'] {
   padding: 12px 12px 12px 24px;
   border-bottom: 1px solid $color-table-border;
   cursor: pointer;
+  position: absolute;
+  z-index: 9999;
+  color: white;
 }
 
 .logs-action {
@@ -762,6 +765,7 @@ mat-form-field input[type='number'] {
 
 /* virtual scroll variable */
 .table-virtual-scroll {
+  top: 0;
   position: absolute;
   width: calc(100%);
   height: calc(100%);
@@ -1818,6 +1822,10 @@ input.mat-input-element {
     grid-template-columns: 180px 70px 1fr;
   }
 
+  &.storage-action-header {
+    grid-template-columns: 120px 120px 1fr;
+  }
+
 }
 
 .virtualScrollRow {
@@ -1840,6 +1848,10 @@ input.mat-input-element {
 
   &.storage-block-row {
     grid-template-columns: 180px 80px 1fr;
+  }
+
+  &.storage-action-row {
+    grid-template-columns: 120px 120px 1fr;
   }
 
   .item-loading {

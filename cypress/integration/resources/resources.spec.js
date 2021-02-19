@@ -1,8 +1,10 @@
 context('resources', () => {
     beforeEach(() => {
         cy.intercept('GET', '/resources/tezedge').as('getTezedgeResources');
-        cy.intercept('GET', '/resources/ocaml').as('getOcamlResources');
         cy.visit(Cypress.config().baseUrl);
+        cy.wait(1000);
+        cy.visit(Cypress.config().baseUrl + '/#/resources', { timeout: 1000 });
+        cy.wait(1000);
     })
 
     it('[resources] should perform get resources request successfully', () => {
@@ -43,9 +45,6 @@ context('resources', () => {
                         store.select('resources')
                             .subscribe(() => {
                                 cy.get('.resource-category-block')
-                                    .its('length')
-                                    .should(value => expect(value).to.equal(3))
-                                cy.get('.resource-panel')
                                     .its('length')
                                     .should(value => expect(value).to.equal(3))
                                 cy.get('app-tezedge-line-chart')

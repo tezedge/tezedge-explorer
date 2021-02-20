@@ -6,8 +6,10 @@
        fxLayout="column"
        fxLayoutAlign="start stretch">
     <div class="tabs">
+      <!--
       <span class="tab"
             [class.selected]="true">SYSTEM OVERVIEW</span>
+      -->
     </div>
     <div fxFlex="grow"
          fxLayout="column"
@@ -18,7 +20,6 @@
            fxLayoutAlign="start stretch"
            class="centered-container">
         <div fxLayout="column"
-             fxLayoutGap="20px"
              [class.fade]="chartData"
              [style.transition-delay.s]="0.2"
              (click)="toggleAdditionalInfo('cpu')"
@@ -53,7 +54,6 @@
           </div>
         </div>
         <div fxLayout="column"
-             fxLayoutGap="20px"
              [class.fade]="chartData"
              [style.transition-delay.s]="0.4"
              (click)="toggleAdditionalInfo('memory')"
@@ -88,7 +88,6 @@
           </div>
         </div>
         <div fxLayout="column"
-             fxLayoutGap="20px"
              [class.fade]="chartData"
              [style.transition-delay.s]="0.6"
              (click)="toggleAdditionalInfo('disk')"
@@ -124,13 +123,17 @@
         </div>
       </div>
     </div>
-    <div fxFlex="38px">
-    </div>
+    
+    <!-- 
+      <div fxFlex="38px">
+      </div> 
+    -->
+
   </div>
   <div class="info-container"
        fxLayout="column">
     <div class="info-header"
-         fxFlex="38px"></div>
+         fxFlex="40px"></div>
     <div class="info-content-container"
          fxFlex="grow"
          fxLayout="column"
@@ -141,7 +144,9 @@
         <app-resources-additional-info [additionalInfo]="additionalInfo[activeAdditionalInfo]"></app-resources-additional-info>
       </div>
     </div>
+    <!--
     <h5 class="info-container-title">Additional info - {{ activeAdditionalInfo.toUpperCase() }} - {{ lastMeasurement }}</h5>
+    -->
   </div>
 </div>
 

@@ -1,4 +1,4 @@
-$faded-white: rgba(255, 255, 255, 0.1);
+$faded-white: rgba(51, 51, 52, 1);
 $text-color: rgb(164, 164, 165);
 
 .resources-wizard {
@@ -7,12 +7,13 @@ $text-color: rgb(164, 164, 165);
 
   .main-resources-container {
     > div:last-child {
-      border-top: 1px solid $faded-white;
+      /*border-top: 1px solid $faded-white;*/
     }
 
     .tabs {
       border-bottom: 1px solid $faded-white;
       padding: 9px 15px;
+      min-height: 40px;
 
       .tab {
         color: rgba(255, 255, 255, 0.6);
@@ -31,7 +32,7 @@ $text-color: rgb(164, 164, 165);
       margin-right: auto;
       width: 100%;
       overflow: auto;
-      padding: 10px 10px 0;
+      /* padding: 10px 10px 0; */
 
       .centered-container {
         width: 100%;
@@ -40,16 +41,19 @@ $text-color: rgb(164, 164, 165);
 
         .resource-category-block {
           position: relative;
-          margin-bottom: 10px;
           opacity: 0;
-          height: 32%;
-          padding: 20px 10px 40px 40px;
+          /* padding: 20px 10px 40px 40px; */
+          padding: 2vh 1vw 4vh 3vw;
           transition: opacity 1s;
           border-radius: 5px;
           background-color: $faded-white;
+          margin: 1vh 1vh 0vh 1vh;
+          height: 28.6vh;
+          /*
+          margin-bottom: 10px;
           min-height: 250px;
           max-height: 400px;
-
+          */
           &.fade {
             opacity: 1;
           }
@@ -57,6 +61,7 @@ $text-color: rgb(164, 164, 165);
           .graph-title {
             color: $text-color;
             font-size: 12px;
+            margin-bottom: 2vh;
             text-align: center;
           }
 
@@ -79,6 +84,7 @@ $text-color: rgb(164, 164, 165);
 
     .info-header {
       border-bottom: 1px solid $faded-white;
+      min-height: 40px;
     }
 
     .info-content-container {

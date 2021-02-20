@@ -6,8 +6,10 @@
        fxLayout="column"
        fxLayoutAlign="start stretch">
     <div class="tabs">
+      <!--
       <span class="tab"
             [class.selected]="true">SYSTEM OVERVIEW</span>
+      -->
     </div>
     <div fxFlex="grow"
          fxLayout="column"
@@ -16,10 +18,8 @@
       <div fxFlex="grow"
            fxLayout="column"
            fxLayoutAlign="start stretch"
-           fxLayoutGap="10px"
            class="centered-container">
         <div fxLayout="column"
-             fxLayoutGap="20px"
              [class.fade]="chartData"
              [style.transition-delay.s]="0.2"
              (click)="toggleAdditionalInfo('cpu')"
@@ -31,6 +31,7 @@
                                     [startWithYGridLine]="true"
                                     [yAxisTickFormatting]="yAxisPercentageConversion"
                                     [xAxisTicks]="chartData.xTicksValues"
+                                    [rotateXAxisTicks]="false"
                                     [results]="chartData.cpu"
                                     [circleAtTheEnd]="true"
                                     [scheme]="colorScheme"
@@ -53,7 +54,6 @@
           </div>
         </div>
         <div fxLayout="column"
-             fxLayoutGap="20px"
              [class.fade]="chartData"
              [style.transition-delay.s]="0.4"
              (click)="toggleAdditionalInfo('memory')"
@@ -64,6 +64,7 @@
             <app-tezedge-line-chart *ngIf="chartData?.memory[0].series.length"
                                     [startWithYGridLine]="true"
                                     [results]="chartData.memory"
+                                    [rotateXAxisTicks]="false"
                                     [yAxisTickFormatting]="yAxisGigaBytesConversion"
                                     [xAxisTicks]="chartData.xTicksValues"
                                     [circleAtTheEnd]="true"
@@ -87,7 +88,6 @@
           </div>
         </div>
         <div fxLayout="column"
-             fxLayoutGap="20px"
              [class.fade]="chartData"
              [style.transition-delay.s]="0.6"
              (click)="toggleAdditionalInfo('disk')"
@@ -99,6 +99,7 @@
                                     [startWithYGridLine]="true"
                                     [results]="chartData.disk"
                                     [yAxisTickFormatting]="yAxisGigaBytesConversion"
+                                    [rotateXAxisTicks]="false"
                                     [xAxisTicks]="chartData.xTicksValues"
                                     [circleAtTheEnd]="true"
                                     [scheme]="colorScheme"
@@ -122,16 +123,30 @@
         </div>
       </div>
     </div>
+    
+    <!-- 
+      <div fxFlex="38px">
+      </div> 
+    -->
+
   </div>
-  <div class="info-container">
-    <div class="info-header">
-      <h5 class="info-container-title">Additional info - {{ activeAdditionalInfo.toUpperCase() }} - {{ lastMeasurement }}</h5>
+  <div class="info-container"
+       fxLayout="column">
+    <div class="info-header"
+         fxFlex="40px"></div>
+    <div class="info-content-container"
+         fxFlex="grow"
+         fxLayout="column"
+         fxLayoutAlign="space-between">
+      <div class="additional-info"
+           [class.fade]="chartData"
+           [style.transition-delay.s]="0.8">
+        <app-resources-additional-info [additionalInfo]="additionalInfo[activeAdditionalInfo]"></app-resources-additional-info>
+      </div>
     </div>
-    <div class="additional-info"
-         [class.fade]="chartData"
-         [style.transition-delay.s]="0.8">
-      <app-resources-additional-info [additionalInfo]="additionalInfo[activeAdditionalInfo]"></app-resources-additional-info>
-    </div>
+    <!--
+    <h5 class="info-container-title">Additional info - {{ activeAdditionalInfo.toUpperCase() }} - {{ lastMeasurement }}</h5>
+    -->
   </div>
 </div>
 

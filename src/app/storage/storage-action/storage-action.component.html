@@ -115,12 +115,30 @@
 
       <div class="action-table-detail" id="virtualScrollTableDetails">
         <mat-tab-group>
-          <mat-tab *ngIf="storageActionItem?.id">
+          <mat-tab *ngIf="storageActionItem?.value_as_json">
             <ng-template mat-tab-label>
               <span>JSON</span>
             </ng-template>
             <ng-template matTabContent>
-              <ngx-json-viewer *ngIf="storageActionItem?.id" [json]="storageActionItem" [expanded]="false">
+              <ngx-json-viewer *ngIf="storageActionItem?.value_as_json" [json]="storageActionItem.value_as_json" [expanded]="false">
+              </ngx-json-viewer>
+            </ng-template>
+          </mat-tab>
+          <mat-tab *ngIf="storageActionItem?.value">
+            <ng-template mat-tab-label>
+              <span>Value</span>
+            </ng-template>
+            <ng-template matTabContent>
+              <ngx-json-viewer *ngIf="storageActionItem?.value" [json]="storageActionItem.value" [expanded]="false">
+              </ngx-json-viewer>
+            </ng-template>
+          </mat-tab>
+          <mat-tab *ngIf="storageActionItem?.path">
+            <ng-template mat-tab-label>
+              <span>Path</span>
+            </ng-template>
+            <ng-template matTabContent>
+              <ngx-json-viewer *ngIf="storageActionItem?.path" [json]="storageActionItem.path" [expanded]="false">
               </ngx-json-viewer>
             </ng-template>
           </mat-tab>

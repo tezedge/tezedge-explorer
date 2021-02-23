@@ -2,13 +2,16 @@
   padding: 10px;
 
   .list-group {
-    /* border: 1px solid rgba(255, 255, 255, 0.1); */
-    padding: 10px;
+    padding: 10px 0 10px 10px;
     font-size: 12px;
     
     .faded-text {
       color: rgba(255, 255, 255, 0.75) !important;
       margin-left: 2px;
+    }
+
+    td.faded-text {
+      text-align: right;
     }
 
     table {

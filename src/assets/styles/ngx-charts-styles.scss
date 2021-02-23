@@ -1,3 +1,5 @@
+$tooltip-background: #2A2A2E;
+
 app-tezedge-line-chart {
   color: rgba(255, 255, 255, 0.6);
   fill: rgba(255, 255, 255, 0.6);
@@ -5,9 +7,30 @@ app-tezedge-line-chart {
 
 .ngx-charts-tooltip-content {
   padding: 0 !important;
+  background-color: $tooltip-background !important;
+  color: rgba(255, 255, 255, 0.6) !important;
+  border-radius: 4px !important;
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
 
   .tooltip-template {
     padding: 5px;
+  }
+
+  .tooltip-caret.position-right {
+    border-right-color: $tooltip-background !important;
+  }
+
+  .tooltip-caret.position-left {
+    border-left-color: $tooltip-background !important;
+  }
+
+  .tooltip-caret.position-top {
+    border-top-color: $tooltip-background !important;
+  }
+
+  .tooltip-caret.position-bottom {
+    border-bottom-color: $tooltip-background !important;
   }
 
   .ngx-series-tooltip {
@@ -15,7 +38,7 @@ app-tezedge-line-chart {
       padding: 7px 12px;
       text-align: left;
       font-size: 14px;
-      border-bottom: 1px solid #444;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.2);
     }
 
     .data-wrapper {
@@ -30,7 +53,7 @@ app-tezedge-line-chart {
 
       .series-value {
         font-size: 13px;
-        text-shadow: 0 1px #fff;
+        color: rgba(255, 255, 255, 0.75);
       }
     }
   }

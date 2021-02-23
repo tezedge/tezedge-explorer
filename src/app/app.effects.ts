@@ -25,30 +25,7 @@ export class AppEffects {
         withLatestFrom(this.store, (action: any, state) => ({ action, state })),
 
         // TODO: refactor and add checks for every featured api (node, debugger, monitoring )
-        tap(({ action, state }) => {
 
-            let redirectUrl = '';
-            if (action.payload.connected) {
-                if (action.payload.id === 'sandbox-carthage-tezedge') {
-                    redirectUrl = 'wallets';
-                }
-                else if (action.payload.ws === false) {
-                    redirectUrl = 'monitoring';
-                    // redirectUrl = 'mempool';
-                } else {
-                    redirectUrl = 'monitoring';
-                    // redirectUrl = 'mempool';
-                }
-            } else {
-                redirectUrl = '';
-            }
-
-            // force url reload
-            this.router.navigateByUrl('/', { skipLocationChange: false }).then(() =>
-                this.router.navigate([redirectUrl])
-            );
-
-        }),
         map(() => ({ type: 'APP_INIT_SUCCESS' }))
     );
 

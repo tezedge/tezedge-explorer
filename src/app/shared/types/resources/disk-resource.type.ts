@@ -5,4 +5,5 @@ export class DiskResource {
   contextActions: number;
   blockStorage: number;
   debugger: number;
+  total: number;
 }

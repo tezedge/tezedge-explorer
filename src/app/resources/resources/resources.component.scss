@@ -4,12 +4,9 @@ $text-color: rgb(164, 164, 165);
 .resources-wizard {
   background-color: #2A2A2E;
   border-top-left-radius: 5px;
+  overflow-y: auto;
 
   .main-resources-container {
-    > div:last-child {
-      /*border-top: 1px solid $faded-white;*/
-    }
-
     .tabs {
       border-bottom: 1px solid $faded-white;
       padding: 9px 15px;
@@ -32,54 +29,16 @@ $text-color: rgb(164, 164, 165);
       margin-right: auto;
       width: 100%;
       overflow: auto;
-      /* padding: 10px 10px 0; */
 
       .centered-container {
         width: 100%;
-        margin: 0 auto;
+        margin: 10px auto;
         max-height: unset !important;
-
-        .resource-category-block {
-          position: relative;
-          opacity: 0;
-          /* padding: 20px 10px 40px 40px; */
-          padding: 2vh 1vw 4vh 3vw;
-          transition: opacity 1s;
-          border-radius: 5px;
-          background-color: $faded-white;
-          margin: 1vh 1vh 0vh 1vh;
-          height: 28.6vh;
-          /*
-          margin-bottom: 10px;
-          min-height: 250px;
-          max-height: 400px;
-          */
-          &.fade {
-            opacity: 1;
-          }
-
-          .graph-title {
-            color: $text-color;
-            font-size: 12px;
-            margin-bottom: 2vh;
-            text-align: center;
-          }
-
-          .rotated-label {
-            position: absolute;
-            left: 10px;
-            top: 50%;
-            transform: rotate(-90deg);
-            color: $text-color;
-            font-size: 12px;
-          }
-        }
       }
     }
   }
 
   .info-container {
-    min-width: 20vw;
     background-color: #2A2A2E;
 
     .info-header {
@@ -88,7 +47,9 @@ $text-color: rgb(164, 164, 165);
     }
 
     .info-content-container {
-      border-left: 1px solid $faded-white;
+      @media (min-width: 1280px) {
+        border-left: 1px solid $faded-white;
+      }
     }
 
     .info-container-title {

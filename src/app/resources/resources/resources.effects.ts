@@ -4,8 +4,8 @@ import { catchError, map, switchMap, takeUntil, tap, withLatestFrom } from 'rxjs
 import { of, Subject, timer } from 'rxjs';
 import { Store } from '@ngrx/store';
 import { ResourcesActionTypes } from './resources.actions';
-import { ResourcesService } from '../services/resources.service';
-import { Resource } from '../models/resource';
+import { ResourcesService } from './resources.service';
+import { Resource } from '../../shared/types/resources/resource.type';
 
 @Injectable({ providedIn: 'root' })
 export class ResourcesEffects {
@@ -21,13 +21,12 @@ export class ResourcesEffects {
 
       return timer(0, 30000).pipe(
         takeUntil(this.resourcesDestroy$),
-        switchMap(() => {
-          return this.resourcesService.getResources(state.settingsNode.api.monitoring)
+        switchMap(() =>
+          this.resourcesService.getResources(state.settingsNode.api.monitoring)
             .pipe(
               map((resources: Resource[]) => ({ type: ResourcesActionTypes.ResourcesLoadSuccess, payload: resources })),
               catchError(error => of({ type: ResourcesActionTypes.ResourcesLoadError, payload: error }))
-            );
-        })
+            ))
       );
     })
   );

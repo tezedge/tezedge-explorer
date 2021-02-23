@@ -15,13 +15,10 @@ import { WalletsComponent } from './wallets/wallets.component';
 
 export const AppRouting: Routes = [
 
-  // lazy load module
-  //   { path: 'network', loadChildren: 'app/network/network.module#networkModule' },
-
   { path: 'monitoring', component: MonitoringComponent },
   {
     path: 'resources',
-    loadChildren: () => import('./resources/resources.module').then(m => m.ResourcesModule)
+    loadChildren: () => import('./resources/resources.module').then(module => module.ResourcesModule)
   },
 
   { path: 'mempool', component: MempoolComponent },
@@ -44,7 +41,7 @@ export const AppRouting: Routes = [
 
   { path: 'wallets', component: WalletsComponent },
 
-  // { path: '', redirectTo: '/network', pathMatch: 'full' },
+  { path: '', redirectTo: 'monitoring', pathMatch: 'full' },
   // { path: '**', component: PageNotFoundComponent }
 
 ];

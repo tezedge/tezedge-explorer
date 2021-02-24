@@ -78,7 +78,7 @@
 
             <span class="truncate">{{event?.type }}</span>
 
-            <div class="truncate" style="text-align:left;width:80px;">
+            <div class="truncate storage-action-time" style="text-align:left;width:80px;">
               <span *ngIf="(event?.timeStorage<=100)">
                 {{event?.timeStorage }}
               </span>
@@ -115,17 +115,34 @@
 
       <div class="action-table-detail" id="virtualScrollTableDetails">
         <mat-tab-group>
-          <mat-tab *ngIf="storageActionItem?.id">
+          <mat-tab *ngIf="storageActionItem?.value_as_json">
             <ng-template mat-tab-label>
               <span>JSON</span>
             </ng-template>
             <ng-template matTabContent>
-              <ngx-json-viewer *ngIf="storageActionItem?.id" [json]="storageActionItem" [expanded]="false">
+              <ngx-json-viewer *ngIf="storageActionItem?.value_as_json" [json]="storageActionItem.value_as_json" [expanded]="false">
+              </ngx-json-viewer>
+            </ng-template>
+          </mat-tab>
+          <mat-tab *ngIf="storageActionItem?.value">
+            <ng-template mat-tab-label>
+              <span>Value</span>
+            </ng-template>
+            <ng-template matTabContent>
+              <ngx-json-viewer *ngIf="storageActionItem?.value" [json]="storageActionItem.value" [expanded]="false">
+              </ngx-json-viewer>
+            </ng-template>
+          </mat-tab>
+          <mat-tab *ngIf="storageActionItem?.path">
+            <ng-template mat-tab-label>
+              <span>Path</span>
+            </ng-template>
+            <ng-template matTabContent>
+              <ngx-json-viewer *ngIf="storageActionItem?.path" [json]="storageActionItem.path" [expanded]="false">
               </ngx-json-viewer>
             </ng-template>
           </mat-tab>
         </mat-tab-group>
-        <!-- TODO: add the Hex and Error tabs if needed  -->
       </div>
     </div>
 

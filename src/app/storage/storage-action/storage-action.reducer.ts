@@ -142,228 +142,45 @@ export function processActions(state, action) {
       // .filter(action => action.hasOwnProperty('Set'))
       // .filter(action => action.hasOwnProperty('Delete'))
       .reduce((accum, action) => {
+        const propertyToUse = getPropertyToUse(action);
 
-        if (action.hasOwnProperty('Set')) {
-
-          const result = {
-            // ...action.Set,
+        if (propertyToUse) {
+          const generalResult = {
+            ...action[propertyToUse],
             id: action.id,
-            type: 'SET',
-            key: parseKey(action.Set.key),
-            path: parsePath(action.Set.key),
-            value: parseValue(action.Set.key, action.Set.value),
+            type: setType(action),
+            key: action[propertyToUse].key ? parseKey(action[propertyToUse].key) : '',
+            path: action[propertyToUse].key ? parsePath(action[propertyToUse].key) : '',
             // text: new TextDecoder('utf-8').decode(new Uint8Array(action.Set.value)),
-            hex: '0x' + bufferToHex(new Uint8Array(action.Set.value)),
-            category: action.Set.key[0] === 'data' ? action.Set.key[1] : action.Set.key[0],
-            address: action.Set.key[1] === 'contracts' ? bytes2address(action.Set.key[9]) : '',
-            lastKey: action.Set.key.length > 2 ? action.Set.key[action.Set.key.length - 1] : '',
-            color: categoryColor(action.Set.key[0] === 'data' ? action.Set.key[1] : action.Set.key[0]),
-            json: action.Set.value_as_json,
-            start_time: action.Set.start_time,
-            timeStorage: Math.floor((action.Set.end_time - action.Set.start_time) * 1000000),
+            category: action[propertyToUse].key ?
+              action[propertyToUse].key[0] === 'data' ? action[propertyToUse].key[1] ? action[propertyToUse].key[1] : '' : action[propertyToUse].key[0] : '',
+            address: action[propertyToUse].key ?
+              action[propertyToUse].key[1] === 'contracts' ? action[propertyToUse].key[9] ? bytes2address(action[propertyToUse].key[9]) : '' : '' : '',
+            lastKey: action[propertyToUse].key ? action[propertyToUse].key.length > 2 ? action[propertyToUse].key[action[propertyToUse].key.length - 1] : '' : '',
+            color: action[propertyToUse].key ? categoryColor(action[propertyToUse].key[0] === 'data' ? action[propertyToUse].key[1] : action[propertyToUse].key[0]) : 'gray',
+            start_time: action[propertyToUse].start_time || 0,
+            timeStorage: Math.floor((action[propertyToUse].end_time - action[propertyToUse].start_time) * 1000000) || 0,
             timeProtocol: actionPreviousTimestamp !== 0 ?
-              Math.floor((action.Set.start_time - actionPreviousTimestamp) * 1000000) : 0,
+              Math.floor((action[propertyToUse].start_time - actionPreviousTimestamp) * 1000000) : 0,
+            value_as_json: action[propertyToUse].value_as_json ? JSON.parse((action[propertyToUse].value_as_json)) : null
           };
+
+          if (propertyToUse === 'Set') {
+            generalResult.value = parseValue(action[propertyToUse].key, action[propertyToUse].value);
+            generalResult.hex = '0x' + bufferToHex(new Uint8Array(action[propertyToUse].value));
+            generalResult.json = action[propertyToUse].value_as_json || '';
+          }
           // save prev timestamp
-          actionPreviousTimestamp = action.Set.end_time;
+          actionPreviousTimestamp = action[propertyToUse].end_time; // TODO: ask if should be set only for Set, Get, Mem, DirMem; on the old implementation, it was like that
 
           return {
             ...accum,
-            [action.id]: result
-            // [result.start_time]: result
+            [action.id]: generalResult
           };
-        }
 
-        if (action.hasOwnProperty('Get')) {
-          const result = {
-            ...action.Get,
-            id: action.id,
-            type: 'GET',
-            key: parseKey(action.Get.key),
-            path: parsePath(action.Get.key),
-            category: action.Get.key[0] === 'data' ? action.Get.key[1] : action.Get.key[0],
-            address: action.Get.key[1] === 'contracts' ? bytes2address(action.Get.key[9]) : '',
-            lastKey: action.Get.key.length > 2 ? action.Get.key[action.Get.key.length - 1] : '',
-            color: categoryColor(action.Get.key[0] === 'data' ? action.Get.key[1] : action.Get.key[0]),
-            start_time: action.Get.start_time,
-            timeStorage: Math.floor((action.Get.end_time - action.Get.start_time) * 1000000),
-            timeProtocol: actionPreviousTimestamp !== 0 ?
-              Math.floor((action.Get.start_time - actionPreviousTimestamp) * 1000000) : 0,
-          };
-          // save prev timestamp
-          actionPreviousTimestamp = action.Get.end_time;
-          return {
-            ...accum,
-            [action.id]: result
-            // [result.start_time]: result
-          };
+        } else {
+          return accum;
         }
-
-        if (action.hasOwnProperty('Mem')) {
-          const result = {
-            ...action.Mem,
-            id: action.id,
-            type: 'MEM',
-            key: parseKey(action.Mem.key),
-            path: parsePath(action.Mem.key),
-            category: action.Mem.key[0] === 'data' ? action.Mem.key[1] : action.Mem.key[0],
-            address: action.Mem.key[1] === 'contracts' ? bytes2address(action.Mem.key[9]) : '',
-            lastKey: action.Mem.key.length > 2 ? action.Mem.key[action.Mem.key.length - 1] : '',
-            color: categoryColor(action.Mem.key[0] === 'data' ? action.Mem.key[1] : action.Mem.key[0]),
-            start_time: action.Mem.start_time,
-            timeStorage: Math.floor((action.Mem.end_time - action.Mem.start_time) * 1000000),
-            timeProtocol: actionPreviousTimestamp !== 0 ?
-              Math.floor((action.Mem.start_time - actionPreviousTimestamp) * 1000000) : 0,
-          };
-          // save prev timestamp
-          actionPreviousTimestamp = action.Mem.end_time;
-          return {
-            ...accum,
-            [action.id]: result
-            // [result.start_time]: result
-          };
-        }
-
-        if (action.hasOwnProperty('DirMem')) {
-          const result = {
-            ...action.DirMem,
-            id: action.id,
-            type: 'DIR MEM',
-            key: parseKey(action.DirMem.key),
-            path: parsePath(action.DirMem.key),
-            category: action.DirMem.key[0] === 'data' ? action.DirMem.key[1] : action.DirMem.key[0],
-            address: action.DirMem.key[1] === 'contracts' ? bytes2address(action.DirMem.key[9]) : '',
-            lastKey: action.DirMem.key.length > 2 ? action.DirMem.key[action.DirMem.key.length - 1] : '',
-            color: categoryColor(action.DirMem.key[0] === 'data' ? action.DirMem.key[1] : action.DirMem.key[0]),
-            start_time: action.DirMem.start_time,
-            timeStorage: Math.floor((action.DirMem.end_time - action.DirMem.start_time) * 1000000),
-            timeProtocol: actionPreviousTimestamp !== 0 ?
-              Math.floor((action.DirMem.start_time - actionPreviousTimestamp) * 1000000) : 0,
-          };
-          // save prev timestamp
-          actionPreviousTimestamp = action.DirMem.end_time;
-          return {
-            ...accum,
-            [action.id]: result
-            // [result.start_time]: result
-          };
-        }
-
-        if (action.hasOwnProperty('Delete')) {
-          console.log('[Delete]', action);
-          return {
-            ...accum,
-            [action.id]: {
-              id: action.id,
-              type: 'DELETE',
-              ...action.Delete,
-              key: parseKey(action.Delete.key),
-              path: parsePath(action.Delete.key),
-              category: action.Delete.key[0] === 'data' ? action.Delete.key[1] : action.Delete.key[0],
-              address: action.Delete.key[1] === 'contracts' ? bytes2address(action.Delete.key[9]) : '',
-              lastKey: action.Delete.key.length > 2 ? action.Delete.key[action.Delete.key.length - 1] : '',
-              color: categoryColor(action.Delete.key[0] === 'data' ? action.Delete.key[1] : action.Delete.key[0]),
-              start_time: action.Delete.start_time,
-              timeStorage: Math.floor((action.Delete.end_time - action.Delete.start_time) * 1000000) || 0,
-              timeProtocol: actionPreviousTimestamp !== 0 ?
-                Math.floor((action.Delete.start_time - actionPreviousTimestamp) * 1000000) : 0
-            }
-          };
-        }
-
-        if (action.hasOwnProperty('RemoveRecord')) {
-          console.log('[RemoveRecord]', action);
-          return {
-            ...accum,
-            [action.id]: {
-              id: action.id,
-              type: 'REMOVE RECORD',
-              ...action.RemoveRecord,
-              key: parseKey(action.RemoveRecord.key),
-              path: parsePath(action.RemoveRecord.key),
-              category: action.RemoveRecord.key[0] === 'data' ? action.RemoveRecord.key[1] : action.RemoveRecord.key[0],
-              address: action.RemoveRecord.key[1] === 'contracts' ? bytes2address(action.RemoveRecord.key[9]) : '',
-              lastKey: action.RemoveRecord.key.length > 2 ? action.RemoveRecord.key[action.RemoveRecord.key.length - 1] : '',
-              color: categoryColor(action.RemoveRecord.key[0] === 'data' ?
-                action.RemoveRecord.key[1] : action.RemoveRecord.key[0]),
-              start_time: action.RemoveRecord.start_time,
-              timeStorage: Math.floor((action.RemoveRecord.end_time - action.RemoveRecord.start_time) * 1000000) || 0,
-              timeProtocol: actionPreviousTimestamp !== 0 ?
-                Math.floor((action.RemoveRecord.start_time - actionPreviousTimestamp) * 1000000) : 0
-            }
-          };
-        }
-
-        if (action.hasOwnProperty('Commit')) {
-          console.log('[Commit]', action);
-          return {
-            ...accum,
-            [action.id]: {
-              id: action.id,
-              type: 'COMMIT',
-              ...action.Commit,
-              key: action.Commit.key ? parseKey(action.Commit.key) : '',
-              path: action.Commit.key ? parsePath(action.Commit.key) : '',
-              category: action.Commit.key ? action.Commit.key[0] === 'data' ? action.Commit.key[1] : action.Commit.key[0] : '',
-              address: action.Commit.key ? action.Commit.key[1] === 'contracts' ? bytes2address(action.Copy.key[9]) : '' : '',
-              lastKey: action.Commit.key ? action.Commit.key.length > 2 ? action.Commit.key[action.Commit.key.length - 1] : '' : '',
-              color: action.Commit.key ?
-                categoryColor(action.Commit.key[0] === 'data' ? action.Commit.key[1] : action.Commit.key[0]) : '',
-              start_time: action.Commit.start_time,
-              timeStorage: Math.floor((action.Commit.end_time - action.Commit.start_time) * 1000000) || 0,
-              timeProtocol: actionPreviousTimestamp !== 0 ?
-                Math.floor((action.Commit.start_time - actionPreviousTimestamp) * 1000000) : 0
-            }
-          };
-        }
-
-        if (action.hasOwnProperty('Copy')) {
-          console.log('[Copy]', action);
-          return {
-            ...accum,
-            [action.id]: {
-              id: action.id,
-              type: 'COPY',
-              ...action.Copy,
-              key: action.Copy.key ? parseKey(action.Copy.key) : '',
-              path: action.Copy.key ? parsePath(action.Copy.key) : '',
-              category: action.Copy.key ? action.Copy.key[0] === 'data' ? action.Copy.key[1] : action.Copy.key[0] : '',
-              address: action.Copy.key ? action.Copy.key[1] === 'contracts' ? bytes2address(action.Copy.key[9]) : '' : '',
-              lastKey: action.Copy.key ? action.Copy.key.length > 2 ? action.Copy.key[action.Copy.key.length - 1] : '' : '',
-              color: action.Copy.key ?
-                categoryColor(action.Copy.key[0] === 'data' ? action.Copy.key[1] : action.Copy.key[0]) : '',
-              start_time: action.Copy.start_time,
-              timeStorage: Math.floor((action.Copy.end_time - action.Copy.start_time) * 1000000) || 0,
-              timeProtocol: actionPreviousTimestamp !== 0 ?
-                Math.floor((action.Copy.start_time - actionPreviousTimestamp) * 1000000) : 0,
-            }
-          };
-        }
-
-        if (action.hasOwnProperty('RemoveRecursively')) {
-          console.log('[RemoveRecursively]', action);
-          return {
-            ...accum,
-            [action.id]: {
-              id: action.id,
-              type: 'REMOVE RECURSIVELY',
-              ...action.RemoveRecursively,
-              key: action.RemoveRecursively.key ? parseKey(action.RemoveRecursively.key) : '',
-              path: action.RemoveRecursively.key ? parsePath(action.RemoveRecursively.key) : '',
-              category: action.RemoveRecursively.key ? action.RemoveRecursively.key[0] === 'data' ? action.RemoveRecursively.key[1] : action.RemoveRecursively.key[0] : '',
-              address: action.RemoveRecursively.key ? action.RemoveRecursively.key[1] === 'contracts' ? bytes2address(action.Copy.key[9]) : '' : '',
-              lastKey: action.RemoveRecursively.key ? action.RemoveRecursively.key.length > 2 ? action.RemoveRecursively.key[action.RemoveRecursively.key.length - 1] : '' : '',
-              color: action.RemoveRecursively.key ?
-                categoryColor(action.RemoveRecursively.key[0] === 'data' ? action.RemoveRecursively.key[1] : action.RemoveRecursively.key[0]) : '',
-              start_time: action.RemoveRecursively.start_time,
-              timeStorage: Math.floor((action.RemoveRecursively.end_time - action.RemoveRecursively.start_time) * 1000000) || 0,
-              timeProtocol: actionPreviousTimestamp !== 0 ?
-                Math.floor((action.RemoveRecursively.start_time - actionPreviousTimestamp) * 1000000) : 0,
-            }
-          };
-        }
-
-        return accum;
       }, {}),
     lastCursorId: setLastCursorId(_action, state)
   };
@@ -390,51 +207,76 @@ export function processActions(state, action) {
 
 }
 
-export function getPropertyToUse(action) {
-  let propertyToUse: string = null;
-
+export function setType(action): string {
   switch (true) {
-    case action.hasOwnProperty('Get'):
-      propertyToUse = 'Get';
-      break;
     case action.hasOwnProperty('Set'):
-      propertyToUse = 'Set';
-      break;
-    case action.hasOwnProperty('Mem'):
-      propertyToUse = 'Mem';
-      break;
-    case action.hasOwnProperty('DirMem'):
-      propertyToUse = 'DirMem';
-      break;
+      return 'SET';
     case action.hasOwnProperty('Delete'):
-      propertyToUse = 'Delete';
-      break;
-    case action.hasOwnProperty('RemoveRecord'):
-      propertyToUse = 'RemoveRecord';
-      break;
-    case action.hasOwnProperty('Commit'):
-      propertyToUse = 'Commit';
-      break;
-    case action.hasOwnProperty('Copy'):
-      propertyToUse = 'Copy';
-      break;
+      return 'DELETE';
     case action.hasOwnProperty('RemoveRecursively'):
-      propertyToUse = 'RemoveRecursively';
-      break;
+      return 'REMOVE RECURSIVELY';
+    case action.hasOwnProperty('Copy'):
+      return 'COPY';
+    case action.hasOwnProperty('Checkout'):
+      return 'CHECKOUT';
+    case action.hasOwnProperty('Commit'):
+      return 'COMMIT';
+    case action.hasOwnProperty('Mem'):
+      return 'MEM';
+    case action.hasOwnProperty('DirMem'):
+      return 'DIR MEM';
+    case action.hasOwnProperty('Get'):
+      return 'GET';
+    case action.hasOwnProperty('Fold'):
+      return 'FOLD';
+    case action.hasOwnProperty('RemoveRecord'):
+      return 'REMOVE RECORD';
+    default:
+      return '';
   }
-  if (!propertyToUse) {
-    debugger;
-  }
+}
 
-  return propertyToUse;
+export function getPropertyToUse(action): string {
+  switch (true) {
+    case action.hasOwnProperty('Set'):
+      return 'Set';
+    case action.hasOwnProperty('Delete'):
+      return 'Delete';
+    case action.hasOwnProperty('RemoveRecursively'):
+      return 'RemoveRecursively';
+    case action.hasOwnProperty('Copy'):
+      return 'Copy';
+    case action.hasOwnProperty('Checkout'):
+      return 'Checkout';
+    case action.hasOwnProperty('Commit'):
+      return 'Commit';
+    case action.hasOwnProperty('Mem'):
+      return 'Mem';
+    case action.hasOwnProperty('DirMem'):
+      return 'DirMem';
+    case action.hasOwnProperty('Get'):
+      return 'Get';
+    case action.hasOwnProperty('Fold'):
+      return 'Fold';
+    case action.hasOwnProperty('RemoveRecord'):
+      return 'RemoveRecord';
+    default:
+      return '';
+  }
 }
 
 export function parseKey(inputKey) {
+  if (!inputKey) {
+    return '';
+  }
   const key = JSON.parse(JSON.stringify(inputKey));
   return key.length > 0 ? '/' + key.toString().replace(/,/g, '/') : '';
 }
 
 export function parsePath(inputKey) {
+  if (inputKey) {
+    return '';
+  }
 
   let key = JSON.parse(JSON.stringify(inputKey));
 
@@ -544,29 +386,21 @@ export function parsePath(inputKey) {
 
 export function categoryColor(category) {
   switch (category) {
-    case 'active_delegates_with_rolls': {
-      return 'darkorange'; //'blue';
+    case 'active_delegates_with_rolls':
+    case 'contracts':
+    case 'delegates_with_frozen_balance': {
+      return 'darkorange';
     }
-    case 'big_maps': {
-      return 'green';
-    }
-    case 'block_priority': {
+    case 'big_maps':
+    case 'block_priority':
+    case 'cycle': {
       return 'green';
     }
     case 'commitments': {
       return 'red';
     }
-    case 'contracts': {
-      return 'darkorange'; //'darkblue';
-    }
-    case 'cycle': {
-      return 'green';
-    }
     case 'delegates': {
       return 'red';
-    }
-    case 'delegates_with_frozen_balance': {
-      return 'darkorange'; //'blue';
     }
     case 'ramp_up': {
       return 'yellow';
@@ -577,12 +411,10 @@ export function categoryColor(category) {
     case 'votes': {
       return 'lightblue';
     }
-
     default:
       return 'gray';
   }
 }
-
 
 export const prefix = {
   tz1: new Uint8Array([6, 161, 159]),
@@ -607,7 +439,6 @@ export function bs58checkEncode(this: void, prefix: Uint8Array, payload: Uint8Ar
 
   return bs58check.encode(Buffer.from(n));
 }
-
 
 export function zarithDecode(hex) {
   let count = 0;
@@ -668,9 +499,8 @@ export function parseValue(key, value) {
   // check encodings
   const isEncoding = encodings.some(code => {
 
-    // check every kkey from encoding path
+    // check every key from encoding path
     const match = code[0].every((item, index) => {
-      // console.log('[item]', item, key[index]);
       if (key[index]) {
         if ((item === '*') || (key[index] === item)) {
           return true;
@@ -682,7 +512,6 @@ export function parseValue(key, value) {
       }
     });
     if (match) {
-      // console.log('[parseValue]', match, code[0], key);
       // save encoding
       encoding = code[1];
     }
@@ -712,6 +541,9 @@ export function parseValue(key, value) {
 }
 
 export function Tez_repr(value) {
+  if (!value) {
+    return '';
+  }
   const hexValue = bufferToHex(new Uint8Array(value));
   // zarith number
   return (zarithDecode(hexValue) / 1000000) + '';
@@ -720,7 +552,9 @@ export function Tez_repr(value) {
 // url to validate result
 // https://alphanet.simplestaking.com:3000/chains/main/blocks/BMSVcRKJriyu49ug6zXQaajbwMDLSYCeZKuA11ZD6rakUwBSE7p/context/contracts/tz1efSQdjbTut8NyqE6VEj6CcyRP5mL97SNi
 export function Cycle_repr(value) {
-
+  if (!value) {
+    return '';
+  }
   const buffer = new Buffer(value);
   const int32 = buffer.readUIntBE(0, 4);
 
@@ -730,12 +564,18 @@ export function Cycle_repr(value) {
 }
 
 export function Z_repr(value) {
+  if (!value) {
+    return '';
+  }
   const hexValue = bufferToHex(new Uint8Array(value));
   // zarith number
   return (zarithDecode(hexValue) / 2);
 }
 
 export function Manager_repr(valueBytes) {
+  if (!valueBytes) {
+    return '';
+  }
 
   const value = bufferToHex(new Uint8Array(valueBytes));
   // convert contract hex to string
@@ -764,12 +604,17 @@ export function Manager_repr(valueBytes) {
 }
 
 export function String_repr(valueBytes) {
+  if (!valueBytes) {
+    return '';
+  }
 
   return new TextDecoder('utf-8').decode(new Uint8Array(valueBytes));
-
 }
 
 export function Block_repr(valueBytes) {
+  if (!valueBytes) {
+    return '';
+  }
 
   const value = bufferToHex(new Uint8Array(valueBytes));
   // convert contract hex to string

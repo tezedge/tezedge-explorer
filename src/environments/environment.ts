@@ -8,7 +8,7 @@ export const environment = {
       debugger: 'http://develop.dev.tezedge.com:17732',
       monitoring: 'http://develop.dev.tezedge.com:38732/resources/tezedge',
       ws: false
-    }
+    },
     // {
     //   id: 'local-carthage-tezedge',
     //   name: 'ocaml.localhost.node',

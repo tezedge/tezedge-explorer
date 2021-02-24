@@ -24,7 +24,7 @@
 
             <span class="truncate">{{event?.datetime}}</span>
             <span class="truncate storage-block-level">{{event?.id}}</span>
-            <span class="truncate pointer" [routerLink]="['/storage',event?.hash]">{{event?.hash}}</span>
+            <span class="truncate storage-block-hash pointer" [routerLink]="['/storage',event?.hash]">{{event?.hash}}</span>
 
           </span>
         </ng-template>

@@ -83,7 +83,7 @@ steps:
   detach: true
   privileged: true
   environment:
-    SANDBOX: 'https://carthage.tezedge.com:3030'
+    SANDBOX: 'https://master.dev.tezedge.com:3030'
     API: '[{"id":"master","name":"master.dev.tezedge","http":"http://master.dev.tezedge.com:18732","monitoring":"http://master.dev.tezedge.com:38732/resources/tezedge","debugger":"http://master.dev.tezedge.com:17732","ws":false}]'
   depends_on:
     - build

@@ -18,7 +18,7 @@
       </a>
     </div>
 
-    <div class="commit-numbers-container-item truncate" id="explorerCommit">
+    <div *ngIf="commitNumber.explorerCommit?.length" class="commit-numbers-container-item truncate" id="explorerCommit">
       <a href="{{githubRepositories.explorer + commitNumber.explorerCommit}}" target="_blank" rel="noreferrer">
         <span>
           <svg-icon icon="github" scale="0.8"></svg-icon>

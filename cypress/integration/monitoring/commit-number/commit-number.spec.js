@@ -86,14 +86,18 @@ context('commit-number', () => {
 					.then((store) => {
 						store.select('commitNumber')
 							.subscribe((data) => {
-								cy.get('app-commit-number')
-									.trigger('mouseenter')
-									.then(() => {
-										cy.wait(1000);
-										cy.get('#explorerCommit')
-											.find('a')
-											.should('have.attr', 'href', 'https://github.com/simplestaking/tezedge-explorer/commit/' + data.explorerCommit)
-									})
+							  if (data.explorerCommit.length) {
+                  cy.get('app-commit-number')
+                    .trigger('mouseenter')
+                    .then(() => {
+                      cy.wait(1000);
+                      cy.get('#explorerCommit')
+                        .find('a')
+                        .should('have.attr', 'href', 'https://github.com/simplestaking/tezedge-explorer/commit/' + data.explorerCommit)
+                    })
+                } else {
+							    return true;
+                }
 
 							})
 					})

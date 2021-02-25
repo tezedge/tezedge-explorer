@@ -83,7 +83,7 @@ steps:
   detach: true
   privileged: true
   environment:
-    SANDBOX: 'https://carthage.tezedge.com:3030'
+    SANDBOX: 'https://master.dev.tezedge.com:3030'
     API: '[{"id":"master","name":"master.dev.tezedge","http":"http://master.dev.tezedge.com:18732","monitoring":"http://master.dev.tezedge.com:38732/resources/tezedge","debugger":"http://master.dev.tezedge.com:17732","ws":false}]'
   depends_on:
     - build
@@ -113,14 +113,30 @@ steps:
     password:
       from_secret: docker_hub_pswd
 
+- name: cp-static
+  image: drone-tezedge-explorer:latest
+  privileged: true
+  pull: if-not-exists
+  volumes:
+    - name: static_page
+      path: /etc/static_page
+  commands:
+    - cp -R /usr/share/nginx/html/* /etc/static_page
+
 - name: publish-firebase
   image: devillex/docker-firebase
   pull: if-not-exists
+  volumes:
+    - name: static_page
+      path: /drone/src/dist/tezedge-explorer
+  environment:
+    FIREBASE_API_TOKEN:
+      from_secret: FIREBASE_API_TOKEN
   depends_on:
     - test
     - publish
   commands:
-    - firebase deploy --token=${FIREBASE_API_TOKEN}
+    - firebase deploy --token=$${FIREBASE_API_TOKEN}
 
 image_pull_secrets:
   - docker_pull_secret
@@ -129,6 +145,9 @@ volumes:
   - name: docker_sock
     host:
       path: /var/run/docker.sock
+  - name: static_page
+    host:
+      path: /etc/tezedge-ci/tezedge-explorer/
 
 trigger:
   ref: refs/tags/**

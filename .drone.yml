@@ -115,6 +115,8 @@ steps:
 
 - name: cp-static
   image: drone-tezedge-explorer:latest
+  depends_on:
+    - test
   privileged: true
   pull: if-not-exists
   volumes:
@@ -134,6 +136,7 @@ steps:
       from_secret: FIREBASE_API_TOKEN
   depends_on:
     - test
+    - cp-static
     - publish
   commands:
     - firebase deploy --token=$${FIREBASE_API_TOKEN}

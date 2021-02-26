@@ -1,4 +1,4 @@
-import { Resource } from '../models/resource';
+import { Resource } from '../../shared/types/resources/resource.type';
 import { ResourcesActions, ResourcesActionTypes } from './resources.actions';
 
 

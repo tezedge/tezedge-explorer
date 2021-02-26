@@ -1,0 +1,42 @@
+<svg:g>
+  <svg:rect
+      class="tooltip-area"
+      [attr.x]="0"
+      y="0"
+      [attr.width]="dims.width"
+      [attr.height]="dims.height"
+      style="opacity: 0; cursor: 'auto';"
+      (mouseenter)="showTooltip()"
+      (mousemove)="mouseMove($event)"
+      (mouseleave)="hideTooltip()"
+  />
+  <ng-template #defaultTooltipTemplate
+               let-model="model">
+    <xhtml:div class="area-tooltip-container">
+      <xhtml:div *ngFor="let tooltipItem of model"
+                 class="tooltip-item">
+        <xhtml:span class="tooltip-item-color"
+                    [style.background-color]="tooltipItem.color"></xhtml:span>
+        {{ getToolTipText(tooltipItem) }}
+      </xhtml:div>
+    </xhtml:div>
+  </ng-template>
+  <svg:rect
+      #tooltipAnchor
+      class="tooltip-anchor"
+      [attr.x]="anchorPos"
+      y="0"
+      [attr.width]="1"
+      [attr.height]="dims.height"
+      [style.opacity]="anchorOpacity"
+      [style.pointer-events]="'none'"
+      ngx-tooltip
+      [tooltipDisabled]="tooltipDisabled"
+      [tooltipPlacement]="'top'"
+      [tooltipType]="'tooltip'"
+      [tooltipSpacing]="15"
+      [tooltipTemplate]="tooltipTemplate ? tooltipTemplate : defaultTooltipTemplate"
+      [tooltipContext]="anchorValues"
+      [tooltipImmediateExit]="true"
+  />
+</svg:g>

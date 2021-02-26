@@ -1,5 +1,5 @@
-import { ChangeDetectionStrategy, Component, Input, ViewEncapsulation } from '@angular/core';
-import { LineChartComponent } from '@swimlane/ngx-charts';
+import { ChangeDetectionStrategy, Component, ElementRef, Input, ViewEncapsulation } from '@angular/core';
+import { LineChartComponent, reduceTicks } from '@swimlane/ngx-charts';
 import { animate, style, transition, trigger } from '@angular/animations';
 
 
@@ -31,24 +31,30 @@ export class TezedgeLineChartComponent extends LineChartComponent {
   @Input() extraYAxisValues: number = 0;
   @Input() startWithYGridLine: boolean;
 
+  chartElementRef: ElementRef;
+
   lineResults = []; // line results are now used for line painting and `results` just for XAxis values
 
   update(): void {
-
-    if (this.startWithYGridLine) {
-      const values = this.results.reduce((accumulator, item) => [...accumulator, ...item.series.map(s => s.value)], []);
-      const max = Math.max(...values);
-      const length = max.toString().length;
-      const step = Math.pow(10, length - 1);
-      const lastExtraStep = Math.ceil(max / step) * step;
-      this.extraYAxisValues = lastExtraStep - max;
-      if ((lastExtraStep / step) % 2 !== 0 && (lastExtraStep / step) > 4) {
-        this.extraYAxisValues += step;
-      }
-    }
-
+    this.getExtraYAxisGridLine();
     super.update();
     this.removeExtraResultsOfTheLine();
+    this.chartElementRef = this.chartElement.nativeElement.querySelector('svg.ngx-charts');
+  }
+
+  private getExtraYAxisGridLine(): void {
+    if (this.startWithYGridLine) {
+      const ticks = this.getTicks();
+      let step = 0;
+      if (ticks.length > 1) {
+        step = Math.abs(ticks[1] - ticks[0]);
+
+        const values = this.results.reduce((accumulator, item) => [...accumulator, ...item.series.map(s => s.value)], []);
+        const max = Math.max(...values);
+        const lastExtraStep = Math.ceil(max / step) * step;
+        this.extraYAxisValues = lastExtraStep - max;
+      }
+    }
   }
 
   private removeExtraResultsOfTheLine(): void {
@@ -63,5 +69,29 @@ export class TezedgeLineChartComponent extends LineChartComponent {
     const yDomain = super.getYDomain();
     yDomain[1] = yDomain[1] + this.extraYAxisValues;
     return yDomain;
+  }
+
+  private getTicks(): any[] {
+    if (!this.dims) {
+      return [];
+    }
+    let ticks;
+    const maxTicks = this.getMaxTicks(20);
+    const maxScaleTicks = this.getMaxTicks(50);
+
+    if (this.yAxisTicks) {
+      ticks = this.yAxisTicks;
+    } else if (this.yScale.ticks) {
+      ticks = this.yScale.ticks.apply(this.yScale, [maxScaleTicks]);
+    } else {
+      ticks = this.yScale.domain();
+      ticks = reduceTicks(ticks, maxTicks);
+    }
+
+    return ticks;
+  }
+
+  private getMaxTicks(tickHeight: number): number {
+    return Math.floor(this.dims.height / tickHeight);
   }
 }

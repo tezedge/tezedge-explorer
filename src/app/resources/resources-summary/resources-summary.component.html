@@ -1,0 +1,19 @@
+<div class="details-container">
+  <div class="list-group"
+       fxLayout="column"
+       fxLayoutGap="8px">
+    <div class="faded-text">Summary</div>
+    <table>
+      <tbody>
+      <tr *ngFor="let block of summaryBlocks">
+        <ng-container *ngIf="block.value">
+          <td><span [style.color]="block.color">{{ block.name }}</span></td>
+          <td class="faded-text">
+            <span>{{ block.value | number: block.label === 'GB' ? '1.2-2' : '' }} {{ block.label }}</span>
+          </td>
+        </ng-container>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

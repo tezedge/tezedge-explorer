@@ -1,5 +1,5 @@
 import { Action } from '@ngrx/store';
-import { Resource } from '../models/resource';
+import { Resource } from '../../shared/types/resources/resource.type';
 
 export enum ResourcesActionTypes {
   LoadResources = 'RESOURCES_STATS_LOAD',

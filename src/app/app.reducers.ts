@@ -48,9 +48,9 @@ import * as fromStorageAction from './storage/storage-action/storage-action.redu
 import * as fromSandbox from './sandbox/sandbox.reducer';
 import * as fromWallets from './wallets/wallets.reducer';
 import * as fromVersion from './monitoring/commit-number/commit-number.reducer';
-import * as fromResource from './resources/state/resources.reducer';
+import * as fromResource from './resources/resources/resources.reducer';
 
-import { ResourcesState } from './resources/state/resources.reducer';
+import { ResourcesState } from './resources/resources/resources.reducer';
 
 // state interface
 export interface State {

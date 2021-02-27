@@ -43,6 +43,12 @@ export function reducer(state = initialState, action) {
       };
     }
 
+    case 'STORAGE_BLOCK_RESET_SUCCESS': {
+      return {
+        ...initialState
+      };
+    }
+
     default:
       return state;
   }

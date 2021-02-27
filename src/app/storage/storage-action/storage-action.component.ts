@@ -185,8 +185,6 @@ export class StorageActionComponent implements OnInit, OnDestroy {
     });
   }
 
-
-
   // expandedDetail(row) {
   //   this.storageActionDetail = this.storageActionDetail ? false : true;
   //   console.log('[storage][action] expandedDetail', this.storageActionDetail, row);

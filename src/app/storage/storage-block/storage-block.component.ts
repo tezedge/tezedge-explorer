@@ -1,8 +1,8 @@
-import { Component, OnInit, OnDestroy, ViewChild, ChangeDetectionStrategy, NgZone, ChangeDetectorRef } from '@angular/core';
-import { Store } from '@ngrx/store';
-import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
-import { VirtualScrollDirective } from '../../shared/virtual-scroll.directive';
+import {Component, OnInit, OnDestroy, ViewChild, ChangeDetectionStrategy, NgZone, ChangeDetectorRef} from '@angular/core';
+import {Store} from '@ngrx/store';
+import {Subject} from 'rxjs';
+import {takeUntil} from 'rxjs/operators';
+import {VirtualScrollDirective} from '../../shared/virtual-scroll.directive';
 
 @Component({
   selector: 'app-storage-block',
@@ -34,6 +34,8 @@ export class StorageBlockComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    this.store.dispatch({type: 'STORAGE_BLOCK_RESET'});
+
     this.scrollStart(null);
 
     this.store.select('storageBlock')
@@ -42,9 +44,9 @@ export class StorageBlockComponent implements OnInit, OnDestroy {
         this.virtualScrollItems = data;
         this.storageBlockShow = data.ids.length > 0;
 
-        if (this.storageBlockShow && !this.storageBlockItem) {
-          // this.tableMouseEnter(this.virtualScrollItems.entities[this.virtualScrollItems.ids[this.virtualScrollItems.ids.length - 1]]);
-        }
+        // if (this.storageBlockShow && !this.virtualScrollItems.selected.hash) {
+        //   this.getItemDetails(this.virtualScrollItems.entities[this.virtualScrollItems.ids[this.virtualScrollItems.ids.length - 1]]);
+        // }
 
         this.changeDetector.markForCheck();
       });
@@ -105,24 +107,26 @@ export class StorageBlockComponent implements OnInit, OnDestroy {
     this.vrFor.scrollToBottom();
   }
 
-  tableMouseEnter(item) {
-    this.ngZone.runOutsideAngular(() => {
-      // check by hash because the id is not present on this.storageBlockItem
-      if (this.storageBlockItem && this.storageBlockItem.hash === item.hash) {
-        return;
-      }
-
-      this.ngZone.run(() => {
-        this.storageBlockItem = { ...item };
-      });
-    });
-  }
+  // tableMouseEnter(item) {
+  //   this.ngZone.runOutsideAngular(() => {
+  //     // check by hash because the id is not present on this.storageBlockItem
+  //     if (this.storageBlockItem && this.storageBlockItem.hash === item.hash) {
+  //       return;
+  //     }
+  //
+  //     this.ngZone.run(() => {
+  //       this.storageBlockItem = {...item};
+  //     });
+  //   });
+  // }
 
   ngOnDestroy() {
     // stop streaming actions
-    this.store.dispatch({
-      type: 'STORAGE_BLOCK_STOP'
-    });
+    // this.store.dispatch({
+    //   type: 'STORAGE_BLOCK_STOP'
+    // });
+
+    this.store.dispatch({type: 'STORAGE_BLOCK_RESET'});
 
     // close all observables
     this.onDestroy$.next();

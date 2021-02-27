@@ -11,6 +11,21 @@ const storageBlockDestroy$ = new Subject();
 export class StorageBlockEffects {
 
   @Effect()
+  StorageBlockReset$ = this.actions$.pipe(
+    ofType('STORAGE_BLOCK_RESET'),
+    // dispatch action
+    map((payload) => ({ type: 'STORAGE_BLOCK_RESET_SUCCESS', payload })),
+    catchError((error, caught) => {
+      console.error(error);
+      this.store.dispatch({
+        type: 'STORAGE_BLOCK_RESET_ERROR',
+        payload: error
+      });
+      return caught;
+    })
+  );
+
+  @Effect()
   StorageBlockLoad$ = this.actions$.pipe(
     ofType('STORAGE_BLOCK_LOAD'),
 

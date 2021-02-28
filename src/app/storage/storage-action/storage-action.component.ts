@@ -138,7 +138,6 @@ export class StorageActionComponent implements OnInit, OnDestroy {
     });
 
 
-
   }
 
   getItems($event) {
@@ -180,15 +179,28 @@ export class StorageActionComponent implements OnInit, OnDestroy {
       }
 
       this.ngZone.run(() => {
-        this.storageActionItem = { ...item };
+        this.storageActionItem = {...item};
       });
     });
   }
 
-  // expandedDetail(row) {
-  //   this.storageActionDetail = this.storageActionDetail ? false : true;
-  //   console.log('[storage][action] expandedDetail', this.storageActionDetail, row);
-  // }
+  parseJson(text) {
+    try {
+      JSON.parse(text);
+    } catch (e) {
+      return text;
+    }
+    return JSON.parse(text);
+  }
+
+  isJsonObjectOrArray(text) {
+    try {
+      JSON.parse(text);
+    } catch (e) {
+      return typeof text === 'object';
+    }
+    return typeof JSON.parse(text) === 'object';
+  }
 
   // remove(value) {
   //

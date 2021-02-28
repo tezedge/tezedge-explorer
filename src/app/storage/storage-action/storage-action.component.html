@@ -119,9 +119,13 @@
               <span>JSON</span>
             </ng-template>
             <ng-template matTabContent>
-              <ngx-json-viewer *ngIf="storageActionItem?.value_as_json" [json]="storageActionItem.value_as_json"
-                               [expanded]="false">
+              <ngx-json-viewer
+                *ngIf="isJsonObjectOrArray(storageActionItem?.value_as_json) && storageActionItem?.value_as_json; else jsonElseBlock"
+                [json]="parseJson(storageActionItem?.value_as_json)" [expanded]="false">
               </ngx-json-viewer>
+              <ng-template #jsonElseBlock>
+                <span>{{parseJson(storageActionItem?.value_as_json)}}</span>
+              </ng-template>
             </ng-template>
           </mat-tab>
           <mat-tab *ngIf="storageActionItem?.value">
@@ -129,8 +133,13 @@
               <span>Value</span>
             </ng-template>
             <ng-template matTabContent>
-              <ngx-json-viewer *ngIf="storageActionItem?.value" [json]="storageActionItem.value" [expanded]="false">
+              <ngx-json-viewer
+                *ngIf="isJsonObjectOrArray(storageActionItem?.value) && storageActionItem?.value; else valueElseBlock"
+                [json]="parseJson(storageActionItem?.value)" [expanded]="false">
               </ngx-json-viewer>
+              <ng-template #valueElseBlock>
+                <span>{{parseJson(storageActionItem?.value)}}</span>
+              </ng-template>
             </ng-template>
           </mat-tab>
           <mat-tab *ngIf="storageActionItem?.path">
@@ -138,8 +147,7 @@
               <span>Path</span>
             </ng-template>
             <ng-template matTabContent>
-              <ngx-json-viewer *ngIf="storageActionItem?.path" [json]="storageActionItem.path" [expanded]="false">
-              </ngx-json-viewer>
+              <span>{{storageActionItem.path}}</span>
             </ng-template>
           </mat-tab>
         </mat-tab-group>

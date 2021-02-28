@@ -1,23 +1,25 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
-import { ResourcesRoutingModule } from './resources-routing.module';
-import { ResourcesComponent } from './components/resources/resources.component';
-import { NgxChartsModule } from '@swimlane/ngx-charts';
+import { ResourcesRoutingModule } from './resources.routing';
+import { ResourcesComponent } from './resources/resources.component';
 import { TezedgeSharedModule } from '../shared/tezedge-shared.module';
-import { ResourcesAdditionalInfoComponent } from './components/resources-additional-info/resources-additional-info.component';
+import { ResourcesSummaryComponent } from './resources-summary/resources-summary.component';
+import { TezedgeChartsModule } from '../shared/charts/tezedge-charts.module';
+import { ResourcesGraphComponent } from './resources-graph/resources-graph.component';
 
 
 @NgModule({
   declarations: [
     ResourcesComponent,
-    ResourcesAdditionalInfoComponent,
+    ResourcesSummaryComponent,
+    ResourcesGraphComponent,
   ],
   imports: [
     CommonModule,
     ResourcesRoutingModule,
-    NgxChartsModule,
     TezedgeSharedModule,
+    TezedgeChartsModule,
   ]
 })
 export class ResourcesModule {}

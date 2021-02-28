@@ -62,13 +62,14 @@
       </svg:g>
       <svg:g (mouseleave)="hideCircles()">
         <svg:g *ngIf="!tooltipDisabled"
-               ngx-charts-tooltip-area
+               tezedge-charts-tooltip-area
                [dims]="dims"
                [xSet]="xSet"
                [xScale]="xScale"
                [yScale]="yScale"
                [results]="lineResults"
                [colors]="colors"
+               [chartElement]="chartElementRef"
                [tooltipDisabled]="tooltipDisabled"
                [tooltipTemplate]="seriesTooltipTemplate"
                (hover)="updateHoveredVertical($event)"

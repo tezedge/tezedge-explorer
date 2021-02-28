@@ -280,6 +280,7 @@ export class VirtualScrollDirective implements AfterViewInit, OnDestroy, OnChang
   private renderViewportItems() {
     for (let index = 0; index < this.embeddedViews.length; index++) {
       const virtualScrollPosition = this.getScrollPositionStartWithOffset() + index + 1;
+      // const virtualScrollPosition = this.getScrollPositionStartWithOffset() + index;
 
       // change view content
       const view = this.embeddedViews[index];
@@ -301,27 +302,6 @@ export class VirtualScrollDirective implements AfterViewInit, OnDestroy, OnChang
       });
     });
   }
-
-  // Renders blank rows while content is loading
-  // private renderBlankViewportItems(){
-
-  //     this.ngZone.runOutsideAngular(() => {
-  //         // requestAnimationFrame(() => {
-  //             console.warn('[renderBlankViewportItems]');
-  //             for (let index = 0; index < this.embeddedViews.length; index++) {
-  //                 const virtualScrollPosition = this.virtualScrollItemsOffset + index + this.scrollPositionStart;
-  //                 // change view content
-  //                 const view = this.embeddedViews[index];
-  //                 view.context.position = (index + this.scrollPositionStart) * this.itemHeight;
-  //                 view.context.start = this.scrollPositionStart;
-  //                 view.context.end = this.scrollPositionEnd;
-  //                 view.context.index = index + this.scrollPositionStart;
-  //                 view.context.$implicit = { index: virtualScrollPosition };
-  //                 view.markForCheck();
-  //             }
-  //         // })
-  //     });
-  // }
 
   // get usable scroll size, so we can stack multiple pages for very large list
   // https://stackoverflow.com/questions/34931732/height-limitations-for-browser-vertical-scroll-bar
@@ -361,10 +341,6 @@ export class VirtualScrollDirective implements AfterViewInit, OnDestroy, OnChang
 
     this.resizeSubscription$.unsubscribe();
   }
-
-  // getRequestPositionOffset(): number {
-  //   return Math.round((this.virtualScrollItemsOffset + (this.scrollPositionStart)) / 20) * 20;
-  // }
 
   private reset(): void {
     this.maxScrollHeight = 0;

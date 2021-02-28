@@ -19,6 +19,8 @@ import { CircleSeriesComponent } from '@swimlane/ngx-charts';
 })
 export class TezedgeChartsCircleSeriesComponent extends CircleSeriesComponent {
 
+  readonly radius = 3.5;
+
   @Input() circleAtTheEnd: boolean;
 
   endOfLineCircle: any;

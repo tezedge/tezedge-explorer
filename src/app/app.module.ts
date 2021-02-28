@@ -117,7 +117,7 @@ import { MempoolComponent } from './mempool/mempool.component';
 import { MempoolActionComponent } from './mempool/mempool-action/mempool-action.component';
 import { CommitNumberComponent } from './monitoring/commit-number/commit-number.component';
 import { CommitNumberEffects } from './monitoring/commit-number/commit-number.effects';
-import { ResourcesEffects } from './resources/state/resources.effects';
+import { ResourcesEffects } from './resources/resources/resources.effects';
 import { TezedgeSharedModule } from './shared/tezedge-shared.module';
 
 @NgModule({

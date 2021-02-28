@@ -6,7 +6,7 @@
   window["env"]["api"] = [
     {
       id: 'rust.carthage.tezedge.com',
-      name: 'Tezedge',
+      name: 'rust.carthage.tezedge.com',
       http: 'https://carthage.tezedge.com:8752',
       debugger: 'https://carthage.tezedge.com:8753',
       monitoring: 'https://carthage.tezedge.com:8754/resources/tezedge',
@@ -14,7 +14,7 @@
     },
     {
       id: 'ocaml.carthage.tezedge.com',
-      name: 'Ocaml',
+      name: 'ocaml.carthage.tezedge.com',
       http: 'https://carthage.tezedge.com:8742',
       debugger: 'https://carthage.tezedge.com:8743',
       monitoring: 'https://carthage.tezedge.com:8754/resources/ocaml',

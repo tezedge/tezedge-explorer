@@ -5,9 +5,10 @@
     </div>
 
     <div class="table-virtual-scroll-header storage-block-header">
-      <span>DATETIME</span> <!--storage-block-table-datetime-->
-      <span>LEVEL</span> <!--storage-block-table-level-->
-      <span>HASH</span> <!--storage-block-table-hash-->
+      <span>DATETIME</span>
+      <span>LEVEL</span>
+      <span>CYCLE POSITION</span>
+      <span>HASH</span>
     </div>
 
     <div class="table-virtual-scroll-body">
@@ -22,6 +23,7 @@
 
             <span class="truncate">{{event?.datetime}}</span>
             <span class="truncate storage-block-level">{{event?.id}}</span>
+            <span class="truncate">{{event?.cyclePosition}}</span>
             <span class="truncate storage-block-hash pointer" [routerLink]="['/storage',event?.hash]">{{event?.hash}}</span>
 
             <span class="item-loading" [class.displayed]="!event?.datetime">&nbsp;</span>

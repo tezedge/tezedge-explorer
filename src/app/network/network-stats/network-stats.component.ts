@@ -1,8 +1,8 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import {ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit} from '@angular/core';
 
-import { Store } from '@ngrx/store';
-import { Subject } from 'rxjs';
-import { debounceTime, takeUntil } from 'rxjs/operators';
+import {Store} from '@ngrx/store';
+import {Subject} from 'rxjs';
+import {debounceTime, takeUntil} from 'rxjs/operators';
 import * as shape from 'd3-shape';
 
 @Component({
@@ -31,7 +31,7 @@ export class NetworkStatsComponent implements OnInit {
   public xAxisLabel = 'Bandwidth';
   public showYAxisLabel = false;
   public yAxisLabel = 'Time';
-  public curve = shape.curveBasis // shape.curveLinear;
+  public curve = shape.curveBasis; // shape.curveLinear;
   // public curve = shape.curveLinear;
 
   public colorScheme =
@@ -42,23 +42,22 @@ export class NetworkStatsComponent implements OnInit {
       domain: [
         '#000000', '#3f51b5', '#2196f3', '#00b862', '#afdf0a', '#a7b61a', '#f3e562', '#ff9800', '#ff5722', '#ff4514'
       ]
-    }
+    };
 
 
+  public networkStats;
+  public networkPeersMetrics;
+  public networkHistoryDurationSeries;
 
-
-  public networkStats
-  public networkPeersMetrics
-  public networkHistoryDurationSeries
-
-  public onDestroy$ = new Subject()
+  public onDestroy$ = new Subject();
 
   constructor(public store: Store<any>,
-              private cdRef: ChangeDetectorRef) { }
+              private cdRef: ChangeDetectorRef) {
+  }
 
   ngOnInit() {
 
-    // wait for data changes from redux    
+    // wait for data changes from redux
     this.store.select('networkStats')
       .pipe(
         debounceTime(200),
@@ -67,16 +66,16 @@ export class NetworkStatsComponent implements OnInit {
       .subscribe(data => {
         this.networkStats = data;
         this.cdRef.detectChanges();
-      })
+      });
 
-    // wait for data changes from redux    
+    // wait for data changes from redux
     this.store.select('networkPeers')
       .pipe(takeUntil(this.onDestroy$))
       .subscribe(data => {
         this.networkPeersMetrics = data.metrics;
-      })
+      });
 
-    // wait for data changes from redux    
+    // wait for data changes from redux
     this.store.select('networkHistory')
       .pipe(
         debounceTime(200),
@@ -90,36 +89,36 @@ export class NetworkStatsComponent implements OnInit {
           //   'value': this.networkStats.downloadRate ? this.networkStats.downloadRate : '',
           //   'name': (data.downloadDurationSeries.length + 1)
           // }
-        ]
+        ];
 
         this.single = [
           {
-            "name": "History",
-            "series": this.networkHistoryDurationSeries,
+            'name': 'History',
+            'series': this.networkHistoryDurationSeries,
           },
           // add empty space to chart and set scale (average value)
           {
-            "name": "History",
-            "series": [
+            'name': 'History',
+            'series': [
               {
-                'value':Math.round(data.downloadDurationSeries.reduce((avg, item) => ((avg + item.value) / 2), 0) / 50) * 50,
-                'name': this.networkStats.currentBlockCount ?
-                  Math.floor(this.networkStats.currentBlockCount / 4096) : ''
+                'value': Math.round(data.downloadDurationSeries.reduce((avg, item) => ((avg + item.value) / 2), 0) / 50) * 50,
+                'name': this.networkStats?.currentBlockCount ?
+                  Math.floor(this.networkStats?.currentBlockCount / 4096) : ''
               },
               // {
               //   'value': 100,
               //   'name': this.networkStats.currentBlockCount ?
-              //     Math.floor(this.networkStats.currentBlockCount / 4096) : '' 
+              //     Math.floor(this.networkStats.currentBlockCount / 4096) : ''
               // }
 
             ]
           }
         ];
 
-      })
+      });
   }
 
-  
+
   ngOnDestroy() {
 
     // close all observables

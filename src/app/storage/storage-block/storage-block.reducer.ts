@@ -69,7 +69,7 @@ export function setEntities(state, action) {
         hash: block.block_hash,
         id: block.level,
         datetime: moment.utc(Number(block.timestamp)).format('HH:mm:ss.SSS, DD MMM YY'),
-        cyclePosition: block.cycle_position || ''
+        cyclePosition: block.cycle_position !== undefined ? block.cycle_position : ''
       }
     }), {});
 

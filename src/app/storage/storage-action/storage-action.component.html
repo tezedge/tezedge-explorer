@@ -76,7 +76,7 @@
 
             <span class="truncate">{{event?.type }}</span>
 
-            <div class="truncate storage-action-time" style="text-align:left;width:80px;">
+            <div *ngIf="event?.start_time" class="truncate storage-action-time" style="text-align:left;width:80px;">
               <span *ngIf="(event?.timeStorage<=100)">
                 {{event?.timeStorage }}
               </span>

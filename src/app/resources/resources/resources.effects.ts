@@ -26,7 +26,8 @@ export class ResourcesEffects {
             .pipe(
               map((resources: Resource[]) => ({ type: ResourcesActionTypes.ResourcesLoadSuccess, payload: resources })),
               catchError(error => of({ type: ResourcesActionTypes.ResourcesLoadError, payload: error }))
-            ))
+            )
+        )
       );
     })
   );

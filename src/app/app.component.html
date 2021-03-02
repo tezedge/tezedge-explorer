@@ -76,22 +76,32 @@
         <app-sandbox-status-bar *ngIf="app.statusbar.sandbox">
         </app-sandbox-status-bar>
 
-        <div style="flex-grow:1;"></div>
-
-        <button *ngIf="pendingTransactions.length" mat-button class="pending-transactions" (click)="sandboxBakeBlock()"
-            [disabled]="!app.statusbar.sandbox">
-            <span>{{pendingTransactions.length + ' pending transaction' + (pendingTransactions.length > 1 ? 's': '')}}
+        <div fxLayout="row"
+             fxLayoutAlign="center center">
+            <button *ngIf="pendingTransactions.length"
+                    mat-button
+                    class="pending-transactions"
+                    (click)="sandboxBakeBlock()"
+                    [disabled]="!app.statusbar.sandbox">
+            <span>{{pendingTransactions.length + ' pending transaction' + (pendingTransactions.length > 1 ? 's' : '')}}
             </span>
-            <span *ngIf="app.statusbar.sandbox" class="action">BAKE</span>
-        </button>
+                <span *ngIf="app.statusbar.sandbox"
+                      class="action">BAKE</span>
+            </button>
 
-        <button class="theme-switcher" mat-button
-            style="font-size: 12px;font-weight: 300; height: 28px; min-width: 24px; padding: 0px 6px 0px 6px;">
-            <mat-icon *ngIf="app.theme.name === 'dark'" style="font-size:12px; opacity:0.3"
-                (click)="changeTheme('light')">wb_sunny</mat-icon>
-            <mat-icon *ngIf="app.theme.name === 'light'" style="font-size:12px; opacity:0.3"
-                (click)="changeTheme('dark')">bedtime</mat-icon>
-        </button>
+            <button class="theme-switcher"
+                    mat-button
+                    style="font-size: 12px;font-weight: 300; height: 28px; min-width: 24px; padding: 0px 6px 0px 6px;">
+                <mat-icon *ngIf="app.theme.name === 'dark'"
+                          style="font-size:12px; opacity:0.3"
+                          (click)="changeTheme('light')">wb_sunny
+                </mat-icon>
+                <mat-icon *ngIf="app.theme.name === 'light'"
+                          style="font-size:12px; opacity:0.3"
+                          (click)="changeTheme('dark')">bedtime
+                </mat-icon>
+            </button>
+        </div>
 
     </div>
 

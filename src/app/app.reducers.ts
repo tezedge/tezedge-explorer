@@ -1,8 +1,4 @@
-import {
-    ActionReducerMap,
-    ActionReducer,
-    MetaReducer,
-} from '@ngrx/store';
+import { ActionReducer, ActionReducerMap, MetaReducer, } from '@ngrx/store';
 // import { storeLogger } from 'ngrx-store-logger';
 import { environment } from '../environments/environment';
 
@@ -13,13 +9,11 @@ import { RouterStateUrl } from './app.routing';
 //   import * as LogRocket from 'logrocket';
 //   import createNgrxMiddleware from 'logrocket-ngrx';
 //   const logrocketMiddleware = createNgrxMiddleware(LogRocket);
-
 // meta reducer for dynamic forms
 import * as fromNgrxForm from './shared/ngrx-form.reducer';
 
 
 import * as fromApp from './app.reducer';
-import * as fromSettings from './settings/settings.reducer';
 import * as fromSettingsNode from './settings/settings-node/settings-node.reducer';
 
 import * as fromMonitoring from './monitoring/monitoring.reducer';
@@ -49,63 +43,60 @@ import * as fromSandbox from './sandbox/sandbox.reducer';
 import * as fromWallets from './wallets/wallets.reducer';
 import * as fromVersion from './monitoring/commit-number/commit-number.reducer';
 import * as fromResource from './resources/resources/resources.reducer';
-
 import { ResourcesState } from './resources/resources/resources.reducer';
+import { SettingsNode } from './shared/types/settings-node/settings-node.type';
 
-// state interface
 export interface State {
-    app: any;
-    monitoring: any;
-    mempoolAction: any;
-    networkAction: any;
-    networkActionDetail: any;
-    networkPeers: any;
-    networkStats: any;
-    networkHistory: any;
-    networkEndpoint: any;
-    endpointsAction: any;
-    logsAction: any;
-    storageBlock: any;
-    storageAction: any;
-    chainServer: any;
-    chainWallets: any;
-    chainConfig: any;
-    chainFinish: any;
-    settings: any;
-    settingsNode: any;
-    sandbox: any;
-    routerReducer: fromRouter.RouterReducerState<RouterStateUrl>;
-    wallets: any;
-    commitNumber: any;
-    resources: ResourcesState;
+  app: any;
+  monitoring: any;
+  mempoolAction: any;
+  networkAction: any;
+  networkActionDetail: any;
+  networkPeers: any;
+  networkStats: any;
+  networkHistory: any;
+  networkEndpoint: any;
+  endpointsAction: any;
+  logsAction: any;
+  storageBlock: any;
+  storageAction: any;
+  chainServer: any;
+  chainWallets: any;
+  chainConfig: any;
+  chainFinish: any;
+  settingsNode: SettingsNode;
+  sandbox: any;
+  routerReducer: fromRouter.RouterReducerState<RouterStateUrl>;
+  wallets: any;
+  commitNumber: any;
+  resources: ResourcesState;
 }
 
 // state
 export const reducers: ActionReducerMap<State> = {
-    app: fromApp.reducer,
-    monitoring: fromMonitoring.reducer,
-    mempoolAction: fromMempoolAction.reducer,
-    networkAction: fromNetworkAction.reducer,
-    networkActionDetail: fromNetworkActionDetail.reducer,
-    networkPeers: fromNetworkPeers.reducer,
-    networkStats: fromNetworkStats.reducer,
-    networkHistory: fromNetworkHistory.reducer,
-    networkEndpoint: fromNetworkEndpoint.reducer,
-    endpointsAction: fromEndpointsAction.reducer,
-    logsAction: fromLogsAction.reducer,
-    storageBlock: fromStorageBlock.reducer,
-    storageAction: fromStorageAction.reducer,
-    chainServer: fromChainServer.reducer,
-    chainWallets: fromChainWallets.reducer,
-    chainConfig: fromChainConfig.reducer,
-    chainFinish: fromChainFinish.reducer,
-    sandbox: fromSandbox.reducer,
-    settings: fromSettings.reducer,
-    settingsNode: fromSettingsNode.reducer,
-    routerReducer: fromRouter.routerReducer,
-    wallets: fromWallets.reducer,
-    commitNumber: fromVersion.reducer,
-    resources: fromResource.reducer,
+  app: fromApp.reducer,
+  monitoring: fromMonitoring.reducer,
+  mempoolAction: fromMempoolAction.reducer,
+  networkAction: fromNetworkAction.reducer,
+  networkActionDetail: fromNetworkActionDetail.reducer,
+  networkPeers: fromNetworkPeers.reducer,
+  networkStats: fromNetworkStats.reducer,
+  networkHistory: fromNetworkHistory.reducer,
+  networkEndpoint: fromNetworkEndpoint.reducer,
+  endpointsAction: fromEndpointsAction.reducer,
+  logsAction: fromLogsAction.reducer,
+  storageBlock: fromStorageBlock.reducer,
+  storageAction: fromStorageAction.reducer,
+  chainServer: fromChainServer.reducer,
+  chainWallets: fromChainWallets.reducer,
+  chainConfig: fromChainConfig.reducer,
+  chainFinish: fromChainFinish.reducer,
+  sandbox: fromSandbox.reducer,
+  settingsNode: fromSettingsNode.reducer,
+  routerReducer: fromRouter.routerReducer,
+  wallets: fromWallets.reducer,
+  commitNumber: fromVersion.reducer,
+  resources: fromResource.reducer,
 };
 
 // // log all actions to console for production
@@ -116,7 +107,26 @@ export const reducers: ActionReducerMap<State> = {
 
 // compose all reducers to map
 export const metaReducers: MetaReducer<State>[] = !environment.production
-    ? [fromNgrxForm.form]
-    : [fromNgrxForm.form
+  ? [fromNgrxForm.form, nodeSwitchStateMetaReducer]
+  : [fromNgrxForm.form, nodeSwitchStateMetaReducer
     //    ,logger
-    ];
+  ];
+
+export function nodeSwitchStateMetaReducer(reducer: ActionReducer<State>): ActionReducer<State> {
+  return function clearStateFn(state: State, action: any) {
+    if (action.type === 'APP_NODE_CHANGE') {
+      state = {
+        app: {
+          ...state.app,
+          initialized: false
+        },
+        settingsNode: {
+          api: state.settingsNode.entities[action.payload.api.id],
+          entities: { ...state.settingsNode.entities },
+          ids: [...state.settingsNode.ids]
+        } as SettingsNode
+      } as State;
+    }
+    return reducer(state, action);
+  };
+}

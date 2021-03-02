@@ -1,95 +1,87 @@
-import { Injectable, NgZone } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Effect, Actions, ofType } from '@ngrx/effects';
+import { Actions, Effect, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
-import { Observable, of, empty } from 'rxjs';
-import { tap, map, switchMap, catchError, withLatestFrom, flatMap } from 'rxjs/operators';
+import { empty, of } from 'rxjs';
+import { catchError, flatMap, map, withLatestFrom } from 'rxjs/operators';
+import { SettingsNodeEntityHeader } from '../../shared/types/settings-node/settings-node-entity-header.type';
+import { SettingsNodeService } from './settings-node.service';
 
 @Injectable()
 export class SettingsNodeEffects {
 
-    // check node availability
-    @Effect()
-    SettingsNodeLoadEffect$ = this.actions$.pipe(
-        ofType('SETTINGS_NODE_LOAD'),
+  // check node availability
+  @Effect()
+  SettingsNodeLoadEffect$ = this.actions$.pipe(
+    ofType('SETTINGS_NODE_LOAD'),
+    withLatestFrom(this.store, (action: any, state) => ({ action, state })),
+    flatMap(({ action, state }) => state.settingsNode.ids.map(id => state.settingsNode.entities[id])),
+    flatMap((api: any) =>
+      this.settingsNodeService.getSettingsHeader(api.http).pipe(
+        map((response: SettingsNodeEntityHeader) => ({ type: 'SETTINGS_NODE_LOAD_SUCCESS', payload: { api, response } })),
+        catchError((error) => of({ type: 'SETTINGS_NODE_LOAD_ERROR', payload: { api, response: error } })),
+      )
+    ),
+  );
 
-        // merge state
-        withLatestFrom(this.store, (action: any, state) => ({ action, state })),
+  @Effect()
+  SettingsNodeInitEffect$ = this.actions$.pipe(
+    ofType('SETTINGS_NODE_LOAD_SUCCESS'),
 
-        // create observable from every item in list
-        flatMap(({ action, state }) => {
+    withLatestFrom(this.store, (action: any, state) => ({ action, state })),
 
-            // get api settings from localstorage
-            // const settingsNode: any = localStorage.getItem('settingsNode') ? localStorage.getItem('settingsNode') : api.ws;
-            // console.log('[SETTINGS_NODE_LOAD][effect][settingsNode]',  settingsNode);
+    flatMap(({ action, state }) =>
+      state.settingsNode && state.settingsNode.api && action.payload && action.payload.api.id === state.settingsNode.api.id
+        ? of({ type: 'APP_INIT', payload: state.settingsNode.api })
+        : empty()
+    ),
+  );
 
-            return state.settingsNode.ids.map(id => state.settingsNode.entities[id]);
-        }),
+  @Effect()
+  SettingsNodeChangeEffect$ = this.actions$.pipe(
+    ofType('SETTINGS_NODE_CHANGE'),
 
-        // check if api is available
-        flatMap((api: any) => {
-            // call node
-            return this.http.get(api.http + '/chains/main/blocks/head/header').pipe(
-                // dispatch action
-                map((response) => ({ type: 'SETTINGS_NODE_LOAD_SUSCCESS', payload: { api: api, response: response } })),
-                // dispatch error
-                catchError((error) => of({ type: 'SETTINGS_NODE_LOAD_ERROR', payload: { api: api, response: error } })),
-            );
-        }),
+    withLatestFrom(this.store, (action: any, state) => ({ action, state })),
 
-    );
+    flatMap(({ action, state }) => of({ type: 'APP_INIT', payload: state.settingsNode.api })),
+  );
 
-    @Effect()
-    SettingsNodeInitEffect$ = this.actions$.pipe(
-        ofType('SETTINGS_NODE_LOAD_SUSCCESS', 'SETTINGS_NODE_CHANGE'),
+  @Effect()
+  SettingsNodeLoadSandboxEffect$ = this.actions$.pipe(
+    ofType('SETTINGS_NODE_LOAD_SANDBOX'),
 
-        // merge state
-        withLatestFrom(this.store, (action: any, state) => ({ action, state })),
+    // merge state
+    withLatestFrom(this.store, (action: any, state) => ({ action, state })),
 
-        flatMap(({ action, state }) => {
-            console.log('[' + action.type + ']', state.settingsNode);
-            // dispatch action only for current api
-            return state.settingsNode && state.settingsNode.api && action.payload.api.id === state.settingsNode.api.id ?
-                of({ type: 'APP_INIT', payload: state.settingsNode.api }) : empty();
+    // check if api is available
+    flatMap(({ action, state }) => {
+      const sandbox = state.settingsNode.entities['sandbox-carthage-tezedge'];
+      return this.http.get(sandbox.http + '/chains/main/blocks/head/header').pipe(
+        // dispatch action
+        map((response) => ({ type: 'SETTINGS_NODE_LOAD_SANDBOX_SUCCESS', payload: { api: sandbox, response } })),
+        // dispatch error
+        catchError((error) => of({ type: 'SETTINGS_NODE_LOAD_SANDBOX_ERROR', payload: { api: sandbox, response: error } })),
+      );
+    }),
+  );
 
-        }),
-    );
+  @Effect()
+  SettingsNodeSandboxSuccessEffect$ = this.actions$.pipe(
+    ofType('SETTINGS_NODE_LOAD_SANDBOX_SUCCESS'),
 
-    @Effect()
-    SettingsNodeLoadSandboxEffect$ = this.actions$.pipe(
-        ofType('SETTINGS_NODE_LOAD_SANDBOX'),
+    // merge state
+    withLatestFrom(this.store, (action: any, state) => ({ action, state })),
 
-        // merge state
-        withLatestFrom(this.store, (action: any, state) => ({ action, state })),
+    flatMap(({ action, state }) => {
+      return of({ type: 'APP_INIT', payload: state.settingsNode.entities['sandbox-carthage-tezedge'] });
+    }),
+  );
 
-        // check if api is available
-        flatMap(({ action, state }) => {
-            const sandbox = state.settingsNode.entities['sandbox-carthage-tezedge'];
-            return this.http.get(sandbox.http + '/chains/main/blocks/head/header').pipe(
-                // dispatch action
-                map((response) => ({ type: 'SETTINGS_NODE_LOAD_SANDBOX_SUCCESS', payload: { api: sandbox, response: response } })),
-                // dispatch error
-                catchError((error) => of({ type: 'SETTINGS_NODE_LOAD_SANDBOX_ERROR', payload: { api: sandbox, response: error } })),
-            );
-        }),
-    );
-
-    @Effect()
-    SettingsNodeSandboxSuccessEffect$ = this.actions$.pipe(
-        ofType('SETTINGS_NODE_LOAD_SANDBOX_SUCCESS'),
-
-        // merge state
-        withLatestFrom(this.store, (action: any, state) => ({ action, state })),
-
-        flatMap(({ action, state }) => {
-            return of({ type: 'APP_INIT', payload: state.settingsNode.entities['sandbox-carthage-tezedge'] });
-        }),
-    );
-
-constructor(
+  constructor(
     private http: HttpClient,
     private actions$: Actions,
-    private store: Store < any >,
-) { }
+    private store: Store<any>,
+    private settingsNodeService: SettingsNodeService
+  ) { }
 
 }

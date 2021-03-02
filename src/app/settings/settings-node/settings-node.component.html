@@ -1,71 +1,88 @@
-<div style="opacity: 0.8;">
+<div style="opacity: 0.8;"
+     *ngIf="settingsNodeApi">
 
-    <mat-form-field class="settings-node-select">
-        
-        <mat-select #settingsNode [value]="settingsNodeApi.id" (click)="nodeSelectOpen()" disableOptionCentering panelClass="settings-node">
+  <mat-form-field class="settings-node-select">
 
-            <mat-select-trigger style="display: flex; align-items: center;">
-                {{ settingsNodeApi.name }}
-                <mat-icon *ngIf="settingsNodeApi?.connected===true" class="settings-node-status-icon">
-                    fiber_manual_record
-                </mat-icon>
-                <mat-icon *ngIf="settingsNodeApi?.connected===false" class="settings-node-status-icon-offline">
-                    fiber_manual_record
-                </mat-icon>
-            </mat-select-trigger>
+    <mat-select #settingsNode
+                [value]="settingsNodeApi.id"
+                (click)="onOpeningNodeSelect()"
+                disableOptionCentering
+                panelClass="settings-node">
 
-            <ng-container *ngFor="let node of settingsNodeEntities">
-                <!-- TODO: remove hardcoded 'sandbox-carthage-tezedge' everywhere and use some flag -->
-                <mat-option *ngIf="node.id !== 'sandbox-carthage-tezedge' || node.connected === true || node.connected === 'pending'" [value]="node.id"
-                    (click)="nodeSelectChange(node.id)" class="settings-node-option">
-                    <div style="display: flex;flex-direction:row;align-items:center;">
-                        <div style="width: 30px;">
-                            <mat-icon *ngIf="node.id == settingsNodeApi.id" style="margin-right: 5px;font-size: 22px;">done</mat-icon>
-                        </div>
-                        <div style="flex-direction:column">
+      <mat-select-trigger fxLayout="row"
+                          fxLayoutAlign="center center">
+        {{ settingsNodeApi.name }}
+        <mat-icon [class.is-offline]="!settingsNodeApi?.connected"
+                  class="settings-node-status-icon">
+          fiber_manual_record
+        </mat-icon>
+      </mat-select-trigger>
 
-                            {{node.name}}
-                            <mat-icon *ngIf="node.connected==='pending'" class="settings-node-status-option-icon-offline">
-                                hourglass_empty
-                            </mat-icon>
-                            <mat-icon *ngIf="node.connected===true" class="settings-node-status-option-icon">
-                                fiber_manual_record
-                            </mat-icon>
-                            <mat-icon *ngIf="node.connected===false" class="settings-node-status-option-icon-offline">
-                                fiber_manual_record
-                            </mat-icon>
+      <ng-container *ngFor="let node of settingsNodeEntities">
+        <!-- TODO: remove hardcoded 'sandbox-carthage-tezedge' everywhere and use some flag -->
+        <mat-option *ngIf="node.id !== 'sandbox-carthage-tezedge' || node.connected === true || node.connected === 'pending'"
+                    [value]="node.id"
+                    (click)="nodeSelectChange(node.id)"
+                    class="settings-node-option">
+          <div style="display: flex;flex-direction:row;align-items:center;">
+            <div style="width: 30px;">
+              <mat-icon *ngIf="node.id == settingsNodeApi.id"
+                        style="margin-right: 5px;font-size: 22px;">done
+              </mat-icon>
+            </div>
+            <div style="flex-direction:column">
 
-                            <div class="settings-node-option-status">
+              {{node.name}}
+              <mat-icon *ngIf="node.connected==='pending'"
+                        class="settings-node-status-option-icon-offline">
+                hourglass_empty
+              </mat-icon>
+              <mat-icon *ngIf="node.connected===true"
+                        class="settings-node-status-option-icon">
+                fiber_manual_record
+              </mat-icon>
+              <mat-icon *ngIf="node.connected===false"
+                        class="settings-node-status-option-icon-offline">
+                fiber_manual_record
+              </mat-icon>
+
+              <div class="settings-node-option-status">
                                 <span *ngIf="node.connected==='pending'">
                                     connecting
                                 </span>
-                                <span *ngIf="node.connected===true">
+                <span *ngIf="node.connected===true">
                                     {{ node.header?.protocol | slice:0:10 }} | last block {{ node.relativeDatetime }}
                                 </span>
-                                <span *ngIf="node.connected===false">
+                <span *ngIf="node.connected===false">
                                     offline
                                 </span>
-                            </div>
+              </div>
 
-                        </div>
-
-                    </div>
-                </mat-option>
-            </ng-container>
-
-            <div style="background-color: #2a2b2e;padding:12px 10px 12px 40px;">
-                <button id="settings-node-add-sandbox" *ngIf="stateEntities['sandbox-carthage-tezedge']?.connected === false" mat-flat-button style="font-size: 12px;line-height: 24px;color:white; background: #8C6141; font-weight:300"
-                    (click)="nodeSandboxAdd();settingsNode.close()">
-                    ADD SANDBOX NODE
-                </button>
-                <button id="settings-node-stop-sandbox" *ngIf="stateEntities['sandbox-carthage-tezedge']?.connected === true" mat-flat-button style="font-size: 12px;line-height: 24px;color:white; background: #8C6141; font-weight:300"
-                    (click)="nodeSandboxStop();settingsNode.close()">
-                    STOP SANDBOX NODE
-                </button>
             </div>
 
-        </mat-select>
+          </div>
+        </mat-option>
+      </ng-container>
 
-    </mat-form-field>
+      <div style="background-color: #2a2b2e;padding:12px 10px 12px 40px;">
+        <button id="settings-node-add-sandbox"
+                *ngIf="stateEntities['sandbox-carthage-tezedge']?.connected === false"
+                mat-flat-button
+                style="font-size: 12px;line-height: 24px;color:white; background: #8C6141; font-weight:300"
+                (click)="nodeSandboxAdd();settingsNode.close()">
+          ADD SANDBOX NODE
+        </button>
+        <button id="settings-node-stop-sandbox"
+                *ngIf="stateEntities['sandbox-carthage-tezedge']?.connected === true"
+                mat-flat-button
+                style="font-size: 12px;line-height: 24px;color:white; background: #8C6141; font-weight:300"
+                (click)="nodeSandboxStop();settingsNode.close()">
+          STOP SANDBOX NODE
+        </button>
+      </div>
+
+    </mat-select>
+
+  </mat-form-field>
 
 </div>

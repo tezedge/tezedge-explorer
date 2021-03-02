@@ -1,59 +1,55 @@
 .settings-node-status-icon {
-    font-size: 12px;
-    padding-left: 4px;
-    height: auto;
-    width: auto;
-    color: #48e5d061
+  font-size: 12px;
+  padding-left: 4px;
+  height: auto;
+  width: auto;
+  color: #3ecab7;
+
+  &.is-offline {
+    color: #883f53;
+  }
 }
 
-.settings-node-status-icon-offline {
-    font-size: 12px;
-    padding-left: 4px;
-    height: auto;
-    width: auto;
-    color: #ae4d6861
+.settings-node-select {
+  width: 220px;
+  line-height: 28px;
+  padding-left: 14px;
+  border-radius: 4px;
 }
 
-.settings-node-select { 
-    width: 198px;
-    line-height: 28px;
-    padding-left: 14px;
-    border-radius: 4px;
+.settings-node-select:hover {
+  background-color: rgba(255, 255, 255, 0.13);
 }
 
-.settings-node-select:hover { 
-    background-color: #ffffff20;
-}
-
-.mat-button:hover { 
-    background-color: #ffffff20;
+.mat-button:hover {
+  background-color: rgba(255, 255, 255, 0.13);
 }
 
 .settings-node-status-option-icon {
-    font-size: 12px;
-    margin: 8px 0px 0px 0px !important;
-    height: 20px;
-    width: 20px;
-    color: #48e5d0c9
+  font-size: 12px;
+  margin: 8px 0 0 0 !important;
+  height: 20px;
+  width: 20px;
+  color: #3ecab7;
 }
 
 .settings-node-status-option-icon-offline {
-    font-size: 12px;
-    margin: 8px 0px 0px 0px !important;
-    height: 20px;
-    width: 20px;
-    color:#ae4d68b3
+  font-size: 12px;
+  margin: 8px 0 0 0 !important;
+  height: 20px;
+  width: 20px;
+  color: #883f53;
 }
 
 .settings-node-option {
-    height: 46px !important;
-    padding: 3px 25px 3px 10px;
-    background-color: #2a2b2e;
-    color: white;
+  height: 46px !important;
+  padding: 3px 25px 3px 10px;
+  background-color: #2a2b2e;
+  color: white;
 }
 
 .settings-node-option-status {
-    margin: -20px 0px 0px 0px; 
-    font-size: 10px;
+  margin: -20px 0px 0px 0px;
+  font-size: 10px;
 }
 

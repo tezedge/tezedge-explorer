@@ -80,6 +80,7 @@ export class AppEffects {
             appFeaturesActions.push({ type: 'NETWORK_INIT' });
             appFeaturesActions.push({ type: 'RESOURCES_STATS_LOAD' });
             appFeaturesActions.push({ type: 'STORAGE_INIT' });
+            appFeaturesActions.push({ type: 'VERSION_NODE_LOAD' });
             // appFeaturesActions.push({ type: 'RPC_INIT' });
             appFeaturesActions.push({ type: 'LOGS_INIT' });
 

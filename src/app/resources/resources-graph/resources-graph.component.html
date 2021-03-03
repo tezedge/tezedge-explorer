@@ -32,11 +32,11 @@
                             [curve]="curve">
       <ng-template #seriesTooltipTemplate
                    let-model="model">
-        <ng-container *ngTemplateOutlet="customSeriesTooltipTemplate; context: { model: model, type: 'percentage' }"></ng-container>
+        <ng-container *ngTemplateOutlet="customSeriesTooltipTemplate; context: { model: model, type: formattingType }"></ng-container>
       </ng-template>
       <ng-template #tooltipTemplate
                    let-model="model">
-        <ng-container *ngTemplateOutlet="customTooltipTemplate; context: { model: model, type: 'percentage' }"></ng-container>
+        <ng-container *ngTemplateOutlet="customTooltipTemplate; context: { model: model, type: formattingType }"></ng-container>
       </ng-template>
     </app-tezedge-line-chart>
   </div>
@@ -60,7 +60,7 @@
         <div *ngIf="type === 'percentage'"
              class="series-value">{{ entry.value }}%
         </div>
-        <div *ngIf="type === undefined"
+        <div *ngIf="type === 'GB'"
              class="series-value">{{ entry.value | number: '1.2-2' }} GB
         </div>
       </div>
@@ -77,7 +77,7 @@
       <span class="tooltip-label">{{ model.series }} • {{ model.name }}</span>
       <span *ngIf="type === 'percentage'"
             class="tooltip-val">{{ model.value }}%</span>
-      <span *ngIf="type === undefined"
+      <span *ngIf="type === 'GB'"
             class="tooltip-val">{{ model.value | number: '1.2-2' }} GB</span>
     </span>
   </div>

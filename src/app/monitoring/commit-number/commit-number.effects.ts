@@ -91,6 +91,9 @@ export function setNodeCommitUrl(state) {
 }
 
 export function setNodeTagUrl(state) {
+  if (state.settingsNode.api.id === 'ocaml') {
+    return state.settingsNode.api.http + '/version/';
+  }
   return state.settingsNode.api.http + '/dev/version/';
 }
 

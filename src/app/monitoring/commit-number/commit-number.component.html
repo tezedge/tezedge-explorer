@@ -1,4 +1,4 @@
-<div class="node-tag-number hide-details">
+<div class="node-tag-number hide-details" *ngIf="!hideComponent">
   <div class="commit-numbers-container" *ngIf="showCommitNumbers">
     <div class="commit-numbers-container-item truncate" id="nodeCommit">
       <a href="{{githubRepositories.node + commitNumber.nodeCommit}}" target="_blank" rel="noreferrer">

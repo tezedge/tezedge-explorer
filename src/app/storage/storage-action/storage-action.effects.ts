@@ -3,8 +3,6 @@ import {Effect, Actions, ofType} from '@ngrx/effects';
 import {HttpClient} from '@angular/common/http';
 import {Store} from '@ngrx/store';
 import {tap, map, switchMap, withLatestFrom, catchError, takeUntil} from 'rxjs/operators';
-import {of, Subject, timer} from 'rxjs';
-import {setUrl} from '../storage-block/storage-block.effects';
 
 
 @Injectable()
@@ -18,7 +16,7 @@ export class StorageActionEffects {
     withLatestFrom(this.store, (action: any, state) => ({action, state})),
 
     switchMap(({action, state}) => {
-      return this.http.get(state.settingsNode.api.http + '/dev/chains/main/actions/blocks/' + action.payload.blockHash);
+      return this.http.get(setUrl(action, state));
     }),
     // dispatch action
     map((payload) => ({type: 'STORAGE_BLOCK_ACTION_LOAD_SUCCESS', payload})),
@@ -64,4 +62,29 @@ export class StorageActionEffects {
   ) {
   }
 
+}
+
+export function setUrl(action, state) {
+  const url = state.settingsNode.api.http + '/dev/chains/main/actions/blocks/' + action.payload.blockHash + '/?';
+  const cursor = storageActionCursor(action);
+  const filters = ''; // use it when we need to filter the list
+  const limit = storageActionLimit(action);
+
+  return `${url}${filters.length ? `${filters}&` : ''}${cursor.length ? `${cursor}&` : ''}${limit}`;
+}
+
+// use limit to load just the necessary number of records
+function storageActionLimit(action) {
+  const limitNr = action.payload && action.payload.limit && action.payload.limit > 60 ?
+    action.payload.limit :
+    '60';
+
+  return `limit=${limitNr}`;
+}
+
+// use cursor to load previous pages
+function storageActionCursor(action) {
+  return action.payload && action.payload.cursor_id ?
+    `cursor_id=${action.payload.cursor_id}`  :
+    '';
 }

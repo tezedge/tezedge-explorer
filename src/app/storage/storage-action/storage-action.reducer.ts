@@ -5,6 +5,7 @@ const initialState: any = {
   ids: [],
   entities: [],
   lastCursorId: 0,
+  lastOriginalCursorId: 0,
   stream: false,
   blocks: [],
   view: '',
@@ -22,12 +23,12 @@ function bufferToHex(buffer) {
 export function reducer(state = initialState, action) {
   switch (action.type) {
 
-    case 'STORAGE_BLOCK_ACTION_LOAD': {
-      return {
-        ...initialState,
-        view: 'block',
-      };
-    }
+    // case 'STORAGE_BLOCK_ACTION_LOAD': {
+    //   return {
+    //     ...initialState,
+    //     view: 'block',
+    //   };
+    // }
 
     case 'STORAGE_ADDRESS_ACTION_LOAD': {
       return {
@@ -80,7 +81,7 @@ export function processActions(state, action) {
     return {
       ...item,
       originalId: item.id,
-      id: index + 1
+      id: item.block_cursor_id + 1
     };
   });
 
@@ -439,7 +440,8 @@ export function processActions(state, action) {
         return accum;
 
       }, {}),
-    lastCursorId: setLastCursorId(_action, state)
+    lastCursorId: setLastCursorId(_action, state),
+    lastOriginalCursorId: setLastOriginalCursorId(_action, state)
   };
 
   // total time for storage time
@@ -903,6 +905,12 @@ export function bytes2address(value) {
 }
 
 export function setLastCursorId(action, state) {
+  return 500;
   return action.payload.length > 0 && state.lastCursorId < action.payload[action.payload.length - 1].id ?
     action.payload[action.payload.length - 1].id : state.lastCursorId;
+}
+
+export function setLastOriginalCursorId(action, state) {
+  return action.payload.length > 0 && state.lastOriginalCursorId < action.payload[action.payload.length - 1].originalId ?
+    action.payload[action.payload.length - 1].originalId : state.lastOriginalCursorId;
 }

@@ -64,7 +64,7 @@
     <div class="table-virtual-scroll-body">
 
       <div class="virtual-scroll-container" [class.storage-block-filters-expanded]="filtersState.open">
-        <ng-template vsFor [vsForOf]="virtualScrollItems" let-event let-position="position"
+        <ng-template vsForFromTop [vsForOf]="virtualScrollItems" let-event let-position="position"
                      (getItems)="getItems($event)" (startStopDataStream)="startStopDataStream($event)">
           <span class="virtualScrollRow storage-action-row"
                 [style.transform]="position !== undefined ? 'translate(0px,' + position + 'px)' : ''"

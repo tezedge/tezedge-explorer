@@ -6,7 +6,7 @@ import {Subject} from 'rxjs';
 import {takeUntil} from 'rxjs/operators';
 
 import {MatAutocompleteSelectedEvent} from '@angular/material/autocomplete';
-import {VirtualScrollDirective} from '../../shared/virtual-scroll.directive';
+import {VirtualScrollFromTopDirective} from '../../shared/virtual-scroll-from-top.directive';
 
 @Component({
   selector: 'app-storage-action',
@@ -44,7 +44,7 @@ export class StorageActionComponent implements OnInit, OnDestroy {
   // public onDestroy$ = new Subject();
 
 
-  @ViewChild(VirtualScrollDirective) vrFor: VirtualScrollDirective;
+  @ViewChild(VirtualScrollFromTopDirective) vrFor: VirtualScrollFromTopDirective;
 
   constructor(
     public store: Store<any>,
@@ -56,6 +56,7 @@ export class StorageActionComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    // this.store.dispatch({type: 'STORAGE_BLOCK_RESET'});
     this.scrollStart(null);
 
     // wait for data changes from redux
@@ -141,23 +142,23 @@ export class StorageActionComponent implements OnInit, OnDestroy {
   }
 
   getItems($event) {
-    return;
-    // this.store.dispatch({
-    //   type: 'STORAGE_BLOCK_ACTION_LOAD',
-    //   payload: {
-    //     block_hash: this.router.url
-    //     // cursor_id: $event?.nextCursorId,
-    //     // limit: $event?.limit
-    //   }
-    // });
+    this.store.dispatch({
+      type: 'STORAGE_BLOCK_ACTION_LOAD',
+      payload: {
+        cursor_id: $event?.nextCursorId,
+        limit: $event?.limit,
+        blockHash: this.block
+      }
+    });
   }
+  //
+  // private setBlockHash(): string {
+  //   console.log(this.router.url);
+  //   return this.router.url;
+  // }
 
   startStopDataStream(event) {
-    if (event.stop) {
-      this.scrollStop();
-    } else {
-      this.scrollStart(event);
-    }
+    return;
   }
 
   scrollStart($event) {
@@ -169,7 +170,7 @@ export class StorageActionComponent implements OnInit, OnDestroy {
   }
 
   scrollToEnd() {
-    this.vrFor.scrollToBottom();
+    this.vrFor.scrollToTop();
   }
 
   tableMouseEnter(item) {

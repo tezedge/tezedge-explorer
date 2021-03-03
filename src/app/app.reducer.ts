@@ -1,5 +1,5 @@
 const initialState = {
-
+    initialized: false,
     user: {
         uid: null,
         email: null,
@@ -100,7 +100,6 @@ export function reducer(state = initialState, action) {
             let sandboxChain = false;
             let sandboxWallets = false;
 
-
             if (action.payload.connected === true) {
                 monitoringSynchronization = true;
             }
@@ -148,6 +147,13 @@ export function reducer(state = initialState, action) {
                 statusbar: {
                     sandbox: action.payload.id === 'sandbox-carthage-tezedge',
                 }
+            };
+        }
+
+        case 'APP_INIT_SUCCESS': {
+            return {
+                ...state,
+                initialized: true
             };
         }
 

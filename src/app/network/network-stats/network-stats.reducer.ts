@@ -44,7 +44,7 @@ export function reducer(state = initialState, action) {
             return initialState;
 
         case 'NETWORK_STATS_LOAD_SUCCESS': {
-
+            console.log(234);
             const etaApplicationMinutes =
                 moment().diff(moment(action.payload.timestamp), 'minutes') / state.currentApplicationSpeed;
 

@@ -1,7 +1,10 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 
-import { Store } from '@ngrx/store';
+import { select, Store } from '@ngrx/store';
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
+import { filter } from 'rxjs/operators';
 
+@UntilDestroy()
 @Component({
   selector: 'app-monitoring',
   templateUrl: './monitoring.component.html',
@@ -14,15 +17,19 @@ export class MonitoringComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit(): void {
-    this.store.dispatch({
-      type: 'MONITORING_LOAD',
-    });
+    this.initMonitoring();
+  }
+
+  private initMonitoring(): void {
+    this.store.pipe(
+      untilDestroyed(this),
+      select(state => state.settingsNode.api),
+      filter(api => api.connected)
+    ).subscribe((s) => this.store.dispatch({ type: 'MONITORING_LOAD' }));
   }
 
   ngOnDestroy(): void {
-    this.store.dispatch({
-      type: 'MONITORING_CLOSE',
-    });
+    this.store.dispatch({ type: 'MONITORING_CLOSE' });
   }
 
 }

@@ -53,7 +53,7 @@ export class SandboxEffects {
         }),
 
         // dispatch actions
-        map((payload) => ({ type: 'SANDBOX_NODE_STOP_PENDING', payload: payload })),
+        map((payload) => ({ type: 'SANDBOX_NODE_STOP_PENDING', payload })),
         catchError((error, caught) => {
             console.error(error);
             this.store.dispatch({

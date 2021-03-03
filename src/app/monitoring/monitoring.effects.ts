@@ -1,18 +1,19 @@
-import { Injectable, NgZone } from '@angular/core';
-import { Effect, Actions, ofType } from '@ngrx/effects';
+import { Injectable } from '@angular/core';
+import { Actions, Effect, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
-import { of, Subject, empty, timer } from 'rxjs';
-import { tap, map, switchMap, catchError, withLatestFrom, filter, takeUntil } from 'rxjs/operators';
+import { empty, of, Subject, timer } from 'rxjs';
+import { catchError, filter, map, switchMap, takeUntil, tap, withLatestFrom } from 'rxjs/operators';
 import { webSocket } from 'rxjs/webSocket';
 import { HttpClient } from '@angular/common/http';
 
-const websocketDestroy$ = new Subject();
-const networkDestroy$ = new Subject();
 
 let wsCounter = 0;
 
 @Injectable()
 export class MonitoringEffects {
+
+    private websocketDestroy$ = null;
+    private networkDestroy$ = null;
 
     // initialize app features
     @Effect({ dispatch: false })
@@ -23,8 +24,8 @@ export class MonitoringEffects {
         // init app modules
         tap(({ action, state }) => {
             // close all open observables
-            networkDestroy$.next();
-            websocketDestroy$.next();
+            // this.networkDestroy$.next();
+            // this.websocketDestroy$.next();
         }),
     );
 
@@ -37,13 +38,20 @@ export class MonitoringEffects {
         // init app modules
         switchMap(({ action, state }) => {
             const appFeaturesActions = [];
-
             // TODO: use app features
+            if (this.networkDestroy$) {
+              this.networkDestroy$.next();
+            }
+            if (this.websocketDestroy$) {
+              this.websocketDestroy$.next();
+            }
             if (state.settingsNode.api.ws === false) {
-                appFeaturesActions.push({ type: 'NETWORK_STATS_LOAD' });
-                appFeaturesActions.push({ type: 'NETWORK_PEERS_LOAD' });
+              this.networkDestroy$ = new Subject();
+              appFeaturesActions.push({ type: 'NETWORK_STATS_LOAD' });
+              appFeaturesActions.push({ type: 'NETWORK_PEERS_LOAD' });
             } else {
-                appFeaturesActions.push({ type: 'NETWORK_WEBSOCKET_LOAD' });
+              this.websocketDestroy$ = new Subject();
+              appFeaturesActions.push({ type: 'NETWORK_WEBSOCKET_LOAD' });
             }
 
             return appFeaturesActions;
@@ -62,9 +70,9 @@ export class MonitoringEffects {
             // TODO: use app features
             if (state.settingsNode.api.ws === false) {
                 // close all open observables
-                networkDestroy$.next();
+                this.networkDestroy$.next();
             } else {
-                websocketDestroy$.next();
+                this.websocketDestroy$.next();
             }
         })
     );
@@ -81,12 +89,13 @@ export class MonitoringEffects {
 
             // get header data every second
             timer(0, 1000).pipe(
-                takeUntil(networkDestroy$),
-                switchMap(() =>
-                    this.http.get(state.settingsNode.api.http + '/chains/main/blocks/head/header').pipe(
-                        map(response => ({ type: 'NETWORK_STATS_LOAD_SUCCESS', payload: response })),
-                        catchError(error => of({ type: 'NETWORK_STATS_LOAD_ERROR', payload: error })),
-                    )
+                takeUntil(this.networkDestroy$),
+                switchMap(() => {
+                    return this.http.get(state.settingsNode.api.http + '/chains/main/blocks/head/header').pipe(
+                      map(response => ({ type: 'NETWORK_STATS_LOAD_SUCCESS', payload: response })),
+                      catchError(error => of({ type: 'NETWORK_STATS_LOAD_ERROR', payload: error })),
+                    );
+                  }
                 )
             )
         ),
@@ -104,7 +113,7 @@ export class MonitoringEffects {
 
             // get header data every second
             timer(0, 1000).pipe(
-                takeUntil(networkDestroy$),
+                takeUntil(this.networkDestroy$),
                 switchMap(() =>
                     this.http.get(state.settingsNode.api.http + '/network/peers').pipe(
                         map(response => ({ type: 'NETWORK_PEERS_LOAD_SUCCESS', payload: response })),
@@ -140,7 +149,7 @@ export class MonitoringEffects {
             );
 
             return webSocketConnection$.pipe(
-                takeUntil(websocketDestroy$),
+                takeUntil(this.websocketDestroy$),
                 filter((data: any) => {
                     // even if ws is turned off update state cca every minute
                     wsCounter = wsCounter < 700 ? wsCounter + 1 : 0;

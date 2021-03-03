@@ -41,6 +41,7 @@ export class StorageBlockComponent implements OnInit, OnDestroy {
     this.store.select('storageBlock')
       .pipe(takeUntil(this.onDestroy$))
       .subscribe(data => {
+        console.log(data);
         this.virtualScrollItems = data;
         this.storageBlockShow = data.ids.length > 0;
 

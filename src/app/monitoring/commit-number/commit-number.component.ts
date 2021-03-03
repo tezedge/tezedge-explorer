@@ -19,6 +19,8 @@ export class CommitNumberComponent implements OnInit, OnDestroy {
   };
   showCommitNumbers = false;
 
+  hideComponent = false;
+
   @HostListener('mouseenter')
   mouseenter() {
     this.showCommitNumbers = true;
@@ -42,6 +44,12 @@ export class CommitNumberComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.onDestroy$))
       .subscribe(data => {
         this.commitNumber = data;
+      });
+
+    this.store.select('settingsNode')
+      .pipe(takeUntil(this.onDestroy$))
+      .subscribe(data => {
+        this.hideComponent = data.api.id.includes('ocaml');
       });
   }
 

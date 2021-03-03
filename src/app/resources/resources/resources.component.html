@@ -45,6 +45,7 @@
                              [yAxisTickFormatting]="yAxisPercentageConversion"
                              [xTicksValues]="chartData.xTicksValues"
                              [colorScheme]="colorScheme"
+                             [formattingType]="'percentage'"
                              (graphClick)="toggleActiveSummary($event)"></app-resources-graph>
 
         <app-resources-graph [chartData]="chartData?.memory"

@@ -48,6 +48,7 @@ body {
   position: fixed;
   display: flex;
   align-items: center;
+  justify-content: space-between;
   flex-direction: row;
   z-index: 999;
 
@@ -721,7 +722,7 @@ mat-form-field input[type='number'] {
   cursor: pointer;
   position: absolute;
   z-index: 9999;
-  color: #F6F9FC;
+  color: $color-table;
 }
 
 .logs-action {
@@ -1819,7 +1820,7 @@ input.mat-input-element {
   }
 
   &.storage-block-header {
-    grid-template-columns: 180px 70px 1fr;
+    grid-template-columns: 180px 80px 80px 1fr;
   }
 
   &.storage-action-header {
@@ -1847,7 +1848,7 @@ input.mat-input-element {
   }
 
   &.storage-block-row {
-    grid-template-columns: 180px 80px 1fr;
+    grid-template-columns: 180px 80px 80px 1fr;
   }
 
   &.storage-action-row {

@@ -125,7 +125,7 @@ export function setUrl(action, state) {
 export function storageBlockLimit(action) {
   const limitNr = action.payload && action.payload.limit ?
     action.payload.limit :
-    '120';
+    '60';
 
   return `limit=${limitNr}`;
 }
@@ -139,5 +139,4 @@ export function storageBlockCursor(action) {
 
 export function setDetailsUrl(action, state) {
   return state.settingsNode.api.http + '/chains/main/blocks/' + action.payload.hash;
-
 }

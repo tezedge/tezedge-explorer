@@ -1,9 +1,10 @@
-import { Injectable, NgZone } from '@angular/core';
-import { Effect, Actions, ofType } from '@ngrx/effects';
+import { Injectable } from '@angular/core';
+import { Actions, Effect, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
-import { tap, map, switchMap, withLatestFrom } from 'rxjs/operators';
+import { flatMap, map, switchMap, tap, withLatestFrom } from 'rxjs/operators';
 import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
+import { empty, of } from 'rxjs';
 
 @Injectable()
 export class AppEffects {
@@ -26,9 +27,17 @@ export class AppEffects {
 
         // TODO: refactor and add checks for every featured api (node, debugger, monitoring )
 
-        map(() => ({ type: 'APP_INIT_SUCCESS' }))
+        flatMap(({ action, state }) => state.app.initialized ? empty() : of({ type: 'APP_INIT_SUCCESS' }))
     );
 
+    @Effect()
+    AppNodeChangeEffect$ = this.actions$.pipe(
+        ofType('APP_NODE_CHANGE'),
+
+        withLatestFrom(this.store, (action: any, state) => ({ action, state })),
+
+        map(({ action, state }) => ({ type: 'SETTINGS_NODE_CHANGE', payload: state.settingsNode }))
+    );
 
     // initialize empty app
     @Effect()
@@ -40,12 +49,10 @@ export class AppEffects {
 
         // TODO: refactor and add checks for every featured api (node, debugger, monitoring )
         tap(({ action, state }) => {
-
             // force url reload
             this.router.navigateByUrl('/', { skipLocationChange: false }).then(() =>
                 this.router.navigate([''])
             );
-
         }),
         map(() => ({ type: 'APP_INIT_DEFAULT_SUCCESS' }))
     );
@@ -67,13 +74,15 @@ export class AppEffects {
         switchMap(({ action, state }) => {
             const appFeaturesActions = [];
 
+            appFeaturesActions.push({ type: 'MONITORING_LOAD' });
             appFeaturesActions.push({ type: 'MEMPOOL_INIT' });
             appFeaturesActions.push({ type: 'MEMPOOL_ACTION_LOAD' });
             appFeaturesActions.push({ type: 'NETWORK_INIT' });
-            // appFeaturesActions.push({ type: 'MONITORING_INIT' });
-            // appFeaturesActions.push({ type: 'STORAGE_INIT' });
+            appFeaturesActions.push({ type: 'RESOURCES_STATS_LOAD' });
+            appFeaturesActions.push({ type: 'STORAGE_INIT' });
+            appFeaturesActions.push({ type: 'VERSION_NODE_LOAD' });
             // appFeaturesActions.push({ type: 'RPC_INIT' });
-            // appFeaturesActions.push({ type: 'LOGS_INIT' });
+            appFeaturesActions.push({ type: 'LOGS_INIT' });
 
             return appFeaturesActions;
         })

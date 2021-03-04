@@ -21,6 +21,11 @@ body {
   min-height: calc(100vh - 38px);
   height: calc(100vh - 38px) !important;
 
+  .sidenav-content-container {
+    overflow: auto;
+    padding-bottom: 20px;
+  }
+
   &.not-visible {
     margin-top: 0 !important;
   }

@@ -87,16 +87,16 @@ export class CommitNumberEffects {
 }
 
 export function setNodeCommitUrl(state) {
-  return state.settingsNode.api.http + '/monitor/commit_hash/';
+  return state.settingsNode.activeNode.http + '/monitor/commit_hash/';
 }
 
 export function setNodeTagUrl(state) {
-  if (state.settingsNode.api.id === 'ocaml') {
-    return state.settingsNode.api.http + '/version/';
+  if (state.settingsNode.activeNode.id === 'ocaml') {
+    return state.settingsNode.activeNode.http + '/version/';
   }
-  return state.settingsNode.api.http + '/dev/version/';
+  return state.settingsNode.activeNode.http + '/dev/version/';
 }
 
 export function setDebuggerCommitUrl(state) {
-  return state.settingsNode.api.debugger + '/v2/version/';
+  return state.settingsNode.activeNode.debugger + '/v2/version/';
 }

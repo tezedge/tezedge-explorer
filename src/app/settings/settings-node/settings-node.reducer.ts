@@ -4,7 +4,7 @@ import { SettingsNode } from '../../shared/types/settings-node/settings-node.typ
 import { SettingsNodeEntityHeader } from '../../shared/types/settings-node/settings-node-entity-header.type';
 
 const initialState: SettingsNode = {
-  api: null,
+  activeNode: null,
   ids: [],
   entities: {}
 };
@@ -16,7 +16,7 @@ export function reducer(state: SettingsNode = initialState, action): SettingsNod
     case 'SETTINGS_NODE_LOAD': {
       // console.log("[SETTINGS_NODE_LOAD][reducer]", environment, action, environment.api);
       return {
-        api: state.api && state.api.connected ? state.api : environment.api[0],
+        activeNode: state.activeNode && state.activeNode.connected ? state.activeNode : environment.api[0],
         ids: environment.api.map(node => node.id),
         entities: environment.api.reduce((accumulator, node) => ({
           ...accumulator,
@@ -35,14 +35,14 @@ export function reducer(state: SettingsNode = initialState, action): SettingsNod
       return {
         ...state,
         // if this is first available api use it
-        api: state.api.connected !== true ? { ...action.payload.api, connected: true } : state.api,
+        activeNode: state.activeNode.connected !== true ? { ...action.payload.activeNode, connected: true } : state.activeNode,
         entities: {
           ...state.entities,
-          [action.payload.api.id]: {
-            ...action.payload.api,
+          [action.payload.activeNode.id]: {
+            ...action.payload.activeNode,
             connected: true,
             header: action.payload.response,
-            relativeDatetime: moment(action.payload.response.timestamp).fromNow(),
+            relativeDateTime: moment(action.payload.response.timestamp).fromNow(),
           },
         }
       };
@@ -53,14 +53,14 @@ export function reducer(state: SettingsNode = initialState, action): SettingsNod
       // console.log("[SETTINGS_NODE_LOAD_ERROR][reducer]", action);
       return {
         ...state,
-        api: {
-          ...state.api,
-          connected: action.payload.api.id === state.api.id ? false : state.api.connected
+        activeNode: {
+          ...state.activeNode,
+          connected: action.payload.activeNode.id === state.activeNode.id ? false : state.activeNode.connected
         },
         entities: {
           ...state.entities,
-          [action.payload.api.id]: {
-            ...action.payload.api,
+          [action.payload.activeNode.id]: {
+            ...action.payload.activeNode,
             connected: false,
             header: {},
           },
@@ -72,7 +72,7 @@ export function reducer(state: SettingsNode = initialState, action): SettingsNod
       // console.log("[SETTINGS_NODE_CHANGE]", action);
       return {
         ...state,
-        api: state.entities[action.payload.api.id]
+        activeNode: state.entities[action.payload.activeNode.id]
       };
     }
 
@@ -94,14 +94,14 @@ export function reducer(state: SettingsNode = initialState, action): SettingsNod
       return {
         ...state,
         // switch to sandbox
-        api: { ...action.payload.api, connected: true },
+        activeNode: { ...action.payload.activeNode, connected: true },
         entities: {
           ...state.entities,
-          [action.payload.api.id]: {
-            ...action.payload.api,
+          [action.payload.activeNode.id]: {
+            ...action.payload.activeNode,
             connected: true,
             header: action.payload.response,
-            relativeDatetime: moment(action.payload.response.timestamp).fromNow(),
+            relativeDateTime: moment(action.payload.response.timestamp).fromNow(),
           },
         }
       };
@@ -110,8 +110,8 @@ export function reducer(state: SettingsNode = initialState, action): SettingsNod
     case 'SANDBOX_NODE_STOP_PENDING': {
       return {
         ...state,
-        api: state.api.id === 'sandbox-carthage-tezedge' ?
-          { ...state.api, connected: 'pending' } : { ...state.api },
+        activeNode: state.activeNode.id === 'sandbox-carthage-tezedge' ?
+          { ...state.activeNode, connected: 'pending' } : { ...state.activeNode },
         entities: {
           ...state.entities,
           ['sandbox-carthage-tezedge']: {

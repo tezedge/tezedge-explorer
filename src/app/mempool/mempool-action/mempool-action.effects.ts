@@ -18,11 +18,11 @@ export class MempoolActionEffects {
         withLatestFrom(this.store, (action: any, state) => ({ action, state })),
 
         switchMap(({ action, state }) => {
-            return this.http.get(state.settingsNode.api.http + '/chains/main/mempool/pending_operations' );
+            return this.http.get(state.settingsNode.activeNode.http + '/chains/main/mempool/pending_operations' );
         }),
 
         // dispatch action
-        map((payload) => ({ type: 'MEMPOOL_ACTION_LOAD_SUCCESS', payload: payload })),
+        map((payload) => ({ type: 'MEMPOOL_ACTION_LOAD_SUCCESS', payload })),
         catchError((error, caught) => {
             console.error(error);
             this.store.dispatch({
@@ -48,7 +48,7 @@ export class MempoolActionEffects {
             timer(0, 1000).pipe(
                 takeUntil(mempoolActionDestroy$),
                 switchMap(() =>
-                    this.http.get(state.settingsNode.api.mempool + '/chains/main/mempool/pending_operations').pipe(
+                    this.http.get(state.settingsNode.activeNode.mempool + '/chains/main/mempool/pending_operations').pipe(
                         map(response => ({ type: 'MEMPOOL_ACTION_START_SUCCESS', payload: response })),
                         catchError(error => of({ type: 'MEMPOOL_ACTION_START_ERROR', payload: error })),
                     )

@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
-import { Effect, Actions, ofType } from '@ngrx/effects';
+import { Actions, Effect, ofType } from '@ngrx/effects';
 import { HttpClient } from '@angular/common/http';
 import { Store } from '@ngrx/store';
-import { map, switchMap, withLatestFrom, catchError, tap, takeUntil } from 'rxjs/operators';
+import { catchError, map, switchMap, takeUntil, tap, withLatestFrom } from 'rxjs/operators';
 import { of, Subject, timer } from 'rxjs';
 
 const logActionDestroy$ = new Subject();
@@ -105,7 +105,7 @@ export class LogsActionEffects {
 }
 
 export function setUrl(action, state) {
-  const url = state.settingsNode.api.debugger + '/v2/log/?';
+  const url = state.settingsNode.activeNode.debugger + '/v2/log/?';
   const cursor = logsActionCursor(action);
   const filters = logsActionFilter(action, state);
   const limit = logsActionLimit(action);

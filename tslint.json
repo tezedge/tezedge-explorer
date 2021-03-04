@@ -18,10 +18,6 @@
     "curly": true,
     "directive-class-suffix": true,
     "directive-selector": [
-      true,
-      "attribute",
-      "app",
-      "camelCase"
     ],
     "component-selector": [
       "element",

@@ -2,10 +2,12 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Actions, Effect, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
-import { empty, of } from 'rxjs';
+import { empty, ObservedValueOf, of } from 'rxjs';
 import { catchError, flatMap, map, withLatestFrom } from 'rxjs/operators';
 import { SettingsNodeEntityHeader } from '../../shared/types/settings-node/settings-node-entity-header.type';
 import { SettingsNodeService } from './settings-node.service';
+import { State } from '../../app.reducers';
+import { SettingsNodeEntity } from '../../shared/types/settings-node/settings-node-entity.type';
 
 @Injectable()
 export class SettingsNodeEffects {
@@ -14,13 +16,14 @@ export class SettingsNodeEffects {
   @Effect()
   SettingsNodeLoadEffect$ = this.actions$.pipe(
     ofType('SETTINGS_NODE_LOAD'),
-    withLatestFrom(this.store, (action: any, state) => ({ action, state })),
+    withLatestFrom(this.store, (action: any, state: ObservedValueOf<Store<State>>) => ({ action, state })),
     flatMap(({ action, state }) => state.settingsNode.ids.map(id => state.settingsNode.entities[id])),
-    flatMap((api: any) =>
-      this.settingsNodeService.getSettingsHeader(api.http).pipe(
-        map((response: SettingsNodeEntityHeader) => ({ type: 'SETTINGS_NODE_LOAD_SUCCESS', payload: { api, response } })),
-        catchError((error) => of({ type: 'SETTINGS_NODE_LOAD_ERROR', payload: { api, response: error } })),
-      )
+    flatMap((activeNode: SettingsNodeEntity) => {
+        return this.settingsNodeService.getSettingsHeader(activeNode.http).pipe(
+          map((response: SettingsNodeEntityHeader) => ({ type: 'SETTINGS_NODE_LOAD_SUCCESS', payload: { activeNode, response } })),
+          catchError((error) => of({ type: 'SETTINGS_NODE_LOAD_ERROR', payload: { activeNode, response: error } })),
+        );
+      }
     ),
   );
 
@@ -30,10 +33,11 @@ export class SettingsNodeEffects {
 
     withLatestFrom(this.store, (action: any, state) => ({ action, state })),
 
-    flatMap(({ action, state }) =>
-      state.settingsNode && state.settingsNode.api && action.payload && action.payload.api.id === state.settingsNode.api.id
-        ? of({ type: 'APP_INIT', payload: state.settingsNode.api })
-        : empty()
+    flatMap(({ action, state }) => {
+        return state.settingsNode && state.settingsNode.activeNode && action.payload && action.payload.activeNode.id === state.settingsNode.activeNode.id
+          ? of({ type: 'APP_INIT', payload: state.settingsNode.activeNode })
+          : empty();
+      }
     ),
   );
 
@@ -43,7 +47,7 @@ export class SettingsNodeEffects {
 
     withLatestFrom(this.store, (action: any, state) => ({ action, state })),
 
-    flatMap(({ action, state }) => of({ type: 'APP_INIT', payload: state.settingsNode.api })),
+    flatMap(({ action, state }) => of({ type: 'APP_INIT', payload: state.settingsNode.activeNode })),
   );
 
   @Effect()

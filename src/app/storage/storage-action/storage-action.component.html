@@ -3,14 +3,14 @@
 
 <div class="storage-action-block-link">
   <span>
-    <b>Storage:</b> {{ virtualScrollItems?.debug?.totalTimeStorage / 1000 }} ms |
-    <b>Protocol:</b> {{ virtualScrollItems?.debug?.totalTimeProtocol / 1000 }} ms |
-    <b>Hash:</b>
+    Storage: {{ virtualScrollItems?.debug?.totalTimeStorage / 1000 | number:'1.3-3' }} ms |
+    Protocol: {{ virtualScrollItems?.debug?.totalTimeProtocol / 1000 | number: '1.3-3' }} ms |
+    Hash:
   </span>
   <span mat-button style="font-weight: 300;max-width: 450px;min-width: 450px;"> <!--matTooltip="Block Hash" matTooltipPosition="above" routerLink="/storage/{{block}}" -->
     {{ block }} |
   </span>
-  <span><b>Number of actions:</b> {{ virtualScrollItems?.lastCursorId }} </span>
+  <span>Number of actions: {{ virtualScrollItems?.debug?.numberOfActions }} </span>
 </div>
 
 <div class="storage-action-container">
@@ -156,14 +156,6 @@
 
     <div class="table-virtual-scroll-footer">
       <span>
-<!--        <button id="startStreaming" mat-icon-button matTooltip="Start" (click)="scrollStart(null)"-->
-        <!--                *ngIf="!virtualScrollItems?.stream">-->
-        <!--          <mat-icon>play_arrow_outline</mat-icon>-->
-        <!--        </button>-->
-        <button id="stopStreaming" mat-icon-button matTooltip="Stop" (click)="scrollStop()"
-                *ngIf="virtualScrollItems?.stream">
-          <mat-icon>stop_outline</mat-icon>
-        </button>
         <button mat-icon-button matTooltip="Last page" (click)="scrollToEnd()">
           <mat-icon style="transform: rotate(90deg)">last_page</mat-icon>
         </button>

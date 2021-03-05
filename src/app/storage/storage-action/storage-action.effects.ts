@@ -30,6 +30,28 @@ export class StorageActionEffects {
     })
   );
 
+  @Effect()
+  StorageBlockActionDetails$ = this.actions$.pipe(
+    ofType('STORAGE_BLOCK_ACTION_DETAILS_LOAD'),
+
+    // merge state
+    withLatestFrom(this.store, (action: any, state) => ({action, state})),
+
+    switchMap(({action, state}) => {
+      return this.http.get(setDetailsUrl(action, state));
+    }),
+    // dispatch action
+    map((payload) => ({type: 'STORAGE_BLOCK_ACTION_DETAILS_LOAD_SUCCESS', payload})),
+    catchError((error, caught) => {
+      console.error(error);
+      this.store.dispatch({
+        type: 'STORAGE_BLOCK_ACTION_DETAILS_LOAD_ERROR',
+        payload: error,
+      });
+      return caught;
+    })
+  );
+
   // @Effect()
   // StorageAddressAction$ = this.actions$.pipe(
   //   ofType('STORAGE_ADDRESS_ACTION_LOAD'),
@@ -85,6 +107,10 @@ function storageActionLimit(action) {
 // use cursor to load previous pages
 function storageActionCursor(action) {
   return action.payload && action.payload.cursor_id ?
-    `cursor_id=${action.payload.cursor_id}`  :
+    `cursor_id=${action.payload.cursor_id}` :
     '';
+}
+
+export function setDetailsUrl(action, state) {
+  return state.settingsNode.api.http + '/dev/chains/main/actions/blocks/' + action.payload.blockHash + '/details/';
 }

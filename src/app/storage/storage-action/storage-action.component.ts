@@ -56,14 +56,10 @@ export class StorageActionComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    // this.store.dispatch({type: 'STORAGE_BLOCK_RESET'});
-    this.scrollStart(null);
-
     // wait for data changes from redux
     this.store.select('storageAction')
       .pipe(takeUntil(this.onDestroy$))
       .subscribe(data => {
-        console.log(data);
         this.virtualScrollItems = data;
         this.storageActionShow = data.ids.length > 0;
 
@@ -112,11 +108,13 @@ export class StorageActionComponent implements OnInit, OnDestroy {
       const blockPrefix = params['search'].substr(0, 1);
       if (blockPrefix === 'B') {
 
+        this.getActionDetails();
+
         // triger action and get blocks data
         this.store.dispatch({
           type: 'STORAGE_BLOCK_ACTION_LOAD',
           payload: {
-            blockHash: params['search']
+            blockHash: this.block
           }
         });
 
@@ -151,21 +149,17 @@ export class StorageActionComponent implements OnInit, OnDestroy {
       }
     });
   }
-  //
-  // private setBlockHash(): string {
-  //   console.log(this.router.url);
-  //   return this.router.url;
-  // }
+
+  getActionDetails() {
+    this.store.dispatch({
+      type: 'STORAGE_BLOCK_ACTION_DETAILS_LOAD',
+      payload: {
+        blockHash: this.block
+      }
+    });
+  }
 
   startStopDataStream(event) {
-    return;
-  }
-
-  scrollStart($event) {
-    return;
-  }
-
-  scrollStop() {
     return;
   }
 
@@ -277,6 +271,10 @@ export class StorageActionComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     console.log('[storage-action] OnDestroy');
+
+    this.store.dispatch({
+      type: 'STORAGE_BLOCK_ACTION_RESET'
+    });
 
     // unsubscribe router
     this.routerParams.unsubscribe();

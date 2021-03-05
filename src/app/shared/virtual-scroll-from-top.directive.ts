@@ -60,9 +60,6 @@ export class VirtualScrollFromTopDirective implements AfterViewInit, OnDestroy, 
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    // if (this.virtualScrollItemsCount > 0 && this.previousLastCursorId === this.vsForOf.lastCursorId) {
-    //   this.renderViewportItems();
-    // }
     this.afterReceivingData();
   }
 
@@ -89,9 +86,10 @@ export class VirtualScrollFromTopDirective implements AfterViewInit, OnDestroy, 
     if (!this.$viewport) {
       return;
     }
-    const newLastCursorIdYN = this.previousLastCursorId < this.vsForOf.lastCursorId;
+    const newLastCursorIdYN = this.previousLastCursorId !== this.vsForOf.lastCursorId;
 
     if (newLastCursorIdYN) {
+      console.log('previous cursor id:' + this.previousLastCursorId + '| new cursor id: ' + this.vsForOf.lastCursorId);
       this.initDimensions();
     }
 
@@ -168,7 +166,7 @@ export class VirtualScrollFromTopDirective implements AfterViewInit, OnDestroy, 
   }
 
   private getScrollPositionStartWithOffset(): number {
-    return Math.max(this.virtualScrollItemsOffset + this.scrollPositionStart, 1);
+    return Math.max(this.virtualScrollItemsOffset + this.scrollPositionStart, 0);
   }
 
   private getScrollPositionEndWithOffset(): number {
@@ -336,6 +334,7 @@ export class VirtualScrollFromTopDirective implements AfterViewInit, OnDestroy, 
   }
 
   private reset(): void {
+    console.log('vs reset');
     this.maxScrollHeight = 0;
     this.scrollPositionStart = 0;
     this.scrollPositionEnd = 0;

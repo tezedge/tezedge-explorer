@@ -5,7 +5,6 @@ const initialState: any = {
   ids: [],
   entities: [],
   lastCursorId: 0,
-  lastOriginalCursorId: 0,
   stream: false,
   blocks: [],
   view: '',
@@ -30,16 +29,33 @@ export function reducer(state = initialState, action) {
     //   };
     // }
 
-    case 'STORAGE_ADDRESS_ACTION_LOAD': {
+    // case 'STORAGE_ADDRESS_ACTION_LOAD': {
+    //   return {
+    //     ...initialState,
+    //     view: 'address',
+    //   };
+    // }
+    case 'STORAGE_BLOCK_ACTION_RESET': {
       return {
-        ...initialState,
-        view: 'address',
+        ...initialState
       };
     }
 
     case 'STORAGE_BLOCK_ACTION_LOAD_SUCCESS': {
       return {
         ...processActions(state, action),
+        view: 'block',
+      };
+    }
+
+    case 'STORAGE_BLOCK_ACTION_DETAILS_LOAD_SUCCESS': {
+      return {
+        ...state,
+        debug: {
+          totalTimeStorage: action.payload.total_storage_time * 1000000,
+          totalTimeProtocol: action.payload.total_protocol_time * 1000000,
+          numberOfActions: action.payload.number_of_actions
+        },
         view: 'block',
       };
     }
@@ -81,7 +97,7 @@ export function processActions(state, action) {
     return {
       ...item,
       originalId: item.id,
-      id: item.block_cursor_id + 1
+      id: item.block_action_id
     };
   });
 
@@ -440,8 +456,7 @@ export function processActions(state, action) {
         return accum;
 
       }, {}),
-    lastCursorId: setLastCursorId(_action, state),
-    lastOriginalCursorId: setLastOriginalCursorId(_action, state)
+    lastCursorId: setLastCursorId(_action, state)
   };
 
   // total time for storage time
@@ -457,11 +472,7 @@ export function processActions(state, action) {
   console.log('[PROFILER] Storage: ' + totalTimeStorage / 1000 + 'ms  Protocol: ' + totalTimeProtocol / 1000 + 'ms');
 
   return {
-    ...result,
-    debug: {
-      totalTimeStorage,
-      totalTimeProtocol
-    }
+    ...result
   };
 
 }
@@ -905,12 +916,5 @@ export function bytes2address(value) {
 }
 
 export function setLastCursorId(action, state) {
-  return 500;
-  return action.payload.length > 0 && state.lastCursorId < action.payload[action.payload.length - 1].id ?
-    action.payload[action.payload.length - 1].id : state.lastCursorId;
-}
-
-export function setLastOriginalCursorId(action, state) {
-  return action.payload.length > 0 && state.lastOriginalCursorId < action.payload[action.payload.length - 1].originalId ?
-    action.payload[action.payload.length - 1].originalId : state.lastOriginalCursorId;
+  return state.debug.numberOfActions;
 }

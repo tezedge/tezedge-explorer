@@ -49,7 +49,7 @@ export class CommitNumberComponent implements OnInit, OnDestroy {
     this.store.select('settingsNode')
       .pipe(takeUntil(this.onDestroy$))
       .subscribe(data => {
-        this.hideComponent = data.api.id.includes('ocaml');
+        this.hideComponent = data.activeNode.id.includes('ocaml');
       });
   }
 

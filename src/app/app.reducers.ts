@@ -121,7 +121,7 @@ export function nodeSwitchStateMetaReducer(reducer: ActionReducer<State>): Actio
           initialized: false
         },
         settingsNode: {
-          api: state.settingsNode.entities[action.payload.api.id],
+          activeNode: state.settingsNode.entities[action.payload.activeNode.id],
           entities: { ...state.settingsNode.entities },
           ids: [...state.settingsNode.ids]
         } as SettingsNode

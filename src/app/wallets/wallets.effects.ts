@@ -58,7 +58,7 @@ export class WalletsEffects {
                     display: 'Sandbox',
                     name: 'sandbox',
                     // url: 'http://sandbox.dev.tezedge.com:18732', 
-                    url: state.settingsNode.api.http, 
+                    url: state.settingsNode.activeNode.http,
                     tzstats: {
                         url: 'https://tzstats.com/',
                         api: 'https://api.tzstats.com/',
@@ -118,7 +118,7 @@ export class WalletsEffects {
                     display: 'Sandbox',
                     name: 'sandbox',
                     //url: 'http://sandbox.dev.tezedge.com:18732', 
-                    url: state.settingsNode.api.http, 
+                    url: state.settingsNode.activeNode.http,
                     tzstats: {
                         url: 'https://tzstats.com/',
                         api: 'https://api.tzstats.com/',

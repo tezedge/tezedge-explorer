@@ -23,9 +23,9 @@ export class MonitoringComponent implements OnInit, OnDestroy {
   private initMonitoring(): void {
     this.store.pipe(
       untilDestroyed(this),
-      select(state => state.settingsNode.api),
+      select(state => state.settingsNode.activeNode),
       filter(api => api.connected)
-    ).subscribe((s) => this.store.dispatch({ type: 'MONITORING_LOAD' }));
+    ).subscribe(() => this.store.dispatch({ type: 'MONITORING_LOAD' }));
   }
 
   ngOnDestroy(): void {

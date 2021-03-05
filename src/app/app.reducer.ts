@@ -1,10 +1,5 @@
 const initialState = {
     initialized: false,
-    user: {
-        uid: null,
-        email: null,
-        displayName: null,
-    },
     progressbar: {
         isVisible: false,
         counter: 0,
@@ -71,10 +66,10 @@ export function reducer(state = initialState, action) {
                 ...state,
                 sidenav: {
                     ...state.sidenav,
-                    isVisible: action.payload.width > MOBILE_WIDTH ? true : false,
+                    isVisible: action.payload.width > MOBILE_WIDTH,
                     mode: action.payload.width > MOBILE_WIDTH ? 'side' : 'over',
                     toggleButton: {
-                        isVisible: action.payload.width < MOBILE_WIDTH ? true : false,
+                        isVisible: action.payload.width < MOBILE_WIDTH,
                     }
                 }
             };
@@ -104,11 +99,7 @@ export function reducer(state = initialState, action) {
                 monitoringSynchronization = true;
             }
 
-            if (action.payload.ws === false) {
-                explorerStorage = false;
-            } else {
-                explorerStorage = true;
-            }
+            explorerStorage = action.payload.ws !== false;
 
             if (action.payload.debugger !== false) {
                 explorerMempool = true;
@@ -173,7 +164,7 @@ export function reducer(state = initialState, action) {
                 statusbar: {
                     sandbox: true,
                 }
-            }
+            };
         }
 
         case 'SANDBOX_NODE_STOP': {
@@ -182,7 +173,7 @@ export function reducer(state = initialState, action) {
                 statusbar: {
                     sandbox: false,
                 }
-            }
+            };
         }
 
         // probress bar show
@@ -198,8 +189,7 @@ export function reducer(state = initialState, action) {
         //     };
         // }
 
-        // probress bar hide
-        case 'NETWORK_ACTION_LOAD_ERROR':
+        // hide progress bar
         case 'STORAGE_BLOCK_LOAD_ERROR':
         case 'STORAGE_BLOCK_ACTION_LOAD_ERROR':
 
@@ -209,7 +199,7 @@ export function reducer(state = initialState, action) {
             return {
                 ...state,
                 progressbar: {
-                    isVisible: state.progressbar.counter === 1 ? false : true,
+                    isVisible: state.progressbar.counter !== 1,
                     counter: state.progressbar.counter - 1,
                 }
             };

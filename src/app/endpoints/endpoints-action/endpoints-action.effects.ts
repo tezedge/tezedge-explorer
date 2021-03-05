@@ -18,13 +18,13 @@ export class EndpointsActionEffects {
         withLatestFrom(this.store, (action: any, state) => ({ action, state })),
 
         switchMap(({ action, state }) => {
-            return this.http.get(state.settingsNode.api.debugger + '/v2/rpc?limit=30' + action.payload)
+            return this.http.get(state.settingsNode.activeNode.debugger + '/v2/rpc?limit=30' + action.payload);
         }),
 
         // dispatch action
-        map((payload) => ({ type: 'ENDPOINTS_ACTION_LOAD_SUCCESS', payload: payload })),
+        map((payload) => ({ type: 'ENDPOINTS_ACTION_LOAD_SUCCESS', payload })),
         catchError((error, caught) => {
-            console.error(error)
+            console.error(error);
             this.store.dispatch({
                 type: 'ENDPOINTS_ACTION_LOAD_ERROR',
                 payload: error,
@@ -32,7 +32,7 @@ export class EndpointsActionEffects {
             return caught;
         })
 
-    )
+    );
 
     // load logs actions
     @Effect()
@@ -48,7 +48,7 @@ export class EndpointsActionEffects {
             timer(0, 2000).pipe(
                 takeUntil(endpointsActionDestroy$),
                 switchMap(() =>
-                    this.http.get(state.settingsNode.api.debugger + '/v2/rpc/?limit=30').pipe(
+                    this.http.get(state.settingsNode.activeNode.debugger + '/v2/rpc/?limit=30').pipe(
                         map(response => ({ type: 'ENDPOINTS_ACTION_START_SUCCESS', payload: response })),
                         catchError(error => of({ type: 'ENDPOINTS_ACTION_START_ERROR', payload: error })),
                     )

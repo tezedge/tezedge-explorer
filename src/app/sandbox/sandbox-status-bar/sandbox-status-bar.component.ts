@@ -19,7 +19,7 @@ export class SandboxStatusBarComponent implements OnInit {
     // this.store.select('settingsNode')
     // .subscribe(state => {
     //   this.settingsNode = state;
-    //   this.nodeHeaderLevel = state.entities[state.api.id]?.header?.level;
+    //   this.nodeHeaderLevel = state.entities[state.activeNode.id]?.header?.level;
     // });
   }
 

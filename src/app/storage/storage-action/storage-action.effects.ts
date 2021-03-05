@@ -18,7 +18,7 @@ export class StorageActionEffects {
     withLatestFrom(this.store, (action: any, state) => ({action, state})),
 
     switchMap(({action, state}) => {
-      return this.http.get(state.settingsNode.api.http + '/dev/chains/main/actions/blocks/' + action.payload.blockHash);
+      return this.http.get(state.settingsNode.activeNode.http + '/dev/chains/main/actions/blocks/' + action.payload.blockHash);
     }),
     // dispatch action
     map((payload) => ({type: 'STORAGE_BLOCK_ACTION_LOAD_SUCCESS', payload})),
@@ -40,7 +40,7 @@ export class StorageActionEffects {
   //   withLatestFrom(this.store, (action: any, state) => ({action, state})),
   //
   //   switchMap(({action, state}) => {
-  //     return this.http.get(state.settingsNode.api.http + '/dev/chains/main/actions/contracts/' + action.payload.addressHanpm sh + '?limit=30');
+  //     return this.http.get(state.settingsNode.activeNode.http + '/dev/chains/main/actions/contracts/' + action.payload.addressHanpm sh + '?limit=30');
   //   }),
   //   // change data structure
   //   map((payload: any) => payload.data.map(action => action.action)),

@@ -460,16 +460,14 @@ export function processActions(state, action) {
   };
 
   // total time for storage time
-  const totalTimeStorage = Object.keys(result.entities).reduce((acc, value) => {
-    return (acc + result.entities[value].timeStorage);
-  }, 0);
-
-  // total time for protocol
-  const totalTimeProtocol = Object.keys(result.entities).reduce((acc, value) => {
-    return (acc + result.entities[value].timeProtocol);
-  }, 0);
-
-  console.log('[PROFILER] Storage: ' + totalTimeStorage / 1000 + 'ms  Protocol: ' + totalTimeProtocol / 1000 + 'ms');
+  // const totalTimeStorage = Object.keys(result.entities).reduce((acc, value) => {
+  //   return (acc + result.entities[value].timeStorage);
+  // }, 0);
+  //
+  // // total time for protocol
+  // const totalTimeProtocol = Object.keys(result.entities).reduce((acc, value) => {
+  //   return (acc + result.entities[value].timeProtocol);
+  // }, 0);
 
   return {
     ...result
@@ -916,5 +914,5 @@ export function bytes2address(value) {
 }
 
 export function setLastCursorId(action, state) {
-  return state.debug.numberOfActions;
+  return state.debug.numberOfActions || 0;
 }

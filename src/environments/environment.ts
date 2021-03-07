@@ -5,20 +5,20 @@ export const environment = {
     {
       id: 'rust',
       name: 'rust.develop.dev.tezedge.com',
-      // http: 'http://develop.dev.tezedge.com:18732',
-      http: 'http://116.202.128.230:18732',
+      http: 'http://develop.dev.tezedge.com:18732',
+      // http: 'http://116.202.128.230:18732',
       debugger: 'http://develop.dev.tezedge.com:17732',
       ws: 'ws://develop.dev.tezedge.com:4927',
       monitoring: 'http://develop.dev.tezedge.com:38732/resources/tezedge'
     },
-    {
-      id: 'ocaml',
-      name: 'ocaml.develop.dev.tezedge.com',
-      http: 'http://develop.dev.tezedge.com:18733',
-      debugger: 'http://develop.dev.tezedge.com:17733',
-      ws: false,
-      monitoring: 'http://develop.dev.tezedge.com:38732/resources/ocaml'
-    }
+    // {
+    //   id: 'ocaml',
+    //   name: 'ocaml.develop.dev.tezedge.com',
+    //   http: 'http://develop.dev.tezedge.com:18733',
+    //   debugger: 'http://develop.dev.tezedge.com:17733',
+    //   ws: false,
+    //   monitoring: 'http://develop.dev.tezedge.com:38732/resources/ocaml'
+    // }
 
     // PROD:
     // {

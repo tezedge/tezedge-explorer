@@ -1,7 +1,7 @@
 context('storage-action', () => {
   beforeEach(() => {
     cy.intercept('GET', '/dev/chains/main/blocks/*').as('getStorageBlockRequest');
-    cy.intercept('GET', '/dev/chains/main/actions/blocks/*').as('getStorageActionRequest');
+    cy.intercept('GET', '/dev/chains/main/actions/blocks/*/*').as('getStorageActionRequest');
     cy.visit(Cypress.config().baseUrl);
     cy.wait(5000);
     cy.visit(Cypress.config().baseUrl + '/#/storage', {timeout: 10000});
@@ -40,14 +40,14 @@ context('storage-action', () => {
             store.select('storageAction')
               .subscribe((data) => {
 
-                const lastRecord = data.entities[data.ids[data.ids.length - 1]];
+                const firstRecord = data.entities[data.ids[0]];
 
                 cy.get('.virtual-scroll-container .virtualScrollRow.used')
-                  .last()
+                  .first()
                   .find('.storage-action-time')
                   .should(($span) => {
-                    expect($span.text().trim()).to.contain(lastRecord.timeStorage.toString());
-                    expect($span.text().trim()).to.contain(lastRecord.timeProtocol.toString());
+                    expect($span.text().trim()).to.contain(firstRecord.timeStorage.toString());
+                    expect($span.text().trim()).to.contain(firstRecord.timeProtocol.toString());
                   })
               })
 

@@ -123,10 +123,9 @@ export class StorageBlockComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     // stop streaming actions
-    // this.store.dispatch({
-    //   type: 'STORAGE_BLOCK_STOP'
-    // });
-
+    this.store.dispatch({
+      type: 'STORAGE_BLOCK_STOP'
+    });
     this.store.dispatch({type: 'STORAGE_BLOCK_RESET'});
 
     // close all observables

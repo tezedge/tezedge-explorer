@@ -22,23 +22,40 @@ function bufferToHex(buffer) {
 export function reducer(state = initialState, action) {
   switch (action.type) {
 
-    case 'STORAGE_BLOCK_ACTION_LOAD': {
-      return {
-        ...initialState,
-        view: 'block',
-      };
-    }
+    // case 'STORAGE_BLOCK_ACTION_LOAD': {
+    //   return {
+    //     ...initialState,
+    //     view: 'block',
+    //   };
+    // }
 
-    case 'STORAGE_ADDRESS_ACTION_LOAD': {
+    // case 'STORAGE_ADDRESS_ACTION_LOAD': {
+    //   return {
+    //     ...initialState,
+    //     view: 'address',
+    //   };
+    // }
+    case 'STORAGE_BLOCK_ACTION_RESET': {
       return {
-        ...initialState,
-        view: 'address',
+        ...initialState
       };
     }
 
     case 'STORAGE_BLOCK_ACTION_LOAD_SUCCESS': {
       return {
         ...processActions(state, action),
+        view: 'block',
+      };
+    }
+
+    case 'STORAGE_BLOCK_ACTION_DETAILS_LOAD_SUCCESS': {
+      return {
+        ...state,
+        debug: {
+          totalTimeStorage: action.payload.total_storage_time * 1000000,
+          totalTimeProtocol: action.payload.total_protocol_time * 1000000,
+          numberOfActions: action.payload.number_of_actions
+        },
         view: 'block',
       };
     }
@@ -80,7 +97,7 @@ export function processActions(state, action) {
     return {
       ...item,
       originalId: item.id,
-      id: index + 1
+      id: item.block_action_id
     };
   });
 
@@ -443,23 +460,17 @@ export function processActions(state, action) {
   };
 
   // total time for storage time
-  const totalTimeStorage = Object.keys(result.entities).reduce((acc, value) => {
-    return (acc + result.entities[value].timeStorage);
-  }, 0);
-
-  // total time for protocol
-  const totalTimeProtocol = Object.keys(result.entities).reduce((acc, value) => {
-    return (acc + result.entities[value].timeProtocol);
-  }, 0);
-
-  console.log('[PROFILER] Storage: ' + totalTimeStorage / 1000 + 'ms  Protocol: ' + totalTimeProtocol / 1000 + 'ms');
+  // const totalTimeStorage = Object.keys(result.entities).reduce((acc, value) => {
+  //   return (acc + result.entities[value].timeStorage);
+  // }, 0);
+  //
+  // // total time for protocol
+  // const totalTimeProtocol = Object.keys(result.entities).reduce((acc, value) => {
+  //   return (acc + result.entities[value].timeProtocol);
+  // }, 0);
 
   return {
-    ...result,
-    debug: {
-      totalTimeStorage,
-      totalTimeProtocol
-    }
+    ...result
   };
 
 }
@@ -903,6 +914,5 @@ export function bytes2address(value) {
 }
 
 export function setLastCursorId(action, state) {
-  return action.payload.length > 0 && state.lastCursorId < action.payload[action.payload.length - 1].id ?
-    action.payload[action.payload.length - 1].id : state.lastCursorId;
+  return state.debug.numberOfActions || 0;
 }

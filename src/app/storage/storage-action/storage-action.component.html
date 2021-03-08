@@ -124,7 +124,9 @@
                 [json]="parseJson(storageActionItem?.value_as_json)" [expanded]="false">
               </ngx-json-viewer>
               <ng-template #jsonElseBlock>
-                <span>{{parseJson(storageActionItem?.value_as_json)}}</span>
+                <div class="non-json-container">
+                  <span>{{parseJson(storageActionItem?.value_as_json)}}</span>
+                </div>
               </ng-template>
             </ng-template>
           </mat-tab>
@@ -138,7 +140,9 @@
                 [json]="parseJson(storageActionItem?.value)" [expanded]="false">
               </ngx-json-viewer>
               <ng-template #valueElseBlock>
-                <span>{{parseJson(storageActionItem?.value)}}</span>
+                <div class="non-json-container">
+                  <span>{{parseJson(storageActionItem?.value)}}</span>
+                </div>
               </ng-template>
             </ng-template>
           </mat-tab>
@@ -147,7 +151,9 @@
               <span>Path</span>
             </ng-template>
             <ng-template matTabContent>
-              <span>{{storageActionItem.path}}</span>
+              <div class="non-json-container">
+                <span>{{storageActionItem.path}}</span>
+              </div>
             </ng-template>
           </mat-tab>
         </mat-tab-group>

@@ -166,7 +166,7 @@
               <span>Hex Values</span>
             </ng-template>
             <ng-template matTabContent>
-              <div class="justify-inter-work">{{networkActionItem?.hexValues}}</div>
+              <div class="non-json-container justify-inter-work">{{networkActionItem?.hexValues}}</div>
             </ng-template>
           </mat-tab>
           <mat-tab *ngIf="showTab('ERROR')">
@@ -174,7 +174,7 @@
               <span>Error</span>
             </ng-template>
             <ng-template matTabContent>
-              <div>{{networkActionItem?.error[0]}}</div>
+              <div class="non-json-container">{{networkActionItem?.error[0]}}</div>
             </ng-template>
           </mat-tab>
         </mat-tab-group>

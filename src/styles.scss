@@ -263,6 +263,7 @@ tr.mat-row {
 }
 
 .ngx-json-viewer {
+  padding-top: 14px;
   font-family: Roboto, "Helvetica Neue", sans-serif !important;
   font-size: 14px !important;
 }
@@ -1799,6 +1800,11 @@ input.mat-input-element {
     .justify-inter-work {
       text-align: justify;
       text-justify: inter-word;
+    }
+
+    .non-json-container {
+      padding: 14px;
+      font-size: 14px;
     }
   }
 

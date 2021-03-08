@@ -113,7 +113,7 @@ export class StorageBlockEffects {
 }
 
 export function setUrl(action, state) {
-  const url = state.settingsNode.api.http + '/dev/chains/main/blocks/?';
+  const url = state.settingsNode.activeNode.http + '/dev/chains/main/blocks/?';
   const cursor = storageBlockCursor(action);
   const filters = ''; // use it when we need to filter the list
   const limit = storageBlockLimit(action);
@@ -138,5 +138,5 @@ export function storageBlockCursor(action) {
 }
 
 export function setDetailsUrl(action, state) {
-  return state.settingsNode.api.http + '/chains/main/blocks/' + action.payload.hash;
+  return state.settingsNode.activeNode.http + '/chains/main/blocks/' + action.payload.hash;
 }

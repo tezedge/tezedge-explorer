@@ -45,7 +45,7 @@ export class MonitoringEffects {
             if (this.websocketDestroy$) {
               this.websocketDestroy$.next();
             }
-            if (state.settingsNode.api.ws === false) {
+            if (state.settingsNode.activeNode.ws === false) {
               this.networkDestroy$ = new Subject();
               appFeaturesActions.push({ type: 'NETWORK_STATS_LOAD' });
               appFeaturesActions.push({ type: 'NETWORK_PEERS_LOAD' });
@@ -68,7 +68,7 @@ export class MonitoringEffects {
         // init app modules
         tap(({ action, state }) => {
             // TODO: use app features
-            if (state.settingsNode.api.ws === false) {
+            if (state.settingsNode.activeNode.ws === false) {
                 // close all open observables
                 this.networkDestroy$.next();
             } else {
@@ -91,7 +91,7 @@ export class MonitoringEffects {
             timer(0, 1000).pipe(
                 takeUntil(this.networkDestroy$),
                 switchMap(() => {
-                    return this.http.get(state.settingsNode.api.http + '/chains/main/blocks/head/header').pipe(
+                    return this.http.get(state.settingsNode.activeNode.http + '/chains/main/blocks/head/header').pipe(
                       map(response => ({ type: 'NETWORK_STATS_LOAD_SUCCESS', payload: response })),
                       catchError(error => of({ type: 'NETWORK_STATS_LOAD_ERROR', payload: error })),
                     );
@@ -115,7 +115,7 @@ export class MonitoringEffects {
             timer(0, 1000).pipe(
                 takeUntil(this.networkDestroy$),
                 switchMap(() =>
-                    this.http.get(state.settingsNode.api.http + '/network/peers').pipe(
+                    this.http.get(state.settingsNode.activeNode.http + '/network/peers').pipe(
                         map(response => ({ type: 'NETWORK_PEERS_LOAD_SUCCESS', payload: response })),
                         catchError(error => of({ type: 'NETWORK_PEERS_LOAD_ERROR', payload: error })),
                     )
@@ -137,13 +137,13 @@ export class MonitoringEffects {
         switchMap(({ action, state }) => {
 
             // return empty observable
-            if (state.settingsNode.api.ws === false) {
+            if (state.settingsNode.activeNode.ws === false) {
                 return empty();
             }
 
             const webSocketConnection$ = (
                 webSocket({
-                    url: state.settingsNode.api.ws,
+                    url: state.settingsNode.activeNode.ws,
                     WebSocketCtor: WebSocket,
                 })
             );

@@ -157,19 +157,15 @@ export class NetworkActionComponent implements OnInit, OnDestroy {
     switch (true) {
       case tab === 'JSON':
         return !!(this.networkActionItem?.payload && JSON.stringify(this.networkActionItem?.payload) !== '[]' && JSON.stringify(this.networkActionItem?.payload) !== '{}');
-        break;
 
       case tab === 'HEX':
         return !!(this.networkActionItem?.original_bytes && this.networkActionItem?.original_bytes.length);
-        break;
 
       case tab === 'ERROR':
         return !!(this.networkActionItem?.error && this.networkActionItem?.error[0]);
-        break;
 
       default:
         return false;
-        break;
     }
   }
 

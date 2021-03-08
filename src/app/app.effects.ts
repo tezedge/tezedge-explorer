@@ -3,8 +3,8 @@ import { Actions, Effect, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { flatMap, map, switchMap, tap, withLatestFrom } from 'rxjs/operators';
 import { Router } from '@angular/router';
-import { HttpClient } from '@angular/common/http';
-import { empty, of } from 'rxjs';
+import { empty, ObservedValueOf, of } from 'rxjs';
+import { State } from './app.reducers';
 
 @Injectable()
 export class AppEffects {
@@ -34,7 +34,7 @@ export class AppEffects {
     AppNodeChangeEffect$ = this.actions$.pipe(
         ofType('APP_NODE_CHANGE'),
 
-        withLatestFrom(this.store, (action: any, state) => ({ action, state })),
+        withLatestFrom(this.store, (action: any, state: ObservedValueOf<Store<State>>) => ({ action, state })),
 
         map(({ action, state }) => ({ type: 'SETTINGS_NODE_CHANGE', payload: state.settingsNode }))
     );
@@ -63,14 +63,10 @@ export class AppEffects {
         map(() => ({ type: 'SETTINGS_NODE_LOAD' }))
     );
 
-
-    // initialize app features
     @Effect()
     AppInitSuccessEffect$ = this.actions$.pipe(
         ofType('APP_INIT_SUCCESS'),
-        // merge state
         withLatestFrom(this.store, (action: any, state) => ({ action, state })),
-        // init app modules
         switchMap(({ action, state }) => {
             const appFeaturesActions = [];
 
@@ -79,10 +75,8 @@ export class AppEffects {
             appFeaturesActions.push({ type: 'MEMPOOL_ACTION_LOAD' });
             appFeaturesActions.push({ type: 'NETWORK_INIT' });
             appFeaturesActions.push({ type: 'RESOURCES_STATS_LOAD' });
-            appFeaturesActions.push({ type: 'STORAGE_INIT' });
             appFeaturesActions.push({ type: 'VERSION_NODE_LOAD' });
-            // appFeaturesActions.push({ type: 'RPC_INIT' });
-            appFeaturesActions.push({ type: 'LOGS_INIT' });
+            appFeaturesActions.push({ type: 'LOGS_ACTION_LOAD' });
 
             return appFeaturesActions;
         })
@@ -92,7 +86,6 @@ export class AppEffects {
         private actions$: Actions,
         private store: Store<any>,
         private router: Router,
-        private http: HttpClient,
     ) { }
 
 }

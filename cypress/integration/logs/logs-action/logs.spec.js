@@ -58,7 +58,7 @@ context('logs', () => {
                 if (!data.stream) {
                   const lastRecord = data.entities[data.ids[data.ids.length - 1]];
 
-                  cy.get('#virtualScrollTableDetails .ngx-json-viewer')
+                  cy.get('#virtualScrollTableDetails .non-json-container')
                     .contains(lastRecord.message);
                 } else {
                   cy.get('#stopStreaming').click();
@@ -87,7 +87,7 @@ context('logs', () => {
                     .eq(-2)
                     .trigger('mouseenter');
 
-                  cy.get('#virtualScrollTableDetails .ngx-json-viewer')
+                  cy.get('#virtualScrollTableDetails .non-json-container')
                     .contains(secondLastRecord.message);
                 } else {
                   cy.get('#stopStreaming').click();

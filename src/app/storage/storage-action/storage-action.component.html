@@ -3,14 +3,14 @@
 
 <div class="storage-action-block-link">
   <span>
-    <b>Storage:</b> {{ virtualScrollItems?.debug?.totalTimeStorage / 1000 }} ms |
-    <b>Protocol:</b> {{ virtualScrollItems?.debug?.totalTimeProtocol / 1000 }} ms |
-    <b>Hash:</b>
+    Storage: {{ virtualScrollItems?.debug?.totalTimeStorage / 1000 | number:'1.3-3' }} ms |
+    Protocol: {{ virtualScrollItems?.debug?.totalTimeProtocol / 1000 | number: '1.3-3' }} ms |
+    Hash:
   </span>
   <span mat-button style="font-weight: 300;max-width: 450px;min-width: 450px;"> <!--matTooltip="Block Hash" matTooltipPosition="above" routerLink="/storage/{{block}}" -->
     {{ block }} |
   </span>
-  <span><b>Number of actions:</b> {{ virtualScrollItems?.lastCursorId }} </span>
+  <span>Number of actions: {{ virtualScrollItems?.debug?.numberOfActions }} </span>
 </div>
 
 <div class="storage-action-container">
@@ -64,7 +64,7 @@
     <div class="table-virtual-scroll-body">
 
       <div class="virtual-scroll-container" [class.storage-block-filters-expanded]="filtersState.open">
-        <ng-template vsFor [vsForOf]="virtualScrollItems" let-event let-position="position"
+        <ng-template vsForFromTop [vsForOf]="virtualScrollItems" let-event let-position="position"
                      (getItems)="getItems($event)" (startStopDataStream)="startStopDataStream($event)">
           <span class="virtualScrollRow storage-action-row"
                 [style.transform]="position !== undefined ? 'translate(0px,' + position + 'px)' : ''"
@@ -124,7 +124,9 @@
                 [json]="parseJson(storageActionItem?.value_as_json)" [expanded]="false">
               </ngx-json-viewer>
               <ng-template #jsonElseBlock>
-                <span>{{parseJson(storageActionItem?.value_as_json)}}</span>
+                <div class="non-json-container">
+                  <span>{{parseJson(storageActionItem?.value_as_json)}}</span>
+                </div>
               </ng-template>
             </ng-template>
           </mat-tab>
@@ -138,7 +140,9 @@
                 [json]="parseJson(storageActionItem?.value)" [expanded]="false">
               </ngx-json-viewer>
               <ng-template #valueElseBlock>
-                <span>{{parseJson(storageActionItem?.value)}}</span>
+                <div class="non-json-container">
+                  <span>{{parseJson(storageActionItem?.value)}}</span>
+                </div>
               </ng-template>
             </ng-template>
           </mat-tab>
@@ -147,7 +151,9 @@
               <span>Path</span>
             </ng-template>
             <ng-template matTabContent>
-              <span>{{storageActionItem.path}}</span>
+              <div class="non-json-container">
+                <span>{{storageActionItem.path}}</span>
+              </div>
             </ng-template>
           </mat-tab>
         </mat-tab-group>
@@ -156,16 +162,8 @@
 
     <div class="table-virtual-scroll-footer">
       <span>
-<!--        <button id="startStreaming" mat-icon-button matTooltip="Start" (click)="scrollStart(null)"-->
-        <!--                *ngIf="!virtualScrollItems?.stream">-->
-        <!--          <mat-icon>play_arrow_outline</mat-icon>-->
-        <!--        </button>-->
-        <button id="stopStreaming" mat-icon-button matTooltip="Stop" (click)="scrollStop()"
-                *ngIf="virtualScrollItems?.stream">
-          <mat-icon>stop_outline</mat-icon>
-        </button>
-        <button mat-icon-button matTooltip="Last page" (click)="scrollToEnd()">
-          <mat-icon style="transform: rotate(90deg)">last_page</mat-icon>
+        <button mat-icon-button matTooltip="Scroll to top" (click)="scrollToEnd()">
+          <mat-icon style="transform: rotate(270deg)">last_page</mat-icon>
         </button>
       </span>
     </div>

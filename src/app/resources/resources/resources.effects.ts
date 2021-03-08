@@ -1,11 +1,12 @@
 import { Injectable } from '@angular/core';
 import { Actions, Effect, ofType } from '@ngrx/effects';
 import { catchError, map, switchMap, takeUntil, tap, withLatestFrom } from 'rxjs/operators';
-import { of, Subject, timer } from 'rxjs';
+import { ObservedValueOf, of, Subject, timer } from 'rxjs';
 import { Store } from '@ngrx/store';
 import { ResourcesActionTypes } from './resources.actions';
 import { ResourcesService } from './resources.service';
 import { Resource } from '../../shared/types/resources/resource.type';
+import { State } from '../../app.reducers';
 
 @Injectable({ providedIn: 'root' })
 export class ResourcesEffects {
@@ -15,14 +16,14 @@ export class ResourcesEffects {
   @Effect()
   ResourcesLoadEffect$ = this.actions$.pipe(
     ofType(ResourcesActionTypes.LoadResources),
-    withLatestFrom(this.store, (action: any, state) => ({ action, state })),
+    withLatestFrom(this.store, (action: any, state: ObservedValueOf<Store<State>>) => ({ action, state })),
     switchMap(({ action, state }) => {
       this.resourcesDestroy$ = new Subject();
 
       return timer(0, 30000).pipe(
         takeUntil(this.resourcesDestroy$),
         switchMap(() =>
-          this.resourcesService.getResources(state.settingsNode.api.monitoring)
+          this.resourcesService.getResources(state.settingsNode.activeNode.monitoring)
             .pipe(
               map((resources: Resource[]) => ({ type: ResourcesActionTypes.ResourcesLoadSuccess, payload: resources })),
               catchError(error => of({ type: ResourcesActionTypes.ResourcesLoadError, payload: error }))

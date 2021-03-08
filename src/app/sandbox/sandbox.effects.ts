@@ -26,8 +26,8 @@ export class SandboxEffects {
 
         // dispatch actions
         switchMap(payload => [
-            { type: 'CHAIN_SERVER_FORM_SUBMIT_SUCCESS', payload: payload },
-            { type: 'SANDBOX_NODE_START_SUCCESS', payload: payload },
+            { type: 'CHAIN_SERVER_FORM_SUBMIT_SUCCESS', payload },
+            { type: 'SANDBOX_NODE_START_SUCCESS', payload },
         ]),
         catchError((error, caught) => {
             console.error(error)
@@ -78,9 +78,9 @@ export class SandboxEffects {
             interval(1000).pipe(
                 takeUntil(sandboxStopPending$),
                 switchMap(() => {
-                    console.log('[SANDBOX_NODE_STOP_PENDING]', state.settingsNode.api.http + '/chains/main/blocks/head/header');
+                    console.log('[SANDBOX_NODE_STOP_PENDING]', state.settingsNode.activeNode.http + '/chains/main/blocks/head/header');
 
-                    return this.http.get(state.settingsNode.api.http + '/chains/main/blocks/head/header').pipe(
+                    return this.http.get(state.settingsNode.activeNode.http + '/chains/main/blocks/head/header').pipe(
                         catchError((error, caught) => {
                             console.warn('[SANDBOX_NODE_STOP_PENDING] error ', error);
 

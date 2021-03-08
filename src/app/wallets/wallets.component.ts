@@ -14,7 +14,7 @@ export class WalletsComponent implements OnInit, OnDestroy {
   onDestroy$ = new Subject();
   // displayedColumns = ['address', 'baking', 'contracts', 'transactions', 'index', 'balance'];
   displayedColumns = ['address', 'balance'];
-  
+
   wallets: any;
   walletEntities: any;
 

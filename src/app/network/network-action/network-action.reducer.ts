@@ -83,7 +83,7 @@ export function setIds(action) {
   return action.payload.length === 0 ?
     [] :
     action.payload
-      .map(item => item.ordinal_id)
+      .map(item => item.id)
       // .map(item => item.id)
       .sort((a, b) => a - b);
 }
@@ -132,26 +132,24 @@ export function setEntities(action) {
 
           return {
             ...accumulator,
-            [networkAction.ordinal_id]: {
+            [networkAction.id]: {
               ...networkAction,
               hexValues,
               category: 'P2P',
               kind: networkAction.message[0].type,
               payload,
               preview: JSON.stringify(networkAction.message),
-              datetime: moment.utc(Math.ceil(networkAction.timestamp / 1000000)).format('HH:mm:ss.SSS, DD MMM YY'),
-              id: networkAction.ordinal_id
+              datetime: moment.utc(Math.ceil(networkAction.timestamp / 1000000)).format('HH:mm:ss.SSS, DD MMM YY')
             }
           };
         } else {
           return {
             ...accumulator,
-            [networkAction.ordinal_id]: {
+            [networkAction.id]: {
               ...networkAction,
               hexValues,
               payload: networkAction.message,
-              datetime: moment.utc(Math.ceil(networkAction.timestamp / 1000000)).format('HH:mm:ss.SSS, DD MMM YY'),
-              id: networkAction.ordinal_id
+              datetime: moment.utc(Math.ceil(networkAction.timestamp / 1000000)).format('HH:mm:ss.SSS, DD MMM YY')
             }
           };
         }
@@ -172,8 +170,8 @@ export function setEntities(action) {
 }
 
 export function setLastCursorId(action, state) {
-  return action.payload.length > 0 && state.lastCursorId < action.payload[0].ordinal_id ?
-    action.payload[0].ordinal_id : state.lastCursorId;
+  return action.payload.length > 0 && state.lastCursorId < action.payload[0].id ?
+    action.payload[0].id : state.lastCursorId;
 }
 
 export function setHexValues(bytes): Array<any> {

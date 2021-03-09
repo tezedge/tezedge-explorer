@@ -20,7 +20,6 @@ steps:
       SANDBOX: 'https://develop.dev.tezedge.com:3030'
       API: '[{"id":"drone","name":"drone-test-node","http":"develop.dev.tezedge.com:18732","monitoring":"http://develop.dev.tezedge.com:38732/resources/tezedge","debugger":"http://develop.dev.tezedge.com:17732","ws":"ws://develop.dev.tezedge.com:4927"}]'
     depends_on:
-      - node-server
       - build
 
   - name: test
@@ -32,9 +31,6 @@ steps:
 
   - name: publish
     image: plugins/docker
-    when:
-      branch:
-        - develop
     depends_on:
       - test
     settings:

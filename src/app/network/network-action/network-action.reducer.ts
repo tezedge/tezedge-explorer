@@ -176,18 +176,13 @@ export function setLastCursorId(action, state) {
     action.payload[0].ordinal_id : state.lastCursorId;
 }
 
-export function setHexValues(bytes): string {
+export function setHexValues(bytes): Array<any> {
   if (!bytes || !bytes.length) {
-    return;
+    return [];
   }
-
-  let hex = '';
-
-  for (const item of bytes) {
-    hex += `${item} `;
-  }
-
-  return hex;
+  return bytes.map((item) => {
+    return item.toString(16).padStart(6, '0').toUpperCase();
+  }) || [];
 }
 
 // filter network items according to traffic source

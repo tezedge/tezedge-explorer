@@ -914,5 +914,5 @@ export function bytes2address(value) {
 }
 
 export function setLastCursorId(action, state) {
-  return state.debug.numberOfActions || 0;
+  return state?.debug?.numberOfActions || 0;
 }

@@ -17,9 +17,10 @@ steps:
     detach: true
     privileged: true
     environment:
-      SANDBOX: 'https://${DRONE_BRANCH}.dev.tezedge.com:3030'
-      API: '[{"id":"${DRONE_BRANCH}","name":"${DRONE_BRANCH}.dev.tezedge","http":"http://${DRONE_BRANCH}.dev.tezedge.com:18732","monitoring":"http://${DRONE_BRANCH}.dev.tezedge.com:38732/resources/tezedge","debugger":"http://${DRONE_BRANCH}.dev.tezedge.com:17732","ws":"ws://${DRONE_BRANCH}.dev.tezedge.com:4927"}]'
+      SANDBOX: 'https://develop.dev.tezedge.com:3030'
+      API: '[{"id":"drone","name":"drone-test-node","http":"develop.dev.tezedge.com:18732","monitoring":"http://develop.dev.tezedge.com:38732/resources/tezedge","debugger":"http://develop.dev.tezedge.com:17732","ws":"ws://develop.dev.tezedge.com:4927"}]'
     depends_on:
+      - node-server
       - build
 
   - name: test
@@ -59,7 +60,6 @@ volumes:
 trigger:
   branch:
     - develop
-    - master # same process, without the publish step
   event: push
 
 ---
@@ -83,8 +83,8 @@ steps:
   detach: true
   privileged: true
   environment:
-    SANDBOX: 'https://master.dev.tezedge.com:3030'
-    API: '[{"id":"master","name":"master.dev.tezedge","http":"http://master.dev.tezedge.com:18732","monitoring":"http://master.dev.tezedge.com:38732/resources/tezedge","debugger":"http://master.dev.tezedge.com:17732","ws":false}]'
+    SANDBOX: 'https://develop.dev.tezedge.com:3030'
+    API: '[{"id":"drone","name":"drone-test-node","http":"develop.dev.tezedge.com:18732","monitoring":"http://develop.dev.tezedge.com:38732/resources/tezedge","debugger":"http://develop.dev.tezedge.com:17732","ws":"ws://develop.dev.tezedge.com:4927"}]'
   depends_on:
     - build
 

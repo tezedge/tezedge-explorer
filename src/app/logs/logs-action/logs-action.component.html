@@ -79,8 +79,16 @@
 
       <div class="action-table-detail">
         <div *ngIf="logsActionItem?.message" id="virtualScrollTableDetails">
-          <ngx-json-viewer [json]="{message:logsActionItem?.message}" [expanded]="true">
-          </ngx-json-viewer>
+          <mat-tab-group>
+            <mat-tab *ngIf="logsActionItem?.message?.length">
+              <ng-template mat-tab-label>
+                <span>MESSAGE</span>
+              </ng-template>
+              <ng-template matTabContent>
+                <div class="non-json-container">{{logsActionItem?.message}}</div>
+              </ng-template>
+            </mat-tab>
+          </mat-tab-group>
         </div>
       </div>
     </div>

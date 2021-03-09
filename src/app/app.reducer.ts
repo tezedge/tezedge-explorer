@@ -1,9 +1,5 @@
 const initialState = {
     initialized: false,
-    progressbar: {
-        isVisible: false,
-        counter: 0,
-    },
     sidenav: {
         isVisible: true,
         mode: 'side',
@@ -175,36 +171,6 @@ export function reducer(state = initialState, action) {
                 }
             };
         }
-
-        // probress bar show
-        // case 'NETWORK_ACTION_LOAD':
-        // case 'STORAGE_BLOCK_LOAD':
-        // case 'STORAGE_BLOCK_ACTION_LOAD': {
-        //     return {
-        //         ...state,
-        //         progressbar: {
-        //             isVisible: state.progressbar.counter >= 0 ? true : false,
-        //             counter: state.progressbar.counter + 1
-        //         }
-        //     };
-        // }
-
-        // hide progress bar
-        case 'STORAGE_BLOCK_LOAD_ERROR':
-        case 'STORAGE_BLOCK_ACTION_LOAD_ERROR':
-
-        case 'NETWORK_ACTION_LOAD_SUCCESS':
-        case 'STORAGE_BLOCK_LOAD_SUCCESS':
-        case 'STORAGE_BLOCK_ACTION_LOAD_SUCCESS': {
-            return {
-                ...state,
-                progressbar: {
-                    isVisible: state.progressbar.counter !== 1,
-                    counter: state.progressbar.counter - 1,
-                }
-            };
-        }
-
 
         case 'NETWORK_ACTION_LOAD_ERROR': {
             return {};

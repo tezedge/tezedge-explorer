@@ -1,15 +1,5 @@
 <div class="network-stats">
 
-    <!-- <div class="network-stats-row">
-        <div class="network-stats-chart">
-            <ngx-charts-line-chart [scheme]="colorScheme" [results]="single" [gradient]="gradient" [xAxis]="showXAxis"
-                [yAxis]="showYAxis" [showXAxisLabel]="showXAxisLabel" [showYAxisLabel]="showYAxisLabel"
-                [xAxisLabel]="xAxisLabel" [yAxisLabel]="yAxisLabel" [curve]="curve" autoScale="true"
-                tooltipDisabled="false" animations="false" roundDomains="false">
-            </ngx-charts-line-chart>
-        </div>
-    </div> -->
-
     <div class="network-stats-row">
 
         <div class="network-stats-card">
@@ -58,19 +48,6 @@
                         level</span>
                     <span class="network-stats-card-right-content">
                         {{ networkStats.currentApplicationSpeed / 60 | number:'1.1-1' }} blocks/s </span>
-                    <!-- <span
-                        class="network-stats-card-right-content">{{networkPeersMetrics?.totalAvgSpeed | bandwidth:'s' }}
-                    </span> -->
-
-
-                    <!-- <div class="network-stats-card-third">
-
-                        {{ networkStats?.lastAppliedBlock?.level}} |
-                        {{ networkStats.currentApplicationSpeed / 60 | number:'1.1-1' }} |
-                        {{ networkStats?.downloadedBlocks}} |
-                        {{ networkStats?.currentBlockCount}}
-
-                    </div> -->
 
                 </div>
 
@@ -78,34 +55,4 @@
         </div>
 
     </div>
-
-    <!-- <div class="network-stats-panel">
-
-        <div class="network-stats-left">
-            <span class="network-stats-completed" *ngIf="networkStats?.downloadedBlocks">
-                {{ (networkStats?.downloadedBlocks/(networkStats?.currentBlockCount*0.01)) | number:'1.1-1'}}%
-            </span>
-            <br />
-        </div>
-
-        <div class="network-stats-right">
-
-            <span class="network-stats-eta">{{networkStats?.eta}}</span>
-            <span class="network-stats-rate">{{networkStats?.downloadRate}} blocks/s </span>
-
-
-            <div class="network-stats-bootstrap">
-                {{ networkPeersMetrics?.totalAvgSpeed | bandwidth:'s' }} |
-                {{ networkStats?.lastAppliedBlock?.level}} |
-                {{ networkStats.currentApplicationSpeed / 60 | number:'1.1-1' }} |
-                {{ networkStats?.downloadedBlocks}} |
-                {{ networkStats?.currentBlockCount}}
-
-            </div>
-        </div>
-    </div>
-
-
- -->
-
 </div>

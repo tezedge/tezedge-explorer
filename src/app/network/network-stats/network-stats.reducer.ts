@@ -1,7 +1,7 @@
-
 import * as moment from 'moment-mini-ts';
+import { NetworkStats } from '../../shared/types/network/network-stats.type';
 
-const initialState: any = {
+const initialState: NetworkStats = {
     eta: '',
     currentBlockCount: 0,
     downloadedBlocks: 0,
@@ -9,12 +9,13 @@ const initialState: any = {
     currentApplicationSpeed: 0,
     averageApplicationSpeed: 0,
     lastAppliedBlock: {
-        level: 0
+        level: 0,
     },
     blockTimestamp: 0,
+    etaApplications: undefined
 };
 
-export function reducer(state = initialState, action) {
+export function reducer(state: NetworkStats = initialState, action): NetworkStats {
     switch (action.type) {
 
         case 'incomingTransfer': {

@@ -3,6 +3,12 @@ name: development-ci
 type: docker
 
 steps:
+  - name: node-server
+    image: simplestakingcom/tezedge:latest
+    pull: if-not-exists
+    detach: true
+    privileged: true
+
   - name: build #build the frontend docker image
     image: docker:latest
     commands:
@@ -18,8 +24,9 @@ steps:
     privileged: true
     environment:
       SANDBOX: 'https://${DRONE_BRANCH}.dev.tezedge.com:3030'
-      API: '[{"id":"${DRONE_BRANCH}","name":"${DRONE_BRANCH}.dev.tezedge","http":"http://${DRONE_BRANCH}.dev.tezedge.com:18732","monitoring":"http://${DRONE_BRANCH}.dev.tezedge.com:38732/resources/tezedge","debugger":"http://${DRONE_BRANCH}.dev.tezedge.com:17732","ws":"ws://${DRONE_BRANCH}.dev.tezedge.com:4927"}]'
+      API: '[{"id":"drone","name":"drone-test-node","http":"http://node-server:80","monitoring":"http://${DRONE_BRANCH}.dev.tezedge.com:38732/resources/tezedge","debugger":"http://${DRONE_BRANCH}.dev.tezedge.com:17732","ws":"ws://${DRONE_BRANCH}.dev.tezedge.com:4927"}]'
     depends_on:
+      - node-server
       - build
 
   - name: test

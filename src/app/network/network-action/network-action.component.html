@@ -166,7 +166,12 @@
               <span>Hex Values</span>
             </ng-template>
             <ng-template matTabContent>
-              <div class="non-json-container justify-inter-work">{{networkActionItem?.hexValues}}</div>
+<!--              <ngx-json-viewer *ngIf="networkActionItem?.hexValues?.length" [json]="networkActionItem?.hexValues" [expanded]="false">-->
+<!--              </ngx-json-viewer>-->
+
+              <div fxLayout="column" class="non-json-container">
+                <span *ngFor="let hexItem of networkActionItem?.hexValues">{{hexItem}}</span>
+              </div>
             </ng-template>
           </mat-tab>
           <mat-tab *ngIf="showTab('ERROR')">

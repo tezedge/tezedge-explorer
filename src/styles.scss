@@ -1797,7 +1797,7 @@ input.mat-input-element {
       height: 36px !important;
     }
 
-    .justify-inter-work {
+    .justify-inter-word {
       text-align: justify;
       text-justify: inter-word;
     }
@@ -1805,6 +1805,13 @@ input.mat-input-element {
     .non-json-container {
       padding: 14px;
       font-size: 14px;
+    }
+
+    .mat-tab-label {
+      justify-content: center;
+      padding-left: 14px !important;
+      padding-right: 14px !important;
+      min-width: 1px !important;
     }
   }
 

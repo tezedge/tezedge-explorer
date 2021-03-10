@@ -7,7 +7,8 @@
         <button class="add-filters" mat-flat-button (click)="filtersState.open=true" [disabled]="filtersState.open">
           <span>
             <svg-icon icon="filter"></svg-icon>
-            {{filtersState.open ? 'Active Filters' : 'ADD FILTER'}}
+<!--            {{filtersState.open ? 'Active Filters' : 'ADD FILTER'}}-->
+            {{'Filters'}}
           </span>
         </button>
 
@@ -16,17 +17,17 @@
       <mat-accordion class="filters-accordion">
         <mat-expansion-panel [expanded]="filtersState.open" hideToggle="true">
           <ng-template matExpansionPanelContent class="filters-content">
-            <div class="filters-row">
-              <button class="close-filters-btn" mat-flat-button (click)="filtersState.open=false">
-                <span>
-                  <svg-icon icon="close"></svg-icon>
-                </span>
-              </button>
+<!--            <div class="filters-row">-->
+<!--              <button class="close-filters-btn" mat-flat-button (click)="filtersState.open=false">-->
+<!--                <span>-->
+<!--                  <svg-icon icon="close"></svg-icon>-->
+<!--                </span>-->
+<!--              </button>-->
 
-              <span class="filters-label">
-                Available Filters
-              </span>
-            </div>
+<!--              <span class="filters-label">-->
+<!--                Available Filters-->
+<!--              </span>-->
+<!--            </div>-->
 
             <div class="filters-row">
               <span class="filters-label" style="padding: 0px 14px 0px 0px; width: 51px;">Control</span>
@@ -119,9 +120,9 @@
       <span>MESSAGE</span>
     </div>
 
-    <div class="table-virtual-scroll-body">
+    <div class="table-virtual-scroll-body" [class.network-filters-expanded]="filtersState.open">
 
-      <div class="virtual-scroll-container" [class.network-filters-expanded]="filtersState.open">
+      <div class="virtual-scroll-container" [class.filtered]="filteredListYN">
         <ng-template vsFor [vsForOf]="virtualScrollItems" let-event let-position="position"
                      (getItems)="getItems($event)" (startStopDataStream)="startStopDataStream($event)">
           <span class="virtualScrollRow network-row" [style.transform]="position !== undefined ? 'translate(0px,' + position + 'px)' : ''"

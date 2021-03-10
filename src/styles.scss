@@ -843,7 +843,7 @@ mat-form-field input[type='number'] {
 }
 
 ::-webkit-scrollbar {
-  width: 112px;
+  width: 12px;
   background-color: $color-table-border; //#F5F5F5;
 }
 
@@ -1766,26 +1766,31 @@ input.mat-input-element {
 .table-virtual-scroll-body {
   display:flex;
   flex-direction: row;
+  height: calc(100vh - 154px);
+
+  &.network-filters-expanded {
+    height: calc(100vh - 226px);
+  }
+
+  &.logs-filters-expanded {
+    height: calc(100vh - 190px); //154
+  }
 
   .virtual-scroll-container,
   .action-table-detail {
     position: relative;
-    height: calc(100vh - 154px);
+    height: 100%;
     overflow-x: hidden;
     overflow-y: auto;
     z-index: 999;
-
-    &.logs-filters-expanded {
-      height: calc(100vh - 190px); //154
-    }
-
-    &.network-filters-expanded {
-      height: calc(100vh - 261px);
-    }
   }
 
   .virtual-scroll-container {
     width: 60%;
+
+    &.filtered::-webkit-scrollbar {
+      display: none !important;
+    }
   }
 
   .action-table-detail {

@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, NgZone, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import {ChangeDetectionStrategy, ChangeDetectorRef, Component, NgZone, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {Router, ActivatedRoute} from '@angular/router';
 
 import {Store} from '@ngrx/store';
@@ -18,8 +18,9 @@ export class NetworkActionComponent implements OnInit, OnDestroy {
   virtualScrollItems;
   networkActionShow: boolean;
   networkActionItem;
+  filteredListYN = false;
   filtersState = {
-    open: false,
+    open: true,
     availableFields: []
   };
 
@@ -67,6 +68,8 @@ export class NetworkActionComponent implements OnInit, OnDestroy {
           this.networkActionItem = this.virtualScrollItems.entities[this.virtualScrollItems.ids[this.virtualScrollItems.ids.length - 1]];
         }
 
+        this.filteredListYN = this.isFiltered();
+
         this.changeDetector.markForCheck();
         //
         // if (this.virtualScrollItems.ids.length > 0 && this.vrFor) {
@@ -74,6 +77,12 @@ export class NetworkActionComponent implements OnInit, OnDestroy {
         // }
       });
 
+  }
+
+  private isFiltered(): boolean {
+    const filtersValues = Object.values(this.virtualScrollItems.filter);
+
+    return filtersValues.includes(true);
   }
 
   getItems($event) {

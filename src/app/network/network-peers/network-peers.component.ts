@@ -1,60 +1,39 @@
-import { ChangeDetectionStrategy, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit, ViewChild } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 
 import { Store } from '@ngrx/store';
-import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
+import { State } from '../../app.reducers';
+import { NetworkPeers } from '../../shared/types/network/network-peers.type';
+import { NetworkPeersEntity } from '../../shared/types/network/network-peers-entity.type';
 
+@UntilDestroy()
 @Component({
   selector: 'app-network-peers',
   templateUrl: './network-peers.component.html',
   styleUrls: ['./network-peers.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class NetworkPeersComponent implements OnInit, OnDestroy {
+export class NetworkPeersComponent implements OnInit {
 
-  public networkPeersList
-  public networkPeersShow
-  public networkPeersMetrics
-  public tableDataSource
-  public onDestroy$ = new Subject()
+  tableDataSource: MatTableDataSource<NetworkPeersEntity>;
 
-  @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
+  @ViewChild(MatPaginator, { static: true }) private paginator: MatPaginator;
 
-  constructor(private store: Store<any>) { }
+  constructor(private store: Store<State>) { }
 
-  ngOnInit() {
-    this.tableDataSource = new MatTableDataSource<any>();
+  ngOnInit(): void {
+    this.tableDataSource = new MatTableDataSource<NetworkPeersEntity>();
 
-    // wait for data changes from redux
     this.store.select('networkPeers')
-      .pipe(takeUntil(this.onDestroy$))
-      .subscribe(data => {
-
-        this.networkPeersList = data.ids.map(id => ({ id, ...data.entities[id] }))
-
-        this.networkPeersShow = data.ids.length > 0;
-
-        this.networkPeersMetrics = data.metrics;
-
-        this.tableDataSource.data = this.networkPeersList;
-
+      .pipe(untilDestroyed(this))
+      .subscribe((data: NetworkPeers) => {
+        this.tableDataSource.data = data.ids.map((id: string) => ({ id, ...data.entities[id] }));
         this.tableDataSource.paginator = this.paginator;
-
-      })
+      });
 
   }
 
   readonly trackByPeerId = (index: number, peer: any) => peer.id;
-
-  ngOnDestroy() {
-
-    // close all observables
-    this.onDestroy$.next();
-    this.onDestroy$.complete();
-
-  }
-
-
 }

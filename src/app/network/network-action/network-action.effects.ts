@@ -3,7 +3,8 @@ import { Effect, Actions, ofType } from '@ngrx/effects';
 import { HttpClient } from '@angular/common/http';
 import { Store } from '@ngrx/store';
 import { map, switchMap, withLatestFrom, catchError, tap, takeUntil } from 'rxjs/operators';
-import { of, Subject, timer } from 'rxjs';
+import { ObservedValueOf, of, Subject, timer } from 'rxjs';
+import { State } from '../../app.reducers';
 
 const networkActionDestroy$ = new Subject();
 
@@ -15,7 +16,7 @@ export class NetworkActionEffects {
     ofType('NETWORK_ACTION_LOAD'),
 
     // merge state
-    withLatestFrom(this.store, (action: any, state) => ({ action, state })),
+    withLatestFrom(this.store, (action: any, state: ObservedValueOf<Store<State>>) => ({ action, state })),
 
     switchMap(({ action, state }) => {
       return this.http.get(setUrl(action, state));
@@ -38,7 +39,7 @@ export class NetworkActionEffects {
     ofType('NETWORK_ACTION_FILTER'),
 
     // merge state
-    withLatestFrom(this.store, (action: any, state) => ({ action, state })),
+    withLatestFrom(this.store, (action: any, state: ObservedValueOf<Store<State>>) => ({ action, state })),
 
     tap(response => {
       networkActionDestroy$.next();
@@ -63,7 +64,7 @@ export class NetworkActionEffects {
     ofType('NETWORK_ACTION_START'),
 
     // merge state
-    withLatestFrom(this.store, (action: any, state) => ({ action, state })),
+    withLatestFrom(this.store, (action: any, state: ObservedValueOf<Store<State>>) => ({ action, state })),
 
     switchMap(({ action, state }) =>
       // get header data every second
@@ -84,7 +85,7 @@ export class NetworkActionEffects {
   NetworkActionStopEffect$ = this.actions$.pipe(
     ofType('NETWORK_ACTION_STOP'),
     // merge state
-    withLatestFrom(this.store, (action: any, state) => ({ action, state })),
+    withLatestFrom(this.store, (action: any, state: ObservedValueOf<Store<State>>) => ({ action, state })),
     // init app modules
     tap(({ action, state }) => {
       // console.log('[LOGS_ACTION_STOP] stream', state.logsAction.stream);

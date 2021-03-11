@@ -18,7 +18,6 @@ export class NetworkActionComponent implements OnInit, OnDestroy {
   virtualScrollItems;
   networkActionShow: boolean;
   networkActionItem;
-  filteredListYN = false;
   filtersState = {
     open: true,
     availableFields: []
@@ -68,7 +67,7 @@ export class NetworkActionComponent implements OnInit, OnDestroy {
           this.networkActionItem = this.virtualScrollItems.entities[this.virtualScrollItems.ids[this.virtualScrollItems.ids.length - 1]];
         }
 
-        this.filteredListYN = this.isFiltered();
+        console.log(this.virtualScrollItems);
 
         this.changeDetector.markForCheck();
         //
@@ -77,12 +76,6 @@ export class NetworkActionComponent implements OnInit, OnDestroy {
         // }
       });
 
-  }
-
-  private isFiltered(): boolean {
-    const filtersValues = Object.values(this.virtualScrollItems.filter);
-
-    return filtersValues.includes(true);
   }
 
   getItems($event) {

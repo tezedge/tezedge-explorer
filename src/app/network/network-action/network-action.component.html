@@ -122,7 +122,7 @@
 
     <div class="table-virtual-scroll-body" [class.network-filters-expanded]="filtersState.open">
 
-      <div class="virtual-scroll-container" [class.filtered]="filteredListYN">
+      <div class="virtual-scroll-container" [class.filtered]="virtualScrollItems.isFiltered">
         <ng-template vsFor [vsForOf]="virtualScrollItems" let-event let-position="position"
                      (getItems)="getItems($event)" (startStopDataStream)="startStopDataStream($event)">
           <span class="virtualScrollRow network-row" [style.transform]="position !== undefined ? 'translate(0px,' + position + 'px)' : ''"

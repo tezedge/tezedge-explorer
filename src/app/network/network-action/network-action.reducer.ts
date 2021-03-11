@@ -4,6 +4,9 @@ const initialState: any = {
   ids: [],
   entities: {},
   lastCursorId: 0,
+  indexToId: {},
+  idToIndex: {},
+  isFiltered: false,
   filter: {
     local: false,
     remote: false,
@@ -48,8 +51,11 @@ export function reducer(state = initialState, action) {
       return {
         ...state,
         ids: setIds(action),
-        entities: setEntities(action),
+        entities: setEntities(action, state),
+        indexToId: setIndexToId(action, state),
+        idToIndex: setIdToIndex(action, state),
         lastCursorId: setLastCursorId(action, state),
+        isFiltered: setIsFiltered(state),
         stream: action.type === 'NETWORK_ACTION_START_SUCCESS'
       };
     }
@@ -60,10 +66,17 @@ export function reducer(state = initialState, action) {
         [action.payload]: !state.filter[action.payload]
       };
 
-      return {
+      const result = {
         ...state,
         lastCursorId: 0,
+        indexToId: {},
+        idToIndex: {},
         filter: stateFilter
+      };
+
+      return {
+        ...result,
+        isFiltered: setIsFiltered(result)
       };
     }
 
@@ -79,7 +92,7 @@ export function reducer(state = initialState, action) {
   }
 }
 
-export function setIds(action) {
+export function setIds(action): Array<number> {
   return action.payload.length === 0 ?
     [] :
     action.payload
@@ -88,7 +101,20 @@ export function setIds(action) {
       .sort((a, b) => a - b);
 }
 
-export function setEntities(action) {
+// export function setIds(action, state): Array<number> {
+//   if (!action.payload.length) {
+//     return [];
+//   }
+//
+//   const biggestIndex = Math.max(action.payload[0].id, state.lastCursorId);
+//
+//   return action.payload
+//       .map((item, index) => biggestIndex - index)
+//       // .map(item => item.id)
+//       .sort((a, b) => a - b);
+// }
+
+export function setEntities(action, state): object {
   return action.payload.length === 0 ?
     {} :
     action.payload
@@ -125,6 +151,8 @@ export function setEntities(action) {
 
         // if (networkAction.type === 'p2p_message') {
         const hexValues = setHexValues(networkAction.original_bytes);
+        const virtualScrollId = setVirtualScrollId(networkAction, state, accumulator);
+        console.log(virtualScrollId);
 
         if (networkAction.message && networkAction.message.length && networkAction.message[0].type) {
           const payload = {...networkAction.message[0]};
@@ -132,9 +160,11 @@ export function setEntities(action) {
 
           return {
             ...accumulator,
-            [networkAction.id]: {
+            [virtualScrollId]: {
               ...networkAction,
               hexValues,
+              id: virtualScrollId,
+              originalId: networkAction.id,
               category: 'P2P',
               kind: networkAction.message[0].type,
               payload,
@@ -145,9 +175,11 @@ export function setEntities(action) {
         } else {
           return {
             ...accumulator,
-            [networkAction.id]: {
+            [virtualScrollId]: {
               ...networkAction,
               hexValues,
+              id: virtualScrollId,
+              originalId: networkAction.id,
               payload: networkAction.message,
               datetime: moment.utc(Math.ceil(networkAction.timestamp / 1000000)).format('HH:mm:ss.SSS, DD MMM YY')
             }
@@ -169,18 +201,87 @@ export function setEntities(action) {
       }, {});
 }
 
-export function setLastCursorId(action, state) {
+export function setLastCursorId(action, state): number {
   return action.payload.length > 0 && state.lastCursorId < action.payload[0].id ?
     action.payload[0].id : state.lastCursorId;
 }
 
-export function setHexValues(bytes): Array<any> {
+export function setHexValues(bytes): Array<string> {
   if (!bytes || !bytes.length) {
     return [];
   }
   return bytes.map((item) => {
     return item.toString(16).padStart(6, '0').toUpperCase();
   }) || [];
+}
+
+export function setIdToIndex(action, state): object {
+  const idToIndexLocal = {};
+  let result = {};
+
+  if (!Object.keys(state.idToIndex).length || action.type === 'NETWORK_ACTION_START_SUCCESS') {
+    // it means that we are initializing the idToIndex
+    for (let index = 0; index < action.payload.length; index++) {
+      idToIndexLocal[action.payload[index].id] = index === 0 ? action.payload[0].id : idToIndexLocal[action.payload[index - 1].id] - 1;
+    }
+
+    result = idToIndexLocal;
+
+  } else {
+    const indexOfTheBiggestId = state.idToIndex[action.payload[0].id];
+    for (let index = 0; index < action.payload.length; index++) {
+      idToIndexLocal[action.payload[index].id] = indexOfTheBiggestId - index;
+    }
+
+    result = {
+      ...state.idToIndex,
+      ...idToIndexLocal
+    };
+  }
+
+  return result;
+}
+
+export function setIndexToId(action, state): object {
+  const indexToIdLocal = {};
+  let result = {};
+
+  if (!Object.keys(state.indexToId).length || action.type === 'NETWORK_ACTION_START_SUCCESS') {
+    for (let index = 0; index < action.payload.length; index++) {
+      indexToIdLocal[action.payload[0].id - index] = action.payload[index].id;
+    }
+
+    result = indexToIdLocal;
+  } else {
+    const indexOfTheBiggestId = state.idToIndex[action.payload[0].id];
+    for (let index = 0; index < action.payload.length; index++) {
+      indexToIdLocal[indexOfTheBiggestId - index] = action.payload[index].id;
+    }
+
+    result = {
+      ...state.idToIndex,
+      ...indexToIdLocal
+    };
+  }
+
+  return result;
+}
+
+export function setVirtualScrollId(action, state, accumulator): number {
+  if (!state.isFiltered) {
+    return action.id;
+  }
+  debugger;
+  // if (!Object.keys(accumulator).length) {
+  //   // first element
+  const alreadySetRecords = Object.keys(accumulator);
+  const indexOfBiggestRecord = !alreadySetRecords.length ? (state.idToIndex[action.id] || action.id) : alreadySetRecords[alreadySetRecords.length - 1];
+  return indexOfBiggestRecord - alreadySetRecords.length;
+  // }
+}
+
+export function setIsFiltered(state): boolean {
+  return Object.values(state.filter).includes(true);
 }
 
 // filter network items according to traffic source

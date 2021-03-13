@@ -31,12 +31,16 @@
 
             <div class="filters-row">
               <span class="filters-label" style="padding: 0px 14px 0px 0px; width: 51px;">Control</span>
-              <button mat-flat-button [class.active]="virtualScrollItems.filter.meta" (click)="filterType('meta')">
-                Meta
-              </button>
               <button mat-flat-button [class.active]="virtualScrollItems.filter.connection"
                       (click)=" filterType('connection')">
                 Connection
+              </button>
+              <button mat-flat-button [class.active]="virtualScrollItems.filter.meta" (click)="filterType('meta')">
+                Meta
+              </button>
+              <button mat-flat-button [class.active]="virtualScrollItems.filter.acknowledge"
+                      (click)=" filterType('acknowledge')">
+                Acknowledge
               </button>
               <button mat-flat-button [class.active]="virtualScrollItems.filter.bootstrap" (click)=" filterType('bootstrap')">
                 Bootstrap

@@ -31,10 +31,9 @@ export class VirtualScrollDirective implements AfterViewInit, OnDestroy, OnChang
 
   private maximumScrollTop = 0;
 
-  private cacheRequestStart = 0;
-  private cacheRequestEnd = 0;
   private previousLastCursorId = 0;
   private elementsBufferUpAndDown = 10;
+  private maximumLimitThatCanBeUsed = 300;
 
   private $scroller: HTMLDivElement = document.createElement('div');
   private $viewport: HTMLElement;
@@ -215,8 +214,6 @@ export class VirtualScrollDirective implements AfterViewInit, OnDestroy, OnChang
 
       // uncomment for debugging
       // console.log({
-      //   cacheRequestStart: this.cacheRequestStart,
-      //   cacheRequestEnd: this.cacheRequestEnd,
       //   scrollPositionStart: this.scrollPositionStart,
       //   scrollPositionEnd: this.scrollPositionEnd,
       //   cursor: reset ? null : Math.min(this.virtualScrollItemsOffset + this.scrollPositionEnd + 40, this.vsForOf.lastCursorId),
@@ -225,32 +222,48 @@ export class VirtualScrollDirective implements AfterViewInit, OnDestroy, OnChang
       //   itemsNumberInViewport: Math.floor(this.viewportHeight / this.itemHeight)
       // });
 
-      if (!reset) {
-        // cache request position
-        this.cacheRequestStart = this.scrollPositionStart;
-        this.cacheRequestEnd = this.scrollPositionEnd;
-      }
-
       // check the cursor construction
-      // const nextCursorId = reset ?
+      // const nextCursorIndex = reset ?
       //   null :
       //   Math.min(this.vsForOf.idsToPositions[this.virtualScrollItemsOffset + this.scrollPositionEnd + 40] || this.vsForOf.lastCursorId, this.vsForOf.lastCursorId);
-      // const limit = nextCursorId ? nextCursorId - (this.getScrollPositionStartWithOffset() - 40) : Math.floor(this.viewportHeight / this.itemHeight * 3);
-      const nextCursorId = reset ?
-        null :
-        Math.min(this.getScrollPositionEndWithOffset() + this.elementsBufferUpAndDown, this.vsForOf.lastCursorId);
+      // const limit = nextCursorIndex ? nextCursorIndex - (this.getScrollPositionStartWithOffset() - 40) : Math.floor(this.viewportHeight / this.itemHeight * 3);
 
-      const limit = nextCursorId ?
-        nextCursorId - (this.getScrollPositionStartWithOffset() - this.elementsBufferUpAndDown) :
-        Math.floor(this.viewportHeight / this.itemHeight * 2);
+      let nextCursorId: number;
+      let nextCursorIndex: number;
+      let limit: number;
 
-      // if (limit > this.maximumLimitThatCanBeUsed) {
-      //   this.$viewport.scrollTop = this.maximumScrollTop - this.itemHeight * (this.vsForOf.lastCursorId - this.vsForOf.idsToPositions[this.vsForOf.ids[0]]);
-      //
-      //   this.prevScrollTop = this.$viewport.scrollTop;
-      //   console.log('!!!!   maximum limit was about to be exceeded   !!!!');
-      //   return;
-      // }
+      if (this.vsForOf.isFiltered) {
+
+        nextCursorIndex = reset ?
+          null :
+          Math.min(this.getScrollPositionEndWithOffset() + this.elementsBufferUpAndDown, this.vsForOf.lastCursorId);
+
+        nextCursorId = this.vsForOf.isFiltered ?
+          this.vsForOf.indexToId[nextCursorIndex] || this.vsForOf.indexToId[this.vsForOf.idToIndex[this.vsForOf.entities[this.vsForOf.ids[0]].originalId]] :
+          nextCursorIndex;
+
+        limit = this.vsForOf.idToIndex[nextCursorId] ?
+          this.vsForOf.idToIndex[nextCursorId] - (this.getScrollPositionStartWithOffset() - this.elementsBufferUpAndDown) :
+          Math.floor(this.viewportHeight / this.itemHeight * 2);
+
+        if (limit > this.maximumLimitThatCanBeUsed) {
+          this.$viewport.scrollTop = this.maximumScrollTop - this.itemHeight * (this.vsForOf.lastCursorId - this.vsForOf.ids[0]);
+
+          this.prevScrollTop = this.$viewport.scrollTop;
+          console.log('!!!!   maximum limit was about to be exceeded   !!!!');
+          return;
+        }
+
+      } else {
+        // if the list is unfiltered and the id itself acts like an index
+        nextCursorId = reset ?
+          null :
+          Math.min(this.getScrollPositionEndWithOffset() + this.elementsBufferUpAndDown, this.vsForOf.lastCursorId);
+
+        limit = nextCursorId ?
+          nextCursorId - (this.getScrollPositionStartWithOffset() - this.elementsBufferUpAndDown) :
+          Math.floor(this.viewportHeight / this.itemHeight * 2);
+      }
 
       this.getItems.emit({
         nextCursorId,

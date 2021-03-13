@@ -1,9 +1,9 @@
-import { Injectable } from '@angular/core';
-import { Effect, Actions, ofType } from '@ngrx/effects';
-import { HttpClient } from '@angular/common/http';
-import { Store } from '@ngrx/store';
-import { map, switchMap, withLatestFrom, catchError, tap, takeUntil } from 'rxjs/operators';
-import { of, Subject, timer } from 'rxjs';
+import {Injectable} from '@angular/core';
+import {Effect, Actions, ofType} from '@ngrx/effects';
+import {HttpClient} from '@angular/common/http';
+import {Store} from '@ngrx/store';
+import {map, switchMap, withLatestFrom, catchError, tap, takeUntil} from 'rxjs/operators';
+import {of, Subject, timer} from 'rxjs';
 
 const networkActionDestroy$ = new Subject();
 
@@ -15,14 +15,14 @@ export class NetworkActionEffects {
     ofType('NETWORK_ACTION_LOAD'),
 
     // merge state
-    withLatestFrom(this.store, (action: any, state) => ({ action, state })),
+    withLatestFrom(this.store, (action: any, state) => ({action, state})),
 
-    switchMap(({ action, state }) => {
+    switchMap(({action, state}) => {
       return this.http.get(setUrl(action, state));
     }),
 
     // dispatch action
-    map((payload) => ({ type: 'NETWORK_ACTION_LOAD_SUCCESS', payload })),
+    map((payload) => ({type: 'NETWORK_ACTION_LOAD_SUCCESS', payload})),
     catchError((error, caught) => {
       console.error(error);
       this.store.dispatch({
@@ -38,7 +38,7 @@ export class NetworkActionEffects {
     ofType('NETWORK_ACTION_FILTER'),
 
     // merge state
-    withLatestFrom(this.store, (action: any, state) => ({ action, state })),
+    withLatestFrom(this.store, (action: any, state) => ({action, state})),
 
     tap(response => {
       networkActionDestroy$.next();
@@ -46,7 +46,7 @@ export class NetworkActionEffects {
     }),
 
     // dispatch action
-    map((payload) => ({ type: 'NETWORK_ACTION_START', payload })),
+    map((payload) => ({type: 'NETWORK_ACTION_START', payload})),
     catchError((error, caught) => {
       console.error(error);
       this.store.dispatch({
@@ -63,16 +63,16 @@ export class NetworkActionEffects {
     ofType('NETWORK_ACTION_START'),
 
     // merge state
-    withLatestFrom(this.store, (action: any, state) => ({ action, state })),
+    withLatestFrom(this.store, (action: any, state) => ({action, state})),
 
-    switchMap(({ action, state }) =>
+    switchMap(({action, state}) =>
       // get header data every second
       timer(0, 1000).pipe(
         takeUntil(networkActionDestroy$),
         switchMap(() =>
           this.http.get(setUrl(action, state)).pipe(
-            map(response => ({ type: 'NETWORK_ACTION_START_SUCCESS', payload: response })),
-            catchError(error => of({ type: 'NETWORK_ACTION_START_ERROR', payload: error }))
+            map(response => ({type: 'NETWORK_ACTION_START_SUCCESS', payload: response})),
+            catchError(error => of({type: 'NETWORK_ACTION_START_ERROR', payload: error}))
           )
         )
       )
@@ -80,13 +80,13 @@ export class NetworkActionEffects {
   );
 
   // stop network action download
-  @Effect({ dispatch: false })
+  @Effect({dispatch: false})
   NetworkActionStopEffect$ = this.actions$.pipe(
     ofType('NETWORK_ACTION_STOP'),
     // merge state
-    withLatestFrom(this.store, (action: any, state) => ({ action, state })),
+    withLatestFrom(this.store, (action: any, state) => ({action, state})),
     // init app modules
-    tap(({ action, state }) => {
+    tap(({action, state}) => {
       // console.log('[LOGS_ACTION_STOP] stream', state.logsAction.stream);
       // close all open observables
       // if (state.logsAction.stream) {
@@ -133,11 +133,12 @@ export function networkActionCursor(action) {
 export function networkActionFilter(action, state) {
   let filterType = '';
 
-  if (state.logsAction && state.logsAction.filter) {
+  if (state.networkAction && state.networkAction.filter) {
     const stateFilter = state.networkAction.filter;
 
     filterType = stateFilter.meta ? filterType + 'metadata,' : filterType;
     filterType = stateFilter.connection ? filterType + 'connection_message,' : filterType;
+    filterType = stateFilter.acknowledge ? filterType + 'ack_message,' : filterType;
     filterType = stateFilter.bootstrap ? filterType + 'bootstrap,' : filterType;
     filterType = stateFilter.advertise ? filterType + 'advertise,' : filterType;
     filterType = stateFilter.swap ? filterType + 'swap_request,swap_ack,' : filterType;

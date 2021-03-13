@@ -1724,10 +1724,9 @@ input.mat-input-element {
 
   }
 
-  .filters-field-btn {
-    &.active {
+  .active {
       opacity: .4;
-    }
+      color: red; // just for development purpose
   }
 
   .filters-accordion {

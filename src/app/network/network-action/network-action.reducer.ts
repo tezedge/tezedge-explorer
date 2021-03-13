@@ -4,6 +4,7 @@ const initialState: any = {
   ids: [],
   entities: {},
   lastCursorId: 0,
+  firstRecordIndex: 0,
   indexToId: {},
   idToIndex: {},
   isFiltered: false,
@@ -11,8 +12,9 @@ const initialState: any = {
     local: false,
     remote: false,
 
-    meta: false,
     connection: false,
+    meta: false,
+    acknowledge: false,
     bootstrap: false,
     advertise: false,
     swap: false,
@@ -50,11 +52,12 @@ export function reducer(state = initialState, action) {
     case 'NETWORK_ACTION_LOAD_SUCCESS': {
       return {
         ...state,
-        ids: setIds(action),
+        ids: setIds(action, state),
         entities: setEntities(action, state),
         indexToId: setIndexToId(action, state),
         idToIndex: setIdToIndex(action, state),
         lastCursorId: setLastCursorId(action, state),
+        firstRecordIndex: setFirstRecordIndex(action),
         isFiltered: setIsFiltered(state),
         stream: action.type === 'NETWORK_ACTION_START_SUCCESS'
       };
@@ -92,13 +95,25 @@ export function reducer(state = initialState, action) {
   }
 }
 
-export function setIds(action): Array<number> {
-  return action.payload.length === 0 ?
-    [] :
-    action.payload
-      .map(item => item.id)
-      // .map(item => item.id)
+export function setIds(action, state): Array<number> {
+  if (!action.payload.length) {
+    return [];
+  }
+
+  const idsLocal = action.payload
+    .map(item => item.id)
+    // .map(item => item.id)
+    .sort((a, b) => a - b);
+
+  if (!state.isFiltered) {
+    return idsLocal;
+  } else {
+    const indexOfBiggestId = state.idToIndex[idsLocal[idsLocal.length - 1]] || idsLocal[idsLocal.length - 1];
+
+    return idsLocal
+      .map((item, index) => indexOfBiggestId - index)
       .sort((a, b) => a - b);
+  }
 }
 
 // export function setIds(action, state): Array<number> {
@@ -152,7 +167,6 @@ export function setEntities(action, state): object {
         // if (networkAction.type === 'p2p_message') {
         const hexValues = setHexValues(networkAction.original_bytes);
         const virtualScrollId = setVirtualScrollId(networkAction, state, accumulator);
-        console.log(virtualScrollId);
 
         if (networkAction.message && networkAction.message.length && networkAction.message[0].type) {
           const payload = {...networkAction.message[0]};
@@ -271,17 +285,18 @@ export function setVirtualScrollId(action, state, accumulator): number {
   if (!state.isFiltered) {
     return action.id;
   }
-  debugger;
-  // if (!Object.keys(accumulator).length) {
-  //   // first element
+
   const alreadySetRecords = Object.keys(accumulator);
   const indexOfBiggestRecord = !alreadySetRecords.length ? (state.idToIndex[action.id] || action.id) : alreadySetRecords[alreadySetRecords.length - 1];
   return indexOfBiggestRecord - alreadySetRecords.length;
-  // }
 }
 
 export function setIsFiltered(state): boolean {
   return Object.values(state.filter).includes(true);
+}
+
+export function setFirstRecordIndex(action): number {
+  return 0;
 }
 
 // filter network items according to traffic source

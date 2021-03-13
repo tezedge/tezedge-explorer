@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import { Actions, Effect, ofType } from '@ngrx/effects';
 import { HttpClient } from '@angular/common/http';
-import { Store } from '@ngrx/store';
+import { State, Store } from '@ngrx/store';
 import { catchError, map, switchMap, takeUntil, tap, withLatestFrom } from 'rxjs/operators';
-import { of, Subject, timer } from 'rxjs';
+import { ObservedValueOf, of, Subject, timer } from 'rxjs';
 
 const logActionDestroy$ = new Subject();
 
@@ -14,14 +14,12 @@ export class LogsActionEffects {
   LogsActionLoad$ = this.actions$.pipe(
     ofType('LOGS_ACTION_LOAD'),
 
-    // merge state
-    withLatestFrom(this.store, (action: any, state) => ({ action, state })),
+    withLatestFrom(this.store, (action: any, state: ObservedValueOf<State<Store>>) => ({ action, state })),
 
     switchMap(({ action, state }) => {
       return this.http.get(setUrl(action, state));
     }),
 
-    // dispatch action
     map((payload) => ({ type: 'LOGS_ACTION_LOAD_SUCCESS', payload })),
     catchError((error, caught) => {
       console.error(error);
@@ -38,7 +36,7 @@ export class LogsActionEffects {
     ofType('LOGS_ACTION_FILTER'),
 
     // merge state
-    withLatestFrom(this.store, (action: any, state) => ({ action, state })),
+    withLatestFrom(this.store, (action: any, state: ObservedValueOf<State<Store>>) => ({ action, state })),
 
     tap(response => {
       logActionDestroy$.next();
@@ -63,7 +61,7 @@ export class LogsActionEffects {
     ofType('LOGS_ACTION_START'),
 
     // merge state
-    withLatestFrom(this.store, (action: any, state) => ({ action, state })),
+    withLatestFrom(this.store, (action: any, state: ObservedValueOf<State<Store>>) => ({ action, state })),
 
     switchMap(({ action, state }) =>
       // get header data every second
@@ -84,7 +82,7 @@ export class LogsActionEffects {
   LogsActionStopEffect$ = this.actions$.pipe(
     ofType('LOGS_ACTION_STOP'),
     // merge state
-    withLatestFrom(this.store, (action: any, state) => ({ action, state })),
+    withLatestFrom(this.store, (action: any, state: ObservedValueOf<State<Store>>) => ({ action, state })),
     // init app modules
     tap(({ action, state }) => {
       // console.log('[LOGS_ACTION_STOP] stream', state.logsAction.stream);

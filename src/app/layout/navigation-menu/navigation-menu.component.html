@@ -1,0 +1,234 @@
+<div class="app-menu-toolbar">
+  <div class="app-menu-toolbar-logo"
+       style="color:#f0f3f7">TezEdge
+  </div>
+</div>
+<ng-container *ngIf="appFeatures$ | async as features">
+  <div class="app-submenu"
+       *ngIf="features['MONITORING'] || features['RESOURCES']">
+    <span>MONITORING</span>
+
+    <a *ngIf="features['MONITORING']"
+       mat-list-item
+       class="menu-item"
+       routerLink="/monitoring"
+       [style.color]="app.sidenav.color">
+      <span>
+        <svg-icon style="margin-right: 7px;"
+                  icon="history"></svg-icon>
+        Synchronization
+      </span>
+    </a>
+
+    <a *ngIf="features['RESOURCES']"
+       mat-list-item
+       class="menu-item"
+       routerLink="/resources"
+       id="resources-trigger"
+       [style.color]="app.sidenav.color">
+      <span>
+        <svg-icon style="margin-right: 7px;"
+                  icon="resources"></svg-icon>
+        Resources
+      </span>
+    </a>
+
+  </div>
+
+  <div class="app-submenu"
+       *ngIf="features['NETWORK_ACTION']
+           || features['STORAGE_BLOCK']
+           || features['MEMPOOL_ACTION']
+           || features['LOGS_ACTION']
+           || features['ENDPOINTS_ACTION']"
+  >
+    <span>EXPLORER</span>
+
+    <a *ngIf="features['MEMPOOL_ACTION']"
+       mat-list-item
+       class="menu-item"
+       routerLink="/mempool"
+       [style.color]="app.sidenav.color">
+      <span>
+        <svg-icon style="margin-right: 7px;"
+                  icon="mempool"></svg-icon>
+        Mempool
+      </span>
+    </a>
+
+    <a *ngIf="features['STORAGE_BLOCK']"
+       mat-list-item
+       class="menu-item"
+       routerLink="/storage"
+       [style.color]="app.sidenav.color">
+      <span>
+        <svg-icon style="margin-right: 7px;"
+                  icon="storage"></svg-icon>
+        Storage
+      </span>
+    </a>
+
+    <a *ngIf="features['NETWORK_ACTION']"
+       mat-list-item
+       class="menu-item"
+       routerLink="/network"
+       [style.color]="app.sidenav.color">
+      <span>
+        <svg-icon style="margin-right: 7px;"
+                  icon="peer"></svg-icon>
+        Network
+      </span>
+    </a>
+    <a *ngIf="features['ENDPOINTS_ACTION']"
+       mat-list-item
+       class="menu-item"
+       routerLink="/endpoints"
+       [style.color]="app.sidenav.color">
+        <span>
+            <svg-icon style="margin-right: 7px;"
+                      icon="endpoints"></svg-icon>
+            Endpoints
+        </span>
+    </a>
+
+
+    <a *ngIf="features['LOGS_ACTION']"
+       mat-list-item
+       class="menu-item"
+       routerLink="/logs"
+       [style.color]="app.sidenav.color">
+      <span>
+       <svg-icon style="margin-right: 7px;"
+                 icon="logs"></svg-icon>
+        Logs
+      </span>
+    </a>
+
+    <!--
+
+    <a mat-list-item class="menu-item" routerLink="/mempool"
+        [style.color]="app.sidenav.color">
+        <span>
+            Mempool
+        </span>
+    </a>
+  -->
+
+
+  </div>
+
+  <!-- <div class="app-submenu">
+      <span>
+          DEVELOPER
+      </span>
+
+      <a mat-list-item class="menu-item" routerLink="/storage"
+          [style.color]="app.sidenav.color">
+          <span>
+              Chain
+          </span>
+      </a>
+
+      <a mat-list-item class="menu-item" routerLink="/storage"
+          [style.color]="app.sidenav.color">
+          <span>
+              Replay
+          </span>
+      </a>
+
+      <a mat-list-item class="menu-item" routerLink="/storage"
+          [style.color]="app.sidenav.color">
+          <span>
+              Debug
+          </span>
+      </a>
+
+      <a mat-list-item class="menu-item" routerLink="/storage"
+      [style.color]="app.sidenav.color">
+          <span>
+              Error
+          </span>
+      </a>
+  </div> -->
+
+  <div class="app-submenu"
+       *ngIf="app.menu.sandbox.chain || app.menu.sandbox.wallets">
+                    <span>
+                        SANDBOX
+                    </span>
+
+    <a *ngIf="app.menu.sandbox.chain"
+       mat-list-item
+       class="menu-item"
+       routerLink="/chain"
+       rel="noreferrer"
+       [style.color]="app.sidenav.color">
+                        <span>
+                            <svg-icon style="margin-right: 7px"
+                                      icon="chain-settings"></svg-icon>
+                            Chain
+                        </span>
+    </a>
+
+    <a *ngIf="app.menu.sandbox.wallets"
+       mat-list-item
+       class="menu-item"
+       routerLink="/wallets"
+       rel="noreferrer"
+       [style.color]="app.sidenav.color">
+                        <span>
+                            <svg-icon style="margin-right: 7px"
+                                      icon="chain-wallets"></svg-icon>
+                            Wallets
+                        </span>
+    </a>
+    <!--
+    <span>
+        <button style="font-size: 12px;line-height: 32px;color:white; background: #323234; " mat-flat-button>
+            START SANDBOX NODE
+        </button>
+    </span>
+    -->
+  </div>
+  <div class="app-submenu"
+       *ngIf="settingsNode.entities['sandbox-carthage-tezedge']?.connected === false">
+                    <span>
+                        SANDBOX
+                    </span>
+    <div style="padding: 5px 0px 0px 20px;">
+      <button mat-flat-button
+              (click)="nodeSandboxAdd();"
+              id="menu-add-sandbox-node"
+              style="font-size: 12px;line-height: 24px;color:white; background: #8C6141; font-weight:300">
+        ADD SANDBOX NODE
+      </button>
+    </div>
+
+    <!-- <div style="padding: 0px 0px 0px 20px;">
+        <button mat-flat-button (click)="odeSandboxStop();"
+            *ngIf="settingsNode.entities['sandbox-carthage-tezedge']?.connected === true"
+            style="font-size: 12px;line-height: 24px;color:white; background: #8C6141; font-weight:300">
+            STOP SANDBOX NODE
+        </button>
+    </div> -->
+  </div>
+
+  <div class="app-submenu">
+    <span>LEARN</span>
+
+    <a mat-list-item
+       class="menu-item"
+       href="https://docs.tezedge.com"
+       target="_blank"
+       rel="noreferrer"
+       [style.color]="app.sidenav.color">
+      <span>
+        <svg-icon style="margin-right: 7px"
+                  icon="documentation"></svg-icon>
+        Documentation
+      </span>
+    </a>
+  </div>
+
+  <app-commit-number class="app-github-version"></app-commit-number>
+</ng-container>

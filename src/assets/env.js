@@ -10,7 +10,8 @@
       http: 'https://carthage.tezedge.com:8752',
       debugger: 'https://carthage.tezedge.com:8753',
       monitoring: 'https://carthage.tezedge.com:8754/resources/tezedge',
-      ws: 'wss://carthage.tezedge.com:443'
+      ws: 'wss://carthage.tezedge.com:443',
+      features: ['MONITORING', 'RESOURCES', 'MEMPOOL_ACTION', 'STORAGE_BLOCK', 'NETWORK_ACTION', 'LOGS_ACTION'],
     },
     {
       id: 'ocaml.carthage.tezedge.com',
@@ -18,7 +19,8 @@
       http: 'https://carthage.tezedge.com:8742',
       debugger: 'https://carthage.tezedge.com:8743',
       monitoring: 'https://carthage.tezedge.com:8754/resources/ocaml',
-      ws: false
+      ws: false,
+      features: ['MONITORING', 'RESOURCES', 'MEMPOOL_ACTION', 'NETWORK_ACTION', 'LOGS_ACTION'],
     }
   ];
 })(this);

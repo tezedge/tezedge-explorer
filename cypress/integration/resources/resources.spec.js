@@ -2,9 +2,9 @@ context('resources', () => {
     beforeEach(() => {
         cy.intercept('GET', '/resources/tezedge').as('getTezedgeResources');
         cy.visit(Cypress.config().baseUrl);
-        cy.wait(1000);
-        cy.visit(Cypress.config().baseUrl + '/#/resources', { timeout: 1000 });
-        cy.wait(1000);
+        cy.wait(5000);
+        cy.visit(Cypress.config().baseUrl + '/#/resources', { timeout: 2000 });
+        cy.wait(5000);
     })
 
     it('[resources] should perform get resources request successfully', () => {

@@ -1,9 +1,9 @@
-import { Injectable, NgZone } from '@angular/core';
-import { Effect, Actions, ofType } from '@ngrx/effects';
+import { Injectable } from '@angular/core';
+import { Actions, Effect, ofType } from '@ngrx/effects';
 import { HttpClient } from '@angular/common/http';
-import { Store } from '@ngrx/store';
-import { map, switchMap, withLatestFrom, catchError, tap, takeUntil } from 'rxjs/operators';
-import { of, Subject, empty, timer } from 'rxjs';
+import { State, Store } from '@ngrx/store';
+import { catchError, map, switchMap, takeUntil, tap, withLatestFrom } from 'rxjs/operators';
+import { ObservedValueOf, of, Subject, timer } from 'rxjs';
 
 const endpointsActionDestroy$ = new Subject();
 
@@ -14,14 +14,12 @@ export class EndpointsActionEffects {
     EndpointsActionLoad$ = this.actions$.pipe(
         ofType('ENDPOINTS_ACTION_LOAD'),
 
-        // merge state
-        withLatestFrom(this.store, (action: any, state) => ({ action, state })),
+        withLatestFrom(this.store, (action: any, state: ObservedValueOf<State<Store>>) => ({ action, state })),
 
         switchMap(({ action, state }) => {
             return this.http.get(state.settingsNode.activeNode.debugger + '/v2/rpc?limit=30' + action.payload);
         }),
 
-        // dispatch action
         map((payload) => ({ type: 'ENDPOINTS_ACTION_LOAD_SUCCESS', payload })),
         catchError((error, caught) => {
             console.error(error);
@@ -40,7 +38,7 @@ export class EndpointsActionEffects {
         ofType('ENDPOINTS_ACTION_START'),
 
         // merge state
-        withLatestFrom(this.store, (action: any, state) => ({ action, state })),
+        withLatestFrom(this.store, (action: any, state: ObservedValueOf<State<Store>>) => ({ action, state })),
 
         switchMap(({ action, state }) =>
 
@@ -62,7 +60,7 @@ export class EndpointsActionEffects {
     EndpointsActionStopEffect$ = this.actions$.pipe(
         ofType('ENDPOINTS_ACTION_STOP'),
         // merge state
-        withLatestFrom(this.store, (action: any, state) => ({ action, state })),
+        withLatestFrom(this.store, (action: any, state: ObservedValueOf<State<Store>>) => ({ action, state })),
         // init app modules
         tap(({ action, state }) => {
             endpointsActionDestroy$.next();

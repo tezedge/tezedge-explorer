@@ -5,8 +5,7 @@ import {Store} from '@ngrx/store';
 import {Subject} from 'rxjs';
 import {takeUntil} from 'rxjs/operators';
 
-import {MatAutocompleteSelectedEvent} from '@angular/material/autocomplete';
-import {VirtualScrollFromTopDirective} from '../../shared/virtual-scroll-from-top.directive';
+import { VirtualScrollFromTopDirective } from '../../shared/virtual-scroll-from-top.directive';
 
 @Component({
   selector: 'app-storage-action',

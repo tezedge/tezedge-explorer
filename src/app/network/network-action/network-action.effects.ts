@@ -15,14 +15,12 @@ export class NetworkActionEffects {
   NetworkActionLoad$ = this.actions$.pipe(
     ofType('NETWORK_ACTION_LOAD'),
 
-    // merge state
     withLatestFrom(this.store, (action: any, state: ObservedValueOf<Store<State>>) => ({ action, state })),
 
     switchMap(({ action, state }) => {
       return this.http.get(setUrl(action, state));
     }),
 
-    // dispatch action
     map((payload) => ({ type: 'NETWORK_ACTION_LOAD_SUCCESS', payload })),
     catchError((error, caught) => {
       console.error(error);

@@ -1,77 +1,17 @@
-<style>
-    .app-menu-toolbar {
-        display: flex;
-        align-items: center;
-        height: 50px;
-    }
-
-    .app-menu-toolbar-logo {
-        padding-left: 18px;
-    }
-
-    .app-menu-toggle {
-        position: absolute;
-        top: 5px;
-        left: 10px;
-        opacity: 0.5;
-    }
-
-    .mat-list-base {
-        padding-top: 0px;
-    }
-
-    .app-submenu {
-        color: #c4cfdc7a;
-        font-size: 12px;
-        padding: 12px 0px 12px 0px;
-        /* border-top: 1px solid rgba(255, 255, 255, 0.1); */
-    }
-
-    .app-submenu span {
-        display: block;
-        padding-top: 8px;
-        padding-left: 20px;
-        padding-bottom: 8px;
-    }
-
-    .app-submenu a {
-        /* font-weight: 300; */
-    }
-
-    .app-submenu a span:focus {
-        color: green;
-    }
-
-    .app-github-version {
-      position: absolute;
-      bottom: 10px;
-      color: #c4cfdc7a;
-      margin-left: 12px;
-    }
-
-    list-option:focus,
-    .mat-list-option:hover,
-    .mat-nav-list .mat-list-item:focus,
-    .mat-nav-list .mat-list-item:hover {
-        background: #323234;
-        color: white !important;
-        border-top-right-radius: 4px;
-        border-bottom-right-radius: 4px;
-        width: calc(100% - 20px);
-    }
-
-    .theme-switcher:hover {
-        background: #ffffff20;
-    }
-</style>
-
-
 <div class="sidenav-area" style="height: 100%;">
 
     <div class="app-status-bar" *ngIf="app.toolbar.isVisible" [class.app-status-bar-sanbox]="app.statusbar.sandbox">
 
-        <app-settings-node>
-        </app-settings-node>
+        <div fxLayout="row"
+             fxLayoutAlign="start center">
+            <button *ngIf="isMobile"
+                    class="app-menu-toggle"
+                    mat-icon-button>
+                <mat-icon (click)="start.toggle()">dehaze</mat-icon>
+            </button>
+
+            <app-settings-node></app-settings-node>
+        </div>
 
         <app-sandbox-status-bar *ngIf="app.statusbar.sandbox">
         </app-sandbox-status-bar>
@@ -105,223 +45,28 @@
 
     </div>
 
-    <!-- Sidebar -->
     <mat-sidenav-container>
-        <mat-sidenav #start [mode]="app.sidenav.mode" style="min-width:200px; z-index:5 !important;top: 34px;"
-            [style.background-color]="app.sidenav.backgroundColor" [style.color]="app.sidenav.color"
-            [opened]="app.sidenav.isVisible" [fixedInViewport]="true" [fixedTopGap]="0" [fixedBottomGap]="0">
+        <!-- Sidebar -->
+        <mat-sidenav #start
+                     [mode]="app.sidenav.mode"
+                     [style.background-color]="app.sidenav.backgroundColor"
+                     [style.color]="app.sidenav.color"
+                     [opened]="app.sidenav.isVisible"
+                     [fixedInViewport]="true"
+                     [fixedTopGap]="34"
+                     [fixedBottomGap]="0">
 
             <mat-nav-list>
-
-                <div class="app-menu-toolbar">
-                    <div class="app-menu-toolbar-logo" style="color:#f0f3f7">
-                        TezEdge
-                    </div>
-
-                    <!--
-                    <button mat-icon-button style="margin-left:110px">
-                        <mat-icon *ngIf="app.theme.name === 'dark'" style="font-size:16px; opacity:0.3" (click)="changeTheme('light')">wb_sunny</mat-icon>
-                        <mat-icon *ngIf="app.theme.name === 'light'"style="font-size:16px; opacity:0.3" (click)="changeTheme('dark')">bedtime</mat-icon>
-                    </button> -->
-
-                    <!-- <button mat-icon-button class="app-menu-toggle" *ngIf="app.sidenav.toggleButton.isVisible">
-                        <mat-icon (click)="start.toggle()">menu</mat-icon>
-                    </button> -->
-                </div>
-
-                <div class="app-submenu" *ngIf="app.menu.monitoring.synchronization">
-                    <span>
-                        MONITORING
-                    </span>
-
-                    <a mat-list-item routerLink="/monitoring"
-                       (click)="isMobile && start.toggle()" [style.color]="app.sidenav.color">
-                        <span>
-                            <svg-icon style="margin-right: 7px;" icon="history"></svg-icon>
-                            Synchronization
-                        </span>
-                    </a>
-
-                    <a mat-list-item routerLink="/resources"
-                       id="resources-trigger"
-                       (click)="isMobile && start.toggle()" [style.color]="app.sidenav.color">
-                        <span>
-                            <svg-icon style="margin-right: 7px;" icon="resources"></svg-icon>
-                            Resources
-                        </span>
-                    </a>
-
-                </div>
-
-                <div class="app-submenu"
-                    *ngIf="app.menu.explorer.endpoints || app.menu.explorer.network || app.menu.explorer.storage">
-                    <span>
-                        EXPLORER
-                    </span>
-
-                    <a *ngIf="app.menu.explorer.mempool" mat-list-item routerLink="/mempool"
-                        (click)="isMobile && start.toggle()" [style.color]="app.sidenav.color">
-                        <span>
-                            <svg-icon style="margin-right: 7px;" icon="mempool"></svg-icon>
-                            Mempool
-                        </span>
-                    </a>
-
-                    <a *ngIf="app.menu.explorer.storage" mat-list-item routerLink="/storage"
-                        (click)="isMobile && start.toggle()" [style.color]="app.sidenav.color">
-                        <span>
-                            <svg-icon style="margin-right: 7px;" icon="storage"></svg-icon>
-                            Storage
-                        </span>
-                    </a>
-
-                    <a *ngIf="app.menu.explorer.network" mat-list-item routerLink="/network"
-                        (click)="isMobile && start.toggle()" [style.color]="app.sidenav.color">
-                        <span>
-                            <svg-icon style="margin-right: 7px;" icon="peer"></svg-icon>
-                            Network
-                        </span>
-                    </a>
-                    <!--
-                    <a *ngIf="app.menu.explorer.endpoints" mat-list-item routerLink="/endpoints"
-                        (click)="isMobile && start.toggle()" [style.color]="app.sidenav.color">
-                        <span>
-                            <svg-icon style="margin-right: 7px;" icon="endpoints"></svg-icon>
-                            Endpoints
-                        </span>
-                    </a> -->
-
-
-                    <a *ngIf="app.menu.explorer.logs" mat-list-item routerLink="/logs"
-                        (click)="isMobile && start.toggle()" [style.color]="app.sidenav.color">
-                        <span>
-                            <svg-icon style="margin-right: 7px;" icon="logs"></svg-icon>
-                            Logs
-                        </span>
-                    </a>
-
-                    <!--
-
-                    <a mat-list-item routerLink="/mempool" (click)="isMobile && start.toggle()"
-                        [style.color]="app.sidenav.color">
-                        <span>
-                            Mempool
-                        </span>
-                    </a>
--->
-
-
-                </div>
-
-                <!-- <div class="app-submenu">
-                    <span>
-                        DEVELOPER
-                    </span>
-
-                    <a mat-list-item routerLink="/storage" (click)="isMobile && start.toggle()"
-                        [style.color]="app.sidenav.color">
-                        <span>
-                            Chain
-                        </span>
-                    </a>
-
-                    <a mat-list-item routerLink="/storage" (click)="isMobile && start.toggle()"
-                        [style.color]="app.sidenav.color">
-                        <span>
-                            Replay
-                        </span>
-                    </a>
-
-                    <a mat-list-item routerLink="/storage" (click)="isMobile && start.toggle()"
-                        [style.color]="app.sidenav.color">
-                        <span>
-                            Debug
-                        </span>
-                    </a>
-
-                    <a mat-list-item routerLink="/storage" (click)="isMobile && start.toggle()"
-                    [style.color]="app.sidenav.color">
-                        <span>
-                            Error
-                        </span>
-                    </a>
-                </div> -->
-
-                <div class="app-submenu" *ngIf="app.menu.sandbox.chain || app.menu.sandbox.wallets">
-                    <span>
-                        SANDBOX
-                    </span>
-
-                    <a *ngIf="app.menu.sandbox.chain" mat-list-item routerLink="/chain" rel="noreferrer"
-                        [style.color]="app.sidenav.color">
-                        <span>
-                            <svg-icon style="margin-right: 7px" icon="chain-settings"></svg-icon>
-                            Chain
-                        </span>
-                    </a>
-
-                    <a *ngIf="app.menu.sandbox.wallets" mat-list-item routerLink="/wallets" rel="noreferrer"
-                        [style.color]="app.sidenav.color">
-                        <span>
-                            <svg-icon style="margin-right: 7px" icon="chain-wallets"></svg-icon>
-                            Wallets
-                        </span>
-                    </a>
-                    <!--
-                    <span>
-                        <button style="font-size: 12px;line-height: 32px;color:white; background: #323234; " mat-flat-button>
-                            START SANDBOX NODE
-                        </button>
-                    </span>
-                    -->
-                </div>
-                <div class="app-submenu" *ngIf="settingsNode.entities['sandbox-carthage-tezedge']?.connected === false">
-                    <span>
-                        SANDBOX
-                    </span>
-                    <div style="padding: 5px 0px 0px 20px;">
-                        <button mat-flat-button (click)="nodeSandboxAdd();" id="menu-add-sandbox-node"
-                            style="font-size: 12px;line-height: 24px;color:white; background: #8C6141; font-weight:300">
-                            ADD SANDBOX NODE
-                        </button>
-                    </div>
-
-                    <!-- <div style="padding: 0px 0px 0px 20px;">
-                        <button mat-flat-button (click)="odeSandboxStop();"
-                            *ngIf="settingsNode.entities['sandbox-carthage-tezedge']?.connected === true"
-                            style="font-size: 12px;line-height: 24px;color:white; background: #8C6141; font-weight:300">
-                            STOP SANDBOX NODE
-                        </button>
-                    </div> -->
-                </div>
-
-                <div class="app-submenu">
-                    <span>
-                        LEARN
-                    </span>
-
-                    <a mat-list-item href="https://docs.tezedge.com" target="_blank" rel="noreferrer"
-                        [style.color]="app.sidenav.color">
-                        <span>
-                            <svg-icon style="margin-right: 7px" icon="documentation"></svg-icon>
-                            Documentation
-                        </span>
-                    </a>
-                </div>
-
-                <app-commit-number class="app-github-version"></app-commit-number>
-
+                <app-navigation-menu></app-navigation-menu>
             </mat-nav-list>
 
         </mat-sidenav>
 
         <!-- Content -->
-        <mat-sidenav-content class="sidenav-content" [class.not-visible]="!app.sidenav.isVisible">
-            <div fxFlexFill class="sidenav-content-container">
-                <!-- menu -->
-                <button mat-icon-button class="app-menu-toggle" *ngIf="isMobile && app.sidenav.isVisible">
-                    <mat-icon (click)="start.toggle()">dehaze</mat-icon>
-                </button>
+        <mat-sidenav-content class="sidenav-content"
+                             [class.not-visible]="!app.sidenav.isVisible">
+            <div class="sidenav-content-container"
+                 fxFlexFill>
                 <router-outlet></router-outlet>
             </div>
         </mat-sidenav-content>

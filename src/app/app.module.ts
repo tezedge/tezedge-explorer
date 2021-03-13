@@ -110,6 +110,7 @@ import { CommitNumberComponent } from './monitoring/commit-number/commit-number.
 import { CommitNumberEffects } from './monitoring/commit-number/commit-number.effects';
 import { ResourcesEffects } from './resources/resources/resources.effects';
 import { TezedgeSharedModule } from './shared/tezedge-shared.module';
+import { NavigationMenuComponent } from './layout/navigation-menu/navigation-menu.component';
 
 @NgModule({
   declarations: [
@@ -149,7 +150,8 @@ import { TezedgeSharedModule } from './shared/tezedge-shared.module';
     WalletsComponent,
     MempoolComponent,
     MempoolActionComponent,
-    CommitNumberComponent
+    CommitNumberComponent,
+    NavigationMenuComponent
   ],
   imports: [
     BrowserModule,

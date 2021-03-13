@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
-import { ResourcesSummaryBlock } from '../resources/resources.component';
+import { ResourcesSummaryBlock, ResourceType } from '../resources/resources.component';
 
 @Component({
   selector: 'app-resources-summary',
@@ -10,5 +10,6 @@ import { ResourcesSummaryBlock } from '../resources/resources.component';
 export class ResourcesSummaryComponent {
 
   @Input() summaryBlocks: ResourcesSummaryBlock[];
+  @Input() resourceType: ResourceType;
 
 }

@@ -9,83 +9,100 @@ import { State } from './app.reducers';
 @Injectable()
 export class AppEffects {
 
-    // load node settings
-    @Effect()
-    SettingsNodeLoadEffect$ = this.actions$.pipe(
-        ofType('@ngrx/effects/init'),
-        // get current url
-        map(() => ({ type: 'SETTINGS_NODE_LOAD', payload: window.location.hostname }))
-    );
+  // load node settings
+  @Effect()
+  SettingsNodeLoadEffect$ = this.actions$.pipe(
+    ofType('@ngrx/effects/init'),
+    // get current url
+    map(() => ({ type: 'SETTINGS_NODE_LOAD', payload: window.location.hostname }))
+  );
 
-    // initialize app features
-    @Effect()
-    AppInitEffect$ = this.actions$.pipe(
-        ofType('APP_INIT'),
+  // initialize app features
+  @Effect()
+  AppInitEffect$ = this.actions$.pipe(
+    ofType('APP_INIT'),
 
-        // merge state
-        withLatestFrom(this.store, (action: any, state) => ({ action, state })),
+    // merge state
+    withLatestFrom(this.store, (action: any, state) => ({ action, state })),
 
-        // TODO: refactor and add checks for every featured api (node, debugger, monitoring )
+    // TODO: refactor and add checks for every featured api (node, debugger, monitoring )
 
-        flatMap(({ action, state }) => state.app.initialized ? empty() : of({ type: 'APP_INIT_SUCCESS' }))
-    );
+    flatMap(({ action, state }) => state.app.initialized ? empty() : of({ type: 'APP_INIT_SUCCESS' }))
+  );
 
-    @Effect()
-    AppNodeChangeEffect$ = this.actions$.pipe(
-        ofType('APP_NODE_CHANGE'),
+  @Effect()
+  AppNodeChangeEffect$ = this.actions$.pipe(
+    ofType('APP_NODE_CHANGE'),
 
-        withLatestFrom(this.store, (action: any, state: ObservedValueOf<Store<State>>) => ({ action, state })),
+    withLatestFrom(this.store, (action: any, state: ObservedValueOf<Store<State>>) => ({ action, state })),
 
-        map(({ action, state }) => ({ type: 'SETTINGS_NODE_CHANGE', payload: state.settingsNode }))
-    );
+    map(({ action, state }) => ({ type: 'SETTINGS_NODE_CHANGE', payload: state.settingsNode }))
+  );
 
-    // initialize empty app
-    @Effect()
-    AppInitDefaultEffect$ = this.actions$.pipe(
-        ofType('APP_INIT_DEFAULT'),
+  // initialize empty app
+  @Effect()
+  AppInitDefaultEffect$ = this.actions$.pipe(
+    ofType('APP_INIT_DEFAULT'),
 
-        // merge state
-        withLatestFrom(this.store, (action: any, state) => ({ action, state })),
+    // merge state
+    withLatestFrom(this.store, (action: any, state: ObservedValueOf<Store<State>>) => ({ action, state })),
 
-        // TODO: refactor and add checks for every featured api (node, debugger, monitoring )
-        tap(({ action, state }) => {
-            // force url reload
-            this.router.navigateByUrl('/', { skipLocationChange: false }).then(() =>
-                this.router.navigate([''])
-            );
-        }),
-        map(() => ({ type: 'APP_INIT_DEFAULT_SUCCESS' }))
-    );
+    // TODO: refactor and add checks for every featured api (node, debugger, monitoring )
+    tap(({ action, state }) => {
+      // force url reload
+      this.router.navigateByUrl('/', { skipLocationChange: false }).then(() =>
+        this.router.navigate([''])
+      );
+    }),
+    map(() => ({ type: 'APP_INIT_DEFAULT_SUCCESS' }))
+  );
 
-    @Effect()
-    AppInitDefaultSuccessEffect$ = this.actions$.pipe(
-        ofType('APP_INIT_DEFAULT_SUCCESS'),
-        map(() => ({ type: 'SETTINGS_NODE_LOAD' }))
-    );
+  @Effect()
+  AppInitDefaultSuccessEffect$ = this.actions$.pipe(
+    ofType('APP_INIT_DEFAULT_SUCCESS'),
+    map(() => ({ type: 'SETTINGS_NODE_LOAD' }))
+  );
 
-    @Effect()
-    AppInitSuccessEffect$ = this.actions$.pipe(
-        ofType('APP_INIT_SUCCESS'),
-        withLatestFrom(this.store, (action: any, state) => ({ action, state })),
-        switchMap(({ action, state }) => {
-            const appFeaturesActions = [];
+  @Effect()
+  AppRefreshEffect$ = this.actions$.pipe(
+    ofType('APP_REFRESH'),
+    withLatestFrom(this.store, (action: any, state: ObservedValueOf<Store<State>>) => ({ action, state })),
+    map(({ action, state }) => {
+      const activePage = this.router.url.replace('/', '').toUpperCase();
 
-            appFeaturesActions.push({ type: 'MONITORING_LOAD' });
-            appFeaturesActions.push({ type: 'MEMPOOL_INIT' });
-            appFeaturesActions.push({ type: 'MEMPOOL_ACTION_LOAD' });
-            appFeaturesActions.push({ type: 'NETWORK_INIT' });
-            appFeaturesActions.push({ type: 'RESOURCES_STATS_LOAD' });
-            appFeaturesActions.push({ type: 'VERSION_NODE_LOAD' });
-            appFeaturesActions.push({ type: 'LOGS_ACTION_LOAD' });
+      let featureLoadAction = `${activePage}_LOAD`;
 
-            return appFeaturesActions;
-        })
-    );
+      if (!state.settingsNode.activeNode.features.includes(activePage)) {
+        featureLoadAction = `${state.settingsNode.activeNode.features[0]}_LOAD`;
+        this.router.navigate([state.settingsNode.activeNode.features[0].toLowerCase()]);
+      }
+      return { type: featureLoadAction };
+    })
+  );
 
-    constructor(
-        private actions$: Actions,
-        private store: Store<any>,
-        private router: Router,
-    ) { }
+  @Effect()
+  AppInitSuccessEffect$ = this.actions$.pipe(
+    ofType('APP_INIT_SUCCESS'),
+    withLatestFrom(this.store, (action: any, state: ObservedValueOf<Store<State>>) => ({ action, state })),
+    switchMap(({ action, state }) => {
+
+      const appFeaturesActions = [];
+      const activePage = this.router.url.replace('/', '');
+
+      state.settingsNode.activeNode.features
+        .filter(feature => feature.toLowerCase() !== activePage.toLowerCase())
+        .forEach(feature => {
+          appFeaturesActions.push({ type: `${feature}_LOAD`, payload: { initialLoad: true } });
+        });
+
+      return appFeaturesActions;
+    })
+  );
+
+  constructor(
+    private actions$: Actions,
+    private store: Store<any>,
+    private router: Router,
+  ) { }
 
 }

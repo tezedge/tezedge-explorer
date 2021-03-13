@@ -32,7 +32,7 @@ export function reducer(state: NetworkAction = initialState, action): NetworkAct
   switch (action.type) {
 
     // initialize or reset state
-    case 'NETWORK_INIT': {
+    case 'NETWORK_LOAD': {
       return initialState;
     }
 

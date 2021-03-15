@@ -59,7 +59,6 @@ const COLOR_SCHEME = {
     '#ff8c00',
     '#ffe600',
     '#ff1c91',
-    '#97d948',
   ]
 };
 
@@ -165,10 +164,6 @@ export class ResourcesComponent implements OnInit, OnDestroy {
       series: ResourcesComponent.getSeries(resources, 'disk.blockStorage')
     });
     chartData.disk.push({
-      name: 'DEBUGGER',
-      series: ResourcesComponent.getSeries(resources, 'disk.debugger')
-    });
-    chartData.disk.push({
       name: 'CONTEXT IRMIN',
       series: ResourcesComponent.getSeries(resources, 'disk.contextIrmin')
     });
@@ -247,14 +242,13 @@ export class ResourcesComponent implements OnInit, OnDestroy {
       this.colorScheme.domain[1],
       'GB'
     ));
-    summary.disk.push(new ResourcesSummaryBlock('Debugger', lastResource.disk.debugger, this.colorScheme.domain[2], 'GB'));
-    summary.disk.push(new ResourcesSummaryBlock('Context Irmin', lastResource.disk.contextIrmin, this.colorScheme.domain[3], 'GB'));
+    summary.disk.push(new ResourcesSummaryBlock('Context Irmin', lastResource.disk.contextIrmin, this.colorScheme.domain[2], 'GB'));
     if (lastResource.disk.contextActions) {
       summary.disk.push(
         new ResourcesSummaryBlock(
           'Context Actions',
           lastResource.disk.contextActions,
-          this.colorScheme.domain[4],
+          this.colorScheme.domain[3],
           'GB'
         ));
     }
@@ -262,13 +256,13 @@ export class ResourcesComponent implements OnInit, OnDestroy {
       summary.disk.push(new ResourcesSummaryBlock(
         'Context Merkle Rocks DB',
         lastResource.disk.contextMerkleRocksDb,
-        this.colorScheme.domain[5],
+        this.colorScheme.domain[4],
         'GB'
       ));
     }
 
     if (lastResource.disk.mainDb) {
-      summary.disk.push(new ResourcesSummaryBlock('Main DB', lastResource.disk.mainDb, this.colorScheme.domain[6], 'GB'));
+      summary.disk.push(new ResourcesSummaryBlock('Main DB', lastResource.disk.mainDb, this.colorScheme.domain[5], 'GB'));
     }
     summary.disk.push(new ResourcesSummaryBlock('Total', lastResource.disk.total, this.colorScheme.domain[0], 'GB'));
 

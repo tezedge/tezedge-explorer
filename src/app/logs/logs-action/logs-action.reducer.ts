@@ -4,6 +4,7 @@ const initialState: any = {
   ids: [],
   entities: {},
   lastCursorId: 0,
+  firstRecordIndex: 0,
   filter: {
     trace: false,
     debug: false,

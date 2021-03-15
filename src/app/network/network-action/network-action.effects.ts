@@ -18,11 +18,12 @@ export class NetworkActionEffects {
     withLatestFrom(this.store, (action: any, state) => ({action, state})),
 
     switchMap(({action, state}) => {
+      this.limit = action.payload?.limit || 60;
       return this.http.get(setUrl(action, state));
     }),
 
     // dispatch action
-    map((payload) => ({type: 'NETWORK_ACTION_LOAD_SUCCESS', payload})),
+    map((payload) => ({type: 'NETWORK_ACTION_LOAD_SUCCESS', payload, limit: this.limit})),
     catchError((error, caught) => {
       console.error(error);
       this.store.dispatch({
@@ -69,11 +70,13 @@ export class NetworkActionEffects {
       // get header data every second
       timer(0, 1000).pipe(
         takeUntil(networkActionDestroy$),
-        switchMap(() =>
-          this.http.get(setUrl(action, state)).pipe(
-            map(response => ({type: 'NETWORK_ACTION_START_SUCCESS', payload: response})),
-            catchError(error => of({type: 'NETWORK_ACTION_START_ERROR', payload: error}))
-          )
+        switchMap(() => {
+            this.limit = action.payload?.limit || 60;
+            return this.http.get(setUrl(action, state)).pipe(
+              map(response => ({type: 'NETWORK_ACTION_START_SUCCESS', payload: response, limit: this.limit})),
+              catchError(error => of({type: 'NETWORK_ACTION_START_ERROR', payload: error}))
+            );
+          }
         )
       )
     )
@@ -94,6 +97,8 @@ export class NetworkActionEffects {
       // }
     })
   );
+
+  private limit: any;
 
   constructor(
     private http: HttpClient,
@@ -148,7 +153,7 @@ export function networkActionFilter(action, state) {
     filterType = stateFilter.operation ? filterType + 'get_operations,operation,' : filterType;
     filterType = stateFilter.currentHead ? filterType + 'get_current_head,current_head,' : filterType;
     filterType = stateFilter.currentBranch ? filterType + 'get_current_branch,current_branch,' : filterType;
-    filterType = stateFilter.blockHeaders ? filterType + 'get_block_header,block_header,' : filterType;
+    filterType = stateFilter.blockHeaders ? filterType + 'get_block_headers,block_header,' : filterType;
     filterType = stateFilter.blockOperations ? filterType + 'get_operations_for_blocks,operations_for_blocks,' : filterType;
     filterType = stateFilter.blockOperationsHashes ? filterType + 'get_operation_hashes_for_blocks,operation_hashes_for_block,' : filterType;
 

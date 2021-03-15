@@ -41,12 +41,12 @@ export function reducer(state = initialState, action) {
     }
 
     // add network url params
-    case 'NETWORK_ACTION_LOAD': {
-      return {
-        ...state,
-        urlParams: action.payload.filter ? action.payload.filter : ''
-      };
-    }
+    // case 'NETWORK_ACTION_LOAD': {
+    //   return {
+    //     ...state,
+    //     urlParams: action.payload.filter ? action.payload.filter : ''
+    //   };
+    // }
 
     case 'NETWORK_ACTION_START_SUCCESS':
     case 'NETWORK_ACTION_LOAD_SUCCESS': {
@@ -57,7 +57,7 @@ export function reducer(state = initialState, action) {
         indexToId: setIndexToId(action, state),
         idToIndex: setIdToIndex(action, state),
         lastCursorId: setLastCursorId(action, state),
-        firstRecordIndex: setFirstRecordIndex(action),
+        firstRecordIndex: setFirstRecordIndex(action, state),
         isFiltered: setIsFiltered(state),
         stream: action.type === 'NETWORK_ACTION_START_SUCCESS'
       };
@@ -230,6 +230,10 @@ export function setHexValues(bytes): Array<string> {
 }
 
 export function setIdToIndex(action, state): object {
+  if (!setIsFiltered(state)) {
+    return {};
+  }
+
   const idToIndexLocal = {};
   let result = {};
 
@@ -257,6 +261,10 @@ export function setIdToIndex(action, state): object {
 }
 
 export function setIndexToId(action, state): object {
+  if (!setIsFiltered(state)) {
+    return {};
+  }
+
   const indexToIdLocal = {};
   let result = {};
 
@@ -273,7 +281,7 @@ export function setIndexToId(action, state): object {
     }
 
     result = {
-      ...state.idToIndex,
+      ...state.indexToId,
       ...indexToIdLocal
     };
   }
@@ -282,7 +290,7 @@ export function setIndexToId(action, state): object {
 }
 
 export function setVirtualScrollId(action, state, accumulator): number {
-  if (!state.isFiltered) {
+  if (!setIsFiltered(state)) {
     return action.id;
   }
 
@@ -295,9 +303,20 @@ export function setIsFiltered(state): boolean {
   return Object.values(state.filter).includes(true);
 }
 
-export function setFirstRecordIndex(action): number {
-  return 0;
+export function setFirstRecordIndex(action, state): number {
+  if (!state.isFiltered || !action.payload.length || action.payload.length >= action.limit) {
+    return 0;
+  }
+
+  const ids = setIds(action, state);
+
+  if (state.firstRecordIndex > 0) {
+    return Math.min(state.firstRecordIndex, ids[0]);
+  } else {
+    return ids[0];
+  }
 }
+
 
 // filter network items according to traffic source
 // export function networkActionSourceFilter(entity, filter) {

@@ -53,7 +53,6 @@ export class ResourcesService {
 
       resource.disk = new DiskResource();
       resource.disk.blockStorage = responseItem.disk.block_storage / 1000000000;
-      resource.disk.debugger = responseItem.disk.debugger / 1000000000;
       resource.disk.contextIrmin = responseItem.disk.context_irmin / 1000000000;
       resource.disk.mainDb = responseItem.disk.main_db / 1000000000 || undefined;
       resource.disk.contextActions = responseItem.disk.context_actions / 1000000000 || undefined;

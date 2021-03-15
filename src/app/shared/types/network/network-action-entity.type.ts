@@ -8,8 +8,9 @@ export class NetworkActionEntity {
   decrypted_bytes: number[];
   error: [];
   message: any[];
+  originalId: number;
   ordinal_id: number;
-  hexValues: string;
+  hexValues: string[];
   category: string;
   kind: string;
   payload: any;

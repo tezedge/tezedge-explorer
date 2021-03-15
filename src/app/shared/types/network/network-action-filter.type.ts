@@ -3,6 +3,7 @@ export class NetworkActionFilter {
   remote: boolean;
   meta: boolean;
   connection: boolean;
+  acknowledge: boolean;
   bootstrap: boolean;
   advertise: boolean;
   swap: boolean;

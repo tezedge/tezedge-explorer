@@ -1,5 +1,6 @@
 import * as moment from 'moment-mini-ts';
 import { NetworkAction } from '../../shared/types/network/network-action.type';
+import {NetworkActionEntity} from '../../shared/types/network/network-action-entity.type';
 
 const initialState: NetworkAction = {
   ids: [],
@@ -130,7 +131,7 @@ export function setIds(action, state): Array<number> {
 //       .sort((a, b) => a - b);
 // }
 
-export function setEntities(action, state): object {
+export function setEntities(action, state): { [id: string]: NetworkActionEntity } {
   return action.payload.length === 0 ?
     {} :
     action.payload
@@ -221,7 +222,7 @@ export function setLastCursorId(action, state): number {
     action.payload[0].id : state.lastCursorId;
 }
 
-export function setHexValues(bytes): Array<string> {
+export function setHexValues(bytes): string[] {
   if (!bytes || !bytes.length) {
     return [];
   }

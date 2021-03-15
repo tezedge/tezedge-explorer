@@ -40,12 +40,12 @@ $text-color: rgb(164, 164, 165);
     margin-bottom: 12px;
     cursor: context-menu;
     text-align: right;
-    padding-right: 19px;
 
     .graph-label-item {
       color: $text-color;
       font-size: 12px;
       display: inline-block;
+      margin-right: 15px;
 
       .label-color {
         width: 7px;

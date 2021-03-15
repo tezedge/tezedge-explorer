@@ -21,11 +21,9 @@ import * as fromMonitoring from './monitoring/monitoring.reducer';
 import * as fromMempoolAction from './mempool/mempool-action/mempool-action.reducer';
 
 import * as fromNetworkAction from './network/network-action/network-action.reducer';
-import * as fromNetworkActionDetail from './network/network-action-detail/network-action-detail.reducer';
 import * as fromNetworkPeers from './network/network-peers/network-peers.reducer';
 import * as fromNetworkStats from './network/network-stats/network-stats.reducer';
 import * as fromNetworkHistory from './network/network-history/network-history.reducer';
-import * as fromNetworkEndpoint from './network/network-endpoint/network-endpoint.reducer';
 
 import * as fromEndpointsAction from './endpoints/endpoints-action/endpoints-action.reducer';
 
@@ -45,17 +43,19 @@ import * as fromVersion from './monitoring/commit-number/commit-number.reducer';
 import * as fromResource from './resources/resources/resources.reducer';
 import { ResourcesState } from './resources/resources/resources.reducer';
 import { SettingsNode } from './shared/types/settings-node/settings-node.type';
+import { NetworkStats } from './shared/types/network/network-stats.type';
+import { NetworkPeers } from './shared/types/network/network-peers.type';
+import { NetworkHistory } from './shared/types/network/network-history.type';
+import { NetworkAction } from './shared/types/network/network-action.type';
 
 export interface State {
   app: any;
   monitoring: any;
   mempoolAction: any;
-  networkAction: any;
-  networkActionDetail: any;
-  networkPeers: any;
-  networkStats: any;
-  networkHistory: any;
-  networkEndpoint: any;
+  networkAction: NetworkAction;
+  networkPeers: NetworkPeers;
+  networkStats: NetworkStats;
+  networkHistory: NetworkHistory;
   endpointsAction: any;
   logsAction: any;
   storageBlock: any;
@@ -78,11 +78,9 @@ export const reducers: ActionReducerMap<State> = {
   monitoring: fromMonitoring.reducer,
   mempoolAction: fromMempoolAction.reducer,
   networkAction: fromNetworkAction.reducer,
-  networkActionDetail: fromNetworkActionDetail.reducer,
   networkPeers: fromNetworkPeers.reducer,
   networkStats: fromNetworkStats.reducer,
   networkHistory: fromNetworkHistory.reducer,
-  networkEndpoint: fromNetworkEndpoint.reducer,
   endpointsAction: fromEndpointsAction.reducer,
   logsAction: fromLogsAction.reducer,
   storageBlock: fromStorageBlock.reducer,

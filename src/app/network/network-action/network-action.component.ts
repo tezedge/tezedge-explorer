@@ -1,11 +1,13 @@
 import {ChangeDetectionStrategy, ChangeDetectorRef, Component, NgZone, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {Router, ActivatedRoute} from '@angular/router';
 
-import {Store} from '@ngrx/store';
-import {Subject} from 'rxjs';
-import {takeUntil} from 'rxjs/operators';
-import {VirtualScrollDirective} from '../../shared/virtual-scroll.directive';
-import {MatAccordion} from '@angular/material/expansion';
+import { Store } from '@ngrx/store';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
+import { VirtualScrollDirective } from '../../shared/virtual-scroll.directive';
+import { MatAccordion } from '@angular/material/expansion';
+import { State } from '../../app.reducers';
+import { NetworkAction } from '../../shared/types/network/network-action.type';
 
 @Component({
   selector: 'app-network-action',
@@ -29,7 +31,7 @@ export class NetworkActionComponent implements OnInit, OnDestroy {
   @ViewChild(MatAccordion) accordion: MatAccordion;
 
   constructor(
-    public store: Store<any>,
+    public store: Store<State>,
     private activeRoute: ActivatedRoute,
     private router: Router,
     private ngZone: NgZone,
@@ -57,7 +59,7 @@ export class NetworkActionComponent implements OnInit, OnDestroy {
     // wait for data changes from redux
     this.store.select('networkAction')
       .pipe(takeUntil(this.onDestroy$))
-      .subscribe(data => {
+      .subscribe((data: NetworkAction) => {
 
         // this.networkAction = data;
         this.virtualScrollItems = data;

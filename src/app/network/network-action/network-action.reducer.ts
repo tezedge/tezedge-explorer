@@ -1,6 +1,7 @@
 import * as moment from 'moment-mini-ts';
+import { NetworkAction } from '../../shared/types/network/network-action.type';
 
-const initialState: any = {
+const initialState: NetworkAction = {
   ids: [],
   entities: {},
   lastCursorId: 0,
@@ -32,7 +33,7 @@ const initialState: any = {
   urlParams: ''
 };
 
-export function reducer(state = initialState, action) {
+export function reducer(state: NetworkAction = initialState, action): NetworkAction {
   switch (action.type) {
 
     // initialize or reset state
@@ -169,7 +170,7 @@ export function setEntities(action, state): object {
         const virtualScrollId = setVirtualScrollId(networkAction, state, accumulator);
 
         if (networkAction.message && networkAction.message.length && networkAction.message[0].type) {
-          const payload = {...networkAction.message[0]};
+          const payload = { ...networkAction.message[0] };
           delete payload.type;
 
           return {

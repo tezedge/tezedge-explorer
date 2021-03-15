@@ -1,10 +1,13 @@
 import { Injectable } from '@angular/core';
 import { Actions, Effect, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
-import { empty, of, Subject, timer } from 'rxjs';
+import { empty, ObservedValueOf, of, Subject, timer } from 'rxjs';
 import { catchError, filter, map, switchMap, takeUntil, tap, withLatestFrom } from 'rxjs/operators';
 import { webSocket } from 'rxjs/webSocket';
 import { HttpClient } from '@angular/common/http';
+import { State } from '../app.reducers';
+import { SettingsNodeService } from '../settings/settings-node/settings-node.service';
+import { SettingsNodeEntityHeader } from '../shared/types/settings-node/settings-node-entity-header.type';
 
 
 let wsCounter = 0;
@@ -82,8 +85,7 @@ export class MonitoringEffects {
     NetworkStatsLoadEffect$ = this.actions$.pipe(
         ofType('NETWORK_STATS_LOAD'),
 
-        // merge state
-        withLatestFrom(this.store, (action: any, state) => ({ action, state })),
+        withLatestFrom(this.store, (action: any, state: ObservedValueOf<Store<State>>) => ({ action, state })),
 
         switchMap(({ action, state }) =>
 
@@ -91,8 +93,9 @@ export class MonitoringEffects {
             timer(0, 1000).pipe(
                 takeUntil(this.networkDestroy$),
                 switchMap(() => {
-                    return this.http.get(state.settingsNode.activeNode.http + '/chains/main/blocks/head/header').pipe(
-                      map(response => ({ type: 'NETWORK_STATS_LOAD_SUCCESS', payload: response })),
+                  return this.settingsNodeService.getSettingsHeader(state.settingsNode.activeNode.http)
+                    .pipe(
+                      map((response: SettingsNodeEntityHeader) => ({ type: 'NETWORK_STATS_LOAD_SUCCESS', payload: response })),
                       catchError(error => of({ type: 'NETWORK_STATS_LOAD_ERROR', payload: error })),
                     );
                   }
@@ -178,6 +181,7 @@ export class MonitoringEffects {
         private http: HttpClient,
         private actions$: Actions,
         private store: Store<any>,
+        private settingsNodeService: SettingsNodeService,
     ) { }
 
 }

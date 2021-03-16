@@ -17,8 +17,9 @@ steps:
     detach: true
     privileged: true
     environment:
-      SANDBOX: 'https://develop.dev.tezedge.com:3030'
-      API: '[{"id":"drone","name":"drone-test-node","http":"http://develop.dev.tezedge.com:18732","monitoring":"http://develop.dev.tezedge.com:38732/resources/tezedge","debugger":"http://develop.dev.tezedge.com:17732","ws":"ws://develop.dev.tezedge.com:4927"}]'
+      SANDBOX: 'http://develop.dev.tezedge.com:3030'
+      DEBUGGER: 'http://develop.dev.tezedge.com:17732'
+      API: '[{"id":"drone","name":"drone-test-node","http":"http://develop.dev.tezedge.com:18732","monitoring":"http://develop.dev.tezedge.com:38732/resources/tezedge","ws":"ws://develop.dev.tezedge.com:4927","p2p_port":"9732"}]'
     depends_on:
       - build
 
@@ -79,8 +80,9 @@ steps:
   detach: true
   privileged: true
   environment:
-    SANDBOX: 'https://develop.dev.tezedge.com:3030'
-    API: '[{"id":"drone","name":"drone-test-node","http":"http://develop.dev.tezedge.com:18732","monitoring":"http://develop.dev.tezedge.com:38732/resources/tezedge","debugger":"http://develop.dev.tezedge.com:17732","ws":"ws://develop.dev.tezedge.com:4927"}]'
+    SANDBOX: 'http://develop.dev.tezedge.com:3030'
+    DEBUGGER: 'http://develop.dev.tezedge.com:17732'
+    API: '[{"id":"drone","name":"drone-test-node","http":"http://develop.dev.tezedge.com:18732","monitoring":"http://develop.dev.tezedge.com:38732/resources/tezedge","ws":"ws://develop.dev.tezedge.com:4927","p2p_port":"9732"}]'
   depends_on:
     - build
 

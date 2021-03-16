@@ -1,9 +1,9 @@
-import { Injectable } from '@angular/core';
-import { Actions, Effect, ofType } from '@ngrx/effects';
-import { HttpClient } from '@angular/common/http';
-import { Store } from '@ngrx/store';
-import { catchError, map, switchMap, takeUntil, tap, withLatestFrom } from 'rxjs/operators';
-import { of, Subject, timer } from 'rxjs';
+import {Injectable} from '@angular/core';
+import {Actions, Effect, ofType} from '@ngrx/effects';
+import {HttpClient} from '@angular/common/http';
+import {Store} from '@ngrx/store';
+import {catchError, map, switchMap, takeUntil, tap, withLatestFrom} from 'rxjs/operators';
+import {of, Subject, timer} from 'rxjs';
 
 const logActionDestroy$ = new Subject();
 
@@ -15,14 +15,14 @@ export class LogsActionEffects {
     ofType('LOGS_ACTION_LOAD'),
 
     // merge state
-    withLatestFrom(this.store, (action: any, state) => ({ action, state })),
+    withLatestFrom(this.store, (action: any, state) => ({action, state})),
 
-    switchMap(({ action, state }) => {
+    switchMap(({action, state}) => {
       return this.http.get(setUrl(action, state));
     }),
 
     // dispatch action
-    map((payload) => ({ type: 'LOGS_ACTION_LOAD_SUCCESS', payload })),
+    map((payload) => ({type: 'LOGS_ACTION_LOAD_SUCCESS', payload})),
     catchError((error, caught) => {
       console.error(error);
       this.store.dispatch({
@@ -38,7 +38,7 @@ export class LogsActionEffects {
     ofType('LOGS_ACTION_FILTER'),
 
     // merge state
-    withLatestFrom(this.store, (action: any, state) => ({ action, state })),
+    withLatestFrom(this.store, (action: any, state) => ({action, state})),
 
     tap(response => {
       logActionDestroy$.next();
@@ -46,7 +46,7 @@ export class LogsActionEffects {
     }),
 
     // dispatch action
-    map((payload) => ({ type: 'LOGS_ACTION_START', payload })),
+    map((payload) => ({type: 'LOGS_ACTION_START', payload})),
     catchError((error, caught) => {
       console.error(error);
       this.store.dispatch({
@@ -63,16 +63,16 @@ export class LogsActionEffects {
     ofType('LOGS_ACTION_START'),
 
     // merge state
-    withLatestFrom(this.store, (action: any, state) => ({ action, state })),
+    withLatestFrom(this.store, (action: any, state) => ({action, state})),
 
-    switchMap(({ action, state }) =>
+    switchMap(({action, state}) =>
       // get header data every second
       timer(0, 1000).pipe(
         takeUntil(logActionDestroy$),
         switchMap(() =>
           this.http.get(setUrl(action, state)).pipe(
-            map(response => ({ type: 'LOGS_ACTION_START_SUCCESS', payload: response })),
-            catchError(error => of({ type: 'LOGS_ACTION_START_ERROR', payload: error }))
+            map(response => ({type: 'LOGS_ACTION_START_SUCCESS', payload: response})),
+            catchError(error => of({type: 'LOGS_ACTION_START_ERROR', payload: error}))
           )
         )
       )
@@ -80,13 +80,13 @@ export class LogsActionEffects {
   );
 
   // stop logs action download
-  @Effect({ dispatch: false })
+  @Effect({dispatch: false})
   LogsActionStopEffect$ = this.actions$.pipe(
     ofType('LOGS_ACTION_STOP'),
     // merge state
-    withLatestFrom(this.store, (action: any, state) => ({ action, state })),
+    withLatestFrom(this.store, (action: any, state) => ({action, state})),
     // init app modules
-    tap(({ action, state }) => {
+    tap(({action, state}) => {
       // console.log('[LOGS_ACTION_STOP] stream', state.logsAction.stream);
       // close all open observables
       // if (state.logsAction.stream) {

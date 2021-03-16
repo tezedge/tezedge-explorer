@@ -66,9 +66,9 @@ export class NetworkActionComponent implements OnInit, OnDestroy {
         this.networkActionShow = this.virtualScrollItems.ids.length > 0;
 
         // if (this.networkActionShow && !this.networkActionItem) {
-        this.networkActionItem = this.virtualScrollItems.ids.length > 0 ?
-          this.virtualScrollItems.entities[this.virtualScrollItems.ids[this.virtualScrollItems.ids.length - 1]] :
-          null;
+        // this.networkActionItem = this.virtualScrollItems.ids.length > 0 ?
+        //   this.virtualScrollItems.entities[this.virtualScrollItems.ids[this.virtualScrollItems.ids.length - 1]] :
+        //   null;
         // }
 
         console.log(this.virtualScrollItems);

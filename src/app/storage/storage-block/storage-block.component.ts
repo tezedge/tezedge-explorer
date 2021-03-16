@@ -14,7 +14,7 @@ export class StorageBlockComponent implements OnInit, OnDestroy {
 
   virtualScrollItems;
   storageBlockShow: boolean;
-  storageBlockItem;
+  // storageBlockItem;
   filtersState = {
     open: false,
     availableFields: []

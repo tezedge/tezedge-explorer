@@ -6,7 +6,8 @@ import { SettingsNodeEntityHeader } from '../../shared/types/settings-node/setti
 const initialState: SettingsNode = {
   activeNode: null,
   ids: [],
-  entities: {}
+  entities: {},
+  debugger: ''
 };
 
 export function reducer(state: SettingsNode = initialState, action): SettingsNode {
@@ -25,6 +26,7 @@ export function reducer(state: SettingsNode = initialState, action): SettingsNod
             connected: 'pending'
           }
         }), {}),
+        debugger: environment.debugger,
         sandbox: environment.sandbox
       } as SettingsNode;
     }

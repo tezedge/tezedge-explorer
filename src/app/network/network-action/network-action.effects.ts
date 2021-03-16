@@ -111,7 +111,7 @@ export class NetworkActionEffects {
 }
 
 export function setUrl(action, state) {
-  const url = state.settingsNode.activeNode.debugger + '/v2/p2p/?';
+  const url = `${state.settingsNode.debugger}/v2/p2p/?node_name=${state.settingsNode.activeNode.p2p_port}&`;
   const cursor = networkActionCursor(action);
   const filters = networkActionFilter(action, state);
   const limit = networkActionLimit(action);

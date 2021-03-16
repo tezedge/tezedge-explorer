@@ -98,5 +98,5 @@ export function setNodeTagUrl(state) {
 }
 
 export function setDebuggerCommitUrl(state) {
-  return state.settingsNode.activeNode.debugger + '/v2/version/';
+  return `${state.settingsNode.debugger}/v2/version/`;
 }

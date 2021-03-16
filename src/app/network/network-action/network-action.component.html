@@ -131,7 +131,7 @@
                      (getItems)="getItems($event)" (startStopDataStream)="startStopDataStream($event)">
           <span class="virtualScrollRow network-row" [style.transform]="position !== undefined ? 'translate(0px,' + position + 'px)' : ''"
                 [class.virtualScrollRowEven]="event?.index % 2" (mouseenter)="event ? tableMouseEnter(event) : null"
-                [class.hover]="event?.datetime && networkActionItem.id===event?.id"
+                [class.hover]="event?.datetime && networkActionItem?.id===event?.id"
                 [class.used]="event?.datetime">
 
             <span class="item-loading" [class.displayed]="!event?.datetime">&nbsp;</span>

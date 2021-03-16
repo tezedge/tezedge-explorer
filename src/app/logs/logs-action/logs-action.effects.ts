@@ -105,7 +105,8 @@ export class LogsActionEffects {
 }
 
 export function setUrl(action, state) {
-  const url = state.settingsNode.activeNode.debugger + '/v2/log/?';
+  const url = `${state.settingsNode.debugger}/v2/log?node_name=${state.settingsNode.activeNode.p2p_port}&`;
+
   const cursor = logsActionCursor(action);
   const filters = logsActionFilter(action, state);
   const limit = logsActionLimit(action);

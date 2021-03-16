@@ -6,7 +6,8 @@ const initialState: any = {
   lastCursorId: 0,
   firstRecordIndex: 0,
   stream: false,
-  selected: {}
+  selected: {},
+  isFiltered: false
 };
 
 export function reducer(state = initialState, action) {

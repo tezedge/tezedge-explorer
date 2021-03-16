@@ -237,12 +237,6 @@ export class VirtualScrollDirective implements AfterViewInit, OnDestroy, OnChang
       //   itemsNumberInViewport: Math.floor(this.viewportHeight / this.itemHeight)
       // });
 
-      if (!reset) {
-        // cache request position
-        this.cacheRequestStart = this.scrollPositionStart;
-        this.cacheRequestEnd = this.scrollPositionEnd;
-      }
-
       // check the cursor construction
       // const nextCursorId = reset ?
       //   null :

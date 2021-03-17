@@ -11,7 +11,7 @@ const initialState: any = {
 export function reducer(state = initialState, action) {
   switch (action.type) {
 
-    // case 'STORAGE_BLOCK_LOAD': {
+    // case 'STORAGE_BLOCK_FETCH': {
     //   return {
     //     ...state,
     //     stream: true
@@ -19,7 +19,7 @@ export function reducer(state = initialState, action) {
     // }
 
     case 'STORAGE_BLOCK_START_SUCCESS':
-    case 'STORAGE_BLOCK_LOAD_SUCCESS': {
+    case 'STORAGE_BLOCK_FETCH_SUCCESS': {
       return {
         ...state,
         ids: setIds(action),

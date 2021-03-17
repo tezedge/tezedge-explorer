@@ -15,7 +15,8 @@
       <div class="additional-info"
            [class.fade]="chartData"
            [style.transition-delay.s]="0.2">
-        <app-resources-summary [summaryBlocks]="resourcesSummary[activeSummary]"></app-resources-summary>
+        <app-resources-summary [summaryBlocks]="resourcesSummary[activeSummary]"
+                               [resourceType]="activeSummary"></app-resources-summary>
       </div>
     </div>
   </div>

@@ -1,10 +1,5 @@
-import { Resource } from '../../shared/types/resources/resource.type';
 import { ResourcesActions, ResourcesActionTypes } from './resources.actions';
-
-
-export interface ResourcesState {
-  resources: Resource[];
-}
+import { ResourcesState } from '../../shared/types/resources/resources-state.type';
 
 const initialState: ResourcesState = {
   resources: []
@@ -14,7 +9,7 @@ export function reducer(state: ResourcesState = initialState, action: ResourcesA
   switch (action.type) {
     case ResourcesActionTypes.ResourcesLoadSuccess: {
       return {
-        resources: action.payload
+        resources: [...action.payload]
       };
     }
     default:

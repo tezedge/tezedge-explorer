@@ -9,16 +9,18 @@ export const environment = {
       // http: 'http://116.202.128.230:18732',
       debugger: 'http://develop.dev.tezedge.com:17732',
       ws: 'ws://develop.dev.tezedge.com:4927',
-      monitoring: 'http://develop.dev.tezedge.com:38732/resources/tezedge'
+      monitoring: 'http://develop.dev.tezedge.com:38732/resources/tezedge',
+      features: ['MONITORING', 'RESOURCES', 'MEMPOOL_ACTION', 'STORAGE_BLOCK', 'NETWORK_ACTION', 'LOGS_ACTION'],
     },
-    // {
-    //   id: 'ocaml',
-    //   name: 'ocaml.develop.dev.tezedge.com',
-    //   http: 'http://develop.dev.tezedge.com:18733',
-    //   debugger: 'http://develop.dev.tezedge.com:17733',
-    //   ws: false,
-    //   monitoring: 'http://develop.dev.tezedge.com:38732/resources/ocaml'
-    // }
+    {
+      id: 'ocaml',
+      name: 'ocaml.develop.dev.tezedge.com',
+      http: 'http://develop.dev.tezedge.com:18733',
+      debugger: 'http://develop.dev.tezedge.com:17733',
+      ws: false,
+      monitoring: 'http://develop.dev.tezedge.com:38732/resources/ocaml',
+      features: ['MONITORING', 'RESOURCES', 'MEMPOOL_ACTION', 'NETWORK_ACTION', 'LOGS_ACTION'],
+    }
 
     // PROD:
     // {

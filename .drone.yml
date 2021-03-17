@@ -18,7 +18,7 @@ steps:
     privileged: true
     environment:
       SANDBOX: 'https://develop.dev.tezedge.com:3030'
-      API: "[{"id":"drone","name":"drone-test-node","http":"http://develop.dev.tezedge.com:18732","monitoring":"http://develop.dev.tezedge.com:38732/resources/tezedge","debugger":"http://develop.dev.tezedge.com:17732","ws":"ws://develop.dev.tezedge.com:4927","features":["MONITORING", "RESOURCES", "MEMPOOL_ACTION", "STORAGE_BLOCK", "NETWORK_ACTION", "LOGS_ACTION"]}]'
+      API: '[{"id":"drone","name":"drone-test-node","http":"http://develop.dev.tezedge.com:18732","monitoring":"http://develop.dev.tezedge.com:38732/resources/tezedge","debugger":"http://develop.dev.tezedge.com:17732","ws":"ws://develop.dev.tezedge.com:4927","features":["MONITORING", "RESOURCES", "MEMPOOL_ACTION", "STORAGE_BLOCK", "NETWORK_ACTION", "LOGS_ACTION"]}]'
     depends_on:
       - build
 

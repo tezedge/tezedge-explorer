@@ -7,7 +7,7 @@
             <button *ngIf="isMobile"
                     class="app-menu-toggle"
                     mat-icon-button>
-                <mat-icon (click)="start.toggle()">dehaze</mat-icon>
+                <mat-icon (click)="toggleMenuOnMobile()">dehaze</mat-icon>
             </button>
 
             <app-settings-node></app-settings-node>
@@ -45,7 +45,7 @@
 
     </div>
 
-    <mat-sidenav-container>
+    <mat-sidenav-container (backdropClick)="toggleMenuOnMobile()">
         <!-- Sidebar -->
         <mat-sidenav #start
                      [mode]="app.sidenav.mode"

@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, HostListener, OnInit } from '@angular/core';
+import { AfterViewInit, ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { State } from '../../app.reducers';
 import { Router } from '@angular/router';
@@ -14,7 +14,7 @@ import { map } from 'rxjs/operators';
   styleUrls: ['./navigation-menu.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class NavigationMenuComponent implements OnInit {
+export class NavigationMenuComponent implements OnInit, AfterViewInit {
 
   app;
   settingsNode: SettingsNode;
@@ -43,6 +43,16 @@ export class NavigationMenuComponent implements OnInit {
           return response;
         }),
       );
+  }
+
+  ngAfterViewInit(): void {
+    this.closeMenu();
+  }
+
+  closeMenu(): void {
+    if (this.app.sidenav.mode === 'over') {
+      this.store.dispatch({ type: 'APP_TOGGLE_SIDENAV', payload: { isVisible: false } });
+    }
   }
 
   nodeSandboxAdd() {

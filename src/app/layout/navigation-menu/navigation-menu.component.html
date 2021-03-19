@@ -12,6 +12,8 @@
        mat-list-item
        class="menu-item"
        routerLink="/monitoring"
+       id="monitoring-trigger"
+       (click)="closeMenu()"
        [style.color]="app.sidenav.color">
       <span>
         <svg-icon style="margin-right: 7px;"
@@ -25,6 +27,7 @@
        class="menu-item"
        routerLink="/resources"
        id="resources-trigger"
+       (click)="closeMenu()"
        [style.color]="app.sidenav.color">
       <span>
         <svg-icon style="margin-right: 7px;"
@@ -48,6 +51,8 @@
        mat-list-item
        class="menu-item"
        routerLink="/mempool"
+       id="mempool-action-trigger"
+       (click)="closeMenu()"
        [style.color]="app.sidenav.color">
       <span>
         <svg-icon style="margin-right: 7px;"
@@ -60,6 +65,8 @@
        mat-list-item
        class="menu-item"
        routerLink="/storage"
+       id="storage-block-trigger"
+       (click)="closeMenu()"
        [style.color]="app.sidenav.color">
       <span>
         <svg-icon style="margin-right: 7px;"
@@ -72,6 +79,8 @@
        mat-list-item
        class="menu-item"
        routerLink="/network"
+       id="network-action-trigger"
+       (click)="closeMenu()"
        [style.color]="app.sidenav.color">
       <span>
         <svg-icon style="margin-right: 7px;"
@@ -83,6 +92,8 @@
        mat-list-item
        class="menu-item"
        routerLink="/endpoints"
+       id="endpoints-action-trigger"
+       (click)="closeMenu()"
        [style.color]="app.sidenav.color">
         <span>
             <svg-icon style="margin-right: 7px;"
@@ -96,6 +107,8 @@
        mat-list-item
        class="menu-item"
        routerLink="/logs"
+       id="logs-action-trigger"
+       (click)="closeMenu()"
        [style.color]="app.sidenav.color">
       <span>
        <svg-icon style="margin-right: 7px;"

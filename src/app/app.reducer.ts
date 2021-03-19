@@ -56,21 +56,6 @@ export function reducer(state = initialState, action) {
 
     switch (action.type) {
 
-        case 'APP_WINDOW': {
-            const MOBILE_WIDTH = 450;
-            return {
-                ...state,
-                sidenav: {
-                    ...state.sidenav,
-                    isVisible: action.payload.width > MOBILE_WIDTH,
-                    mode: action.payload.width > MOBILE_WIDTH ? 'side' : 'over',
-                    toggleButton: {
-                        isVisible: action.payload.width < MOBILE_WIDTH,
-                    }
-                }
-            };
-        }
-
         case 'APP_INIT_DEFAULT': {
             return {
                 ...state,
@@ -161,6 +146,16 @@ export function reducer(state = initialState, action) {
                     ...state.sidenav,
                     mode: action.payload.mode,
                     isVisible: action.payload.mode !== 'over'
+                }
+            };
+        }
+
+        case 'APP_TOGGLE_SIDENAV': {
+            return {
+                ...state,
+                sidenav: {
+                    ...state.sidenav,
+                    isVisible: action.payload.isVisible
                 }
             };
         }

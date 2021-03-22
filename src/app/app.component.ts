@@ -21,7 +21,7 @@ export class AppComponent implements OnInit, OnDestroy {
 
   @ViewChild('sidenav') sidenav: MatSidenav;
 
-  @HostListener('window:resize', ['$event'])
+  @HostListener('window:resize')
   onResize(): void {
     if (window.innerWidth < 600 && !this.isMobile) {
       this.store.dispatch({ type: 'APP_MENU_STATE_CHANGE', payload: { mode: 'over' } });
@@ -41,25 +41,26 @@ export class AppComponent implements OnInit, OnDestroy {
       (window as any).store = this.store;
     }
 
-    // get inner windows width
     this.isMobile = window.innerWidth < 600;
   }
 
-  ngOnInit() {
-    // select store data
+  ngOnInit(): void {
+    this.initAppData();
+    this.getMempoolPendingTransactions();
+
+    if (this.isMobile) {
+      this.store.dispatch({ type: 'APP_MENU_STATE_CHANGE', payload: { mode: 'over' } });
+    }
+  }
+
+  private initAppData(): void {
     this.store.select('app')
       .subscribe(data => {
         this.app = data;
       });
+  }
 
-    // dispatch inner width
-    this.store.dispatch({
-      type: 'APP_WINDOW',
-      payload: {
-        width: window.innerWidth
-      },
-    });
-
+  private getMempoolPendingTransactions(): void {
     // subscribe to mempool to get pending transactions
     this.store.select('mempoolAction')
       .pipe(takeUntil(this.onDestroy$))
@@ -69,7 +70,6 @@ export class AppComponent implements OnInit, OnDestroy {
       });
   }
 
-  // change app theme
   changeTheme(theme) {
 
     // TODO: enabled once we have white theme ready
@@ -89,6 +89,13 @@ export class AppComponent implements OnInit, OnDestroy {
         type: 'SANDBOX_BAKE_BLOCK',
       });
     }
+  }
+
+  toggleMenuOnMobile(): void {
+    this.store.dispatch({
+      type: 'APP_TOGGLE_SIDENAV',
+      payload: { isVisible: !this.app.sidenav.isVisible }
+    });
   }
 
   ngOnDestroy() {

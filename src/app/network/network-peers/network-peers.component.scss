@@ -3,7 +3,7 @@
     overflow: hidden;
     white-space: nowrap;
     padding-left: 16px ;
-    width: 200px; 
+    width: 200px;
 }
 
 .network-peers .mat-cell.cdk-column-id.mat-column-id {
@@ -38,4 +38,15 @@
 .network-peers .mat-cell.cdk-column-currentTransferSpeed.mat-column-currentTransferSpeed {
     width: 20vw;
     text-align: right;
+}
+
+.network-peers .mat-table {
+  tr th {
+    color: #cacaca;
+  }
+
+  tr td,
+  tr td a {
+    color: #f0f3f7 !important;
+  }
 }

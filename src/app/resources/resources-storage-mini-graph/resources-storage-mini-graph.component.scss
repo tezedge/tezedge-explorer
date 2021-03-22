@@ -1,0 +1,95 @@
+$border-color: rgba(255, 255, 255, 0.1);
+
+
+.mini-graph {
+  padding-right: 30px;
+}
+
+.cols-wrap {
+  height: 142px;
+  width: 160px;
+  background: repeating-linear-gradient(0deg, #2a2a2e, #2a2a2e 16px, $border-color 0.05em, $border-color 18px);
+  border-bottom: 1px solid $border-color;
+  padding-top: 2px;
+
+  .col {
+    width: 16px;
+    cursor: pointer;
+
+    &:hover .square {
+      background-color: #fff !important;
+    }
+
+    .square {
+      width: 16px;
+      height: 16px;
+      background-color: rgba(255, 255, 255, 0.4);
+
+      &.yellow-square {
+        background-color: #FF9F0A;
+      }
+
+      &.red-square {
+        background-color: #FF2D55;
+      }
+    }
+  }
+}
+
+.operation-name {
+  color: #fff;
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.4px;
+}
+
+.calls-label {
+  font-size: 10px;
+  color: rgba(255, 255, 255, 0.4);
+}
+
+.svg-icon {
+  width: 10px;
+  height: 10px;
+}
+
+.x-steps,
+.y-steps {
+  color: #fff;
+  font-size: 10px;
+}
+
+.y-steps {
+  white-space: nowrap;
+  padding-top: 15px;
+  height: 30px;
+  text-align: right;
+
+  span {
+    width: 32px;
+    height: 0;
+    margin-left: -14px;
+    transform: rotate(-60deg);
+    text-align: right;
+  }
+}
+
+.tooltip-template {
+  background-color: #2A2A2E;
+  padding: 8px;
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
+  border-radius: 4px;
+  font-size: 12px;
+  display: flex;
+  flex-direction: column;
+  color: rgba(255, 255, 255, 0.4);
+
+  > div {
+    margin-bottom: 8px;
+  }
+}
+
+.text-white {
+  color: #fff;
+}

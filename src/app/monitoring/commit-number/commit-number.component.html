@@ -1,7 +1,15 @@
-<div class="node-tag-number hide-details" *ngIf="!hideComponent">
-  <div class="commit-numbers-container" *ngIf="showCommitNumbers">
+<div class="node-tag-number" *ngIf="!hideComponent && commitNumber$ | async as commitNumber"
+     (click)="attachTooltip($event)">
+  <span class="node-tag-number-and-icon">
+    {{ commitNumber.nodeTag }}
+    <svg-icon class="node-tag-icon" icon="caret-down" scale="0.5"></svg-icon>
+  </span>
+</div>
+
+<ng-template #versionTooltip>
+  <div class="commit-numbers-container" *ngIf="commitNumber$ | async as commitNumber">
     <div class="commit-numbers-container-item truncate" id="nodeCommit">
-      <a href="{{githubRepositories.node + commitNumber.nodeCommit}}" target="_blank" rel="noreferrer">
+      <a href="{{ githubRepositories.node + commitNumber.nodeCommit }}" target="_blank" rel="noreferrer">
         <span>
           <svg-icon icon="github" scale="0.8"></svg-icon>
           Node
@@ -10,7 +18,7 @@
     </div>
 
     <div class="commit-numbers-container-item truncate" id="debuggerCommit">
-      <a href="{{githubRepositories.debugger + commitNumber.debuggerCommit}}" target="_blank" rel="noreferrer">
+      <a href="{{ githubRepositories.debugger + commitNumber.debuggerCommit }}" target="_blank" rel="noreferrer">
         <span>
           <svg-icon icon="github" scale="0.8"></svg-icon>
           Debugger
@@ -19,7 +27,7 @@
     </div>
 
     <div *ngIf="commitNumber.explorerCommit?.length" class="commit-numbers-container-item truncate" id="explorerCommit">
-      <a href="{{githubRepositories.explorer + commitNumber.explorerCommit}}" target="_blank" rel="noreferrer">
+      <a href="{{ githubRepositories.explorer + commitNumber.explorerCommit }}" target="_blank" rel="noreferrer">
         <span>
           <svg-icon icon="github" scale="0.8"></svg-icon>
           Explorer
@@ -27,12 +35,4 @@
       </a>
     </div>
   </div>
-
-  <span class="node-tag-number-and-icon" [class.active]="showCommitNumbers">
-    {{commitNumber.nodeTag}}
-    <svg-icon class="node-tag-icon" icon="caret-down" scale="0.5"></svg-icon>
-  </span>
-
-</div>
-
-
+</ng-template>

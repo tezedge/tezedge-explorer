@@ -28,13 +28,13 @@
               "src/manifest.webmanifest"
             ],
             "styles": [
-              { 
-                "input": "src/styles.light.scss", 
+              {
+                "input": "src/styles.light.scss",
                 "bundleName": "styles.light",
                 "inject": false
               },
-              { 
-                "input": "src/styles.dark.scss", 
+              {
+                "input": "src/styles.dark.scss",
                 "bundleName": "styles.dark",
                 "inject": false
               }

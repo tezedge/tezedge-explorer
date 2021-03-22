@@ -1,0 +1,36 @@
+<div class="storage-resources"
+     fxLayout="column"
+     fxLayoutAlign="start stretch"
+     fxLayoutGap="10px"
+     *ngIf="storageStats$ | async as storageStats">
+  <div class="operation"
+       *ngFor="let operation of storageStats.operationsContext"
+       fxLayout="column"
+       fxLayoutAlign="start stretch">
+    <div class="text-uppercase"
+         fxFlex="30px">{{ operation.root | replaceCharacter: '_': ' '}}</div>
+    <div fxFlex="grow">
+      <div class="graph-list"
+           fxLayout="row"
+           fxLayoutAlign="space-between">
+        <app-resources-storage-mini-graph [operationName]="'MEM'"
+                                          [graphData]="operation.mem"
+                                          [isMainGraph]="true"></app-resources-storage-mini-graph>
+        <app-resources-storage-mini-graph [operationName]="'FIND'"
+                                          [graphData]="operation.find"></app-resources-storage-mini-graph>
+        <app-resources-storage-mini-graph [operationName]="'FIND TREE'"
+                                          [graphData]="operation.findTree"></app-resources-storage-mini-graph>
+        <app-resources-storage-mini-graph [operationName]="'ADD'"
+                                          [graphData]="operation.add"></app-resources-storage-mini-graph>
+        <app-resources-storage-mini-graph [operationName]="'ADD TREE'"
+                                          [graphData]="operation.addTree"></app-resources-storage-mini-graph>
+        <app-resources-storage-mini-graph [operationName]="'LIST'"
+                                          [graphData]="operation.list"></app-resources-storage-mini-graph>
+        <app-resources-storage-mini-graph [operationName]="'FOLD'"
+                                          [graphData]="operation.fold"></app-resources-storage-mini-graph>
+        <app-resources-storage-mini-graph [operationName]="'REMOVE'"
+                                          [graphData]="operation.remove"></app-resources-storage-mini-graph>
+      </div>
+    </div>
+  </div>
+</div>

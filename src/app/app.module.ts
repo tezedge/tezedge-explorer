@@ -69,7 +69,7 @@ import { NetworkHistoryComponent } from './network/network-history/network-histo
 
 // TODO: replace with reactive forms
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { BandwidthPipe } from './shared/bandwidth.pipe';
+import { BandwidthPipe } from './shared/pipes/bandwidth.pipe';
 import { StorageComponent } from './storage/storage.component';
 import { StorageBlockComponent } from './storage/storage-block/storage-block.component';
 import { StorageActionComponent } from './storage/storage-action/storage-action.component';
@@ -112,6 +112,8 @@ import { ResourcesEffects } from './resources/resources/resources.effects';
 import { TezedgeSharedModule } from './shared/tezedge-shared.module';
 import { NavigationMenuComponent } from './layout/navigation-menu/navigation-menu.component';
 import { DatePipe } from '@angular/common';
+import { StorageBlockDetailsComponent } from './storage/storage-block-details/storage-block-details.component';
+import { StorageResourcesEffects } from './resources/resources-storage/resources-storage.effects';
 
 @NgModule({
   declarations: [
@@ -152,7 +154,8 @@ import { DatePipe } from '@angular/common';
     MempoolComponent,
     MempoolActionComponent,
     CommitNumberComponent,
-    NavigationMenuComponent
+    NavigationMenuComponent,
+    StorageBlockDetailsComponent,
   ],
   imports: [
     BrowserModule,
@@ -198,6 +201,7 @@ import { DatePipe } from '@angular/common';
       WalletsEffects,
       CommitNumberEffects,
       ResourcesEffects,
+      StorageResourcesEffects,
     ]),
 
     // https://github.com/zalmoxisus/redux-devtools-extension
@@ -236,7 +240,6 @@ import { DatePipe } from '@angular/common';
 
   ],
   providers: [DatePipe],
-  exports: [],
   bootstrap: [AppComponent]
 })
 export class AppModule {

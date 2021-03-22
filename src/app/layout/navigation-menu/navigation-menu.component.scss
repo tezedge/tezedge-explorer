@@ -1,11 +1,67 @@
+.menu-wrapper {
+  .text-nowrap {
+    opacity: 1;
+    transition: opacity 150ms ease-in;
+  }
+
+  &.slim {
+    .text-nowrap {
+      opacity: 0;
+    }
+
+    .menu-item {
+      padding-left: 16px;
+      width: 52px;
+    }
+
+    .app-github-version {
+      margin-left: 0;
+    }
+  }
+}
+
 .app-menu-toolbar {
   display: flex;
   align-items: center;
-  height: 50px;
-}
+  padding: 12px 0 16px 0;
+  position: relative;
 
-.app-menu-toolbar-logo {
-  padding-left: 18px;
+  .arrow-toggle {
+    position: absolute;
+    left: 0;
+    transform: rotateY(180deg);
+    transition: transform 0.15s, margin-left 0.1s, margin-top 0.1s;
+    cursor: pointer;
+    padding: 3px;
+    border-radius: 2px;
+    height: 36px;
+    width: 52px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    &:hover {
+      background-color: #323234;
+    }
+
+    &.slim {
+      transition: transform 0.15s, margin-left 0.1s, margin-top 0.1s;
+      transform: rotateY(0);
+    }
+
+    @media (max-width: 600px) {
+      display: none;
+    }
+  }
+
+  .app-menu-toolbar-logo {
+    padding-left: 3px;
+    color: #f0f3f7;
+    font-size: 14px;
+    margin-left: 60px;
+    font-weight: 500;
+    letter-spacing: 0.4px;
+  }
 }
 
 .app-menu-toggle {
@@ -18,14 +74,12 @@
 .app-submenu {
   color: #c4cfdc7a;
   font-size: 12px;
-  padding: 12px 0 12px 0;
-}
+  padding: 12px 0 20px 0;
 
-.app-submenu span {
-  display: block;
-  padding-top: 8px;
-  padding-left: 20px;
-  padding-bottom: 8px;
+  > div {
+    margin-bottom: 10px;
+    margin-left: 20px;
+  }
 }
 
 .app-github-version {
@@ -33,14 +87,48 @@
   bottom: 10px;
   color: #c4cfdc7a;
   margin-left: 12px;
+  transition: margin-left 0.15s;
 }
 
-.menu-item:hover {
-  background: #323234;
-  color: white !important;
+.menu-item {
+  padding-left: 20px;
+  width: calc(100% - 20px);
   border-top-right-radius: 4px;
   border-bottom-right-radius: 4px;
-  width: calc(100% - 20px);
+  background-color: transparent;
+  transition: padding-left 0.2s, width 0.2s;
+
+  &:hover {
+    background-color: #323234;
+    color: white !important;
+    border-top-right-radius: 4px;
+    border-bottom-right-radius: 4px;
+  }
+
+  &.active {
+    background-color: #204E8A;
+
+    svg-icon {
+      filter: brightness(0) invert(1);
+    }
+
+    .menu-content .text-nowrap {
+      color: #fff;
+    }
+  }
+
+  .menu-content {
+    display: flex;
+    align-items: center;
+
+    .text-nowrap {
+      padding: 8px 0 8px 10px;
+      font-size: 12px;
+      font-weight: 500;
+      color: rgba(255, 255, 255, 0.6);
+      text-transform: uppercase;
+    }
+  }
 }
 
 .theme-switcher:hover {

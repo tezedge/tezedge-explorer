@@ -26,7 +26,7 @@ export class NetworkActionComponent implements OnInit, OnDestroy {
     availableFields: []
   };
   virtualPageSize = 1000;
-  
+
   onDestroy$ = new Subject();
 
   @ViewChild(VirtualScrollDirective) vrFor: VirtualScrollDirective;
@@ -106,7 +106,6 @@ export class NetworkActionComponent implements OnInit, OnDestroy {
   }
 
   loadNextPage() {
-    debugger;
     const actualPageIndex = this.pagesIdsList.findIndex(pageId => Number(pageId) === this.virtualScrollItems.activePage.id);
 
     if (actualPageIndex === this.pagesIdsList.length - 1) {

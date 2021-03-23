@@ -5,11 +5,9 @@ export class NetworkAction {
   ids: number[];
   entities: { [id: string]: NetworkActionEntity };
   lastCursorId: number;
-  firstRecordIndex: number;
   filter: NetworkActionFilter;
-  isFiltered: boolean;
-  indexToId: object;
-  idToIndex: object;
   stream: boolean;
   urlParams: string;
+  activePage: any; // TODO create a type
+  pages: any; // TODO create a type
 }

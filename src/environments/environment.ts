@@ -6,7 +6,6 @@ export const environment = {
       id: 'rust',
       name: 'rust.develop.dev.tezedge.com',
       http: 'http://develop.dev.tezedge.com:18732',
-      // http: 'http://116.202.128.230:18732',
       ws: 'ws://develop.dev.tezedge.com:4927',
       monitoring: 'http://develop.dev.tezedge.com:38732/resources/tezedge',
       p2p_port: '9732',
@@ -21,6 +20,7 @@ export const environment = {
       p2p_port: '9733',
       features: ['MONITORING', 'RESOURCES', 'MEMPOOL_ACTION', 'NETWORK_ACTION', 'LOGS_ACTION'],
     }
+
 
     // PROD:
     // {

@@ -46,7 +46,7 @@ export class NetworkActionEffects {
     }),
 
     // dispatch action
-    map((payload) => ({ type: 'NETWORK_ACTION_START', payload })),
+    map((payload) => ({ type: 'NETWORK_ACTION_LOAD', payload })),
     catchError((error, caught) => {
       console.error(error);
       this.store.dispatch({
@@ -67,7 +67,7 @@ export class NetworkActionEffects {
 
     switchMap(({ action, state }) =>
       // get header data every second
-      timer(0, 1000).pipe(
+      timer(0, 2000).pipe(
         takeUntil(networkActionDestroy$),
         switchMap(() => {
             this.limit = action.payload?.limit || 1000;
@@ -121,7 +121,7 @@ export function setUrl(action, state) {
 export function networkActionLimit(action) {
   const limitNr = action.payload && action.payload.limit ?
     action.payload.limit :
-    '60';
+    '1000';
 
   return `limit=${limitNr}`;
 }

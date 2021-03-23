@@ -4,10 +4,8 @@ const initialState: any = {
   ids: [],
   entities: {},
   lastCursorId: 0,
-  firstRecordIndex: 0,
   stream: false,
-  selected: {},
-  isFiltered: false
+  selected: {}
 };
 
 export function reducer(state = initialState, action) {

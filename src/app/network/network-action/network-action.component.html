@@ -7,7 +7,7 @@
         <button class="add-filters" mat-flat-button (click)="filtersState.open=true" [disabled]="filtersState.open">
           <span>
             <svg-icon icon="filter"></svg-icon>
-<!--            {{filtersState.open ? 'Active Filters' : 'ADD FILTER'}}-->
+            <!--            {{filtersState.open ? 'Active Filters' : 'ADD FILTER'}}-->
             {{'Filters'}}
           </span>
         </button>
@@ -17,17 +17,17 @@
       <mat-accordion class="filters-accordion">
         <mat-expansion-panel [expanded]="filtersState.open" hideToggle="true">
           <ng-template matExpansionPanelContent class="filters-content">
-<!--            <div class="filters-row">-->
-<!--              <button class="close-filters-btn" mat-flat-button (click)="filtersState.open=false">-->
-<!--                <span>-->
-<!--                  <svg-icon icon="close"></svg-icon>-->
-<!--                </span>-->
-<!--              </button>-->
+            <!--            <div class="filters-row">-->
+            <!--              <button class="close-filters-btn" mat-flat-button (click)="filtersState.open=false">-->
+            <!--                <span>-->
+            <!--                  <svg-icon icon="close"></svg-icon>-->
+            <!--                </span>-->
+            <!--              </button>-->
 
-<!--              <span class="filters-label">-->
-<!--                Available Filters-->
-<!--              </span>-->
-<!--            </div>-->
+            <!--              <span class="filters-label">-->
+            <!--                Available Filters-->
+            <!--              </span>-->
+            <!--            </div>-->
 
             <div class="filters-row">
               <span class="filters-label" style="padding: 0px 14px 0px 0px; width: 51px;">Control</span>
@@ -42,10 +42,12 @@
                       (click)=" filterType('acknowledge')">
                 Acknowledge
               </button>
-              <button mat-flat-button [class.active]="virtualScrollItems.filter.bootstrap" (click)=" filterType('bootstrap')">
+              <button mat-flat-button [class.active]="virtualScrollItems.filter.bootstrap"
+                      (click)=" filterType('bootstrap')">
                 Bootstrap
               </button>
-              <button mat-flat-button [class.active]="virtualScrollItems.filter.advertise" (click)=" filterType('advertise')">
+              <button mat-flat-button [class.active]="virtualScrollItems.filter.advertise"
+                      (click)=" filterType('advertise')">
                 Advertise
               </button>
               <button mat-flat-button [class.active]="virtualScrollItems.filter.swap" (click)=" filterType('swap')">
@@ -89,10 +91,12 @@
                       (click)=" filterType('currentBranch')">
                 Current Branch
               </button>
-              <button mat-flat-button [class.active]="virtualScrollItems.filter.operation" (click)=" filterType('operation')">
+              <button mat-flat-button [class.active]="virtualScrollItems.filter.operation"
+                      (click)=" filterType('operation')">
                 Operation
               </button>
-              <button mat-flat-button [class.active]="virtualScrollItems.filter.protocol" (click)=" filterType('protocol')">
+              <button mat-flat-button [class.active]="virtualScrollItems.filter.protocol"
+                      (click)=" filterType('protocol')">
                 Protocol
               </button>
               <button mat-flat-button [class.active]="virtualScrollItems.filter.blockHeaders"
@@ -126,22 +130,25 @@
 
     <div class="table-virtual-scroll-body" [class.network-filters-expanded]="filtersState.open">
 
-      <div class="virtual-scroll-container" [class.filtered]="virtualScrollItems.isFiltered">
+      <div class="virtual-scroll-container">
         <ng-template vsFor [vsForOf]="virtualScrollItems" let-event let-position="position"
                      (getItems)="getItems($event)" (startStopDataStream)="startStopDataStream($event)">
-          <span class="virtualScrollRow network-row" [style.transform]="position !== undefined ? 'translate(0px,' + position + 'px)' : ''"
-                [class.virtualScrollRowEven]="event?.index % 2" (mouseenter)="event ? tableMouseEnter(event) : null"
+          <span class="virtualScrollRow network-row"
+                [style.transform]="position !== undefined ? 'translate(0px,' + position + 'px)' : ''"
+                [class.virtualScrollRowEven]="event?.index % 2" (click)="event ? tableMouseEnter(event) : null"
                 [class.hover]="event?.datetime && networkActionItem?.id===event?.id"
                 [class.used]="event?.datetime">
 
             <span class="item-loading" [class.displayed]="!event?.datetime">&nbsp;</span>
 
             <span class="truncate">{{event?.datetime}}</span>
-            <span class="network-action-table-address truncate"><a href="#/network/{{ event?.remote_addr }}"> {{ event?.remote_addr }}</a></span>
+            <span class="network-action-table-address truncate"><a
+              href="#/network/{{ event?.remote_addr }}"> {{ event?.remote_addr }}</a></span>
             <span>
               <span *ngIf="event?.datetime && (event?.source_type==='local' || event?.source_type==='remote')">
                 <svg-icon icon="{{event?.source_type==='local' ? 'local' : 'remote'}}"></svg-icon>
-                <svg-icon icon="{{event?.source_type==='local' && !event?.incoming  || event?.source_type==='remote' && event?.incoming ? 'arrow-right' : 'arrow-left'}}"></svg-icon>
+                <svg-icon
+                  icon="{{event?.source_type==='local' && !event?.incoming  || event?.source_type==='remote' && event?.incoming ? 'arrow-right' : 'arrow-left'}}"></svg-icon>
                 <svg-icon icon="{{event?.source_type==='local' ? 'remote' : 'local'}}"></svg-icon>
               </span>
             </span>
@@ -162,7 +169,8 @@
               <span>JSON</span>
             </ng-template>
             <ng-template matTabContent>
-              <ngx-json-viewer *ngIf="networkActionItem?.payload" [json]="networkActionItem?.payload" [expanded]="false">
+              <ngx-json-viewer *ngIf="networkActionItem?.payload" [json]="networkActionItem?.payload"
+                               [expanded]="false">
               </ngx-json-viewer>
             </ng-template>
           </mat-tab>
@@ -171,8 +179,8 @@
               <span>Hex Values</span>
             </ng-template>
             <ng-template matTabContent>
-<!--              <ngx-json-viewer *ngIf="networkActionItem?.hexValues?.length" [json]="networkActionItem?.hexValues" [expanded]="false">-->
-<!--              </ngx-json-viewer>-->
+              <!--              <ngx-json-viewer *ngIf="networkActionItem?.hexValues?.length" [json]="networkActionItem?.hexValues" [expanded]="false">-->
+              <!--              </ngx-json-viewer>-->
 
               <div fxLayout="column" class="non-json-container">
                 <span *ngFor="let hexItem of networkActionItem?.hexValues">{{hexItem}}</span>
@@ -193,14 +201,38 @@
 
     <div class="table-virtual-scroll-footer">
       <span>
-        <button id="startStreaming" mat-icon-button matTooltip="Start" (click)="scrollStart(null)" *ngIf="!virtualScrollItems?.stream">
+        <button id="startStreaming" mat-icon-button matTooltip="Start" (click)="scrollStart(null)"
+                *ngIf="!virtualScrollItems?.stream">
           <mat-icon>play_arrow_outline</mat-icon>
         </button>
-        <button id="stopStreaming" mat-icon-button matTooltip="Stop" (click)="scrollStop()" *ngIf="virtualScrollItems?.stream">
+        <button id="stopStreaming" mat-icon-button matTooltip="Stop" (click)="scrollStop()"
+                *ngIf="virtualScrollItems?.stream">
           <mat-icon>stop_outline</mat-icon>
         </button>
         <button mat-icon-button matTooltip="Last page" (click)="scrollToEnd()">
           <mat-icon style="transform: rotate(90deg)">last_page</mat-icon>
+        </button>
+      </span>
+
+      <span class="active-page-details">
+        Active Page:
+        {{virtualScrollItems?.activePage?.numberOfRecords}}
+        records
+        <span *ngIf="virtualScrollItems?.activePage?.numberOfRecords">
+          , from:
+          {{virtualScrollItems?.activePage?.start?.datetime}}
+          to:
+          {{virtualScrollItems?.activePage?.end?.datetime}}
+          </span>
+      </span>
+
+      <span>
+        <button id="previousPage" mat-icon-button matTooltip="Previous Page" (click)="loadPreviousPage()">
+          <mat-icon style="transform: rotate(180deg)">last_page</mat-icon>
+        </button>
+
+        <button id="nextPage" mat-icon-button matTooltip="Next Page" (click)="loadNextPage()">
+          <mat-icon style="transform: rotate(0deg)">last_page</mat-icon>
         </button>
       </span>
     </div>

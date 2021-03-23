@@ -1,13 +1,13 @@
 import {ChangeDetectionStrategy, ChangeDetectorRef, Component, NgZone, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {Router, ActivatedRoute} from '@angular/router';
 
-import { Store } from '@ngrx/store';
-import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
-import { VirtualScrollDirective } from '../../shared/virtual-scroll.directive';
-import { MatAccordion } from '@angular/material/expansion';
-import { State } from '../../app.reducers';
-import { NetworkAction } from '../../shared/types/network/network-action.type';
+import {Store} from '@ngrx/store';
+import {Subject} from 'rxjs';
+import {takeUntil} from 'rxjs/operators';
+import {VirtualScrollDirective} from '../../shared/virtual-scroll.directive';
+import {MatAccordion} from '@angular/material/expansion';
+import {State} from '../../app.reducers';
+import {NetworkAction} from '../../shared/types/network/network-action.type';
 
 @Component({
   selector: 'app-network-action',
@@ -17,7 +17,7 @@ import { NetworkAction } from '../../shared/types/network/network-action.type';
 })
 export class NetworkActionComponent implements OnInit, OnDestroy {
 
-  virtualScrollItems;
+  virtualScrollItems: NetworkAction;
   networkActionShow: boolean;
   networkActionItem;
   filtersState = {
@@ -40,7 +40,8 @@ export class NetworkActionComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.scrollStart(null);
+    // this.scrollStart(null);
+    this.getItems({limit: 1000});
 
     // this.activeRoute.params
     //   .pipe(takeUntil(this.onDestroy$))
@@ -92,6 +93,20 @@ export class NetworkActionComponent implements OnInit, OnDestroy {
     });
   }
 
+  loadPreviousPage() {
+    this.getItems({
+      nextCursorId: this.virtualScrollItems.activePage.start.originalId,
+      limit: 1000
+    });
+  }
+
+  loadNextPage() {
+    this.getItems({
+      nextCursorId: this.virtualScrollItems.activePage.start.originalId,
+      limit: 1000
+    });
+  }
+
   startStopDataStream(event) {
     if (event.stop) {
       this.scrollStop();
@@ -108,7 +123,7 @@ export class NetworkActionComponent implements OnInit, OnDestroy {
     this.store.dispatch({
       type: 'NETWORK_ACTION_START',
       payload: {
-        limit: $event?.limit ? $event.limit : 60
+        limit: $event?.limit ? $event.limit : 1000
       }
     });
   }

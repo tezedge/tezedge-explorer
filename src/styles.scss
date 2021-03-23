@@ -1826,6 +1826,11 @@ input.mat-input-element {
   box-sizing: border-box;
   border-top: 1px solid #333334;
   width: 100%;
+  line-height: 40px;
+
+  .active-page-details {
+    margin: 2px 20px;
+  }
 }
 
 .table-virtual-scroll-header {
@@ -1907,7 +1912,7 @@ input.mat-input-element {
   }
 
   &.hover {
-    background: $color-table-item-hover;
+    background: $color-highlight-blue;
   }
 }
 

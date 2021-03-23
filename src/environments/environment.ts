@@ -9,8 +9,8 @@ export const environment = {
       ws: 'ws://develop.dev.tezedge.com:4927',
       monitoring: 'http://develop.dev.tezedge.com:38732/resources/tezedge',
       p2p_port: '9732',
-      features: ['MONITORING', 'RESOURCES', 'MEMPOOL_ACTION', 'STORAGE_BLOCK', 'NETWORK_ACTION', 'LOGS_ACTION'],
-    },
+      features: ['MONITORING', 'RESOURCES', 'MEMPOOL_ACTION', 'STORAGE_BLOCK', 'NETWORK_ACTION', 'LOGS_ACTION']
+    }
     // {
     //   id: 'ocaml',
     //   name: 'ocaml.develop.dev.tezedge.com',

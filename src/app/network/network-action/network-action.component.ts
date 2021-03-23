@@ -20,11 +20,13 @@ export class NetworkActionComponent implements OnInit, OnDestroy {
   virtualScrollItems: NetworkAction;
   networkActionShow: boolean;
   networkActionItem;
+  pagesIdsList: any[];
   filtersState = {
     open: true,
     availableFields: []
   };
-
+  virtualPageSize = 1000;
+  
   onDestroy$ = new Subject();
 
   @ViewChild(VirtualScrollDirective) vrFor: VirtualScrollDirective;
@@ -66,6 +68,9 @@ export class NetworkActionComponent implements OnInit, OnDestroy {
         this.virtualScrollItems = data;
         this.networkActionShow = this.virtualScrollItems.ids.length > 0;
 
+        this.pagesIdsList = Object.keys(this.virtualScrollItems.pages);
+        console.log(this.pagesIdsList);
+
         // if (this.networkActionShow && !this.networkActionItem) {
         // this.networkActionItem = this.virtualScrollItems.ids.length > 0 ?
         //   this.virtualScrollItems.entities[this.virtualScrollItems.ids[this.virtualScrollItems.ids.length - 1]] :
@@ -101,8 +106,17 @@ export class NetworkActionComponent implements OnInit, OnDestroy {
   }
 
   loadNextPage() {
+    debugger;
+    const actualPageIndex = this.pagesIdsList.findIndex(pageId => Number(pageId) === this.virtualScrollItems.activePage.id);
+
+    if (actualPageIndex === this.pagesIdsList.length - 1) {
+      return;
+    }
+
+    const nextPageId = this.pagesIdsList[actualPageIndex + 1];
+
     this.getItems({
-      nextCursorId: this.virtualScrollItems.activePage.start.originalId,
+      nextCursorId: nextPageId,
       limit: 1000
     });
   }

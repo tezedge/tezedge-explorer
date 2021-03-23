@@ -11,15 +11,15 @@ export const environment = {
       p2p_port: '9732',
       features: ['MONITORING', 'RESOURCES', 'MEMPOOL_ACTION', 'STORAGE_BLOCK', 'NETWORK_ACTION', 'LOGS_ACTION'],
     },
-    {
-      id: 'ocaml',
-      name: 'ocaml.develop.dev.tezedge.com',
-      http: 'http://develop.dev.tezedge.com:18733',
-      ws: false,
-      monitoring: 'http://develop.dev.tezedge.com:38732/resources/ocaml',
-      p2p_port: '9733',
-      features: ['MONITORING', 'RESOURCES', 'MEMPOOL_ACTION', 'NETWORK_ACTION', 'LOGS_ACTION'],
-    }
+    // {
+    //   id: 'ocaml',
+    //   name: 'ocaml.develop.dev.tezedge.com',
+    //   http: 'http://develop.dev.tezedge.com:18733',
+    //   ws: false,
+    //   monitoring: 'http://develop.dev.tezedge.com:38732/resources/ocaml',
+    //   p2p_port: '9733',
+    //   features: ['MONITORING', 'RESOURCES', 'MEMPOOL_ACTION', 'NETWORK_ACTION', 'LOGS_ACTION'],
+    // }
 
 
     // PROD:

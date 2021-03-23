@@ -29,7 +29,7 @@ const initialState: NetworkAction = {
   stream: false,
   urlParams: '',
   activePage: {},
-  pages: []
+  pages: {}
 };
 
 export function reducer(state: NetworkAction = initialState, action): NetworkAction {
@@ -160,6 +160,10 @@ export function setVirtualScrollId(action, state, accumulator): number {
 }
 
 export function setActivePage(entities, action): any {
+  if (!action.payload.length) {
+    return {};
+  }
+
   return {
     id: entities[action.payload.length - 1].originalId,
     start: entities[0],
@@ -169,10 +173,24 @@ export function setActivePage(entities, action): any {
 }
 
 export function setPages(activePage, state) {
-  const pages = state.pages.slice();
-  pages.push(activePage);
+  if (!activePage.id) {
+    return {};
+  }
 
-  return pages;
+  const pagesArray = Object.keys(state.pages)
+    .sort((a, b) => Number(b) - Number(a));
+
+  if (Number(pagesArray[0]) < Number(activePage.id)) {
+    return {
+      [activePage.id]: activePage
+    };
+  } else {
+    return {
+      ...state.pages,
+      [activePage.id]: activePage
+    };
+  }
+
 }
 
 

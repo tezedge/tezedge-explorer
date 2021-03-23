@@ -1,10 +1,11 @@
 @import 'assets/styles/ngx-charts-styles';
+@import 'assets/styles/utilities';
 
 html,
 body {
   height: 100%;
   font-family: Roboto, "Helvetica Neue", sans-serif;
-  margin: 0px !important;
+  margin: 0 !important;
   background-color: $color-background;
   font-weight: 300 !important;
 }

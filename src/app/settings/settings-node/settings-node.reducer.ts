@@ -37,14 +37,17 @@ export function reducer(state: SettingsNode = initialState, action): SettingsNod
       return {
         ...state,
         // if this is first available api use it
-        activeNode: state.activeNode.connected !== true ? { ...action.payload.activeNode, connected: true } : state.activeNode,
+        activeNode: state.activeNode.connected !== true
+          ? { ...action.payload.activeNode, connected: true, features: action.payload.features }
+          : state.activeNode,
         entities: {
           ...state.entities,
           [action.payload.activeNode.id]: {
             ...action.payload.activeNode,
             connected: true,
-            header: action.payload.response,
-            relativeDateTime: moment(action.payload.response.timestamp).fromNow(),
+            header: action.payload.header,
+            relativeDateTime: moment(action.payload.header.timestamp).fromNow(),
+            features: action.payload.features,
           },
         }
       };
@@ -71,7 +74,6 @@ export function reducer(state: SettingsNode = initialState, action): SettingsNod
     }
 
     case 'SETTINGS_NODE_CHANGE': {
-      // console.log("[SETTINGS_NODE_CHANGE]", action);
       return {
         ...state,
         activeNode: state.entities[action.payload.activeNode.id]

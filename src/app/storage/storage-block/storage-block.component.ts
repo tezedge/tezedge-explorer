@@ -65,7 +65,7 @@ export class StorageBlockComponent implements OnInit, OnDestroy {
 
   getItems($event) {
     this.store.dispatch({
-      type: 'STORAGE_BLOCK_LOAD',
+      type: 'STORAGE_BLOCK_FETCH',
       payload: {
         cursor_id: $event?.nextCursorId,
         limit: $event?.limit

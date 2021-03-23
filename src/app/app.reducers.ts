@@ -41,12 +41,12 @@ import * as fromSandbox from './sandbox/sandbox.reducer';
 import * as fromWallets from './wallets/wallets.reducer';
 import * as fromVersion from './monitoring/commit-number/commit-number.reducer';
 import * as fromResource from './resources/resources/resources.reducer';
-import { ResourcesState } from './resources/resources/resources.reducer';
 import { SettingsNode } from './shared/types/settings-node/settings-node.type';
 import { NetworkStats } from './shared/types/network/network-stats.type';
 import { NetworkPeers } from './shared/types/network/network-peers.type';
 import { NetworkHistory } from './shared/types/network/network-history.type';
 import { NetworkAction } from './shared/types/network/network-action.type';
+import { ResourcesState } from './shared/types/resources/resources-state.type';
 
 export interface State {
   app: any;

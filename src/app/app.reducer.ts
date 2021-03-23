@@ -56,21 +56,6 @@ export function reducer(state = initialState, action) {
 
     switch (action.type) {
 
-        case 'APP_WINDOW': {
-            const MOBILE_WIDTH = 450;
-            return {
-                ...state,
-                sidenav: {
-                    ...state.sidenav,
-                    isVisible: action.payload.width > MOBILE_WIDTH,
-                    mode: action.payload.width > MOBILE_WIDTH ? 'side' : 'over',
-                    toggleButton: {
-                        isVisible: action.payload.width < MOBILE_WIDTH,
-                    }
-                }
-            };
-        }
-
         case 'APP_INIT_DEFAULT': {
             return {
                 ...state,
@@ -154,6 +139,27 @@ export function reducer(state = initialState, action) {
             };
         }
 
+        case 'APP_MENU_STATE_CHANGE': {
+            return {
+                ...state,
+                sidenav: {
+                    ...state.sidenav,
+                    mode: action.payload.mode,
+                    isVisible: action.payload.mode !== 'over'
+                }
+            };
+        }
+
+        case 'APP_TOGGLE_SIDENAV': {
+            return {
+                ...state,
+                sidenav: {
+                    ...state.sidenav,
+                    isVisible: action.payload.isVisible
+                }
+            };
+        }
+
         case 'SANDBOX_NODE_START_SUCCESS': {
             return {
                 ...state,
@@ -170,10 +176,6 @@ export function reducer(state = initialState, action) {
                     sandbox: false,
                 }
             };
-        }
-
-        case 'NETWORK_ACTION_LOAD_ERROR': {
-            return {};
         }
 
         case 'SIDENAV_VISIBILITY_CHANGE': {

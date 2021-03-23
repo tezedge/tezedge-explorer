@@ -3,7 +3,7 @@ import { select, Store } from '@ngrx/store';
 import { Resource } from '../../shared/types/resources/resource.type';
 import { Observable } from 'rxjs';
 import { ResourcesActionTypes } from './resources.actions';
-import { filter, map } from 'rxjs/operators';
+import { filter, map, skip } from 'rxjs/operators';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { BreakpointObserver } from '@angular/cdk/layout';
 
@@ -107,7 +107,7 @@ export class ResourcesComponent implements OnInit, OnDestroy {
   private handleSmallDevices(): void {
     this.isSmallDevice = window.innerWidth < 1100;
     this.breakpointObserver.observe('(min-width: 1100px)')
-      .pipe(untilDestroyed(this))
+      .pipe(untilDestroyed(this), skip(1))
       .subscribe(() => {
         this.isSmallDevice = window.innerWidth < 1100;
         this.getResources();

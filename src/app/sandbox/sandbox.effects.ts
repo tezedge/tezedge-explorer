@@ -213,7 +213,7 @@ export class SandboxEffects {
         // dispatch action
         switchMap((payload) => [
             { type: 'MEMPOOL_ACTION_LOAD' },
-            { type: 'STORAGE_BLOCK_LOAD' },
+            { type: 'STORAGE_BLOCK_FETCH' },
             { type: 'WALLETS_LIST_INIT' },
             { type: 'SANDBOX_BAKE_BLOCK_SUCCESS', payload: payload },
         ]),

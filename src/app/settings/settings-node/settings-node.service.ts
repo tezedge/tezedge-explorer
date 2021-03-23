@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { SettingsNodeEntityHeader } from '../../shared/types/settings-node/settings-node-entity-header.type';
 import { map } from 'rxjs/operators';
+import { environment } from '../../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -10,6 +11,13 @@ import { map } from 'rxjs/operators';
 export class SettingsNodeService {
 
   constructor(private http: HttpClient) { }
+
+  getNodeFeatures(apiHttp: string, nodeId: string): Observable<string[]> {
+    return of(environment.api.find(node => node.id === nodeId).features);
+    // TODO: get features from backend, not from environment variables
+    // this.http.get<SettingsNodeFeature[]>(apiHttp + '/pathToFeatures')
+    //   .pipe(map(response => SettingsNodeService.mapGetNodeFeatures(response)));
+  }
 
   getSettingsHeader(apiHttp: string): Observable<SettingsNodeEntityHeader> {
     return this.http.get<SettingsNodeEntityHeader>(apiHttp + '/chains/main/blocks/head/header')

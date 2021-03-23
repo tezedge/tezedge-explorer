@@ -1,10 +1,10 @@
-import {Injectable} from '@angular/core';
-import {Effect, Actions, ofType} from '@ngrx/effects';
-import {HttpClient} from '@angular/common/http';
-import {Store} from '@ngrx/store';
-import {map, switchMap, withLatestFrom, catchError, tap, takeUntil} from 'rxjs/operators';
-import {ObservedValueOf, of, Subject, timer} from 'rxjs';
-import {State} from '../../app.reducers';
+import { Injectable } from '@angular/core';
+import { Effect, Actions, ofType } from '@ngrx/effects';
+import { HttpClient } from '@angular/common/http';
+import { Store } from '@ngrx/store';
+import { map, switchMap, withLatestFrom, catchError, tap, takeUntil } from 'rxjs/operators';
+import { ObservedValueOf, of, Subject, timer } from 'rxjs';
+import { State } from '../../app.reducers';
 
 const networkActionDestroy$ = new Subject();
 
@@ -15,15 +15,13 @@ export class NetworkActionEffects {
   NetworkActionLoad$ = this.actions$.pipe(
     ofType('NETWORK_ACTION_LOAD'),
 
-    // merge state
     withLatestFrom(this.store, (action: any, state: ObservedValueOf<Store<State>>) => ({action, state})),
 
     switchMap(({action, state}) => {
-      this.limit = action.payload?.limit || 60;
+      this.limit = action.payload?.limit || 1000;
       return this.http.get(setUrl(action, state));
     }),
 
-    // dispatch action
     map((payload) => ({type: 'NETWORK_ACTION_LOAD_SUCCESS', payload, limit: this.limit})),
     catchError((error, caught) => {
       console.error(error);
@@ -48,7 +46,7 @@ export class NetworkActionEffects {
     }),
 
     // dispatch action
-    map((payload) => ({type: 'NETWORK_ACTION_START', payload})),
+    map((payload) => ({ type: 'NETWORK_ACTION_START', payload })),
     catchError((error, caught) => {
       console.error(error);
       this.store.dispatch({
@@ -67,12 +65,12 @@ export class NetworkActionEffects {
     // merge state
     withLatestFrom(this.store, (action: any, state: ObservedValueOf<Store<State>>) => ({ action, state })),
 
-    switchMap(({action, state}) =>
+    switchMap(({ action, state }) =>
       // get header data every second
       timer(0, 1000).pipe(
         takeUntil(networkActionDestroy$),
         switchMap(() => {
-            this.limit = action.payload?.limit || 60;
+            this.limit = action.payload?.limit || 1000;
             return this.http.get(setUrl(action, state)).pipe(
               map(response => ({type: 'NETWORK_ACTION_START_SUCCESS', payload: response, limit: this.limit})),
               catchError(error => of({type: 'NETWORK_ACTION_START_ERROR', payload: error}))
@@ -84,13 +82,13 @@ export class NetworkActionEffects {
   );
 
   // stop network action download
-  @Effect({dispatch: false})
+  @Effect({ dispatch: false })
   NetworkActionStopEffect$ = this.actions$.pipe(
     ofType('NETWORK_ACTION_STOP'),
     // merge state
     withLatestFrom(this.store, (action: any, state: ObservedValueOf<Store<State>>) => ({ action, state })),
     // init app modules
-    tap(({action, state}) => {
+    tap(({ action, state }) => {
       // console.log('[LOGS_ACTION_STOP] stream', state.logsAction.stream);
       // close all open observables
       // if (state.logsAction.stream) {

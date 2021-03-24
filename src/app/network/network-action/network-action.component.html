@@ -205,14 +205,14 @@
         <svg-icon icon="arrow-bottom"></svg-icon>
       </button>
 
-      <button fxLayout="row" fxLayoutAlign="center center" class="rectangle-button" mat-icon-button
-              matTooltip="Start Streaming" (click)="scrollStart(null)" [class.active]="virtualScrollItems?.stream">
+      <button fxLayout="row" fxLayoutAlign="center center" class="rectangle-button start-stream" mat-icon-button
+              matTooltip="Start Streaming" (click)="scrollStart(null)" [class.inactive]="!virtualScrollItems?.stream">
         <svg-icon icon="play-circle"></svg-icon>
         <span>LIVE</span>
       </button>
 
-      <button fxLayout="row" fxLayoutAlign="center center" class="rectangle-button" mat-icon-button
-              matTooltip="Stop Streaming" (click)="scrollStop()" [class.active]="!virtualScrollItems?.stream">
+      <button fxLayout="row" fxLayoutAlign="center center" class="rectangle-button stop-stream" mat-icon-button
+              matTooltip="Stop Streaming" (click)="scrollStop()" [class.inactive]="virtualScrollItems?.stream">
         <svg-icon icon="pause-circle"></svg-icon>
         <span>PAUSED</span>
       </button>

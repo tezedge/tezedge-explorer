@@ -31,7 +31,6 @@ export class VirtualScrollDirective implements AfterViewInit, OnDestroy, OnChang
   private maximumScrollTop = 0;
 
   private previousLastCursorId = 0;
-  private elementsBufferUpAndDown = 10;
 
   private $scroller: HTMLDivElement = document.createElement('div');
   private $viewport: HTMLElement;
@@ -113,23 +112,18 @@ export class VirtualScrollDirective implements AfterViewInit, OnDestroy, OnChang
   onScroll(event) {
     if (this.$viewport.scrollTop > this.maximumScrollTop) {
       this.$viewport.scrollTop = this.maximumScrollTop;
-      // this.startStopStream();
       event.stopPropagation();
       event.preventDefault();
       return;
     }
 
+    if (this.$viewport.scrollTop !== this.maximumScrollTop) {
+      this.startStopStream();
+    }
+
     // trigger only if user scrolled vertically
     // if (this.prevScrollTop !== this.$viewport.scrollTop) {
     this.preparePositionsAndCreateViewElements();
-    //   // TODO: implement the stream part
-    //   this.startStopStream();
-    //
-    //   if (this.vsForOf.ids.length === 0 ||
-    //     this.getScrollPositionEndWithOffset() > this.vsForOf.ids[this.vsForOf.ids.length - 1] ||
-    //     this.getScrollPositionStartWithOffset() < this.vsForOf.ids[0]) {
-    //     this.fetchData();
-    //   }
 
     this.renderViewportItems();
     this.prevScrollTop = this.$viewport.scrollTop;
@@ -195,7 +189,8 @@ export class VirtualScrollDirective implements AfterViewInit, OnDestroy, OnChang
   }
 
   private startStopStream(): void {
-    const stop = this.maximumScrollTop > this.$viewport.scrollTop;
+    // const stop = this.maximumScrollTop > this.$viewport.scrollTop;
+    const stop = true;
     // const limit = Math.floor(this.viewportHeight / this.itemHeight * 2);
     const limit = 1000;
 
@@ -204,42 +199,6 @@ export class VirtualScrollDirective implements AfterViewInit, OnDestroy, OnChang
         limit,
         stop
       });
-    });
-  }
-
-  private fetchData(reset: boolean = false): void {
-    this.ngZone.run(() => {
-
-      // uncomment for debugging
-      // console.log({
-      //   cacheRequestStart: this.cacheRequestStart,
-      //   cacheRequestEnd: this.cacheRequestEnd,
-      //   scrollPositionStart: this.scrollPositionStart,
-      //   scrollPositionEnd: this.scrollPositionEnd,
-      //   cursor: reset ? null : Math.min(this.virtualScrollItemsOffset + this.scrollPositionEnd + 40, this.vsForOf.lastCursorId),
-      //   viewportHeight: this.viewportHeight,
-      //   itemsNr: this.virtualScrollItemsCount,
-      //   itemsNumberInViewport: Math.floor(this.viewportHeight / this.itemHeight)
-      // });
-
-      // check the cursor construction
-      // const nextCursorId = reset ?
-      //   null :
-      //   Math.min(this.vsForOf.idsToPositions[this.virtualScrollItemsOffset + this.scrollPositionEnd + 40] || this.vsForOf.lastCursorId, this.vsForOf.lastCursorId);
-      // const limit = nextCursorId ? nextCursorId - (this.getScrollPositionStartWithOffset() - 40) : Math.floor(this.viewportHeight / this.itemHeight * 3);
-      const nextCursorId = reset ?
-        null :
-        Math.min(this.getScrollPositionEndWithOffset() + this.elementsBufferUpAndDown, this.vsForOf.lastCursorId);
-
-      const limit = nextCursorId ?
-        nextCursorId - (this.getScrollPositionStartWithOffset() - this.elementsBufferUpAndDown) :
-        Math.floor(this.viewportHeight / this.itemHeight * 2);
-
-      this.getItems.emit({
-        nextCursorId,
-        limit
-      });
-
     });
   }
 

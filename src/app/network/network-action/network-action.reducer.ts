@@ -95,7 +95,6 @@ export function setIds(action, state): Array<number> {
 
   return action.payload
     .map((item, index) => index)
-    // .map(item => item.id)
     .sort((a, b) => a - b);
 }
 

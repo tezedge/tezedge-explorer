@@ -20,7 +20,7 @@ export class NetworkActionComponent implements OnInit, OnDestroy {
   virtualScrollItems: NetworkAction;
   networkActionShow: boolean;
   networkActionItem;
-  pagesIdsList: any[];
+  pagesIdsList: string[];
   filtersState = {
     open: true,
     availableFields: []
@@ -42,8 +42,8 @@ export class NetworkActionComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    // this.scrollStart(null);
-    this.getItems({limit: 1000});
+    this.scrollStart(null);
+    // this.getItems({limit: this.virtualPageSize});
 
     // this.activeRoute.params
     //   .pipe(takeUntil(this.onDestroy$))
@@ -99,9 +99,12 @@ export class NetworkActionComponent implements OnInit, OnDestroy {
   }
 
   loadPreviousPage() {
+    if (this.virtualScrollItems.stream) {
+      this.scrollStop();
+    }
     this.getItems({
       nextCursorId: this.virtualScrollItems.activePage.start.originalId,
-      limit: 1000
+      limit: this.virtualPageSize
     });
   }
 
@@ -116,7 +119,7 @@ export class NetworkActionComponent implements OnInit, OnDestroy {
 
     this.getItems({
       nextCursorId: nextPageId,
-      limit: 1000
+      limit: this.virtualPageSize
     });
   }
 
@@ -124,7 +127,9 @@ export class NetworkActionComponent implements OnInit, OnDestroy {
     if (event.stop) {
       this.scrollStop();
     } else {
-      this.scrollStart(event);
+      if (this.virtualScrollItems.activePage.id === Number(this.pagesIdsList[this.pagesIdsList.length - 1])) {
+        this.scrollStart(event);
+      }
     }
   }
 
@@ -136,7 +141,7 @@ export class NetworkActionComponent implements OnInit, OnDestroy {
     this.store.dispatch({
       type: 'NETWORK_ACTION_START',
       payload: {
-        limit: $event?.limit ? $event.limit : 1000
+        limit: $event?.limit ? $event.limit : this.virtualPageSize
       }
     });
   }
@@ -152,7 +157,7 @@ export class NetworkActionComponent implements OnInit, OnDestroy {
   }
 
   scrollToEnd() {
-    this.vrFor.scrollToBottom();
+    this.scrollStart(null);
   }
 
   filterType(filterType) {

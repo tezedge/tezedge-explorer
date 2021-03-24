@@ -32,8 +32,6 @@ steps:
 
 - name: publish
   image: plugins/docker
-  depends_on:
-    - test
   settings:
     repo: simplestakingcom/tezedge-explorer
     tags: latest

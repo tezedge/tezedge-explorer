@@ -73,7 +73,6 @@
   padding: 0 8px 3px 8px;
   box-sizing: border-box;
 
-
   .active-filters-row {
     display: flex;
     padding: 6px 0;
@@ -81,7 +80,7 @@
 
   .filters-row {
     display: flex;
-    padding: 6px;
+    padding: 5px;
     //height: 26px;
   }
 
@@ -199,6 +198,8 @@
 
   .virtual-scroll-container {
     width: 60%;
+    transform: translateZ(0);
+    -webkit-transform: translateZ(0);
   }
 
   .action-table-detail {

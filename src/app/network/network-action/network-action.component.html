@@ -150,7 +150,7 @@
         <ng-template vsFor [vsForOf]="virtualScrollItems" let-event let-position="position"
                      (getItems)="getItems($event)" (startStopDataStream)="startStopDataStream($event)">
           <span class="virtualScrollRow network-row"
-                [style.transform]="position !== undefined ? 'translate(0px,' + position + 'px)' : ''"
+                [style.transform]="position !== undefined ? 'translateY(' + position + 'px)' : ''"
                 [class.virtualScrollRowEven]="event?.index % 2" (click)="event ? getItemDetails(event) : null"
                 [class.hover]="event?.datetime && virtualScrollItems?.selected?.id===event?.originalId"
                 [class.used]="event?.datetime">

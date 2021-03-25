@@ -6,6 +6,7 @@ const initialState: NetworkAction = {
   ids: [],
   entities: {},
   lastCursorId: 0,
+  selected: {},
   filter: {
     local: false,
     remote: false,
@@ -55,7 +56,7 @@ export function reducer(state: NetworkAction = initialState, action): NetworkAct
 
       return {
         ...state,
-        ids: setIds(action, state),
+        ids: setIds(action),
         entities,
         lastCursorId: setLastCursorId(action, state),
         activePage,
@@ -83,12 +84,44 @@ export function reducer(state: NetworkAction = initialState, action): NetworkAct
       };
     }
 
+    case 'NETWORK_ACTION_DETAILS_LOAD_SUCCESS': {
+      return {
+        ...state,
+        selected: setDetails(action)
+      };
+    }
+
     default:
       return state;
   }
 }
 
-export function setIds(action, state): Array<number> {
+export function setDetails(action) {
+  if (!action.payload) {
+    return {};
+  }
+
+  const hexValues = action.payload.original_bytes ? setHexValues(action.payload.original_bytes) : [];
+  const payload = {};
+
+  if (action.payload.message && action.payload.message.length && action.payload.message[0].type) {
+    this.payload = {...action.payload.message[0]};
+    delete this.payload.type;
+  } else {
+    this.payload = action.payload;
+    delete this.payload.error;
+    delete this.payload.original_bytes;
+  }
+
+  return {
+    id: action.payload.id,
+    hexValues,
+    payload,
+    error: action.payload.error
+  };
+}
+
+export function setIds(action): Array<number> {
   if (!action.payload.length) {
     return [];
   }
@@ -103,40 +136,18 @@ export function setEntities(action, state): { [id: string]: NetworkActionEntity 
     {} :
     action.payload
       .reduce((accumulator, networkAction) => {
-        const hexValues = setHexValues(networkAction.original_bytes);
         const virtualScrollId = setVirtualScrollId(action, state, accumulator);
 
-        if (networkAction.message && networkAction.message.length && networkAction.message[0].type) {
-          const payload = {...networkAction.message[0]};
-          delete payload.type;
-
-          return {
-            ...accumulator,
-            [virtualScrollId]: {
-              ...networkAction,
-              hexValues,
-              id: virtualScrollId,
-              originalId: networkAction.id,
-              category: 'P2P',
-              kind: networkAction.message[0].type,
-              payload,
-              preview: JSON.stringify(networkAction.message),
-              datetime: moment.utc(Math.ceil(networkAction.timestamp / 1000000)).format('HH:mm:ss.SSS, DD MMM YY')
-            }
-          };
-        } else {
-          return {
-            ...accumulator,
-            [virtualScrollId]: {
-              ...networkAction,
-              hexValues,
-              id: virtualScrollId,
-              originalId: networkAction.id,
-              payload: networkAction.message,
-              datetime: moment.utc(Math.ceil(networkAction.timestamp / 1000000)).format('HH:mm:ss.SSS, DD MMM YY')
-            }
-          };
-        }
+        return {
+          ...accumulator,
+          [virtualScrollId]: {
+            ...networkAction,
+            id: virtualScrollId,
+            originalId: networkAction.id,
+            payload: networkAction.message,
+            datetime: moment.utc(Math.ceil(networkAction.timestamp / 1000000)).format('HH:mm:ss.SSS, DD MMM YY')
+          }
+        };
       }, {});
 }
 

@@ -1,10 +1,10 @@
-import { Injectable } from '@angular/core';
-import { Effect, Actions, ofType } from '@ngrx/effects';
-import { HttpClient } from '@angular/common/http';
-import { Store } from '@ngrx/store';
-import { map, switchMap, withLatestFrom, catchError, tap, takeUntil } from 'rxjs/operators';
-import { ObservedValueOf, of, Subject, timer } from 'rxjs';
-import { State } from '../../app.reducers';
+import {Injectable} from '@angular/core';
+import {Effect, Actions, ofType} from '@ngrx/effects';
+import {HttpClient} from '@angular/common/http';
+import {Store} from '@ngrx/store';
+import {map, switchMap, withLatestFrom, catchError, tap, takeUntil} from 'rxjs/operators';
+import {ObservedValueOf, of, Subject, timer} from 'rxjs';
+import {State} from '../../app.reducers';
 
 const networkActionDestroy$ = new Subject();
 
@@ -38,7 +38,7 @@ export class NetworkActionEffects {
     ofType('NETWORK_ACTION_FILTER'),
 
     // merge state
-    withLatestFrom(this.store, (action: any, state: ObservedValueOf<Store<State>>) => ({ action, state })),
+    withLatestFrom(this.store, (action: any, state: ObservedValueOf<Store<State>>) => ({action, state})),
 
     tap(response => {
       networkActionDestroy$.next();
@@ -46,7 +46,7 @@ export class NetworkActionEffects {
     }),
 
     // dispatch action
-    map((payload) => ({ type: 'NETWORK_ACTION_LOAD', payload })),
+    map((payload) => ({type: 'NETWORK_ACTION_LOAD', payload})),
     catchError((error, caught) => {
       console.error(error);
       this.store.dispatch({
@@ -63,9 +63,9 @@ export class NetworkActionEffects {
     ofType('NETWORK_ACTION_START'),
 
     // merge state
-    withLatestFrom(this.store, (action: any, state: ObservedValueOf<Store<State>>) => ({ action, state })),
+    withLatestFrom(this.store, (action: any, state: ObservedValueOf<Store<State>>) => ({action, state})),
 
-    switchMap(({ action, state }) =>
+    switchMap(({action, state}) =>
       // get header data every second
       timer(0, 2000).pipe(
         takeUntil(networkActionDestroy$),
@@ -82,18 +82,40 @@ export class NetworkActionEffects {
   );
 
   // stop network action download
-  @Effect({ dispatch: false })
+  @Effect({dispatch: false})
   NetworkActionStopEffect$ = this.actions$.pipe(
     ofType('NETWORK_ACTION_STOP'),
     // merge state
-    withLatestFrom(this.store, (action: any, state: ObservedValueOf<Store<State>>) => ({ action, state })),
+    withLatestFrom(this.store, (action: any, state: ObservedValueOf<Store<State>>) => ({action, state})),
     // init app modules
-    tap(({ action, state }) => {
+    tap(({action, state}) => {
       // console.log('[LOGS_ACTION_STOP] stream', state.logsAction.stream);
       // close all open observables
       // if (state.logsAction.stream) {
       networkActionDestroy$.next();
       // }
+    })
+  );
+
+  @Effect()
+  StorageBlockDetailsLoad$ = this.actions$.pipe(
+    ofType('NETWORK_ACTION_DETAILS_LOAD'),
+
+    // merge state
+    withLatestFrom(this.store, (action: any, state: ObservedValueOf<Store<State>>) => ({action, state})),
+    switchMap(({action, state}) => {
+      return this.http.get(setDetailsUrl(action, state));
+    }),
+
+    // dispatch action
+    map((payload) => ({type: 'NETWORK_ACTION_DETAILS_LOAD_SUCCESS', payload})),
+    catchError((error, caught) => {
+      console.error(error);
+      this.store.dispatch({
+        type: 'NETWORK_ACTION_DETAILS_LOAD_ERROR',
+        payload: error
+      });
+      return caught;
     })
   );
 
@@ -116,6 +138,11 @@ export function setUrl(action, state) {
 
   return `${url}${filters.length ? `${filters}&` : ''}${cursor.length ? `${cursor}&` : ''}${limit}`;
 }
+
+export function setDetailsUrl(action, state) {
+  return `${state.settingsNode.debugger}/v2/p2p/${action.payload.originalId}`;
+}
+
 
 // use limit to load just the necessary number of records
 export function networkActionLimit(action) {

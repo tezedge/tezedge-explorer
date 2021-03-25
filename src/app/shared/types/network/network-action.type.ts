@@ -5,6 +5,7 @@ export class NetworkAction {
   ids: number[];
   entities: { [id: string]: NetworkActionEntity };
   lastCursorId: number;
+  selected: any; // TODO create a type
   filter: NetworkActionFilter;
   stream: boolean;
   urlParams: string;

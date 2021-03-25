@@ -1,16 +1,20 @@
 <div class="network-action-container">
 
   <div class="table-virtual-scroll">
-    <div class="filters-container logs-filters ">
+    <div class="filters-container">
 
       <div class="active-filters-row">
         <button class="add-filters" mat-flat-button (click)="filtersState.open=true" [disabled]="filtersState.open">
-          <span>
-            <svg-icon icon="filter"></svg-icon>
-            <!--            {{filtersState.open ? 'Active Filters' : 'ADD FILTER'}}-->
-            {{'Filters'}}
-          </span>
+          <svg-icon icon="filter" scale="0.8"></svg-icon>
+          {{filtersState.open ? 'Active Filters' : 'ADD FILTER'}}
         </button>
+
+        <div class="filters-content">
+          <button *ngFor="let filter of activeFilters" mat-flat-button (click)=" filterType(filter)">
+            {{filter}}
+            <svg-icon icon="close" scale="0.8"></svg-icon>
+          </button>
+        </div>
 
       </div>
 
@@ -30,50 +34,55 @@
             <!--            </div>-->
 
             <div class="filters-row">
-              <span class="filters-label" style="padding: 0px 14px 0px 0px; width: 51px;">Control</span>
+              <span class="filters-label">Control</span>
               <button mat-flat-button [class.active]="virtualScrollItems.filter.connection"
                       (click)=" filterType('connection')">
                 Connection
+                <svg-icon icon="close" scale="0.8"></svg-icon>
               </button>
               <button mat-flat-button [class.active]="virtualScrollItems.filter.meta" (click)="filterType('meta')">
                 Meta
+                <svg-icon icon="close" scale="0.8"></svg-icon>
               </button>
               <button mat-flat-button [class.active]="virtualScrollItems.filter.acknowledge"
                       (click)=" filterType('acknowledge')">
                 Acknowledge
+                <svg-icon icon="close" scale="0.8"></svg-icon>
               </button>
               <button mat-flat-button [class.active]="virtualScrollItems.filter.bootstrap"
                       (click)=" filterType('bootstrap')">
                 Bootstrap
+                <svg-icon icon="close" scale="0.8"></svg-icon>
               </button>
               <button mat-flat-button [class.active]="virtualScrollItems.filter.advertise"
                       (click)=" filterType('advertise')">
                 Advertise
+                <svg-icon icon="close" scale="0.8"></svg-icon>
               </button>
               <button mat-flat-button [class.active]="virtualScrollItems.filter.swap" (click)=" filterType('swap')">
                 Swap
+                <svg-icon icon="close" scale="0.8"></svg-icon>
               </button>
               <button mat-flat-button [class.active]="virtualScrollItems.filter.deactivate"
                       (click)=" filterType('deactivate')">
                 Deactivate
+                <svg-icon icon="close" scale="0.8"></svg-icon>
               </button>
 
-              <span class="filters-label" style="padding: 0px 8px 0px 8px; width: 40px;">Source</span>
+              <span class="filters-label source-filters-label">Source</span>
               <button mat-flat-button [class.active]="virtualScrollItems.filter.local" (click)=" filterType('local')">
-                <span style="display:inline-block; margin: 1px 0px 0px -5px;">
-                  <svg-icon icon="local" scale="0.8"></svg-icon>
-                </span>
+                <svg-icon icon="local" scale="0.8"></svg-icon>
                 Local
+                <svg-icon icon="close" scale="0.8"></svg-icon>
               </button>
               <button mat-flat-button [class.active]="virtualScrollItems.filter.remote" (click)=" filterType('remote')">
-                <span style="display:inline-block; margin: 1px 0px 0px -5px;">
-                  <svg-icon icon="remote" scale="0.8"></svg-icon>
-                </span>
+                <svg-icon icon="remote" scale="0.8"></svg-icon>
                 Remote
+                <svg-icon icon="close" scale="0.8"></svg-icon>
               </button>
 
 
-              <span *ngIf="virtualScrollItems.urlParams" style="padding:0px 8px 0px 8px; width: 50px;">Address</span>
+              <span *ngIf="virtualScrollItems.urlParams" style="padding:0 8px 0 8px; width: 50px;">Address</span>
               <button *ngIf="virtualScrollItems.urlParams" mat-flat-button class="active" (click)="filterAddress()">
                 {{ virtualScrollItems.urlParams }}
               </button>
@@ -81,35 +90,42 @@
 
             <div class="filters-row">
 
-              <span class="filters-label" style="padding:0px 6px 0px 0px; width: 60px;">Messages</span>
+              <span class="filters-label">Messages</span>
 
               <button mat-flat-button [class.active]="virtualScrollItems.filter.currentHead"
                       (click)=" filterType('currentHead')">
                 Current Head
+                <svg-icon icon="close" scale="0.8"></svg-icon>
               </button>
               <button mat-flat-button [class.active]="virtualScrollItems.filter.currentBranch"
                       (click)=" filterType('currentBranch')">
                 Current Branch
+                <svg-icon icon="close" scale="0.8"></svg-icon>
               </button>
               <button mat-flat-button [class.active]="virtualScrollItems.filter.operation"
                       (click)=" filterType('operation')">
                 Operation
+                <svg-icon icon="close" scale="0.8"></svg-icon>
               </button>
               <button mat-flat-button [class.active]="virtualScrollItems.filter.protocol"
                       (click)=" filterType('protocol')">
                 Protocol
+                <svg-icon icon="close" scale="0.8"></svg-icon>
               </button>
               <button mat-flat-button [class.active]="virtualScrollItems.filter.blockHeaders"
                       (click)=" filterType('blockHeaders')">
                 Block Headers
+                <svg-icon icon="close" scale="0.8"></svg-icon>
               </button>
               <button mat-flat-button [class.active]="virtualScrollItems.filter.blockOperations"
                       (click)=" filterType('blockOperations')">
                 Block Operations
+                <svg-icon icon="close" scale="0.8"></svg-icon>
               </button>
               <button mat-flat-button [class.active]="virtualScrollItems.filter.blockOperationsHashes"
                       (click)=" filterType('blockOperationsHashes')">
                 Block Operations Hashes
+                <svg-icon icon="close" scale="0.8"></svg-icon>
               </button>
 
 
@@ -135,8 +151,8 @@
                      (getItems)="getItems($event)" (startStopDataStream)="startStopDataStream($event)">
           <span class="virtualScrollRow network-row"
                 [style.transform]="position !== undefined ? 'translate(0px,' + position + 'px)' : ''"
-                [class.virtualScrollRowEven]="event?.index % 2" (click)="event ? tableMouseEnter(event) : null"
-                [class.hover]="event?.datetime && networkActionItem?.id===event?.id"
+                [class.virtualScrollRowEven]="event?.index % 2" (click)="event ? getItemDetails(event) : null"
+                [class.hover]="event?.datetime && virtualScrollItems?.selected?.id===event?.originalId"
                 [class.used]="event?.datetime">
 
             <span class="item-loading" [class.displayed]="!event?.datetime">&nbsp;</span>

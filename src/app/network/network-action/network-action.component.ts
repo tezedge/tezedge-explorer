@@ -26,6 +26,7 @@ export class NetworkActionComponent implements OnInit, OnDestroy {
     availableFields: []
   };
   virtualPageSize = 1000;
+  activeFilters = [];
 
   onDestroy$ = new Subject();
 
@@ -69,7 +70,10 @@ export class NetworkActionComponent implements OnInit, OnDestroy {
         this.networkActionShow = this.virtualScrollItems.ids.length > 0;
 
         this.pagesIdsList = Object.keys(this.virtualScrollItems.pages);
+        this.activeFilters = this.setActiveFilters(this.virtualScrollItems.filter);
+
         console.log(this.pagesIdsList);
+        console.log(this.activeFilters);
 
         // if (this.networkActionShow && !this.networkActionItem) {
         // this.networkActionItem = this.virtualScrollItems.ids.length > 0 ?
@@ -77,7 +81,7 @@ export class NetworkActionComponent implements OnInit, OnDestroy {
         //   null;
         // }
 
-        console.log(this.virtualScrollItems);
+        console.log(this.virtualScrollItems.selected);
 
         this.changeDetector.markForCheck();
         //
@@ -88,12 +92,37 @@ export class NetworkActionComponent implements OnInit, OnDestroy {
 
   }
 
+  setActiveFilters(filters): string[] {
+    return Object.keys(this.virtualScrollItems.filter)
+      .reduce((accumulator, filter) => {
+        if (this.virtualScrollItems.filter[filter]) {
+          return [
+            ...accumulator,
+            filter
+          ];
+        } else {
+          return accumulator;
+        }
+      }, []);
+
+    // return ['aa'];
+  }
+
   getItems($event) {
     this.store.dispatch({
       type: 'NETWORK_ACTION_LOAD',
       payload: {
         cursor_id: $event?.nextCursorId,
         limit: $event?.limit
+      }
+    });
+  }
+
+  getItemDetails($event) {
+    this.store.dispatch({
+      type: 'NETWORK_ACTION_DETAILS_LOAD',
+      payload: {
+        originalId: $event?.originalId
       }
     });
   }

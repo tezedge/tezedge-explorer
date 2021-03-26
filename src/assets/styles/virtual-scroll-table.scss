@@ -163,6 +163,10 @@
 
 .network-action-table-address a {
   color: $color-table;
+
+  &:hover {
+    text-decoration: underline !important;
+  }
 }
 
 //.network-action-table-detail {
@@ -311,6 +315,7 @@
   display: grid;
   padding: 0 16px;
   box-sizing: border-box;
+  cursor: pointer;
 
   &.logs-row {
     grid-template-columns: 180px 60px 1fr;

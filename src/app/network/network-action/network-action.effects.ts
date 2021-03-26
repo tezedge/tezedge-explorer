@@ -57,6 +57,29 @@ export class NetworkActionEffects {
     })
   );
 
+  @Effect()
+  NetworkActionAddress$ = this.actions$.pipe(
+    ofType('NETWORK_ACTION_ADDRESS'),
+
+    // merge state
+    withLatestFrom(this.store, (action: any, state: ObservedValueOf<Store<State>>) => ({action, state})),
+
+    tap(response => {
+      networkActionDestroy$.next();
+    }),
+
+    // dispatch action
+    map((payload) => ({type: 'NETWORK_ACTION_LOAD', payload})),
+    catchError((error, caught) => {
+      console.error(error);
+      this.store.dispatch({
+        type: 'NETWORK_ACTION_ADDRESS_ERROR',
+        payload: error
+      });
+      return caught;
+    })
+  );
+
   // load network actions
   @Effect()
   NetworkActionStartEffect$ = this.actions$.pipe(

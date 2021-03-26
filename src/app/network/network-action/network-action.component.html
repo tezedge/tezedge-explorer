@@ -16,6 +16,14 @@
           </button>
         </div>
 
+        <div class="filters-content">
+          <button *ngIf="virtualScrollItems.urlParams" mat-flat-button (click)="filterAddress()">
+            Address:
+            {{ virtualScrollItems.urlParams }}
+            <svg-icon icon="close" scale="0.8"></svg-icon>
+          </button>
+        </div>
+
       </div>
 
       <mat-accordion class="filters-accordion">
@@ -79,12 +87,6 @@
                 <svg-icon icon="remote" scale="0.8"></svg-icon>
                 Remote
                 <svg-icon icon="close" scale="0.8"></svg-icon>
-              </button>
-
-
-              <span *ngIf="virtualScrollItems.urlParams" style="padding:0 8px 0 8px; width: 50px;">Address</span>
-              <button *ngIf="virtualScrollItems.urlParams" mat-flat-button class="active" (click)="filterAddress()">
-                {{ virtualScrollItems.urlParams }}
               </button>
             </div>
 

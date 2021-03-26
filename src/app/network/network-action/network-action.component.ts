@@ -46,19 +46,18 @@ export class NetworkActionComponent implements OnInit, OnDestroy {
     this.scrollStart(null);
     // this.getItems({limit: this.virtualPageSize});
 
-    // this.activeRoute.params
-    //   .pipe(takeUntil(this.onDestroy$))
-    //   .subscribe((params) => {
-    //
-    //     // triger action and get network data
-    //     this.store.dispatch({
-    //       type: 'NETWORK_ACTION_LOAD',
-    //       payload: {
-    //         filter: params.address ? params.address : ''
-    //       }
-    //     });
-    //
-    //   });
+    this.activeRoute.params
+      .pipe(takeUntil(this.onDestroy$))
+      .subscribe((params) => {
+
+        this.store.dispatch({
+          type: 'NETWORK_ACTION_ADDRESS',
+          payload: {
+            urlParams: params.address ? params.address : '',
+          }
+        });
+
+      });
 
     // wait for data changes from redux
     this.store.select('networkAction')
@@ -72,16 +71,13 @@ export class NetworkActionComponent implements OnInit, OnDestroy {
         this.pagesIdsList = Object.keys(this.virtualScrollItems.pages);
         this.activeFilters = this.setActiveFilters(this.virtualScrollItems.filter);
 
-        console.log(this.pagesIdsList);
-        console.log(this.activeFilters);
-
         // if (this.networkActionShow && !this.networkActionItem) {
         // this.networkActionItem = this.virtualScrollItems.ids.length > 0 ?
         //   this.virtualScrollItems.entities[this.virtualScrollItems.ids[this.virtualScrollItems.ids.length - 1]] :
         //   null;
         // }
 
-        console.log(this.virtualScrollItems.selected);
+        console.log(this.virtualScrollItems);
 
         this.changeDetector.markForCheck();
         //
@@ -200,9 +196,7 @@ export class NetworkActionComponent implements OnInit, OnDestroy {
   }
 
   filterAddress() {
-    // remove address and route to default network url
     this.router.navigate(['network']);
-
   }
 
   tableMouseEnter(item) {

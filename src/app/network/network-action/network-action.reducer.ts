@@ -68,12 +68,20 @@ export function reducer(state: NetworkAction = initialState, action): NetworkAct
     case 'NETWORK_ACTION_FILTER': {
       const stateFilter = {
         ...state.filter,
-        [action.payload]: !state.filter[action.payload]
+        [action.payload]: !state.filter[action.payload],
       };
 
       return {
         ...initialState,
+        urlParams: state.urlParams,
         filter: stateFilter
+      };
+    }
+
+    case 'NETWORK_ACTION_ADDRESS': {
+      return {
+        ...state,
+        urlParams: action.payload.urlParams ? action.payload.urlParams : ''
       };
     }
 

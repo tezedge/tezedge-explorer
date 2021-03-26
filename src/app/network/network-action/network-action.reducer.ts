@@ -102,15 +102,15 @@ export function setDetails(action) {
   }
 
   const hexValues = action.payload.original_bytes ? setHexValues(action.payload.original_bytes) : [];
-  const payload = {};
+  let payload;
 
   if (action.payload.message && action.payload.message.length && action.payload.message[0].type) {
-    this.payload = {...action.payload.message[0]};
-    delete this.payload.type;
+    payload = {...action.payload.message[0]};
+    delete payload.type;
   } else {
-    this.payload = action.payload;
-    delete this.payload.error;
-    delete this.payload.original_bytes;
+    payload = action.payload;
+    delete payload.error;
+    delete payload.original_bytes;
   }
 
   return {

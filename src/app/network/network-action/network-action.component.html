@@ -160,8 +160,9 @@
             <span class="item-loading" [class.displayed]="!event?.datetime">&nbsp;</span>
 
             <span class="truncate">{{event?.datetime}}</span>
-            <span class="network-action-table-address truncate"><a
-              href="#/network/{{ event?.remote_addr }}"> {{ event?.remote_addr }}</a></span>
+            <span class="network-action-table-address truncate">
+              <a href="#/network/{{ event?.remote_addr }}"> {{ event?.remote_addr }}</a>
+            </span>
             <span>
               <span *ngIf="event?.datetime && (event?.source_type==='local' || event?.source_type==='remote')">
                 <svg-icon icon="{{event?.source_type==='local' ? 'local' : 'remote'}}"></svg-icon>
@@ -237,13 +238,13 @@
 
       <button fxLayout="row" fxLayoutAlign="center center" class="square-button" id="previousPage" mat-icon-button
               matTooltip="Previous Page" (click)="loadPreviousPage()"
-              [disabled]="!pagesIdsList.length || virtualScrollItems.ids.length < virtualPageSize">
+              [disabled]="!virtualScrollItems?.pages?.length || virtualScrollItems.ids.length < virtualPageSize">
         <svg-icon icon="less-than"></svg-icon>
       </button>
 
       <button fxLayout="row" fxLayoutAlign="center center" class="square-button" id="nextPage" mat-icon-button
               matTooltip="Next Page" (click)="loadNextPage()"
-              [disabled]="!pagesIdsList.length || virtualScrollItems.activePage.id == pagesIdsList[pagesIdsList.length - 1]">
+              [disabled]="!virtualScrollItems?.pages?.length || virtualScrollItems.activePage.id == virtualScrollItems?.pages[virtualScrollItems?.pages?.length - 1]">
         <svg-icon icon="greater-than"></svg-icon>
       </button>
 

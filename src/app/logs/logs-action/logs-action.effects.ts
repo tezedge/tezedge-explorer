@@ -44,7 +44,7 @@ export class LogsActionEffects {
     }),
 
     // dispatch action
-    map((payload) => ({ type: 'LOGS_ACTION_START', payload })),
+    map((payload) => ({ type: 'LOGS_ACTION_LOAD', payload })),
     catchError((error, caught) => {
       console.error(error);
       this.store.dispatch({
@@ -116,7 +116,7 @@ export function setUrl(action, state) {
 export function logsActionLimit(action) {
   const limitNr = action.payload && action.payload.limit ?
     action.payload.limit :
-    '60';
+    '1000';
 
   return `limit=${limitNr}`;
 }
@@ -139,8 +139,7 @@ export function logsActionFilter(action, state) {
     filterType = stateFilter.debug ? filterType + 'debug,' : filterType;
     filterType = stateFilter.info ? filterType + 'info,' : filterType;
     filterType = stateFilter.notice ? filterType + 'notice,' : filterType;
-    filterType = stateFilter.warn ? filterType + 'warn,' : filterType;
-    filterType = stateFilter.warning ? filterType + 'warning,' : filterType;
+    filterType = stateFilter.warning ? filterType + 'warning,warn,' : filterType;
     filterType = stateFilter.error ? filterType + 'error,' : filterType;
     filterType = stateFilter.fatal ? filterType + 'fatal,' : filterType;
 

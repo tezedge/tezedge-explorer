@@ -2,7 +2,7 @@ import {Component, OnInit, OnDestroy, ViewChild, ChangeDetectionStrategy, NgZone
 import {Store} from '@ngrx/store';
 import {Subject} from 'rxjs';
 import {takeUntil} from 'rxjs/operators';
-import {VirtualScrollDirective} from '../../shared/virtual-scroll.directive';
+import {VirtualScrollDirective} from '../../shared/virtual-scroll/virtual-scroll.directive';
 
 @Component({
   selector: 'app-storage-block',
@@ -16,8 +16,7 @@ export class StorageBlockComponent implements OnInit, OnDestroy {
   storageBlockShow: boolean;
   // storageBlockItem;
   filtersState = {
-    open: false,
-    availableFields: []
+    open: false
   };
 
   onDestroy$ = new Subject();

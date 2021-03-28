@@ -18,11 +18,10 @@ export class NetworkActionEffects {
     withLatestFrom(this.store, (action: any, state: ObservedValueOf<Store<State>>) => ({action, state})),
 
     switchMap(({action, state}) => {
-      this.limit = action.payload?.limit || 1000;
       return this.http.get(setUrl(action, state));
     }),
 
-    map((payload) => ({type: 'NETWORK_ACTION_LOAD_SUCCESS', payload, limit: this.limit})),
+    map((payload) => ({type: 'NETWORK_ACTION_LOAD_SUCCESS', payload})),
     catchError((error, caught) => {
       console.error(error);
       this.store.dispatch({
@@ -93,9 +92,8 @@ export class NetworkActionEffects {
       timer(0, 2000).pipe(
         takeUntil(networkActionDestroy$),
         switchMap(() => {
-            this.limit = action.payload?.limit || 1000;
             return this.http.get(setUrl(action, state)).pipe(
-              map(response => ({type: 'NETWORK_ACTION_START_SUCCESS', payload: response, limit: this.limit})),
+              map(response => ({type: 'NETWORK_ACTION_START_SUCCESS', payload: response})),
               catchError(error => of({type: 'NETWORK_ACTION_START_ERROR', payload: error}))
             );
           }
@@ -142,8 +140,6 @@ export class NetworkActionEffects {
     })
   );
 
-  private limit: any;
-
   constructor(
     private http: HttpClient,
     private actions$: Actions,
@@ -165,7 +161,6 @@ export function setUrl(action, state) {
 export function setDetailsUrl(action, state) {
   return `${state.settingsNode.debugger}/v2/p2p/${action.payload.originalId}`;
 }
-
 
 // use limit to load just the necessary number of records
 export function networkActionLimit(action) {

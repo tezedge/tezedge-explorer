@@ -12,7 +12,6 @@ const initialState: LogsAction = {
     debug: false,
     info: false,
     notice: false,
-    warn: false,
     warning: false,
     error: false,
     fatal: false

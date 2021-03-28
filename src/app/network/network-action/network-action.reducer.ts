@@ -1,6 +1,7 @@
 import * as moment from 'moment-mini-ts';
 import {NetworkAction} from '../../shared/types/network/network-action.type';
 import {NetworkActionEntity} from '../../shared/types/network/network-action-entity.type';
+import {VirtualScrollActivePage} from '../../shared/types/shared/virtual-scroll-active-page.type';
 
 const initialState: NetworkAction = {
   ids: [],
@@ -30,7 +31,7 @@ const initialState: NetworkAction = {
   stream: false,
   urlParams: '',
   activePage: {},
-  pages: {}
+  pages: []
 };
 
 export function reducer(state: NetworkAction = initialState, action): NetworkAction {
@@ -58,7 +59,7 @@ export function reducer(state: NetworkAction = initialState, action): NetworkAct
         ...state,
         ids: setIds(action),
         entities,
-        lastCursorId: setLastCursorId(action, state),
+        lastCursorId: setLastCursorId(action),
         activePage,
         pages: setPages(activePage, state),
         stream: action.type === 'NETWORK_ACTION_START_SUCCESS',
@@ -129,7 +130,7 @@ export function setDetails(action) {
   };
 }
 
-export function setIds(action): Array<number> {
+export function setIds(action): number[] {
   if (!action.payload.length) {
     return [];
   }
@@ -159,7 +160,7 @@ export function setEntities(action, state): { [id: string]: NetworkActionEntity 
       }, {});
 }
 
-export function setLastCursorId(action, state): number {
+export function setLastCursorId(action): number {
   return action.payload.length - 1;
 }
 
@@ -177,7 +178,7 @@ export function setVirtualScrollId(action, state, accumulator): number {
   return action.payload.length - (alreadySetRecords.length + 1);
 }
 
-export function setActivePage(entities, action): any {
+export function setActivePage(entities, action): VirtualScrollActivePage {
   if (!action.payload.length) {
     return {};
   }
@@ -190,27 +191,24 @@ export function setActivePage(entities, action): any {
   };
 }
 
-export function setPages(activePage, state) {
+export function setPages(activePage, state): number[] {
   if (!activePage.id) {
-    return {};
+    return [];
   }
 
-  const pagesArray = Object.keys(state.pages)
-    .sort((a, b) => Number(b) - Number(a));
+  const pagesArray = [...state.pages];
 
-  if (Number(pagesArray[0]) < Number(activePage.id)) {
-    return {
-      [activePage.id]: activePage
-    };
+  if (pagesArray.indexOf(activePage.id) !== -1) {
+    return [...state.pages];
+  }
+
+  if (Number(pagesArray[pagesArray.length - 1]) < activePage.id) {
+    return [activePage.id].sort((a, b) => a - b);
   } else {
-    return {
-      ...state.pages,
-      [activePage.id]: activePage
-    };
+    return [...state.pages, activePage.id].sort((a, b) => a - b);
   }
 
 }
-
 
 // filter network items according to traffic source
 // export function networkActionSourceFilter(entity, filter) {

@@ -5,7 +5,7 @@ import {Store} from '@ngrx/store';
 import {Subject} from 'rxjs';
 import {takeUntil} from 'rxjs/operators';
 
-import { VirtualScrollFromTopDirective } from '../../shared/virtual-scroll-from-top.directive';
+import { VirtualScrollFromTopDirective } from '../../shared/virtual-scroll/virtual-scroll-from-top.directive';
 
 @Component({
   selector: 'app-storage-action',
@@ -18,8 +18,7 @@ export class StorageActionComponent implements OnInit, OnDestroy {
   storageActionShow: boolean;
   storageActionItem;
   filtersState = {
-    open: false,
-    availableFields: []
+    open: false
   };
   block: string;
   viewLast = 'block';

@@ -7,7 +7,6 @@
   font-family: Roboto, "Helvetica Neue", sans-serif;
   color: $color-table;
   background-color: $color-table-background;
-  // border: 1px solid $color-table-border;
   border-top-left-radius: 4px;
 }
 
@@ -28,7 +27,7 @@
   }
 
   &.network-header {
-    grid-template-columns: 180px 160px 80px 180px 1fr; // initial it was 260px before 1fr
+    grid-template-columns: 180px 180px 80px 180px 1fr;
   }
 
   &.storage-block-header {
@@ -322,7 +321,7 @@
   }
 
   &.network-row {
-    grid-template-columns: 180px 160px 80px 180px 1fr;
+    grid-template-columns: 180px 180px 80px 180px 1fr;
   }
 
   &.storage-block-row {

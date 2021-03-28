@@ -1,5 +1,6 @@
 import { NetworkActionEntity } from './network-action-entity.type';
 import { NetworkActionFilter } from './network-action-filter.type';
+import {VirtualScrollActivePage} from '../shared/virtual-scroll-active-page.type';
 
 export class NetworkAction {
   ids: number[];
@@ -9,6 +10,6 @@ export class NetworkAction {
   filter: NetworkActionFilter;
   stream: boolean;
   urlParams: string;
-  activePage: any; // TODO create a type
-  pages: any; // TODO create a type
+  activePage: VirtualScrollActivePage;
+  pages: number[];
 }

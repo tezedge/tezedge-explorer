@@ -4,7 +4,7 @@ import {Router, ActivatedRoute} from '@angular/router';
 import {Store} from '@ngrx/store';
 import {Subject} from 'rxjs';
 import {takeUntil} from 'rxjs/operators';
-import {VirtualScrollDirective} from '../../shared/virtual-scroll.directive';
+import {VirtualScrollDirective} from '../../shared/virtual-scroll/virtual-scroll.directive';
 import {MatAccordion} from '@angular/material/expansion';
 import {State} from '../../app.reducers';
 import {NetworkAction} from '../../shared/types/network/network-action.type';
@@ -20,10 +20,8 @@ export class NetworkActionComponent implements OnInit, OnDestroy {
   virtualScrollItems: NetworkAction;
   networkActionShow: boolean;
   networkActionItem;
-  pagesIdsList: string[];
   filtersState = {
-    open: true,
-    availableFields: []
+    open: true
   };
   virtualPageSize = 1000;
   activeFilters = [];
@@ -68,7 +66,6 @@ export class NetworkActionComponent implements OnInit, OnDestroy {
         this.virtualScrollItems = data;
         this.networkActionShow = this.virtualScrollItems.ids.length > 0;
 
-        this.pagesIdsList = Object.keys(this.virtualScrollItems.pages);
         this.activeFilters = this.setActiveFilters(this.virtualScrollItems.filter);
 
         // if (this.networkActionShow && !this.networkActionItem) {
@@ -134,13 +131,13 @@ export class NetworkActionComponent implements OnInit, OnDestroy {
   }
 
   loadNextPage() {
-    const actualPageIndex = this.pagesIdsList.findIndex(pageId => Number(pageId) === this.virtualScrollItems.activePage.id);
+    const actualPageIndex = this.virtualScrollItems.pages.findIndex(pageId => Number(pageId) === this.virtualScrollItems.activePage.id);
 
-    if (actualPageIndex === this.pagesIdsList.length - 1) {
+    if (actualPageIndex === this.virtualScrollItems.pages.length - 1) {
       return;
     }
 
-    const nextPageId = this.pagesIdsList[actualPageIndex + 1];
+    const nextPageId = this.virtualScrollItems.pages[actualPageIndex + 1];
 
     this.getItems({
       nextCursorId: nextPageId,
@@ -152,7 +149,7 @@ export class NetworkActionComponent implements OnInit, OnDestroy {
     if (event.stop) {
       this.scrollStop();
     } else {
-      if (this.virtualScrollItems.activePage.id === Number(this.pagesIdsList[this.pagesIdsList.length - 1])) {
+      if (this.virtualScrollItems.activePage.id === Number(this.virtualScrollItems.pages[this.virtualScrollItems.pages.length - 1])) {
         this.scrollStart(event);
       }
     }

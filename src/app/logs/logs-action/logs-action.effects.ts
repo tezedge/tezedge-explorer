@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import { Actions, Effect, ofType } from '@ngrx/effects';
 import { HttpClient } from '@angular/common/http';
-import { Store } from '@ngrx/store';
+import { State, Store } from '@ngrx/store';
 import { catchError, map, switchMap, takeUntil, tap, withLatestFrom } from 'rxjs/operators';
-import { of, Subject, timer } from 'rxjs';
+import { ObservedValueOf, of, Subject, timer } from 'rxjs';
 
 const logActionDestroy$ = new Subject();
 
@@ -14,15 +14,13 @@ export class LogsActionEffects {
   LogsActionLoad$ = this.actions$.pipe(
     ofType('LOGS_ACTION_LOAD'),
 
-    // merge state
-    withLatestFrom(this.store, (action: any, state) => ({ action, state })),
+    withLatestFrom(this.store, (action: any, state: ObservedValueOf<State<Store>>) => ({action, state})),
 
     switchMap(({ action, state }) => {
       return this.http.get(setUrl(action, state));
     }),
 
-    // dispatch action
-    map((payload) => ({ type: 'LOGS_ACTION_LOAD_SUCCESS', payload })),
+    map((payload) => ({type: 'LOGS_ACTION_LOAD_SUCCESS', payload})),
     catchError((error, caught) => {
       console.error(error);
       this.store.dispatch({
@@ -38,7 +36,7 @@ export class LogsActionEffects {
     ofType('LOGS_ACTION_FILTER'),
 
     // merge state
-    withLatestFrom(this.store, (action: any, state) => ({ action, state })),
+    withLatestFrom(this.store, (action: any, state: ObservedValueOf<State<Store>>) => ({action, state})),
 
     tap(response => {
       logActionDestroy$.next();
@@ -46,7 +44,7 @@ export class LogsActionEffects {
     }),
 
     // dispatch action
-    map((payload) => ({ type: 'LOGS_ACTION_START', payload })),
+    map((payload) => ({ type: 'LOGS_ACTION_LOAD', payload })),
     catchError((error, caught) => {
       console.error(error);
       this.store.dispatch({
@@ -63,11 +61,11 @@ export class LogsActionEffects {
     ofType('LOGS_ACTION_START'),
 
     // merge state
-    withLatestFrom(this.store, (action: any, state) => ({ action, state })),
+    withLatestFrom(this.store, (action: any, state: ObservedValueOf<State<Store>>) => ({action, state})),
 
     switchMap(({ action, state }) =>
       // get header data every second
-      timer(0, 1000).pipe(
+      timer(0, 2000).pipe(
         takeUntil(logActionDestroy$),
         switchMap(() =>
           this.http.get(setUrl(action, state)).pipe(
@@ -84,7 +82,7 @@ export class LogsActionEffects {
   LogsActionStopEffect$ = this.actions$.pipe(
     ofType('LOGS_ACTION_STOP'),
     // merge state
-    withLatestFrom(this.store, (action: any, state) => ({ action, state })),
+    withLatestFrom(this.store, (action: any, state: ObservedValueOf<State<Store>>) => ({action, state})),
     // init app modules
     tap(({ action, state }) => {
       // console.log('[LOGS_ACTION_STOP] stream', state.logsAction.stream);
@@ -105,7 +103,8 @@ export class LogsActionEffects {
 }
 
 export function setUrl(action, state) {
-  const url = state.settingsNode.activeNode.debugger + '/v2/log/?';
+  const url = `${state.settingsNode.debugger}/v2/log?node_name=${state.settingsNode.activeNode.p2p_port}&`;
+
   const cursor = logsActionCursor(action);
   const filters = logsActionFilter(action, state);
   const limit = logsActionLimit(action);
@@ -117,7 +116,7 @@ export function setUrl(action, state) {
 export function logsActionLimit(action) {
   const limitNr = action.payload && action.payload.limit ?
     action.payload.limit :
-    '60';
+    '1000';
 
   return `limit=${limitNr}`;
 }
@@ -140,8 +139,7 @@ export function logsActionFilter(action, state) {
     filterType = stateFilter.debug ? filterType + 'debug,' : filterType;
     filterType = stateFilter.info ? filterType + 'info,' : filterType;
     filterType = stateFilter.notice ? filterType + 'notice,' : filterType;
-    filterType = stateFilter.warn ? filterType + 'warn,' : filterType;
-    filterType = stateFilter.warning ? filterType + 'warning,' : filterType;
+    filterType = stateFilter.warning ? filterType + 'warning,warn,' : filterType;
     filterType = stateFilter.error ? filterType + 'error,' : filterType;
     filterType = stateFilter.fatal ? filterType + 'fatal,' : filterType;
 

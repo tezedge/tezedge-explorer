@@ -10,8 +10,6 @@ import { AppRouting } from './app.routing';
 
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
-import { NgxChartsModule } from '@swimlane/ngx-charts';
-
 import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
@@ -26,7 +24,6 @@ import { MonitoringEffects } from './monitoring/monitoring.effects';
 import { MempoolActionEffects } from './mempool/mempool-action/mempool-action.effects';
 
 import { NetworkActionEffects } from './network/network-action/network-action.effects';
-import { NetworkActionDetailEffects } from './network/network-action-detail/network-action-detail.effects';
 
 import { EndpointsActionEffects } from './endpoints/endpoints-action/endpoints-action.effects';
 
@@ -50,7 +47,6 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatListModule } from '@angular/material/list';
-import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatTableModule } from '@angular/material/table';
 import { MatTabsModule } from '@angular/material/tabs';
@@ -70,7 +66,6 @@ import { ClipboardModule } from '@angular/cdk/clipboard';
 
 import { NetworkStatsComponent } from './network/network-stats/network-stats.component';
 import { NetworkHistoryComponent } from './network/network-history/network-history.component';
-import { NetworkEndpointComponent } from './network/network-endpoint/network-endpoint.component';
 
 // TODO: replace with reactive forms
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -81,7 +76,6 @@ import { StorageActionComponent } from './storage/storage-action/storage-action.
 import { StorageSearchComponent } from './storage/storage-search/storage-search.component';
 import { NetworkActionComponent } from './network/network-action/network-action.component';
 import { NetworkSearchComponent } from './network/network-search/network-search.component';
-import { NetworkActionDetailComponent } from './network/network-action-detail/network-action-detail.component';
 import { MonitoringComponent } from './monitoring/monitoring.component';
 
 import { NgxJsonViewerModule } from 'ngx-json-viewer';
@@ -105,8 +99,8 @@ import { SandboxComponent } from './sandbox/sandbox.component';
 
 import { NgrxFormDirective } from './shared/ngrx-form.directive';
 import { NgrxVirtualScrollDirective } from './shared/ngrx-virtual-scroll.directive';
-import { VirtualScrollDirective } from './shared/virtual-scroll.directive';
-import { VirtualScrollFromTopDirective } from './shared/virtual-scroll-from-top.directive';
+import { VirtualScrollDirective } from './shared/virtual-scroll/virtual-scroll.directive';
+import { VirtualScrollFromTopDirective } from './shared/virtual-scroll/virtual-scroll-from-top.directive';
 
 import { SandboxStatusBarComponent } from './sandbox/sandbox-status-bar/sandbox-status-bar.component';
 import { WalletsComponent } from './wallets/wallets.component';
@@ -116,6 +110,8 @@ import { CommitNumberComponent } from './monitoring/commit-number/commit-number.
 import { CommitNumberEffects } from './monitoring/commit-number/commit-number.effects';
 import { ResourcesEffects } from './resources/resources/resources.effects';
 import { TezedgeSharedModule } from './shared/tezedge-shared.module';
+import { NavigationMenuComponent } from './layout/navigation-menu/navigation-menu.component';
+import { DatePipe } from '@angular/common';
 
 @NgModule({
   declarations: [
@@ -124,7 +120,6 @@ import { TezedgeSharedModule } from './shared/tezedge-shared.module';
     NetworkPeersComponent,
     NetworkStatsComponent,
     NetworkHistoryComponent,
-    NetworkEndpointComponent,
     BandwidthPipe,
     StorageComponent,
     StorageBlockComponent,
@@ -132,7 +127,6 @@ import { TezedgeSharedModule } from './shared/tezedge-shared.module';
     StorageSearchComponent,
     NetworkActionComponent,
     NetworkSearchComponent,
-    NetworkActionDetailComponent,
     MonitoringComponent,
     EndpointsActionComponent,
     EndpointsSearchComponent,
@@ -157,7 +151,8 @@ import { TezedgeSharedModule } from './shared/tezedge-shared.module';
     WalletsComponent,
     MempoolComponent,
     MempoolActionComponent,
-    CommitNumberComponent
+    CommitNumberComponent,
+    NavigationMenuComponent
   ],
   imports: [
     BrowserModule,
@@ -192,7 +187,6 @@ import { TezedgeSharedModule } from './shared/tezedge-shared.module';
       MonitoringEffects,
       MempoolActionEffects,
       NetworkActionEffects,
-      NetworkActionDetailEffects,
       StorageBlockEffects,
       StorageActionEffects,
       StorageSearchEffects,
@@ -220,7 +214,6 @@ import { TezedgeSharedModule } from './shared/tezedge-shared.module';
     MatInputModule,
     MatListModule,
     MatPaginatorModule,
-    MatProgressBarModule,
     MatProgressSpinnerModule,
     MatRadioModule,
     MatSelectModule,
@@ -233,8 +226,6 @@ import { TezedgeSharedModule } from './shared/tezedge-shared.module';
     MatTooltipModule,
     ClipboardModule,
 
-    NgxChartsModule,
-
     FormsModule,
     ReactiveFormsModule,
     // ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production }),
@@ -243,7 +234,7 @@ import { TezedgeSharedModule } from './shared/tezedge-shared.module';
     TezedgeSharedModule
 
   ],
-  providers: [],
+  providers: [DatePipe],
   exports: [],
   bootstrap: [AppComponent]
 })

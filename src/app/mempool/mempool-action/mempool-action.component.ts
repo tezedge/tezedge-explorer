@@ -2,6 +2,8 @@ import { Component, OnInit, OnDestroy, ViewChild, ChangeDetectionStrategy } from
 import { Store } from '@ngrx/store';
 import { Subject, Observable, Subscription } from 'rxjs';
 import { takeUntil, map, debounceTime, filter } from 'rxjs/operators';
+import { State } from '../../app.reducers';
+import { NetworkAction } from '../../shared/types/network/network-action.type';
 
 @Component({
   selector: 'app-mempool-action',
@@ -26,7 +28,7 @@ export class MempoolActionComponent implements OnInit, OnDestroy {
   public networkActionlastCursorId = 0;
 
   constructor(
-    public store: Store<any>,
+    public store: Store<State>,
   ) { }
 
   ngOnInit(): void {
@@ -58,7 +60,7 @@ export class MempoolActionComponent implements OnInit, OnDestroy {
     // wait for data changes from redux
     this.store.select('networkAction')
       .pipe(takeUntil(this.onDestroy$))
-      .subscribe(data => {
+      .subscribe((data: NetworkAction) => {
 
         if (this.networkActionlastCursorId < data.lastCursorId) {
 
@@ -76,7 +78,7 @@ export class MempoolActionComponent implements OnInit, OnDestroy {
   }
 
   // set clicked mempool item
-  clickWallet(item: any){    
+  clickWallet(item: any) {
     this.mempoolClickedItem = item;
     this.mempoolSelectedItem = this.mempoolClickedItem;
   }

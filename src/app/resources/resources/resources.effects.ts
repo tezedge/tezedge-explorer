@@ -11,30 +11,36 @@ import { State } from '../../app.reducers';
 @Injectable({ providedIn: 'root' })
 export class ResourcesEffects {
 
-  private resourcesDestroy$ = new Subject();
+  private resourcesDestroy$ = new Subject<void>();
 
   @Effect()
   ResourcesLoadEffect$ = this.actions$.pipe(
     ofType(ResourcesActionTypes.LoadResources),
     withLatestFrom(this.store, (action: any, state: ObservedValueOf<Store<State>>) => ({ action, state })),
     switchMap(({ action, state }) => {
-      this.resourcesDestroy$ = new Subject();
 
-      return timer(0, 30000).pipe(
-        takeUntil(this.resourcesDestroy$),
-        switchMap(() =>
-          this.resourcesService.getResources(state.settingsNode.activeNode.monitoring)
-            .pipe(
-              map((resources: Resource[]) => ({ type: ResourcesActionTypes.ResourcesLoadSuccess, payload: resources })),
-              catchError(error => of({ type: ResourcesActionTypes.ResourcesLoadError, payload: error }))
-            )
-        )
-      );
+      const resourcesData$ = this.resourcesService.getResources(state.settingsNode.activeNode.monitoring)
+        .pipe(
+          map((resources: Resource[]) => ({ type: ResourcesActionTypes.ResourcesLoadSuccess, payload: resources })),
+          catchError(error => of({ type: ResourcesActionTypes.ResourcesLoadError, payload: error }))
+        );
+
+      if (action.payload && action.payload.initialLoad) {
+        return resourcesData$;
+      }
+
+      this.resourcesDestroy$ = new Subject<void>();
+
+      return timer(0, 120000)
+        .pipe(
+          takeUntil(this.resourcesDestroy$),
+          switchMap(() => resourcesData$)
+        );
     })
   );
 
   @Effect({ dispatch: false })
-  MonitoringCloseEffect$ = this.actions$.pipe(
+  ResourcesCloseEffect$ = this.actions$.pipe(
     ofType(ResourcesActionTypes.ResourcesClose),
     withLatestFrom(this.store, (action: any, state) => ({ action, state })),
     tap(({ action, state }) => {

@@ -4,7 +4,7 @@ $text-color: rgb(164, 164, 165);
 .resource-category-block {
   position: relative;
   opacity: 0;
-  padding: 2vh 1vw 4vh 3vw;
+  padding: 2vh 3vw 4vh 0;
   transition: opacity 1s;
   border-radius: 5px;
   background-color: $faded-white;
@@ -24,15 +24,23 @@ $text-color: rgb(164, 164, 165);
   }
 
   .rotated-label {
-    position: absolute;
-    left: 10px;
-    top: 50%;
-    transform: rotate(-90deg);
+    //position: absolute;
+    //left: 10px;
+    //top: 50%;
     color: #fff;
     font-size: 12px;
+    white-space: nowrap;
+    display: flex;
+    align-items: center;
+    //justify-content: center;
+
+    span {
+      transform: rotate(-90deg) translateY(-6px);
+      padding-right: 3vh;
+    }
 
     @media (max-width: 800px) {
-      left: 0;
+      //left: 0;
     }
   }
 
@@ -40,12 +48,12 @@ $text-color: rgb(164, 164, 165);
     margin-bottom: 12px;
     cursor: context-menu;
     text-align: right;
-    padding-right: 19px;
 
     .graph-label-item {
       color: $text-color;
       font-size: 12px;
       display: inline-block;
+      margin-right: 15px;
 
       .label-color {
         width: 7px;

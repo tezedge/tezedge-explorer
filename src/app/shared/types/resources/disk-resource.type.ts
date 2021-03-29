@@ -4,6 +4,5 @@ export class DiskResource {
   contextMerkleRocksDb: number;
   contextActions: number;
   blockStorage: number;
-  debugger: number;
   total: number;
 }

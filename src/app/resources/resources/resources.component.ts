@@ -1,11 +1,12 @@
-import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, NgZone, OnDestroy, OnInit } from '@angular/core';
 import { select, Store } from '@ngrx/store';
 import { Resource } from '../../shared/types/resources/resource.type';
 import { Observable } from 'rxjs';
 import { ResourcesActionTypes } from './resources.actions';
-import { filter, map } from 'rxjs/operators';
+import { filter, map, skip } from 'rxjs/operators';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { BreakpointObserver } from '@angular/cdk/layout';
+import { State } from '../../app.reducers';
 
 
 class ChartData {
@@ -59,7 +60,6 @@ const COLOR_SCHEME = {
     '#ff8c00',
     '#ffe600',
     '#ff1c91',
-    '#97d948',
   ]
 };
 
@@ -83,7 +83,8 @@ export class ResourcesComponent implements OnInit, OnDestroy {
 
   private isSmallDevice: boolean;
 
-  constructor(private store: Store<any>,
+  constructor(private store: Store<State>,
+              private zone: NgZone,
               private breakpointObserver: BreakpointObserver) {}
 
   ngOnInit(): void {
@@ -97,7 +98,11 @@ export class ResourcesComponent implements OnInit, OnDestroy {
       untilDestroyed(this),
       select(state => state.resources.resources),
       filter((resources: Resource[]) => resources.length > 0),
-      map((resources: Resource[]) => this.createChartData(resources))
+      map((resources: Resource[]) => {
+        return this.zone.runOutsideAngular(() => {
+          return this.createChartData(resources);
+        });
+      })
     );
   }
 
@@ -108,7 +113,7 @@ export class ResourcesComponent implements OnInit, OnDestroy {
   private handleSmallDevices(): void {
     this.isSmallDevice = window.innerWidth < 1100;
     this.breakpointObserver.observe('(min-width: 1100px)')
-      .pipe(untilDestroyed(this))
+      .pipe(untilDestroyed(this), skip(1))
       .subscribe(() => {
         this.isSmallDevice = window.innerWidth < 1100;
         this.getResources();
@@ -120,9 +125,6 @@ export class ResourcesComponent implements OnInit, OnDestroy {
   }
 
   private createChartData(resources: Array<Resource>): ChartData {
-    // create a unique minute-based list of entries. Only one value for each minute
-    resources = [...new Map(resources.map(entry => [entry.timestamp, entry])).values()].reverse();
-
     this.resourcesSummary = this.createSummaryBlocks(resources);
 
     const chartData = new ChartData();
@@ -165,10 +167,6 @@ export class ResourcesComponent implements OnInit, OnDestroy {
       series: ResourcesComponent.getSeries(resources, 'disk.blockStorage')
     });
     chartData.disk.push({
-      name: 'DEBUGGER',
-      series: ResourcesComponent.getSeries(resources, 'disk.debugger')
-    });
-    chartData.disk.push({
       name: 'CONTEXT IRMIN',
       series: ResourcesComponent.getSeries(resources, 'disk.contextIrmin')
     });
@@ -191,7 +189,7 @@ export class ResourcesComponent implements OnInit, OnDestroy {
       });
     }
 
-    chartData.xTicksValues = ResourcesComponent.getFilteredXTicks(resources, Math.min(resources.length, this.isSmallDevice ? 5 : 15));
+    chartData.xTicksValues = ResourcesComponent.getFilteredXTicks(resources, Math.min(resources.length, this.isSmallDevice ? 2 : 7));
 
     return chartData;
   }
@@ -247,14 +245,13 @@ export class ResourcesComponent implements OnInit, OnDestroy {
       this.colorScheme.domain[1],
       'GB'
     ));
-    summary.disk.push(new ResourcesSummaryBlock('Debugger', lastResource.disk.debugger, this.colorScheme.domain[2], 'GB'));
-    summary.disk.push(new ResourcesSummaryBlock('Context Irmin', lastResource.disk.contextIrmin, this.colorScheme.domain[3], 'GB'));
+    summary.disk.push(new ResourcesSummaryBlock('Context Irmin', lastResource.disk.contextIrmin, this.colorScheme.domain[2], 'GB'));
     if (lastResource.disk.contextActions) {
       summary.disk.push(
         new ResourcesSummaryBlock(
           'Context Actions',
           lastResource.disk.contextActions,
-          this.colorScheme.domain[4],
+          this.colorScheme.domain[3],
           'GB'
         ));
     }
@@ -262,13 +259,13 @@ export class ResourcesComponent implements OnInit, OnDestroy {
       summary.disk.push(new ResourcesSummaryBlock(
         'Context Merkle Rocks DB',
         lastResource.disk.contextMerkleRocksDb,
-        this.colorScheme.domain[5],
+        this.colorScheme.domain[4],
         'GB'
       ));
     }
 
     if (lastResource.disk.mainDb) {
-      summary.disk.push(new ResourcesSummaryBlock('Main DB', lastResource.disk.mainDb, this.colorScheme.domain[6], 'GB'));
+      summary.disk.push(new ResourcesSummaryBlock('Main DB', lastResource.disk.mainDb, this.colorScheme.domain[5], 'GB'));
     }
     summary.disk.push(new ResourcesSummaryBlock('Total', lastResource.disk.total, this.colorScheme.domain[0], 'GB'));
 

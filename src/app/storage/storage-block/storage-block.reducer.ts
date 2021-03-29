@@ -1,17 +1,21 @@
 import * as moment from 'moment-mini-ts';
+import {setVirtualScrollId} from '../../network/network-action/network-action.reducer';
+import {VirtualScrollActivePage} from '../../shared/types/shared/virtual-scroll-active-page.type';
 
 const initialState: any = {
   ids: [],
   entities: {},
   lastCursorId: 0,
   stream: false,
-  selected: {}
+  selected: {},
+  activePage: {},
+  pages: []
 };
 
 export function reducer(state = initialState, action) {
   switch (action.type) {
 
-    // case 'STORAGE_BLOCK_LOAD': {
+    // case 'STORAGE_BLOCK_FETCH': {
     //   return {
     //     ...state,
     //     stream: true
@@ -19,13 +23,18 @@ export function reducer(state = initialState, action) {
     // }
 
     case 'STORAGE_BLOCK_START_SUCCESS':
-    case 'STORAGE_BLOCK_LOAD_SUCCESS': {
+    case 'STORAGE_BLOCK_FETCH_SUCCESS': {
+      const entities = setEntities(action, state);
+      const activePage = setActivePage(entities, action);
+
       return {
         ...state,
         ids: setIds(action),
-        entities: setEntities(state, action),
-        lastCursorId: setLastCursorId(action, state),
-        stream: action.type === 'STORAGE_BLOCK_START_SUCCESS'
+        entities,
+        lastCursorId: setLastCursorId(action),
+        activePage,
+        pages: setPages(activePage, state),
+        // stream: action.type === 'STORAGE_BLOCK_START_SUCCESS'
       };
     }
 
@@ -33,6 +42,13 @@ export function reducer(state = initialState, action) {
       return {
         ...state,
         stream: false
+      };
+    }
+
+    case 'STORAGE_BLOCK_START': {
+      return {
+        ...state,
+        stream: true
       };
     }
 
@@ -55,23 +71,33 @@ export function reducer(state = initialState, action) {
 }
 
 export function setIds(action) {
-  return action.payload
-    .map(item => item.level)
-    .sort((a, b) => a - b);
+  if (!action.payload.length) {
+    return [];
+  }
 
+  return action.payload
+    .map((item, index) => index)
+    .sort((a, b) => a - b);
 }
 
-export function setEntities(state, action) {
-  return action.payload
-    .reduce((accumulator, block) => ({
-      ...accumulator,
-      [block.level]: {
-        hash: block.block_hash,
-        id: block.level,
-        datetime: moment.utc(Number(block.timestamp)).format('HH:mm:ss.SSS, DD MMM YY'),
-        cyclePosition: block.cycle_position !== undefined ? block.cycle_position : ''
-      }
-    }), {});
+export function setEntities(action, state) {
+  return action.payload.length === 0 ?
+    {} :
+    action.payload
+      .reduce((accumulator, block) => {
+        const virtualScrollId = setVirtualScrollId(action, state, accumulator);
+
+        return {
+          ...accumulator,
+          [virtualScrollId]: {
+            hash: block.block_hash,
+            id: virtualScrollId,
+            originalId: block.level,
+            datetime: moment.utc(Number(block.timestamp)).format('HH:mm:ss.SSS, DD MMM YY'),
+            cyclePosition: block.cycle_position !== undefined ? block.cycle_position : ''
+          }
+        };
+      }, {});
 
   // return action.payload
   //   .reduce((accumulator, logsAction) => {
@@ -85,7 +111,38 @@ export function setEntities(state, action) {
   //   }, {});
 }
 
-export function setLastCursorId(action, state) {
-  return action.payload.length > 0 && state.lastCursorId < action.payload[0].level ?
-    action.payload[0].level : state.lastCursorId;
+export function setLastCursorId(action) {
+  return action.payload.length - 1;
+}
+
+export function setActivePage(entities, action): VirtualScrollActivePage {
+  if (!action.payload.length) {
+    return {};
+  }
+
+  return {
+    id: entities[action.payload.length - 1].originalId,
+    start: entities[0],
+    end: entities[action.payload.length - 1],
+    numberOfRecords: action.payload.length
+  };
+}
+
+export function setPages(activePage, state): number[] {
+  if (!activePage.id) {
+    return [];
+  }
+
+  const pagesArray = [...state.pages];
+
+  if (pagesArray.indexOf(activePage.id) !== -1) {
+    return [...state.pages];
+  }
+
+  if (Number(pagesArray[pagesArray.length - 1]) < activePage.id) {
+    return [activePage.id].sort((a, b) => a - b);
+  } else {
+    return [...state.pages, activePage.id].sort((a, b) => a - b);
+  }
+
 }

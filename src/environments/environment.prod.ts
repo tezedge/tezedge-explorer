@@ -5,6 +5,7 @@
 export const environment = {
   production: true,
   sandbox: window['env']['sandbox'] || false,
+  debugger: window['env']['debugger'] || false,
   api: window['env']['api'] || [],
   commit: window['env']['commit'] || ''
   //   [

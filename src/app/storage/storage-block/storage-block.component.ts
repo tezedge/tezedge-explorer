@@ -2,7 +2,7 @@ import {Component, OnInit, OnDestroy, ViewChild, ChangeDetectionStrategy, NgZone
 import {Store} from '@ngrx/store';
 import {Subject} from 'rxjs';
 import {takeUntil} from 'rxjs/operators';
-import {VirtualScrollDirective} from '../../shared/virtual-scroll.directive';
+import {VirtualScrollDirective} from '../../shared/virtual-scroll/virtual-scroll.directive';
 
 @Component({
   selector: 'app-storage-block',
@@ -14,16 +14,14 @@ export class StorageBlockComponent implements OnInit, OnDestroy {
 
   virtualScrollItems;
   storageBlockShow: boolean;
-  storageBlockItem;
   filtersState = {
-    open: false,
-    availableFields: []
+    open: false
   };
+  virtualPageSize = 1000;
 
   onDestroy$ = new Subject();
 
   @ViewChild(VirtualScrollDirective) vrFor: VirtualScrollDirective;
-
   // @ViewChild(MatAccordion) accordion: MatAccordion;
 
   constructor(
@@ -35,7 +33,6 @@ export class StorageBlockComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.store.dispatch({type: 'STORAGE_BLOCK_RESET'});
-
     this.scrollStart(null);
 
     this.store.select('storageBlock')
@@ -65,11 +62,36 @@ export class StorageBlockComponent implements OnInit, OnDestroy {
 
   getItems($event) {
     this.store.dispatch({
-      type: 'STORAGE_BLOCK_LOAD',
+      type: 'STORAGE_BLOCK_FETCH',
       payload: {
         cursor_id: $event?.nextCursorId,
         limit: $event?.limit
       }
+    });
+  }
+
+  loadPreviousPage() {
+    if (this.virtualScrollItems.stream) {
+      this.scrollStop();
+    }
+    this.getItems({
+      nextCursorId: this.virtualScrollItems.activePage.start.originalId,
+      limit: this.virtualPageSize
+    });
+  }
+
+  loadNextPage() {
+    const actualPageIndex = this.virtualScrollItems.pages.findIndex(pageId => Number(pageId) === this.virtualScrollItems.activePage.id);
+
+    if (actualPageIndex === this.virtualScrollItems.pages.length - 1) {
+      return;
+    }
+
+    const nextPageId = this.virtualScrollItems.pages[actualPageIndex + 1];
+
+    this.getItems({
+      nextCursorId: nextPageId,
+      limit: this.virtualPageSize
     });
   }
 
@@ -89,7 +111,7 @@ export class StorageBlockComponent implements OnInit, OnDestroy {
     this.store.dispatch({
       type: 'STORAGE_BLOCK_START',
       payload: {
-        limit: $event?.limit ? $event.limit : 60
+        limit: $event?.limit ? $event.limit : this.virtualPageSize
       }
     });
   }

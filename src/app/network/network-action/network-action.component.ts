@@ -1,11 +1,13 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, NgZone, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import {ChangeDetectionStrategy, ChangeDetectorRef, Component, NgZone, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {Router, ActivatedRoute} from '@angular/router';
 
 import {Store} from '@ngrx/store';
 import {Subject} from 'rxjs';
 import {takeUntil} from 'rxjs/operators';
-import {VirtualScrollDirective} from '../../shared/virtual-scroll.directive';
+import {VirtualScrollDirective} from '../../shared/virtual-scroll/virtual-scroll.directive';
 import {MatAccordion} from '@angular/material/expansion';
+import {State} from '../../app.reducers';
+import {NetworkAction} from '../../shared/types/network/network-action.type';
 
 @Component({
   selector: 'app-network-action',
@@ -15,13 +17,14 @@ import {MatAccordion} from '@angular/material/expansion';
 })
 export class NetworkActionComponent implements OnInit, OnDestroy {
 
-  virtualScrollItems;
+  virtualScrollItems: NetworkAction;
   networkActionShow: boolean;
   networkActionItem;
   filtersState = {
-    open: false,
-    availableFields: []
+    open: true
   };
+  virtualPageSize = 1000;
+  activeFilters = [];
 
   onDestroy$ = new Subject();
 
@@ -29,7 +32,7 @@ export class NetworkActionComponent implements OnInit, OnDestroy {
   @ViewChild(MatAccordion) accordion: MatAccordion;
 
   constructor(
-    public store: Store<any>,
+    public store: Store<State>,
     private activeRoute: ActivatedRoute,
     private router: Router,
     private ngZone: NgZone,
@@ -38,34 +41,41 @@ export class NetworkActionComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    this.store.dispatch({type: 'NETWORK_LOAD'});
     this.scrollStart(null);
+    // this.getItems({limit: this.virtualPageSize});
 
-    // this.activeRoute.params
-    //   .pipe(takeUntil(this.onDestroy$))
-    //   .subscribe((params) => {
-    //
-    //     // triger action and get network data
-    //     this.store.dispatch({
-    //       type: 'NETWORK_ACTION_LOAD',
-    //       payload: {
-    //         filter: params.address ? params.address : ''
-    //       }
-    //     });
-    //
-    //   });
+    this.activeRoute.params
+      .pipe(takeUntil(this.onDestroy$))
+      .subscribe((params) => {
+
+        this.store.dispatch({
+          type: 'NETWORK_ACTION_ADDRESS',
+          payload: {
+            urlParams: params.address ? params.address : '',
+          }
+        });
+
+      });
 
     // wait for data changes from redux
     this.store.select('networkAction')
       .pipe(takeUntil(this.onDestroy$))
-      .subscribe(data => {
+      .subscribe((data: NetworkAction) => {
 
         // this.networkAction = data;
         this.virtualScrollItems = data;
         this.networkActionShow = this.virtualScrollItems.ids.length > 0;
 
-        if (this.networkActionShow && !this.networkActionItem) {
-          this.networkActionItem = this.virtualScrollItems.entities[this.virtualScrollItems.ids[this.virtualScrollItems.ids.length - 1]];
-        }
+        this.activeFilters = this.setActiveFilters();
+
+        // if (this.networkActionShow && !this.networkActionItem) {
+        // this.networkActionItem = this.virtualScrollItems.ids.length > 0 ?
+        //   this.virtualScrollItems.entities[this.virtualScrollItems.ids[this.virtualScrollItems.ids.length - 1]] :
+        //   null;
+        // }
+
+        console.log(this.virtualScrollItems);
 
         this.changeDetector.markForCheck();
         //
@@ -74,6 +84,22 @@ export class NetworkActionComponent implements OnInit, OnDestroy {
         // }
       });
 
+  }
+
+  setActiveFilters(): string[] {
+    return Object.keys(this.virtualScrollItems.filter)
+      .reduce((accumulator, filter) => {
+        if (this.virtualScrollItems.filter[filter]) {
+          return [
+            ...accumulator,
+            filter
+          ];
+        } else {
+          return accumulator;
+        }
+      }, []);
+
+    // return ['aa'];
   }
 
   getItems($event) {
@@ -86,11 +112,47 @@ export class NetworkActionComponent implements OnInit, OnDestroy {
     });
   }
 
+  getItemDetails($event) {
+    this.store.dispatch({
+      type: 'NETWORK_ACTION_DETAILS_LOAD',
+      payload: {
+        originalId: $event?.originalId
+      }
+    });
+  }
+
+  loadPreviousPage() {
+    if (this.virtualScrollItems.stream) {
+      this.scrollStop();
+    }
+    this.getItems({
+      nextCursorId: this.virtualScrollItems.activePage.start.originalId,
+      limit: this.virtualPageSize
+    });
+  }
+
+  loadNextPage() {
+    const actualPageIndex = this.virtualScrollItems.pages.findIndex(pageId => Number(pageId) === this.virtualScrollItems.activePage.id);
+
+    if (actualPageIndex === this.virtualScrollItems.pages.length - 1) {
+      return;
+    }
+
+    const nextPageId = this.virtualScrollItems.pages[actualPageIndex + 1];
+
+    this.getItems({
+      nextCursorId: nextPageId,
+      limit: this.virtualPageSize
+    });
+  }
+
   startStopDataStream(event) {
     if (event.stop) {
       this.scrollStop();
     } else {
-      this.scrollStart(event);
+      if (this.virtualScrollItems.activePage.id === Number(this.virtualScrollItems.pages[this.virtualScrollItems.pages.length - 1])) {
+        this.scrollStart(event);
+      }
     }
   }
 
@@ -102,7 +164,7 @@ export class NetworkActionComponent implements OnInit, OnDestroy {
     this.store.dispatch({
       type: 'NETWORK_ACTION_START',
       payload: {
-        limit: $event?.limit ? $event.limit : 60
+        limit: $event?.limit ? $event.limit : this.virtualPageSize
       }
     });
   }
@@ -118,7 +180,7 @@ export class NetworkActionComponent implements OnInit, OnDestroy {
   }
 
   scrollToEnd() {
-    this.vrFor.scrollToBottom();
+    this.scrollStart(null);
   }
 
   filterType(filterType) {
@@ -132,9 +194,7 @@ export class NetworkActionComponent implements OnInit, OnDestroy {
   }
 
   filterAddress() {
-    // remove address and route to default network url
     this.router.navigate(['network']);
-
   }
 
   tableMouseEnter(item) {

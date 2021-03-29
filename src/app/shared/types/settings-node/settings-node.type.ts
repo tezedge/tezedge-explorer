@@ -5,5 +5,6 @@ export class SettingsNode {
   activeNode: SettingsNodeApi;
   ids: string[];
   entities: { [node: string]: SettingsNodeEntity };
+  debugger: string;
   sandbox?: string;
 }

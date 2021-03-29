@@ -12,7 +12,7 @@ export class StorageBlockEffects {
 
   @Effect()
   StorageBlockReset$ = this.actions$.pipe(
-    ofType('STORAGE_BLOCK_RESET'),
+    ofType('STORAGE_BLOCK_RESET', 'STORAGE_BLOCK_LOAD'),
     // dispatch action
     map((payload) => ({ type: 'STORAGE_BLOCK_RESET_SUCCESS', payload })),
     catchError((error, caught) => {
@@ -27,7 +27,7 @@ export class StorageBlockEffects {
 
   @Effect()
   StorageBlockLoad$ = this.actions$.pipe(
-    ofType('STORAGE_BLOCK_LOAD'),
+    ofType('STORAGE_BLOCK_FETCH'),
 
     // merge state
     withLatestFrom(this.store, (action: any, state) => ({ action, state })),
@@ -36,11 +36,11 @@ export class StorageBlockEffects {
     }),
 
     // dispatch action
-    map((payload) => ({ type: 'STORAGE_BLOCK_LOAD_SUCCESS', payload })),
+    map((payload) => ({ type: 'STORAGE_BLOCK_FETCH_SUCCESS', payload })),
     catchError((error, caught) => {
       console.error(error);
       this.store.dispatch({
-        type: 'STORAGE_BLOCK_LOAD_ERROR',
+        type: 'STORAGE_BLOCK_FETCH_ERROR',
         payload: error
       });
       return caught;
@@ -125,7 +125,7 @@ export function setUrl(action, state) {
 export function storageBlockLimit(action) {
   const limitNr = action.payload && action.payload.limit ?
     action.payload.limit :
-    '60';
+    '1000';
 
   return `limit=${limitNr}`;
 }

@@ -1,26 +1,25 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
-
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { Subject } from 'rxjs';
-import { debounceTime, takeUntil } from 'rxjs/operators';
+import { debounceTime } from 'rxjs/operators';
 import { FormattedNetworkHistory, VotingCycle, VotingPeriodRow } from './models/formatted-network-history';
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
+import { State } from '../../app.reducers';
+import { NetworkHistoryEntity } from '../../shared/types/network/network-history-entity.type';
+import { NetworkHistory } from '../../shared/types/network/network-history.type';
 
 
+@UntilDestroy()
 @Component({
   selector: 'app-network-history',
   templateUrl: './network-history.component.html',
   styleUrls: ['./network-history.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
+export class NetworkHistoryComponent implements OnInit {
 
-export class NetworkHistoryComponent implements OnInit, OnDestroy {
-
-  private networkHistory;
+  private networkHistoryEntities: Array<NetworkHistoryEntity>;
   public formattedNetworkHistory: Array<FormattedNetworkHistory>;
-  public networkHistoryPanel;
 
-  public networkHistoryPanelShow = false;
-  public networkStats;
   public networkHistoryConfig = {
     row_length: 32,
     row_height: 20,
@@ -38,43 +37,30 @@ export class NetworkHistoryComponent implements OnInit, OnDestroy {
     }
   };
 
-  public onDestroy$ = new Subject();
-
   constructor(
     private cd: ChangeDetectorRef,
-    public store: Store<any>
+    public store: Store<State>
   ) { }
 
   ngOnInit() {
-
-    // wait for data changes from redux
-    // this.store.select('networkStats')
-    //   .pipe(takeUntil(this.onDestroy$))
-    //   .subscribe(data => {
-    //     console.log(3278237);
-    //     this.networkStats = data;
-    //
-    //   });
-
-    // wait for data changes from redux
     this.store.select('networkHistory')
       .pipe(
         debounceTime(200),
-        takeUntil(this.onDestroy$)
+        untilDestroyed(this)
       )
-      .subscribe(data => this.mapDataFromHistory(data));
+      .subscribe((networkHistory: NetworkHistory) => this.mapDataFromHistory(networkHistory));
   }
 
   // remove this after the logic has been moved to the backend and get data straight from the ngrx
-  private mapDataFromHistory(data): void {
-    this.networkHistory = data.ids.map(id => data.entities[id]);
+  private mapDataFromHistory(networkHistory: NetworkHistory): void {
+    this.networkHistoryEntities = networkHistory.ids.map(id => networkHistory.entities[id]);
 
     const cyclesPerVotingPeriod = 8;
     const votingPeriodPerRow = 2;
 
     this.formattedNetworkHistory = [];
 
-    for (let cycle = 0; cycle < this.networkHistory.length; ++cycle) {
+    for (let cycle = 0; cycle < this.networkHistoryEntities.length; ++cycle) {
       // get voting period
       const votingPeriod = Math.floor(cycle / cyclesPerVotingPeriod);
       // this value represent position in voting period
@@ -97,7 +83,7 @@ export class NetworkHistoryComponent implements OnInit, OnDestroy {
       }
 
       // save element
-      rowPositions[votingPeriodRowPosition].cycles[votingPeriodPosition] = this.networkHistory[cycle];
+      rowPositions[votingPeriodRowPosition].cycles[votingPeriodPosition] = this.networkHistoryEntities[cycle];
 
     }
     this.cd.markForCheck();
@@ -106,16 +92,5 @@ export class NetworkHistoryComponent implements OnInit, OnDestroy {
   readonly trackByRowPosition = (index: number, row: FormattedNetworkHistory) => row.id;
   readonly trackByRowPeriod = (index: number, period: VotingPeriodRow) => period.id;
   readonly trackByCycle = (index: number, cycle: VotingCycle) => cycle.id;
-
-  // used for debugging
-  render() {
-    this.cd.markForCheck();
-  }
-
-  ngOnDestroy(): void {
-    this.onDestroy$.next();
-    this.onDestroy$.complete();
-  }
-
 }
 

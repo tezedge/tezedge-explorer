@@ -1,11 +1,13 @@
 import * as moment from 'moment-mini-ts';
 import {NetworkAction} from '../../shared/types/network/network-action.type';
 import {NetworkActionEntity} from '../../shared/types/network/network-action-entity.type';
+import {VirtualScrollActivePage} from '../../shared/types/shared/virtual-scroll-active-page.type';
 
 const initialState: NetworkAction = {
   ids: [],
   entities: {},
   lastCursorId: 0,
+  selected: {},
   filter: {
     local: false,
     remote: false,
@@ -29,7 +31,7 @@ const initialState: NetworkAction = {
   stream: false,
   urlParams: '',
   activePage: {},
-  pages: {}
+  pages: []
 };
 
 export function reducer(state: NetworkAction = initialState, action): NetworkAction {
@@ -55,24 +57,32 @@ export function reducer(state: NetworkAction = initialState, action): NetworkAct
 
       return {
         ...state,
-        ids: setIds(action, state),
+        ids: setIds(action),
         entities,
-        lastCursorId: setLastCursorId(action, state),
+        lastCursorId: setLastCursorId(action),
         activePage,
         pages: setPages(activePage, state),
-        stream: action.type === 'NETWORK_ACTION_START_SUCCESS',
+        stream: action.type === 'NETWORK_ACTION_START_SUCCESS'
       };
     }
 
     case 'NETWORK_ACTION_FILTER': {
       const stateFilter = {
         ...state.filter,
-        [action.payload]: !state.filter[action.payload]
+        [action.payload]: !state.filter[action.payload],
       };
 
       return {
         ...initialState,
+        urlParams: state.urlParams,
         filter: stateFilter
+      };
+    }
+
+    case 'NETWORK_ACTION_ADDRESS': {
+      return {
+        ...state,
+        urlParams: action.payload.urlParams ? action.payload.urlParams : ''
       };
     }
 
@@ -83,19 +93,50 @@ export function reducer(state: NetworkAction = initialState, action): NetworkAct
       };
     }
 
+    case 'NETWORK_ACTION_DETAILS_LOAD_SUCCESS': {
+      return {
+        ...state,
+        selected: setDetails(action)
+      };
+    }
+
     default:
       return state;
   }
 }
 
-export function setIds(action, state): Array<number> {
+export function setDetails(action) {
+  if (!action.payload) {
+    return {};
+  }
+
+  const hexValues = action.payload.original_bytes ? setHexValues(action.payload.original_bytes) : [];
+  let payload;
+
+  if (action.payload.message && action.payload.message.length && action.payload.message[0].type) {
+    payload = {...action.payload.message[0]};
+    delete payload.type;
+  } else {
+    payload = action.payload;
+    delete payload.error;
+    delete payload.original_bytes;
+  }
+
+  return {
+    id: action.payload.id,
+    hexValues,
+    payload,
+    error: action.payload.error
+  };
+}
+
+export function setIds(action): number[] {
   if (!action.payload.length) {
     return [];
   }
 
   return action.payload
     .map((item, index) => index)
-    // .map(item => item.id)
     .sort((a, b) => a - b);
 }
 
@@ -104,44 +145,22 @@ export function setEntities(action, state): { [id: string]: NetworkActionEntity 
     {} :
     action.payload
       .reduce((accumulator, networkAction) => {
-        const hexValues = setHexValues(networkAction.original_bytes);
         const virtualScrollId = setVirtualScrollId(action, state, accumulator);
 
-        if (networkAction.message && networkAction.message.length && networkAction.message[0].type) {
-          const payload = {...networkAction.message[0]};
-          delete payload.type;
-
-          return {
-            ...accumulator,
-            [virtualScrollId]: {
-              ...networkAction,
-              hexValues,
-              id: virtualScrollId,
-              originalId: networkAction.id,
-              category: 'P2P',
-              kind: networkAction.message[0].type,
-              payload,
-              preview: JSON.stringify(networkAction.message),
-              datetime: moment.utc(Math.ceil(networkAction.timestamp / 1000000)).format('HH:mm:ss.SSS, DD MMM YY')
-            }
-          };
-        } else {
-          return {
-            ...accumulator,
-            [virtualScrollId]: {
-              ...networkAction,
-              hexValues,
-              id: virtualScrollId,
-              originalId: networkAction.id,
-              payload: networkAction.message,
-              datetime: moment.utc(Math.ceil(networkAction.timestamp / 1000000)).format('HH:mm:ss.SSS, DD MMM YY')
-            }
-          };
-        }
+        return {
+          ...accumulator,
+          [virtualScrollId]: {
+            ...networkAction,
+            id: virtualScrollId,
+            originalId: networkAction.id,
+            payload: networkAction.message,
+            datetime: moment.utc(Math.ceil(networkAction.timestamp / 1000000)).format('HH:mm:ss.SSS, DD MMM YY')
+          }
+        };
       }, {});
 }
 
-export function setLastCursorId(action, state): number {
+export function setLastCursorId(action): number {
   return action.payload.length - 1;
 }
 
@@ -159,7 +178,7 @@ export function setVirtualScrollId(action, state, accumulator): number {
   return action.payload.length - (alreadySetRecords.length + 1);
 }
 
-export function setActivePage(entities, action): any {
+export function setActivePage(entities, action): VirtualScrollActivePage {
   if (!action.payload.length) {
     return {};
   }
@@ -172,27 +191,24 @@ export function setActivePage(entities, action): any {
   };
 }
 
-export function setPages(activePage, state) {
+export function setPages(activePage, state): number[] {
   if (!activePage.id) {
-    return {};
+    return [];
   }
 
-  const pagesArray = Object.keys(state.pages)
-    .sort((a, b) => Number(b) - Number(a));
+  const pagesArray = [...state.pages];
 
-  if (Number(pagesArray[0]) < Number(activePage.id)) {
-    return {
-      [activePage.id]: activePage
-    };
+  if (pagesArray.indexOf(activePage.id) !== -1) {
+    return [...state.pages];
+  }
+
+  if (Number(pagesArray[pagesArray.length - 1]) < activePage.id) {
+    return [activePage.id].sort((a, b) => a - b);
   } else {
-    return {
-      ...state.pages,
-      [activePage.id]: activePage
-    };
+    return [...state.pages, activePage.id].sort((a, b) => a - b);
   }
 
 }
-
 
 // filter network items according to traffic source
 // export function networkActionSourceFilter(entity, filter) {

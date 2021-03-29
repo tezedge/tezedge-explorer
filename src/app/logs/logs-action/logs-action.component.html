@@ -1,54 +1,81 @@
 <div class="logs-action-container">
 
   <div class="table-virtual-scroll">
+    <div class="filters-container">
 
+      <div class="active-filters-row">
+        <button class="add-filters" mat-flat-button (click)="filtersState.open=true" [disabled]="filtersState.open">
+          <svg-icon icon="filter" scale="0.8"></svg-icon>
+          {{filtersState.open ? 'Active Filters' : 'ADD FILTER'}}
+        </button>
 
-    <div class="filters-container logs-filters ">
-      <!--
-         <div class="active-filters-row">
-           <button class="add-filters" mat-flat-button (click)="setFiltersVisibility(true)" [disabled]="filtersState.open">
-             <span>
-               <svg-icon icon="filter"></svg-icon>
-               {{filtersState.open ? 'Active Filters' : 'ADD FILTER'}}
-             </span>
-           </button>
+        <div class="filters-content">
+          <button *ngFor="let filter of activeFilters" mat-flat-button (click)=" filterType(filter)">
+            {{filter}}
+            <svg-icon icon="close" scale="0.8"></svg-icon>
+          </button>
+        </div>
 
-           <button *ngFor="let filter of filtersState.availableFields" class="filters-field-btn"
-                   mat-flat-button (click)="filterType(filter)" [hidden]="!virtualScrollItems.filter[filter]">
-             <span>
-               {{filter}}
-               <svg-icon icon="close"></svg-icon>
-             </span>
-           </button>
-         </div>
+      </div>
 
-         <mat-accordion class="filters-accordion">
-           <mat-expansion-panel [expanded]="filtersState.open" hideToggle="true">
-             <ng-template matExpansionPanelContent class="filters-content">
-               <div class="filters-row">
-                 <button class="close-filters-btn" mat-flat-button (click)="setFiltersVisibility(false)">
-                   <span>
-                     <svg-icon icon="close"></svg-icon>
-                   </span>
-                 </button>
+      <mat-accordion class="filters-accordion">
+        <mat-expansion-panel [expanded]="filtersState.open" hideToggle="true">
+          <ng-template matExpansionPanelContent class="filters-content">
+            <!--            <div class="filters-row">-->
+            <!--              <button class="close-filters-btn" mat-flat-button (click)="filtersState.open=false">-->
+            <!--                <span>-->
+            <!--                  <svg-icon icon="close"></svg-icon>-->
+            <!--                </span>-->
+            <!--              </button>-->
 
-                 <span class="filters-label">
-                   Available Filters
-                 </span>
+            <!--              <span class="filters-label">-->
+            <!--                Available Filters-->
+            <!--              </span>-->
+            <!--            </div>-->
 
-                 <button *ngFor="let filter of filtersState.availableFields" class="filters-field-btn"
-                         mat-flat-button (click)="filterType(filter)"
-                         [class.active]="virtualScrollItems.filter[filter]">
-                   <span>
-                     {{filter}}
-                     <svg-icon icon="{{virtualScrollItems.filter[filter] ? 'close' : 'add-circle'}}"></svg-icon>
-                   </span>
-                 </button>
-               </div>
-             </ng-template>
-           </mat-expansion-panel>
-         </mat-accordion>
-   -->
+            <div class="filters-row">
+              <span class="filters-label">Level</span>
+              <button mat-flat-button [class.active]="virtualScrollItems.filter.trace"
+                      (click)=" filterType('trace')">
+                Trace
+                <svg-icon icon="close" scale="0.8"></svg-icon>
+              </button>
+              <button mat-flat-button [class.active]="virtualScrollItems.filter.debug"
+                      (click)="filterType('debug')">
+                Debug
+                <svg-icon icon="close" scale="0.8"></svg-icon>
+              </button>
+              <button mat-flat-button [class.active]="virtualScrollItems.filter.info"
+                      (click)=" filterType('info')">
+                Info
+                <svg-icon icon="close" scale="0.8"></svg-icon>
+              </button>
+              <button mat-flat-button [class.active]="virtualScrollItems.filter.notice"
+                      (click)=" filterType('notice')">
+                Notice
+                <svg-icon icon="close" scale="0.8"></svg-icon>
+              </button>
+              <button mat-flat-button [class.active]="virtualScrollItems.filter.warning"
+                      (click)=" filterType('warning')">
+                Warning
+                <svg-icon icon="close" scale="0.8"></svg-icon>
+              </button>
+              <button mat-flat-button [class.active]="virtualScrollItems.filter.error"
+                      (click)=" filterType('error')">
+                Error
+                <svg-icon icon="close" scale="0.8"></svg-icon>
+              </button>
+              <button mat-flat-button [class.active]="virtualScrollItems.filter.fatal"
+                      (click)=" filterType('fatal')">
+                Fatal
+                <svg-icon icon="close" scale="0.8"></svg-icon>
+              </button>
+
+            </div>
+          </ng-template>
+        </mat-expansion-panel>
+      </mat-accordion>
+
     </div>
 
     <div class="table-virtual-scroll-header logs-header">
@@ -62,9 +89,10 @@
       <div class="virtual-scroll-container">
         <ng-template vsFor let-event [vsForOf]="virtualScrollItems" let-position="position"
                      (getItems)="getItems($event)" (startStopDataStream)="startStopDataStream($event)">
-          <span class="virtualScrollRow logs-row" [style.transform]="'translate(0px,' + position + 'px)'"
+          <span class="virtualScrollRow logs-row"
+                [style.transform]="position !== undefined ? 'translateY(' + position + 'px)' : ''"
                 [class.virtualScrollRowEven]="event?.index % 2" (click)="tableMouseEnter(event)"
-                [class.hover]="event?.datetime && logsActionItem.id===event?.id"
+                [class.hover]="event?.datetime && logsActionItem.originalId === event?.originalId"
                 [class.used]="event?.datetime">
 
             <span class="item-loading" [class.displayed]="!event?.datetime">&nbsp;</span>
@@ -93,17 +121,47 @@
       </div>
     </div>
 
-    <div class="table-virtual-scroll-footer">
-      <span>
-        <button id="startStreaming" mat-icon-button matTooltip="Start" (click)="scrollStart(null)" *ngIf="!virtualScrollItems?.stream">
-          <mat-icon>play_arrow_outline</mat-icon>
-        </button>
-        <button id="stopStreaming" mat-icon-button matTooltip="Stop" (click)="scrollStop()" *ngIf="virtualScrollItems?.stream">
-          <mat-icon>stop_outline</mat-icon>
-        </button>
-        <button mat-icon-button style="transform: rotate(90deg)" matTooltip="Last page" (click)="scrollToEnd()">
-          <mat-icon>last_page</mat-icon>
-        </button>
+    <div class="table-virtual-scroll-footer" fxLayout="row" fxLayoutAlign="start center">
+      <button fxLayout="row" fxLayoutAlign="center center" class="square-button" mat-icon-button
+              matTooltip="Last page" (click)="scrollToEnd()">
+        <svg-icon icon="arrow-bottom"></svg-icon>
+      </button>
+
+      <button fxLayout="row" fxLayoutAlign="center center" class="rectangle-button start-stream" mat-icon-button
+              matTooltip="Start Streaming" (click)="scrollStart(null)" [class.inactive]="!virtualScrollItems?.stream">
+        <svg-icon icon="play-circle"></svg-icon>
+        <span>LIVE</span>
+      </button>
+
+      <button fxLayout="row" fxLayoutAlign="center center" class="rectangle-button stop-stream" mat-icon-button
+              matTooltip="Stop Streaming" (click)="scrollStop()" [class.inactive]="virtualScrollItems?.stream">
+        <svg-icon icon="pause-circle"></svg-icon>
+        <span>PAUSED</span>
+      </button>
+
+      <button fxLayout="row" fxLayoutAlign="center center" class="square-button" id="previousPage" mat-icon-button
+              matTooltip="Previous Page" (click)="loadPreviousPage()"
+              [disabled]="!virtualScrollItems?.pages?.length || virtualScrollItems.ids.length < virtualPageSize">
+        <svg-icon icon="less-than"></svg-icon>
+      </button>
+
+      <button fxLayout="row" fxLayoutAlign="center center" class="square-button" id="nextPage" mat-icon-button
+              matTooltip="Next Page" (click)="loadNextPage()"
+              [disabled]="!virtualScrollItems?.pages?.length || virtualScrollItems.activePage.id == virtualScrollItems?.pages[virtualScrollItems?.pages?.length - 1]">
+        <svg-icon icon="greater-than"></svg-icon>
+      </button>
+
+
+      <span class="active-page-details">
+        Active Page:
+        {{virtualScrollItems?.activePage?.numberOfRecords || 0}}
+        records
+        <span *ngIf="virtualScrollItems?.activePage?.numberOfRecords">
+          , from:
+          {{virtualScrollItems?.activePage?.start?.datetime}}
+          to:
+          {{virtualScrollItems?.activePage?.end?.datetime}}
+          </span>
       </span>
     </div>
   </div>

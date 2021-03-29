@@ -1,5 +1,3 @@
-
-
 /* virtual scroll variable */
 .table-virtual-scroll {
   top: 0;
@@ -9,7 +7,6 @@
   font-family: Roboto, "Helvetica Neue", sans-serif;
   color: $color-table;
   background-color: $color-table-background;
-  // border: 1px solid $color-table-border;
   border-top-left-radius: 4px;
 }
 
@@ -26,11 +23,11 @@
   line-height: 35px;
 
   &.logs-header {
-    grid-template-columns: 180px 70px 1fr;
+    grid-template-columns: 180px 80px 1fr;
   }
 
   &.network-header {
-    grid-template-columns: 180px 160px 80px 180px 1fr; // initial it was 260px before 1fr
+    grid-template-columns: 180px 180px 80px 180px 1fr;
   }
 
   &.storage-block-header {
@@ -72,39 +69,43 @@
 // general styles added in 13 december 2020
 .filters-container {
   min-height: 40px;
-  padding: 0 8px 3px 8px;
+  padding: 0;
   box-sizing: border-box;
-
 
   .active-filters-row {
     display: flex;
-    padding: 6px 0;
+    padding: 6px 7px;
   }
 
   .filters-row {
     display: flex;
-    padding: 6px;
-
+    padding: 5px 11px;
+    //height: 26px;
   }
 
   button {
-    height: 24px;
-    line-height: 24px;
+    height: 16px;
+    line-height: 16px;
     font-size: 12px;
     background-color: rgba(255, 255, 255, 0.1);
-    padding: 0 8px;
-    color: white;
+    padding: 0 6px 0;
+    color: rgba(255, 255, 255, 1);
     margin-right: 4px;
     text-transform: capitalize;
     border-radius: 16px;
+    font-weight: 200;
   }
 
   .add-filters {
     font-weight: 400;
     border-radius: 4px;
+    color: rgba(255, 255, 255, 1);
+    line-height: 20px;
+    height: 20px;
 
     &:disabled {
-      color: rgba(255, 255, 255, 0.4);
+      color: rgba(255, 255, 255, 1);
+      opacity: 0.3;
       background-color: transparent;
     }
   }
@@ -117,11 +118,16 @@
   }
 
   .filters-label {
-    line-height: 24px;
+    line-height: 16px;
     font-size: 12px;
     color: rgba(255, 255, 255, 0.4);
     margin-right: 4px;
+    width: 60px;
 
+    &.source-filters-label {
+      margin-left: 10px;
+      width: 40px;
+    }
   }
 
   .active {
@@ -135,10 +141,16 @@
 
     .mat-expansion-panel {
       background-color: rgba(63, 63, 67, 1);
+      box-shadow: unset !important;
+      border-radius: 0 !important;
 
       .mat-expansion-panel-body {
-        padding: 0;
+        padding: 4px 5px;
         margin: 0;
+      }
+
+      .mat-expansion-panel-content {
+        font-weight: 200 !important;
       }
     }
   }
@@ -150,6 +162,10 @@
 
 .network-action-table-address a {
   color: $color-table;
+
+  &:hover {
+    text-decoration: underline !important;
+  }
 }
 
 //.network-action-table-detail {
@@ -168,11 +184,11 @@
   height: calc(100vh - 154px);
 
   &.network-filters-expanded {
-    height: calc(100vh - 226px);
+    height: calc(100vh - 207px);
   }
 
   &.logs-filters-expanded {
-    height: calc(100vh - 190px); //154
+    height: calc(100vh - 181px);
   }
 
   .virtual-scroll-container,
@@ -221,12 +237,12 @@
   border-top: 1px solid #333334;
   width: 100%;
   line-height: 40px;
-  padding-left: 4px;
+  padding-left: 16px;
   font-size: 14px;
 
   background: #464648;
   box-shadow: 0 5px 15px 5px rgba(0, 0, 0, 0.2);
-  border-radius: 4px;
+  border-radius: 0;
 
   .active-page-details {
     margin-left: 20px;
@@ -235,10 +251,6 @@
   button {
     height: 24px;
     margin-right: 8px;
-
-    &.active {
-      background-color: transparent;
-    }
   }
 
   .square-button {
@@ -255,9 +267,9 @@
 
   .rectangle-button {
     width: 90px;
-
-    background: #70BF53;
     border-radius: 6px;
+    font-weight: 300;
+    font-size: 14px;
 
     .svg-icon {
       width: 14px;
@@ -265,6 +277,25 @@
       vertical-align: -1.5px;
       margin-right: 4px;
     }
+
+    &.start-stream {
+      background-color: #70BF53;
+    }
+
+    &.stop-stream {
+      background-color: rgba(235, 83, 104, 1);
+    }
+
+    &.inactive {
+      background-color: transparent;
+      opacity: .5;
+    }
+
+    &:hover {
+      background-color: rgba(255, 255, 255, 0.2);
+    }
+
+
   }
 
   [disabled] {
@@ -281,13 +312,16 @@
   display: grid;
   padding: 0 16px;
   box-sizing: border-box;
+  cursor: pointer;
+  transform: translateZ(0);
+  -webkit-transform: translateZ(0);
 
   &.logs-row {
-    grid-template-columns: 180px 60px 1fr;
+    grid-template-columns: 180px 80px 1fr;
   }
 
   &.network-row {
-    grid-template-columns: 180px 160px 80px 180px 1fr;
+    grid-template-columns: 180px 180px 80px 180px 1fr;
   }
 
   &.storage-block-row {
@@ -315,7 +349,8 @@
   }
 
   &.virtualScrollRowEven {
-    background-color: #323334;
+    //background-color: #323334;
+    background-color: rgba(255, 255, 255, 0.1);
 
     .item-loading {
       background-color: #2a2a2e !important;
@@ -324,6 +359,10 @@
 
   a {
     text-decoration: none !important;
+  }
+
+  .storage-block-hash:hover {
+    text-decoration: underline;
   }
 
   &.hover {

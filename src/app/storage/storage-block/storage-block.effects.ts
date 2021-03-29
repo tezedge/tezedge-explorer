@@ -125,7 +125,7 @@ export function setUrl(action, state) {
 export function storageBlockLimit(action) {
   const limitNr = action.payload && action.payload.limit ?
     action.payload.limit :
-    '60';
+    '1000';
 
   return `limit=${limitNr}`;
 }

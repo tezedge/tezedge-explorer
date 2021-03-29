@@ -4,7 +4,7 @@ import {Router, ActivatedRoute} from '@angular/router';
 import {Store} from '@ngrx/store';
 import {Subject} from 'rxjs';
 import {takeUntil} from 'rxjs/operators';
-import {VirtualScrollDirective} from '../../shared/virtual-scroll.directive';
+import {VirtualScrollDirective} from '../../shared/virtual-scroll/virtual-scroll.directive';
 import {MatAccordion} from '@angular/material/expansion';
 import {State} from '../../app.reducers';
 import {NetworkAction} from '../../shared/types/network/network-action.type';
@@ -20,12 +20,11 @@ export class NetworkActionComponent implements OnInit, OnDestroy {
   virtualScrollItems: NetworkAction;
   networkActionShow: boolean;
   networkActionItem;
-  pagesIdsList: any[];
   filtersState = {
-    open: true,
-    availableFields: []
+    open: true
   };
   virtualPageSize = 1000;
+  activeFilters = [];
 
   onDestroy$ = new Subject();
 
@@ -42,22 +41,22 @@ export class NetworkActionComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    // this.scrollStart(null);
-    this.getItems({limit: 1000});
+    this.store.dispatch({type: 'NETWORK_LOAD'});
+    this.scrollStart(null);
+    // this.getItems({limit: this.virtualPageSize});
 
-    // this.activeRoute.params
-    //   .pipe(takeUntil(this.onDestroy$))
-    //   .subscribe((params) => {
-    //
-    //     // triger action and get network data
-    //     this.store.dispatch({
-    //       type: 'NETWORK_ACTION_LOAD',
-    //       payload: {
-    //         filter: params.address ? params.address : ''
-    //       }
-    //     });
-    //
-    //   });
+    this.activeRoute.params
+      .pipe(takeUntil(this.onDestroy$))
+      .subscribe((params) => {
+
+        this.store.dispatch({
+          type: 'NETWORK_ACTION_ADDRESS',
+          payload: {
+            urlParams: params.address ? params.address : '',
+          }
+        });
+
+      });
 
     // wait for data changes from redux
     this.store.select('networkAction')
@@ -68,8 +67,7 @@ export class NetworkActionComponent implements OnInit, OnDestroy {
         this.virtualScrollItems = data;
         this.networkActionShow = this.virtualScrollItems.ids.length > 0;
 
-        this.pagesIdsList = Object.keys(this.virtualScrollItems.pages);
-        console.log(this.pagesIdsList);
+        this.activeFilters = this.setActiveFilters();
 
         // if (this.networkActionShow && !this.networkActionItem) {
         // this.networkActionItem = this.virtualScrollItems.ids.length > 0 ?
@@ -88,6 +86,22 @@ export class NetworkActionComponent implements OnInit, OnDestroy {
 
   }
 
+  setActiveFilters(): string[] {
+    return Object.keys(this.virtualScrollItems.filter)
+      .reduce((accumulator, filter) => {
+        if (this.virtualScrollItems.filter[filter]) {
+          return [
+            ...accumulator,
+            filter
+          ];
+        } else {
+          return accumulator;
+        }
+      }, []);
+
+    // return ['aa'];
+  }
+
   getItems($event) {
     this.store.dispatch({
       type: 'NETWORK_ACTION_LOAD',
@@ -98,25 +112,37 @@ export class NetworkActionComponent implements OnInit, OnDestroy {
     });
   }
 
+  getItemDetails($event) {
+    this.store.dispatch({
+      type: 'NETWORK_ACTION_DETAILS_LOAD',
+      payload: {
+        originalId: $event?.originalId
+      }
+    });
+  }
+
   loadPreviousPage() {
+    if (this.virtualScrollItems.stream) {
+      this.scrollStop();
+    }
     this.getItems({
       nextCursorId: this.virtualScrollItems.activePage.start.originalId,
-      limit: 1000
+      limit: this.virtualPageSize
     });
   }
 
   loadNextPage() {
-    const actualPageIndex = this.pagesIdsList.findIndex(pageId => Number(pageId) === this.virtualScrollItems.activePage.id);
+    const actualPageIndex = this.virtualScrollItems.pages.findIndex(pageId => Number(pageId) === this.virtualScrollItems.activePage.id);
 
-    if (actualPageIndex === this.pagesIdsList.length - 1) {
+    if (actualPageIndex === this.virtualScrollItems.pages.length - 1) {
       return;
     }
 
-    const nextPageId = this.pagesIdsList[actualPageIndex + 1];
+    const nextPageId = this.virtualScrollItems.pages[actualPageIndex + 1];
 
     this.getItems({
       nextCursorId: nextPageId,
-      limit: 1000
+      limit: this.virtualPageSize
     });
   }
 
@@ -124,7 +150,9 @@ export class NetworkActionComponent implements OnInit, OnDestroy {
     if (event.stop) {
       this.scrollStop();
     } else {
-      this.scrollStart(event);
+      if (this.virtualScrollItems.activePage.id === Number(this.virtualScrollItems.pages[this.virtualScrollItems.pages.length - 1])) {
+        this.scrollStart(event);
+      }
     }
   }
 
@@ -136,7 +164,7 @@ export class NetworkActionComponent implements OnInit, OnDestroy {
     this.store.dispatch({
       type: 'NETWORK_ACTION_START',
       payload: {
-        limit: $event?.limit ? $event.limit : 1000
+        limit: $event?.limit ? $event.limit : this.virtualPageSize
       }
     });
   }
@@ -152,7 +180,7 @@ export class NetworkActionComponent implements OnInit, OnDestroy {
   }
 
   scrollToEnd() {
-    this.vrFor.scrollToBottom();
+    this.scrollStart(null);
   }
 
   filterType(filterType) {
@@ -166,9 +194,7 @@ export class NetworkActionComponent implements OnInit, OnDestroy {
   }
 
   filterAddress() {
-    // remove address and route to default network url
     this.router.navigate(['network']);
-
   }
 
   tableMouseEnter(item) {

@@ -99,8 +99,8 @@ import { SandboxComponent } from './sandbox/sandbox.component';
 
 import { NgrxFormDirective } from './shared/ngrx-form.directive';
 import { NgrxVirtualScrollDirective } from './shared/ngrx-virtual-scroll.directive';
-import { VirtualScrollDirective } from './shared/virtual-scroll.directive';
-import { VirtualScrollFromTopDirective } from './shared/virtual-scroll-from-top.directive';
+import { VirtualScrollDirective } from './shared/virtual-scroll/virtual-scroll.directive';
+import { VirtualScrollFromTopDirective } from './shared/virtual-scroll/virtual-scroll-from-top.directive';
 
 import { SandboxStatusBarComponent } from './sandbox/sandbox-status-bar/sandbox-status-bar.component';
 import { WalletsComponent } from './wallets/wallets.component';

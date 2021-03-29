@@ -334,7 +334,6 @@ export class VirtualScrollFromTopDirective implements AfterViewInit, OnDestroy, 
   }
 
   private reset(): void {
-    console.log('vs reset');
     this.maxScrollHeight = 0;
     this.scrollPositionStart = 0;
     this.scrollPositionEnd = 0;

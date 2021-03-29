@@ -48,7 +48,6 @@ export class LogsActionComponent implements OnInit, OnDestroy {
           this.logsActionItem = this.virtualScrollItems.entities[this.virtualScrollItems.ids[this.virtualScrollItems.ids.length - 1]];
         }
 
-        console.log(this.virtualScrollItems);
         this.changeDetector.markForCheck();
 
         // if (this.virtualScrollItems.ids.length > 0 && this.vrFor) {

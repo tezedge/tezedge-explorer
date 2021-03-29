@@ -1,8 +1,10 @@
 import * as moment from 'moment-mini-ts';
 import {setVirtualScrollId} from '../../network/network-action/network-action.reducer';
 import {VirtualScrollActivePage} from '../../shared/types/shared/virtual-scroll-active-page.type';
+import {StorageBlock} from '../../shared/types/storage/storage-block.type';
+import {StorageBlockEntity} from '../../shared/types/storage/storage-block-entity.type';
 
-const initialState: any = {
+const initialState: StorageBlock = {
   ids: [],
   entities: {},
   lastCursorId: 0,
@@ -12,7 +14,7 @@ const initialState: any = {
   pages: []
 };
 
-export function reducer(state = initialState, action) {
+export function reducer(state: StorageBlock = initialState, action): StorageBlock {
   switch (action.type) {
 
     // case 'STORAGE_BLOCK_FETCH': {
@@ -70,7 +72,7 @@ export function reducer(state = initialState, action) {
   }
 }
 
-export function setIds(action) {
+export function setIds(action): number[] {
   if (!action.payload.length) {
     return [];
   }
@@ -80,7 +82,7 @@ export function setIds(action) {
     .sort((a, b) => a - b);
 }
 
-export function setEntities(action, state) {
+export function setEntities(action, state): { [id: string]: StorageBlockEntity } {
   return action.payload.length === 0 ?
     {} :
     action.payload
@@ -111,7 +113,7 @@ export function setEntities(action, state) {
   //   }, {});
 }
 
-export function setLastCursorId(action) {
+export function setLastCursorId(action): number {
   return action.payload.length - 1;
 }
 

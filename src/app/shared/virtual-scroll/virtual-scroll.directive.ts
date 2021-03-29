@@ -1,5 +1,5 @@
 import {
-  Directive, AfterViewInit, DoCheck, OnChanges,
+  Directive, AfterViewInit, OnChanges,
   Input, Output, EventEmitter, ElementRef, ViewContainerRef,
   Renderer2, TemplateRef, SimpleChanges, OnDestroy, NgZone
 } from '@angular/core';
@@ -10,7 +10,7 @@ import {debounceTime} from 'rxjs/operators';
 @Directive({
   selector: '[vsFor][vsForOf]'
 })
-export class VirtualScrollDirective implements AfterViewInit, OnDestroy, OnChanges, DoCheck {
+export class VirtualScrollDirective implements AfterViewInit, OnDestroy, OnChanges {
 
   private itemHeight = 36;
   private maxScrollHeight = 0;
@@ -64,25 +64,6 @@ export class VirtualScrollDirective implements AfterViewInit, OnDestroy, OnChang
     this.afterReceivingData();
   }
 
-  ngDoCheck() {
-  }
-
-  private isEquivalent(a, b): boolean {
-    const aProps = Object.getOwnPropertyNames(a);
-    const bProps = Object.getOwnPropertyNames(b);
-
-    if (aProps.length !== bProps.length) {
-      return false;
-    }
-
-    for (const propName of aProps) {
-      if (a[propName] !== b[propName]) {
-        return false;
-      }
-    }
-    return true;
-  }
-
   ngAfterViewInit() {
     this.initDimensions();
 
@@ -98,7 +79,7 @@ export class VirtualScrollDirective implements AfterViewInit, OnDestroy, OnChang
     // this.afterReceivingData();
   }
 
-  afterReceivingData() {
+  private afterReceivingData() {
     if (!this.$viewport) {
       return;
     }
@@ -120,7 +101,7 @@ export class VirtualScrollDirective implements AfterViewInit, OnDestroy, OnChang
     this.prevScrollTop = this.$viewport.scrollTop;
   }
 
-  scrollToBottom(): void {
+  private scrollToBottom(): void {
     if (!this.$viewport) {
       return;
     }
@@ -130,7 +111,7 @@ export class VirtualScrollDirective implements AfterViewInit, OnDestroy, OnChang
 
   }
 
-  onScroll(event) {
+  private onScroll(event) {
     if (this.$viewport.scrollTop > this.maximumScrollTop) {
       this.$viewport.scrollTop = this.maximumScrollTop;
       event.stopPropagation();
@@ -179,13 +160,9 @@ export class VirtualScrollDirective implements AfterViewInit, OnDestroy, OnChang
     this.createViewElements();
   }
 
-  onResize(): void {
+  private onResize(): void {
     this.initDimensions();
     this.scrollToBottom();
-  }
-
-  private getScrollPositionStartWithOffset(): number {
-    return this.scrollPositionStart;
   }
 
   private initDimensions(): void {
@@ -210,9 +187,7 @@ export class VirtualScrollDirective implements AfterViewInit, OnDestroy, OnChang
   }
 
   private startStopStream(): void {
-    // const stop = this.maximumScrollTop > this.$viewport.scrollTop;
     const stop = true;
-    // const limit = Math.floor(this.viewportHeight / this.itemHeight * 2);
     const limit = 1000;
 
     this.ngZone.run(() => {
@@ -236,8 +211,7 @@ export class VirtualScrollDirective implements AfterViewInit, OnDestroy, OnChang
 
   private renderViewportItems() {
     for (let index = 0; index < this.embeddedViews.length; index++) {
-      const virtualScrollPosition = this.getScrollPositionStartWithOffset() + index;
-      // const virtualScrollPosition = this.getScrollPositionStartWithOffset() + index;
+      const virtualScrollPosition = this.scrollPositionStart + index;
 
       // change view content
       const view = this.embeddedViews[index];
@@ -260,33 +234,9 @@ export class VirtualScrollDirective implements AfterViewInit, OnDestroy, OnChang
     });
   }
 
-  // get usable scroll size, so we can stack multiple pages for very large list
-  // https://stackoverflow.com/questions/34931732/height-limitations-for-browser-vertical-scroll-bar
-  // private getMaxBrowserScrollSize(): number {
-  //   if (!this.maxScrollHeight) {
-  //
-  //     const div = document.createElement('div');
-  //     const style = div.style;
-  //     style.position = 'absolute';
-  //     style.top = '9999999999999999px';
-  //     document.body.appendChild(div);
-  //     const size = div.getBoundingClientRect().top;
-  //     document.body.removeChild(div);
-  //     return Math.abs(Math.floor(size / 10));
-  //
-  //   } else {
-  //     return this.maxScrollHeight;
-  //   }
-  //
-  // }
-
   private createViewElements(): void {
     if (!this.viewContainer.length) {
-      // const numberOfElements = Math.max(this.scrollPositionEnd - this.scrollPositionStart, this.viewportHeight * 2);
-      // this.embeddedViews.length = 0;
-      // this.viewContainer.clear();
-
-      const numberOfElements = (this.scrollPositionEnd - this.scrollPositionStart);
+      const numberOfElements = this.scrollPositionEnd - this.scrollPositionStart + 1;
 
       // Initialize viewContainer with all need views (rows)
       // console.warn(`[renderViewportItems] viewContainer init (${this.scrollPositionEnd - this.scrollPositionStart} views)`);
@@ -295,6 +245,22 @@ export class VirtualScrollDirective implements AfterViewInit, OnDestroy, OnChang
         this.embeddedViews.push(view);
       }
     }
+  }
+
+  private isEquivalent(a, b): boolean {
+    const aProps = Object.getOwnPropertyNames(a);
+    const bProps = Object.getOwnPropertyNames(b);
+
+    if (aProps.length !== bProps.length) {
+      return false;
+    }
+
+    for (const propName of aProps) {
+      if (a[propName] !== b[propName]) {
+        return false;
+      }
+    }
+    return true;
   }
 
   private removeListeners(): void {

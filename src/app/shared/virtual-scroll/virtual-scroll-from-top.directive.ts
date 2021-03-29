@@ -212,29 +212,12 @@ export class VirtualScrollFromTopDirective implements AfterViewInit, OnDestroy, 
   private fetchData(reset: boolean = false): void {
     this.ngZone.run(() => {
 
-      // uncomment for debugging
-      // console.log({
-      //   cacheRequestStart: this.cacheRequestStart,
-      //   cacheRequestEnd: this.cacheRequestEnd,
-      //   scrollPositionStart: this.scrollPositionStart,
-      //   scrollPositionEnd: this.scrollPositionEnd,
-      //   cursor: reset ? null : Math.min(this.virtualScrollItemsOffset + this.scrollPositionEnd + 40, this.vsForOf.lastCursorId),
-      //   viewportHeight: this.viewportHeight,
-      //   itemsNr: this.virtualScrollItemsCount,
-      //   itemsNumberInViewport: Math.floor(this.viewportHeight / this.itemHeight)
-      // });
-
       if (!reset) {
         // cache request position
         this.cacheRequestStart = this.scrollPositionStart;
         this.cacheRequestEnd = this.scrollPositionEnd;
       }
 
-      // check the cursor construction
-      // const nextCursorId = reset ?
-      //   null :
-      //   Math.min(this.vsForOf.idsToPositions[this.virtualScrollItemsOffset + this.scrollPositionEnd + 40] || this.vsForOf.lastCursorId, this.vsForOf.lastCursorId);
-      // const limit = nextCursorId ? nextCursorId - (this.getScrollPositionStartWithOffset() - 40) : Math.floor(this.viewportHeight / this.itemHeight * 3);
       const nextCursorId = reset ?
         null :
         Math.max(this.getScrollPositionStartWithOffset() - this.elementsBufferUpAndDown, 0);

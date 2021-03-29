@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CommonModule, DatePipe } from '@angular/common';
 
 import { ResourcesRoutingModule } from './resources.routing';
 import { ResourcesComponent } from './resources/resources.component';

@@ -111,6 +111,7 @@ import { CommitNumberEffects } from './monitoring/commit-number/commit-number.ef
 import { ResourcesEffects } from './resources/resources/resources.effects';
 import { TezedgeSharedModule } from './shared/tezedge-shared.module';
 import { NavigationMenuComponent } from './layout/navigation-menu/navigation-menu.component';
+import { DatePipe } from '@angular/common';
 
 @NgModule({
   declarations: [
@@ -233,7 +234,7 @@ import { NavigationMenuComponent } from './layout/navigation-menu/navigation-men
     TezedgeSharedModule
 
   ],
-  providers: [],
+  providers: [DatePipe],
   exports: [],
   bootstrap: [AppComponent]
 })

@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, NgZone, OnDestroy, OnInit } from '@angular/core';
 import { select, Store } from '@ngrx/store';
 import { Resource } from '../../shared/types/resources/resource.type';
 import { Observable } from 'rxjs';
@@ -6,6 +6,7 @@ import { ResourcesActionTypes } from './resources.actions';
 import { filter, map, skip } from 'rxjs/operators';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { BreakpointObserver } from '@angular/cdk/layout';
+import { State } from '../../app.reducers';
 
 
 class ChartData {
@@ -82,7 +83,8 @@ export class ResourcesComponent implements OnInit, OnDestroy {
 
   private isSmallDevice: boolean;
 
-  constructor(private store: Store<any>,
+  constructor(private store: Store<State>,
+              private zone: NgZone,
               private breakpointObserver: BreakpointObserver) {}
 
   ngOnInit(): void {
@@ -96,7 +98,11 @@ export class ResourcesComponent implements OnInit, OnDestroy {
       untilDestroyed(this),
       select(state => state.resources.resources),
       filter((resources: Resource[]) => resources.length > 0),
-      map((resources: Resource[]) => this.createChartData(resources))
+      map((resources: Resource[]) => {
+        return this.zone.runOutsideAngular(() => {
+          return this.createChartData(resources);
+        });
+      })
     );
   }
 
@@ -119,9 +125,6 @@ export class ResourcesComponent implements OnInit, OnDestroy {
   }
 
   private createChartData(resources: Array<Resource>): ChartData {
-    // create a unique minute-based list of entries. Only one value for each minute
-    resources = [...new Map(resources.map(entry => [entry.timestamp, entry])).values()].reverse();
-
     this.resourcesSummary = this.createSummaryBlocks(resources);
 
     const chartData = new ChartData();
@@ -186,7 +189,7 @@ export class ResourcesComponent implements OnInit, OnDestroy {
       });
     }
 
-    chartData.xTicksValues = ResourcesComponent.getFilteredXTicks(resources, Math.min(resources.length, this.isSmallDevice ? 5 : 15));
+    chartData.xTicksValues = ResourcesComponent.getFilteredXTicks(resources, Math.min(resources.length, this.isSmallDevice ? 2 : 7));
 
     return chartData;
   }

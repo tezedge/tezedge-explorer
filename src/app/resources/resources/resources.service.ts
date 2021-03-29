@@ -6,26 +6,26 @@ import { Resource } from '../../shared/types/resources/resource.type';
 import { CpuResource } from '../../shared/types/resources/cpu-resources.type';
 import { DiskResource } from '../../shared/types/resources/disk-resource.type';
 import { MemoryResource, MemoryResourceUsage } from '../../shared/types/resources/memory-resource.type';
+import { DatePipe } from '@angular/common';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ResourcesService {
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient,
+              private datePipe: DatePipe) {}
 
   getResources(endpoint: string): Observable<Resource[]> {
     return this.http.get<Resource[]>(endpoint)
-      .pipe(map(response => ResourcesService.mapGetResourcesResponse(response)));
+      .pipe(map(response => this.mapGetResourcesResponse(response)));
   }
 
-  private static mapGetResourcesResponse(response: any): Resource[] {
-    const twoDigitValue = (value: number) => value < 10 ? ('0' + value) : value;
+  private mapGetResourcesResponse(response: any): Resource[] {
 
-    return response.map(responseItem => {
-      const date = new Date(responseItem.timestamp * 1000);
+    return response.reverse().map(responseItem => {
       const resource = new Resource();
-      resource.timestamp = twoDigitValue(date.getHours()) + ':' + twoDigitValue(date.getMinutes());
+      resource.timestamp = this.datePipe.transform(responseItem.timestamp * 1000, 'MM/dd, HH:mm:ss');
 
       resource.memory = new MemoryResource();
       resource.memory.node = new MemoryResourceUsage();

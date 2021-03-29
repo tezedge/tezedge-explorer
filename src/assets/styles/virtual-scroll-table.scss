@@ -188,7 +188,7 @@
   }
 
   &.logs-filters-expanded {
-    height: calc(100vh - 190px); //154
+    height: calc(100vh - 181px);
   }
 
   .virtual-scroll-container,
@@ -202,8 +202,11 @@
 
   .virtual-scroll-container {
     width: 60%;
-    transform: translateZ(0);
-    -webkit-transform: translateZ(0);
+
+    .virtualScrollRow {
+      transform: translateZ(0);
+      -webkit-transform: translateZ(0);
+    }
   }
 
   .action-table-detail {

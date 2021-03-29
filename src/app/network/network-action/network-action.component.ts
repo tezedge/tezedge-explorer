@@ -41,6 +41,7 @@ export class NetworkActionComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    this.store.dispatch({type: 'NETWORK_LOAD'});
     this.scrollStart(null);
     // this.getItems({limit: this.virtualPageSize});
 
@@ -66,7 +67,7 @@ export class NetworkActionComponent implements OnInit, OnDestroy {
         this.virtualScrollItems = data;
         this.networkActionShow = this.virtualScrollItems.ids.length > 0;
 
-        this.activeFilters = this.setActiveFilters(this.virtualScrollItems.filter);
+        this.activeFilters = this.setActiveFilters();
 
         // if (this.networkActionShow && !this.networkActionItem) {
         // this.networkActionItem = this.virtualScrollItems.ids.length > 0 ?
@@ -85,7 +86,7 @@ export class NetworkActionComponent implements OnInit, OnDestroy {
 
   }
 
-  setActiveFilters(filters): string[] {
+  setActiveFilters(): string[] {
     return Object.keys(this.virtualScrollItems.filter)
       .reduce((accumulator, filter) => {
         if (this.virtualScrollItems.filter[filter]) {

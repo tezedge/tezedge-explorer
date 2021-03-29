@@ -4,7 +4,7 @@ context('resources', () => {
     cy.visit(Cypress.config().baseUrl);
     cy.wait(5000);
     cy.visit(Cypress.config().baseUrl + '/#/resources', { timeout: 2000 });
-    cy.wait(5000);
+    cy.wait(10000);
   })
 
   it('[resources] should perform get resources request successfully', () => {
@@ -21,7 +21,7 @@ context('resources', () => {
               .subscribe((data) => {
                 const parsingBackendResponseSuccessfully = data.resources.every(r => {
                   return typeof r.timestamp === 'string'
-                    && r.timestamp.length === 5
+                    && r.timestamp.length === 15
                     && r.cpu.node !== undefined
                     && r.disk.blockStorage !== undefined
                     && r.disk.mainDb !== undefined

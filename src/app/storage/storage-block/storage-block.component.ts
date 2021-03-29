@@ -3,6 +3,7 @@ import {Store} from '@ngrx/store';
 import {Subject} from 'rxjs';
 import {takeUntil} from 'rxjs/operators';
 import {VirtualScrollDirective} from '../../shared/virtual-scroll/virtual-scroll.directive';
+import {StorageBlock} from '../../shared/types/storage/storage-block.type';
 
 @Component({
   selector: 'app-storage-block',
@@ -12,7 +13,7 @@ import {VirtualScrollDirective} from '../../shared/virtual-scroll/virtual-scroll
 })
 export class StorageBlockComponent implements OnInit, OnDestroy {
 
-  virtualScrollItems;
+  virtualScrollItems: StorageBlock;
   storageBlockShow: boolean;
   filtersState = {
     open: false
@@ -22,7 +23,6 @@ export class StorageBlockComponent implements OnInit, OnDestroy {
   onDestroy$ = new Subject();
 
   @ViewChild(VirtualScrollDirective) vrFor: VirtualScrollDirective;
-  // @ViewChild(MatAccordion) accordion: MatAccordion;
 
   constructor(
     public store: Store<any>,
@@ -37,8 +37,7 @@ export class StorageBlockComponent implements OnInit, OnDestroy {
 
     this.store.select('storageBlock')
       .pipe(takeUntil(this.onDestroy$))
-      .subscribe(data => {
-        console.log(data);
+      .subscribe((data: StorageBlock) => {
         this.virtualScrollItems = data;
         this.storageBlockShow = data.ids.length > 0;
 
@@ -51,7 +50,7 @@ export class StorageBlockComponent implements OnInit, OnDestroy {
 
   }
 
-  getItemDetails($event) {
+  getItemDetails($event): void {
     this.store.dispatch({
       type: 'STORAGE_BLOCK_DETAILS_LOAD',
       payload: {
@@ -60,7 +59,7 @@ export class StorageBlockComponent implements OnInit, OnDestroy {
     });
   }
 
-  getItems($event) {
+  getItems($event): void {
     this.store.dispatch({
       type: 'STORAGE_BLOCK_FETCH',
       payload: {
@@ -70,7 +69,7 @@ export class StorageBlockComponent implements OnInit, OnDestroy {
     });
   }
 
-  loadPreviousPage() {
+  loadPreviousPage(): void {
     if (this.virtualScrollItems.stream) {
       this.scrollStop();
     }
@@ -80,7 +79,7 @@ export class StorageBlockComponent implements OnInit, OnDestroy {
     });
   }
 
-  loadNextPage() {
+  loadNextPage(): void {
     const actualPageIndex = this.virtualScrollItems.pages.findIndex(pageId => Number(pageId) === this.virtualScrollItems.activePage.id);
 
     if (actualPageIndex === this.virtualScrollItems.pages.length - 1) {
@@ -95,7 +94,7 @@ export class StorageBlockComponent implements OnInit, OnDestroy {
     });
   }
 
-  startStopDataStream(event) {
+  startStopDataStream(event): void {
     if (event.stop) {
       this.scrollStop();
     } else {
@@ -103,7 +102,7 @@ export class StorageBlockComponent implements OnInit, OnDestroy {
     }
   }
 
-  scrollStart($event) {
+  scrollStart($event): void {
     if (this.virtualScrollItems && this.virtualScrollItems.stream) {
       return;
     }
@@ -116,7 +115,7 @@ export class StorageBlockComponent implements OnInit, OnDestroy {
     });
   }
 
-  scrollStop() {
+  scrollStop(): void {
     if (!this.virtualScrollItems.stream) {
       return;
     }
@@ -126,8 +125,8 @@ export class StorageBlockComponent implements OnInit, OnDestroy {
     });
   }
 
-  scrollToEnd() {
-    this.vrFor.scrollToBottom();
+  scrollToEnd(): void {
+    this.scrollStart(null);
   }
 
   // tableMouseEnter(item) {
@@ -143,11 +142,11 @@ export class StorageBlockComponent implements OnInit, OnDestroy {
   //   });
   // }
 
-  ngOnDestroy() {
+  ngOnDestroy(): void {
     // stop streaming actions
-    this.store.dispatch({
-      type: 'STORAGE_BLOCK_STOP'
-    });
+    // this.store.dispatch({
+    //   type: 'STORAGE_BLOCK_STOP'
+    // });
     this.store.dispatch({type: 'STORAGE_BLOCK_RESET'});
 
     // close all observables

@@ -75,8 +75,6 @@ export class NetworkActionComponent implements OnInit, OnDestroy {
         //   null;
         // }
 
-        console.log(this.virtualScrollItems);
-
         this.changeDetector.markForCheck();
         //
         // if (this.virtualScrollItems.ids.length > 0 && this.vrFor) {

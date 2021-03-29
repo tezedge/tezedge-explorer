@@ -35,8 +35,7 @@ export function reducer(state: LogsAction = initialState, action): LogsAction {
         entities: setEntities(action, state),
         lastCursorId: setLastCursorId(action),
         activePage,
-        pages: setPages(activePage, state),
-        stream: action.type === 'LOGS_ACTION_START_SUCCESS'
+        pages: setPages(activePage, state)
       };
     }
 
@@ -56,6 +55,13 @@ export function reducer(state: LogsAction = initialState, action): LogsAction {
       return {
         ...state,
         stream: false
+      };
+    }
+
+    case 'LOGS_ACTION_START': {
+      return {
+        ...state,
+        stream: true
       };
     }
 

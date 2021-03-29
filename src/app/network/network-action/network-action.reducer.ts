@@ -61,8 +61,7 @@ export function reducer(state: NetworkAction = initialState, action): NetworkAct
         entities,
         lastCursorId: setLastCursorId(action),
         activePage,
-        pages: setPages(activePage, state),
-        stream: action.type === 'NETWORK_ACTION_START_SUCCESS'
+        pages: setPages(activePage, state)
       };
     }
 
@@ -90,6 +89,13 @@ export function reducer(state: NetworkAction = initialState, action): NetworkAct
       return {
         ...state,
         stream: false
+      };
+    }
+
+    case 'NETWORK_ACTION_START': {
+      return {
+        ...state,
+        stream: true
       };
     }
 

@@ -202,11 +202,6 @@
 
   .virtual-scroll-container {
     width: 60%;
-
-    .virtualScrollRow {
-      transform: translateZ(0);
-      -webkit-transform: translateZ(0);
-    }
   }
 
   .action-table-detail {
@@ -318,6 +313,8 @@
   padding: 0 16px;
   box-sizing: border-box;
   cursor: pointer;
+  transform: translateZ(0);
+  -webkit-transform: translateZ(0);
 
   &.logs-row {
     grid-template-columns: 180px 80px 1fr;
@@ -362,6 +359,10 @@
 
   a {
     text-decoration: none !important;
+  }
+
+  .storage-block-hash:hover {
+    text-decoration: underline;
   }
 
   &.hover {

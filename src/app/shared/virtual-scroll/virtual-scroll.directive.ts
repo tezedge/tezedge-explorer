@@ -58,10 +58,29 @@ export class VirtualScrollDirective implements AfterViewInit, OnDestroy, OnChang
   }
 
   ngOnChanges(changes: SimpleChanges) {
+    if (changes.vsForOf.previousValue !== undefined && this.isEquivalent(changes.vsForOf.currentValue.entities, changes.vsForOf.previousValue.entities)) {
+      return;
+    }
     this.afterReceivingData();
   }
 
   ngDoCheck() {
+  }
+
+  private isEquivalent(a, b): boolean {
+    const aProps = Object.getOwnPropertyNames(a);
+    const bProps = Object.getOwnPropertyNames(b);
+
+    if (aProps.length !== bProps.length) {
+      return false;
+    }
+
+    for (const propName of aProps) {
+      if (a[propName] !== b[propName]) {
+        return false;
+      }
+    }
+    return true;
   }
 
   ngAfterViewInit() {
@@ -262,7 +281,7 @@ export class VirtualScrollDirective implements AfterViewInit, OnDestroy, OnChang
   // }
 
   private createViewElements(): void {
-    if (!this.viewContainer.length ) {
+    if (!this.viewContainer.length) {
       // const numberOfElements = Math.max(this.scrollPositionEnd - this.scrollPositionStart, this.viewportHeight * 2);
       // this.embeddedViews.length = 0;
       // this.viewContainer.clear();

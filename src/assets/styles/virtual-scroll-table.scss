@@ -23,7 +23,7 @@
   line-height: 35px;
 
   &.logs-header {
-    grid-template-columns: 180px 70px 1fr;
+    grid-template-columns: 180px 80px 1fr;
   }
 
   &.network-header {
@@ -317,7 +317,7 @@
   cursor: pointer;
 
   &.logs-row {
-    grid-template-columns: 180px 60px 1fr;
+    grid-template-columns: 180px 80px 1fr;
   }
 
   &.network-row {

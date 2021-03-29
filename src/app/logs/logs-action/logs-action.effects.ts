@@ -65,7 +65,7 @@ export class LogsActionEffects {
 
     switchMap(({ action, state }) =>
       // get header data every second
-      timer(0, 1000).pipe(
+      timer(0, 2000).pipe(
         takeUntil(logActionDestroy$),
         switchMap(() =>
           this.http.get(setUrl(action, state)).pipe(

@@ -62,7 +62,7 @@ export function reducer(state: NetworkAction = initialState, action): NetworkAct
         lastCursorId: setLastCursorId(action),
         activePage,
         pages: setPages(activePage, state),
-        stream: action.type === 'NETWORK_ACTION_START_SUCCESS',
+        stream: action.type === 'NETWORK_ACTION_START_SUCCESS'
       };
     }
 

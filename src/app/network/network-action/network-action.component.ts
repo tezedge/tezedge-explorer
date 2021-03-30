@@ -70,6 +70,10 @@ export class NetworkActionComponent implements OnInit, OnDestroy {
   }
 
   getItemDetails($event) {
+    if ($event.originalId === undefined) {
+      return;
+    }
+
     this.store.dispatch({
       type: 'NETWORK_ACTION_DETAILS_LOAD',
       payload: {

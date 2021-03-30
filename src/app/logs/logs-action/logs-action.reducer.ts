@@ -99,7 +99,7 @@ export function setEntities(action, state): { [id: string]: LogsActionEntity } {
             ...logsAction,
             id: virtualScrollId,
             originalId: logsAction.id,
-            datetime: moment.utc(Math.ceil(logsAction.timestamp / 1000000)).format('HH:mm:ss.SSS, DD MMM YY')
+            datetime: moment(Math.ceil(logsAction.timestamp / 1000000)).format('HH:mm:ss.SSS, DD MMM YY')
           }
         };
       }, {});

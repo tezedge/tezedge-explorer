@@ -9,7 +9,7 @@
         <ng-container *ngIf="block.value">
           <td><span [style.color]="block.color">{{ block.name }}</span></td>
           <td class="faded-text">
-            <span>{{ block.value | number: block.label === 'GB' ? '1.2-2' : '' }} {{ block.label }}</span>
+            <span>{{ block.value | number: block.label !== '%' ? '1.2-2' : '' }} {{ block.label }}</span>
           </td>
         </ng-container>
       </tr>

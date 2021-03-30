@@ -55,9 +55,10 @@
                              [resourceType]="'memory'"
                              [graphTitle]="'RAM'"
                              [rotatedLabel]="'Usage'"
-                             [yAxisTickFormatting]="yAxisGigaBytesConversion"
+                             [yAxisTickFormatting]="yAxisMegaBytesConversion"
                              [xTicksValues]="chartData.xTicksValues"
                              [colorScheme]="colorScheme"
+                             [formattingType]="'MB'"
                              (graphClick)="toggleActiveSummary($event)"></app-resources-graph>
 
         <app-resources-graph [chartData]="chartData?.disk"

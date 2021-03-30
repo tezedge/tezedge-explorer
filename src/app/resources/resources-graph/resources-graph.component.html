@@ -2,8 +2,9 @@
      [class.fade]="chartData"
      [style.transition-delay.s]="transitionDelay"
      (click)="toggleActiveSummary()"
+     [ngClass.lt-md]="'small-device'"
      class="resource-category-block">
-  <div class="rotated-label" fxFlex="33px"><span>{{ rotatedLabel }}</span></div>
+  <div class="rotated-label" fxFlex="33px" fxHide.lt-md><span>{{ rotatedLabel }}</span></div>
   <div fxLayout="column" fxFlex="grow">
     <div class="graph-title">{{ graphTitle }}</div>
     <div class="graph-label-list"
@@ -64,6 +65,9 @@
         <div *ngIf="type === 'GB'"
              class="series-value">{{ entry.value | number: '1.2-2' }} GB
         </div>
+        <div *ngIf="type === 'MB'"
+             class="series-value">{{ entry.value | number: '1.2-2' }} MB
+        </div>
       </div>
     </div>
   </div>
@@ -80,6 +84,8 @@
             class="tooltip-val">{{ model.value }}%</span>
       <span *ngIf="type === 'GB'"
             class="tooltip-val">{{ model.value | number: '1.2-2' }} GB</span>
+      <span *ngIf="type === 'MB'"
+            class="tooltip-val">{{ model.value | number: '1.2-2' }} MB</span>
     </span>
   </div>
 </ng-template>

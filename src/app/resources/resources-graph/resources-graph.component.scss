@@ -12,6 +12,10 @@ $text-color: rgb(164, 164, 165);
   margin-right: 10px;
   overflow-x: hidden;
 
+  &.small-device {
+    padding: 2vh 7vw 4vh 0;
+  }
+
   &.fade {
     opacity: 1;
   }
@@ -24,23 +28,15 @@ $text-color: rgb(164, 164, 165);
   }
 
   .rotated-label {
-    //position: absolute;
-    //left: 10px;
-    //top: 50%;
     color: #fff;
     font-size: 12px;
     white-space: nowrap;
     display: flex;
     align-items: center;
-    //justify-content: center;
 
     span {
       transform: rotate(-90deg) translateY(-6px);
       padding-right: 3vh;
-    }
-
-    @media (max-width: 800px) {
-      //left: 0;
     }
   }
 

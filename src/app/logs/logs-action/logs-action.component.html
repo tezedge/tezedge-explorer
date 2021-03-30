@@ -35,37 +35,37 @@
 
             <div class="filters-row">
               <span class="filters-label">Level</span>
-              <button mat-flat-button [class.active]="virtualScrollItems.filter.trace"
+              <button mat-flat-button [class.active]="virtualScrollItems.filter.trace || !activeFilters.length"
                       (click)=" filterType('trace')">
                 Trace
                 <svg-icon icon="close" scale="0.8"></svg-icon>
               </button>
-              <button mat-flat-button [class.active]="virtualScrollItems.filter.debug"
+              <button mat-flat-button [class.active]="virtualScrollItems.filter.debug || !activeFilters.length"
                       (click)="filterType('debug')">
                 Debug
                 <svg-icon icon="close" scale="0.8"></svg-icon>
               </button>
-              <button mat-flat-button [class.active]="virtualScrollItems.filter.info"
+              <button mat-flat-button [class.active]="virtualScrollItems.filter.info || !activeFilters.length"
                       (click)=" filterType('info')">
                 Info
                 <svg-icon icon="close" scale="0.8"></svg-icon>
               </button>
-              <button mat-flat-button [class.active]="virtualScrollItems.filter.notice"
+              <button mat-flat-button [class.active]="virtualScrollItems.filter.notice || !activeFilters.length"
                       (click)=" filterType('notice')">
                 Notice
                 <svg-icon icon="close" scale="0.8"></svg-icon>
               </button>
-              <button mat-flat-button [class.active]="virtualScrollItems.filter.warning"
+              <button mat-flat-button [class.active]="virtualScrollItems.filter.warning || !activeFilters.length"
                       (click)=" filterType('warning')">
                 Warning
                 <svg-icon icon="close" scale="0.8"></svg-icon>
               </button>
-              <button mat-flat-button [class.active]="virtualScrollItems.filter.error"
+              <button mat-flat-button [class.active]="virtualScrollItems.filter.error || !activeFilters.length"
                       (click)=" filterType('error')">
                 Error
                 <svg-icon icon="close" scale="0.8"></svg-icon>
               </button>
-              <button mat-flat-button [class.active]="virtualScrollItems.filter.fatal"
+              <button mat-flat-button [class.active]="virtualScrollItems.filter.fatal || !activeFilters.length"
                       (click)=" filterType('fatal')">
                 Fatal
                 <svg-icon icon="close" scale="0.8"></svg-icon>

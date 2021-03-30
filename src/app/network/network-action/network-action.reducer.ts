@@ -160,7 +160,7 @@ export function setEntities(action, state): { [id: string]: NetworkActionEntity 
             id: virtualScrollId,
             originalId: networkAction.id,
             payload: networkAction.message,
-            datetime: moment.utc(Math.ceil(networkAction.timestamp / 1000000)).format('HH:mm:ss.SSS, DD MMM YY')
+            datetime: moment(Math.ceil(networkAction.timestamp / 1000000)).format('HH:mm:ss.SSS, DD MMM YY')
           }
         };
       }, {});

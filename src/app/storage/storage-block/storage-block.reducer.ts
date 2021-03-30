@@ -95,7 +95,7 @@ export function setEntities(action, state): { [id: string]: StorageBlockEntity }
             hash: block.block_hash,
             id: virtualScrollId,
             originalId: block.level,
-            datetime: moment(Number(block.timestamp)).format('HH:mm:ss.SSS, DD MMM YY'),
+            datetime: moment(Number(block.timestamp) * 1000).format('HH:mm:ss.SSS, DD MMM YY'),
             cyclePosition: block.cycle_position !== undefined ? block.cycle_position : ''
           }
         };

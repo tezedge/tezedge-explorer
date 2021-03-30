@@ -77,6 +77,7 @@ export class ResourcesComponent implements OnInit, OnDestroy {
   readonly colorScheme = COLOR_SCHEME;
   readonly yAxisPercentageConversion = (value) => `${value}%`;
   readonly yAxisGigaBytesConversion = (value) => (value < 1 ? value : (value + '.00')) + ' GB';
+  readonly yAxisMegaBytesConversion = (value) => `${value} MB`;
 
   resourcesSummary: ResourcesSummary;
   activeSummary: ResourceType = 'disk';
@@ -208,9 +209,10 @@ export class ResourcesComponent implements OnInit, OnDestroy {
   private static getFilteredXTicks(resources: Resource[], noOfResults: number): string[] {
     const xTicks = [];
     const delta = Math.floor(resources.length / noOfResults);
-
-    for (let i = 0; i < resources.length; i = i + delta) {
-      xTicks.push(resources[i].timestamp);
+    for (let i = 0; i <= resources.length; i = i + delta) {
+      if (resources[i]) {
+        xTicks.push(resources[i].timestamp);
+      }
     }
     return xTicks;
   }
@@ -220,14 +222,14 @@ export class ResourcesComponent implements OnInit, OnDestroy {
     const lastResource = resources[resources.length - 1];
     summary.cpu.push(new ResourcesSummaryBlock('Load', lastResource.cpu.node, this.colorScheme.domain[0], '%'));
 
-    summary.memory.push(new ResourcesSummaryBlock('Total', lastResource.memory.total, this.colorScheme.domain[0], 'GB'));
-    summary.memory.push(new ResourcesSummaryBlock('Nodes', lastResource.memory.node.resident, this.colorScheme.domain[1], 'GB'));
+    summary.memory.push(new ResourcesSummaryBlock('Total', lastResource.memory.total, this.colorScheme.domain[0], 'MB'));
+    summary.memory.push(new ResourcesSummaryBlock('Nodes', lastResource.memory.node.resident, this.colorScheme.domain[1], 'MB'));
     if (lastResource.memory.protocolRunners) {
       summary.memory.push(new ResourcesSummaryBlock(
         'Protocol runners',
         lastResource.memory.protocolRunners.resident,
         this.colorScheme.domain[2],
-        'GB'
+        'MB'
       ));
     }
     if (lastResource.memory.validators) {
@@ -235,7 +237,7 @@ export class ResourcesComponent implements OnInit, OnDestroy {
         'Validators',
         lastResource.memory.validators.resident,
         this.colorScheme.domain[2],
-        'GB'
+        'MB'
       ));
     }
 

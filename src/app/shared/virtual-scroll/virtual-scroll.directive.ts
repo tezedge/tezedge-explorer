@@ -151,7 +151,7 @@ export class VirtualScrollDirective implements AfterViewInit, OnDestroy, OnChang
     const start = Math.max(firstDisplayed - this.offsetScrollElements, 0);
 
     const lastDisplayed = firstDisplayed + Math.ceil(this.viewportHeight / this.itemHeight);
-    const end = Math.min(lastDisplayed + this.offsetScrollElements, 1000);
+    const end = Math.min(lastDisplayed, 1000);
 
     // save scroll position
     this.scrollPositionStart = start;

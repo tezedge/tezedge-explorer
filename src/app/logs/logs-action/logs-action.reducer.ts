@@ -65,6 +65,12 @@ export function reducer(state: LogsAction = initialState, action): LogsAction {
       };
     }
 
+    case 'LOGS_ACTION_RESET': {
+      return {
+        ...initialState
+      };
+    }
+
     default:
       return state;
   }

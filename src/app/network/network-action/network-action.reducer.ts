@@ -37,8 +37,8 @@ const initialState: NetworkAction = {
 export function reducer(state: NetworkAction = initialState, action): NetworkAction {
   switch (action.type) {
 
-    // initialize or reset state
-    case 'NETWORK_LOAD': {
+    case 'NETWORK_LOAD':
+    case 'NETWORK_ACTION_RESET': {
       return initialState;
     }
 

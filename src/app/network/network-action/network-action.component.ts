@@ -41,63 +41,22 @@ export class NetworkActionComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.store.dispatch({type: 'NETWORK_LOAD'});
+    this.store.dispatch({type: 'NETWORK_ACTION_RESET'});
     this.scrollStart(null);
-    // this.getItems({limit: this.virtualPageSize});
-
-    this.activeRoute.params
-      .pipe(takeUntil(this.onDestroy$))
-      .subscribe((params) => {
-
-        this.store.dispatch({
-          type: 'NETWORK_ACTION_ADDRESS',
-          payload: {
-            urlParams: params.address ? params.address : '',
-          }
-        });
-
-      });
 
     // wait for data changes from redux
     this.store.select('networkAction')
       .pipe(takeUntil(this.onDestroy$))
       .subscribe((data: NetworkAction) => {
 
-        // this.networkAction = data;
         this.virtualScrollItems = data;
         this.networkActionShow = this.virtualScrollItems.ids.length > 0;
 
         this.activeFilters = this.setActiveFilters();
 
-        // if (this.networkActionShow && !this.networkActionItem) {
-        // this.networkActionItem = this.virtualScrollItems.ids.length > 0 ?
-        //   this.virtualScrollItems.entities[this.virtualScrollItems.ids[this.virtualScrollItems.ids.length - 1]] :
-        //   null;
-        // }
-
         this.changeDetector.markForCheck();
-        //
-        // if (this.virtualScrollItems.ids.length > 0 && this.vrFor) {
-        //   this.vrFor.afterReceivingData();
-        // }
       });
 
-  }
-
-  setActiveFilters(): string[] {
-    return Object.keys(this.virtualScrollItems.filter)
-      .reduce((accumulator, filter) => {
-        if (this.virtualScrollItems.filter[filter]) {
-          return [
-            ...accumulator,
-            filter
-          ];
-        } else {
-          return accumulator;
-        }
-      }, []);
-
-    // return ['aa'];
   }
 
   getItems($event) {
@@ -191,8 +150,33 @@ export class NetworkActionComponent implements OnInit, OnDestroy {
 
   }
 
-  filterAddress() {
-    this.router.navigate(['network']);
+  filterAddress(addressParam) {
+    let address = '';
+
+    if (this.virtualScrollItems.urlParams !== addressParam) {
+      address = addressParam;
+    }
+
+    this.store.dispatch({
+      type: 'NETWORK_ACTION_ADDRESS',
+      payload: {
+        urlParams: address,
+      }
+    });
+  }
+
+  setActiveFilters(): string[] {
+    return Object.keys(this.virtualScrollItems.filter)
+      .reduce((accumulator, filter) => {
+        if (this.virtualScrollItems.filter[filter]) {
+          return [
+            ...accumulator,
+            filter
+          ];
+        } else {
+          return accumulator;
+        }
+      }, []);
   }
 
   tableMouseEnter(item) {

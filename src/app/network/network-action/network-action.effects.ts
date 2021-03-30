@@ -65,6 +65,7 @@ export class NetworkActionEffects {
 
     tap(response => {
       networkActionDestroy$.next();
+      networkActionFilter(response.action, response.state);
     }),
 
     // dispatch action

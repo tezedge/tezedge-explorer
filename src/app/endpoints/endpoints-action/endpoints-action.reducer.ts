@@ -32,7 +32,7 @@ export function reducer(state = initialState, action) {
                                 ...endpointAction,
                                 message,
                                 preview: message.payload.length > 20 ? message.payload.substring(0, 20) + '...' : '',
-                                datetime: moment.utc(Math.ceil(endpointAction.timestamp / 1000000)).format('HH:mm:ss.SSS, DD MMM YY'),
+                                datetime: moment(Math.ceil(endpointAction.timestamp / 1000000)).format('HH:mm:ss.SSS, DD MMM YY'),
                             },
                         };
 

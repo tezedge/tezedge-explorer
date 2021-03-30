@@ -36,6 +36,7 @@ export class LogsActionComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    this.store.dispatch({type: 'LOGS_ACTION_RESET'});
     this.scrollStart(null);
 
     this.store.select('logsAction')
@@ -43,6 +44,8 @@ export class LogsActionComponent implements OnInit, OnDestroy {
       .subscribe((data: LogsAction) => {
         this.virtualScrollItems = data;
         this.logsActionShow = this.virtualScrollItems.ids.length > 0;
+
+        this.activeFilters = this.setActiveFilters();
 
         if (this.logsActionShow && !this.logsActionItem) {
           this.logsActionItem = this.virtualScrollItems.entities[this.virtualScrollItems.ids[this.virtualScrollItems.ids.length - 1]];
@@ -144,7 +147,20 @@ export class LogsActionComponent implements OnInit, OnDestroy {
       type: 'LOGS_ACTION_FILTER',
       payload: filterType
     });
+  }
 
+  setActiveFilters(): string[] {
+    return Object.keys(this.virtualScrollItems.filter)
+      .reduce((accumulator, filter) => {
+        if (this.virtualScrollItems.filter[filter]) {
+          return [
+            ...accumulator,
+            filter
+          ];
+        } else {
+          return accumulator;
+        }
+      }, []);
   }
 
   tableMouseEnter(item) {

@@ -68,7 +68,7 @@
                      (getItems)="getItems($event)" (startStopDataStream)="startStopDataStream($event)">
           <span class="virtualScrollRow storage-action-row"
                 [style.transform]="position !== undefined ? 'translate(0px,' + position + 'px)' : ''"
-                [class.virtualScrollRowEven]="event?.index % 2" (mouseenter)="event ? tableMouseEnter(event) : null"
+                [class.virtualScrollRowEven]="event?.index % 2" (click)="event ? tableMouseEnter(event) : null"
                 [class.hover]="event?.start_time && storageActionItem?.id===event?.id"
                 [class.used]="event?.start_time">
 

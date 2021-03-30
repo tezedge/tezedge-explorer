@@ -10,14 +10,14 @@
         </button>
 
         <div class="filters-content">
-          <button *ngFor="let filter of activeFilters" mat-flat-button (click)=" filterType(filter)">
+          <button class="active" *ngFor="let filter of activeFilters" mat-flat-button (click)=" filterType(filter)">
             {{filter}}
             <svg-icon icon="close" scale="0.8"></svg-icon>
           </button>
         </div>
 
         <div class="filters-content">
-          <button *ngIf="virtualScrollItems.urlParams" mat-flat-button (click)="filterAddress()">
+          <button class="active" *ngIf="virtualScrollItems.urlParams" mat-flat-button (click)="filterAddress(virtualScrollItems.urlParams)">
             Address:
             {{ virtualScrollItems.urlParams }}
             <svg-icon icon="close" scale="0.8"></svg-icon>
@@ -160,8 +160,8 @@
             <span class="item-loading" [class.displayed]="!event?.datetime">&nbsp;</span>
 
             <span class="truncate">{{event?.datetime}}</span>
-            <span class="network-action-table-address truncate">
-              <a href="#/network/{{ event?.remote_addr }}"> {{ event?.remote_addr }}</a>
+            <span class="truncate">
+              <span class="network-action-table-address" (click)="filterAddress(event?.remote_addr)"> {{ event?.remote_addr }}</span>
             </span>
             <span>
               <span *ngIf="event?.datetime && (event?.source_type==='local' || event?.source_type==='remote')">

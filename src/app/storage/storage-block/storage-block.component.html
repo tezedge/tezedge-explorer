@@ -19,15 +19,17 @@
           <span class="virtualScrollRow storage-block-row"
                 [style.transform]="position !== undefined ? 'translateY(' + position + 'px)' : ''"
                 [class.virtualScrollRowEven]="event?.index % 2"
-                (click)="event?.hash ? getItemDetails(event) : null"
+                (mouseenter)="event?.hash ? getItemDetails(event) : null"
                 [class.hover]="event?.datetime && virtualScrollItems?.selected?.hash===event?.hash"
-                [class.used]="event?.datetime">
+                [class.used]="event?.datetime"
+                [routerLink]="['/storage',event?.hash]"
+          >
 
             <span class="truncate">{{event?.datetime}}</span>
             <span class="truncate storage-block-level">{{event?.originalId}}</span>
             <span class="truncate">{{event?.cyclePosition}}</span>
             <span class="truncate">
-              <span class="storage-block-hash" [routerLink]="['/storage',event?.hash]">{{event?.hash}}</span>
+              <span class="storage-block-hash">{{event?.hash}}</span>
             </span>
 
             <span class="item-loading" [class.displayed]="!event?.datetime">&nbsp;</span>

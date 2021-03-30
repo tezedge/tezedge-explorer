@@ -109,8 +109,6 @@ steps:
 
 - name: cp-static
   image: drone-tezedge-explorer:latest
-  depends_on:
-    - test
   privileged: true
   pull: if-not-exists
   volumes:
@@ -129,7 +127,6 @@ steps:
     FIREBASE_API_TOKEN:
       from_secret: FIREBASE_API_TOKEN
   depends_on:
-    - test
     - cp-static
     - publish
   commands:

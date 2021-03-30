@@ -4,6 +4,7 @@ import {Subject} from 'rxjs';
 import {takeUntil} from 'rxjs/operators';
 import {VirtualScrollDirective} from '../../shared/virtual-scroll/virtual-scroll.directive';
 import {StorageBlock} from '../../shared/types/storage/storage-block.type';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-storage-block',
@@ -27,7 +28,8 @@ export class StorageBlockComponent implements OnInit, OnDestroy {
   constructor(
     public store: Store<any>,
     private ngZone: NgZone,
-    private changeDetector: ChangeDetectorRef
+    private changeDetector: ChangeDetectorRef,
+    private router: Router
   ) {
   }
 
@@ -127,6 +129,13 @@ export class StorageBlockComponent implements OnInit, OnDestroy {
 
   scrollToEnd(): void {
     this.scrollStart(null);
+  }
+
+  goToStorageActions(hash): void {
+    if (!hash) {
+      return;
+    }
+    this.router.navigate(['storage', hash]);
   }
 
   // tableMouseEnter(item) {

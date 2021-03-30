@@ -22,7 +22,7 @@
                 (mouseenter)="event?.hash ? getItemDetails(event) : null"
                 [class.hover]="event?.datetime && virtualScrollItems?.selected?.hash===event?.hash"
                 [class.used]="event?.datetime"
-                [routerLink]="['/storage',event?.hash]"
+                (click)="goToStorageActions(event?.hash)"
           >
 
             <span class="truncate">{{event?.datetime}}</span>

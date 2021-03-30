@@ -20,7 +20,7 @@ export class ResourcesGraphComponent {
   @Input() xTicksValues: string[];
   @Input() colorScheme: { domain: string[] };
   @Input() curve: any = curveCardinal;
-  @Input() formattingType: 'percentage' | 'GB' = 'GB';
+  @Input() formattingType: 'percentage' | 'GB' | 'MB' = 'GB';
 
   @Output() graphClick = new EventEmitter<ResourceType>();
 

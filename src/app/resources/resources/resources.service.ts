@@ -29,21 +29,21 @@ export class ResourcesService {
 
       resource.memory = new MemoryResource();
       resource.memory.node = new MemoryResourceUsage();
-      resource.memory.node.resident = responseItem.memory.node.resident_mem / 1000000000;
-      resource.memory.node.virtual = responseItem.memory.node.virtual_mem / 1000000000;
+      resource.memory.node.resident = responseItem.memory.node.resident_mem / 1000000;
+      resource.memory.node.virtual = responseItem.memory.node.virtual_mem / 1000000;
       resource.memory.total = resource.memory.node.resident;
 
       if (responseItem.memory.protocol_runners) {
         resource.memory.protocolRunners = new MemoryResourceUsage();
-        resource.memory.protocolRunners.resident = responseItem.memory.protocol_runners.resident_mem / 1000000000;
-        resource.memory.protocolRunners.virtual = responseItem.memory.protocol_runners.virtual_mem / 1000000000;
+        resource.memory.protocolRunners.resident = responseItem.memory.protocol_runners.resident_mem / 1000000;
+        resource.memory.protocolRunners.virtual = responseItem.memory.protocol_runners.virtual_mem / 1000000;
         resource.memory.total += resource.memory.protocolRunners.resident;
       }
 
       if (responseItem.memory.validators) {
         resource.memory.validators = new MemoryResourceUsage();
-        resource.memory.validators.resident = responseItem.memory.validators.resident_mem / 1000000000;
-        resource.memory.validators.virtual = responseItem.memory.validators.virtual_mem / 1000000000;
+        resource.memory.validators.resident = responseItem.memory.validators.resident_mem / 1000000;
+        resource.memory.validators.virtual = responseItem.memory.validators.virtual_mem / 1000000;
         resource.memory.total += resource.memory.validators.resident;
       }
 

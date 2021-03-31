@@ -225,6 +225,15 @@
       font-size: 14px;
     }
 
+    .hex-row {
+      display: grid;
+      grid-template-columns: minmax(22px, 1fr) minmax(22px, 1fr) minmax(22px, 1fr) minmax(22px, 1fr) minmax(22px, 1fr) minmax(22px, 1fr) minmax(22px, 1fr) minmax(22px, 1fr) minmax(22px, 1fr) minmax(22px, 1fr) minmax(22px, 1fr) minmax(22px, 1fr) minmax(22px, 1fr) minmax(22px, 1fr) minmax(22px, 1fr) minmax(22px, 1fr);
+      padding-bottom: 5px;
+
+      //grid-gap: 10px;
+      //grid-template-columns: repeat(auto-fit, minmax(22px, 1fr));
+    }
+
     .mat-tab-label {
       justify-content: center;
       padding-left: 14px !important;

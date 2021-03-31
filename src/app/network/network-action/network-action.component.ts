@@ -195,26 +195,6 @@ export class NetworkActionComponent implements OnInit, OnDestroy {
     });
   }
 
-  showTab(tab): boolean {
-    if (!this.networkActionItem) {
-      return false;
-    }
-
-    switch (true) {
-      case tab === 'JSON':
-        return !!(this.networkActionItem?.payload && JSON.stringify(this.networkActionItem?.payload) !== '[]' && JSON.stringify(this.networkActionItem?.payload) !== '{}');
-
-      case tab === 'HEX':
-        return !!(this.networkActionItem?.original_bytes && this.networkActionItem?.original_bytes.length);
-
-      case tab === 'ERROR':
-        return !!(this.networkActionItem?.error && this.networkActionItem?.error[0]);
-
-      default:
-        return false;
-    }
-  }
-
   ngOnDestroy() {
 
     // stop streaming actions

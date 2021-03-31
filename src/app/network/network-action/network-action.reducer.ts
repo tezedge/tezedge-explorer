@@ -182,18 +182,14 @@ export function setHexValues(bytes): string[][] {
   bytes.forEach((byte, index) => {
     if (index % 16 === 0 && index > 0) {
       hexArray.push(row);
-      console.log('reset');
       row = [];
     }
     row.push(byte);
   });
 
-  hexArray.push(row); // this is the incomplete row, with less than 16 elements
+  hexArray.push(row);
 
   return hexArray;
-  // return bytes.map((item) => {
-  //   return item.toString(16).padStart(6, '0').toUpperCase();
-  // }) || [];
 }
 
 export function setVirtualScrollId(action, state, accumulator): number {

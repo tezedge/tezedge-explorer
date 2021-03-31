@@ -193,7 +193,7 @@
               </ngx-json-viewer>
             </ng-template>
           </mat-tab>
-          <mat-tab *ngIf="virtualScrollItems?.selected?.hexValues">
+          <mat-tab *ngIf="virtualScrollItems?.selected?.hexValues && virtualScrollItems?.selected?.hexValues.length">
             <ng-template mat-tab-label>
               <span>Hex Values</span>
             </ng-template>

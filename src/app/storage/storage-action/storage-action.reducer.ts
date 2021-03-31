@@ -153,51 +153,6 @@ export function processActions(state, action) {
       .reduce((accum, action) => {
         const propertyToUse = getPropertyToUse(action);
 
-        // New version by TJHN
-
-        /*
-        if (propertyToUse) {
-          const generalResult = {
-            ...action[propertyToUse],
-            id: action.id,
-            type: setType(action),
-            key: action[propertyToUse].key ? parseKey(action[propertyToUse].key) : '',
-            path: action[propertyToUse].key ? parsePath(action[propertyToUse].key) : '',
-            // text: new TextDecoder('utf-8').decode(new Uint8Array(action.Set.value)),
-            category: action[propertyToUse].key ?
-              action[propertyToUse].key[0] === 'data' ? action[propertyToUse].key[1] ? action[propertyToUse].key[1] : '' : action[propertyToUse].key[0] : '',
-            address: action[propertyToUse].key ?
-              action[propertyToUse].key[1] === 'contracts' ? action[propertyToUse].key[9] ? bytes2address(action[propertyToUse].key[9]) : '' : '' : '',
-            lastKey: action[propertyToUse].key ? action[propertyToUse].key.length > 2 ? action[propertyToUse].key[action[propertyToUse].key.length - 1] : '' : '',
-            color: action[propertyToUse].key ? categoryColor(action[propertyToUse].key[0] === 'data' ? action[propertyToUse].key[1] : action[propertyToUse].key[0]) : 'gray',
-            start_time: action[propertyToUse].start_time || 0,
-            timeStorage: Math.floor((action[propertyToUse].end_time - action[propertyToUse].start_time) * 1000000) || 0,
-            timeProtocol: actionPreviousTimestamp !== 0 ?
-              Math.floor((action[propertyToUse].start_time - actionPreviousTimestamp) * 1000000) : 0,
-            value_as_json: action[propertyToUse].value_as_json ? JSON.parse((action[propertyToUse].value_as_json)) : null
-          };
-
-          if (propertyToUse === 'Set') {
-            generalResult.value = parseValue(action[propertyToUse].key, action[propertyToUse].value);
-            generalResult.hex = '0x' + bufferToHex(new Uint8Array(action[propertyToUse].value));
-            generalResult.json = action[propertyToUse].value_as_json || '';
-          }
-
-          // save prev timestamp
-          if (['Set', 'Get', 'Mem', 'DirMem'].includes(propertyToUse)) {
-            actionPreviousTimestamp = action[propertyToUse].end_time; // TODO: ask if should be set only for Set, Get, Mem, DirMem; on the old implementation, it was like that
-          }
-        return {
-          ...accum,
-            [action.id]: generalResult
-          };
-
-        } else {
-          return accum;
-        }
-          */
-        // End of new version by TJHN
-
         if (action.hasOwnProperty('Set')) {
 
           const result = {

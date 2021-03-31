@@ -172,9 +172,34 @@ export class StorageActionComponent implements OnInit, OnDestroy {
       }
 
       this.ngZone.run(() => {
-        this.storageActionItem = {...item};
+        const value = this.formatHexValues(item.value);
+        this.storageActionItem = {
+          ...item,
+          value
+        };
       });
     });
+  }
+
+  private formatHexValues(bytes): string[][] {
+    if (!bytes || !bytes.length) {
+      return [];
+    }
+
+    let row = [];
+    const hexArray = [];
+
+    bytes.forEach((byte, index) => {
+      if (index % 16 === 0 && index > 0) {
+        hexArray.push(row);
+        row = [];
+      }
+      row.push(byte.toString(16));
+    });
+
+    hexArray.push(row);
+
+    return hexArray;
   }
 
   parseJson(text) {

@@ -130,20 +130,25 @@
               </ng-template>
             </ng-template>
           </mat-tab>
-          <mat-tab *ngIf="storageActionItem?.value">
+          <mat-tab *ngIf="storageActionItem?.value && storageActionItem?.value.length">
             <ng-template mat-tab-label>
               <span>Value</span>
             </ng-template>
             <ng-template matTabContent>
-              <ngx-json-viewer
-                *ngIf="isJsonObjectOrArray(storageActionItem?.value) && storageActionItem?.value; else valueElseBlock"
-                [json]="parseJson(storageActionItem?.value)" [expanded]="false">
-              </ngx-json-viewer>
-              <ng-template #valueElseBlock>
-                <div class="non-json-container">
-                  <span>{{parseJson(storageActionItem?.value)}}</span>
-                </div>
-              </ng-template>
+<!--              <ngx-json-viewer-->
+<!--                *ngIf="isJsonObjectOrArray(storageActionItem?.value) && storageActionItem?.value; else valueElseBlock"-->
+<!--                [json]="parseJson(storageActionItem?.value)" [expanded]="false">-->
+<!--              </ngx-json-viewer>-->
+<!--              <ng-template #valueElseBlock>-->
+<!--                <div class="non-json-container">-->
+<!--                  <span>{{parseJson(storageActionItem?.value)}}</span>-->
+<!--                </div>-->
+<!--              </ng-template>-->
+              <div fxLayout="column" class="non-json-container hex-values-container">
+                <span *ngFor="let hexRow of storageActionItem?.value" class="hex-row">
+                  <span *ngFor="let hexItem of hexRow" class="hex-value">{{hexItem}}</span>
+                </span>
+              </div>
             </ng-template>
           </mat-tab>
           <mat-tab *ngIf="storageActionItem?.path">

@@ -175,7 +175,7 @@
               {{event?.category}}<span *ngIf="event?.kind"> | {{ event?.kind }}</span>
             </span>
 
-            <span class="truncate">{{event?.preview}}</span>
+            <span class="truncate">{{event?.message_preview === 'null' ? '' : event?.message_preview}}</span>
 
           </span>
         </ng-template>
@@ -183,35 +183,34 @@
 
       <div class="action-table-detail" id="virtualScrollTableDetails">
         <mat-tab-group>
-          <mat-tab *ngIf="showTab('JSON')">
+          <mat-tab *ngIf="virtualScrollItems?.selected?.message">
             <ng-template mat-tab-label>
               <span>JSON</span>
             </ng-template>
             <ng-template matTabContent>
-              <ngx-json-viewer *ngIf="networkActionItem?.payload" [json]="networkActionItem?.payload"
+              <ngx-json-viewer [json]="virtualScrollItems?.selected?.message"
                                [expanded]="false">
               </ngx-json-viewer>
             </ng-template>
           </mat-tab>
-          <mat-tab *ngIf="showTab('HEX')">
+          <mat-tab *ngIf="virtualScrollItems?.selected?.hexValues">
             <ng-template mat-tab-label>
               <span>Hex Values</span>
             </ng-template>
             <ng-template matTabContent>
-              <!--              <ngx-json-viewer *ngIf="networkActionItem?.hexValues?.length" [json]="networkActionItem?.hexValues" [expanded]="false">-->
-              <!--              </ngx-json-viewer>-->
-
-              <div fxLayout="column" class="non-json-container">
-                <span *ngFor="let hexItem of networkActionItem?.hexValues">{{hexItem}}</span>
+              <div fxLayout="column" class="non-json-container hex-values-container">
+                <span *ngFor="let hexRow of virtualScrollItems?.selected?.hexValues" class="hex-row">
+                  <span *ngFor="let hexItem of hexRow" class="hex-value">{{hexItem}}</span>
+                </span>
               </div>
             </ng-template>
           </mat-tab>
-          <mat-tab *ngIf="showTab('ERROR')">
+          <mat-tab *ngIf="virtualScrollItems?.selected?.error">
             <ng-template mat-tab-label>
               <span>Error</span>
             </ng-template>
             <ng-template matTabContent>
-              <div class="non-json-container">{{networkActionItem?.error[0]}}</div>
+              <div class="non-json-container">{{virtualScrollItems?.selected?.error}}</div>
             </ng-template>
           </mat-tab>
         </mat-tab-group>

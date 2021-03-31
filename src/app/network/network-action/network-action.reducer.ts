@@ -2,6 +2,7 @@ import * as moment from 'moment-mini-ts';
 import {NetworkAction} from '../../shared/types/network/network-action.type';
 import {NetworkActionEntity} from '../../shared/types/network/network-action-entity.type';
 import {VirtualScrollActivePage} from '../../shared/types/shared/virtual-scroll-active-page.type';
+import {NetworkActionDetails} from '../../shared/types/network/network-action-details.type';
 
 const initialState: NetworkAction = {
   ids: [],
@@ -111,27 +112,27 @@ export function reducer(state: NetworkAction = initialState, action): NetworkAct
   }
 }
 
-export function setDetails(action) {
+export function setDetails(action): NetworkActionDetails {
   if (!action.payload) {
-    return {};
+    return new NetworkActionDetails();
   }
 
-  const hexValues = action.payload.original_bytes ? setHexValues(action.payload.original_bytes) : [];
-  let payload;
+  const hexValues = action.payload.original_bytes ?
+    setHexValues(action.payload.original_bytes) : [];
 
-  if (action.payload.message && action.payload.message.length && action.payload.message[0].type) {
-    payload = {...action.payload.message[0]};
-    delete payload.type;
-  } else {
-    payload = action.payload;
-    delete payload.error;
-    delete payload.original_bytes;
-  }
+  // if (action.payload.message && action.payload.message.length && action.payload.message[0].type) {
+  //   payload = {...action.payload.message[0]};
+  //   delete payload.type;
+  // } else {
+  //   payload = action.payload;
+  //   delete payload.error;
+  //   delete payload.original_bytes;
+  // }
 
   return {
     id: action.payload.id,
     hexValues,
-    payload,
+    message: action.payload.message,
     error: action.payload.error
   };
 }
@@ -170,13 +171,29 @@ export function setLastCursorId(action): number {
   return action.payload.length - 1;
 }
 
-export function setHexValues(bytes): string[] {
+export function setHexValues(bytes): string[][] {
   if (!bytes || !bytes.length) {
     return [];
   }
-  return bytes.map((item) => {
-    return item.toString(16).padStart(6, '0').toUpperCase();
-  }) || [];
+
+  let row = [];
+  const hexArray = [];
+
+  bytes.forEach((byte, index) => {
+    if (index % 16 === 0 && index > 0) {
+      hexArray.push(row);
+      console.log('reset');
+      row = [];
+    }
+    row.push(byte);
+  });
+
+  hexArray.push(row); // this is the incomplete row, with less than 16 elements
+
+  return hexArray;
+  // return bytes.map((item) => {
+  //   return item.toString(16).padStart(6, '0').toUpperCase();
+  // }) || [];
 }
 
 export function setVirtualScrollId(action, state, accumulator): number {

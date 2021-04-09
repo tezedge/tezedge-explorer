@@ -67,7 +67,7 @@ export class AppEffects {
   AppRefreshEffect$ = this.actions$.pipe(
     ofType('APP_REFRESH'),
     withLatestFrom(this.store, (action: any, state: ObservedValueOf<Store<State>>) => ({ action, state })),
-    map(({ action, state }) => {
+    switchMap(({ action, state }) => {
       const activePage = this.router.url.replace('/', '').toUpperCase();
 
       let featureLoadAction = `${activePage}_LOAD`;
@@ -76,7 +76,12 @@ export class AppEffects {
         featureLoadAction = `${state.settingsNode.activeNode.features[0]}_LOAD`;
         this.router.navigate([state.settingsNode.activeNode.features[0].toLowerCase()]);
       }
-      return { type: featureLoadAction };
+      const featuresToLoad = [{ type: featureLoadAction, payload: null }];
+      console.log(featuresToLoad);
+      if (featureLoadAction !== 'MONITORING_LOAD') {
+        featuresToLoad.push({ type: 'MONITORING_LOAD', payload: { lazyCalls: true } });
+      }
+      return featuresToLoad;
     })
   );
 

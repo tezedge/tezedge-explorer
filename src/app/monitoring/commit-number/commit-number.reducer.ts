@@ -1,13 +1,14 @@
 import { environment } from '../../../environments/environment';
+import { CommitNumber } from '../../shared/types/commit-number/commit-number.type';
 
-const initialState: any = {
+const initialState: CommitNumber = {
   explorerCommit: environment.commit,
   nodeCommit: '',
   debuggerCommit: '',
   nodeTag: ''
 };
 
-export function reducer(state = initialState, action) {
+export function reducer(state: CommitNumber = initialState, action): CommitNumber {
   switch (action.type) {
 
     // initialize or reset state

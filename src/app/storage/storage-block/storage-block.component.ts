@@ -1,10 +1,10 @@
-import {Component, OnInit, OnDestroy, ViewChild, ChangeDetectionStrategy, NgZone, ChangeDetectorRef} from '@angular/core';
-import {Store} from '@ngrx/store';
-import {Subject} from 'rxjs';
-import {takeUntil} from 'rxjs/operators';
-import {VirtualScrollDirective} from '../../shared/virtual-scroll/virtual-scroll.directive';
-import {StorageBlock} from '../../shared/types/storage/storage-block.type';
-import {Router} from '@angular/router';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, NgZone, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Store } from '@ngrx/store';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
+import { VirtualScrollDirective } from '../../shared/virtual-scroll/virtual-scroll.directive';
+import { StorageBlock } from '../../shared/types/storage/storage-block/storage-block.type';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-storage-block',
@@ -34,7 +34,7 @@ export class StorageBlockComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.store.dispatch({type: 'STORAGE_BLOCK_RESET'});
+    this.store.dispatch({ type: 'STORAGE_BLOCK_RESET' });
     this.scrollStart(null);
 
     this.store.select('storageBlock')
@@ -156,7 +156,7 @@ export class StorageBlockComponent implements OnInit, OnDestroy {
     // this.store.dispatch({
     //   type: 'STORAGE_BLOCK_STOP'
     // });
-    this.store.dispatch({type: 'STORAGE_BLOCK_RESET'});
+    this.store.dispatch({ type: 'STORAGE_BLOCK_RESET' });
 
     // close all observables
     this.onDestroy$.next();

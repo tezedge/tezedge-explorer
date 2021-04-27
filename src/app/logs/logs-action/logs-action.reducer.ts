@@ -1,7 +1,7 @@
 import * as moment from 'moment-mini-ts';
-import {LogsAction} from '../../shared/types/logs/logs-action.type';
-import {LogsActionEntity} from '../../shared/types/logs/logs-action-entity.type';
-import {VirtualScrollActivePage} from '../../shared/types/shared/virtual-scroll-active-page.type';
+import { LogsAction } from '../../shared/types/logs/logs-action.type';
+import { LogsActionEntity } from '../../shared/types/logs/logs-action-entity.type';
+import { VirtualScrollActivePage } from '../../shared/types/shared/virtual-scroll-active-page.type';
 
 const initialState: LogsAction = {
   ids: [],

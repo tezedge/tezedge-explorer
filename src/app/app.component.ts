@@ -7,6 +7,7 @@ import { Observable, Subject } from 'rxjs';
 import { State } from './app.reducers';
 import { NetworkStats } from './shared/types/network/network-stats.type';
 import { SettingsNode } from './shared/types/settings-node/settings-node.type';
+import { App } from './shared/types/app/app.type';
 
 @Component({
   selector: 'app-root',
@@ -15,7 +16,7 @@ import { SettingsNode } from './shared/types/settings-node/settings-node.type';
 })
 export class AppComponent implements OnInit, OnDestroy {
 
-  app;
+  app: App;
   isMobile = false;
 
   onDestroy$ = new Subject();

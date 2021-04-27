@@ -1,4 +1,6 @@
-const initialState = {
+import { App } from './shared/types/app/app.type';
+
+const initialState: App = {
     initialized: false,
     sidenav: {
         isVisible: true,
@@ -21,23 +23,7 @@ const initialState = {
     logo: {
         isVisible: true,
     },
-    version: {
-        update: false,
-        type: 'web',
-        value: '',
-        valueUpdate: '',
-    },
     menu: {
-        monitoring: {
-            synchronization: false,
-        },
-        explorer: {
-            mempool: false,
-            endpoints: false,
-            network: false,
-            storage: false,
-            logs: false,
-        },
         sandbox: {
             chain: false,
             wallets: false,
@@ -49,10 +35,9 @@ const initialState = {
     statusbar: {
         sandbox: false,
     }
-
 };
 
-export function reducer(state = initialState, action) {
+export function reducer(state: App = initialState, action): App {
 
     switch (action.type) {
 
@@ -67,50 +52,17 @@ export function reducer(state = initialState, action) {
         case 'APP_INIT': {
 
             // TODO: refactor use app features
-            let monitoringSynchronization = false;
-            let explorerMempool = false;
-            let explorerEndpoints = false;
-            let explorerNetwork = false;
-            let explorerStorage = false;
-            let explorerLogs = false;
             let sandboxChain = false;
             let sandboxWallets = false;
-
-            if (action.payload.connected === true) {
-                monitoringSynchronization = true;
-            }
-
-            explorerStorage = action.payload.ws !== false;
-
-            if (action.payload.debugger !== false) {
-                explorerMempool = true;
-                explorerEndpoints = true;
-                explorerNetwork = true;
-                explorerLogs = true;
-            }
 
             if (action.payload.id === 'sandbox-carthage-tezedge') {
                 sandboxChain = true;
                 sandboxWallets = true;
-
-                monitoringSynchronization = false;
-                explorerEndpoints = false;
-                explorerNetwork = false;
             }
 
             return {
                 ...state,
                 menu: {
-                    monitoring: {
-                        synchronization: monitoringSynchronization,
-                    },
-                    explorer: {
-                        mempool: explorerMempool,
-                        endpoints: explorerEndpoints,
-                        network: explorerNetwork,
-                        storage: explorerStorage,
-                        logs: explorerLogs,
-                    },
                     sandbox: {
                         chain: sandboxChain,
                         wallets: sandboxWallets,

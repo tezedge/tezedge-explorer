@@ -5,6 +5,6 @@ export class StorageBlockEntity {
   originalId: number;
   level: string;
   datetime: string;
-  section: string;
-  node_name?: number;
+  hash: string;
+  cyclePosition: number;
 }

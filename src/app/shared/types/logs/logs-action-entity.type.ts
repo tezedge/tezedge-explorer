@@ -6,5 +6,4 @@ export class LogsActionEntity {
   level: string;
   datetime: string;
   section: string;
-  node_name?: number;
 }

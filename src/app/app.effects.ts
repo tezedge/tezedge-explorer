@@ -77,7 +77,6 @@ export class AppEffects {
         this.router.navigate([state.settingsNode.activeNode.features[0].toLowerCase()]);
       }
       const featuresToLoad = [{ type: featureLoadAction, payload: null }];
-      console.log(featuresToLoad);
       if (featureLoadAction !== 'MONITORING_LOAD') {
         featuresToLoad.push({ type: 'MONITORING_LOAD', payload: { lazyCalls: true } });
       }

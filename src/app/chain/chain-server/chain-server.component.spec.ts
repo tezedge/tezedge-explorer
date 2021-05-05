@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { ChainServerComponent } from './chain-server.component';
 
@@ -6,7 +6,7 @@ describe('ChainServerComponent', () => {
   let component: ChainServerComponent;
   let fixture: ComponentFixture<ChainServerComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ ChainServerComponent ]
     })

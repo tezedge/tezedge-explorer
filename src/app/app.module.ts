@@ -165,12 +165,13 @@ import { DatePipe } from '@angular/common';
 
     // loading routing
     RouterModule.forRoot(AppRouting, {
-      useHash: true,
-      // preload all modules
-      preloadingStrategy: PreloadAllModules,
-      // scroll page to top on route change
-      scrollPositionRestoration: 'enabled'
-    }),
+    useHash: true,
+    // preload all modules
+    preloadingStrategy: PreloadAllModules,
+    // scroll page to top on route change
+    scrollPositionRestoration: 'enabled',
+    relativeLinkResolution: 'legacy'
+}),
 
     StoreModule.forRoot(reducers, {
       metaReducers,

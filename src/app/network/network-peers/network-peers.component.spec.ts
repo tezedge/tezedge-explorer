@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { NetworkPeersComponent } from './network-peers.component';
 
@@ -6,7 +6,7 @@ describe('NetworkPeersComponent', () => {
   let component: NetworkPeersComponent;
   let fixture: ComponentFixture<NetworkPeersComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ NetworkPeersComponent ]
     })

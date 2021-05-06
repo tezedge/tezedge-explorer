@@ -1,15 +1,19 @@
 import * as moment from 'moment-mini-ts';
-import {setVirtualScrollId} from '../../network/network-action/network-action.reducer';
-import {VirtualScrollActivePage} from '../../shared/types/shared/virtual-scroll-active-page.type';
-import {StorageBlock} from '../../shared/types/storage/storage-block.type';
-import {StorageBlockEntity} from '../../shared/types/storage/storage-block-entity.type';
+import { setVirtualScrollId } from '../../network/network-action/network-action.reducer';
+import { VirtualScrollActivePage } from '../../shared/types/shared/virtual-scroll-active-page.type';
+import { StorageBlock } from '../../shared/types/storage/storage-block/storage-block.type';
+import { StorageBlockEntity } from '../../shared/types/storage/storage-block/storage-block-entity.type';
 
 const initialState: StorageBlock = {
   ids: [],
   entities: {},
   lastCursorId: 0,
   stream: false,
-  selected: {},
+  selected: {
+    hash: '',
+    chain_id: '',
+    protocol: ''
+  },
   activePage: {},
   pages: []
 };

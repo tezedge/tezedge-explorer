@@ -6,6 +6,7 @@ import { SettingsNode } from '../../shared/types/settings-node/settings-node.typ
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { App } from '../../shared/types/app/app.type';
 
 @UntilDestroy()
 @Component({
@@ -16,7 +17,7 @@ import { map } from 'rxjs/operators';
 })
 export class NavigationMenuComponent implements OnInit, AfterViewInit {
 
-  app;
+  app: App;
   settingsNode: SettingsNode;
   appFeatures$: Observable<{ [p: string]: string }>;
 

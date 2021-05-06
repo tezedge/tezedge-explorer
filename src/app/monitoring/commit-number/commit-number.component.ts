@@ -2,6 +2,7 @@ import { Component, HostListener, OnDestroy, OnInit } from '@angular/core';
 import { Subject } from 'rxjs';
 import { Store } from '@ngrx/store';
 import { takeUntil } from 'rxjs/operators';
+import { CommitNumber } from '../../shared/types/commit-number/commit-number.type';
 
 @Component({
   selector: 'app-commit-number',
@@ -11,7 +12,7 @@ import { takeUntil } from 'rxjs/operators';
 export class CommitNumberComponent implements OnInit, OnDestroy {
 
   onDestroy$ = new Subject();
-  commitNumber: any;
+  commitNumber: CommitNumber;
   githubRepositories = {
     explorer: 'https://github.com/simplestaking/tezedge-explorer/commit/',
     node: 'https://github.com/simplestaking/tezedge/commit/',
@@ -25,6 +26,7 @@ export class CommitNumberComponent implements OnInit, OnDestroy {
   mouseenter() {
     this.showCommitNumbers = true;
   }
+
   @HostListener('mouseleave')
   mouseleave() {
     this.showCommitNumbers = false;
@@ -45,7 +47,7 @@ export class CommitNumberComponent implements OnInit, OnDestroy {
       .subscribe(data => {
         this.commitNumber = data;
       });
-
+    // TODO: commitNumber for ocaml is not the same, find a solution
     this.store.select('settingsNode')
       .pipe(takeUntil(this.onDestroy$))
       .subscribe(data => {

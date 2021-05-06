@@ -1,6 +1,7 @@
 <div class="network-history">
 
-    <div class="history-cycle-panel">
+    <div class="history-cycle-panel"
+         fxLayoutAlign.lt-md="center center">
                  
         <span class="history-voting-period-row" *ngFor="let votingPeriodRow of formattedNetworkHistory; trackBy: trackByRowPosition">
             <span class="history-voting-period" *ngFor="let votingPeriod of votingPeriodRow.votingPeriodRows; trackBy: trackByRowPeriod">

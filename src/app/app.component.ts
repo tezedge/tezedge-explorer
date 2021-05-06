@@ -2,9 +2,12 @@ import { Component, HostListener, OnDestroy, OnInit, ViewChild } from '@angular/
 import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { MatSidenav } from '@angular/material/sidenav';
-import { takeUntil } from 'rxjs/operators';
-import { Subject } from 'rxjs';
+import { debounceTime, filter, map, takeUntil } from 'rxjs/operators';
+import { Observable, Subject } from 'rxjs';
 import { State } from './app.reducers';
+import { NetworkStats } from './shared/types/network/network-stats.type';
+import { SettingsNode } from './shared/types/settings-node/settings-node.type';
+import { App } from './shared/types/app/app.type';
 
 @Component({
   selector: 'app-root',
@@ -13,11 +16,13 @@ import { State } from './app.reducers';
 })
 export class AppComponent implements OnInit, OnDestroy {
 
-  app;
+  app: App;
   isMobile = false;
 
   onDestroy$ = new Subject();
   pendingTransactions: any[];
+  networkStats$: Observable<NetworkStats>;
+  settingsNodeProtocol$: Observable<string>;
 
   @ViewChild('sidenav') sidenav: MatSidenav;
 
@@ -47,10 +52,24 @@ export class AppComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.initAppData();
     this.getMempoolPendingTransactions();
+    this.getNetworkStatsData();
+    this.getSettingsNode();
 
     if (this.isMobile) {
       this.store.dispatch({ type: 'APP_MENU_STATE_CHANGE', payload: { mode: 'over' } });
     }
+  }
+
+  private getSettingsNode(): void {
+    this.settingsNodeProtocol$ = this.store.select((state: State) => state.settingsNode)
+      .pipe(
+        filter(settingsNode => !!settingsNode.entities[settingsNode.activeNode.id].header),
+        map((settingsNode: SettingsNode) => settingsNode.entities[settingsNode.activeNode.id].header.protocol)
+      );
+  }
+
+  private getNetworkStatsData(): void {
+    this.networkStats$ = this.store.select('networkStats').pipe(debounceTime(200));
   }
 
   private initAppData(): void {

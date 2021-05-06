@@ -5,15 +5,14 @@
 .history-cycle-panel {
   display: flex;
   flex-wrap: wrap;
-  width: 726px;
+  max-width: 726px;
   padding-top: 20px;
 }
 
 .history-voting-period-row {
   display: flex;
   flex-direction: row;
-  /* align-self: flex-start; */
-  margin: 0px 8px 0px 6px;
+  margin: 0 8px 0 6px;
 }
 
 .history-voting-period-panel {
@@ -29,11 +28,9 @@
   width: 16px;
 }
 
-/* #163940 */
-
 .history-cycle-headers {
   background-color: #537880;
-  margin: 2px 2px 0px 2px;
+  margin: 2px 2px 0 2px;
   border-top-left-radius: 2px;
   border-top-right-radius: 2px;
   height: 6px;
@@ -42,7 +39,7 @@
 
 .history-cycle-operations {
   background-color: #537880;
-  margin: 0px 2px 2px 2px;
+  margin: 0 2px 2px 2px;
   border-bottom-left-radius: 2px;
   border-bottom-right-radius: 2px;
   height: 10px;

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Actions, Effect, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
-import { empty, ObservedValueOf, of, Subject, timer } from 'rxjs';
+import { BehaviorSubject, empty, interval, ObservedValueOf, of, Subject } from 'rxjs';
 import { catchError, filter, map, switchMap, takeUntil, tap, withLatestFrom } from 'rxjs/operators';
 import { webSocket } from 'rxjs/webSocket';
 import { HttpClient } from '@angular/common/http';
@@ -17,6 +17,8 @@ export class MonitoringEffects {
   private websocketDestroy$: Subject<void>;
   private networkDestroy$: Subject<void>;
 
+  private interval$: BehaviorSubject<number> = new BehaviorSubject(1);
+
   @Effect()
   MonitoringLoadEffect$ = this.actions$.pipe(
     ofType('MONITORING_LOAD'),
@@ -24,6 +26,7 @@ export class MonitoringEffects {
     switchMap(({ action, state }) => {
       const actions = [];
       const initialLoad = action.payload && action.payload.initialLoad;
+      const lazyCalls = action.payload && action.payload.lazyCalls;
 
       if (this.networkDestroy$) {
         this.networkDestroy$.next();
@@ -37,11 +40,13 @@ export class MonitoringEffects {
         if (!initialLoad) {
           this.networkDestroy$ = new Subject<void>();
         }
+        this.interval$.next(lazyCalls || initialLoad ? 5 : 1);
+
         actions.push({ type: 'NETWORK_STATS_LOAD', payload: { initialLoad } });
         actions.push({ type: 'NETWORK_PEERS_LOAD', payload: { initialLoad } });
       } else {
         this.websocketDestroy$ = new Subject<void>();
-        actions.push({ type: 'NETWORK_WEBSOCKET_LOAD', payload: { initialLoad } });
+        actions.push({ type: 'NETWORK_WEBSOCKET_LOAD', payload: { initialLoad, lazyCalls } });
       }
 
       return actions;
@@ -58,6 +63,7 @@ export class MonitoringEffects {
       // TODO: use app features
       if (state.settingsNode.activeNode.ws === false) {
         // close all open observables
+        this.interval$.next(5);
         this.networkDestroy$.next();
       } else {
         this.websocketDestroy$.next();
@@ -83,12 +89,10 @@ export class MonitoringEffects {
         return headerData$;
       }
 
-      // get header data every second
-      return timer(0, 1000)
-        .pipe(
-          takeUntil(this.networkDestroy$),
-          switchMap(() => headerData$)
-        );
+      return this.interval$.pipe(
+        switchMap(value => interval(value * 1000)),
+        switchMap(() => headerData$)
+      );
     }),
   );
 
@@ -108,12 +112,10 @@ export class MonitoringEffects {
         return peersData$;
       }
 
-      // get peers data every second
-      return timer(0, 1000)
-        .pipe(
-          takeUntil(this.networkDestroy$),
-          switchMap(() => peersData$)
-        );
+      return this.interval$.pipe(
+        switchMap(value => interval(value * 1000)),
+        switchMap(() => peersData$)
+      );
     }),
   );
 
@@ -143,14 +145,13 @@ export class MonitoringEffects {
       return webSocketConnection$.pipe(
         takeUntil(this.websocketDestroy$),
         filter((data: any) => {
-          // even if ws is turned off update state cca every minute
-          wsCounter = wsCounter < 700 ? wsCounter + 1 : 0;
+          // even if ws is turned off update state cca 5 sec
+          wsCounter = wsCounter < 25 ? wsCounter + 1 : 0;
 
           // stop ws when we got all 5 type of data from the backend (this case is only if we are on another route on app start)
-          if (action.payload && action.payload.initialLoad && wsCounter > 4) {
-            this.websocketDestroy$.next();
+          if (action.payload && (action.payload.initialLoad || action.payload.lazyCalls) && wsCounter > 5) {
+            return false;
           }
-
           return state.monitoring.open || wsCounter < 6;
         }),
       );

@@ -1,6 +1,8 @@
 <div class="sidenav-area" style="height: 100%;">
 
-    <div class="app-status-bar" *ngIf="app?.toolbar?.isVisible" [class.app-status-bar-sanbox]="app.statusbar.sandbox">
+    <div class="app-status-bar"
+         *ngIf="app?.toolbar?.isVisible"
+         [class.app-status-bar-sanbox]="app.statusbar.sandbox">
 
         <div fxLayout="row"
              fxLayoutAlign="start center">
@@ -11,38 +13,56 @@
             </button>
 
             <app-settings-node></app-settings-node>
+            <app-sandbox-status-bar *ngIf="app.statusbar.sandbox">
+            </app-sandbox-status-bar>
         </div>
 
-        <app-sandbox-status-bar *ngIf="app.statusbar.sandbox">
-        </app-sandbox-status-bar>
+        <div fxFlex="grow"
+             fxLayoutAlign="space-between stretch"
+             fxLayoutAlign.lt-sm="end stretch">
+            <div *ngIf="networkStats$ | async as networkStats"
+                 fxHide.lt-sm
+                 fxLayout="row"
+                 fxLayoutGap="10px"
+                 fxLayoutAlign="start center">
+                <div class="toolbar-divider"></div>
+                <span>
+                    SYNC
+                    <span class="text-white">
+                        {{ (networkStats?.downloadedBlocks / (networkStats?.currentBlockCount * 0.01)) || 0.0 | number:'1.1-1'}}%
+                        {{ (networkStats?.lastAppliedBlock?.level / (networkStats?.currentBlockCount * 0.01)) || 0.0 | number:'1.1-1'}}%
+                    </span>
+                </span>
+                <span>CURRENT BLOCK <span class="text-white">{{ networkStats.lastAppliedBlock.level }}</span></span>
+                <span *ngIf="settingsNodeProtocol$ | async as protocol">PROTOCOL <span class="text-white">{{ protocol | slice: 0: 10 }}</span></span>
+            </div>
+            <div fxLayout="row"
+                 fxLayoutAlign="center center">
+                <button *ngIf="pendingTransactions.length"
+                        mat-button
+                        class="pending-transactions"
+                        (click)="sandboxBakeBlock()"
+                        [disabled]="!app.statusbar.sandbox">
+                <span>{{pendingTransactions.length + ' pending transaction' + (pendingTransactions.length > 1 ? 's' : '')}}
+                </span>
+                    <span *ngIf="app.statusbar.sandbox"
+                          class="action">BAKE</span>
+                </button>
 
-        <div fxLayout="row"
-             fxLayoutAlign="center center">
-            <button *ngIf="pendingTransactions.length"
-                    mat-button
-                    class="pending-transactions"
-                    (click)="sandboxBakeBlock()"
-                    [disabled]="!app.statusbar.sandbox">
-            <span>{{pendingTransactions.length + ' pending transaction' + (pendingTransactions.length > 1 ? 's' : '')}}
-            </span>
-                <span *ngIf="app.statusbar.sandbox"
-                      class="action">BAKE</span>
-            </button>
-
-            <button class="theme-switcher"
-                    mat-button
-                    style="font-size: 12px;font-weight: 300; height: 28px; min-width: 24px; padding: 0px 6px 0px 6px;">
-                <mat-icon *ngIf="app.theme.name === 'dark'"
-                          style="font-size:12px; opacity:0.3"
-                          (click)="changeTheme('light')">wb_sunny
-                </mat-icon>
-                <mat-icon *ngIf="app.theme.name === 'light'"
-                          style="font-size:12px; opacity:0.3"
-                          (click)="changeTheme('dark')">bedtime
-                </mat-icon>
-            </button>
+                <button class="theme-switcher"
+                        mat-button
+                        style="font-size: 12px;font-weight: 300; height: 28px; min-width: 24px; padding: 0px 6px 0px 6px;">
+                    <mat-icon *ngIf="app.theme.name === 'dark'"
+                              style="font-size:12px; opacity:0.3"
+                              (click)="changeTheme('light')">wb_sunny
+                    </mat-icon>
+                    <mat-icon *ngIf="app.theme.name === 'light'"
+                              style="font-size:12px; opacity:0.3"
+                              (click)="changeTheme('dark')">bedtime
+                    </mat-icon>
+                </button>
+            </div>
         </div>
-
     </div>
 
     <mat-sidenav-container (backdropClick)="toggleMenuOnMobile()">

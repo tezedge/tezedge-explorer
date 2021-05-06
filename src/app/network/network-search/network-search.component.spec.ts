@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { NetworkSearchComponent } from './network-search.component';
 
@@ -6,7 +6,7 @@ describe('NetworkSearchComponent', () => {
   let component: NetworkSearchComponent;
   let fixture: ComponentFixture<NetworkSearchComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ NetworkSearchComponent ]
     })

@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { ChainFinishComponent } from './chain-finish.component';
 
@@ -6,7 +6,7 @@ describe('ChainFinishComponent', () => {
   let component: ChainFinishComponent;
   let fixture: ComponentFixture<ChainFinishComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ ChainFinishComponent ]
     })

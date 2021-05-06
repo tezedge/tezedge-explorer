@@ -1,8 +1,8 @@
 import * as moment from 'moment-mini-ts';
-import {NetworkAction} from '../../shared/types/network/network-action.type';
-import {NetworkActionEntity} from '../../shared/types/network/network-action-entity.type';
-import {VirtualScrollActivePage} from '../../shared/types/shared/virtual-scroll-active-page.type';
-import {NetworkActionDetails} from '../../shared/types/network/network-action-details.type';
+import { NetworkAction } from '../../shared/types/network/network-action.type';
+import { NetworkActionEntity } from '../../shared/types/network/network-action-entity.type';
+import { VirtualScrollActivePage } from '../../shared/types/shared/virtual-scroll-active-page.type';
+import { NetworkActionDetails } from '../../shared/types/network/network-action-details.type';
 
 const initialState: NetworkAction = {
   ids: [],
@@ -113,8 +113,9 @@ export function reducer(state: NetworkAction = initialState, action): NetworkAct
 }
 
 export function setDetails(action): NetworkActionDetails {
+  console.log( action);
   if (!action.payload) {
-    return new NetworkActionDetails();
+    return {};
   }
 
   const hexValues = action.payload.original_bytes ?

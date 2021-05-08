@@ -1,14 +1,17 @@
 import { Injectable } from '@angular/core';
-import { Effect, Actions, ofType } from '@ngrx/effects';
+import { Actions, Effect, ofType } from '@ngrx/effects';
 import { HttpClient } from '@angular/common/http';
 import { Store } from '@ngrx/store';
-import { tap, map, switchMap, withLatestFrom, catchError, takeUntil } from 'rxjs/operators';
-import { of, Subject, timer } from 'rxjs';
+import { catchError, map, switchMap, takeUntil, tap, withLatestFrom } from 'rxjs/operators';
+import { combineLatest, ObservedValueOf, of, Subject, timer } from 'rxjs';
+import { State } from '../../app.reducers';
+import { StorageBlockService } from './storage-block.service';
 
-const storageBlockDestroy$ = new Subject();
 
 @Injectable()
 export class StorageBlockEffects {
+
+  private storageBlockDestroy$ = new Subject();
 
   @Effect()
   StorageBlockReset$ = this.actions$.pipe(
@@ -58,7 +61,7 @@ export class StorageBlockEffects {
 
       // get header data every 30 seconds
       timer(0, 30000).pipe(
-        takeUntil(storageBlockDestroy$),
+        takeUntil(this.storageBlockDestroy$),
         switchMap(() =>
           this.http.get(setUrl(action, state)).pipe(
             map(response => ({ type: 'STORAGE_BLOCK_START_SUCCESS', payload: response })),
@@ -69,6 +72,26 @@ export class StorageBlockEffects {
     )
   );
 
+  @Effect()
+  StorageBlockGetNextBlockDetailsEffect$ = this.actions$.pipe(
+    ofType('STORAGE_BLOCK_NEIGHBOUR_BLOCK_DETAILS'),
+    withLatestFrom(this.store, (action: any, state: ObservedValueOf<Store<State>>) => ({ action, state })),
+    map(({ action, state }) => {
+      const currentHash = state.storageBlock.selected.hash;
+      const entities = Object.keys(state.storageBlock.entities).map(key => state.storageBlock.entities[key]);
+      const currentBlockIndex = entities.findIndex(block => block.hash === currentHash);
+      if (currentBlockIndex !== -1) {
+        return {
+          type: 'STORAGE_BLOCK_DETAILS_LOAD',
+          payload: {
+            hash: entities[currentBlockIndex + action.payload.neighbourIndex].hash
+          }
+        };
+      }
+      return;
+    })
+  );
+
   // stop storage block download
   @Effect({ dispatch: false })
   StorageBlockStopEffect$ = this.actions$.pipe(
@@ -77,7 +100,7 @@ export class StorageBlockEffects {
     withLatestFrom(this.store, (action: any, state) => ({ action, state })),
     // init app modules
     tap(({ action, state }) => {
-      storageBlockDestroy$.next();
+      this.storageBlockDestroy$.next();
     })
   );
 
@@ -88,11 +111,20 @@ export class StorageBlockEffects {
     // merge state
     withLatestFrom(this.store, (action: any, state) => ({ action, state })),
     switchMap(({ action, state }) => {
-      return this.http.get(setDetailsUrl(action, state));
+      return combineLatest(
+        this.http.get(setDetailsUrl(action, state)),
+        this.storageBlockService.getStorageBlockContextDetails(state.settingsNode.activeNode.http, action.payload.hash)
+      );
     }),
 
     // dispatch action
-    map((payload) => ({ type: 'STORAGE_BLOCK_DETAILS_LOAD_SUCCESS', payload })),
+    map((response) => {
+      const payload = {
+        selected: response[0],
+        blockDetails: response[1]
+      };
+      return ({ type: 'STORAGE_BLOCK_DETAILS_LOAD_SUCCESS', payload });
+    }),
     catchError((error, caught) => {
       console.error(error);
       this.store.dispatch({
@@ -106,7 +138,8 @@ export class StorageBlockEffects {
   constructor(
     private http: HttpClient,
     private actions$: Actions,
-    private store: Store<any>
+    private store: Store<State>,
+    private storageBlockService: StorageBlockService,
   ) {
   }
 

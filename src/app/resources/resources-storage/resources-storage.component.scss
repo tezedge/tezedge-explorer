@@ -1,0 +1,25 @@
+$border-color: rgba(255, 255, 255, 0.1);
+
+.storage-resources {
+  padding: 10px;
+
+  .operation {
+    border: 1px solid $border-color;
+    border-radius: 5px;
+    padding-top: 10px;
+
+    .text-uppercase {
+      color: #fff;
+      font-size: 12px;
+      font-weight: 500;
+      letter-spacing: 0.4px;
+      padding-left: 10px;
+    }
+
+    .graph-list {
+      padding-left: 10px;
+      padding-bottom: 10px;
+      overflow-x: auto;
+    }
+  }
+}

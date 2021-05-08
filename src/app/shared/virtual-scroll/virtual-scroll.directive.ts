@@ -41,7 +41,7 @@ export class VirtualScrollDirective implements AfterViewInit, OnDestroy, OnChang
   private resizeObservable$: Observable<Event>;
   private resizeSubscription$: Subscription;
 
-  public onDestroy$ = new Subject();
+  private onDestroy$ = new Subject();
 
   @Input() vsForOf: any;
 

@@ -56,6 +56,13 @@ export class NavigationMenuComponent implements OnInit, AfterViewInit {
     }
   }
 
+  toggleMenuSize(): void {
+    this.store.dispatch({
+      type: 'APP_MENU_SIZE_CHANGE',
+      payload: { collapsed: !this.app.sidenav.collapsed }
+    });
+  }
+
   nodeSandboxAdd() {
     this.router.navigate(['/sandbox']);
   }

@@ -1,7 +1,6 @@
-import { Component, HostListener, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Component, HostListener, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { MatSidenav } from '@angular/material/sidenav';
 import { debounceTime, filter, map, takeUntil } from 'rxjs/operators';
 import { Observable, Subject } from 'rxjs';
 import { State } from './app.reducers';
@@ -23,8 +22,6 @@ export class AppComponent implements OnInit, OnDestroy {
   pendingTransactions: any[];
   networkStats$: Observable<NetworkStats>;
   settingsNodeProtocol$: Observable<string>;
-
-  @ViewChild('sidenav') sidenav: MatSidenav;
 
   @HostListener('window:resize')
   onResize(): void {

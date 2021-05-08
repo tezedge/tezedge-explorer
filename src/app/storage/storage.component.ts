@@ -1,19 +1,9 @@
-import { Component, OnInit } from '@angular/core';
-
-import { Store } from '@ngrx/store';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 
 @Component({
   selector: 'app-storage',
   templateUrl: './storage.component.html',
-  styleUrls: ['./storage.component.scss']
+  styleUrls: ['./storage.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class StorageComponent implements OnInit {
-
-  constructor(
-    public store: Store<any>,
-  ) { }
-
-  ngOnInit() {
-  }
-
-}
+export class StorageComponent {}

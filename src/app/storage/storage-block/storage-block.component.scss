@@ -1,82 +1,122 @@
+.storage-header-wrapper {
+
+  .storage-details-actions {
+    font-size: 12px;
+    border-bottom: 1px solid #333334;
+    border-top: 1px solid #333334;
+
+    .block-hash {
+      color: rgba(255, 255, 255, 0.4);
+
+      .hash {
+        max-width: 200px;
+      }
+
+      svg-icon {
+        width: 10px;
+        height: 12px;
+
+        ::ng-deep .svg-icon {
+          width: 100%;
+          height: 100%;
+          vertical-align: unset;
+        }
+      }
+    }
+  }
+}
+
+.storage-block-row:hover {
+  background: #204e8a;
+}
+
+.action-table-detail {
+  padding: 0;
+}
+
 .storage-block th.mat-header-cell.cdk-column-level.mat-column-level {
-    text-overflow: ellipsis;
-    overflow: hidden;
-    white-space: nowrap;
-    /* width: 20vw;  */
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
 }
 
 .storage-block .mat-cell.cdk-column-level.mat-column-level {
-    padding: 20px;
-    text-overflow: ellipsis;
-    overflow: hidden;
-    white-space: nowrap;
-    width: 80px;
-}
-
-.storage-block th.mat-header-cell.cdk-column-hash.mat-column-hash {
-    /* text-align: left; */
+  padding: 20px;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+  width: 80px;
 }
 
 .storage-block .mat-cell.cdk-column-hash.mat-column-hash {
-    /* text-align: left; */
-    max-width: 350px;
-    padding-right: 10px;
-    transform: scale(1, 1);
+  max-width: 350px;
+  padding-right: 10px;
+  transform: scale(1, 1);
 }
 
 .storage-block .mat-cell.cdk-column-hash.mat-column-position {
-    padding-right: 10px;
-    /* text-align: left; */
+  padding-right: 10px;
 }
 
 .mat-cell.cdk-column-level.mat-column-level {
-    padding: 10px 0px 10px 0px !important;
+  padding: 10px 0 10px 0 !important;
+}
+
+.json-wrap {
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+
+  .json-block {
+    padding: 10px 8px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    font-size: 12px;
+    margin: 10px;
+  }
 }
 
 @media (max-width: 600px) {
 
-    .storage-block {
-        max-width: 90vw !important;
-    } 
+  .storage-block {
+    max-width: 90vw !important;
+  }
 
-    th.mat-header-cell.cdk-column-level.mat-column-level {
-        display: none;
-    }
+  th.mat-header-cell.cdk-column-level.mat-column-level {
+    display: none;
+  }
 
-    .mat-cell.cdk-column-level.mat-column-level {
-        display: none;
-    }
+  .mat-cell.cdk-column-level.mat-column-level {
+    display: none;
+  }
 
-    th.mat-header-cell.cdk-column-position.mat-column-position {
-        display: none;
-    }
+  th.mat-header-cell.cdk-column-position.mat-column-position {
+    display: none;
+  }
 
-    .mat-cell.cdk-column-position.mat-column-position {
-        display: none;
-    }
+  .mat-cell.cdk-column-position.mat-column-position {
+    display: none;
+  }
 
-    th.mat-header-cell.cdk-column-datetime.mat-column-datetime {
-        width: 5vw !important;
-    }
+  th.mat-header-cell.cdk-column-datetime.mat-column-datetime {
+    width: 5vw !important;
+  }
 
-    .mat-cell.cdk-column-datetime.mat-column-datetime {
-        text-overflow: ellipsis;
-        overflow: hidden;
-        white-space: nowrap;
-        min-width: 30vw !important;
-        max-width: 3vw !important;
-        /* padding-right: 10px; */
-    }
+  .mat-cell.cdk-column-datetime.mat-column-datetime {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    min-width: 30vw !important;
+    max-width: 3vw !important;
+    /* padding-right: 10px; */
+  }
 
-    th.mat-header-cell.cdk-column-hash.mat-column-hash {
-        width: 35vw !important;
-    }
+  th.mat-header-cell.cdk-column-hash.mat-column-hash {
+    width: 35vw !important;
+  }
 
-    .mat-cell.cdk-column-hash.mat-column-hash {
-        text-overflow: ellipsis;
-        overflow: hidden;
-        white-space: nowrap;
-        min-width: 5vw !important;
-        max-width: 5vw !important;
-    }
+  .mat-cell.cdk-column-hash.mat-column-hash {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    min-width: 5vw !important;
+    max-width: 5vw !important;
+  }
 }

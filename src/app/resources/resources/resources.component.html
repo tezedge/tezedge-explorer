@@ -1,37 +1,46 @@
 <div fxFlexFill
-     class="resources-wizard"
-     fxLayout.gt-md="row-reverse"
-     fxLayout="column"
-     *ngIf="chartData$ | async as chartData">
-  <div class="info-container"
-       fxFlex.gt-md="20vw"
-       fxLayout="column">
-    <div class="info-header"
-         fxFlex="40px"></div>
-    <div class="info-content-container"
-         fxFlex="grow"
-         fxLayout="column"
-         fxLayoutAlign="space-between">
-      <div class="additional-info"
-           [class.fade]="chartData"
-           [style.transition-delay.s]="0.2">
-        <app-resources-summary [summaryBlocks]="resourcesSummary[activeSummary]"
-                               [resourceType]="activeSummary"></app-resources-summary>
-      </div>
-    </div>
-  </div>
-  <div class="main-resources-container"
-       fxFlex.gt-md="calc(100% - 20vw)"
+     class="resources-wizard">
+  <div fxHide.gt-sm [style.height.px]="40"></div>
+  <div fxFlexFill
        fxLayout="column"
        fxLayoutAlign="start stretch">
     <div class="tabs"
-         fxHide.lt-lg>
+         fxLayoutAlign="start center"
+         fxLayoutGap="16px">
+      <div *ngFor="let tab of tabs"
+           (click)="activeTabId = tab.id"
+           [class.selected]="activeTabId === tab.id"
+           class="tab">
+        {{ tab.title }}
+      </div>
     </div>
-    <div fxFlex="grow"
+    <div *ngIf="activeTabId === 1"
+         fxFlex="grow"
          fxLayout="column"
+         fxLayout.gt-md="row-reverse"
          fxLayoutAlign="start stretch"
          class="resources-container">
-      <div fxFlex="grow"
+      <div class="info-container"
+           fxFlex.gt-md="20vw"
+           fxLayout="column">
+        <div class="info-content-container"
+             fxFlex="grow"
+             fxLayout="column"
+             fxLayoutAlign="space-between">
+          <ng-container *ngIf="chartData$ | async as chartData">
+            <div class="additional-info"
+                 *ngIf="activeTabId === 1"
+                 [class.fade]="chartData"
+                 [style.transition-delay.s]="0.2">
+              <app-resources-summary [summaryBlocks]="resourcesSummary[activeSummary]"
+                                     [resourceType]="activeSummary"></app-resources-summary>
+            </div>
+          </ng-container>
+        </div>
+      </div>
+      <div *ngIf="chartData$ | async as chartData"
+           fxFlex.gt-md="calc(100% - 20vw)"
+           fxFlex.lt-lg="grow"
            fxLayout="column"
            fxLayoutAlign="start stretch"
            fxLayoutGap="10px"
@@ -74,6 +83,8 @@
 
       </div>
     </div>
+    <app-resources-storage *ngIf="activeTabId === 2"></app-resources-storage>
+    <app-resources-memory *ngIf="activeTabId === 3"></app-resources-memory>
 
   </div>
 </div>

@@ -15,10 +15,9 @@ export class ResourcesEffects {
 
   @Effect()
   ResourcesLoadEffect$ = this.actions$.pipe(
-    ofType(ResourcesActionTypes.LoadResources),
+    ofType(ResourcesActionTypes.LoadResources, 'APP_MENU_SIZE_CHANGE'),
     withLatestFrom(this.store, (action: any, state: ObservedValueOf<Store<State>>) => ({ action, state })),
     switchMap(({ action, state }) => {
-
       const resourcesData$ = this.resourcesService.getResources(state.settingsNode.activeNode.monitoring)
         .pipe(
           map((resources: Resource[]) => ({ type: ResourcesActionTypes.ResourcesLoadSuccess, payload: resources })),
@@ -42,7 +41,7 @@ export class ResourcesEffects {
   @Effect({ dispatch: false })
   ResourcesCloseEffect$ = this.actions$.pipe(
     ofType(ResourcesActionTypes.ResourcesClose),
-    withLatestFrom(this.store, (action: any, state) => ({ action, state })),
+    withLatestFrom(this.store, (action: any, state: ObservedValueOf<Store<State>>) => ({ action, state })),
     tap(({ action, state }) => {
       this.resourcesDestroy$.next();
       this.resourcesDestroy$.complete();

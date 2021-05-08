@@ -1,0 +1,80 @@
+<div class="mini-graph"
+     fxFlexFill
+     fxLayout="column">
+  <div fxLayout="row"
+       fxLayoutAlign="start center"
+       fxFlex="30px"
+       fxLayoutGap="6px">
+    <svg-icon *ngIf="isMainGraph"
+              [icon]="'arrow-down'"></svg-icon>
+    <span class="operation-name">{{ operationName }}</span>
+    <span *ngIf="isMainGraph"
+          class="calls-label">Number of calls</span>
+  </div>
+  <div fxLayout="row"
+       fxLayoutGap="4px">
+    <div *ngIf="isMainGraph"
+         fxLayout="column"
+         fxLayoutGap="6px"
+         class="x-steps">
+      <span>10m</span>
+      <span>1m</span>
+      <span>100k</span>
+      <span>10k</span>
+      <span>1k</span>
+      <span>100</span>
+      <span>10</span>
+      <span>1</span>
+    </div>
+    <div class="cols-wrap"
+         fxLayout="row"
+         fxLayoutGap="2px"
+         fxLayoutAlign="start end">
+      <div *ngFor="let col of columns; let i=index"
+           class="col"
+           fxLayout="column-reverse"
+           fxLayoutGap="2px"
+           (mouseenter)="openPersonDetailsOverlay(col, i, $event)"
+           (mouseleave)="detachOverlay()">
+        <div *ngFor="let square of [].constructor(col.count); let j=index"
+             [class.yellow-square]="i + j > 6"
+             [class.red-square]="i + j > 9"
+             class="square"></div>
+      </div>
+    </div>
+  </div>
+  <div *ngIf="isMainGraph"
+       fxLayout="row"
+       fxLayoutAlign="end"
+       class="y-steps">
+    <span>1μs</span>
+    <span>10μs</span>
+    <span>100μs</span>
+    <span>1ms</span>
+    <span>10ms</span>
+    <span>100ms</span>
+    <span>1s</span>
+    <span>10s</span>
+    <span>100s</span>
+  </div>
+  <div fxLayoutAlign="start center"
+       fxLayoutGap="8px">
+    <svg-icon *ngIf="isMainGraph"
+              [icon]="'arrow-right'"></svg-icon>
+    <span *ngIf="isMainGraph"
+          class="calls-label">Duration of call</span>
+  </div>
+</div>
+
+<ng-template #tooltipTemplate
+             let-total="total"
+             let-mean="mean"
+             let-max="max"
+             let-range="range">
+  <div class="tooltip-template">
+    <div class="text-white">Range {{ range }}</div>
+    <div><span class="text-white">{{ mean | timeTransform: false }}</span> Mean</div>
+    <div><span class="text-white">{{ max | timeTransform: false }}</span> Max</div>
+    <div><span class="text-white">{{ total | timeTransform: false }}</span> Total Time</div>
+  </div>
+</ng-template>

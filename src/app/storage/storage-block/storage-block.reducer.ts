@@ -12,13 +12,18 @@ const initialState: StorageBlock = {
   selected: {
     hash: '',
     chain_id: '',
-    protocol: ''
+    protocol: '',
+    header: {},
+    metadata: {},
+    operations: [],
   },
+  blockDetails: null,
   activePage: {},
   pages: []
 };
 
 export function reducer(state: StorageBlock = initialState, action): StorageBlock {
+
   switch (action.type) {
 
     // case 'STORAGE_BLOCK_FETCH': {
@@ -61,7 +66,8 @@ export function reducer(state: StorageBlock = initialState, action): StorageBloc
     case 'STORAGE_BLOCK_DETAILS_LOAD_SUCCESS': {
       return {
         ...state,
-        selected: action.payload
+        selected: action.payload.selected,
+        blockDetails: action.payload.blockDetails
       };
     }
 

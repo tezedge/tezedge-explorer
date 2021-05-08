@@ -46,12 +46,12 @@ import { NetworkStats } from './shared/types/network/network-stats.type';
 import { NetworkPeers } from './shared/types/network/network-peers.type';
 import { NetworkHistory } from './shared/types/network/network-history.type';
 import { NetworkAction } from './shared/types/network/network-action.type';
-import { ResourcesState } from './shared/types/resources/resources-state.type';
 import { App } from './shared/types/app/app.type';
 import { Monitoring } from './shared/types/monitoring/monitoring.type';
 import { LogsAction } from './shared/types/logs/logs-action.type';
 import { StorageBlock } from './shared/types/storage/storage-block/storage-block.type';
 import { CommitNumber } from './shared/types/commit-number/commit-number.type';
+import { ResourcesState } from './resources/resources/resources.reducer';
 
 export interface State {
   app: App;

@@ -1,11 +1,11 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, NgZone, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
 import { VirtualScrollDirective } from '../../shared/virtual-scroll/virtual-scroll.directive';
-import { StorageBlock } from '../../shared/types/storage/storage-block/storage-block.type';
 import { Router } from '@angular/router';
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
+import { StorageBlock } from '../../shared/types/storage/storage-block/storage-block.type';
 
+@UntilDestroy()
 @Component({
   selector: 'app-storage-block',
   templateUrl: './storage-block.component.html',
@@ -21,13 +21,12 @@ export class StorageBlockComponent implements OnInit, OnDestroy {
   };
   virtualPageSize = 1000;
 
-  onDestroy$ = new Subject();
 
   @ViewChild(VirtualScrollDirective) vrFor: VirtualScrollDirective;
+  @ViewChild('vsContainer') vsContainer: ElementRef<HTMLDivElement>;
 
   constructor(
     public store: Store<any>,
-    private ngZone: NgZone,
     private changeDetector: ChangeDetectorRef,
     private router: Router
   ) {
@@ -38,7 +37,7 @@ export class StorageBlockComponent implements OnInit, OnDestroy {
     this.scrollStart(null);
 
     this.store.select('storageBlock')
-      .pipe(takeUntil(this.onDestroy$))
+      .pipe(untilDestroyed(this))
       .subscribe((data: StorageBlock) => {
         this.virtualScrollItems = data;
         this.storageBlockShow = data.ids.length > 0;
@@ -47,9 +46,8 @@ export class StorageBlockComponent implements OnInit, OnDestroy {
         //   this.getItemDetails(this.virtualScrollItems.entities[this.virtualScrollItems.ids[this.virtualScrollItems.ids.length - 1]]);
         // }
 
-        this.changeDetector.markForCheck();
+        this.changeDetector.detectChanges();
       });
-
   }
 
   getItemDetails($event): void {
@@ -59,6 +57,28 @@ export class StorageBlockComponent implements OnInit, OnDestroy {
         hash: $event?.hash
       }
     });
+  }
+
+  getDetailsOfPreviousBlock(): void {
+    const items = this.virtualScrollItems;
+    if (items.selected.hash !== items.entities[0].hash) {
+      this.store.dispatch({ type: 'STORAGE_BLOCK_NEIGHBOUR_BLOCK_DETAILS', payload: { neighbourIndex: -1 } });
+    }
+    const hoverIndex = Array.from(this.vsContainer.nativeElement.children).findIndex(entry => entry.classList.contains('hover'));
+    if (hoverIndex < 33) {
+      this.vsContainer.nativeElement.scrollBy({ top: -150, behavior: 'smooth' });
+    }
+  }
+
+  getDetailsOfNextBlock(): void {
+    const items = this.virtualScrollItems;
+    if (items.selected.hash !== items.entities[items.ids[items.ids.length - 1]].hash) {
+      this.store.dispatch({ type: 'STORAGE_BLOCK_NEIGHBOUR_BLOCK_DETAILS', payload: { neighbourIndex: 1 } });
+    }
+    const hoverIndex = Array.from(this.vsContainer.nativeElement.children).findIndex(entry => entry.classList.contains('hover'));
+    if (hoverIndex > (this.vsContainer.nativeElement.childElementCount - 6)) {
+      this.vsContainer.nativeElement.scrollBy({ top: 150, behavior: 'smooth' });
+    }
   }
 
   getItems($event): void {
@@ -157,10 +177,5 @@ export class StorageBlockComponent implements OnInit, OnDestroy {
     //   type: 'STORAGE_BLOCK_STOP'
     // });
     this.store.dispatch({ type: 'STORAGE_BLOCK_RESET' });
-
-    // close all observables
-    this.onDestroy$.next();
-    this.onDestroy$.complete();
   }
-
 }

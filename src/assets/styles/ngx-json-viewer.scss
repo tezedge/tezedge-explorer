@@ -1,0 +1,45 @@
+.storage-details-table {
+  ngx-json-viewer .ngx-json-viewer {
+    padding-top: 0;
+    color: #fff !important;
+    font-size: 12px !important;
+
+    .segment-type-number,
+    .segment-type-string {
+      > .segment-main > .segment-value {
+        color: #BF5AF2 !important;
+      }
+    }
+  }
+
+  tr:not(.expanded-row) {
+    ngx-json-viewer .ngx-json-viewer .segment-type-object {
+
+      .segment-separator {
+        position: relative;
+
+        &::after {
+          position: absolute;
+          content: "{\00a0 \00a0 \00a0}";
+          right: -20px;
+          color: #0A84FF;
+        }
+
+        &::before {
+          position: absolute;
+          content: '..';
+          right: -14.5px;
+          color: rgba(255, 255, 255, 0.4);
+        }
+      }
+
+      .segment-value {
+        display: none;
+      }
+    }
+  }
+
+  tr.expanded-row > td > ngx-json-viewer .ngx-json-viewer .segment-type-object .segment-main {
+    margin-bottom: 12px;
+  }
+}

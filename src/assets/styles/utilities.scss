@@ -2,14 +2,26 @@
   text-transform: capitalize;
 }
 
+.text-uppercase {
+  text-transform: uppercase;
+}
+
+.text-nowrap {
+  white-space: nowrap;
+}
+
+.pointer {
+  cursor: pointer;
+}
+
 .truncate {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 
-.pointer {
-  cursor: pointer;
+.text-white {
+  color: #fff !important;
 }
 
 .text-gray {
@@ -23,3 +35,8 @@
 .text-white {
   color: white !important;
 }
+
+.overflow-hidden {
+  overflow: hidden;
+}
+

@@ -1,247 +1,277 @@
-<div class="app-menu-toolbar">
-  <div class="app-menu-toolbar-logo"
-       style="color:#f0f3f7">TezEdge
-  </div>
-</div>
-<ng-container *ngIf="appFeatures$ | async as features">
-  <div class="app-submenu"
-       *ngIf="features['MONITORING'] || features['RESOURCES']">
-    <span>MONITORING</span>
-
-    <a *ngIf="features['MONITORING']"
-       mat-list-item
-       class="menu-item"
-       routerLink="/monitoring"
-       id="monitoring-trigger"
-       (click)="closeMenu()"
-       [style.color]="app.sidenav.color">
-      <span>
-        <svg-icon style="margin-right: 7px;"
-                  icon="history"></svg-icon>
-        Synchronization
-      </span>
-    </a>
-
-    <a *ngIf="features['RESOURCES']"
-       mat-list-item
-       class="menu-item"
-       routerLink="/resources"
-       id="resources-trigger"
-       (click)="closeMenu()"
-       [style.color]="app.sidenav.color">
-      <span>
-        <svg-icon style="margin-right: 7px;"
-                  icon="resources"></svg-icon>
-        Resources
-      </span>
-    </a>
-
+<div class="menu-wrapper"
+     [class.slim]="app.sidenav.collapsed">
+  <div class="app-menu-toolbar">
+    <svg-icon icon="arrow-toggle"
+              class="arrow-toggle"
+              [class.slim]="app.sidenav.collapsed"
+              (click)="toggleMenuSize()"></svg-icon>
+    <div class="app-menu-toolbar-logo text-nowrap">TEZEDGE</div>
   </div>
 
-  <div class="app-submenu"
-       *ngIf="features['NETWORK_ACTION']
+  <ng-container *ngIf="appFeatures$ | async as features">
+    <div class="app-submenu"
+         *ngIf="features['MONITORING'] || features['RESOURCES']">
+      <div class="text-nowrap">MONITORING</div>
+
+      <a *ngIf="features['MONITORING']"
+         mat-list-item
+         class="menu-item"
+         routerLink="/monitoring"
+         routerLinkActive="active"
+         matTooltip="Synchronization"
+         matTooltipPosition="right"
+         [matTooltipDisabled]="!app.sidenav.collapsed"
+         id="monitoring-trigger"
+         (click)="closeMenu()"
+         [style.color]="app.sidenav.color">
+      <span class="menu-content">
+        <svg-icon icon="history"></svg-icon>
+        <span class="text-nowrap">Synchronization</span>
+      </span>
+      </a>
+
+      <a *ngIf="features['RESOURCES']"
+         mat-list-item
+         class="menu-item"
+         routerLink="/resources"
+         routerLinkActive="active"
+         id="resources-trigger"
+         matTooltip="Resources"
+         matTooltipPosition="right"
+         [matTooltipDisabled]="!app.sidenav.collapsed"
+         (click)="closeMenu()"
+         [style.color]="app.sidenav.color">
+      <span class="menu-content">
+        <svg-icon icon="resources"></svg-icon>
+        <span class="text-nowrap">Resources</span>
+      </span>
+      </a>
+
+    </div>
+
+    <div *ngIf="features['NETWORK_ACTION']
            || features['STORAGE_BLOCK']
            || features['MEMPOOL_ACTION']
            || features['LOGS_ACTION']
            || features['ENDPOINTS_ACTION']"
-  >
-    <span>EXPLORER</span>
+         class="app-submenu">
+      <div class="text-nowrap">EXPLORER</div>
 
-    <a *ngIf="features['MEMPOOL_ACTION']"
-       mat-list-item
-       class="menu-item"
-       routerLink="/mempool"
-       id="mempool-action-trigger"
-       (click)="closeMenu()"
-       [style.color]="app.sidenav.color">
-      <span>
-        <svg-icon style="margin-right: 7px;"
-                  icon="mempool"></svg-icon>
-        Mempool
+      <a *ngIf="features['MEMPOOL_ACTION']"
+         mat-list-item
+         class="menu-item"
+         routerLink="/mempool"
+         routerLinkActive="active"
+         id="mempool-action-trigger"
+         matTooltip="Mempool"
+         matTooltipPosition="right"
+         [matTooltipDisabled]="!app.sidenav.collapsed"
+         (click)="closeMenu()"
+         [style.color]="app.sidenav.color">
+      <span class="menu-content">
+        <svg-icon icon="mempool"></svg-icon>
+        <span class="text-nowrap">Mempool</span>
       </span>
-    </a>
+      </a>
 
-    <a *ngIf="features['STORAGE_BLOCK']"
-       mat-list-item
-       class="menu-item"
-       routerLink="/storage"
-       id="storage-block-trigger"
-       (click)="closeMenu()"
-       [style.color]="app.sidenav.color">
-      <span>
-        <svg-icon style="margin-right: 7px;"
-                  icon="storage"></svg-icon>
-        Storage
+      <a *ngIf="features['STORAGE_BLOCK']"
+         mat-list-item
+         class="menu-item"
+         routerLink="/storage"
+         routerLinkActive="active"
+         id="storage-block-trigger"
+         matTooltip="Storage"
+         matTooltipPosition="right"
+         [matTooltipDisabled]="!app.sidenav.collapsed"
+         (click)="closeMenu()"
+         [style.color]="app.sidenav.color">
+      <span class="menu-content">
+        <svg-icon icon="storage"></svg-icon>
+        <span class="text-nowrap">Storage</span>
       </span>
-    </a>
+      </a>
 
-    <a *ngIf="features['NETWORK_ACTION']"
-       mat-list-item
-       class="menu-item"
-       routerLink="/network"
-       id="network-action-trigger"
-       (click)="closeMenu()"
-       [style.color]="app.sidenav.color">
-      <span>
-        <svg-icon style="margin-right: 7px;"
-                  icon="peer"></svg-icon>
-        Network
+      <a *ngIf="features['NETWORK_ACTION']"
+         mat-list-item
+         class="menu-item"
+         routerLink="/network"
+         routerLinkActive="active"
+         id="network-action-trigger"
+         matTooltip="Network"
+         matTooltipPosition="right"
+         [matTooltipDisabled]="!app.sidenav.collapsed"
+         (click)="closeMenu()"
+         [style.color]="app.sidenav.color">
+      <span class="menu-content">
+        <svg-icon icon="peer"></svg-icon>
+        <span class="text-nowrap">Network</span>
       </span>
-    </a>
-    <a *ngIf="features['ENDPOINTS_ACTION']"
-       mat-list-item
-       class="menu-item"
-       routerLink="/endpoints"
-       id="endpoints-action-trigger"
-       (click)="closeMenu()"
-       [style.color]="app.sidenav.color">
-        <span>
-            <svg-icon style="margin-right: 7px;"
-                      icon="endpoints"></svg-icon>
-            Endpoints
-        </span>
-    </a>
-
-
-    <a *ngIf="features['LOGS_ACTION']"
-       mat-list-item
-       class="menu-item"
-       routerLink="/logs"
-       id="logs-action-trigger"
-       (click)="closeMenu()"
-       [style.color]="app.sidenav.color">
-      <span>
-       <svg-icon style="margin-right: 7px;"
-                 icon="logs"></svg-icon>
-        Logs
+      </a>
+      <a *ngIf="features['ENDPOINTS_ACTION']"
+         mat-list-item
+         class="menu-item"
+         routerLink="/endpoints"
+         routerLinkActive="active"
+         id="endpoints-action-trigger"
+         matTooltip="Endpoints"
+         matTooltipPosition="right"
+         [matTooltipDisabled]="!app.sidenav.collapsed"
+         (click)="closeMenu()"
+         [style.color]="app.sidenav.color">
+      <span class="menu-content">
+        <svg-icon icon="endpoints"></svg-icon>
+        <span class="text-nowrap">Endpoints</span>
       </span>
-    </a>
-
-    <!--
-
-    <a mat-list-item class="menu-item" routerLink="/mempool"
-        [style.color]="app.sidenav.color">
-        <span>
-            Mempool
-        </span>
-    </a>
-  -->
+      </a>
 
 
-  </div>
-
-  <!-- <div class="app-submenu">
-      <span>
-          DEVELOPER
+      <a *ngIf="features['LOGS_ACTION']"
+         mat-list-item
+         class="menu-item"
+         routerLink="/logs"
+         routerLinkActive="active"
+         id="logs-action-trigger"
+         matTooltip="Logs"
+         matTooltipPosition="right"
+         [matTooltipDisabled]="!app.sidenav.collapsed"
+         (click)="closeMenu()"
+         [style.color]="app.sidenav.color">
+      <span class="menu-content">
+        <svg-icon icon="logs"></svg-icon>
+        <span class="text-nowrap">Logs</span>
       </span>
+      </a>
 
-      <a mat-list-item class="menu-item" routerLink="/storage"
+      <!--
+
+      <a mat-list-item class="menu-item" routerLink="/mempool"
           [style.color]="app.sidenav.color">
           <span>
-              Chain
+              Mempool
           </span>
       </a>
-
-      <a mat-list-item class="menu-item" routerLink="/storage"
-          [style.color]="app.sidenav.color">
-          <span>
-              Replay
-          </span>
-      </a>
-
-      <a mat-list-item class="menu-item" routerLink="/storage"
-          [style.color]="app.sidenav.color">
-          <span>
-              Debug
-          </span>
-      </a>
-
-      <a mat-list-item class="menu-item" routerLink="/storage"
-      [style.color]="app.sidenav.color">
-          <span>
-              Error
-          </span>
-      </a>
-  </div> -->
-
-  <div class="app-submenu"
-       *ngIf="app.menu.sandbox.chain || app.menu.sandbox.wallets">
-                    <span>
-                        SANDBOX
-                    </span>
-
-    <a *ngIf="app.menu.sandbox.chain"
-       mat-list-item
-       class="menu-item"
-       routerLink="/chain"
-       rel="noreferrer"
-       [style.color]="app.sidenav.color">
-                        <span>
-                            <svg-icon style="margin-right: 7px"
-                                      icon="chain-settings"></svg-icon>
-                            Chain
-                        </span>
-    </a>
-
-    <a *ngIf="app.menu.sandbox.wallets"
-       mat-list-item
-       class="menu-item"
-       routerLink="/wallets"
-       rel="noreferrer"
-       [style.color]="app.sidenav.color">
-                        <span>
-                            <svg-icon style="margin-right: 7px"
-                                      icon="chain-wallets"></svg-icon>
-                            Wallets
-                        </span>
-    </a>
-    <!--
-    <span>
-        <button style="font-size: 12px;line-height: 32px;color:white; background: #323234; " mat-flat-button>
-            START SANDBOX NODE
-        </button>
-    </span>
     -->
-  </div>
-  <div class="app-submenu"
-       *ngIf="settingsNode.entities['sandbox-carthage-tezedge']?.connected === false">
-                    <span>
-                        SANDBOX
-                    </span>
-    <div style="padding: 5px 0px 0px 20px;">
-      <button mat-flat-button
-              (click)="nodeSandboxAdd();"
-              id="menu-add-sandbox-node"
-              style="font-size: 12px;line-height: 24px;color:white; background: #8C6141; font-weight:300">
-        ADD SANDBOX NODE
-      </button>
+
+
     </div>
 
-    <!-- <div style="padding: 0px 0px 0px 20px;">
-        <button mat-flat-button (click)="odeSandboxStop();"
-            *ngIf="settingsNode.entities['sandbox-carthage-tezedge']?.connected === true"
-            style="font-size: 12px;line-height: 24px;color:white; background: #8C6141; font-weight:300">
-            STOP SANDBOX NODE
-        </button>
+    <!-- <div class="app-submenu">
+        <span>
+            DEVELOPER
+        </span>
+
+        <a mat-list-item class="menu-item" routerLink="/storage"
+            [style.color]="app.sidenav.color">
+            <span>
+                Chain
+            </span>
+        </a>
+
+        <a mat-list-item class="menu-item" routerLink="/storage"
+            [style.color]="app.sidenav.color">
+            <span>
+                Replay
+            </span>
+        </a>
+
+        <a mat-list-item class="menu-item" routerLink="/storage"
+            [style.color]="app.sidenav.color">
+            <span>
+                Debug
+            </span>
+        </a>
+
+        <a mat-list-item class="menu-item" routerLink="/storage"
+        [style.color]="app.sidenav.color">
+            <span>
+                Error
+            </span>
+        </a>
     </div> -->
-  </div>
 
-  <div class="app-submenu">
-    <span>LEARN</span>
+    <div class="app-submenu"
+         *ngIf="app.menu.sandbox.chain || app.menu.sandbox.wallets">
+      <div class="text-nowrap">SANDBOX</div>
 
-    <a mat-list-item
-       class="menu-item"
-       href="https://docs.tezedge.com"
-       target="_blank"
-       rel="noreferrer"
-       [style.color]="app.sidenav.color">
-      <span>
-        <svg-icon style="margin-right: 7px"
-                  icon="documentation"></svg-icon>
-        Documentation
+      <a *ngIf="app.menu.sandbox.chain"
+         mat-list-item
+         class="menu-item"
+         routerLink="/chain"
+         routerLinkActive="active"
+         matTooltip="Chain"
+         matTooltipPosition="right"
+         [matTooltipDisabled]="!app.sidenav.collapsed"
+         rel="noreferrer"
+         [style.color]="app.sidenav.color">
+      <span class="menu-content">
+        <svg-icon icon="chain-settings"></svg-icon>
+        <span class="text-nowrap">Chain</span>
       </span>
-    </a>
-  </div>
+      </a>
 
-  <app-commit-number class="app-github-version"></app-commit-number>
-</ng-container>
+      <a *ngIf="app.menu.sandbox.wallets"
+         mat-list-item
+         class="menu-item"
+         routerLink="/wallets"
+         routerLinkActive="active"
+         matTooltip="Wallets"
+         matTooltipPosition="right"
+         [matTooltipDisabled]="!app.sidenav.collapsed"
+         rel="noreferrer"
+         [style.color]="app.sidenav.color">
+      <span class="menu-content">
+        <svg-icon icon="chain-wallets"></svg-icon>
+        <span class="text-nowrap">Wallets</span>
+      </span>
+      </a>
+      <!--
+      <span>
+          <button style="font-size: 12px;line-height: 32px;color:white; background: #323234; " mat-flat-button>
+              START SANDBOX NODE
+          </button>
+      </span>
+      -->
+    </div>
+    <div class="app-submenu"
+         *ngIf="settingsNode.entities['sandbox-carthage-tezedge']?.connected === false">
+      <div class="text-nowrap">SANDBOX</div>
+      <div style="padding: 5px 0 0 20px">
+        <button mat-flat-button
+                (click)="nodeSandboxAdd();"
+                id="menu-add-sandbox-node"
+                style="font-size: 12px;line-height: 24px;color:white; background: #8C6141; font-weight:300">
+          ADD SANDBOX NODE
+        </button>
+      </div>
+
+      <!-- <div style="padding: 0px 0px 0px 20px;">
+          <button mat-flat-button (click)="odeSandboxStop();"
+              *ngIf="settingsNode.entities['sandbox-carthage-tezedge']?.connected === true"
+              style="font-size: 12px;line-height: 24px;color:white; background: #8C6141; font-weight:300">
+              STOP SANDBOX NODE
+          </button>
+      </div> -->
+    </div>
+
+    <div class="app-submenu">
+      <div class="text-nowrap">LEARN</div>
+
+      <a mat-list-item
+         class="menu-item"
+         href="https://docs.tezedge.com"
+         target="_blank"
+         matTooltip="Documentation"
+         matTooltipPosition="right"
+         [matTooltipDisabled]="!app.sidenav.collapsed"
+         rel="noreferrer"
+         [style.color]="app.sidenav.color">
+      <span class="menu-content">
+        <svg-icon icon="documentation"></svg-icon>
+        <span class="text-nowrap">Documentation</span>
+      </span>
+      </a>
+    </div>
+
+    <app-commit-number class="app-github-version"></app-commit-number>
+  </ng-container>
+</div>

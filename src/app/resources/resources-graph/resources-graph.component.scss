@@ -40,6 +40,18 @@ $text-color: rgb(164, 164, 165);
     }
   }
 
+  .chart-container {
+    .selection-overlay {
+      pointer-events: none;
+      position: fixed;
+      opacity: 1;
+      height: 110px;
+      left: 0;
+      width: 0;
+      background-color: rgba(255,255,255,0.3);
+    }
+  }
+
   .graph-label-list {
     margin-bottom: 12px;
     cursor: context-menu;

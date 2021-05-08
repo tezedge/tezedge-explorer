@@ -65,9 +65,10 @@
         </div>
     </div>
 
-    <mat-sidenav-container (backdropClick)="toggleMenuOnMobile()">
+    <mat-sidenav-container (backdropClick)="toggleMenuOnMobile()"
+                           [class.slim-sidenav]="app.sidenav.collapsed">
         <!-- Sidebar -->
-        <mat-sidenav #start
+        <mat-sidenav class="tezedge-sidenav"
                      [mode]="app.sidenav.mode"
                      [style.background-color]="app.sidenav.backgroundColor"
                      [style.color]="app.sidenav.color"
@@ -76,7 +77,7 @@
                      [fixedTopGap]="34"
                      [fixedBottomGap]="0">
 
-            <mat-nav-list>
+            <mat-nav-list class="overflow-hidden">
                 <app-navigation-menu></app-navigation-menu>
             </mat-nav-list>
 

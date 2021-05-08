@@ -4,19 +4,19 @@ $color-commit-container: rgba(63, 63, 67, 1);
 $color-commit-item-hovered: rgba(80, 80, 88, 1);
 
 .node-tag-number {
-  position: relative;
+  cursor: pointer;
+  border-radius: 4px;
+  padding: 3px 8px;
+  margin-bottom: -4px;
+
+  &:hover {
+    background-color: $color-node-tag-active;
+  }
 }
 
 .node-tag-number-and-icon {
-  cursor: pointer;
-  border-radius: 4px;
+  pointer-events: none;
   font-size: 12px;
-  line-height: 14px;
-  padding: 6px 8px;
-
-  &.active {
-    background-color: $color-node-tag-active;
-  }
 }
 
 svg-icon {
@@ -24,7 +24,6 @@ svg-icon {
 }
 
 .commit-numbers-container {
-  //position: absolute;
   overflow: hidden;
   bottom: 25px;
   background-color: $color-commit-container;
@@ -33,12 +32,19 @@ svg-icon {
   margin-bottom: 5px;
 
   .commit-numbers-container-item {
-    padding: 8px;
     font-size: 12px;
     width: 128px;
 
     &:hover {
       background-color: $color-commit-item-hovered;
+    }
+
+    a {
+      cursor: pointer;
+      color: #eaeaea;
+      text-decoration: unset;
+      padding: 8px;
+      display: block;
     }
   }
 }

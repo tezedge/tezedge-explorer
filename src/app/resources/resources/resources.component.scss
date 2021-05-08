@@ -6,7 +6,6 @@ $text-color: rgb(164, 164, 165);
   border-top-left-radius: 5px;
   overflow-y: auto;
 
-  .main-resources-container {
     .tabs {
       border-bottom: 1px solid $faded-white;
       padding: 9px 15px;
@@ -16,10 +15,11 @@ $text-color: rgb(164, 164, 165);
         color: rgba(255, 255, 255, 0.6);
         font-size: 12px;
         cursor: pointer;
+        text-transform: uppercase;
 
         &:hover,
         &.selected {
-          color: $text-color;
+          color: #fff;
         }
       }
     }
@@ -36,7 +36,6 @@ $text-color: rgb(164, 164, 165);
         max-height: unset !important;
       }
     }
-  }
 
   .info-container {
     background-color: #2A2A2E;

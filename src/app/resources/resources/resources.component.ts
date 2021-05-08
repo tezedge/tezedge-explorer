@@ -83,6 +83,12 @@ export class ResourcesComponent implements OnInit, OnDestroy {
   activeSummary: ResourceType = 'disk';
 
   private isSmallDevice: boolean;
+  readonly tabs = [
+    { title: 'System overview', id: 1 },
+    { title: 'Storage', id: 2 },
+    // { title: 'Memory', id: 3 },
+  ];
+  activeTabId: number = 1;
 
   constructor(private store: Store<State>,
               private zone: NgZone,
@@ -100,9 +106,7 @@ export class ResourcesComponent implements OnInit, OnDestroy {
       select(state => state.resources.resources),
       filter((resources: Resource[]) => resources.length > 0),
       map((resources: Resource[]) => {
-        return this.zone.runOutsideAngular(() => {
-          return this.createChartData(resources);
-        });
+        return this.zone.runOutsideAngular(() => this.createChartData(resources));
       })
     );
   }
@@ -126,6 +130,7 @@ export class ResourcesComponent implements OnInit, OnDestroy {
   }
 
   private createChartData(resources: Array<Resource>): ChartData {
+    resources = resources.slice(0,150);
     this.resourcesSummary = this.createSummaryBlocks(resources);
 
     const chartData = new ChartData();

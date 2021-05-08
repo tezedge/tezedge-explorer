@@ -4,16 +4,37 @@
     <div class="filters-container storage-filters">
     </div>
 
-    <div class="table-virtual-scroll-header storage-block-header">
-      <span>DATETIME</span>
-      <span>LEVEL</span>
-      <span>CYCLE</span>
-      <span>HASH</span>
+    <div class="storage-header-wrapper"
+         fxLayoutAlign="start"
+         fxLayout="row">
+      <div fxFlex="grow">
+        <div class="table-virtual-scroll-header storage-block-header">
+          <span>DATETIME</span>
+          <span>LEVEL</span>
+          <span>CYCLE</span>
+          <span>HASH</span>
+        </div>
+      </div>
+      <div class="storage-details-actions"
+           fxFlex="40%"
+           fxLayoutAlign="start center"
+           fxLayoutGap="8px">
+        <span>BLOCKS</span>
+        <div *ngIf="virtualScrollItems?.selected?.hash"
+             fxLayoutAlign="start center"
+             fxLayoutGap="8px"
+             class="block-hash">
+          <svg-icon icon="chevron-right"></svg-icon>
+          <span class="hash truncate">{{ virtualScrollItems.selected.hash }}</span>
+          <svg-icon icon="chevron-down" class="pointer" (click)="getDetailsOfNextBlock()"></svg-icon>
+          <svg-icon icon="chevron-up" class="pointer" (click)="getDetailsOfPreviousBlock()"></svg-icon>
+        </div>
+      </div>
     </div>
 
     <div class="table-virtual-scroll-body">
 
-      <div class="virtual-scroll-container" [class.storage-block-filters-expanded]="filtersState.open">
+      <div class="virtual-scroll-container" [class.storage-block-filters-expanded]="filtersState.open" #vsContainer>
         <ng-template vsFor [vsForOf]="virtualScrollItems" let-event let-position="position"
                      (getItems)="getItems($event)" (startStopDataStream)="startStopDataStream($event)">
           <span class="virtualScrollRow storage-block-row"
@@ -38,18 +59,18 @@
       </div>
 
       <div class="action-table-detail" id="virtualScrollTableDetails">
-        <mat-tab-group>
-          <mat-tab *ngIf="virtualScrollItems?.selected?.hash">
-            <ng-template mat-tab-label>
-              <span>JSON</span>
-            </ng-template>
-            <ng-template matTabContent>
-              <ngx-json-viewer *ngIf="virtualScrollItems?.selected?.hash" [json]="virtualScrollItems.selected"
-                               [expanded]="false">
-              </ngx-json-viewer>
-            </ng-template>
-          </mat-tab>
-        </mat-tab-group>
+        <app-storage-block-details *ngIf="virtualScrollItems.selected"
+                                   [block]="virtualScrollItems.blockDetails"></app-storage-block-details>
+
+        <div class="json-wrap"
+             *ngIf="virtualScrollItems?.selected?.hash">
+          <div class="json-block">
+            <div class="json-header text-gray">JSON</div>
+            <ngx-json-viewer [json]="virtualScrollItems.selected"
+                             [expanded]="false">
+            </ngx-json-viewer>
+          </div>
+        </div>
         <!-- TODO: add the Hex and Error tabs if needed  -->
       </div>
     </div>

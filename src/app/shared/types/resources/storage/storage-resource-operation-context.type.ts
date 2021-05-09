@@ -7,7 +7,5 @@ export class StorageResourceOperationContext {
   findTree: ResourceStorageOperation;
   add: ResourceStorageOperation;
   addTree: ResourceStorageOperation;
-  list: ResourceStorageOperation;
-  fold: ResourceStorageOperation;
   remove: ResourceStorageOperation;
 }

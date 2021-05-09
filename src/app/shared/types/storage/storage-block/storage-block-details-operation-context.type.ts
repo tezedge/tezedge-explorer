@@ -11,12 +11,5 @@ export class StorageBlockDetailsOperationContext {
   findTree: number;
   add: number;
   addTree: number;
-  equal: number;
-  hash: number;
-  kind: number;
-  empty: number;
-  isEmpty: number;
-  list: number;
-  fold: number;
   remove: number;
 }

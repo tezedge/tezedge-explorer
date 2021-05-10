@@ -12,7 +12,7 @@
          fxLayout="row"
          fxLayoutGap="20px">
       <div>CHECKOUT</div>
-      <div><span>{{ block.checkoutContextTime | timeTransform }}</span> <span class="text-gray"> Total time</span></div>
+      <div><span [innerHTML]="block.checkoutContextTime | timeTransform"></span> <span class="text-gray"> Total time</span></div>
     </div>
   </div>
 
@@ -38,8 +38,6 @@
       </thead>
       <tbody>
       <tr *ngFor="let row of block.operationsContext; let i=index"
-          (click)="onRowClick(i)"
-          [class.expanded-row]="openRowsIndexes.includes(i)"
           (mouseenter)="attachTooltip(row, $event)"
           (mouseleave)="detachTooltip()">
         <td>{{ row.data.root }}</td>
@@ -67,7 +65,7 @@
          fxLayoutGap="20px"
          fxLayoutAlign="start center">
       <div>COMMIT</div>
-      <div><span>{{ block.commitContextTime | timeTransform }}</span> <span class="text-gray"> Total time</span></div>
+      <div><span [innerHTML]="block.commitContextTime | timeTransform"></span> <span class="text-gray"> Total time</span></div>
     </div>
   </div>
 </div>

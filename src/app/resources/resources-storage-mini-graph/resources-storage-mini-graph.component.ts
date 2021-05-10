@@ -5,7 +5,6 @@ import { TemplatePortal } from '@angular/cdk/portal';
 import { ResourceStorageOperationUsageEntry } from '../../shared/types/resources/storage/resource-storage-operation-usage-entry.type';
 
 const RANGES = [
-  '100ns - 1μs',
   '1μs - 10μs',
   '10μs - 100μs',
   '100μs - 1ms',
@@ -13,7 +12,8 @@ const RANGES = [
   '10ms - 100ms',
   '100ms - 1s',
   '1s - 10s',
-  '10s - 100s'
+  '10s - 100s',
+  'Above 100s'
 ];
 
 @Component({
@@ -28,7 +28,7 @@ export class ResourcesStorageMiniGraphComponent implements OnInit {
   @Input() operationName: string;
   @Input() isMainGraph: boolean;
 
-  columns: ResourceStorageOperationUsageEntry[];
+  columns: Array<{ squareCount: number } & { [p in keyof ResourceStorageOperationUsageEntry]: number; }>;
 
   @ViewChild('tooltipTemplate') private tooltipTemplate: TemplateRef<any>;
 
@@ -49,15 +49,12 @@ export class ResourcesStorageMiniGraphComponent implements OnInit {
 
     this.columns = [];
 
-    this.columns[0] = { ...this.graphData.oneToTenUs, count: Math.min(this.graphData.oneToTenUs.count.toString().length, 8) };
-    this.columns[1] = { ...this.graphData.tenToOneHundredUs, count: Math.min(this.graphData.tenToOneHundredUs.count.toString().length, 8) };
-    this.columns[2] = { ...this.graphData.oneHundredUsToOneMs, count: Math.min(this.graphData.oneHundredUsToOneMs.count.toString().length, 8) };
-    this.columns[3] = { ...this.graphData.oneToTenMs, count: Math.min(this.graphData.oneToTenMs.count.toString().length, 8) };
-    this.columns[4] = { ...this.graphData.tenToOneHundredMs, count: Math.min(this.graphData.tenToOneHundredMs.count.toString().length, 8) };
-    this.columns[5] = { ...this.graphData.oneHundredMsToOneS, count: Math.min(this.graphData.oneHundredMsToOneS.count.toString().length, 8) };
-    this.columns[6] = { ...this.graphData.oneToTenS, count: Math.min(this.graphData.oneToTenS.count.toString().length, 8) };
-    this.columns[7] = { ...this.graphData.tenToOneHundredS, count: Math.min(this.graphData.tenToOneHundredS.count.toString().length, 8) };
-    this.columns[8] = { ...this.graphData.oneHundredS, count: Math.min(this.graphData.oneHundredS.count.toString().length, 8) };
+    Object.keys(this.graphData).forEach((key: string, index: number) => {
+      this.columns[index] = {
+        ...this.graphData[key],
+        squareCount: ResourcesStorageMiniGraphComponent.getSquareCount(this.graphData[key].totalTime)
+      };
+    });
   }
 
   openPersonDetailsOverlay(column: ResourceStorageOperationUsageEntry, index: number, event: MouseEvent): void {
@@ -81,10 +78,10 @@ export class ResourcesStorageMiniGraphComponent implements OnInit {
     });
 
     event.stopPropagation();
-    console.log(column);
     const context = this.tooltipTemplate
       .createEmbeddedView({
         range: RANGES[index],
+        count: column.count,
         total: column.totalTime,
         mean: column.meanTime,
         max: column.maxTime
@@ -96,5 +93,16 @@ export class ResourcesStorageMiniGraphComponent implements OnInit {
 
   detachOverlay(): void {
     this.overlayRef.detach();
+  }
+
+  private static getSquareCount(totalTimeInSeconds: number): number {
+    const TEN_MICROSECONDS_FACTOR = 100000;
+    let squareCount = 0;
+    let timeInTenMicroseconds = totalTimeInSeconds * TEN_MICROSECONDS_FACTOR;
+    while (timeInTenMicroseconds > 1) {
+      timeInTenMicroseconds /= 10;
+      squareCount++;
+    }
+    return Math.min(squareCount, 8);
   }
 }

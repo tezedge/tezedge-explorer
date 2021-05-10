@@ -1,8 +1,21 @@
-import { AfterViewInit, ChangeDetectionStrategy, Component, ElementRef, ViewChild } from '@angular/core';
+import {
+  AfterContentInit,
+  AfterViewInit,
+  ChangeDetectionStrategy,
+  Component,
+  ElementRef,
+  ViewChild
+} from '@angular/core';
 import * as d3 from 'd3';
 import Treemap, { Node, TreemapChartInstance } from 'treemap-chart';
+
+
 // @ts-ignore
 import * as tree from './tree.json';
+// import { Runtime, Inspector } from '@observablehq/runtime';
+// import { setTreeData } from '../../../assets/js/treemap';
+//
+// declare var define: any;
 
 @Component({
   selector: 'app-resources-memory',
@@ -10,31 +23,50 @@ import * as tree from './tree.json';
   styleUrls: ['./resources-memory.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class ResourcesMemoryComponent implements AfterViewInit {
+export class ResourcesMemoryComponent implements AfterViewInit, AfterContentInit {
 
   @ViewChild('treeMapChart') private treeMapRef: ElementRef<HTMLDivElement>;
   treeMapChart: TreemapChartInstance;
 
   private serverData = (tree as any).default;
 
-  constructor() { }
+  constructor() {
+  }
+
+  ngAfterContentInit() {
+    // console.log(define)
+    // const runtime = new Runtime();
+    // const main = runtime.module(define, Inspector.into(this.treeMapRef.nativeElement));
+
+    // const runtime = new Runtime();
+    // const main = runtime.module(define);
+    // main.value('foo').then(value => console.log(value));
+    // Runtime.load(define, Inspector.into(this.treeMapRef.nativeElement));
+
+
+  }
 
   ngAfterViewInit(): void {
-    this.initTreeMapChart();
+    // this.initTreeMapChart();
+    // this.parse();
+    // const runtime = new Runtime();
+    // setTreeData(this.serverData);
+    // const main = runtime.module(define, Inspector.into(this.treeMapRef.nativeElement));
+
   }
 
   private initTreeMapChart(): void {
     this.treeMapChart = Treemap();
     const color = d3.scaleOrdinal(d3.schemePaired);
     this.parse();
+    console.log(JSON.stringify(this.serverData));
     this.treeMapChart.data(this.serverData)
       .width(this.treeMapRef.nativeElement.offsetWidth)
       .height(this.treeMapRef.nativeElement.offsetHeight)
       .color(d => color(d.name))
       .showLabels(true)
-      // .padding(60)
       .minBlockArea(10)
-      .tooltipContent((d, node) => `Size: <i>${node.value}</i>`)
+      .tooltipContent((d, node) => `Size: <i>${ node.value }</i>`)
       (this.treeMapRef.nativeElement);
 
     this.treeMapChart.onClick((node: Node) => {

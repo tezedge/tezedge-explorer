@@ -43,12 +43,8 @@
       tbody tr {
         cursor: pointer;
 
-        &:hover:not(.expanded-row) {
+        &:hover {
           background-color: #3F3F43;
-        }
-
-        &.expanded-row {
-          background: linear-gradient(to bottom, #204E8A 30px, transparent 30px);
         }
 
         td {

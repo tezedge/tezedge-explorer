@@ -1,5 +1,8 @@
+import { MemoryResourceName } from './memory-resource-name.type';
+
 export class MemoryResource {
-  name: string;
-  value?: number;
+  name: MemoryResourceName;
   children: MemoryResource[];
+  value?: number;
+  color?: string;
 }

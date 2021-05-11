@@ -114,6 +114,7 @@ import { NavigationMenuComponent } from './layout/navigation-menu/navigation-men
 import { DatePipe } from '@angular/common';
 import { StorageBlockDetailsComponent } from './storage/storage-block-details/storage-block-details.component';
 import { StorageResourcesEffects } from './resources/resources-storage/resources-storage.effects';
+import { MemoryResourcesEffects } from './resources/memory-resources/memory-resources.effects';
 
 @NgModule({
   declarations: [
@@ -202,6 +203,7 @@ import { StorageResourcesEffects } from './resources/resources-storage/resources
       CommitNumberEffects,
       ResourcesEffects,
       StorageResourcesEffects,
+      MemoryResourcesEffects,
     ]),
 
     // https://github.com/zalmoxisus/redux-devtools-extension

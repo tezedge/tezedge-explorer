@@ -1,14 +1,21 @@
-<div class="mini-graph"
-     [class.main-graph]="isMainGraph"
-     fxFlexFill
-     fxLayout="column">
-  <div fxLayout="row"
-       fxLayoutAlign="start center"
-       fxFlex="30px"
-       fxLayoutGap="6px">
-    <svg-icon [icon]="'arrow-down'"></svg-icon>
-    <span class="operation-name">{{ operationName }}</span>
-    <span class="calls-label">Total time</span>
+<div fxFlexFill
+     fxLayout="column"
+     class="mini-graph"
+     [class.main-graph]="isMainGraph">
+  <div fxLayout="column"
+       fxLayoutGap="10px"
+       class="graph-overview"
+       [class.minimal]="!isMainGraph">
+    <span class="operation-name">
+      {{ operationName }}
+      <span class="total-time">
+        {{ graphData.totalTime | timeTransform: false }} · {{ graphData.count | thousandTransform }} <span class="calls">calls</span>
+      </span>
+    </span>
+    <div fxLayoutAlign="start center" *ngIf="isMainGraph">
+      <svg-icon [icon]="'arrow-down'"></svg-icon>
+      <span class="calls-label">Total time</span>
+    </div>
   </div>
   <div fxLayout="row"
        fxLayoutGap="4px">
@@ -55,7 +62,7 @@
     <span>100s</span>
   </div>
   <div fxLayoutAlign="start center"
-       fxLayoutGap="8px">
+       fxLayoutGap="8px" *ngIf="isMainGraph">
     <svg-icon [icon]="'arrow-right'"></svg-icon>
     <span class="calls-label">Duration of call</span>
   </div>

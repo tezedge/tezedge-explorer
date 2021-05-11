@@ -6,5 +6,6 @@ export class SettingsNode {
   ids: string[];
   entities: { [node: string]: SettingsNodeEntity };
   debugger: string;
+  memoryProfiler: string;
   sandbox?: string;
 }

@@ -5,7 +5,7 @@ import { map } from 'rxjs/operators';
 import { Resource } from '../../shared/types/resources/resource.type';
 import { CpuResource } from '../../shared/types/resources/cpu-resources.type';
 import { DiskResource } from '../../shared/types/resources/disk-resource.type';
-import { MemoryResource, MemoryResourceUsage } from '../../shared/types/resources/memory-resource.type';
+import { SystemMemoryResource, MemoryResourceUsage } from '../../shared/types/resources/system-memory-resource.type';
 import { DatePipe } from '@angular/common';
 
 const MB_DIVISOR = 1048576;
@@ -30,7 +30,7 @@ export class ResourcesService {
       const resource = new Resource();
       resource.timestamp = this.datePipe.transform(responseItem.timestamp * 1000, 'MM/dd, HH:mm:ss');
 
-      resource.memory = new MemoryResource();
+      resource.memory = new SystemMemoryResource();
       resource.memory.node = new MemoryResourceUsage();
       resource.memory.node.resident = responseItem.memory.node.resident_mem / MB_DIVISOR;
       resource.memory.node.virtual = responseItem.memory.node.virtual_mem / MB_DIVISOR;

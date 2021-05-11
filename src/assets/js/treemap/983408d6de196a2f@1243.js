@@ -6,8 +6,6 @@ export function setTreeData(data) {
 
 export function define(runtime, observer) {
   const main = runtime.module();
-  // const fileAttachments = new Map([["flare-2.json", new URL("./files/e65374209781891f37dea1e7a6e1c5e020a3009b8aedf113b4c80942018887a1176ad4945cf14444603ff91d3da371b3b0d72419fa8d2ee0f6e815732475d5de", import.meta.url)]]);
-  // main.builtin("FileAttachment", runtime.fileAttachments(name => fileAttachments.get(name)));
   main.variable(observer()).define(['md'], function (md) {
     return md;
   });
@@ -38,7 +36,7 @@ export function define(runtime, observer) {
 
           node.filter(d => d === root ? d.parent : d.children)
             .attr('cursor', 'pointer')
-            .on('click', (event, d) => d === root ? zoomout(root) : zoomin(d))
+            .on('click', (event, d) => d === root ? zoomout(root) : zoomin(d));
           // .on("wheel", function (event, d) {
           //     if (event.wheelDelta < 0) {
           //         if (d.depth === 1) {
@@ -177,7 +175,7 @@ export function define(runtime, observer) {
         (d3.hierarchy(data)
           .sum(d => d.value)
           .sort((a, b) => b.value - a.value))
-    )
+    );
   });
   main.variable(observer('tile')).define('tile', ['d3', 'width', 'height'], function (d3, width, height) {
     return (
@@ -190,7 +188,7 @@ export function define(runtime, observer) {
           child.y1 = y0 + child.y1 / height * (y1 - y0);
         }
       }
-    )
+    );
   });
   main.variable(observer('tooltip')).define('tooltip', ['d3'], function (d3) {
     return (
@@ -206,27 +204,27 @@ export function define(runtime, observer) {
         .style('border-radius', '4px')
         .style('color', '#fff')
         .text('a simple tooltip')
-    )
+    );
   });
   main.variable(observer('name')).define('name', function () {
     return (
       d => d.ancestors().reverse().map(d => d.data.name).join('/')
-    )
+    );
   });
   main.variable(observer('width')).define('width', function () {
     return (
       954
-    )
+    );
   });
   main.variable(observer('height')).define('height', function () {
     return (
       924
-    )
+    );
   });
   main.variable(observer('format')).define('format', ['d3'], function (d3) {
     return (
       d3.format(',d')
-    )
+    );
   });
   main.variable(observer('colors')).define('colors', function () {
     return (
@@ -250,21 +248,21 @@ export function define(runtime, observer) {
         };
         return colors[name];
       }
-    )
+    );
   });
   main.variable(observer('color')).define('color', ['d3', 'treemap', 'data'], function (d3, treemap, data) {
     return (
       d3.scaleOrdinal()
         .domain(treemap(data).leaves().map(d => {
-          return d.parent.data.name
+          return d.parent.data.name;
         }))
         .range(d3.schemeCategory10)
-    )
+    );
   });
   main.variable(observer('d3')).define('d3', ['require'], function (require) {
     return (
       require('d3@6')
-    )
+    );
   });
   return main;
 }

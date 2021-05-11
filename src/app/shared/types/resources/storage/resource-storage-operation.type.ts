@@ -1,13 +1,15 @@
-import { ResourceStorageOperationUsageEntry } from './resource-storage-operation-usage-entry.type';
+import { ResourceStorageQueryDetails } from './resource-storage-operation-usage-entry.type';
 
-export class ResourceStorageOperation {
-  oneToTenUs: ResourceStorageOperationUsageEntry;
-  tenToOneHundredUs: ResourceStorageOperationUsageEntry;
-  oneHundredUsToOneMs: ResourceStorageOperationUsageEntry;
-  oneToTenMs: ResourceStorageOperationUsageEntry;
-  tenToOneHundredMs: ResourceStorageOperationUsageEntry;
-  oneHundredMsToOneS: ResourceStorageOperationUsageEntry;
-  oneToTenS: ResourceStorageOperationUsageEntry;
-  tenToOneHundredS: ResourceStorageOperationUsageEntry;
-  oneHundredS: ResourceStorageOperationUsageEntry;
+export class ResourceStorageQuery {
+  totalTime: number;
+  count: number;
+  oneToTenUs: ResourceStorageQueryDetails;
+  tenToOneHundredUs: ResourceStorageQueryDetails;
+  oneHundredUsToOneMs: ResourceStorageQueryDetails;
+  oneToTenMs: ResourceStorageQueryDetails;
+  tenToOneHundredMs: ResourceStorageQueryDetails;
+  oneHundredMsToOneS: ResourceStorageQueryDetails;
+  oneToTenS: ResourceStorageQueryDetails;
+  tenToOneHundredS: ResourceStorageQueryDetails;
+  oneHundredS: ResourceStorageQueryDetails;
 }

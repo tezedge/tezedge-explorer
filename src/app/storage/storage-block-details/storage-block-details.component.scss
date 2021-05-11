@@ -23,7 +23,11 @@
         text-align: left;
         white-space: nowrap;
         padding-bottom: 5px;
-        padding-right: 10px;
+        padding-right: 8px;
+
+        &:not(:first-child) {
+          text-align: right;
+        }
 
         &:first-child {
           padding-right: 15px;
@@ -52,6 +56,7 @@
           padding: 5px 8px 5px 0;
 
           &:not(:first-child) {
+            text-align: right;
             padding-top: 8px;
             color: rgba(255, 255, 255, 0.4);
           }

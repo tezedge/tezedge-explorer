@@ -1,11 +1,13 @@
-import { ResourceStorageOperation } from './resource-storage-operation.type';
+import { ResourceStorageQuery } from './resource-storage-operation.type';
 
 export class StorageResourceOperationContext {
   root: string;
-  mem: ResourceStorageOperation;
-  find: ResourceStorageOperation;
-  findTree: ResourceStorageOperation;
-  add: ResourceStorageOperation;
-  addTree: ResourceStorageOperation;
-  remove: ResourceStorageOperation;
+  totalTime: number;
+  count: number;
+  mem: ResourceStorageQuery;
+  find: ResourceStorageQuery;
+  findTree: ResourceStorageQuery;
+  add: ResourceStorageQuery;
+  addTree: ResourceStorageQuery;
+  remove: ResourceStorageQuery;
 }

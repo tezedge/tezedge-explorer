@@ -3,12 +3,41 @@
      fxLayoutAlign="start stretch"
      fxLayoutGap="10px"
      *ngIf="storageStats$ | async as storageStats">
+
   <div class="operation"
-       *ngFor="let operation of storageStats.operationsContext"
        fxLayout="column"
        fxLayoutAlign="start stretch">
-    <div class="text-uppercase"
-         fxFlex="30px">{{ operation.root | replaceCharacter: '_': ' '}}</div>
+    <div fxFlex="grow">
+      <div class="graph-list"
+           fxLayout="row"
+           fxLayoutAlign="space-between">
+        <app-resources-storage-mini-graph #miniGraph [operationName]="'COMMIT'"
+                                          [graphData]="storageStats.commitContext"
+                                          [isMainGraph]="true"></app-resources-storage-mini-graph>
+        <app-resources-storage-mini-graph [operationName]="'CHECKOUT'"
+                                          [graphData]="storageStats.checkoutContext"
+                                          [isMainGraph]="true"></app-resources-storage-mini-graph>
+        <ng-container *ngIf="miniGraphRef"> <!--PLACEHOLDERS FOR SIMETRICAL VIEW-->
+          <span [style.width.px]="miniGraphRef.nativeElement.offsetWidth"></span>
+          <span [style.width.px]="miniGraphRef.nativeElement.offsetWidth"></span>
+          <span [style.width.px]="miniGraphRef.nativeElement.offsetWidth"></span>
+          <span [style.width.px]="miniGraphRef.nativeElement.offsetWidth"></span>
+        </ng-container>
+      </div>
+    </div>
+  </div>
+
+  <div *ngFor="let operation of storageStats.operationsContext; let i=index"
+       class="operation"
+       fxLayout="column"
+       fxLayoutAlign="start stretch">
+    <div fxFlex="38px">
+      <span class="text-uppercase">{{ operation.root | replaceCharacter: '_': ' '}}</span>
+      <span class="total-time">
+        {{ operation.totalTime | timeTransform: false }} · {{ operation.count | thousandTransform }} <span
+        class="calls">calls</span>
+      </span>
+    </div>
     <div fxFlex="grow">
       <div class="graph-list"
            fxLayout="row"

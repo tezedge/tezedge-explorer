@@ -1,4 +1,12 @@
-import { ChangeDetectionStrategy, Component, Input, TemplateRef, ViewChild, ViewContainerRef } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  Input,
+  OnDestroy,
+  TemplateRef,
+  ViewChild,
+  ViewContainerRef
+} from '@angular/core';
 import { StorageBlockDetails } from '../../shared/types/storage/storage-block/storage-block-details.type';
 import { Overlay, OverlayRef } from '@angular/cdk/overlay';
 import { StorageBlockDetailsOperationContext } from '../../shared/types/storage/storage-block/storage-block-details-operation-context.type';
@@ -10,7 +18,7 @@ import { TemplatePortal } from '@angular/cdk/portal';
   styleUrls: ['./storage-block-details.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class StorageBlockDetailsComponent {
+export class StorageBlockDetailsComponent implements OnDestroy {
 
   @Input() block: StorageBlockDetails;
 
@@ -40,7 +48,6 @@ export class StorageBlockDetailsComponent {
           offsetY: 26
         }])
     });
-
     event.stopPropagation();
     const contextData = {
       total: row.data.totalTime,
@@ -55,5 +62,9 @@ export class StorageBlockDetailsComponent {
 
   detachTooltip(): void {
     this.overlayRef.detach();
+  }
+
+  ngOnDestroy(): void {
+    this.detachTooltip();
   }
 }

@@ -18,14 +18,20 @@
             "main": "src/main.ts",
             "polyfills": "src/polyfills.ts",
             "tsConfig": "tsconfig.app.json",
+            "stylePreprocessorOptions": {
+              "includePaths": [
+                "src/assets",
+                "src/assets/styles"
+              ]
+            },
             "allowedCommonJsDependencies": [
               "crypto-js"
             ],
             "aot": true,
             "assets": [
               "src/favicon.ico",
-              "src/assets",
-              "src/manifest.webmanifest"
+              "src/manifest.webmanifest",
+              "src/assets"
             ],
             "styles": [
               {
@@ -40,7 +46,9 @@
               }
             ],
             "extractCss": true,
-            "scripts": []
+            "scripts": [
+              "src/assets/js/treemap/index.js"
+            ]
           },
           "configurations": {
             "production": {
@@ -135,13 +143,13 @@
               "src/manifest.webmanifest"
             ],
             "styles": [
-              { 
-                "input": "src/styles.light.scss", 
+              {
+                "input": "src/styles.light.scss",
                 "bundleName": "styles.light",
                 "inject": false
               },
-              { 
-                "input": "src/styles.dark.scss", 
+              {
+                "input": "src/styles.dark.scss",
                 "bundleName": "styles.dark",
                 "inject": false
               }

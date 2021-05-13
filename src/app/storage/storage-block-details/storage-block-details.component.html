@@ -12,7 +12,8 @@
          fxLayout="row"
          fxLayoutGap="20px">
       <div>CHECKOUT</div>
-      <div><span [innerHTML]="block.checkoutContextTime | timeTransform"></span> <span class="text-gray"> Total time</span></div>
+      <div><span [innerHTML]="block.checkoutContextTime | timeTransform: true: true"></span> <span class="text-gray"> Total time</span>
+      </div>
     </div>
   </div>
 
@@ -21,6 +22,8 @@
       <thead>
       <tr>
         <th class="text-gray">CONTEXT OPERATIONS</th>
+        <th>TOTAL</th>
+        <th>ACTIONS</th>
         <th>MEM</th>
         <th>FIND</th>
         <th>FIND TREE</th>
@@ -34,12 +37,14 @@
           (mouseenter)="attachTooltip(row, $event)"
           (mouseleave)="detachTooltip()">
         <td>{{ row.data.root }}</td>
-        <td [innerHTML]="row.mem | timeTransform"></td>
-        <td [innerHTML]="row.find | timeTransform">{{ row.find }}</td>
-        <td [innerHTML]="row.findTree | timeTransform">{{ row.findTree }}</td>
-        <td [innerHTML]="row.add | timeTransform">{{ row.add }}</td>
-        <td [innerHTML]="row.addTree | timeTransform">{{ row.addTree }}</td>
-        <td [innerHTML]="row.remove | timeTransform">{{ row.remove }}</td>
+        <td [innerHTML]="row.data.totalTime | timeTransform: true: true"></td>
+        <td [innerHTML]="row.data.actionsCount"></td>
+        <td [innerHTML]="row.mem | timeTransform: true: true"></td>
+        <td [innerHTML]="row.find | timeTransform: true: true">{{ row.find }}</td>
+        <td [innerHTML]="row.findTree | timeTransform: true: true">{{ row.findTree }}</td>
+        <td [innerHTML]="row.add | timeTransform: true: true">{{ row.add }}</td>
+        <td [innerHTML]="row.addTree | timeTransform: true: true">{{ row.addTree }}</td>
+        <td [innerHTML]="row.remove | timeTransform: true: true">{{ row.remove }}</td>
       </tr>
       </tbody>
     </table>
@@ -51,7 +56,8 @@
          fxLayoutGap="20px"
          fxLayoutAlign="start center">
       <div>COMMIT</div>
-      <div><span [innerHTML]="block.commitContextTime | timeTransform"></span> <span class="text-gray"> Total time</span></div>
+      <div><span [innerHTML]="block.commitContextTime | timeTransform: true: true"></span> <span class="text-gray"> Total time</span>
+      </div>
     </div>
   </div>
 </div>
@@ -66,13 +72,13 @@
        fxLayoutGap="8px">
     <div><span class="text-white">{{ actions }}</span> Actions</div>
     <div><span class="text-white"
-               [innerHTML]="total | timeTransform"></span> Total Time
+               [innerHTML]="total | timeTransform: true: true"></span> Total Time
     </div>
     <div><span class="text-white"
-               [innerHTML]="mean | timeTransform"></span> Mean
+               [innerHTML]="mean | timeTransform: true: true"></span> Mean
     </div>
     <div><span class="text-white"
-               [innerHTML]="max | timeTransform"></span> Max
+               [innerHTML]="max | timeTransform: true: true"></span> Max
     </div>
   </div>
 </ng-template>

@@ -1,8 +1,8 @@
 @import 'assets/styles/ngx-charts';
-@import 'assets/styles/ngx-json-viewer';
 @import 'assets/styles/utilities';
 @import 'assets/styles/virtual-scroll-table';
 @import 'assets/styles/material/material-tooltip';
+@import 'assets/styles/material/material-form';
 
 html,
 body {
@@ -458,11 +458,13 @@ mat-form-field .mat-form-field-underline {
   background-color: initial !important;
 }
 
-/* change arrow color in mat select */
-mat-form-field .mat-select-arrow {
-  color: #c4cfdc !important;
+.hide-arrow .mat-select-arrow {
   /* hide arrow in mat select*/
-  border: 0px;
+  border: 0;
+}
+
+.mat-select-arrow {
+  color: #c4cfdc !important;
 }
 
 /* hide number input arrows */

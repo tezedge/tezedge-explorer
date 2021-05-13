@@ -5,14 +5,22 @@
        fxLayout="column"
        fxLayoutAlign="start stretch">
     <div class="tabs"
-         fxLayoutAlign="start center"
-         fxLayoutGap="16px">
-      <div *ngFor="let tab of tabs"
-           (click)="activeTabId = tab.id"
-           [class.selected]="activeTabId === tab.id"
-           class="tab">
-        {{ tab.title }}
+         fxLayoutAlign="space-between center">
+      <div fxLayoutAlign="start"
+           fxLayoutGap="16px">
+        <div *ngFor="let tab of tabs"
+             (click)="activeTabId = tab.id"
+             [class.selected]="activeTabId === tab.id"
+             class="tab">
+          {{ tab.title }}
+        </div>
       </div>
+      <mat-form-field *ngIf="activeTabId === 2" class="combo-box">
+        <mat-select [value]="'rust'" panelClass="resources-select" disableOptionCentering>
+          <mat-option value="rust">Rust</mat-option>
+          <mat-option value="irmin">Irmin</mat-option>
+        </mat-select>
+      </mat-form-field>
     </div>
     <div *ngIf="activeTabId === 1"
          fxFlex="grow"
@@ -84,7 +92,7 @@
       </div>
     </div>
     <app-resources-storage *ngIf="activeTabId === 2"></app-resources-storage>
-    <app-resources-memory *ngIf="activeTabId === 3"></app-resources-memory>
+    <app-memory-resources *ngIf="activeTabId === 3"></app-memory-resources>
 
   </div>
 </div>

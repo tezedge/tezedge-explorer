@@ -1,4 +1,4 @@
-export class ResourceStorageOperationUsageEntry {
+export class ResourceStorageQueryDetails {
   count: number;
   meanTime: number;
   maxTime: number;

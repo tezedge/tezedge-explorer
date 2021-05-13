@@ -1,4 +1,4 @@
-export class MemoryResource {
+export class SystemMemoryResource {
   node: MemoryResourceUsage;
   protocolRunners: MemoryResourceUsage;
   validators: MemoryResourceUsage;

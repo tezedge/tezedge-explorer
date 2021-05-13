@@ -86,7 +86,7 @@ export class ResourcesComponent implements OnInit, OnDestroy {
   readonly tabs = [
     { title: 'System overview', id: 1 },
     { title: 'Storage', id: 2 },
-    // { title: 'Memory', id: 3 },
+    { title: 'Memory', id: 3 },
   ];
   activeTabId: number = 1;
 
@@ -130,7 +130,6 @@ export class ResourcesComponent implements OnInit, OnDestroy {
   }
 
   private createChartData(resources: Array<Resource>): ChartData {
-    resources = resources.slice(0,150);
     this.resourcesSummary = this.createSummaryBlocks(resources);
 
     const chartData = new ChartData();

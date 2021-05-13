@@ -1,8 +1,16 @@
-import { ChangeDetectionStrategy, Component, Input, OnInit, TemplateRef, ViewChild, ViewContainerRef } from '@angular/core';
-import { ResourceStorageOperation } from '../../shared/types/resources/storage/resource-storage-operation.type';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  Input,
+  OnInit,
+  TemplateRef,
+  ViewChild,
+  ViewContainerRef
+} from '@angular/core';
+import { ResourceStorageQuery } from '../../shared/types/resources/storage/resource-storage-operation.type';
 import { Overlay, OverlayRef } from '@angular/cdk/overlay';
 import { TemplatePortal } from '@angular/cdk/portal';
-import { ResourceStorageOperationUsageEntry } from '../../shared/types/resources/storage/resource-storage-operation-usage-entry.type';
+import { ResourceStorageQueryDetails } from '../../shared/types/resources/storage/resource-storage-operation-usage-entry.type';
 
 const RANGES = [
   '1μs - 10μs',
@@ -24,11 +32,11 @@ const RANGES = [
 })
 export class ResourcesStorageMiniGraphComponent implements OnInit {
 
-  @Input() graphData: ResourceStorageOperation;
+  @Input() graphData: ResourceStorageQuery;
   @Input() operationName: string;
   @Input() isMainGraph: boolean;
 
-  columns: Array<{ squareCount: number } & { [p in keyof ResourceStorageOperationUsageEntry]: number; }>;
+  columns: Array<{ squareCount: number } & { [p in keyof ResourceStorageQueryDetails]: number; }>;
 
   @ViewChild('tooltipTemplate') private tooltipTemplate: TemplateRef<any>;
 
@@ -42,22 +50,20 @@ export class ResourcesStorageMiniGraphComponent implements OnInit {
   }
 
   private buildTimeline(): void {
-    Object
-      .keys(this.graphData)
-      .filter(key => this.graphData[key] === 0)
-      .forEach(key => this.graphData[key] = '');
-
     this.columns = [];
 
-    Object.keys(this.graphData).forEach((key: string, index: number) => {
-      this.columns[index] = {
-        ...this.graphData[key],
-        squareCount: ResourcesStorageMiniGraphComponent.getSquareCount(this.graphData[key].totalTime)
-      };
-    });
+    Object
+      .keys(this.graphData)
+      .filter(key => key !== 'totalTime' && key !== 'calls')
+      .forEach((key: string, index: number) => {
+        this.columns[index] = {
+          ...this.graphData[key],
+          squareCount: ResourcesStorageMiniGraphComponent.getSquareCount(this.graphData[key].totalTime)
+        };
+      });
   }
 
-  openPersonDetailsOverlay(column: ResourceStorageOperationUsageEntry, index: number, event: MouseEvent): void {
+  openPersonDetailsOverlay(column: ResourceStorageQueryDetails, index: number, event: MouseEvent): void {
     if (this.overlayRef && this.overlayRef.hasAttached()) {
       this.overlayRef.detach();
     }

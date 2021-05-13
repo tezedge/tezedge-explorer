@@ -20,42 +20,42 @@ export class StorageResourceService {
   }
 
   private mapStorageResourcesResponse(response: StorageResourcesStats): StorageResourcesStats {
-    response.operationsContext.forEach(operation => {
-
-      Object
-        .keys(operation)
-        .filter(key => key !== 'totalTime' && key !== 'root' && key !== 'count')
-        .forEach((key: string) => {
-          const objectKeys = Object
-            .keys(operation[key])
-            .filter(key2 => key2 !== 'totalTime' && key !== 'count');
-
-          operation[key].totalTime = objectKeys.reduce((sum: number, key2: string) => sum + operation[key][key2].totalTime, 0);
-          operation[key].count = objectKeys.reduce((sum: number, key2: string) => sum + operation[key][key2].count, 0);
-        });
-
-      const objKeys = Object
-        .keys(operation)
-        .filter(key => key !== 'totalTime' && key !== 'root' && key !== 'count');
-
-      operation.totalTime = objKeys.reduce((sum: number, key: string) => sum + operation[key].totalTime, 0);
-      operation.count = objKeys.reduce((sum: number, key: string) => sum + operation[key].count, 0);
-
-    });
-
-    const commitKeys = Object
-      .keys(response.commitContext)
-      .filter(key => key !== 'totalTime' && key !== 'root' && key !== 'count');
-
-    response.commitContext.totalTime = commitKeys.reduce((sum: number, key: string) => sum + response.commitContext[key].totalTime, 0);
-    response.commitContext.count = commitKeys.reduce((sum: number, key: string) => sum + response.commitContext[key].count, 0);
-
-    const checkoutKeys = Object
-      .keys(response.checkoutContext)
-      .filter(key => key !== 'totalTime' && key !== 'root' && key !== 'count');
-
-    response.checkoutContext.totalTime = checkoutKeys.reduce((sum: number, key: string) => sum + response.checkoutContext[key].totalTime, 0);
-    response.checkoutContext.count = checkoutKeys.reduce((sum: number, key: string) => sum + response.checkoutContext[key].count, 0);
+    // response.operationsContext.forEach(operation => {
+    //
+    //   Object
+    //     .keys(operation)
+    //     .filter(key => key !== 'totalTime' && key !== 'root' && key !== 'count')
+    //     .forEach((key: string) => {
+    //       const objectKeys = Object
+    //         .keys(operation[key])
+    //         .filter(key2 => key2 !== 'totalTime' && key !== 'count');
+    //
+    //       operation[key].totalTime = objectKeys.reduce((sum: number, key2: string) => sum + operation[key][key2].totalTime, 0);
+    //       operation[key].count = objectKeys.reduce((sum: number, key2: string) => sum + operation[key][key2].count, 0);
+    //     });
+    //
+    //   const objKeys = Object
+    //     .keys(operation)
+    //     .filter(key => key !== 'totalTime' && key !== 'root' && key !== 'count');
+    //
+    //   operation.totalTime = objKeys.reduce((sum: number, key: string) => sum + operation[key].totalTime, 0);
+    //   operation.count = objKeys.reduce((sum: number, key: string) => sum + operation[key].count, 0);
+    //
+    // });
+    //
+    // const commitKeys = Object
+    //   .keys(response.commitContext)
+    //   .filter(key => key !== 'totalTime' && key !== 'root' && key !== 'count');
+    //
+    // response.commitContext.totalTime = commitKeys.reduce((sum: number, key: string) => sum + response.commitContext[key].totalTime, 0);
+    // response.commitContext.count = commitKeys.reduce((sum: number, key: string) => sum + response.commitContext[key].count, 0);
+    //
+    // const checkoutKeys = Object
+    //   .keys(response.checkoutContext)
+    //   .filter(key => key !== 'totalTime' && key !== 'root' && key !== 'count');
+    //
+    // response.checkoutContext.totalTime = checkoutKeys.reduce((sum: number, key: string) => sum + response.checkoutContext[key].totalTime, 0);
+    // response.checkoutContext.count = checkoutKeys.reduce((sum: number, key: string) => sum + response.checkoutContext[key].count, 0);
 
     return response;
   }

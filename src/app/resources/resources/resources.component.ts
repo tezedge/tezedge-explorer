@@ -1,12 +1,14 @@
-import { ChangeDetectionStrategy, Component, NgZone, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, NgZone, OnDestroy, OnInit } from '@angular/core';
 import { select, Store } from '@ngrx/store';
 import { Resource } from '../../shared/types/resources/resource.type';
 import { Observable } from 'rxjs';
 import { ResourcesActionTypes } from './resources.actions';
-import { filter, map, skip } from 'rxjs/operators';
+import { filter, map, skip, tap } from 'rxjs/operators';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { BreakpointObserver } from '@angular/cdk/layout';
 import { State } from '../../app.reducers';
+import { SettingsNode } from '../../shared/types/settings-node/settings-node.type';
+import { SettingsNodeApi } from '../../shared/types/settings-node/settings-node-api.type';
 
 
 class ChartData {
@@ -75,28 +77,29 @@ export class ResourcesComponent implements OnInit, OnDestroy {
   chartData$: Observable<ChartData>;
 
   readonly colorScheme = COLOR_SCHEME;
-  readonly yAxisPercentageConversion = (value) => `${value}%`;
+  readonly yAxisPercentageConversion = (value) => `${ value }%`;
   readonly yAxisGigaBytesConversion = (value) => (value < 1 ? value : (value + '.00')) + ' GB';
-  readonly yAxisMegaBytesConversion = (value) => `${value} MB`;
+  readonly yAxisMegaBytesConversion = (value) => `${ value } MB`;
 
   resourcesSummary: ResourcesSummary;
   activeSummary: ResourceType = 'disk';
 
   private isSmallDevice: boolean;
-  readonly tabs = [
+  tabs = [
     { title: 'System overview', id: 1 },
     { title: 'Storage', id: 2 },
-    { title: 'Memory', id: 3 },
   ];
   activeTabId: number = 1;
 
   constructor(private store: Store<State>,
               private zone: NgZone,
+              private cdRef: ChangeDetectorRef,
               private breakpointObserver: BreakpointObserver) {}
 
   ngOnInit(): void {
     this.handleSmallDevices();
     this.listenToResourcesChange();
+    this.listenToNodeChange();
     this.getResources();
   }
 
@@ -107,6 +110,22 @@ export class ResourcesComponent implements OnInit, OnDestroy {
       filter((resources: Resource[]) => resources.length > 0),
       map((resources: Resource[]) => {
         return this.zone.runOutsideAngular(() => this.createChartData(resources));
+      })
+    );
+  }
+
+  private listenToNodeChange(): void {
+    this.store.pipe(
+      untilDestroyed(this),
+      select(state => state.settingsNode.activeNode),
+      tap((settingsNode: SettingsNodeApi) => {
+        if (settingsNode.id === 'ocaml' && !this.tabs.find(tab => tab.title === 'Memory')) {
+          this.tabs.push({ title: 'Memory', id: 3 });
+        } else if (settingsNode.id !== 'ocaml' && this.tabs.find(tab => tab.title === 'Memory')) {
+          this.activeTabId = this.activeTabId === 3 ? 1 : this.activeTabId;
+          this.tabs.splice(this.tabs.findIndex(tab => tab.title === 'Memory'), 1);
+        }
+        this.cdRef.detectChanges();
       })
     );
   }

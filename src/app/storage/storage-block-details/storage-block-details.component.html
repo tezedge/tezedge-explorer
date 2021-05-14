@@ -7,7 +7,19 @@
     <div class="actions-count">{{ block.actionsCount }} actions</div>
   </div>
   <div class="storage-details-block">
-    <div class="storage-block-header text-gray">CONTEXT CHECKOUT</div>
+    <div class="storage-block-header text-gray"
+         fxLayoutAlign="space-between center">
+      CONTEXT CHECKOUT
+      <mat-form-field class="combo-box">
+        <mat-select [value]="'tezedge'"
+                    panelClass="storage-details-select"
+                    disableOptionCentering
+                    (selectionChange)="getBlockDetails($event)">
+          <mat-option value="tezedge">TezEdge</mat-option>
+          <mat-option value="irmin">Irmin</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
     <div fxLayoutAlign="start center"
          fxLayout="row"
          fxLayoutGap="20px">
@@ -15,42 +27,40 @@
       <div><span [innerHTML]="block.checkoutContextTime | timeTransform: true: true"></span> <span class="text-gray"> Total time</span>
       </div>
     </div>
-  </div>
 
-  <div class="storage-details-block table-block">
-    <table class="storage-details-table">
-      <thead>
-      <tr>
-        <th class="text-gray">CONTEXT OPERATIONS</th>
-        <th>TOTAL</th>
-        <th>ACTIONS</th>
-        <th>MEM</th>
-        <th>FIND</th>
-        <th>FIND TREE</th>
-        <th>ADD</th>
-        <th>ADD TREE</th>
-        <th>REMOVE</th>
-      </tr>
-      </thead>
-      <tbody>
-      <tr *ngFor="let row of block.operationsContext; let i=index"
-          (mouseenter)="attachTooltip(row, $event)"
-          (mouseleave)="detachTooltip()">
-        <td>{{ row.data.root }}</td>
-        <td [innerHTML]="row.data.totalTime | timeTransform: true: true"></td>
-        <td [innerHTML]="row.data.actionsCount"></td>
-        <td [innerHTML]="row.mem | timeTransform: true: true"></td>
-        <td [innerHTML]="row.find | timeTransform: true: true">{{ row.find }}</td>
-        <td [innerHTML]="row.findTree | timeTransform: true: true">{{ row.findTree }}</td>
-        <td [innerHTML]="row.add | timeTransform: true: true">{{ row.add }}</td>
-        <td [innerHTML]="row.addTree | timeTransform: true: true">{{ row.addTree }}</td>
-        <td [innerHTML]="row.remove | timeTransform: true: true">{{ row.remove }}</td>
-      </tr>
-      </tbody>
-    </table>
-  </div>
+    <div class="overflow-x-auto">
+      <table class="storage-details-table">
+        <thead>
+        <tr>
+          <th class="text-gray">CONTEXT OPERATIONS</th>
+          <th>TOTAL</th>
+          <th>ACTIONS</th>
+          <th>MEM</th>
+          <th>FIND</th>
+          <th>FIND TREE</th>
+          <th>ADD</th>
+          <th>ADD TREE</th>
+          <th>REMOVE</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let row of block.operationsContext; let i=index"
+            (mouseenter)="attachTooltip(row, $event)"
+            (mouseleave)="detachTooltip()">
+          <td>{{ row.data.root }}</td>
+          <td [innerHTML]="row.data.totalTime | timeTransform: true: true"></td>
+          <td [innerHTML]="row.data.actionsCount"></td>
+          <td [innerHTML]="row.mem | timeTransform: true: true"></td>
+          <td [innerHTML]="row.find | timeTransform: true: true">{{ row.find }}</td>
+          <td [innerHTML]="row.findTree | timeTransform: true: true">{{ row.findTree }}</td>
+          <td [innerHTML]="row.add | timeTransform: true: true">{{ row.add }}</td>
+          <td [innerHTML]="row.addTree | timeTransform: true: true">{{ row.addTree }}</td>
+          <td [innerHTML]="row.remove | timeTransform: true: true">{{ row.remove }}</td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
 
-  <div class="storage-details-block">
     <div class="storage-block-header text-gray">CONTEXT COMMIT</div>
     <div fxLayout="row"
          fxLayoutGap="20px"

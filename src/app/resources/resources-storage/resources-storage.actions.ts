@@ -10,6 +10,8 @@ export enum StorageResourcesActionTypes {
 
 export class LoadStorageResources implements Action {
   readonly type = StorageResourcesActionTypes.LoadResources;
+
+  constructor(public payload: string) { }
 }
 
 export class StorageResourcesLoaded implements Action {

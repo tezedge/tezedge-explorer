@@ -12,6 +12,11 @@ $border-color: rgba(255, 255, 255, 0.1);
       padding-top: 10px;
     }
 
+    .slice-header {
+      border-bottom: 1px solid $border-color;
+      margin-bottom: 10px;
+    }
+
     .text-uppercase {
       color: #fff;
       font-size: 12px;
@@ -25,7 +30,7 @@ $border-color: rgba(255, 255, 255, 0.1);
       font-size: 12px;
       color: rgba(255, 255, 255, 0.7);
 
-      .calls {
+      .grayish {
         color: rgba(255, 255, 255, 0.4);
       }
     }

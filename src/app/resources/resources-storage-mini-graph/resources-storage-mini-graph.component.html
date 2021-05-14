@@ -9,7 +9,7 @@
     <span class="operation-name">
       {{ operationName }}
       <span class="total-time">
-        {{ graphData.totalTime | timeTransform: false }} · {{ graphData.count | thousandTransform }} <span class="calls">calls</span>
+        {{ graphData.actionsCount | thousandTransform }} <span class="calls">calls</span> · {{ graphData.totalTime | timeTransform: false: false: true }}
       </span>
     </span>
     <div fxLayoutAlign="start center" *ngIf="isMainGraph">

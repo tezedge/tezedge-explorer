@@ -10,16 +10,16 @@ const NANOSECOND_FACTOR = 1000000000;
 })
 export class TimeTransformPipe implements PipeTransform {
 
-  transform(value: number, redText: boolean = true, onlyMs: boolean = false): string {
+  transform(value: number, redText: boolean = true, onlyMs: boolean = false, skipSpace: boolean = false): string {
     if (!value) {
-      return '0 ms';
+      return '0' + (skipSpace ? '' : ' ') + 'ms';
     }
 
     let newValue;
     if (onlyMs) {
-      newValue = TimeTransformPipe.format(value * MILLISECOND_FACTOR) + ' ms';
+      newValue = TimeTransformPipe.format(value * MILLISECOND_FACTOR) + (skipSpace ? '' : ' ') + 'ms';
     } else {
-      newValue = TimeTransformPipe.getClosestMeasurementUnit(value);
+      newValue = TimeTransformPipe.getClosestMeasurementUnit(value, skipSpace);
     }
 
     if (value >= 0.001 && redText) {
@@ -29,15 +29,15 @@ export class TimeTransformPipe implements PipeTransform {
     return newValue;
   }
 
-  private static getClosestMeasurementUnit(value: number): string {
+  private static getClosestMeasurementUnit(value: number, skipSpace: boolean): string {
     if (value > 1) {
-      return this.format(value) + ' s';
+      return this.format(value) + (skipSpace ? '' : ' ') + 's';
     } else if (value > 0.001) {
-      return this.format(value * MILLISECOND_FACTOR) + ' ms';
+      return this.format(value * MILLISECOND_FACTOR) + (skipSpace ? '' : ' ') + 'ms';
     } else if (value > 0.000001) {
-      return this.format(value * MICROSECOND_FACTOR) + ' μs';
+      return this.format(value * MICROSECOND_FACTOR) + (skipSpace ? '' : ' ') + 'μs';
     } else {
-      return this.format(value * NANOSECOND_FACTOR) + ' ns';
+      return this.format(value * NANOSECOND_FACTOR) + (skipSpace ? '' : ' ') + 'ns';
     }
   }
 

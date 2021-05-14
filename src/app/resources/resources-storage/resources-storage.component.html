@@ -11,13 +11,14 @@
       <div class="graph-list"
            fxLayout="row"
            fxLayoutAlign="space-between">
-        <app-resources-storage-mini-graph #miniGraph [operationName]="'COMMIT'"
+        <app-resources-storage-mini-graph #miniGraph
+                                          [operationName]="'COMMIT'"
                                           [graphData]="storageStats.commitContext"
                                           [isMainGraph]="true"></app-resources-storage-mini-graph>
         <app-resources-storage-mini-graph [operationName]="'CHECKOUT'"
                                           [graphData]="storageStats.checkoutContext"
                                           [isMainGraph]="true"></app-resources-storage-mini-graph>
-        <ng-container *ngIf="miniGraphRef"> <!--PLACEHOLDERS FOR SIMETRICAL VIEW-->
+        <ng-container *ngIf="miniGraphRef"> <!--PLACEHOLDERS FOR SYMMETRICAL VIEW-->
           <span [style.width.px]="miniGraphRef.nativeElement.offsetWidth"></span>
           <span [style.width.px]="miniGraphRef.nativeElement.offsetWidth"></span>
           <span [style.width.px]="miniGraphRef.nativeElement.offsetWidth"></span>
@@ -31,11 +32,14 @@
        class="operation"
        fxLayout="column"
        fxLayoutAlign="start stretch">
-    <div fxFlex="38px">
+    <div fxFlex="28px" class="slice-header">
       <span class="text-uppercase">{{ operation.root | replaceCharacter: '_': ' '}}</span>
       <span class="total-time">
-        {{ operation.totalTime | timeTransform: false }} · {{ operation.count | thousandTransform }} <span
-        class="calls">calls</span>
+        {{ operation.actionsCount | thousandTransform }}<span class="grayish"> calls</span>
+        &nbsp;·&nbsp;
+        {{ operation.totalTime | timeTransform: false: false: true }}<span class="grayish"> total duration </span>
+        <span class="grayish">(</span>{{ operation.totalTimeRead | timeTransform: false: false: true }}<span class="grayish"> read, </span>
+        {{ operation.totalTimeWrite | timeTransform: false: false: true }}<span class="grayish"> write)</span>
       </span>
     </div>
     <div fxFlex="grow">

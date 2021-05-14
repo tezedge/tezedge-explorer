@@ -88,6 +88,7 @@ export class ResourcesComponent implements OnInit, OnDestroy {
   tabs = [
     { title: 'System overview', id: 1 },
     { title: 'Storage', id: 2 },
+    // { title: 'Memory', id: 3 }
   ];
   activeTabId: number = 1;
 

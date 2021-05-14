@@ -18,6 +18,7 @@ import { MemoryResourcesActionTypes } from './memory-resources.actions';
 
 // @ts-ignore
 import * as tree from './small-tree.json';
+import { filter } from 'rxjs/operators';
 
 @UntilDestroy()
 @Component({
@@ -43,7 +44,8 @@ export class MemoryResourcesComponent implements AfterViewInit, OnInit, OnDestro
   ngAfterViewInit(): void {
     this.store.pipe(
       untilDestroyed(this),
-      select(state => state.resources.memoryResources)
+      select(state => state.resources.memoryResources),
+      filter(Boolean)
     ).subscribe(resources => {
       this.zone.runOutsideAngular(() => {
         const runtime = new Runtime();
@@ -69,7 +71,7 @@ export class MemoryResourcesComponent implements AfterViewInit, OnInit, OnDestro
   }
 
   private findNodeByName(name: string, node: MemoryResource): MemoryResource {
-    if (node.name === name) {
+    if (node.name.functionName === name) {
       return node;
     } else if (node.children) {
       let found = null;

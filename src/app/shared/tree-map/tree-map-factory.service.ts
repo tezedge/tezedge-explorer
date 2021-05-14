@@ -69,6 +69,8 @@ export class TreeMapFactoryService {
                   d = d.parent;
                 }
                 return color(d.data.name);
+                // const opaqueColor = d.data.color.replace(')', ', 0.6)');
+                // return color(opaqueColor);
               })
               .attr('fill-opacity', d => d.depth <= 1 ? 1 : myScale(d.value))
               // .attr("fill-opacity", d => {
@@ -76,6 +78,12 @@ export class TreeMapFactoryService {
               //  let max = d3Library.max(root.leaves().map(leaf => leaf.data.value))
               //  return (d.value-min)/(max-min)})
               .attr('stroke', '#fff')
+              // .attr('stroke', d => {
+              //   while (d.depth > 1) {
+              //     d = d.parent;
+              //   }
+              //   return color(d.data.color);
+              // })
               .on('mouseover', (d, dataSet) => {
                 tooltip
                   .html('Value: ' + dataSet.value + '<br/>' + 'Name: ' + name(dataSet))

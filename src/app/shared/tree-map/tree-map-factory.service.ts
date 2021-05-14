@@ -68,22 +68,20 @@ export class TreeMapFactoryService {
                 while (d.depth > 1) {
                   d = d.parent;
                 }
-                return color(d.data.name);
-                // const opaqueColor = d.data.color.replace(')', ', 0.6)');
-                // return color(opaqueColor);
+                return d.data.color;
               })
-              .attr('fill-opacity', d => d.depth <= 1 ? 1 : myScale(d.value))
+              .attr('fill-opacity', d => d.depth <= 1 ? 0.6 : 0.6)
               // .attr("fill-opacity", d => {
               //  let min = d3Library.min(root.leaves().map(leaf => leaf.data.value))
               //  let max = d3Library.max(root.leaves().map(leaf => leaf.data.value))
               //  return (d.value-min)/(max-min)})
-              .attr('stroke', '#fff')
-              // .attr('stroke', d => {
-              //   while (d.depth > 1) {
-              //     d = d.parent;
-              //   }
-              //   return color(d.data.color);
-              // })
+              // .attr('stroke', '#fff')
+              .attr('stroke', d => {
+                while (d.depth > 1) {
+                  d = d.parent;
+                }
+                return d.data.color;
+              })
               .on('mouseover', (d, dataSet) => {
                 tooltip
                   .html('Value: ' + dataSet.value + '<br/>' + 'Name: ' + name(dataSet))
@@ -114,10 +112,15 @@ export class TreeMapFactoryService {
               .attr('font-weight', d => d === root ? 'bold' : null)
               .attr('pointer-events', 'none')
               .selectAll('tspan')
-              .data(d => (d === root ? name(d) : d.data.name).split(/(?=[A-Z][^A-Z])/g).concat(format(d.value)))
+              .data(d =>
+                (d === root ? name(d) : (d.data.name.functionName || d.data.name.virtualAddress))
+                  .split(
+                    // /(?=[A-Z][^A-Z])/g
+                  ).concat(format(d.value))
+              )
               .join('tspan')
               .attr('x', 3)
-              .attr('y', (d, i, nodes) => `${ (i === nodes.length - 1 ? 1 : 0) * 0.3 + 1.1 + i * 0.9 }em`)
+              .attr('y', (d, i, nodes) => `${(i === nodes.length - 1 ? 1 : 0) * 0.3 + 1.1 + i * 0.9}em`)
               .attr('fill', '#fff')
               .attr('fill-opacity', (d, i, nodes) => i === nodes.length - 1 ? 0.7 : null)
               .attr('font-weight', (d, i, nodes) => i === nodes.length - 1 ? 'normal' : null)
@@ -128,7 +131,7 @@ export class TreeMapFactoryService {
 
           function position(groupParam, root) {
             groupParam.selectAll('g')
-              .attr('transform', d => d === root ? `translate(0,-30)` : `translate(${ x(d.x0) },${ y(d.y0) })`)
+              .attr('transform', d => d === root ? `translate(0,-30)` : `translate(${x(d.x0)},${y(d.y0)})`)
               .select('rect')
               .attr('width', d => d === root ? width : x(d.x1) - x(d.x0))
               .attr('height', d => d === root ? 30 : y(d.y1) - y(d.y0));
@@ -220,7 +223,7 @@ export class TreeMapFactoryService {
         .text('a simple tooltip');
     });
     main.variable(observer('name')).define('name', () => {
-      return d => d.ancestors().reverse().map(a => a.data.name).join('/');
+      return d => d.ancestors().reverse().map(a => a.data.name).map(a => a.functionName || a.virtualAddress).join('/');
     });
     main.variable(observer('width')).define('width', () => {
       return runtime.setup.containerRect.width;
@@ -253,7 +256,7 @@ export class TreeMapFactoryService {
     });
     main.variable(observer('color')).define('color', ['d3', 'treemap', 'data'], (d3Library, treemap, data) => {
       return d3Library.scaleOrdinal()
-        .domain(treemap(data).leaves().map(d => d.parent.data.name))
+        .domain(treemap(data).leaves().map(d => d.parent.data.name.functionName || d.parent.data.name.virtualAddress))
         .range(d3Library.schemeCategory10);
     });
     main.variable(observer('d3')).define('d3', ['require'], (require) => require('d3@6'));

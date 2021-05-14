@@ -2,7 +2,7 @@ import { ResourceStorageQueryDetails } from './resource-storage-operation-usage-
 
 export class ResourceStorageQuery {
   totalTime: number;
-  count: number;
+  actionsCount: number;
   oneToTenUs: ResourceStorageQueryDetails;
   tenToOneHundredUs: ResourceStorageQueryDetails;
   oneHundredUsToOneMs: ResourceStorageQueryDetails;

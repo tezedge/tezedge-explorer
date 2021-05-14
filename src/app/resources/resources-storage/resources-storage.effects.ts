@@ -18,7 +18,7 @@ export class StorageResourcesEffects {
     ofType(StorageResourcesActionTypes.LoadResources),
     withLatestFrom(this.store, (action: any, state: ObservedValueOf<Store<State>>) => ({ action, state })),
     switchMap(({ action, state }) =>
-      this.storageResourcesService.getStorageResources(state.settingsNode.activeNode.http)
+      this.storageResourcesService.getStorageResources(state.settingsNode.activeNode.http, action.payload)
         .pipe(
           map((stats: StorageResourcesStats) => ({ type: StorageResourcesActionTypes.ResourcesLoadSuccess, payload: stats })),
           catchError(error => of({ type: StorageResourcesActionTypes.ResourcesLoadError, payload: error }))

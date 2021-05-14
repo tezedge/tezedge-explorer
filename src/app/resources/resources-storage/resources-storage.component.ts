@@ -5,7 +5,6 @@ import { StorageResourcesActionTypes } from './resources-storage.actions';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { StorageResourcesStats } from '../../shared/types/resources/storage/storage-resources-stats.type';
 import { Observable } from 'rxjs';
-import { tap } from 'rxjs/operators';
 
 @UntilDestroy()
 @Component({
@@ -32,11 +31,10 @@ export class ResourcesStorageComponent implements OnInit {
   ngOnInit(): void {
     this.storageStats$ = this.store.pipe(
       untilDestroyed(this),
-      tap(s => console.log(s.resources.storageResources)),
       select(state => state.resources.storageResources),
     );
 
-    this.store.dispatch({ type: StorageResourcesActionTypes.LoadResources });
+    this.store.dispatch({ type: StorageResourcesActionTypes.LoadResources, payload: 'tezedge' });
   }
 
 }

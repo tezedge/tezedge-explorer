@@ -33,7 +33,7 @@ export class StorageBlockEffects {
     ofType('STORAGE_BLOCK_FETCH'),
 
     // merge state
-    withLatestFrom(this.store, (action: any, state) => ({ action, state })),
+    withLatestFrom(this.store, (action: any, state: ObservedValueOf<Store<State>>) => ({ action, state })),
     switchMap(({ action, state }) => {
       return this.http.get(setUrl(action, state));
     }),
@@ -55,7 +55,7 @@ export class StorageBlockEffects {
     ofType('STORAGE_BLOCK_START'),
 
     // merge state
-    withLatestFrom(this.store, (action: any, state) => ({ action, state })),
+    withLatestFrom(this.store, (action: any, state: ObservedValueOf<Store<State>>) => ({ action, state })),
 
     switchMap(({ action, state }) =>
 
@@ -84,7 +84,8 @@ export class StorageBlockEffects {
         return {
           type: 'STORAGE_BLOCK_DETAILS_LOAD',
           payload: {
-            hash: entities[currentBlockIndex + action.payload.neighbourIndex].hash
+            hash: entities[currentBlockIndex + action.payload.neighbourIndex].hash,
+            context: 'tezedge'
           }
         };
       }
@@ -97,7 +98,7 @@ export class StorageBlockEffects {
   StorageBlockStopEffect$ = this.actions$.pipe(
     ofType('STORAGE_BLOCK_STOP'),
     // merge state
-    withLatestFrom(this.store, (action: any, state) => ({ action, state })),
+    withLatestFrom(this.store, (action: any, state: ObservedValueOf<Store<State>>) => ({ action, state })),
     // init app modules
     tap(({ action, state }) => {
       this.storageBlockDestroy$.next();
@@ -109,11 +110,11 @@ export class StorageBlockEffects {
     ofType('STORAGE_BLOCK_DETAILS_LOAD'),
 
     // merge state
-    withLatestFrom(this.store, (action: any, state) => ({ action, state })),
+    withLatestFrom(this.store, (action: any, state: ObservedValueOf<Store<State>>) => ({ action, state })),
     switchMap(({ action, state }) => {
       return combineLatest(
         this.http.get(setDetailsUrl(action, state)),
-        this.storageBlockService.getStorageBlockContextDetails(state.settingsNode.activeNode.http, action.payload.hash)
+        this.storageBlockService.getStorageBlockContextDetails(state.settingsNode.activeNode.http, action.payload.hash, action.payload.context)
       );
     }),
 

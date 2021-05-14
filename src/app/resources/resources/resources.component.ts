@@ -7,8 +7,9 @@ import { filter, map, skip, tap } from 'rxjs/operators';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { BreakpointObserver } from '@angular/cdk/layout';
 import { State } from '../../app.reducers';
-import { SettingsNode } from '../../shared/types/settings-node/settings-node.type';
 import { SettingsNodeApi } from '../../shared/types/settings-node/settings-node-api.type';
+import { MatSelectChange } from '@angular/material/select';
+import { StorageResourcesActionTypes } from '../resources-storage/resources-storage.actions';
 
 
 class ChartData {
@@ -77,9 +78,9 @@ export class ResourcesComponent implements OnInit, OnDestroy {
   chartData$: Observable<ChartData>;
 
   readonly colorScheme = COLOR_SCHEME;
-  readonly yAxisPercentageConversion = (value) => `${ value }%`;
+  readonly yAxisPercentageConversion = (value) => `${value}%`;
   readonly yAxisGigaBytesConversion = (value) => (value < 1 ? value : (value + '.00')) + ' GB';
-  readonly yAxisMegaBytesConversion = (value) => `${ value } MB`;
+  readonly yAxisMegaBytesConversion = (value) => `${value} MB`;
 
   resourcesSummary: ResourcesSummary;
   activeSummary: ResourceType = 'disk';
@@ -88,14 +89,14 @@ export class ResourcesComponent implements OnInit, OnDestroy {
   tabs = [
     { title: 'System overview', id: 1 },
     { title: 'Storage', id: 2 },
-    // { title: 'Memory', id: 3 }
+    { title: 'Memory', id: 3 }
   ];
-  activeTabId: number = 1;
+  activeTabId: number = 2;
 
   constructor(private store: Store<State>,
               private zone: NgZone,
               private cdRef: ChangeDetectorRef,
-              private breakpointObserver: BreakpointObserver) {}
+              private breakpointObserver: BreakpointObserver) { }
 
   ngOnInit(): void {
     this.handleSmallDevices();
@@ -133,6 +134,10 @@ export class ResourcesComponent implements OnInit, OnDestroy {
 
   toggleActiveSummary(value: ResourceType): void {
     this.activeSummary = value;
+  }
+
+  getStorageStatistics(event: MatSelectChange): void {
+    this.store.dispatch({ type: StorageResourcesActionTypes.LoadResources, payload: event.value });
   }
 
   private handleSmallDevices(): void {

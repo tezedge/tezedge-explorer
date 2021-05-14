@@ -1,16 +1,11 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  Input,
-  OnDestroy,
-  TemplateRef,
-  ViewChild,
-  ViewContainerRef
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnDestroy, TemplateRef, ViewChild, ViewContainerRef } from '@angular/core';
 import { StorageBlockDetails } from '../../shared/types/storage/storage-block/storage-block-details.type';
 import { Overlay, OverlayRef } from '@angular/cdk/overlay';
 import { StorageBlockDetailsOperationContext } from '../../shared/types/storage/storage-block/storage-block-details-operation-context.type';
 import { TemplatePortal } from '@angular/cdk/portal';
+import { MatSelectChange } from '@angular/material/select';
+import { Store } from '@ngrx/store';
+import { State } from '../../app.reducers';
 
 @Component({
   selector: 'app-storage-block-details',
@@ -21,12 +16,14 @@ import { TemplatePortal } from '@angular/cdk/portal';
 export class StorageBlockDetailsComponent implements OnDestroy {
 
   @Input() block: StorageBlockDetails;
+  @Input() blockHash: string;
 
   @ViewChild('tooltipTemplate') private tooltipTemplate: TemplateRef<any>;
 
   private overlayRef: OverlayRef;
 
-  constructor(private overlay: Overlay,
+  constructor(private store: Store<State>,
+              private overlay: Overlay,
               private viewContainerRef: ViewContainerRef) { }
 
   attachTooltip(row: StorageBlockDetailsOperationContext, event: MouseEvent): void {
@@ -66,5 +63,15 @@ export class StorageBlockDetailsComponent implements OnDestroy {
 
   ngOnDestroy(): void {
     this.detachTooltip();
+  }
+
+  getBlockDetails(event: MatSelectChange): void {
+    this.store.dispatch({
+      type: 'STORAGE_BLOCK_DETAILS_LOAD',
+      payload: {
+        hash: this.blockHash,
+        context: event.value
+      }
+    });
   }
 }

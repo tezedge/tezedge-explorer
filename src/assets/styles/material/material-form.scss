@@ -1,9 +1,31 @@
+mat-form-field .mat-select-value {
+  font-size: 12px !important;
+}
+
+.combo-box {
+  color: #fff;
+  background-color: rgba(255, 255, 255, 0.1);
+  padding: 4px 10px;
+  border-radius: 4px;
+  width: 100px;
+}
+
 .resources-select {
   margin-top: -7px;
-  width: 70px;
+  width: 90px;
+}
 
-  .mat-option {
-    height: 2em !important;
-    line-height: 2em !important;
+.storage-details-select {
+  margin-top: -7px;
+  width: 125px;
+}
+
+.mat-option {
+  height: 2em !important;
+  line-height: 2em !important;
+  background-color: #2a2b2e;
+
+  .mat-option-text {
+    font-size: 12px !important;
   }
 }

@@ -50,11 +50,12 @@ export class StorageBlockComponent implements OnInit, OnDestroy {
       });
   }
 
-  getItemDetails($event): void {
+  getItemDetails($event, context: string = 'tezedge'): void {
     this.store.dispatch({
       type: 'STORAGE_BLOCK_DETAILS_LOAD',
       payload: {
-        hash: $event?.hash
+        hash: $event?.hash,
+        context
       }
     });
   }

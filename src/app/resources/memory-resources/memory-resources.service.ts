@@ -17,36 +17,37 @@ export class MemoryResourcesService {
   }
 
   private mapMemoryResponse(response: any): MemoryResource {
-    const resource = {
-      name: 'root',
-      value: response.value,
-      children: this.build(response.frames)
-    };
     response.frames.forEach((child, i: number) => {
       let color;
       if (i % 5 === 0) {
-        color = 'rgba(191, 90, 242)';
+        color = 'rgb(191, 90, 242)';
       } else if (i % 4 === 0) {
-        color = 'rgba(255, 214, 10)';
+        color = 'rgb(255, 214, 10)';
       } else if (i % 3 === 0) {
-        color = 'rgba(94, 92, 230)';
+        color = 'rgb(94, 92, 230)';
       } else if (i % 2 === 0) {
-        color = 'rgba(50, 215, 75)';
+        color = 'rgb(50, 215, 75)';
       } else {
-        color = 'rgba(255, 45, 85)';
+        color = 'rgb(255, 45, 85)';
       }
       child.color = color;
     });
-    return resource as any;
+    const resource = {
+      name: { ...response.name, virtualAddress: 'rootAddress' },
+      value: response.value,
+      children: this.build(response.frames)
+    };
+    return resource;
   }
 
   private build(frames): MemoryResource[] {
     const children = [];
     frames.forEach(frame => {
       const items: MemoryResource = {
-        name: frame.name.virtualAddress as any,
+        name: frame.name,
         value: frame.value,
-        children: this.build(frame.frames)
+        children: this.build(frame.frames),
+        color: frame.color
       };
       children.push(items);
     });

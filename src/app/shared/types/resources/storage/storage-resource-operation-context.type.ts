@@ -2,8 +2,10 @@ import { ResourceStorageQuery } from './resource-storage-operation.type';
 
 export class StorageResourceOperationContext {
   root: string;
+  actionsCount: number;
   totalTime: number;
-  count: number;
+  totalTimeRead: number;
+  totalTimeWrite: number;
   mem: ResourceStorageQuery;
   find: ResourceStorageQuery;
   findTree: ResourceStorageQuery;

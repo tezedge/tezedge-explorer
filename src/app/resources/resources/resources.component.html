@@ -16,8 +16,8 @@
         </div>
       </div>
       <mat-form-field *ngIf="activeTabId === 2" class="combo-box">
-        <mat-select [value]="'rust'" panelClass="resources-select" disableOptionCentering>
-          <mat-option value="rust">Rust</mat-option>
+        <mat-select [value]="'tezedge'" panelClass="resources-select" disableOptionCentering (selectionChange)="getStorageStatistics($event)">
+          <mat-option value="tezedge">TezEdge</mat-option>
           <mat-option value="irmin">Irmin</mat-option>
         </mat-select>
       </mat-form-field>

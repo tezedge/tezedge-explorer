@@ -1,8 +1,11 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { MemoryResource } from '../../shared/types/resources/memory/memory-resource.type';
 import { map } from 'rxjs/operators';
+
+// @ts-ignore
+import * as tree from './tree.json';
 
 @Injectable({
   providedIn: 'root'
@@ -11,9 +14,13 @@ export class MemoryResourcesService {
 
   constructor(private http: HttpClient) { }
 
+  private serverData = (tree as any).default;
+
   getMemoryResources(api: string, threshold: number = 256): Observable<MemoryResource> {
-    return this.http.get<MemoryResource>(`${api}/v1/tree?threshold=${threshold}`)
+    return of(this.serverData)
       .pipe(map(response => this.mapMemoryResponse(response)));
+    // this.http.get<MemoryResource>(`${api}/v1/tree?threshold=${threshold}`)
+
   }
 
   private mapMemoryResponse(response: any): MemoryResource {
@@ -32,12 +39,11 @@ export class MemoryResourcesService {
       }
       child.color = color;
     });
-    const resource = {
+    return {
       name: { ...response.name, virtualAddress: 'rootAddress' },
       value: response.value,
       children: this.build(response.frames)
     };
-    return resource;
   }
 
   private build(frames): MemoryResource[] {

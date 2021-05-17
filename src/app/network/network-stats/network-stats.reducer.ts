@@ -21,7 +21,7 @@ export function reducer(state: NetworkStats = initialState, action): NetworkStat
         case 'incomingTransfer': {
             return {
                 ...state,
-                eta: Math.floor(action.payload.eta / 60) + ' m ' + Math.floor(action.payload.eta % 60) + ' s',
+                eta: getETA(action.payload.eta),
                 currentBlockCount: action.payload.currentBlockCount,
                 downloadedBlocks: action.payload.downloadedBlocks,
                 downloadRate: Math.floor(action.payload.downloadRate),
@@ -37,7 +37,6 @@ export function reducer(state: NetworkStats = initialState, action): NetworkStat
                 etaApplications:
                     Math.floor((state.currentBlockCount - state.lastAppliedBlock.level) / action.payload.currentApplicationSpeed) + ' m ',
             };
-            // action.payload.currentApplicationSpeed
         }
 
         case 'MONITORING_LOAD':
@@ -45,8 +44,8 @@ export function reducer(state: NetworkStats = initialState, action): NetworkStat
             return initialState;
 
         case 'NETWORK_STATS_LOAD_SUCCESS': {
-            const etaApplicationMinutes =
-                moment().diff(moment(action.payload.timestamp), 'minutes') / state.currentApplicationSpeed;
+            const etaApplicationSeconds =
+                moment().diff(moment(action.payload.timestamp), 'seconds') / state.currentApplicationSpeed;
 
             return {
                 ...state,
@@ -63,13 +62,28 @@ export function reducer(state: NetworkStats = initialState, action): NetworkStat
                 lastAppliedBlock: {
                     level: action.payload.level,
                 },
-                etaApplications: state.currentApplicationSpeed === 0 ? '0 m' :
-                    Math.floor(etaApplicationMinutes / 60) + ' h ' +
-                    Math.floor(etaApplicationMinutes % 60) + ' m ' ,
+                etaApplications: getETA(etaApplicationSeconds)
             };
         }
 
         default:
             return state;
     }
+}
+
+function getETA(eta: number): string {
+    const days = Math.floor(eta / 86400);
+    const hours = Math.floor((eta / 3600) % 24);
+    const minutes = Math.floor((eta / 60) % 60);
+    const seconds = Math.floor(eta % 60);
+    return numberOrSpace(days, 'd ')
+      + numberOrSpace(hours, 'h ', days > 0)
+      + numberOrSpace(minutes, 'm ', days > 0 || hours > 0)
+      + numberOrSpace(seconds, 's', days > 0 || hours > 0 || minutes > 0);
+}
+
+function numberOrSpace(value: number, mu: string, canBeZero?: boolean): string {
+    return value >= 1 || (value < 1 && canBeZero)
+      ? (value > 9 ? value + mu : `0${value}${mu}`)
+      : '    ';
 }

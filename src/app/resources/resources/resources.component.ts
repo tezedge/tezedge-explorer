@@ -3,7 +3,7 @@ import { select, Store } from '@ngrx/store';
 import { Resource } from '../../shared/types/resources/resource.type';
 import { Observable } from 'rxjs';
 import { ResourcesActionTypes } from './resources.actions';
-import { filter, map, skip, tap } from 'rxjs/operators';
+import { filter, map, skip } from 'rxjs/operators';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { BreakpointObserver } from '@angular/cdk/layout';
 import { State } from '../../app.reducers';
@@ -91,7 +91,7 @@ export class ResourcesComponent implements OnInit, OnDestroy {
     { title: 'Storage', id: 2 },
     { title: 'Memory', id: 3 }
   ];
-  activeTabId: number = 2;
+  activeTabId: number = 1;
 
   constructor(private store: Store<State>,
               private zone: NgZone,
@@ -120,16 +120,15 @@ export class ResourcesComponent implements OnInit, OnDestroy {
     this.store.pipe(
       untilDestroyed(this),
       select(state => state.settingsNode.activeNode),
-      tap((settingsNode: SettingsNodeApi) => {
-        if (settingsNode.id === 'ocaml' && !this.tabs.find(tab => tab.title === 'Memory')) {
-          this.tabs.push({ title: 'Memory', id: 3 });
-        } else if (settingsNode.id !== 'ocaml' && this.tabs.find(tab => tab.title === 'Memory')) {
-          this.activeTabId = this.activeTabId === 3 ? 1 : this.activeTabId;
-          this.tabs.splice(this.tabs.findIndex(tab => tab.title === 'Memory'), 1);
-        }
-        this.cdRef.detectChanges();
-      })
-    );
+    ).subscribe((settingsNode: SettingsNodeApi) => {
+      if (settingsNode.id === 'ocaml' && this.tabs.find(tab => tab.title === 'Memory')) {
+        this.activeTabId = this.activeTabId === 3 ? 1 : this.activeTabId;
+        this.tabs.splice(this.tabs.findIndex(tab => tab.title === 'Memory'), 1);
+      } else if (settingsNode.id !== 'ocaml' && !this.tabs.find(tab => tab.title === 'Memory')) {
+        this.tabs.push({ title: 'Memory', id: 3 });
+      }
+      this.cdRef.detectChanges();
+    });
   }
 
   toggleActiveSummary(value: ResourceType): void {
@@ -199,6 +198,10 @@ export class ResourcesComponent implements OnInit, OnDestroy {
     chartData.disk.push({
       name: 'CONTEXT IRMIN',
       series: ResourcesComponent.getSeries(resources, 'disk.contextIrmin')
+    });
+    chartData.disk.push({
+      name: 'DEBUGGER',
+      series: ResourcesComponent.getSeries(resources, 'disk.debugger')
     });
     if (resources[0].disk.contextActions) {
       chartData.disk.push({
@@ -270,6 +273,7 @@ export class ResourcesComponent implements OnInit, OnDestroy {
       ));
     }
 
+    summary.disk.push(new ResourcesSummaryBlock('Total', lastResource.disk.total, this.colorScheme.domain[0], 'GB'));
     summary.disk.push(new ResourcesSummaryBlock(
       'Block storage',
       lastResource.disk.blockStorage,
@@ -277,6 +281,7 @@ export class ResourcesComponent implements OnInit, OnDestroy {
       'GB'
     ));
     summary.disk.push(new ResourcesSummaryBlock('Context Irmin', lastResource.disk.contextIrmin, this.colorScheme.domain[2], 'GB'));
+    summary.disk.push(new ResourcesSummaryBlock('Debugger', lastResource.disk.debugger, this.colorScheme.domain[3], 'GB'));
     if (lastResource.disk.contextActions) {
       summary.disk.push(
         new ResourcesSummaryBlock(
@@ -298,7 +303,6 @@ export class ResourcesComponent implements OnInit, OnDestroy {
     if (lastResource.disk.mainDb) {
       summary.disk.push(new ResourcesSummaryBlock('Main DB', lastResource.disk.mainDb, this.colorScheme.domain[5], 'GB'));
     }
-    summary.disk.push(new ResourcesSummaryBlock('Total', lastResource.disk.total, this.colorScheme.domain[0], 'GB'));
 
     return summary;
   }

@@ -45,10 +45,7 @@
                 "inject": false
               }
             ],
-            "extractCss": true,
-            "scripts": [
-              "src/assets/js/treemap/index.js"
-            ]
+            "extractCss": true
           },
           "configurations": {
             "production": {

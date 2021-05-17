@@ -20,9 +20,13 @@ mat-form-field .mat-select-value {
   width: 125px;
 }
 
-.mat-option {
+.storage-details-select mat-option,
+.resources-select mat-option {
   height: 2em !important;
   line-height: 2em !important;
+}
+
+.mat-option {
   background-color: #2a2b2e;
 
   .mat-option-text {

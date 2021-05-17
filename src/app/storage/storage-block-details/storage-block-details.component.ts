@@ -1,9 +1,19 @@
-import { ChangeDetectionStrategy, Component, Input, OnDestroy, TemplateRef, ViewChild, ViewContainerRef } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  Input,
+  OnChanges,
+  OnDestroy,
+  SimpleChanges,
+  TemplateRef,
+  ViewChild,
+  ViewContainerRef
+} from '@angular/core';
 import { StorageBlockDetails } from '../../shared/types/storage/storage-block/storage-block-details.type';
 import { Overlay, OverlayRef } from '@angular/cdk/overlay';
 import { StorageBlockDetailsOperationContext } from '../../shared/types/storage/storage-block/storage-block-details-operation-context.type';
 import { TemplatePortal } from '@angular/cdk/portal';
-import { MatSelectChange } from '@angular/material/select';
+import { MatSelect, MatSelectChange } from '@angular/material/select';
 import { Store } from '@ngrx/store';
 import { State } from '../../app.reducers';
 
@@ -13,12 +23,13 @@ import { State } from '../../app.reducers';
   styleUrls: ['./storage-block-details.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class StorageBlockDetailsComponent implements OnDestroy {
+export class StorageBlockDetailsComponent implements OnChanges, OnDestroy {
 
   @Input() block: StorageBlockDetails;
   @Input() blockHash: string;
 
   @ViewChild('tooltipTemplate') private tooltipTemplate: TemplateRef<any>;
+  @ViewChild('contextSelect') private contextSelect: MatSelect;
 
   private overlayRef: OverlayRef;
 
@@ -26,10 +37,24 @@ export class StorageBlockDetailsComponent implements OnDestroy {
               private overlay: Overlay,
               private viewContainerRef: ViewContainerRef) { }
 
-  attachTooltip(row: StorageBlockDetailsOperationContext, event: MouseEvent): void {
-    if (this.overlayRef && this.overlayRef.hasAttached()) {
-      this.overlayRef.detach();
+  ngOnChanges(changes: SimpleChanges): void {
+    if (this.contextSelect && changes.blockHash && changes.blockHash.previousValue !== changes.blockHash.currentValue) {
+      this.contextSelect.value = 'tezedge';
     }
+  }
+
+  getBlockDetails(event: MatSelectChange): void {
+    this.store.dispatch({
+      type: 'STORAGE_BLOCK_DETAILS_LOAD',
+      payload: {
+        hash: this.blockHash,
+        context: event.value
+      }
+    });
+  }
+
+  attachTooltip(row: StorageBlockDetailsOperationContext, event: MouseEvent): void {
+    this.detachTooltip();
 
     this.overlayRef = this.overlay.create({
       hasBackdrop: false,
@@ -58,20 +83,12 @@ export class StorageBlockDetailsComponent implements OnDestroy {
   }
 
   detachTooltip(): void {
-    this.overlayRef.detach();
+    if (this.overlayRef && this.overlayRef.hasAttached()) {
+      this.overlayRef.detach();
+    }
   }
 
   ngOnDestroy(): void {
     this.detachTooltip();
-  }
-
-  getBlockDetails(event: MatSelectChange): void {
-    this.store.dispatch({
-      type: 'STORAGE_BLOCK_DETAILS_LOAD',
-      payload: {
-        hash: this.blockHash,
-        context: event.value
-      }
-    });
   }
 }

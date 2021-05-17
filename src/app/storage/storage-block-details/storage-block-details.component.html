@@ -11,7 +11,8 @@
          fxLayoutAlign="space-between center">
       CONTEXT CHECKOUT
       <mat-form-field class="combo-box">
-        <mat-select [value]="'tezedge'"
+        <mat-select #contextSelect
+                    [value]="'tezedge'"
                     panelClass="storage-details-select"
                     disableOptionCentering
                     (selectionChange)="getBlockDetails($event)">

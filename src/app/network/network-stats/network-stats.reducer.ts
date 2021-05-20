@@ -34,8 +34,9 @@ export function reducer(state: NetworkStats = initialState, action): NetworkStat
                 currentApplicationSpeed: action.payload.currentApplicationSpeed,
                 averageApplicationSpeed: action.payload.averageApplicationSpeed,
                 lastAppliedBlock: action.payload.lastAppliedBlock ? action.payload.lastAppliedBlock : state.lastAppliedBlock,
-                etaApplications:
-                    Math.floor((state.currentBlockCount - state.lastAppliedBlock.level) / action.payload.currentApplicationSpeed) + ' m ',
+                etaApplications: action.payload.currentApplicationSpeed !== 0
+                  ? getETA((state.currentBlockCount - state.lastAppliedBlock.level) / action.payload.currentApplicationSpeed * 60)
+                  : 'Infinity'
             };
         }
 
@@ -85,5 +86,5 @@ function getETA(eta: number): string {
 function numberOrSpace(value: number, mu: string, canBeZero?: boolean): string {
     return value >= 1 || (value < 1 && canBeZero)
       ? (value > 9 ? value + mu : `0${value}${mu}`)
-      : '    ';
+      : '';
 }

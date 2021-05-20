@@ -9,6 +9,8 @@ export enum MemoryResourcesActionTypes {
 
 export class LoadMemoryResources implements Action {
   readonly type = MemoryResourcesActionTypes.LoadResources;
+
+  constructor(public payload: { reversed: boolean }) { }
 }
 
 export class MemoryResourcesLoaded implements Action {

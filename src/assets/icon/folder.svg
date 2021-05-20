@@ -1,0 +1,10 @@
+<svg width="16"
+     height="14"
+     viewBox="0 0 16 14"
+     fill="none"
+     xmlns="http://www.w3.org/2000/svg">
+  <path d="M14.5 3H8.5L6.5 1H1.5C0.671562 1 0 1.67156 0 2.5V11.5C0 12.3284 0.671562 13 1.5 13H14.5C15.3284 13 16 12.3284 16 11.5V4.5C16 3.67156 15.3284 3 14.5 3Z"
+        fill="inherit"
+        fill-opacity="0.2"
+        stroke="inherit"/>
+</svg>

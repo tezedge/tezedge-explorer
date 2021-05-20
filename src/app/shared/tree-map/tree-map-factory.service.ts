@@ -15,24 +15,47 @@ export class TreeMapFactoryService {
         ['d3', 'width', 'height', 'treemap', 'data', 'DOM', 'color', 'tooltip', 'name', 'format'],
         (d3Library, width, height, treemap, data, DOM, color, tooltip, name, format) => {
 
+          const treemapData = treemap(data);
           const x = d3Library.scaleLinear().rangeRound([0, width]);
           const y = d3Library.scaleLinear().rangeRound([0, height]);
           const svg = d3Library.create('svg')
-            .attr('viewBox', [0.5, -30.5, width, height + 35])
+            .attr('viewBox', [0, 0, width, height])
             .style('font', '12px sans-serif');
 
-          d3Library.select('body').append('div')
-            .attr('class', 'tooltip')
-            .style('opacity', 0);
+          // d3Library.select('body').append('div')
+          //   .attr('class', 'tooltip')
+          //   .style('opacity', 0);
 
           let group = svg.append('g')
-            .call(render, treemap(data));
+            .call(render, treemapData);
+
+          runtime.setup.zoomNode = (nodeName) => {
+            const nodeToBeZoomed = findNodeByName(nodeName, treemapData);
+            zoomin(nodeToBeZoomed, false);
+          };
+
+          function findNodeByName(nodeName: string, node) {
+            if (node.data.name.executableName === nodeName) {
+              return node;
+            } else if (node.children) {
+              let found = null;
+              node.children.forEach(item => {
+                if (!found) {
+                  found = findNodeByName(nodeName, item);
+                }
+              });
+
+              return found;
+            }
+
+            return null;
+          }
 
           function render(groupParam, root) {
 
             const node = groupParam
               .selectAll('g')
-              .data(root.children.concat(root))
+              .data(root.children)
               .join('g');
 
             node.filter(d => d === root ? d.parent : d.children)
@@ -65,27 +88,25 @@ export class TreeMapFactoryService {
             node.append('rect')
               .attr('id', d => (d.leafUid = DOM.uid('leaf')).id)
               .attr('fill', d => {
-                while (d.depth > 1) {
-                  d = d.parent;
-                }
+                // while (d.depth > 1) {
+                //   d = d.parent;
+                // }
                 return d.data.color;
               })
-              .attr('fill-opacity', d => d.depth <= 1 ? 0.6 : 0.6)
+              .attr('fill-opacity', d => d.depth <= 1 ? 0.45 : 0.45)
               // .attr("fill-opacity", d => {
               //  let min = d3Library.min(root.leaves().map(leaf => leaf.data.value))
               //  let max = d3Library.max(root.leaves().map(leaf => leaf.data.value))
               //  return (d.value-min)/(max-min)})
-              // .attr('stroke', '#fff')
               .attr('stroke', d => {
-                while (d.depth > 1) {
-                  d = d.parent;
-                }
+                // while (d.depth > 1) {
+                //   d = d.parent;
+                // }
                 return d.data.color;
               })
               .on('mouseover', (d, dataSet) => {
                 tooltip
-                  .html('Value: ' + dataSet.value + '<br/>' + 'Name: ' + name(dataSet))
-                  // .html(data.value + "<br/>" + name(data))
+                  .html(`${name(dataSet)}<br/><div style="margin-top: 5px">${dataSet.value.toLocaleString('fr-FR')} kb<span class="text-white-4"> size</span></div>`)
                   .style('visibility', 'visible');
               })
               .on('mousemove', (d) => {
@@ -112,11 +133,10 @@ export class TreeMapFactoryService {
               .attr('font-weight', d => d === root ? 'bold' : null)
               .attr('pointer-events', 'none')
               .selectAll('tspan')
-              .data(d =>
-                (d === root ? name(d) : (d.data.name.functionName || d.data.name.virtualAddress))
-                  .split(
-                    // /(?=[A-Z][^A-Z])/g
-                  ).concat(format(d.value))
+              .data(d => d.data.name.executableName
+                .split(
+                  // /(?=[A-Z][^A-Z])/g
+                ).concat(d.value.toLocaleString('fr-FR') + ' kb')
               )
               .join('tspan')
               .attr('x', 3)
@@ -131,14 +151,14 @@ export class TreeMapFactoryService {
 
           function position(groupParam, root) {
             groupParam.selectAll('g')
-              .attr('transform', d => d === root ? `translate(0,-30)` : `translate(${x(d.x0)},${y(d.y0)})`)
+              .attr('transform', d => `translate(${x(d.x0)},${y(d.y0)})`)
               .select('rect')
-              .attr('width', d => d === root ? width : x(d.x1) - x(d.x0))
-              .attr('height', d => d === root ? 30 : y(d.y1) - y(d.y0));
+              .attr('width', d => d === root ? 0 : x(d.x1) - x(d.x0))
+              .attr('height', d => d === root ? 0 : y(d.y1) - y(d.y0));
           }
 
           // When zooming in, draw the new nodes on top, and fade them in.
-          function zoomin(d) {
+          function zoomin(d, dispatch: boolean = true) {
             const group0 = group.attr('pointer-events', 'none');
             const group1 = group = svg.append('g').call(render, d);
 
@@ -146,12 +166,18 @@ export class TreeMapFactoryService {
             y.domain([d.y0, d.y1]);
 
             svg.transition()
-              .duration(350)
-              .call(t => group0.transition(t).remove()
-                .call(position, d.parent))
+              .duration(250)
+              .call(t => group0.transition(t)
+                .attrTween('opacity', () => d3Library.interpolate(1, 0))
+                .remove()
+                .call(position, d.parent)
+              )
               .call(t => group1.transition(t)
                 .attrTween('opacity', () => d3Library.interpolate(0, 1))
                 .call(position, d));
+            if (dispatch) {
+              runtime.setup.nodeZoomed(d.data);
+            }
           }
 
           // When zooming out, draw the old nodes on top, and fade them out.
@@ -163,12 +189,16 @@ export class TreeMapFactoryService {
             y.domain([d.parent.y0, d.parent.y1]);
 
             svg.transition()
-              .duration(350)
+              .duration(250)
               .call(t => group0.transition(t).remove()
                 .attrTween('opacity', () => d3Library.interpolate(1, 0))
                 .call(position, d)
               )
-              .call(t => group1.transition(t).call(position, d.parent));
+              .call(t => group1.transition(t)
+                .attrTween('opacity', () => d3Library.interpolate(0, 1))
+                .call(position, d.parent));
+
+            runtime.setup.nodeZoomed(d.parent.data);
           }
 
           /* External Zoom */
@@ -188,14 +218,27 @@ export class TreeMapFactoryService {
       );
     main.variable(observer('data')).define('data', ['FileAttachment'], () => runtime.setup.treeData);
     main.variable(observer('treemap')).define('treemap', ['d3', 'tile'], (d3Library, tile) => {
-      return data => d3Library.treemap()
-        .tile(tile)
-        (
-          d3Library
-            .hierarchy(data)
-            .sum(d => d.value)
-            .sort((a, b) => b.value - a.value)
-        );
+      return data => {
+
+        const hierarchy = d3Library.hierarchy(data);
+
+        function appendHierarchyValue(tree: any) {
+          tree.value = tree.data.value;
+          if (tree.children) {
+            tree.children.forEach(child => {
+              appendHierarchyValue(child);
+            });
+          }
+        }
+
+        appendHierarchyValue(hierarchy);
+        return d3Library.treemap()
+          .tile(tile)
+          (
+            hierarchy
+              .sort((a, b) => b.value - a.value)
+          );
+      };
     });
     main.variable(observer('tile')).define('tile', ['d3', 'width', 'height'], (d3Library, width, height) => {
       return function tile(node, x0, y0, x1, y1) {
@@ -215,21 +258,24 @@ export class TreeMapFactoryService {
         .attr('class', 'd3-tooltip')
         .style('position', 'absolute')
         .style('z-index', '10')
+        .style('max-width', '50%')
+        .style('font-size', '12px')
+        .style('box-shadow', '0 4px 4px rgba(0, 0, 0, 0.25)')
         .style('visibility', 'hidden')
-        .style('padding', '10px')
-        .style('background', 'rgba(0,0,0,0.6)')
+        .style('color', 'rgba(255, 255, 255, 0.4)')
+        .style('padding', '8px')
+        .style('background', '#2A2A2E')
         .style('border-radius', '4px')
-        .style('color', '#fff')
-        .text('a simple tooltip');
+        .style('color', '#fff');
     });
     main.variable(observer('name')).define('name', () => {
-      return d => d.ancestors().reverse().map(a => a.data.name).map(a => a.functionName || a.virtualAddress).join('/');
+      return d => d.ancestors().reverse().map(a => a.data.name.executableName).join('/');
     });
     main.variable(observer('width')).define('width', () => {
       return runtime.setup.containerRect.width;
     });
     main.variable(observer('height')).define('height', () => {
-      return runtime.setup.containerRect.height - 32;
+      return runtime.setup.containerRect.height;
     });
     main.variable(observer('format')).define('format', ['d3'], (d3Library) => {
       return d3Library.format(',d');
@@ -256,7 +302,7 @@ export class TreeMapFactoryService {
     });
     main.variable(observer('color')).define('color', ['d3', 'treemap', 'data'], (d3Library, treemap, data) => {
       return d3Library.scaleOrdinal()
-        .domain(treemap(data).leaves().map(d => d.parent.data.name.functionName || d.parent.data.name.virtualAddress))
+        .domain(treemap(data).leaves().map(d => d.parent.data.name.executableName))
         .range(d3Library.schemeCategory10);
     });
     main.variable(observer('d3')).define('d3', ['require'], (require) => require('d3@6'));

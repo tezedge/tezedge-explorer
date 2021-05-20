@@ -19,7 +19,7 @@
                 <div class="network-stats-card-right" *ngIf="networkStats?.downloadedBlocks>0">
 
                     <span class="network-stats-card-right-content" [class.hidden]="!networkStats?.eta.trim()"
-                          style="font-weight:400;">{{ networkStats?.eta | replaceCharacter: ' ': '&nbsp;' }} ETA</span>
+                          style="font-weight:400;">{{ networkStats?.eta }} ETA</span>
                     <span class="network-stats-card-right-content">{{ networkStats?.downloadedBlocks}}
                         level</span>
                     <span class="network-stats-card-right-content">{{networkStats?.downloadRate}} blocks/s</span>

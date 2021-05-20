@@ -1,8 +1,10 @@
 @import 'assets/styles/ngx-charts';
-@import 'assets/styles/utilities';
+@import 'assets/styles/utilities/layout';
+@import 'assets/styles/utilities/text';
 @import 'assets/styles/virtual-scroll-table';
 @import 'assets/styles/material/material-tooltip';
 @import 'assets/styles/material/material-form';
+@import 'assets/styles/material/material-icon';
 
 html,
 body {
@@ -716,6 +718,7 @@ mat-form-field input[type='number'] {
 
 ::-webkit-scrollbar {
   width: 12px;
+  height: 12px;
   background-color: $color-table-border; //#F5F5F5;
 }
 
@@ -724,6 +727,9 @@ mat-form-field input[type='number'] {
   background-color: $color-border;
 }
 
+::-webkit-scrollbar-corner {
+  background: rgba(0, 0, 0, 0.02);
+}
 
 .mat-drawer-content {
   overflow: initial !important;
@@ -1123,10 +1129,6 @@ ngx-json-viewer .segment .segment-main .segment-key {
         &:last-of-type {
           padding-right: 16px;
         }
-
-        &.text-right {
-          text-align: right;
-        }
       }
     }
 
@@ -1167,10 +1169,6 @@ ngx-json-viewer .segment .segment-main .segment-key {
 
         &.muted {
           // color: fade-out($color-focus, 0.4) !important;
-        }
-
-        &.text-right {
-          text-align: right;
         }
       }
     }

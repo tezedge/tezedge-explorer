@@ -1,6 +1,4 @@
 export class MemoryResourceName {
-  offset: string | null;
-  executable: string | null;
-  virtualAddress: string | null;
+  executableName: string;
   functionName: string | null;
 }

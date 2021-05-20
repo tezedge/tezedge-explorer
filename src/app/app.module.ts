@@ -1,5 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import { APP_INITIALIZER, LOCALE_ID, NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule } from '@angular/router';
 
 import { HttpClientModule } from '@angular/common/http';
@@ -111,10 +111,18 @@ import { CommitNumberEffects } from './monitoring/commit-number/commit-number.ef
 import { ResourcesEffects } from './resources/resources/resources.effects';
 import { TezedgeSharedModule } from './shared/tezedge-shared.module';
 import { NavigationMenuComponent } from './layout/navigation-menu/navigation-menu.component';
-import { DatePipe } from '@angular/common';
+import { DatePipe, registerLocaleData } from '@angular/common';
 import { StorageBlockDetailsComponent } from './storage/storage-block-details/storage-block-details.component';
 import { StorageResourcesEffects } from './resources/resources-storage/resources-storage.effects';
 import { MemoryResourcesEffects } from './resources/memory-resources/memory-resources.effects';
+import { IconRegisterService } from './shared/design/icon/icon-register.service';
+import localeFr from '@angular/common/locales/fr';
+
+registerLocaleData(localeFr, 'fr');
+
+function loadIcons(matIconService: IconRegisterService): Function {
+  return () => matIconService.loadIcons();
+}
 
 @NgModule({
   declarations: [
@@ -169,13 +177,13 @@ import { MemoryResourcesEffects } from './resources/memory-resources/memory-reso
 
     // loading routing
     RouterModule.forRoot(AppRouting, {
-    useHash: true,
-    // preload all modules
-    preloadingStrategy: PreloadAllModules,
-    // scroll page to top on route change
-    scrollPositionRestoration: 'enabled',
-    relativeLinkResolution: 'legacy'
-}),
+      useHash: true,
+      // preload all modules
+      preloadingStrategy: PreloadAllModules,
+      // scroll page to top on route change
+      scrollPositionRestoration: 'enabled',
+      relativeLinkResolution: 'legacy'
+    }),
 
     StoreModule.forRoot(reducers, {
       metaReducers,
@@ -241,7 +249,16 @@ import { MemoryResourcesEffects } from './resources/memory-resources/memory-reso
     TezedgeSharedModule
 
   ],
-  providers: [DatePipe],
+  providers: [
+    DatePipe,
+    {
+      provide: APP_INITIALIZER,
+      useFactory: loadIcons,
+      deps: [IconRegisterService],
+      multi: true
+    },
+    { provide: LOCALE_ID, useValue: 'fr'},
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule {

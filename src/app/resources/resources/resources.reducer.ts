@@ -9,12 +9,14 @@ export interface ResourcesState {
   resources: Resource[];
   storageResources: StorageResourcesStats;
   memoryResources: MemoryResource;
+  reversedMemoryResources: boolean;
 }
 
 const initialState: ResourcesState = {
   resources: [],
   storageResources: null,
   memoryResources: null,
+  reversedMemoryResources: false
 };
 
 export function reducer(state: ResourcesState = initialState, action: ResourcesActions | ResourcesStorageActions | MemoryResourcesActions): ResourcesState {

@@ -9,7 +9,7 @@ $text-color: rgb(164, 164, 165);
   .tabs {
     border-bottom: 1px solid $faded-white;
     padding: 9px 15px;
-    min-height: 40px;
+    height: 40px;
 
     .tab {
       color: rgba(255, 255, 255, 0.6);
@@ -21,6 +21,14 @@ $text-color: rgb(164, 164, 165);
       &.selected {
         color: #fff;
       }
+    }
+
+    .combo-box {
+      margin-right: 8px;
+    }
+
+    .reversed-checkbox {
+      font-size: 12px;
     }
   }
 

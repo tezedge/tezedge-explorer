@@ -10,6 +10,8 @@ import { State } from '../../app.reducers';
 import { SettingsNodeApi } from '../../shared/types/settings-node/settings-node-api.type';
 import { MatSelectChange } from '@angular/material/select';
 import { StorageResourcesActionTypes } from '../resources-storage/resources-storage.actions';
+import { MemoryResourcesActionTypes } from '../memory-resources/memory-resources.actions';
+import { MatCheckboxChange } from '@angular/material/checkbox';
 
 
 class ChartData {
@@ -91,7 +93,9 @@ export class ResourcesComponent implements OnInit, OnDestroy {
     { title: 'Storage', id: 2 },
     { title: 'Memory', id: 3 }
   ];
-  activeTabId: number = 1;
+  activeTabId: number = 3;
+
+  reversedCheckboxState = false;
 
   constructor(private store: Store<State>,
               private zone: NgZone,
@@ -103,6 +107,10 @@ export class ResourcesComponent implements OnInit, OnDestroy {
     this.listenToResourcesChange();
     this.listenToNodeChange();
     this.getResources();
+  }
+
+  onTabChange(): void {
+    this.reversedCheckboxState = false;
   }
 
   private listenToResourcesChange(): void {
@@ -309,5 +317,14 @@ export class ResourcesComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.store.dispatch({ type: ResourcesActionTypes.ResourcesClose });
+  }
+
+  onReversedCheckboxChange(event: MatCheckboxChange): void {
+    this.reversedCheckboxState = event.checked;
+    this.cdRef.detectChanges();
+    this.store.dispatch({
+      type: MemoryResourcesActionTypes.LoadResources,
+      payload: { reversed: this.reversedCheckboxState }
+    });
   }
 }

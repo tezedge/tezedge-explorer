@@ -76,7 +76,7 @@
              let-total="total">
   <div class="tooltip-template">
     <div class="text-white">Range {{ range }}</div>
-    <div><span class="text-white">{{ count }}</span> Calls</div>
+    <div><span class="text-white">{{ count | thousandTransform }}</span> Calls</div>
     <div><span class="text-white">{{ mean | timeTransform: false }}</span> Mean</div>
     <div><span class="text-white">{{ max | timeTransform: false }}</span> Max</div>
     <div><span class="text-white">{{ total | timeTransform: false }}</span> Total Time</div>

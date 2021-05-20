@@ -13,6 +13,8 @@ import { ResourcesStorageMiniGraphComponent } from './resources-storage-mini-gra
 import { MemoryResourcesComponent } from './memory-resources/memory-resources.component';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
+import { MatIconModule } from '@angular/material/icon';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 
 
 @NgModule({
@@ -32,6 +34,8 @@ import { MatSelectModule } from '@angular/material/select';
     MatTableModule,
     MatFormFieldModule,
     MatSelectModule,
+    MatIconModule,
+    MatCheckboxModule,
   ],
 })
 export class ResourcesModule {}

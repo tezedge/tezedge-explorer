@@ -10,8 +10,20 @@
   white-space: nowrap;
 }
 
-.text-bold {
+.font-600 {
   font-weight: 600;
+}
+
+.font-500 {
+  font-weight: 500;
+}
+
+.font-400 {
+  font-weight: 400;
+}
+
+.text-right {
+  text-align: right;
 }
 
 .pointer {
@@ -28,6 +40,14 @@
   color: #fff !important;
 }
 
+.text-white-4 {
+  color: rgba(255, 255, 255, 0.4) !important;
+}
+
+.text-white-7 {
+  color: rgba(255, 255, 255, 0.7) !important;
+}
+
 .text-gray {
   color: rgba(255, 255, 255, 0.4) !important;
 }
@@ -38,16 +58,4 @@
 
 .text-white {
   color: white !important;
-}
-
-.overflow-hidden {
-  overflow: hidden;
-}
-
-.overflow-x-auto {
-  overflow-x: auto;
-}
-
-.hidden {
-  visibility: hidden !important;
 }

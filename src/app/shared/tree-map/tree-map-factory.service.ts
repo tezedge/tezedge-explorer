@@ -102,7 +102,8 @@ export class TreeMapFactoryService {
                 // while (d.depth > 1) {
                 //   d = d.parent;
                 // }
-                return d.data.color;
+                // return d.data.color;
+                return 'rgba(255, 255, 255, 0.2)';
               })
               .on('mouseover', (d, dataSet) => {
                 tooltip
@@ -132,11 +133,14 @@ export class TreeMapFactoryService {
               .attr('clip-path', d => d.clipUid)
               .attr('font-weight', d => d === root ? 'bold' : null)
               .attr('pointer-events', 'none')
+              .attr('visibility', d => x(d.x1) - x(d.x0) < 80 ? 'hidden' : '')
               .selectAll('tspan')
-              .data(d => d.data.name.executableName
-                .split(
-                  // /(?=[A-Z][^A-Z])/g
-                ).concat(d.value.toLocaleString('fr-FR') + ' kb')
+              .data(d =>
+                d.data.name.executableName
+                  .split(
+                    // /(?=[A-Z][^A-Z])/g
+                  )
+                  .concat(d.value.toLocaleString('fr-FR') + ' kb')
               )
               .join('tspan')
               .attr('x', 7)
@@ -150,11 +154,15 @@ export class TreeMapFactoryService {
           }
 
           function position(groupParam, root) {
-            groupParam.selectAll('g')
+            const g = groupParam.selectAll('g');
+            g
               .attr('transform', d => `translate(${x(d.x0)},${y(d.y0)})`)
               .select('rect')
-              .attr('width', d => d === root ? 0 : x(d.x1) - x(d.x0) - 1)
-              .attr('height', d => d === root ? 0 : y(d.y1) - y(d.y0) - 1);
+              .attr('width', d => d === root ? 0 : x(d.x1) - x(d.x0))
+              .attr('height', d => d === root ? 0 : y(d.y1) - y(d.y0));
+            g
+              .select('text')
+              .attr('visibility', d => x(d.x1) - x(d.x0) < 80 ? 'hidden' : '');
           }
 
           // When zooming in, draw the new nodes on top, and fade them in.
@@ -264,7 +272,7 @@ export class TreeMapFactoryService {
         .style('visibility', 'hidden')
         .style('color', 'rgba(255, 255, 255, 0.4)')
         .style('padding', '8px')
-        .style('background', '#2A2A2E')
+        .style('background', '#2a2a2e')
         .style('border-radius', '4px')
         .style('color', '#fff');
     });
@@ -284,17 +292,17 @@ export class TreeMapFactoryService {
       return (name) => {
         const colors = {
           flare: '#fff',
-          analytics: '#596F7E',
-          animate: '#168B98',
-          data: '#ED5B67',
+          analytics: '#596f7e',
+          animate: '#168b98',
+          data: '#ed5b67',
           display: '#fd8f24',
           flex: '#919c4c',
           physics: '#919c4c',
           query: '#fd8f24',
-          scale: '#596F7E',
+          scale: '#596f7e',
           util: '#919c4c',
           vis: '#919c4c',
-          interpolate: '#168B98',
+          interpolate: '#168b98',
           methods: '#fd8f24'
         };
         return colors[name];

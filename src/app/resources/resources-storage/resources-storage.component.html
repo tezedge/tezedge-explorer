@@ -19,7 +19,16 @@
                                           [graphData]="storageStats.checkoutContext"
                                           [isMainGraph]="true"></app-resources-storage-mini-graph>
         <ng-container *ngIf="miniGraphRef"> <!--PLACEHOLDERS FOR SYMMETRICAL VIEW-->
-          <span [style.width.px]="miniGraphRef.nativeElement.offsetWidth"></span>
+          <div fxLayoutAlign="center center">
+            <div class="overview text-white-7" fxLayout="column" fxLayoutAlign="center start" fxLayoutGap="8px"
+                 [style.width.px]="miniGraphRef.nativeElement.offsetWidth">
+              <div class="text-white-4">Total values</div>
+              <span>Total time: {{ totalTime | timeTransform: false: false: true }}</span>
+              <span>Total time read: {{ totalTimeRead | timeTransform: false: false: true }}</span>
+              <span>Total time write: {{ totalTimeWrite | timeTransform: false: false: true }}</span>
+              <span>Total no of calls: {{ totalCalls | thousandTransform }}</span>
+            </div>
+          </div>
           <span [style.width.px]="miniGraphRef.nativeElement.offsetWidth"></span>
           <span [style.width.px]="miniGraphRef.nativeElement.offsetWidth"></span>
           <span [style.width.px]="miniGraphRef.nativeElement.offsetWidth"></span>
@@ -38,7 +47,8 @@
         {{ operation.actionsCount | thousandTransform }}<span class="grayish"> calls</span>
         &nbsp;·&nbsp;
         {{ operation.totalTime | timeTransform: false: false: true }}<span class="grayish"> total duration </span>
-        <span class="grayish">(</span>{{ operation.totalTimeRead | timeTransform: false: false: true }}<span class="grayish"> read, </span>
+        <span class="grayish">(</span>{{ operation.totalTimeRead | timeTransform: false: false: true }}<span
+        class="grayish"> read, </span>
         {{ operation.totalTimeWrite | timeTransform: false: false: true }}<span class="grayish"> write)</span>
       </span>
     </div>

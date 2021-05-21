@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Actions, Effect, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
-import { BehaviorSubject, empty, interval, ObservedValueOf, of, Subject } from 'rxjs';
-import { catchError, filter, map, switchMap, takeUntil, tap, withLatestFrom } from 'rxjs/operators';
+import { BehaviorSubject, empty, interval, Observable, ObservedValueOf, of, Subject } from 'rxjs';
+import { catchError, filter, flatMap, map, switchMap, takeUntil, takeWhile, tap, withLatestFrom } from 'rxjs/operators';
 import { webSocket } from 'rxjs/webSocket';
 import { HttpClient } from '@angular/common/http';
 import { State } from '../app.reducers';
@@ -30,13 +30,17 @@ export class MonitoringEffects {
 
       if (this.networkDestroy$) {
         this.networkDestroy$.next();
+        this.networkDestroy$.complete();
       }
       if (this.websocketDestroy$) {
         this.websocketDestroy$.next();
         this.websocketDestroy$.complete();
       }
 
-      if (!state.settingsNode.activeNode.ws) {
+      if (state.settingsNode.activeNode.ws) {
+        this.websocketDestroy$ = new Subject<void>();
+        actions.push({ type: 'NETWORK_WEBSOCKET_LOAD', payload: { initialLoad, lazyCalls } });
+      } else {
         if (!initialLoad) {
           this.networkDestroy$ = new Subject<void>();
         }
@@ -44,29 +48,25 @@ export class MonitoringEffects {
 
         actions.push({ type: 'NETWORK_STATS_LOAD', payload: { initialLoad } });
         actions.push({ type: 'NETWORK_PEERS_LOAD', payload: { initialLoad } });
-      } else {
-        this.websocketDestroy$ = new Subject<void>();
-        actions.push({ type: 'NETWORK_WEBSOCKET_LOAD', payload: { initialLoad, lazyCalls } });
       }
-
       return actions;
     })
   );
 
-
   // initialize app features
-  @Effect({ dispatch: false })
+  @Effect()
   MonitoringCloseEffect$ = this.actions$.pipe(
     ofType('MONITORING_CLOSE'),
     withLatestFrom(this.store, (action: any, state: ObservedValueOf<Store<State>>) => ({ action, state })),
-    tap(({ action, state }) => {
+    flatMap(({ action, state }) => {
       // TODO: use app features
       if (state.settingsNode.activeNode.ws === false) {
         // close all open observables
         this.interval$.next(5);
-        this.networkDestroy$.next();
+        return empty();
       } else {
         this.websocketDestroy$.next();
+        return of({ type: 'NETWORK_WEBSOCKET_LOAD', payload: { lazyCalls: true } });
       }
     })
   );
@@ -90,7 +90,7 @@ export class MonitoringEffects {
       }
 
       return this.interval$.pipe(
-        switchMap(value => interval(value * 1000)),
+        switchMap(value => interval(value * 1000).pipe(takeUntil(this.networkDestroy$))),
         switchMap(() => headerData$)
       );
     }),
@@ -113,7 +113,7 @@ export class MonitoringEffects {
       }
 
       return this.interval$.pipe(
-        switchMap(value => interval(value * 1000)),
+        switchMap(value => interval(value * 1000).pipe(takeUntil(this.networkDestroy$))),
         switchMap(() => peersData$)
       );
     }),
@@ -135,12 +135,10 @@ export class MonitoringEffects {
         return empty();
       }
 
-      const webSocketConnection$ = (
-        webSocket({
-          url: state.settingsNode.activeNode.ws.toString(),
-          WebSocketCtor: WebSocket,
-        })
-      );
+      const webSocketConnection$ = webSocket({
+        url: state.settingsNode.activeNode.ws.toString(),
+        WebSocketCtor: WebSocket,
+      });
 
       return webSocketConnection$.pipe(
         takeUntil(this.websocketDestroy$),
@@ -174,7 +172,7 @@ export class MonitoringEffects {
   constructor(
     private http: HttpClient,
     private actions$: Actions,
-    private store: Store<any>,
+    private store: Store<State>,
     private settingsNodeService: SettingsNodeService,
   ) { }
 

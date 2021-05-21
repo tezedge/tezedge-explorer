@@ -142,29 +142,24 @@
     white-space: nowrap;
 
     ::ng-deep mat-icon {
-      &.purple svg path {
-        fill: #bf5af2;
-        stroke: #bf5af2;
-      }
-
-      &.yellow svg path {
-        fill: #ffd60a;
-        stroke: #ffd60a;
-      }
-
-      &.violet svg path {
-        fill: #5e5ce6;
-        stroke: #5e5ce6;
-      }
-
-      &.green svg path {
-        fill: #32d74b;
-        stroke: #32d74b;
-      }
-
       &.red svg path {
-        fill: #ff2d55;
-        stroke: #ff2d55;
+        fill: #eb5368;
+        stroke: #eb5368;
+      }
+
+      &.light svg path {
+        fill: #c4c4c4;
+        stroke: #b8b8b8;
+      }
+
+      &.gray svg path {
+        fill: #888;
+        stroke: #888;
+      }
+
+      &.dark svg path {
+        fill: #1b1b1d;
+        stroke: #797979;
       }
     }
 

@@ -4,7 +4,16 @@ $text-color: rgb(164, 164, 165);
 .resources-wizard {
   background-color: #2A2A2E;
   border-top-left-radius: 5px;
-  overflow-y: auto;
+  overflow-y: hidden;
+
+  .tabs-spacer {
+    height: 40px;
+    display: flex;
+
+    @media (min-width: 600px) {
+      display: none;
+    }
+  }
 
   .tabs {
     border-bottom: 1px solid $faded-white;

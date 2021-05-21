@@ -18,11 +18,10 @@ export class MemoryResourcesService {
   private serverData = (tree as any).default;
 
   getMemoryResources(api: string, reversed: boolean, threshold: number = 512): Observable<MemoryResource> {
-    // return of(this.serverData)
-    //   .pipe(map(response => this.mapMemoryResponse(response)));
-    return this.http.get<MemoryResource>(`${api}/v1/tree?threshold=${threshold}&reverse=${reversed}`)
+    return of(this.serverData)
       .pipe(map(response => this.mapMemoryResponse(response)));
-
+    // return this.http.get<MemoryResource>(`${api}/v1/tree?threshold=${threshold}&reverse=${reversed}`)
+    //   .pipe(map(response => this.mapMemoryResponse(response)));
   }
 
   private mapMemoryResponse(response: any): MemoryResource {
@@ -35,7 +34,9 @@ export class MemoryResourcesService {
 
   private build(frames): MemoryResource[] {
     const children = [];
-    frames.forEach((frame, i) => {
+    frames
+      .sort((a, b) => b.value - a.value)
+      .forEach((frame, i) => {
       const items: MemoryResource = {
         name: this.getFrameName(frame.name),
         value: frame.value,

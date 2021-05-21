@@ -3,22 +3,26 @@
 
   .list-group {
     font-size: 12px;
-    
+    padding-top: 8px;
+    border-radius: 3px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+
+    .summary-row {
+      padding: 0 10px;
+      height: 32px;
+
+      &:first-child {
+        height: 20px;
+      }
+
+      &:not(:last-child):not(:first-child) {
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      }
+    }
+
     .faded-text {
       color: rgba(255, 255, 255, 0.75) !important;
       margin-left: 2px;
-    }
-
-    td.faded-text {
-      text-align: right;
-    }
-
-    table {
-      border-spacing: 0;
-
-      tr {
-        padding-bottom: 6px;
-      }
     }
   }
 }

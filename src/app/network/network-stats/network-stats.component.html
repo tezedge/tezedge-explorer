@@ -22,7 +22,7 @@
                           style="font-weight:400;">{{ networkStats?.eta }} ETA</span>
                     <span class="network-stats-card-right-content">{{ networkStats?.downloadedBlocks}}
                         level</span>
-                    <span class="network-stats-card-right-content">{{networkStats?.downloadRate}} blocks/s</span>
+                    <span class="network-stats-card-right-content">{{networkStats?.downloadRate | number }} blocks/s</span>
 
                 </div>
 
@@ -49,7 +49,7 @@
                     <span class="network-stats-card-right-content"> {{ networkStats?.lastAppliedBlock?.level}}
                         level</span>
                     <span class="network-stats-card-right-content">
-                        {{ networkStats.currentApplicationSpeed / 60 | number:'1.1-1' }} blocks/s </span>
+                        {{ networkStats.currentApplicationSpeed / 60 | number:'1.1-1': 'fr' }} blocks/s </span>
 
                 </div>
 

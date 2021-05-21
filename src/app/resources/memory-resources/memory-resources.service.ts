@@ -36,15 +36,15 @@ export class MemoryResourcesService {
     const children = [];
     frames
       .sort((a, b) => b.value - a.value)
-      .forEach((frame, i) => {
-      const items: MemoryResource = {
-        name: this.getFrameName(frame.name),
-        value: frame.value,
-        children: this.build(frame.frames || []),
-        color: this.appendColorForFrame(i)
-      };
-      children.push(items);
-    });
+      .forEach(frame => {
+        const items: MemoryResource = {
+          name: this.getFrameName(frame.name),
+          value: frame.value,
+          children: this.build(frame.frames || []),
+          color: this.appendColorForFrame(frame.value)
+        };
+        children.push(items);
+      });
     return children;
   }
 
@@ -62,17 +62,15 @@ export class MemoryResourcesService {
     };
   }
 
-  private appendColorForFrame(i: number): string {
-    if (i % 5 === 0) {
-      return '#bf5af2';
-    } else if (i % 4 === 0) {
-      return '#ffd60a';
-    } else if (i % 3 === 0) {
-      return '#5e5ce6';
-    } else if (i % 2 === 0) {
-      return '#32d74b';
+  private appendColorForFrame(value: number): string {
+    if (value > 999999) {
+      return '#eb5368';
+    } else if (value > 99999) {
+      return '#555558';
+    } else if (value > 9999) {
+      return '#3f3f43';
     } else {
-      return '#ff2d55';
+      return '#2a2a2e';
     }
   }
 }

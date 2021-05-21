@@ -52,6 +52,7 @@ export class ResourcesService {
       resource.cpu = new CpuResource();
       resource.cpu.node = responseItem.cpu.node;
       resource.cpu.protocolRunners = responseItem.cpu.protocol_runners || undefined;
+      resource.cpu.total = Object.values(resource.cpu).filter(Boolean).reduce((total: number, current: number) => total + current, 0);
 
       resource.disk = new DiskResource();
       resource.disk.blockStorage = responseItem.disk.block_storage / GB_DIVISOR;

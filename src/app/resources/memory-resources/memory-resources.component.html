@@ -67,13 +67,11 @@
              fxLayout="row">
           <mat-icon svgIcon="folder"
                     class="icon-16"
-                    [class.purple]="operation.color === '#bf5af2'"
-                    [class.yellow]="operation.color === '#ffd60a'"
-                    [class.violet]="operation.color === '#5e5ce6'"
-                    [class.green]="operation.color === '#32d74b'"
-                    [class.red]="operation.color === '#ff2d55'"
-
-          ></mat-icon>
+                    [class.red]="operation.color === '#eb5368'"
+                    [class.light]="operation.color === '#555558'"
+                    [class.gray]="operation.color === '#3f3f43'"
+                    [class.dark]="operation.color === '#2a2a2e'">
+          </mat-icon>
           <span>{{ operation.name.executableName }}</span></div>
       </td>
       <td>{{ operation.value | number: '': 'fr' }} kb</td>

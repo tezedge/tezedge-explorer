@@ -39,6 +39,7 @@ class ResourcesSummary {
   cpu: ResourcesSummaryBlock[] = [];
   memory: ResourcesSummaryBlock[] = [];
   disk: ResourcesSummaryBlock[] = [];
+  timestamp: string;
 }
 
 export class ResourcesSummaryBlock {
@@ -60,11 +61,11 @@ export type ResourceType = 'cpu' | 'memory' | 'disk';
 const COLOR_SCHEME = {
   domain: [
     '#46afe3',
-    '#df80ff',
-    '#5aa454',
-    '#ff8c00',
-    '#ffe600',
-    '#ff1c91',
+    '#bf5af2',
+    '#32d74b',
+    '#ff9f0a',
+    '#ffd60a',
+    '#ff2d55',
   ]
 };
 
@@ -93,14 +94,15 @@ export class ResourcesComponent implements OnInit, OnDestroy {
     { title: 'Storage', id: 2 },
     { title: 'Memory', id: 3 }
   ];
-  activeTabId: number = 3;
+  activeTabId: number = 1;
 
   reversedCheckboxState = false;
 
-  constructor(private store: Store<State>,
-              private zone: NgZone,
+  constructor(private zone: NgZone,
+              private store: Store<State>,
               private cdRef: ChangeDetectorRef,
-              private breakpointObserver: BreakpointObserver) { }
+              private breakpointObserver: BreakpointObserver) {
+  }
 
   ngOnInit(): void {
     this.handleSmallDevices();
@@ -168,18 +170,32 @@ export class ResourcesComponent implements OnInit, OnDestroy {
     chartData.memory = [];
     chartData.disk = [];
     chartData.cpu = [];
-
-    chartData.cpu.push({
-      name: 'CPU',
-      series: ResourcesComponent.getSeries(resources, 'cpu.node')
-    });
+    if (resources[0].cpu.protocolRunners) {
+      chartData.cpu.push({
+        name: 'TOTAL',
+        series: ResourcesComponent.getSeries(resources, 'cpu.total')
+      });
+      chartData.cpu.push({
+        name: 'NODE',
+        series: ResourcesComponent.getSeries(resources, 'cpu.node')
+      });
+      chartData.cpu.push({
+        name: 'PROTOCOL RUNNERS',
+        series: ResourcesComponent.getSeries(resources, 'cpu.protocolRunners')
+      });
+    } else {
+      chartData.cpu.push({
+        name: 'NODE',
+        series: ResourcesComponent.getSeries(resources, 'cpu.node')
+      });
+    }
 
     chartData.memory.push({
       name: 'TOTAL',
       series: ResourcesComponent.getSeries(resources, 'memory.total')
     });
     chartData.memory.push({
-      name: 'NODES',
+      name: 'NODE',
       series: ResourcesComponent.getSeries(resources, 'memory.node.resident')
     });
     if (resources[0].memory.protocolRunners) {
@@ -260,10 +276,17 @@ export class ResourcesComponent implements OnInit, OnDestroy {
   private createSummaryBlocks(resources: Array<Resource>): ResourcesSummary {
     const summary = new ResourcesSummary();
     const lastResource = resources[resources.length - 1];
-    summary.cpu.push(new ResourcesSummaryBlock('Load', lastResource.cpu.node, this.colorScheme.domain[0], '%'));
+    summary.timestamp = lastResource.timestamp;
+    if (lastResource.memory.protocolRunners) {
+      summary.cpu.push(new ResourcesSummaryBlock('Total', lastResource.cpu.total, this.colorScheme.domain[0], '%'));
+      summary.cpu.push(new ResourcesSummaryBlock('Node', lastResource.cpu.node, this.colorScheme.domain[1], '%'));
+      summary.cpu.push(new ResourcesSummaryBlock('Protocol runners', lastResource.cpu.protocolRunners, this.colorScheme.domain[2], '%'));
+    } else {
+      summary.cpu.push(new ResourcesSummaryBlock('Load', lastResource.cpu.node, this.colorScheme.domain[0], '%'));
+    }
 
     summary.memory.push(new ResourcesSummaryBlock('Total', lastResource.memory.total, this.colorScheme.domain[0], 'MB'));
-    summary.memory.push(new ResourcesSummaryBlock('Nodes', lastResource.memory.node.resident, this.colorScheme.domain[1], 'MB'));
+    summary.memory.push(new ResourcesSummaryBlock('Node', lastResource.memory.node.resident, this.colorScheme.domain[1], 'MB'));
     if (lastResource.memory.protocolRunners) {
       summary.memory.push(new ResourcesSummaryBlock(
         'Protocol runners',

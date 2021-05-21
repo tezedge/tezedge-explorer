@@ -1,7 +1,7 @@
 import {
   ChangeDetectionStrategy,
   Component,
-  Input,
+  Input, OnChanges,
   OnInit,
   TemplateRef,
   ViewChild,
@@ -30,7 +30,7 @@ const RANGES = [
   styleUrls: ['./resources-storage-mini-graph.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class ResourcesStorageMiniGraphComponent implements OnInit {
+export class ResourcesStorageMiniGraphComponent implements OnChanges {
 
   @Input() graphData: ResourceStorageQuery;
   @Input() operationName: string;
@@ -45,7 +45,7 @@ export class ResourcesStorageMiniGraphComponent implements OnInit {
   constructor(private overlay: Overlay,
               private viewContainerRef: ViewContainerRef) { }
 
-  ngOnInit(): void {
+  ngOnChanges(): void {
     this.buildTimeline();
   }
 
@@ -54,7 +54,7 @@ export class ResourcesStorageMiniGraphComponent implements OnInit {
 
     Object
       .keys(this.graphData)
-      .filter(key => key !== 'totalTime' && key !== 'calls')
+      .filter(key => key !== 'totalTime' && key !== 'actionsCount')
       .forEach((key: string, index: number) => {
         this.columns[index] = {
           ...this.graphData[key],

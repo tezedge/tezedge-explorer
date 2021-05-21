@@ -1,6 +1,7 @@
 :host {
   display: flex;
   flex-direction: column;
+  height: 100%;
   padding-left: 8px;
   padding-right: 8px;
   padding-top: 8px;
@@ -127,6 +128,16 @@
     }
 
     &:nth-child(5) {
+      min-width: 90px;
+      max-width: 90px;
+    }
+
+    &:nth-child(6) {
+      min-width: 90px;
+      max-width: 90px;
+    }
+
+    &:nth-child(7) {
       min-width: 65px;
       max-width: 65px;
     }

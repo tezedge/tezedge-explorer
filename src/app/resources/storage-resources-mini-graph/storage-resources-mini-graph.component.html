@@ -1,0 +1,74 @@
+<div fxFlexFill
+     fxLayout="column"
+     class="mini-graph"
+     [class.overview-graph]="isOverviewGraph"
+     [class.main-graph]="isMainGraph">
+  <div fxLayout="column"
+       [fxLayoutGap]="isOverviewGraph ? '5px' : '10px'"
+       class="graph-overview"
+       [class.minimal]="!isMainGraph">
+    <span class="operation-name text-nowrap">
+      {{ operationName }}
+      <span class="total-time">
+        {{ graphData.actionsCount | thousandTransform }} <span
+        class="text-white-4">calls</span> · {{ graphData.totalTime | timeTransform: false: false: true }}
+        <ng-container *ngIf="graphData.totalTimeRead">
+          <span class="text-white-4">total </span>
+          <span class="text-white-4">(</span>{{ graphData.totalTimeRead | timeTransform: false: false: true }}<span
+          class="text-white-4"> read, </span>
+          {{ graphData.totalTimeWrite | timeTransform: false: false: true }}<span class="text-white-4"> write)</span>
+        </ng-container>
+      </span>
+    </span>
+    <div fxLayoutAlign="start center" *ngIf="isMainGraph">
+      <svg-icon [icon]="'arrow-down'"></svg-icon>
+      <span class="calls-label">Total time</span>
+    </div>
+  </div>
+  <div fxLayout="row"
+       fxLayoutGap="4px">
+    <div fxLayout="column"
+         fxLayoutGap="6px"
+         class="y-steps">
+      <span *ngFor="let step of ySteps">{{ step }}</span>
+    </div>
+    <div class="d-flex flex-column">
+      <div class="cols-wrap flex-row align-end d-flex"
+           [class.overview-graph-col]="isOverviewGraph">
+        <div *ngFor="let col of graphData.columns; let i=index"
+             class="gr-col d-flex flex-column-reverse"
+             (mouseenter)="openPersonDetailsOverlay(col, i, $event)"
+             (mouseleave)="detachOverlay()">
+          <div *ngFor="let square of [].constructor(col.squareCount); let j=index"
+               [class.yellow-square]="isOverviewGraph ? j > 3 : i + j > 6"
+               [class.red-square]="isOverviewGraph ? j > 5 : i + j > 9"
+               class="square"></div>
+        </div>
+      </div>
+      <div *ngIf="xSteps.length"
+           class="x-steps d-flex flex-row text-capitalize">
+        <span *ngFor="let step of xSteps" class="truncate">{{ step }}</span>
+      </div>
+    </div>
+  </div>
+  <div fxLayoutAlign="start center" class="x-info"
+       fxLayoutGap="8px" *ngIf="isMainGraph">
+    <svg-icon [icon]="'arrow-right'"></svg-icon>
+    <span class="calls-label">{{ isOverviewGraph ? 'Slices' : 'Duration of call'}}</span>
+  </div>
+</div>
+
+<ng-template #tooltipTemplate
+             let-header="header"
+             let-count="count"
+             let-mean="mean"
+             let-max="max"
+             let-total="total">
+  <div class="tooltip-template">
+    <div class="text-white header">{{ header }}</div>
+    <div><span class="text-white">{{ count | thousandTransform }}</span> Calls</div>
+    <div *ngIf="mean !== undefined"><span class="text-white">{{ mean | timeTransform: false }}</span> Mean</div>
+    <div *ngIf="max !== undefined"><span class="text-white">{{ max | timeTransform: false }}</span> Max</div>
+    <div><span class="text-white">{{ total | timeTransform: false }}</span> Total Time</div>
+  </div>
+</ng-template>

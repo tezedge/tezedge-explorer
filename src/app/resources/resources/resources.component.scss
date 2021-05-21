@@ -4,20 +4,14 @@ $text-color: rgb(164, 164, 165);
 .resources-wizard {
   background-color: #2A2A2E;
   border-top-left-radius: 5px;
-  overflow-y: hidden;
 
-  .tabs-spacer {
-    height: 40px;
-    display: flex;
-
-    @media (min-width: 600px) {
-      display: none;
-    }
-  }
+  //@media (min-width: 1280px) {
+  //  overflow: hidden;
+  //}
 
   .tabs {
     border-bottom: 1px solid $faded-white;
-    padding: 9px 15px;
+    padding: 9px 10px 9px 15px;
     height: 40px;
 
     .tab {
@@ -32,58 +26,18 @@ $text-color: rgb(164, 164, 165);
       }
     }
 
-    .combo-box {
-      margin-right: 8px;
+    .node-switcher {
+      background-color: rgba(255, 255, 255, 0.05);
+      border-radius: 3px;
+      padding: 2px;
+
+      &:hover {
+        background-color: rgba(255, 255, 255, 0.25);
+      }
     }
 
     .reversed-checkbox {
       font-size: 12px;
-    }
-  }
-
-  .resources-container {
-    margin-left: auto;
-    margin-right: auto;
-    width: 100%;
-    overflow: auto;
-
-    .centered-container {
-      width: 100%;
-      margin: 10px auto;
-      max-height: unset !important;
-    }
-  }
-
-  .info-container {
-    background-color: #2A2A2E;
-
-    .info-header {
-      border-bottom: 1px solid $faded-white;
-      min-height: 40px;
-    }
-
-    .info-content-container {
-      @media (min-width: 1280px) {
-        border-left: 1px solid $faded-white;
-      }
-    }
-
-    .info-container-title {
-      border-top: 1px solid $faded-white;
-      margin: 0;
-      padding: 11px;
-      font-size: 12px;
-      color: $text-color;
-      font-weight: 400;
-    }
-
-    .additional-info {
-      opacity: 0;
-      transition: opacity 1s;
-
-      &.fade {
-        opacity: 1;
-      }
     }
   }
 }

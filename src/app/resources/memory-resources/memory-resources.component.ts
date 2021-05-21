@@ -48,8 +48,7 @@ export class MemoryResourcesComponent implements AfterViewInit, OnInit, OnDestro
   constructor(private zone: NgZone,
               private store: Store<State>,
               private cdRef: ChangeDetectorRef,
-              private treeMapFactory: TreeMapFactoryService) {
-  }
+              private treeMapFactory: TreeMapFactoryService) { }
 
   ngOnInit(): void {
     this.store.dispatch({ type: MemoryResourcesActionTypes.LoadResources, payload: { reversed: false } });

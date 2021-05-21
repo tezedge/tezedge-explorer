@@ -11,7 +11,7 @@
 
       <mat-select-trigger fxLayout="row"
                           fxLayoutAlign="start center">
-        {{ activeNode.name }}
+        <span class="truncate">{{ activeNode.name }}</span>
         <mat-icon [class.is-offline]="!activeNode.connected"
                   class="settings-node-status-icon">
           fiber_manual_record

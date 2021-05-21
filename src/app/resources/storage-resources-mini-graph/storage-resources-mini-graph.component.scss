@@ -4,6 +4,14 @@ $border-color: rgba(255, 255, 255, 0.1);
 .mini-graph {
   padding-right: 30px;
 
+  &.overview-graph {
+    padding-right: 0;
+
+    .graph-overview {
+      margin-bottom: 8px;
+    }
+  }
+
   .graph-overview {
     margin-bottom: 14px;
 
@@ -23,10 +31,6 @@ $border-color: rgba(255, 255, 255, 0.1);
         margin-left: 10px;
         font-size: 12px;
         color: rgba(255, 255, 255, 0.7);
-
-        .calls {
-          color: rgba(255, 255, 255, 0.4);
-        }
       }
     }
   }
@@ -38,10 +42,21 @@ $border-color: rgba(255, 255, 255, 0.1);
   background: repeating-linear-gradient(0deg, #2a2a2e, #2a2a2e 16px, $border-color 0.05em, $border-color 18px);
   border-bottom: 1px solid $border-color;
   padding-top: 2px;
+  margin-right: 10px;
 
-  .col {
+  &.overview-graph-col {
+    width: 322px;
+    background: repeating-linear-gradient(0deg, lighten(#1b1b1d, 5), lighten(#1b1b1d, 5) 16px, $border-color 0.05em, $border-color 18px);
+  }
+
+  .gr-col {
     min-width: 16px;
     cursor: pointer;
+
+    &:not(:last-child) {
+      padding-right: 2px;
+      min-width: 18px;
+    }
 
     &:hover .square {
       background-color: #fff !important;
@@ -51,6 +66,10 @@ $border-color: rgba(255, 255, 255, 0.1);
       width: 16px;
       height: 16px;
       background-color: rgba(255, 255, 255, 0.4);
+
+      &:not(:last-child) {
+        margin-top: 2px;
+      }
 
       &.yellow-square {
         background-color: #FF9F0A;
@@ -82,16 +101,20 @@ $border-color: rgba(255, 255, 255, 0.1);
 .x-steps {
   white-space: nowrap;
   padding-top: 15px;
-  height: 30px;
+  height: 25px;
   text-align: right;
 
   span {
     width: 32px;
-    height: 0;
+    height: 12px;
     margin-left: -14px;
-    transform: rotate(-60deg);
+    transform: rotate(-60deg) translate(6px, 1px);
     text-align: right;
   }
+}
+
+.x-info {
+  margin-top: 5px;
 }
 
 .main-graph .x-steps,
@@ -113,8 +136,10 @@ $border-color: rgba(255, 255, 255, 0.1);
   > div {
     margin-bottom: 8px;
   }
-}
 
-.text-white {
-  color: #fff;
+  .header {
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 4px;
+    padding: 6px 8px;
+  }
 }

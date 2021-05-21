@@ -6,13 +6,8 @@ mat-form-field .mat-select-value {
   color: #fff;
   background-color: rgba(255, 255, 255, 0.1);
   padding: 4px 10px;
-  border-radius: 4px;
+  border-radius: 3px;
   width: 100px;
-}
-
-.resources-select {
-  margin-top: -7px;
-  width: 90px;
 }
 
 .storage-details-select {
@@ -20,8 +15,7 @@ mat-form-field .mat-select-value {
   width: 125px;
 }
 
-.storage-details-select mat-option,
-.resources-select mat-option {
+.storage-details-select mat-option {
   height: 2em !important;
   line-height: 2em !important;
 }
@@ -47,7 +41,7 @@ mat-form-field .mat-select-value {
     background: unset !important;
   }
 
-  &.reversed-checkbox .mat-checkbox-inner-container{
+  &.reversed-checkbox .mat-checkbox-inner-container {
     transform: scale(0.9);
   }
 }

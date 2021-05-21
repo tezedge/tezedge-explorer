@@ -93,7 +93,7 @@ export class ResourcesComponent implements OnInit, OnDestroy {
     { title: 'Storage', id: 2 },
     { title: 'Memory', id: 3 }
   ];
-  activeTabId: number = 1;
+  activeTabId: number = 3;
 
   reversedCheckboxState = false;
 

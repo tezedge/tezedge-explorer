@@ -1,5 +1,5 @@
 <div class="active-resources"
-     fxFlex="24px"
+     fxFlex="30px"
      fxLayoutAlign="start center"
      *ngIf="activeResource">
   <div class="pointer"
@@ -14,6 +14,7 @@
 </div>
 
 <div #treeMapChart
+     [class.hidden]="!activeResource"
      class="tree-map">
 </div>
 

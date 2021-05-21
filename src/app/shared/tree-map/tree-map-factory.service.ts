@@ -139,8 +139,8 @@ export class TreeMapFactoryService {
                 ).concat(d.value.toLocaleString('fr-FR') + ' kb')
               )
               .join('tspan')
-              .attr('x', 3)
-              .attr('y', (d, i, nodes) => `${(i === nodes.length - 1 ? 1 : 0) * 0.3 + 1.1 + i * 0.9}em`)
+              .attr('x', 7)
+              .attr('y', (d, i, nodes) => `${0.5 + ((i === nodes.length - 1 ? 1 : 0) * 0.3 + 1.1 + i * 0.9)}em`)
               .attr('fill', '#fff')
               .attr('fill-opacity', (d, i, nodes) => i === nodes.length - 1 ? 0.7 : null)
               .attr('font-weight', (d, i, nodes) => i === nodes.length - 1 ? 'normal' : null)
@@ -153,8 +153,8 @@ export class TreeMapFactoryService {
             groupParam.selectAll('g')
               .attr('transform', d => `translate(${x(d.x0)},${y(d.y0)})`)
               .select('rect')
-              .attr('width', d => d === root ? 0 : x(d.x1) - x(d.x0))
-              .attr('height', d => d === root ? 0 : y(d.y1) - y(d.y0));
+              .attr('width', d => d === root ? 0 : x(d.x1) - x(d.x0) - 1)
+              .attr('height', d => d === root ? 0 : y(d.y1) - y(d.y0) - 1);
           }
 
           // When zooming in, draw the new nodes on top, and fade them in.

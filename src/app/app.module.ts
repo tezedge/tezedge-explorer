@@ -117,8 +117,10 @@ import { StorageResourcesEffects } from './resources/resources-storage/resources
 import { MemoryResourcesEffects } from './resources/memory-resources/memory-resources.effects';
 import { IconRegisterService } from './shared/design/icon/icon-register.service';
 import localeFr from '@angular/common/locales/fr';
+import localeEnGb from '@angular/common/locales/en-GB';
 
 registerLocaleData(localeFr, 'fr');
+registerLocaleData(localeEnGb, 'en');
 
 function loadIcons(matIconService: IconRegisterService): Function {
   return () => matIconService.loadIcons();
@@ -258,6 +260,7 @@ function loadIcons(matIconService: IconRegisterService): Function {
       multi: true
     },
     { provide: LOCALE_ID, useValue: 'fr'},
+    { provide: LOCALE_ID, useValue: 'en'},
   ],
   bootstrap: [AppComponent]
 })

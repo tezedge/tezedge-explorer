@@ -18,8 +18,8 @@
 
                 <div class="network-stats-card-right" *ngIf="networkStats?.downloadedBlocks>0">
 
-                    <span class="network-stats-card-right-content" [class.hidden]="!networkStats?.eta.trim()"
-                          style="font-weight:400;">{{ networkStats?.eta }} ETA</span>
+                    <span class="network-stats-card-right-content font-400" [class.hidden]="!networkStats?.eta.trim()">
+                      {{ networkStats?.eta }} ETA</span>
                     <span class="network-stats-card-right-content">{{ networkStats?.downloadedBlocks}}
                         level</span>
                     <span class="network-stats-card-right-content">{{networkStats?.downloadRate | number }} blocks/s</span>
@@ -45,11 +45,11 @@
                 <div class="network-stats-card-right" *ngIf="networkStats?.lastAppliedBlock?.level > 0 ">
 
                     <span [class.hidden]="!networkStats?.etaApplications.trim()"
-                          class="network-stats-card-right-content" style="font-weight: 400;">{{ networkStats?.etaApplications + ' ETA' }}</span>
+                          class="network-stats-card-right-content font-400">{{ networkStats?.etaApplications + ' ETA' }}</span>
                     <span class="network-stats-card-right-content"> {{ networkStats?.lastAppliedBlock?.level}}
                         level</span>
                     <span class="network-stats-card-right-content">
-                        {{ networkStats.currentApplicationSpeed / 60 | number:'1.1-1': 'fr' }} blocks/s </span>
+                        {{ networkStats.currentApplicationSpeed / 60 | number:'1.1-1' }} blocks/s </span>
 
                 </div>
 

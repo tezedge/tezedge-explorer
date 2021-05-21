@@ -1,8 +1,10 @@
 @import 'assets/styles/ngx-charts';
-@import 'assets/styles/ngx-json-viewer';
-@import 'assets/styles/utilities';
+@import 'assets/styles/utilities/layout';
+@import 'assets/styles/utilities/text';
 @import 'assets/styles/virtual-scroll-table';
 @import 'assets/styles/material/material-tooltip';
+@import 'assets/styles/material/material-form';
+@import 'assets/styles/material/material-icon';
 
 html,
 body {
@@ -11,6 +13,7 @@ body {
   margin: 0 !important;
   background-color: $color-background;
   font-weight: 300 !important;
+  overflow-y: hidden;
 }
 
 * {
@@ -458,11 +461,13 @@ mat-form-field .mat-form-field-underline {
   background-color: initial !important;
 }
 
-/* change arrow color in mat select */
-mat-form-field .mat-select-arrow {
-  color: #c4cfdc !important;
+.hide-arrow .mat-select-arrow {
   /* hide arrow in mat select*/
-  border: 0px;
+  border: 0;
+}
+
+.mat-select-arrow {
+  color: #c4cfdc !important;
 }
 
 /* hide number input arrows */
@@ -713,6 +718,7 @@ mat-form-field input[type='number'] {
 
 ::-webkit-scrollbar {
   width: 12px;
+  height: 12px;
   background-color: $color-table-border; //#F5F5F5;
 }
 
@@ -721,6 +727,9 @@ mat-form-field input[type='number'] {
   background-color: $color-border;
 }
 
+::-webkit-scrollbar-corner {
+  background: rgba(0, 0, 0, 0.02);
+}
 
 .mat-drawer-content {
   overflow: initial !important;
@@ -1120,10 +1129,6 @@ ngx-json-viewer .segment .segment-main .segment-key {
         &:last-of-type {
           padding-right: 16px;
         }
-
-        &.text-right {
-          text-align: right;
-        }
       }
     }
 
@@ -1164,10 +1169,6 @@ ngx-json-viewer .segment .segment-main .segment-key {
 
         &.muted {
           // color: fade-out($color-focus, 0.4) !important;
-        }
-
-        &.text-right {
-          text-align: right;
         }
       }
     }

@@ -1,0 +1,61 @@
+.text-capitalize {
+  text-transform: capitalize;
+}
+
+.text-uppercase {
+  text-transform: uppercase;
+}
+
+.text-nowrap {
+  white-space: nowrap;
+}
+
+.font-600 {
+  font-weight: 600;
+}
+
+.font-500 {
+  font-weight: 500;
+}
+
+.font-400 {
+  font-weight: 400;
+}
+
+.text-right {
+  text-align: right;
+}
+
+.pointer {
+  cursor: pointer;
+}
+
+.truncate {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.text-white {
+  color: #fff !important;
+}
+
+.text-white-4 {
+  color: rgba(255, 255, 255, 0.4) !important;
+}
+
+.text-white-7 {
+  color: rgba(255, 255, 255, 0.7) !important;
+}
+
+.text-gray {
+  color: rgba(255, 255, 255, 0.4) !important;
+}
+
+.text-red {
+  color: #FF453A !important;
+}
+
+.text-white {
+  color: white !important;
+}

@@ -17,25 +17,12 @@ export class StorageResourcesEffects {
   ResourcesLoadEffect$ = this.actions$.pipe(
     ofType(StorageResourcesActionTypes.LoadResources),
     withLatestFrom(this.store, (action: any, state: ObservedValueOf<Store<State>>) => ({ action, state })),
-    switchMap(({ action, state }) => {
-      const resourcesData$ = this.storageResourcesService.getStorageResources(state.settingsNode.activeNode.http)
+    switchMap(({ action, state }) =>
+      this.storageResourcesService.getStorageResources(state.settingsNode.activeNode.http, action.payload)
         .pipe(
           map((stats: StorageResourcesStats) => ({ type: StorageResourcesActionTypes.ResourcesLoadSuccess, payload: stats })),
           catchError(error => of({ type: StorageResourcesActionTypes.ResourcesLoadError, payload: error }))
-        );
-
-      // if (action.payload && action.payload.initialLoad) {
-      return resourcesData$;
-      // }
-      //
-      // this.resourcesDestroy$ = new Subject<void>();
-      //
-      // return timer(0, 120000)
-      //   .pipe(
-      //     takeUntil(this.resourcesDestroy$),
-      //     switchMap(() => resourcesData$)
-      //   );
-    })
+        ))
   );
 
   @Effect({ dispatch: false })

@@ -1,0 +1,53 @@
+mat-form-field .mat-select-value {
+  font-size: 12px !important;
+}
+
+.combo-box {
+  color: #fff;
+  background-color: rgba(255, 255, 255, 0.1);
+  padding: 4px 10px;
+  border-radius: 4px;
+  width: 100px;
+}
+
+.resources-select {
+  margin-top: -7px;
+  width: 90px;
+}
+
+.storage-details-select {
+  margin-top: -7px;
+  width: 125px;
+}
+
+.storage-details-select mat-option,
+.resources-select mat-option {
+  height: 2em !important;
+  line-height: 2em !important;
+}
+
+.mat-option {
+  background-color: #2a2b2e;
+
+  .mat-option-text {
+    font-size: 12px !important;
+  }
+}
+
+.mat-checkbox {
+  &.mat-checkbox-checked.mat-accent .mat-checkbox-background {
+    background-color: #204E8A;
+  }
+
+  .mat-checkbox-frame {
+    border-color: rgba(255, 255, 255, 0.1);
+  }
+
+  .mat-ripple-element {
+    background: unset !important;
+  }
+
+  &.reversed-checkbox .mat-checkbox-inner-container{
+    transform: scale(0.9);
+  }
+}

@@ -5,7 +5,7 @@ import { map } from 'rxjs/operators';
 import { Resource } from '../../shared/types/resources/resource.type';
 import { CpuResource } from '../../shared/types/resources/cpu-resources.type';
 import { DiskResource } from '../../shared/types/resources/disk-resource.type';
-import { MemoryResource, MemoryResourceUsage } from '../../shared/types/resources/memory-resource.type';
+import { SystemMemoryResource, MemoryResourceUsage } from '../../shared/types/resources/system-memory-resource.type';
 import { DatePipe } from '@angular/common';
 
 const MB_DIVISOR = 1048576;
@@ -25,12 +25,11 @@ export class ResourcesService {
   }
 
   private mapGetResourcesResponse(response: any): Resource[] {
-
     return response.reverse().map(responseItem => {
       const resource = new Resource();
       resource.timestamp = this.datePipe.transform(responseItem.timestamp * 1000, 'MM/dd, HH:mm:ss');
 
-      resource.memory = new MemoryResource();
+      resource.memory = new SystemMemoryResource();
       resource.memory.node = new MemoryResourceUsage();
       resource.memory.node.resident = responseItem.memory.node.resident_mem / MB_DIVISOR;
       resource.memory.node.virtual = responseItem.memory.node.virtual_mem / MB_DIVISOR;
@@ -58,6 +57,7 @@ export class ResourcesService {
       resource.disk.blockStorage = responseItem.disk.block_storage / GB_DIVISOR;
       resource.disk.contextIrmin = responseItem.disk.context_irmin / GB_DIVISOR;
       resource.disk.mainDb = responseItem.disk.main_db / GB_DIVISOR || undefined;
+      resource.disk.debugger = responseItem.disk.debugger / GB_DIVISOR || undefined;
       resource.disk.contextActions = responseItem.disk.context_actions / GB_DIVISOR || undefined;
       resource.disk.contextMerkleRocksDb = responseItem.disk.context_merkle_rocksdb / GB_DIVISOR || undefined;
       resource.disk.total = Object.values(resource.disk).filter(Boolean).reduce((total: number, current: number) => total + current, 0);

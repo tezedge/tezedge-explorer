@@ -3,14 +3,18 @@ import { CommonModule } from '@angular/common';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { SvgIconComponent } from './svg-icon/svg-icon.component';
 import { ReplaceCharacterPipe } from './pipes/replace-character.pipe';
-import { StorageBlockDetailsTimeTransformPipe } from '../storage/storage-block-details/storage-block-details-time-transform.pipe';
+import { TimeTransformPipe } from './pipes/time-transform.pipe';
+import { ThousandTransformPipe } from './pipes/thousand-transform.pipe';
+import { EtaTimePipe } from './pipes/eta-time.pipe';
 
 
 @NgModule({
   declarations: [
     SvgIconComponent,
     ReplaceCharacterPipe,
-    StorageBlockDetailsTimeTransformPipe,
+    TimeTransformPipe,
+    ThousandTransformPipe,
+    EtaTimePipe,
   ],
   imports: [
     CommonModule,
@@ -20,7 +24,9 @@ import { StorageBlockDetailsTimeTransformPipe } from '../storage/storage-block-d
     FlexLayoutModule,
     SvgIconComponent,
     ReplaceCharacterPipe,
-    StorageBlockDetailsTimeTransformPipe,
+    TimeTransformPipe,
+    ThousandTransformPipe,
+    EtaTimePipe,
   ]
 })
 export class TezedgeSharedModule {}

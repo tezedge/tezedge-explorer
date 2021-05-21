@@ -1,9 +1,9 @@
 export class StorageBlockDetailsOperationContext {
   data: {
     root: string;
-    meanTime: string;
-    maxTime: string;
-    totalTime: string;
+    meanTime: number;
+    maxTime: number;
+    totalTime: number;
     actionsCount: number;
   };
   mem: number;
@@ -11,12 +11,5 @@ export class StorageBlockDetailsOperationContext {
   findTree: number;
   add: number;
   addTree: number;
-  equal: number;
-  hash: number;
-  kind: number;
-  empty: number;
-  isEmpty: number;
-  list: number;
-  fold: number;
   remove: number;
 }

@@ -1,14 +1,47 @@
-<div class="storage-resources"
+<div class="storage-resources overflow-y-auto"
      fxLayout="column"
      fxLayoutAlign="start stretch"
      fxLayoutGap="10px"
      *ngIf="storageStats$ | async as storageStats">
+
   <div class="operation"
-       *ngFor="let operation of storageStats.operationsContext"
        fxLayout="column"
        fxLayoutAlign="start stretch">
-    <div class="text-uppercase"
-         fxFlex="30px">{{ operation.root | replaceCharacter: '_': ' '}}</div>
+    <div fxFlex="grow">
+      <div class="graph-list"
+           fxLayout="row"
+           fxLayoutAlign="space-between">
+        <app-resources-storage-mini-graph #miniGraph
+                                          [operationName]="'COMMIT'"
+                                          [graphData]="storageStats.commitContext"
+                                          [isMainGraph]="true"></app-resources-storage-mini-graph>
+        <app-resources-storage-mini-graph [operationName]="'CHECKOUT'"
+                                          [graphData]="storageStats.checkoutContext"
+                                          [isMainGraph]="true"></app-resources-storage-mini-graph>
+        <ng-container *ngIf="miniGraphRef"> <!--PLACEHOLDERS FOR SYMMETRICAL VIEW-->
+          <span [style.width.px]="miniGraphRef.nativeElement.offsetWidth"></span>
+          <span [style.width.px]="miniGraphRef.nativeElement.offsetWidth"></span>
+          <span [style.width.px]="miniGraphRef.nativeElement.offsetWidth"></span>
+          <span [style.width.px]="miniGraphRef.nativeElement.offsetWidth"></span>
+        </ng-container>
+      </div>
+    </div>
+  </div>
+
+  <div *ngFor="let operation of storageStats.operationsContext; let i=index"
+       class="operation"
+       fxLayout="column"
+       fxLayoutAlign="start stretch">
+    <div fxFlex="28px" class="slice-header">
+      <span class="text-uppercase">{{ operation.root | replaceCharacter: '_': ' '}}</span>
+      <span class="total-time">
+        {{ operation.actionsCount | thousandTransform }}<span class="grayish"> calls</span>
+        &nbsp;·&nbsp;
+        {{ operation.totalTime | timeTransform: false: false: true }}<span class="grayish"> total duration </span>
+        <span class="grayish">(</span>{{ operation.totalTimeRead | timeTransform: false: false: true }}<span class="grayish"> read, </span>
+        {{ operation.totalTimeWrite | timeTransform: false: false: true }}<span class="grayish"> write)</span>
+      </span>
+    </div>
     <div fxFlex="grow">
       <div class="graph-list"
            fxLayout="row"
@@ -24,10 +57,6 @@
                                           [graphData]="operation.add"></app-resources-storage-mini-graph>
         <app-resources-storage-mini-graph [operationName]="'ADD TREE'"
                                           [graphData]="operation.addTree"></app-resources-storage-mini-graph>
-        <app-resources-storage-mini-graph [operationName]="'LIST'"
-                                          [graphData]="operation.list"></app-resources-storage-mini-graph>
-        <app-resources-storage-mini-graph [operationName]="'FOLD'"
-                                          [graphData]="operation.fold"></app-resources-storage-mini-graph>
         <app-resources-storage-mini-graph [operationName]="'REMOVE'"
                                           [graphData]="operation.remove"></app-resources-storage-mini-graph>
       </div>

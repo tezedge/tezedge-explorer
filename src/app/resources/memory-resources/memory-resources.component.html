@@ -1,0 +1,86 @@
+<div class="active-resources"
+     fxFlex="24px"
+     fxLayoutAlign="start center"
+     *ngIf="activeResource">
+  <div class="pointer"
+       fxLayoutAlign="center center"
+       *ngIf="activeResource.name.executableName !== 'root'"
+       (click)="zoomToNode(breadcrumbs[breadcrumbs.length - 2])">
+    <mat-icon svgIcon="arrow-left"
+              class="icon-14 icon-white-7"></mat-icon>
+  </div>
+  <span class="text-white-7 font-500">{{ activeResource.name.executableName }}</span>
+  <span class="text-white-4">&nbsp;- {{ activeResource.value | number: '': 'fr' }} kb</span>
+</div>
+
+<div #treeMapChart
+     class="tree-map">
+</div>
+
+<div *ngIf="breadcrumbs.length"
+     fxLayoutAlign="start center"
+     fxLayoutGap="4px"
+     fxLayout="row"
+     #breadcrumbsRef
+     class="breadcrumbs">
+  <ng-container *ngFor="let breadcrumb of breadcrumbs">
+    <div class="breadcrumb text-nowrap"
+         (click)="zoomToNode(breadcrumb)">{{ breadcrumb.name.executableName }}</div>
+    <div class="d-flex">
+      <mat-icon class="icon-10"
+                svgIcon="chevron-right"></mat-icon>
+    </div>
+  </ng-container>
+</div>
+
+<table class="memory-table overflow-y-auto "
+       *ngIf="activeResource">
+  <thead>
+  <tr>
+    <th>%</th>
+    <th>Percentage</th>
+    <th>Executable</th>
+    <th>Size</th>
+    <th>Children</th>
+    <th>Function</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr *ngFor="let operation of activeResource.children"
+      [class.non-clickable]="!operation.children.length"
+      (click)="zoomToNode(operation)">
+    <ng-container *ngIf="operation.value / activeResource.value * 100 as percent">
+      <td>{{ percent | number: '1.0-1' }}%</td>
+      <td>
+        <div class="progress-background">
+          <div class="progress-background"
+               [class.yellow]="percent > 10"
+               [class.red]="percent > 50"
+               [style.width.%]="percent"></div>
+        </div>
+      </td>
+      <td class="text-nowrap">
+        <div class="truncate"
+             fxLayoutAlign="start center"
+             fxLayoutGap="8px"
+             fxLayout="row">
+          <mat-icon svgIcon="folder"
+                    class="icon-16"
+                    [class.purple]="operation.color === '#bf5af2'"
+                    [class.yellow]="operation.color === '#ffd60a'"
+                    [class.violet]="operation.color === '#5e5ce6'"
+                    [class.green]="operation.color === '#32d74b'"
+                    [class.red]="operation.color === '#ff2d55'"
+
+          ></mat-icon>
+          <span>{{ operation.name.executableName }}</span></div>
+      </td>
+      <td>{{ operation.value | number: '': 'fr' }} kb</td>
+      <td>{{ operation.children.length }}</td>
+      <td class="truncate">
+        <div>{{ operation.name.functionName || '-' }}</div>
+      </td>
+    </ng-container>
+  </tr>
+  </tbody>
+</table>

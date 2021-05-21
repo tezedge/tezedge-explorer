@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { select, Store } from '@ngrx/store';
 import { State } from '../../app.reducers';
 import { StorageResourcesActionTypes } from './resources-storage.actions';
@@ -16,17 +16,25 @@ import { Observable } from 'rxjs';
 export class ResourcesStorageComponent implements OnInit {
 
   storageStats$: Observable<StorageResourcesStats>;
+  miniGraphRef: ElementRef;
 
-  constructor(private store: Store<State>) { }
+  @ViewChild('miniGraph', { read: ElementRef }) set content(content: ElementRef) {
+    if (content) {
+      this.miniGraphRef = content;
+      this.cdRef.detectChanges();
+    }
+  }
+
+  constructor(private store: Store<State>,
+              private cdRef: ChangeDetectorRef) { }
 
   ngOnInit(): void {
-
     this.storageStats$ = this.store.pipe(
       untilDestroyed(this),
       select(state => state.resources.storageResources),
     );
 
-    this.store.dispatch({ type: StorageResourcesActionTypes.LoadResources });
+    this.store.dispatch({ type: StorageResourcesActionTypes.LoadResources, payload: 'tezedge' });
   }
 
 }

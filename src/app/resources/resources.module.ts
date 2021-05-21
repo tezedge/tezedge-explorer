@@ -10,7 +10,11 @@ import { ResourcesGraphComponent } from './resources-graph/resources-graph.compo
 import { MatTableModule } from '@angular/material/table';
 import { ResourcesStorageComponent } from './resources-storage/resources-storage.component';
 import { ResourcesStorageMiniGraphComponent } from './resources-storage-mini-graph/resources-storage-mini-graph.component';
-import { ResourcesMemoryComponent } from './resources-memory/resources-memory.component';
+import { MemoryResourcesComponent } from './memory-resources/memory-resources.component';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatSelectModule } from '@angular/material/select';
+import { MatIconModule } from '@angular/material/icon';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 
 
 @NgModule({
@@ -20,7 +24,7 @@ import { ResourcesMemoryComponent } from './resources-memory/resources-memory.co
     ResourcesGraphComponent,
     ResourcesStorageComponent,
     ResourcesStorageMiniGraphComponent,
-    ResourcesMemoryComponent,
+    MemoryResourcesComponent,
   ],
   imports: [
     CommonModule,
@@ -28,6 +32,10 @@ import { ResourcesMemoryComponent } from './resources-memory/resources-memory.co
     TezedgeSharedModule,
     TezedgeChartsModule,
     MatTableModule,
-  ]
+    MatFormFieldModule,
+    MatSelectModule,
+    MatIconModule,
+    MatCheckboxModule,
+  ],
 })
 export class ResourcesModule {}

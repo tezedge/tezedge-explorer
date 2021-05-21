@@ -1,0 +1,133 @@
+{
+  "name": {
+    "offset": null,
+    "executable": null,
+    "virtualAddress": "roooot",
+    "functionName": "rootFunc"
+  },
+  "value": 83812,
+  "frames": [
+    {
+      "name": {
+        "offset": "0018e854",
+        "executable": "libc-2.31.so",
+        "virtualAddress": "00007f4b0c0e9854",
+        "functionName": null
+      },
+      "value": 83812,
+      "frames": [
+        {
+          "name": {
+            "offset": "017f7b8d",
+            "executable": "light-node",
+            "virtualAddress": "000055f9d7f4db8d",
+            "functionName": "_ZN7rocksdb16MemTableInserter9PutCFImplEjRKNS_5SliceES3_NS_9ValueTypeE"
+          },
+          "value": 32760,
+          "frames": [
+            {
+                    "name": {
+                      "offset": "01a818ea",
+                      "executable": "light-node",
+                      "virtualAddress": "11919",
+                      "functionName": "testnested"
+                    },
+                    "value": 32760,
+                    "frames": []
+            }
+          ]
+        },
+        {
+          "name": {
+            "offset": "01a818ea",
+            "executable": "light-node",
+            "virtualAddress": "000055f9d81d78ea",
+            "functionName": "_ZN5tokio7runtime4task3raw7RawTask3new17h092c610dff5f73ebE"
+          },
+          "value": 25208,
+                                  "frames": []
+        },
+        {
+          "name": {
+            "offset": "0245d368",
+            "executable": "light-node",
+            "virtualAddress": "000055f9d8bb3368",
+            "functionName": "_rjem_rallocx"
+          },
+          "value": 17428,
+                                  "frames": []
+        },
+        {
+          "name": {
+            "offset": "01ad399b",
+            "executable": "light-node",
+            "virtualAddress": "000055f9d822999b",
+            "functionName": "_ZN97_$LT$core..future..from_generator..GenFuture$LT$T$GT$$u20$as$u20$core..future..future..Future$GT$4poll17hac43260c211b6db8E"
+          },
+          "value": 5240,
+                                 "frames": []
+        },
+        {
+          "name": {
+            "offset": "0102873a",
+            "executable": "light-node",
+            "virtualAddress": "000055f9d777e73a",
+            "functionName": "_ZN5tokio7runtime4task3raw7RawTask3new17he88c07fd2eb5c228E"
+          },
+          "value": 24,
+                               "frames": []
+        },
+        {
+          "name": {
+            "offset": "01733194",
+            "executable": "light-node",
+            "virtualAddress": "000055f9d7e89194",
+            "functionName": "_ZN7rocksdb13InternalStats11DumpCFStatsEPNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEE"
+          },
+          "value": 12,
+                               "frames": []
+        },
+        {
+          "name": {
+            "offset": "01ad3c7a",
+            "executable": "light-node",
+            "virtualAddress": "000055f9d8229c7a",
+            "functionName": "_ZN97_$LT$core..future..from_generator..GenFuture$LT$T$GT$$u20$as$u20$core..future..future..Future$GT$4poll17hefb5712630dd06cdE"
+          },
+          "value": 8,
+          "frames": []
+        },
+        {
+          "name": {
+            "offset": null,
+            "executable": null,
+            "virtualAddress": "0000000000000000",
+            "functionName": null
+          },
+          "value": 4,
+          "frames": []
+        },
+        {
+          "name": {
+            "offset": "00efe78a",
+            "executable": "light-node",
+            "virtualAddress": "000055f9d765478a",
+            "functionName": "_ZN97_$LT$core..future..from_generator..GenFuture$LT$T$GT$$u20$as$u20$core..future..future..Future$GT$4poll17hbcd6cf968993c017E"
+          },
+          "value": 0,
+          "frames": []
+        },
+        {
+          "name": {
+            "offset": "00efe78a",
+            "executable": "light-node",
+            "virtualAddress": "000055f9d765478a",
+            "functionName": "test"
+          },
+          "value": 3128,
+          "frames": []
+        }
+      ]
+    }
+  ]
+}

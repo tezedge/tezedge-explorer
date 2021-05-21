@@ -7,6 +7,8 @@
         "statements"
       ]
     },
+    "ban-types": false,
+    "forin": false,
     "array-type": false,
     "arrow-parens": false,
     "arrow-return-shorthand": true,

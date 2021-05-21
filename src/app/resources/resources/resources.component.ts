@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, NgZone, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, NgZone, OnDestroy, OnInit } from '@angular/core';
 import { select, Store } from '@ngrx/store';
 import { Resource } from '../../shared/types/resources/resource.type';
 import { Observable } from 'rxjs';
@@ -7,6 +7,11 @@ import { filter, map, skip } from 'rxjs/operators';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { BreakpointObserver } from '@angular/cdk/layout';
 import { State } from '../../app.reducers';
+import { SettingsNodeApi } from '../../shared/types/settings-node/settings-node-api.type';
+import { MatSelectChange } from '@angular/material/select';
+import { StorageResourcesActionTypes } from '../resources-storage/resources-storage.actions';
+import { MemoryResourcesActionTypes } from '../memory-resources/memory-resources.actions';
+import { MatCheckboxChange } from '@angular/material/checkbox';
 
 
 class ChartData {
@@ -83,21 +88,29 @@ export class ResourcesComponent implements OnInit, OnDestroy {
   activeSummary: ResourceType = 'disk';
 
   private isSmallDevice: boolean;
-  readonly tabs = [
+  tabs = [
     { title: 'System overview', id: 1 },
     { title: 'Storage', id: 2 },
-    // { title: 'Memory', id: 3 },
+    { title: 'Memory', id: 3 }
   ];
   activeTabId: number = 1;
 
+  reversedCheckboxState = false;
+
   constructor(private store: Store<State>,
               private zone: NgZone,
-              private breakpointObserver: BreakpointObserver) {}
+              private cdRef: ChangeDetectorRef,
+              private breakpointObserver: BreakpointObserver) { }
 
   ngOnInit(): void {
     this.handleSmallDevices();
     this.listenToResourcesChange();
+    this.listenToNodeChange();
     this.getResources();
+  }
+
+  onTabChange(): void {
+    this.reversedCheckboxState = false;
   }
 
   private listenToResourcesChange(): void {
@@ -111,8 +124,27 @@ export class ResourcesComponent implements OnInit, OnDestroy {
     );
   }
 
+  private listenToNodeChange(): void {
+    this.store.pipe(
+      untilDestroyed(this),
+      select(state => state.settingsNode.activeNode),
+    ).subscribe((settingsNode: SettingsNodeApi) => {
+      if (settingsNode.id === 'ocaml' && this.tabs.find(tab => tab.title === 'Memory')) {
+        this.activeTabId = this.activeTabId === 3 ? 1 : this.activeTabId;
+        this.tabs.splice(this.tabs.findIndex(tab => tab.title === 'Memory'), 1);
+      } else if (settingsNode.id !== 'ocaml' && !this.tabs.find(tab => tab.title === 'Memory')) {
+        this.tabs.push({ title: 'Memory', id: 3 });
+      }
+      this.cdRef.detectChanges();
+    });
+  }
+
   toggleActiveSummary(value: ResourceType): void {
     this.activeSummary = value;
+  }
+
+  getStorageStatistics(event: MatSelectChange): void {
+    this.store.dispatch({ type: StorageResourcesActionTypes.LoadResources, payload: event.value });
   }
 
   private handleSmallDevices(): void {
@@ -130,7 +162,6 @@ export class ResourcesComponent implements OnInit, OnDestroy {
   }
 
   private createChartData(resources: Array<Resource>): ChartData {
-    resources = resources.slice(0,150);
     this.resourcesSummary = this.createSummaryBlocks(resources);
 
     const chartData = new ChartData();
@@ -175,6 +206,10 @@ export class ResourcesComponent implements OnInit, OnDestroy {
     chartData.disk.push({
       name: 'CONTEXT IRMIN',
       series: ResourcesComponent.getSeries(resources, 'disk.contextIrmin')
+    });
+    chartData.disk.push({
+      name: 'DEBUGGER',
+      series: ResourcesComponent.getSeries(resources, 'disk.debugger')
     });
     if (resources[0].disk.contextActions) {
       chartData.disk.push({
@@ -246,6 +281,7 @@ export class ResourcesComponent implements OnInit, OnDestroy {
       ));
     }
 
+    summary.disk.push(new ResourcesSummaryBlock('Total', lastResource.disk.total, this.colorScheme.domain[0], 'GB'));
     summary.disk.push(new ResourcesSummaryBlock(
       'Block storage',
       lastResource.disk.blockStorage,
@@ -253,6 +289,7 @@ export class ResourcesComponent implements OnInit, OnDestroy {
       'GB'
     ));
     summary.disk.push(new ResourcesSummaryBlock('Context Irmin', lastResource.disk.contextIrmin, this.colorScheme.domain[2], 'GB'));
+    summary.disk.push(new ResourcesSummaryBlock('Debugger', lastResource.disk.debugger, this.colorScheme.domain[3], 'GB'));
     if (lastResource.disk.contextActions) {
       summary.disk.push(
         new ResourcesSummaryBlock(
@@ -274,12 +311,20 @@ export class ResourcesComponent implements OnInit, OnDestroy {
     if (lastResource.disk.mainDb) {
       summary.disk.push(new ResourcesSummaryBlock('Main DB', lastResource.disk.mainDb, this.colorScheme.domain[5], 'GB'));
     }
-    summary.disk.push(new ResourcesSummaryBlock('Total', lastResource.disk.total, this.colorScheme.domain[0], 'GB'));
 
     return summary;
   }
 
   ngOnDestroy(): void {
     this.store.dispatch({ type: ResourcesActionTypes.ResourcesClose });
+  }
+
+  onReversedCheckboxChange(event: MatCheckboxChange): void {
+    this.reversedCheckboxState = event.checked;
+    this.cdRef.detectChanges();
+    this.store.dispatch({
+      type: MemoryResourcesActionTypes.LoadResources,
+      payload: { reversed: this.reversedCheckboxState }
+    });
   }
 }

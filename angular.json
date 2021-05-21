@@ -24,9 +24,6 @@
                 "src/assets/styles"
               ]
             },
-            "allowedCommonJsDependencies": [
-              "crypto-js"
-            ],
             "aot": true,
             "assets": [
               "src/favicon.ico",

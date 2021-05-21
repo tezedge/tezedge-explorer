@@ -17,7 +17,7 @@ import { State } from '../../app.reducers';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { MemoryResource } from '../../shared/types/resources/memory/memory-resource.type';
 import { MemoryResourcesActionTypes } from './memory-resources.actions';
-import { filter } from 'rxjs/operators';
+import { delay, filter } from 'rxjs/operators';
 
 // @ts-ignore
 import * as tree from './small-tree.json';
@@ -48,10 +48,17 @@ export class MemoryResourcesComponent implements AfterViewInit, OnInit, OnDestro
   constructor(private zone: NgZone,
               private store: Store<State>,
               private cdRef: ChangeDetectorRef,
-              private treeMapFactory: TreeMapFactoryService) { }
+              private treeMapFactory: TreeMapFactoryService) {
+  }
 
   ngOnInit(): void {
     this.store.dispatch({ type: MemoryResourcesActionTypes.LoadResources, payload: { reversed: false } });
+    this.store.pipe(
+      untilDestroyed(this),
+      select(state => state.app),
+      filter(() => !!this.activeResource),
+      delay(400)
+    ).subscribe(() => this.createTreemap(this.activeResource));
   }
 
   ngAfterViewInit(): void {
@@ -107,10 +114,6 @@ export class MemoryResourcesComponent implements AfterViewInit, OnInit, OnDestro
     setTimeout(() => this.breadcrumbsRef.nativeElement.scroll({ left: 10000, behavior: 'smooth' }), 10);
   }
 
-  backOneNode(): void {
-    // this.
-  }
-
   ngOnDestroy(): void {
     this.store.dispatch({ type: MemoryResourcesActionTypes.ResourcesClose });
     this.removeD3Tooltip();
@@ -118,6 +121,8 @@ export class MemoryResourcesComponent implements AfterViewInit, OnInit, OnDestro
 
   private removeD3Tooltip(): void {
     const tooltip = document.querySelector('.d3-tooltip');
-    if (tooltip) { tooltip.remove(); }
+    if (tooltip) {
+      tooltip.remove();
+    }
   }
 }

@@ -22,9 +22,9 @@ export class ResourcesGraphComponent {
   @Input() curve: any = curveCardinal;
   @Input() formattingType: 'percentage' | 'GB' | 'MB' = 'GB';
 
-  @Output() graphClick = new EventEmitter<ResourceType>();
+  @Output() graphHover = new EventEmitter<ResourceType>();
 
   toggleActiveSummary(): void {
-    this.graphClick.emit(this.resourceType);
+    this.graphHover.emit(this.resourceType);
   }
 }

@@ -1,8 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-
-import { select, Store } from '@ngrx/store';
-import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { filter } from 'rxjs/operators';
+import { Store } from '@ngrx/store';
+import { UntilDestroy } from '@ngneat/until-destroy';
+import { State } from '../app.reducers';
 
 @UntilDestroy()
 @Component({
@@ -13,7 +12,7 @@ import { filter } from 'rxjs/operators';
 export class MonitoringComponent implements OnInit, OnDestroy {
 
   constructor(
-    private store: Store<any>,
+    private store: Store<State>,
   ) { }
 
   ngOnInit(): void {
@@ -21,11 +20,7 @@ export class MonitoringComponent implements OnInit, OnDestroy {
   }
 
   private initMonitoring(): void {
-    this.store.pipe(
-      untilDestroyed(this),
-      select(state => state.settingsNode.activeNode),
-      filter(api => api.connected)
-    ).subscribe(() => this.store.dispatch({ type: 'MONITORING_LOAD' }));
+    this.store.dispatch({ type: 'MONITORING_LOAD' });
   }
 
   ngOnDestroy(): void {

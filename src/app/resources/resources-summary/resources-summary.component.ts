@@ -11,5 +11,6 @@ export class ResourcesSummaryComponent {
 
   @Input() summaryBlocks: ResourcesSummaryBlock[];
   @Input() resourceType: ResourceType;
+  @Input() time: string;
 
 }

@@ -63,7 +63,7 @@ export function reducer(state: NetworkStats = initialState, action): NetworkStat
                 lastAppliedBlock: {
                     level: action.payload.level,
                 },
-                etaApplications: getETA(etaApplicationSeconds)
+                etaApplications: etaApplicationSeconds === 0 ? getETA(etaApplicationSeconds) : 'Infinity'
             };
         }
 

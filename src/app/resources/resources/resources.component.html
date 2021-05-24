@@ -1,7 +1,6 @@
 <div fxFlexFill
      class="resources-wizard">
-  <div fxHide.gt-sm
-       [style.height.px]="40"></div>
+  <div class="tabs-spacer"></div>
   <div fxFlexFill
        fxLayout="column"
        fxLayoutAlign="start stretch">
@@ -53,6 +52,7 @@
                  [class.fade]="chartData"
                  [style.transition-delay.s]="0.2">
               <app-resources-summary [summaryBlocks]="resourcesSummary[activeSummary]"
+                                     [time]="resourcesSummary.timestamp"
                                      [resourceType]="activeSummary"></app-resources-summary>
             </div>
           </ng-container>
@@ -76,7 +76,7 @@
                              [xTicksValues]="chartData.xTicksValues"
                              [colorScheme]="colorScheme"
                              [formattingType]="'percentage'"
-                             (graphClick)="toggleActiveSummary($event)"></app-resources-graph>
+                             (graphHover)="toggleActiveSummary($event)"></app-resources-graph>
 
         <app-resources-graph [chartData]="chartData?.memory"
                              [transitionDelay]="0.4"
@@ -88,7 +88,7 @@
                              [xTicksValues]="chartData.xTicksValues"
                              [colorScheme]="colorScheme"
                              [formattingType]="'MB'"
-                             (graphClick)="toggleActiveSummary($event)"></app-resources-graph>
+                             (graphHover)="toggleActiveSummary($event)"></app-resources-graph>
 
         <app-resources-graph [chartData]="chartData?.disk"
                              [transitionDelay]="0.6"
@@ -99,7 +99,7 @@
                              [yAxisTickFormatting]="yAxisGigaBytesConversion"
                              [xTicksValues]="chartData.xTicksValues"
                              [colorScheme]="colorScheme"
-                             (graphClick)="toggleActiveSummary($event)"></app-resources-graph>
+                             (graphHover)="toggleActiveSummary($event)"></app-resources-graph>
 
       </div>
     </div>

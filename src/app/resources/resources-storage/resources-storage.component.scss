@@ -9,6 +9,13 @@ $border-color: rgba(255, 255, 255, 0.1);
     border-radius: 5px;
     padding-top: 7px;
 
+    .overview {
+      font-size: 14px;
+      padding: 10px;
+      border: 1px solid $border-color;
+      border-radius: 4px;
+    }
+
     &:first-child {
       padding-top: 10px;
     }

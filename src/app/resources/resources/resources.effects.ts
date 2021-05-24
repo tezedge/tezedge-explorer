@@ -50,5 +50,5 @@ export class ResourcesEffects {
 
   constructor(private resourcesService: ResourcesService,
               private actions$: Actions,
-              private store: Store<any>) { }
+              private store: Store<State>) { }
 }

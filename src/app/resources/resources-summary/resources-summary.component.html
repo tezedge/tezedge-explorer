@@ -1,7 +1,10 @@
 <div class="details-container">
   <div class="list-group"
        fxLayout="column">
-    <div class="summary-row text-uppercase text-white-4">{{ resourceType }} summary</div>
+    <div class="summary-row text-uppercase text-white-4 d-flex flex-between">
+      <span>{{ resourceType }} summary</span>
+      <span>{{ time }}</span>
+    </div>
     <div *ngFor="let block of summaryBlocks"
          class="summary-row"
          fxLayoutAlign="space-between center">

@@ -54,7 +54,7 @@ export class ResourcesStorageMiniGraphComponent implements OnChanges {
 
     Object
       .keys(this.graphData)
-      .filter(key => key !== 'totalTime' && key !== 'calls')
+      .filter(key => key !== 'totalTime' && key !== 'actionsCount')
       .forEach((key: string, index: number) => {
         this.columns[index] = {
           ...this.graphData[key],

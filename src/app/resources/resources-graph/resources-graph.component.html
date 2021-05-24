@@ -1,7 +1,7 @@
 <div fxLayout="row"
      [class.fade]="chartData"
      [style.transition-delay.s]="transitionDelay"
-     (click)="toggleActiveSummary()"
+     (mouseenter)="toggleActiveSummary()"
      [ngClass.lt-md]="'small-device'"
      class="resource-category-block">
   <div class="rotated-label" fxFlex="33px" fxHide.lt-md><span>{{ rotatedLabel }}</span></div>

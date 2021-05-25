@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable, of } from 'rxjs';
+import { Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { MemoryResource } from '../../shared/types/resources/memory/memory-resource.type';
 import { map } from 'rxjs/operators';
@@ -20,6 +20,7 @@ export class MemoryResourcesService {
   getMemoryResources(api: string, reversed: boolean, threshold: number = 512): Observable<MemoryResource> {
     // return of(this.serverData)
     //   .pipe(map(response => this.mapMemoryResponse(response)));
+    api = 'http://debug.dev.tezedge.com:17832';
     return this.http.get<MemoryResource>(`${api}/v1/tree?threshold=${threshold}&reverse=${reversed}`)
       .pipe(map(response => this.mapMemoryResponse(response)));
   }

@@ -4,5 +4,6 @@ export class MemoryResource {
   name: MemoryResourceName;
   children: MemoryResource[];
   value?: number;
+  cacheValue?: number;
   color?: string;
 }

@@ -42,6 +42,8 @@
     <th>Percentage</th>
     <th>Executable</th>
     <th>Size</th>
+    <th>Cache</th>
+    <th>Without Cache</th>
     <th>Children</th>
     <th>Function</th>
   </tr>
@@ -75,6 +77,8 @@
           <span>{{ operation.name.executableName }}</span></div>
       </td>
       <td>{{ operation.value | number: '': 'fr' }} kb</td>
+      <td>{{ operation.cacheValue | number: '': 'fr' }} kb</td>
+      <td>{{ operation.value - operation.cacheValue | number: '': 'fr' }} kb</td>
       <td>{{ operation.children.length }}</td>
       <td class="truncate">
         <div>{{ operation.name.functionName || '-' }}</div>

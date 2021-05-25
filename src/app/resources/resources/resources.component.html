@@ -1,6 +1,5 @@
 <div fxFlexFill
-     class="resources-wizard">
-  <div class="tabs-spacer"></div>
+     class="resources-wizard overflow-x-hidden">
   <div fxFlexFill
        fxLayout="column"
        fxLayoutAlign="start stretch">
@@ -16,16 +15,11 @@
           {{ tab.title }}
         </div>
       </div>
-      <mat-form-field *ngIf="activeTabId === 2"
-                      class="combo-box">
-        <mat-select [value]="'tezedge'"
-                    panelClass="resources-select"
-                    disableOptionCentering
-                    (selectionChange)="getStorageStatistics($event)">
-          <mat-option value="tezedge">TezEdge</mat-option>
-          <mat-option value="irmin">Irmin</mat-option>
-        </mat-select>
-      </mat-form-field>
+      <mat-icon *ngIf="activeTabId === 2" (click)="getStorageStatistics()"
+                svgIcon="switch" class="icon-20 icon-white-4 pointer node-switcher"
+                [matTooltip]="'Current: ' + storageNodeStats"
+                matTooltipPosition="left"
+                matTooltipShowDelay="600"></mat-icon>
       <mat-checkbox *ngIf="activeTabId === 3"
                     disableRipple
                     class="reversed-checkbox text-white-7"
@@ -38,7 +32,7 @@
          fxLayout="column"
          fxLayout.gt-md="row-reverse"
          fxLayoutAlign="start stretch"
-         class="resources-container">
+         class="resources-container overflow-hidden">
       <div class="info-container"
            fxFlex.gt-md="20vw"
            fxLayout="column">
@@ -64,7 +58,7 @@
            fxLayout="column"
            fxLayoutAlign="start stretch"
            fxLayoutGap="10px"
-           class="centered-container">
+           class="centered-container overflow-y-auto">
 
         <app-resources-graph [chartData]="chartData?.cpu"
                              [transitionDelay]="0.2"
@@ -103,9 +97,9 @@
 
       </div>
     </div>
-    <app-resources-storage *ngIf="activeTabId === 2"
+    <app-storage-resources *ngIf="activeTabId === 2"
                            class="overflow-hidden"
-                           fxFlex="grow"></app-resources-storage>
+                           fxFlex="grow"></app-storage-resources>
     <app-memory-resources *ngIf="activeTabId === 3"
                           class="overflow-hidden"
                           fxFlex="grow"></app-memory-resources>

@@ -51,18 +51,17 @@ export class ResourcesService {
 
       resource.cpu = new CpuResource();
       resource.cpu.node = responseItem.cpu.node;
-      resource.cpu.protocolRunners = responseItem.cpu.protocol_runners || undefined;
+      resource.cpu.protocolRunners = responseItem.cpu.protocol_runners;
       resource.cpu.total = Object.values(resource.cpu).filter(Boolean).reduce((total: number, current: number) => total + current, 0);
 
       resource.disk = new DiskResource();
       resource.disk.blockStorage = responseItem.disk.block_storage / GB_DIVISOR;
       resource.disk.contextIrmin = responseItem.disk.context_irmin / GB_DIVISOR;
-      resource.disk.mainDb = responseItem.disk.main_db / GB_DIVISOR || undefined;
-      resource.disk.debugger = responseItem.disk.debugger / GB_DIVISOR || undefined;
-      resource.disk.contextActions = responseItem.disk.context_actions / GB_DIVISOR || undefined;
-      resource.disk.contextMerkleRocksDb = responseItem.disk.context_merkle_rocksdb / GB_DIVISOR || undefined;
+      resource.disk.mainDb = responseItem.disk.main_db / GB_DIVISOR;
+      resource.disk.debugger = responseItem.disk.debugger / GB_DIVISOR;
+      resource.disk.contextActions = responseItem.disk.context_actions / GB_DIVISOR;
+      resource.disk.contextMerkleRocksDb = responseItem.disk.context_merkle_rocksdb / GB_DIVISOR;
       resource.disk.total = Object.values(resource.disk).filter(Boolean).reduce((total: number, current: number) => total + current, 0);
-
       return resource;
     });
   }

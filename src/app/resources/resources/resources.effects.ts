@@ -15,7 +15,7 @@ export class ResourcesEffects {
 
   @Effect()
   ResourcesLoadEffect$ = this.actions$.pipe(
-    ofType(ResourcesActionTypes.LoadResources, 'APP_MENU_SIZE_CHANGE'),
+    ofType(ResourcesActionTypes.LoadResources),
     withLatestFrom(this.store, (action: any, state: ObservedValueOf<Store<State>>) => ({ action, state })),
     switchMap(({ action, state }) => {
       const resourcesData$ = this.resourcesService.getResources(state.settingsNode.activeNode.monitoring)

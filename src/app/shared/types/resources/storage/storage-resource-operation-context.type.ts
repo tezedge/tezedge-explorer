@@ -1,4 +1,4 @@
-import { ResourceStorageQuery } from './resource-storage-operation.type';
+import { ResourceStorageQuery } from './storage-resource-operation.type';
 
 export class StorageResourceOperationContext {
   root: string;

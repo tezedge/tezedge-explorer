@@ -1,42 +1,67 @@
 import {
   ChangeDetectionStrategy,
   Component,
-  Input, OnChanges,
-  OnInit,
+  Input,
+  OnDestroy,
   TemplateRef,
   ViewChild,
   ViewContainerRef
 } from '@angular/core';
-import { ResourceStorageQuery } from '../../shared/types/resources/storage/resource-storage-operation.type';
+import { ResourceStorageQuery } from '../../shared/types/resources/storage/storage-resource-operation.type';
 import { Overlay, OverlayRef } from '@angular/cdk/overlay';
 import { TemplatePortal } from '@angular/cdk/portal';
-import { ResourceStorageQueryDetails } from '../../shared/types/resources/storage/resource-storage-operation-usage-entry.type';
+import { ResourceStorageQueryDetails } from '../../shared/types/resources/storage/storage-resource-operation-usage-entry.type';
 
 const RANGES = [
-  '1μs - 10μs',
-  '10μs - 100μs',
-  '100μs - 1ms',
-  '1ms - 10ms',
-  '10ms - 100ms',
-  '100ms - 1s',
-  '1s - 10s',
-  '10s - 100s',
-  'Above 100s'
+  'Range 1μs - 10μs',
+  'Range 10μs - 100μs',
+  'Range 100μs - 1ms',
+  'Range 1ms - 10ms',
+  'Range 10ms - 100ms',
+  'Range 100ms - 1s',
+  'Range 1s - 10s',
+  'Range 10s - 100s',
+  'Range > 100s'
+];
+
+const X_STEPS = [
+  '1μs',
+  '10μs',
+  '100μs',
+  '1ms',
+  '10ms',
+  '100ms',
+  '1s',
+  '10s',
+  '100s'
+];
+
+const Y_STEPS = [
+  '100s',
+  '10s',
+  '1s',
+  '100ms',
+  '10ms',
+  '1ms',
+  '100μs',
+  '10μs',
 ];
 
 @Component({
-  selector: 'app-resources-storage-mini-graph',
-  templateUrl: './resources-storage-mini-graph.component.html',
-  styleUrls: ['./resources-storage-mini-graph.component.scss'],
+  selector: 'app-storage-resources-mini-graph',
+  templateUrl: './storage-resources-mini-graph.component.html',
+  styleUrls: ['./storage-resources-mini-graph.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class ResourcesStorageMiniGraphComponent implements OnChanges {
+export class StorageResourcesMiniGraphComponent implements OnDestroy {
 
   @Input() graphData: ResourceStorageQuery;
   @Input() operationName: string;
   @Input() isMainGraph: boolean;
-
-  columns: Array<{ squareCount: number } & { [p in keyof ResourceStorageQueryDetails]: number; }>;
+  @Input() isOverviewGraph: boolean;
+  @Input() tooltipHeaders: string[];
+  @Input() xSteps: string[] = X_STEPS;
+  @Input() ySteps: string[] = Y_STEPS;
 
   @ViewChild('tooltipTemplate') private tooltipTemplate: TemplateRef<any>;
 
@@ -44,24 +69,6 @@ export class ResourcesStorageMiniGraphComponent implements OnChanges {
 
   constructor(private overlay: Overlay,
               private viewContainerRef: ViewContainerRef) { }
-
-  ngOnChanges(): void {
-    this.buildTimeline();
-  }
-
-  private buildTimeline(): void {
-    this.columns = [];
-
-    Object
-      .keys(this.graphData)
-      .filter(key => key !== 'totalTime' && key !== 'actionsCount')
-      .forEach((key: string, index: number) => {
-        this.columns[index] = {
-          ...this.graphData[key],
-          squareCount: ResourcesStorageMiniGraphComponent.getSquareCount(this.graphData[key].totalTime)
-        };
-      });
-  }
 
   openPersonDetailsOverlay(column: ResourceStorageQueryDetails, index: number, event: MouseEvent): void {
     if (this.overlayRef && this.overlayRef.hasAttached()) {
@@ -86,7 +93,7 @@ export class ResourcesStorageMiniGraphComponent implements OnChanges {
     event.stopPropagation();
     const context = this.tooltipTemplate
       .createEmbeddedView({
-        range: RANGES[index],
+        header: this.tooltipHeaders ? this.tooltipHeaders[index].toUpperCase() : RANGES[index],
         count: column.count,
         total: column.totalTime,
         mean: column.meanTime,
@@ -101,14 +108,9 @@ export class ResourcesStorageMiniGraphComponent implements OnChanges {
     this.overlayRef.detach();
   }
 
-  private static getSquareCount(totalTimeInSeconds: number): number {
-    const TEN_MICROSECONDS_FACTOR = 100000;
-    let squareCount = 0;
-    let timeInTenMicroseconds = totalTimeInSeconds * TEN_MICROSECONDS_FACTOR;
-    while (timeInTenMicroseconds > 1) {
-      timeInTenMicroseconds /= 10;
-      squareCount++;
+  ngOnDestroy(): void {
+    if (this.overlayRef && this.overlayRef.hasAttached()) {
+      this.overlayRef.detach();
     }
-    return Math.min(squareCount, 8);
   }
 }

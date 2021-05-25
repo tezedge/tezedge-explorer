@@ -26,15 +26,20 @@
                  fxLayoutGap="10px"
                  fxLayoutAlign="start center">
                 <div class="toolbar-divider"></div>
-                <span>
-                    SYNC
+                <div>
+                    BOOTSTRAP
                     <span class="text-white">
                         {{ (networkStats?.downloadedBlocks / (networkStats?.currentBlockCount * 0.01)) || 0.0 | number:'1.1-1'}}%
+                    </span>
+                </div>
+                <div>
+                    APPLIED OPERATIONS
+                    <span class="text-white">
                         {{ (networkStats?.lastAppliedBlock?.level / (networkStats?.currentBlockCount * 0.01)) || 0.0 | number:'1.1-1'}}%
                     </span>
-                </span>
-                <span>CURRENT BLOCK <span class="text-white">{{ networkStats.lastAppliedBlock.level }}</span></span>
-                <span *ngIf="settingsNodeProtocol$ | async as protocol">PROTOCOL <span class="text-white">{{ protocol | slice: 0: 10 }}</span></span>
+                </div>
+                <div>CURRENT BLOCK <span class="text-white">{{ networkStats.lastAppliedBlock.level }}</span></div>
+                <div *ngIf="settingsNodeProtocol$ | async as protocol">PROTOCOL <span class="text-white">{{ protocol | slice: 0: 10 }}</span></div>
             </div>
             <div fxLayout="row"
                  fxLayoutAlign="center center">
@@ -51,7 +56,7 @@
 
                 <button class="theme-switcher"
                         mat-button
-                        style="font-size: 12px;font-weight: 300; height: 28px; min-width: 24px; padding: 0px 6px 0px 6px;">
+                        style="font-size: 12px;font-weight: 300; height: 28px; min-width: 24px; padding: 2px 6px 0px 6px;">
                     <mat-icon *ngIf="app.theme.name === 'dark'"
                               style="font-size:12px; opacity:0.3"
                               (click)="changeTheme('light')">wb_sunny
@@ -84,8 +89,7 @@
         </mat-sidenav>
 
         <!-- Content -->
-        <mat-sidenav-content class="sidenav-content"
-                             [class.not-visible]="!app.sidenav.isVisible">
+        <mat-sidenav-content class="sidenav-content">
             <div class="sidenav-content-container"
                  fxFlexFill>
                 <router-outlet></router-outlet>

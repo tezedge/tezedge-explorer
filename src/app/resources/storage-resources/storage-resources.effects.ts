@@ -3,7 +3,7 @@ import { Actions, Effect, ofType } from '@ngrx/effects';
 import { catchError, map, switchMap, tap, withLatestFrom } from 'rxjs/operators';
 import { ObservedValueOf, of, Subject } from 'rxjs';
 import { Store } from '@ngrx/store';
-import { StorageResourcesActionTypes } from './resources-storage.actions';
+import { StorageResourcesActionTypes } from './storage-resources.actions';
 import { State } from '../../app.reducers';
 import { StorageResourceService } from './storage-resource.service';
 import { StorageResourcesStats } from '../../shared/types/resources/storage/storage-resources-stats.type';

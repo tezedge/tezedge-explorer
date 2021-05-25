@@ -3,13 +3,12 @@ import { select, Store } from '@ngrx/store';
 import { Resource } from '../../shared/types/resources/resource.type';
 import { Observable } from 'rxjs';
 import { ResourcesActionTypes } from './resources.actions';
-import { filter, map, skip } from 'rxjs/operators';
+import { delay, filter, map, skip } from 'rxjs/operators';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { BreakpointObserver } from '@angular/cdk/layout';
 import { State } from '../../app.reducers';
 import { SettingsNodeApi } from '../../shared/types/settings-node/settings-node-api.type';
-import { MatSelectChange } from '@angular/material/select';
-import { StorageResourcesActionTypes } from '../resources-storage/resources-storage.actions';
+import { StorageResourcesActionTypes } from '../storage-resources/storage-resources.actions';
 import { MemoryResourcesActionTypes } from '../memory-resources/memory-resources.actions';
 import { MatCheckboxChange } from '@angular/material/checkbox';
 
@@ -65,6 +64,7 @@ const COLOR_SCHEME = {
     '#32d74b',
     '#ff9f0a',
     '#ffd60a',
+    '#00dbc6',
     '#ff2d55',
   ]
 };
@@ -95,14 +95,13 @@ export class ResourcesComponent implements OnInit, OnDestroy {
     { title: 'Memory', id: 3 }
   ];
   activeTabId: number = 1;
-
+  storageNodeStats = 'tezedge';
   reversedCheckboxState = false;
 
   constructor(private zone: NgZone,
               private store: Store<State>,
               private cdRef: ChangeDetectorRef,
-              private breakpointObserver: BreakpointObserver) {
-  }
+              private breakpointObserver: BreakpointObserver) { }
 
   ngOnInit(): void {
     this.handleSmallDevices();
@@ -113,6 +112,7 @@ export class ResourcesComponent implements OnInit, OnDestroy {
 
   onTabChange(): void {
     this.reversedCheckboxState = false;
+    this.storageNodeStats = 'tezedge';
   }
 
   private listenToResourcesChange(): void {
@@ -124,6 +124,11 @@ export class ResourcesComponent implements OnInit, OnDestroy {
         return this.zone.runOutsideAngular(() => this.createChartData(resources));
       })
     );
+    this.store.pipe(
+      untilDestroyed(this),
+      select(state => state.app),
+      delay(400)
+    ).subscribe(() => this.getResources());
   }
 
   private listenToNodeChange(): void {
@@ -145,8 +150,12 @@ export class ResourcesComponent implements OnInit, OnDestroy {
     this.activeSummary = value;
   }
 
-  getStorageStatistics(event: MatSelectChange): void {
-    this.store.dispatch({ type: StorageResourcesActionTypes.LoadResources, payload: event.value });
+  getStorageStatistics(): void {
+    this.storageNodeStats = this.storageNodeStats === 'tezedge' ? 'irmin' : 'tezedge';
+    this.store.dispatch({
+      type: StorageResourcesActionTypes.LoadResources,
+      payload: this.storageNodeStats
+    });
   }
 
   private handleSmallDevices(): void {
@@ -170,7 +179,7 @@ export class ResourcesComponent implements OnInit, OnDestroy {
     chartData.memory = [];
     chartData.disk = [];
     chartData.cpu = [];
-    if (resources[0].cpu.protocolRunners) {
+    if (resources[0].cpu.protocolRunners !== undefined) {
       chartData.cpu.push({
         name: 'TOTAL',
         series: ResourcesComponent.getSeries(resources, 'cpu.total')
@@ -198,13 +207,13 @@ export class ResourcesComponent implements OnInit, OnDestroy {
       name: 'NODE',
       series: ResourcesComponent.getSeries(resources, 'memory.node.resident')
     });
-    if (resources[0].memory.protocolRunners) {
+    if (resources[0].memory.protocolRunners !== undefined) {
       chartData.memory.push({
         name: 'PROTOCOL RUNNERS',
         series: ResourcesComponent.getSeries(resources, 'memory.protocolRunners.resident')
       });
     }
-    if (resources[0].memory.validators) {
+    if (resources[0].memory.validators !== undefined) {
       chartData.memory.push({
         name: 'VALIDATORS',
         series: ResourcesComponent.getSeries(resources, 'memory.validators.resident')
@@ -227,19 +236,19 @@ export class ResourcesComponent implements OnInit, OnDestroy {
       name: 'DEBUGGER',
       series: ResourcesComponent.getSeries(resources, 'disk.debugger')
     });
-    if (resources[0].disk.contextActions) {
+    if (resources[0].disk.contextActions !== undefined) {
       chartData.disk.push({
         name: 'CONTEXT ACTIONS',
         series: ResourcesComponent.getSeries(resources, 'disk.contextActions')
       });
     }
-    if (resources[0].disk.contextMerkleRocksDb) {
+    if (resources[0].disk.contextMerkleRocksDb !== undefined) {
       chartData.disk.push({
         name: 'CONTEXT MERKLE ROCKS DB',
         series: ResourcesComponent.getSeries(resources, 'disk.contextMerkleRocksDb')
       });
     }
-    if (resources[0].disk.mainDb) {
+    if (resources[0].disk.mainDb !== undefined) {
       chartData.disk.push({
         name: 'MAIN DB',
         series: ResourcesComponent.getSeries(resources, 'disk.mainDb')
@@ -277,7 +286,7 @@ export class ResourcesComponent implements OnInit, OnDestroy {
     const summary = new ResourcesSummary();
     const lastResource = resources[resources.length - 1];
     summary.timestamp = lastResource.timestamp;
-    if (lastResource.memory.protocolRunners) {
+    if (lastResource.memory.protocolRunners !== undefined) {
       summary.cpu.push(new ResourcesSummaryBlock('Total', lastResource.cpu.total, this.colorScheme.domain[0], '%'));
       summary.cpu.push(new ResourcesSummaryBlock('Node', lastResource.cpu.node, this.colorScheme.domain[1], '%'));
       summary.cpu.push(new ResourcesSummaryBlock('Protocol runners', lastResource.cpu.protocolRunners, this.colorScheme.domain[2], '%'));
@@ -287,7 +296,7 @@ export class ResourcesComponent implements OnInit, OnDestroy {
 
     summary.memory.push(new ResourcesSummaryBlock('Total', lastResource.memory.total, this.colorScheme.domain[0], 'MB'));
     summary.memory.push(new ResourcesSummaryBlock('Node', lastResource.memory.node.resident, this.colorScheme.domain[1], 'MB'));
-    if (lastResource.memory.protocolRunners) {
+    if (lastResource.memory.protocolRunners !== undefined) {
       summary.memory.push(new ResourcesSummaryBlock(
         'Protocol runners',
         lastResource.memory.protocolRunners.resident,
@@ -295,7 +304,7 @@ export class ResourcesComponent implements OnInit, OnDestroy {
         'MB'
       ));
     }
-    if (lastResource.memory.validators) {
+    if (lastResource.memory.validators !== undefined) {
       summary.memory.push(new ResourcesSummaryBlock(
         'Validators',
         lastResource.memory.validators.resident,
@@ -313,26 +322,26 @@ export class ResourcesComponent implements OnInit, OnDestroy {
     ));
     summary.disk.push(new ResourcesSummaryBlock('Context Irmin', lastResource.disk.contextIrmin, this.colorScheme.domain[2], 'GB'));
     summary.disk.push(new ResourcesSummaryBlock('Debugger', lastResource.disk.debugger, this.colorScheme.domain[3], 'GB'));
-    if (lastResource.disk.contextActions) {
+    if (lastResource.disk.contextActions !== undefined) {
       summary.disk.push(
         new ResourcesSummaryBlock(
           'Context Actions',
           lastResource.disk.contextActions,
-          this.colorScheme.domain[3],
+          this.colorScheme.domain[4],
           'GB'
         ));
     }
-    if (lastResource.disk.contextMerkleRocksDb) {
+    if (lastResource.disk.contextMerkleRocksDb !== undefined) {
       summary.disk.push(new ResourcesSummaryBlock(
         'Context Merkle Rocks DB',
         lastResource.disk.contextMerkleRocksDb,
-        this.colorScheme.domain[4],
+        this.colorScheme.domain[5],
         'GB'
       ));
     }
 
-    if (lastResource.disk.mainDb) {
-      summary.disk.push(new ResourcesSummaryBlock('Main DB', lastResource.disk.mainDb, this.colorScheme.domain[5], 'GB'));
+    if (lastResource.disk.mainDb !== undefined) {
+      summary.disk.push(new ResourcesSummaryBlock('Main DB', lastResource.disk.mainDb, this.colorScheme.domain[6], 'GB'));
     }
 
     return summary;

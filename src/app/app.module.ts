@@ -113,11 +113,12 @@ import { TezedgeSharedModule } from './shared/tezedge-shared.module';
 import { NavigationMenuComponent } from './layout/navigation-menu/navigation-menu.component';
 import { DatePipe, registerLocaleData } from '@angular/common';
 import { StorageBlockDetailsComponent } from './storage/storage-block-details/storage-block-details.component';
-import { StorageResourcesEffects } from './resources/resources-storage/resources-storage.effects';
+import { StorageResourcesEffects } from './resources/storage-resources/storage-resources.effects';
 import { MemoryResourcesEffects } from './resources/memory-resources/memory-resources.effects';
 import { IconRegisterService } from './shared/design/icon/icon-register.service';
 import localeFr from '@angular/common/locales/fr';
 import localeEnGb from '@angular/common/locales/en-GB';
+import { ReplaceCharacterPipe } from './shared/pipes/replace-character.pipe';
 
 registerLocaleData(localeFr, 'fr');
 registerLocaleData(localeEnGb, 'en');
@@ -253,6 +254,7 @@ function loadIcons(matIconService: IconRegisterService): Function {
   ],
   providers: [
     DatePipe,
+    ReplaceCharacterPipe,
     {
       provide: APP_INITIALIZER,
       useFactory: loadIcons,

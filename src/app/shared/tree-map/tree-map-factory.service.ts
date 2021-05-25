@@ -31,7 +31,7 @@ export class TreeMapFactoryService {
 
           runtime.setup.zoomNode = (nodeName) => {
             const nodeToBeZoomed = findNodeByName(nodeName, treemapData);
-            zoomin(nodeToBeZoomed, false);
+            zoomIn(nodeToBeZoomed, false);
           };
 
           function findNodeByName(nodeName: string, node) {
@@ -60,7 +60,7 @@ export class TreeMapFactoryService {
 
             node.filter(d => d === root ? d.parent : d.children)
               .attr('cursor', 'pointer')
-              .on('click', (event, d) => d === root ? zoomout(root) : zoomin(d));
+              .on('click', (event, d) => d === root ? zoomOut(root) : zoomIn(d));
 
             /* Smart zoom */
             // .on("wheel", function (event, d) {
@@ -68,11 +68,11 @@ export class TreeMapFactoryService {
             //         if (d.depth === 1) {
             //             return d.children
             //         } else {
-            //             zoomout(root)
+            //             zoomOut(root)
             //         }
             //     } else {
             //         console.log(d)
-            //         zoomin(d)
+            //         zoomIn(d)
             //     }
             // });
 
@@ -105,6 +105,7 @@ export class TreeMapFactoryService {
                 // return d.data.color;
                 return 'rgba(255, 255, 255, 0.2)';
               })
+              .attr('touch-action', 'none')
               .on('mouseover', (d, dataSet) => {
                 tooltip
                   .html(`${name(dataSet)}<br/><div style="margin-top: 5px">${dataSet.value.toLocaleString('fr-FR')} kb<span class="text-white-4"> size</span></div>`)
@@ -166,7 +167,7 @@ export class TreeMapFactoryService {
           }
 
           // When zooming in, draw the new nodes on top, and fade them in.
-          function zoomin(d, dispatch: boolean = true) {
+          function zoomIn(d, dispatch: boolean = true) {
             const group0 = group.attr('pointer-events', 'none');
             const group1 = group = svg.append('g').call(render, d);
 
@@ -189,7 +190,7 @@ export class TreeMapFactoryService {
           }
 
           // When zooming out, draw the old nodes on top, and fade them out.
-          function zoomout(d) {
+          function zoomOut(d) {
             const group0 = group.attr('pointer-events', 'none');
             const group1 = group = svg.insert('g', '*').call(render, d.parent);
 

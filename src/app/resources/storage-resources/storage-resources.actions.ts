@@ -20,4 +20,4 @@ export class StorageResourcesLoaded implements Action {
   constructor(public payload: StorageResourcesStats) { }
 }
 
-export type ResourcesStorageActions = LoadStorageResources | StorageResourcesLoaded;
+export type StorageResourcesActions = LoadStorageResources | StorageResourcesLoaded;

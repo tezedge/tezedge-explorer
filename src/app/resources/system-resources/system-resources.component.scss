@@ -1,0 +1,60 @@
+$faded-white: rgba(255, 255, 255, 0.1);
+$text-color: rgb(164, 164, 165);
+
+.resources-container {
+  margin-left: auto;
+  margin-right: auto;
+  width: 100%;
+  overflow: auto;
+
+  @media (min-width: 1280px) {
+    overflow: hidden;
+
+    .centered-container {
+      overflow-y: auto;
+    }
+  }
+
+  .centered-container {
+    width: 100%;
+    padding-top: 10px;
+    max-height: 100% !important;
+
+    > :last-child {
+      padding-bottom: 10px;
+    }
+  }
+}
+
+.info-container {
+  background-color: #2A2A2E;
+
+  .info-header {
+    border-bottom: 1px solid $faded-white;
+    min-height: 40px;
+  }
+
+  .info-content-container {
+    @media (min-width: 1280px) {
+      border-left: 1px solid $faded-white;
+    }
+  }
+
+  .info-container-title {
+    border-top: 1px solid $faded-white;
+    margin: 0;
+    padding: 11px;
+    font-size: 12px;
+    color: $text-color;
+    font-weight: 400;
+  }
+
+  .additional-info {
+    opacity: 0;
+    transition: opacity 1s;
+
+    &.fade {
+      opacity: 1;
+    }
+  }
+}

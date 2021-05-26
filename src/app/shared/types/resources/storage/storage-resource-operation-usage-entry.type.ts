@@ -3,4 +3,5 @@ export class ResourceStorageQueryDetails {
   meanTime: number;
   maxTime: number;
   totalTime: number;
+  squareCount: number;
 }

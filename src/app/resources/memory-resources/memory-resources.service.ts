@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable, of } from 'rxjs';
+import { Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { MemoryResource } from '../../shared/types/resources/memory/memory-resource.type';
 import { map } from 'rxjs/operators';
@@ -18,40 +18,44 @@ export class MemoryResourcesService {
   private serverData = (tree as any).default;
 
   getMemoryResources(api: string, reversed: boolean, threshold: number = 512): Observable<MemoryResource> {
-    return of(this.serverData)
-      .pipe(map(response => this.mapMemoryResponse(response)));
-    // return this.http.get<MemoryResource>(`${api}/v1/tree?threshold=${threshold}&reverse=${reversed}`)
+    // return of(this.serverData)
     //   .pipe(map(response => this.mapMemoryResponse(response)));
+    api = 'http://debug.dev.tezedge.com:17832';
+    return this.http.get<MemoryResource>(`${api}/v1/tree?threshold=${threshold}&reverse=${reversed}`)
+      .pipe(map(response => this.mapMemoryResponse(response, threshold)));
   }
 
-  private mapMemoryResponse(response: any): MemoryResource {
+  private mapMemoryResponse(response: any, threshold: number): MemoryResource {
     return {
       name: { ...response.name, executableName: 'root' },
-      value: response.value,
-      children: this.build(response.frames)
+      value: response.value - (response.cacheValue || 0),
+      cacheValue: response.cacheValue,
+      total: response.value,
+      children: this.build(response.frames, threshold)
     };
   }
 
-  private build(frames): MemoryResource[] {
+  private build(frames, threshold: number): MemoryResource[] {
     const children = [];
     frames
-      .sort((a, b) => b.value - a.value)
       .forEach(frame => {
         const items: MemoryResource = {
-          name: this.getFrameName(frame.name),
-          value: frame.value,
-          children: this.build(frame.frames || []),
-          color: this.appendColorForFrame(frame.value)
+          name: this.getFrameName(frame.name, threshold),
+          value: frame.value - (frame.cacheValue || 0),
+          cacheValue: frame.cacheValue || 0,
+          total: frame.value,
+          children: this.build(frame.frames || [], threshold),
+          color: this.appendColorForFrame(frame.value - (frame.cacheValue || 0))
         };
         children.push(items);
       });
-    return children;
+    return children.sort((c1, c2) => c2.value - c1.value);
   }
 
-  private getFrameName(name: any | string): MemoryResourceName {
+  private getFrameName(name: any, threshold: number): MemoryResourceName {
     if (typeof name === 'string') {
       return {
-        executableName: name,
+        executableName: name === 'underThreshold' ? name + ` (${threshold} kb)` : name,
         functionName: null
       };
     }

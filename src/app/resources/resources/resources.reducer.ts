@@ -1,7 +1,7 @@
 import { ResourcesActions, ResourcesActionTypes } from './resources.actions';
 import { Resource } from '../../shared/types/resources/resource.type';
 import { StorageResourcesStats } from '../../shared/types/resources/storage/storage-resources-stats.type';
-import { ResourcesStorageActions, StorageResourcesActionTypes } from '../resources-storage/resources-storage.actions';
+import { StorageResourcesActions, StorageResourcesActionTypes } from '../storage-resources/storage-resources.actions';
 import { MemoryResource } from '../../shared/types/resources/memory/memory-resource.type';
 import { MemoryResourcesActions, MemoryResourcesActionTypes } from '../memory-resources/memory-resources.actions';
 
@@ -19,7 +19,7 @@ const initialState: ResourcesState = {
   reversedMemoryResources: false
 };
 
-export function reducer(state: ResourcesState = initialState, action: ResourcesActions | ResourcesStorageActions | MemoryResourcesActions): ResourcesState {
+export function reducer(state: ResourcesState = initialState, action: ResourcesActions | StorageResourcesActions | MemoryResourcesActions): ResourcesState {
   switch (action.type) {
     case ResourcesActionTypes.ResourcesLoadSuccess: {
       return {

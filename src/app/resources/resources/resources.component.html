@@ -1,5 +1,5 @@
 <div fxFlexFill
-     class="resources-wizard">
+     class="resources-wizard overflow-hidden">
   <div fxFlexFill
        fxLayout="column"
        fxLayoutAlign="start stretch">
@@ -9,100 +9,27 @@
       <div fxLayoutAlign="start"
            fxLayoutGap="16px">
         <div *ngFor="let tab of tabs"
+             [routerLink]="'/resources/' + tab.link"
              (click)="activeTabId = tab.id; onTabChange()"
-             [class.selected]="activeTabId === tab.id"
+             routerLinkActive="selected"
              class="tab">
           {{ tab.title }}
         </div>
       </div>
-      <mat-icon *ngIf="activeTabId === 2" (click)="getStorageStatistics()"
+      <mat-icon *ngIf="activeRoute === 'storage'" (click)="getStorageStatistics()"
                 svgIcon="switch" class="icon-20 icon-white-4 pointer node-switcher"
                 [matTooltip]="'Current: ' + storageNodeStats"
                 matTooltipPosition="left"
                 matTooltipShowDelay="600"></mat-icon>
-      <mat-checkbox *ngIf="activeTabId === 3"
+      <mat-checkbox *ngIf="activeRoute === 'memory'"
                     disableRipple
                     class="reversed-checkbox text-white-7"
                     (change)="onReversedCheckboxChange($event)"
                     [checked]="reversedCheckboxState">Reversed
       </mat-checkbox>
     </div>
-    <div *ngIf="activeTabId === 1"
-         fxFlex="grow"
-         fxLayout="column"
-         fxLayout.gt-md="row-reverse"
-         fxLayoutAlign="start stretch"
-         class="resources-container">
-      <div class="info-container"
-           fxFlex.gt-md="20vw"
-           fxLayout="column">
-        <div class="info-content-container"
-             fxFlex="grow"
-             fxLayout="column"
-             fxLayoutAlign="space-between">
-          <ng-container *ngIf="chartData$ | async as chartData">
-            <div class="additional-info"
-                 *ngIf="activeTabId === 1"
-                 [class.fade]="chartData"
-                 [style.transition-delay.s]="0.2">
-              <app-resources-summary [summaryBlocks]="resourcesSummary[activeSummary]"
-                                     [time]="resourcesSummary.timestamp"
-                                     [resourceType]="activeSummary"></app-resources-summary>
-            </div>
-          </ng-container>
-        </div>
-      </div>
-      <div *ngIf="chartData$ | async as chartData"
-           fxFlex.gt-md="calc(100% - 20vw)"
-           fxFlex.lt-lg="grow"
-           fxLayout="column"
-           fxLayoutAlign="start stretch"
-           fxLayoutGap="10px"
-           class="centered-container">
-
-        <app-resources-graph [chartData]="chartData?.cpu"
-                             [transitionDelay]="0.2"
-                             [labelList]="resourcesSummary.cpu"
-                             [resourceType]="'cpu'"
-                             [graphTitle]="'CPU'"
-                             [rotatedLabel]="'Load'"
-                             [yAxisTickFormatting]="yAxisPercentageConversion"
-                             [xTicksValues]="chartData.xTicksValues"
-                             [colorScheme]="colorScheme"
-                             [formattingType]="'percentage'"
-                             (graphHover)="toggleActiveSummary($event)"></app-resources-graph>
-
-        <app-resources-graph [chartData]="chartData?.memory"
-                             [transitionDelay]="0.4"
-                             [labelList]="resourcesSummary.memory"
-                             [resourceType]="'memory'"
-                             [graphTitle]="'RAM'"
-                             [rotatedLabel]="'Usage'"
-                             [yAxisTickFormatting]="yAxisMegaBytesConversion"
-                             [xTicksValues]="chartData.xTicksValues"
-                             [colorScheme]="colorScheme"
-                             [formattingType]="'MB'"
-                             (graphHover)="toggleActiveSummary($event)"></app-resources-graph>
-
-        <app-resources-graph [chartData]="chartData?.disk"
-                             [transitionDelay]="0.6"
-                             [labelList]="resourcesSummary.disk"
-                             [resourceType]="'disk'"
-                             [graphTitle]="'DISK'"
-                             [rotatedLabel]="'Storage'"
-                             [yAxisTickFormatting]="yAxisGigaBytesConversion"
-                             [xTicksValues]="chartData.xTicksValues"
-                             [colorScheme]="colorScheme"
-                             (graphHover)="toggleActiveSummary($event)"></app-resources-graph>
-
-      </div>
+    <div fxFlex="calc(100% - 40px)">
+      <router-outlet></router-outlet>
     </div>
-    <app-storage-resources *ngIf="activeTabId === 2"
-                           class="overflow-hidden"
-                           fxFlex="grow"></app-storage-resources>
-    <app-memory-resources *ngIf="activeTabId === 3"
-                          class="overflow-hidden"
-                          fxFlex="grow"></app-memory-resources>
-
   </div>
 </div>

@@ -68,11 +68,10 @@ export class AppEffects {
     ofType('APP_REFRESH'),
     withLatestFrom(this.store, (action: any, state: ObservedValueOf<Store<State>>) => ({ action, state })),
     switchMap(({ action, state }) => {
-      const activePage = this.router.url.replace('/', '').toUpperCase();
-
+      const activePage = this.router.url.replace('/', '').split('/')[0].toUpperCase();
       let featureLoadAction = `${activePage}_LOAD`;
 
-      if (!state.settingsNode.activeNode.features.includes(activePage)) {
+      if (!state.settingsNode.activeNode.features.some(feature => feature.includes(activePage))) {
         featureLoadAction = `${state.settingsNode.activeNode.features[0]}_LOAD`;
         this.router.navigate([state.settingsNode.activeNode.features[0].toLowerCase()]);
       }

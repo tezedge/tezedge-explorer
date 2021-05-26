@@ -65,7 +65,7 @@
              let-max="max"
              let-total="total">
   <div class="tooltip-template">
-    <div class="text-white">{{ header }}</div>
+    <div class="text-white header">{{ header }}</div>
     <div><span class="text-white">{{ count | thousandTransform }}</span> Calls</div>
     <div *ngIf="mean !== undefined"><span class="text-white">{{ mean | timeTransform: false }}</span> Mean</div>
     <div *ngIf="max !== undefined"><span class="text-white">{{ max | timeTransform: false }}</span> Max</div>

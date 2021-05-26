@@ -4,9 +4,9 @@ import { CommonModule } from '@angular/common';
 import { ResourcesRoutingModule } from './resources.routing';
 import { ResourcesComponent } from './resources/resources.component';
 import { TezedgeSharedModule } from '../shared/tezedge-shared.module';
-import { ResourcesSummaryComponent } from './resources-summary/resources-summary.component';
+import { SystemResourcesSummaryComponent } from './system-resources-summary/system-resources-summary.component';
 import { TezedgeChartsModule } from '../shared/charts/tezedge-charts.module';
-import { ResourcesGraphComponent } from './resources-graph/resources-graph.component';
+import { SystemResourcesGraphComponent } from './system-resources-graph/system-resources-graph.component';
 import { MatTableModule } from '@angular/material/table';
 import { StorageResourcesComponent } from './storage-resources/storage-resources.component';
 import { StorageResourcesMiniGraphComponent } from './storage-resources-mini-graph/storage-resources-mini-graph.component';
@@ -16,16 +16,18 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatIconModule } from '@angular/material/icon';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { SystemResourcesComponent } from './system-resources/system-resources.component';
 
 
 @NgModule({
   declarations: [
     ResourcesComponent,
-    ResourcesSummaryComponent,
-    ResourcesGraphComponent,
+    SystemResourcesSummaryComponent,
+    SystemResourcesGraphComponent,
     StorageResourcesComponent,
     StorageResourcesMiniGraphComponent,
     MemoryResourcesComponent,
+    SystemResourcesComponent,
   ],
   imports: [
     CommonModule,

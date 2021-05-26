@@ -43,7 +43,7 @@
     <th>Executable</th>
     <th>Size</th>
     <th>Cache</th>
-    <th>Without Cache</th>
+    <th>Total size</th>
     <th>Children</th>
     <th>Function</th>
   </tr>
@@ -57,8 +57,8 @@
       <td>
         <div class="progress-background">
           <div class="progress-background"
-               [class.yellow]="percent > 10"
                [class.red]="percent > 50"
+               [class.yellow]="percent > 10"
                [style.width.%]="percent"></div>
         </div>
       </td>
@@ -78,7 +78,7 @@
       </td>
       <td>{{ operation.value | number: '': 'fr' }} kb</td>
       <td>{{ operation.cacheValue | number: '': 'fr' }} kb</td>
-      <td>{{ operation.value - operation.cacheValue | number: '': 'fr' }} kb</td>
+      <td>{{ operation.total | number: '': 'fr' }} kb</td>
       <td>{{ operation.children.length }}</td>
       <td class="truncate">
         <div>{{ operation.name.functionName || '-' }}</div>

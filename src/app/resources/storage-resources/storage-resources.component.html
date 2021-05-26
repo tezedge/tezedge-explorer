@@ -18,27 +18,21 @@
         <app-storage-resources-mini-graph [operationName]="'CHECKOUT'"
                                           [graphData]="storageStats.checkoutContext"
                                           [isMainGraph]="true"></app-storage-resources-mini-graph>
-        <div class="overview-graph-box" #overviewGraph>
-          <app-storage-resources-mini-graph [operationName]="'OVERVIEW'"
-                                            [graphData]="storageStats.totalContext"
-                                            [tooltipHeaders]="storageStats.contextSliceNames"
-                                            [isOverviewGraph]="true"
-                                            [isMainGraph]="true"
-                                            [xSteps]="storageStats.contextSliceNames"
-                                            [ySteps]="[
-                                              '10000s',
-                                              '1000s',
-                                              '100s',
-                                              '10s',
-                                              '1s',
-                                              '100ms',
-                                              '10ms',
-                                              '1μs',
-                                            ]"></app-storage-resources-mini-graph>
+        <div [style.marginRight.px]="10">
+          <div class="overview-graph-box" #overviewGraph>
+            <app-storage-resources-mini-graph [operationName]="'OVERVIEW'"
+                                              [graphData]="storageStats.totalContext"
+                                              [tooltipHeaders]="storageStats.contextSliceNames"
+                                              [isOverviewGraph]="true"
+                                              [isMainGraph]="true"
+                                              [xSteps]="storageStats.contextSliceNames"
+                                              [ySteps]="overviewGraphYSteps"></app-storage-resources-mini-graph>
+          </div>
         </div>
 
         <ng-container *ngIf="miniGraphRef && overviewGraphRef"> <!--PLACEHOLDERS FOR SYMMETRICAL VIEW-->
-          <span [style.width.px]="miniGraphRef.nativeElement.offsetWidth * 2 - overviewGraphRef.nativeElement.offsetWidth"></span>
+          <span
+            [style.width.px]="miniGraphRef.nativeElement.offsetWidth * 2 - overviewGraphRef.nativeElement.offsetWidth"></span>
           <span [style.width.px]="miniGraphRef.nativeElement.offsetWidth"></span>
           <span [style.width.px]="miniGraphRef.nativeElement.offsetWidth"></span>
         </ng-container>

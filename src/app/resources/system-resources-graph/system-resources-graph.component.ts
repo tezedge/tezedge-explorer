@@ -1,14 +1,14 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
-import { ResourcesSummaryBlock, ResourceType, SeriesEntry } from '../resources/resources.component';
 import { curveCardinal } from 'd3-shape';
+import { ResourcesSummaryBlock, ResourceType, SeriesEntry } from '../system-resources/system-resources.component';
 
 @Component({
-  selector: 'app-resources-graph',
-  templateUrl: './resources-graph.component.html',
-  styleUrls: ['./resources-graph.component.scss'],
+  selector: 'app-system-resources-graph',
+  templateUrl: './system-resources-graph.component.html',
+  styleUrls: ['./system-resources-graph.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class ResourcesGraphComponent {
+export class SystemResourcesGraphComponent {
 
   @Input() chartData: Array<{ name: string; series: Array<SeriesEntry>; }>;
   @Input() transitionDelay: number;

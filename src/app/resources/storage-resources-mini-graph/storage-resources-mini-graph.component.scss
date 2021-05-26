@@ -4,12 +4,16 @@ $border-color: rgba(255, 255, 255, 0.1);
 .mini-graph {
   padding-right: 30px;
 
-  .graph-overview {
-    margin-bottom: 14px;
+  &.overview-graph {
+    padding-right: 0;
 
-    &.overview-graph {
+    .graph-overview {
       margin-bottom: 8px;
     }
+  }
+
+  .graph-overview {
+    margin-bottom: 14px;
 
     &.minimal {
       height: 44px;

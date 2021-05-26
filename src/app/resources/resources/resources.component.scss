@@ -4,7 +4,10 @@ $text-color: rgb(164, 164, 165);
 .resources-wizard {
   background-color: #2A2A2E;
   border-top-left-radius: 5px;
-  overflow-y: hidden;
+
+  @media (min-width: 1280px) {
+    overflow: hidden;
+  }
 
   .tabs {
     border-bottom: 1px solid $faded-white;
@@ -42,6 +45,15 @@ $text-color: rgb(164, 164, 165);
     margin-left: auto;
     margin-right: auto;
     width: 100%;
+    overflow: auto;
+
+    @media (min-width: 1280px) {
+      overflow: hidden;
+
+      .centered-container {
+        overflow-y: auto;
+      }
+    }
 
     .centered-container {
       width: 100%;

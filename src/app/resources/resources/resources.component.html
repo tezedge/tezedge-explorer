@@ -1,5 +1,5 @@
 <div fxFlexFill
-     class="resources-wizard overflow-x-hidden">
+     class="resources-wizard">
   <div fxFlexFill
        fxLayout="column"
        fxLayoutAlign="start stretch">
@@ -32,7 +32,7 @@
          fxLayout="column"
          fxLayout.gt-md="row-reverse"
          fxLayoutAlign="start stretch"
-         class="resources-container overflow-hidden">
+         class="resources-container">
       <div class="info-container"
            fxFlex.gt-md="20vw"
            fxLayout="column">
@@ -58,7 +58,7 @@
            fxLayout="column"
            fxLayoutAlign="start stretch"
            fxLayoutGap="10px"
-           class="centered-container overflow-y-auto">
+           class="centered-container">
 
         <app-resources-graph [chartData]="chartData?.cpu"
                              [transitionDelay]="0.2"

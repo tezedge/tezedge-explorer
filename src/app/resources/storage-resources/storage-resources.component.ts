@@ -18,10 +18,18 @@ export class StorageResourcesComponent implements OnInit {
 
   storageStats$: Observable<StorageResourcesStats>;
   miniGraphRef: ElementRef;
+  overviewGraphRef: ElementRef;
 
-  @ViewChild('miniGraph', { read: ElementRef }) set content(content: ElementRef) {
+  @ViewChild('miniGraph', { read: ElementRef }) set miniGraph(content: ElementRef) {
     if (content) {
       this.miniGraphRef = content;
+      this.cdRef.detectChanges();
+    }
+  }
+
+  @ViewChild('overviewGraph', { read: ElementRef }) set overviewGraph(content: ElementRef) {
+    if (content) {
+      this.overviewGraphRef = content;
       this.cdRef.detectChanges();
     }
   }

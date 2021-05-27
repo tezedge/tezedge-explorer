@@ -1,6 +1,8 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
 import { curveCardinal } from 'd3-shape';
-import { ResourcesSummaryBlock, ResourceType, SeriesEntry } from '../system-resources/system-resources.component';
+import { ResourceType } from '../system-resources/system-resources.component';
+import { SystemResourcesSeries } from '../../shared/types/resources/system/system-resources-series.type';
+import { SystemResourcesSummaryBlock } from '../../shared/types/resources/system/system-resources-summary-block.type';
 
 @Component({
   selector: 'app-system-resources-graph',
@@ -10,9 +12,9 @@ import { ResourcesSummaryBlock, ResourceType, SeriesEntry } from '../system-reso
 })
 export class SystemResourcesGraphComponent {
 
-  @Input() chartData: Array<{ name: string; series: Array<SeriesEntry>; }>;
+  @Input() chartData: SystemResourcesSeries[];
   @Input() transitionDelay: number;
-  @Input() labelList: ResourcesSummaryBlock[];
+  @Input() labelList: SystemResourcesSummaryBlock[];
   @Input() graphTitle: string;
   @Input() resourceType: ResourceType;
   @Input() rotatedLabel: string;

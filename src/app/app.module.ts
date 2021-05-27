@@ -67,7 +67,6 @@ import { ClipboardModule } from '@angular/cdk/clipboard';
 import { NetworkStatsComponent } from './network/network-stats/network-stats.component';
 import { NetworkHistoryComponent } from './network/network-history/network-history.component';
 
-// TODO: replace with reactive forms
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BandwidthPipe } from './shared/pipes/bandwidth.pipe';
 import { StorageComponent } from './storage/storage.component';
@@ -108,7 +107,7 @@ import { MempoolComponent } from './mempool/mempool.component';
 import { MempoolActionComponent } from './mempool/mempool-action/mempool-action.component';
 import { CommitNumberComponent } from './monitoring/commit-number/commit-number.component';
 import { CommitNumberEffects } from './monitoring/commit-number/commit-number.effects';
-import { ResourcesEffects } from './resources/resources/resources.effects';
+import { SystemResourcesEffects } from './resources/system-resources/system-resources.effects';
 import { TezedgeSharedModule } from './shared/tezedge-shared.module';
 import { NavigationMenuComponent } from './layout/navigation-menu/navigation-menu.component';
 import { DatePipe, registerLocaleData } from '@angular/common';
@@ -212,7 +211,7 @@ function loadIcons(matIconService: IconRegisterService): Function {
       SandboxEffects,
       WalletsEffects,
       CommitNumberEffects,
-      ResourcesEffects,
+      SystemResourcesEffects,
       StorageResourcesEffects,
       MemoryResourcesEffects,
     ]),

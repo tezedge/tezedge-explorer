@@ -5,7 +5,7 @@
      [ngClass.lt-md]="'small-device'"
      class="resource-category-block">
   <div class="rotated-label" fxFlex="33px" fxHide.lt-md><span>{{ rotatedLabel }}</span></div>
-  <div fxLayout="column" fxFlex="grow">
+  <div fxLayout="column" fxFlex="calc(100% - 33px)">
     <div class="graph-title">{{ graphTitle }}</div>
     <div class="graph-label-list"
          fxLayout="row wrap"
@@ -33,11 +33,13 @@
                               [curve]="curve">
         <ng-template #seriesTooltipTemplate
                      let-model="model">
-          <ng-container *ngTemplateOutlet="customSeriesTooltipTemplate; context: { model: model, type: formattingType }"></ng-container>
+          <ng-container
+            *ngTemplateOutlet="customSeriesTooltipTemplate; context: { model: model, type: formattingType }"></ng-container>
         </ng-template>
         <ng-template #tooltipTemplate
                      let-model="model">
-          <ng-container *ngTemplateOutlet="customTooltipTemplate; context: { model: model, type: formattingType }"></ng-container>
+          <ng-container
+            *ngTemplateOutlet="customTooltipTemplate; context: { model: model, type: formattingType }"></ng-container>
         </ng-template>
       </app-tezedge-line-chart>
     </div>

@@ -7,8 +7,6 @@ import { StorageResourcesStats } from '../../shared/types/resources/storage/stor
 import { Observable } from 'rxjs';
 import { filter } from 'rxjs/operators';
 
-const OVERVIEW_GRAPH_Y_STEPS = ['10000s', '1000s', '100s', '10s', '1s', '100ms', '10ms', '1μs',];
-
 @UntilDestroy()
 @Component({
   selector: 'app-storage-resources',
@@ -18,22 +16,13 @@ const OVERVIEW_GRAPH_Y_STEPS = ['10000s', '1000s', '100s', '10s', '1s', '100ms',
 })
 export class StorageResourcesComponent implements OnInit {
 
-  readonly overviewGraphYSteps = OVERVIEW_GRAPH_Y_STEPS;
-
   storageStats$: Observable<StorageResourcesStats>;
   miniGraphRef: ElementRef;
-  overviewGraphRef: ElementRef;
+  expandedPanel: boolean = true;
 
   @ViewChild('miniGraph', { read: ElementRef }) set miniGraph(content: ElementRef) {
     if (content) {
       this.miniGraphRef = content;
-      this.cdRef.detectChanges();
-    }
-  }
-
-  @ViewChild('overviewGraph', { read: ElementRef }) set overviewGraph(content: ElementRef) {
-    if (content) {
-      this.overviewGraphRef = content;
       this.cdRef.detectChanges();
     }
   }
@@ -49,6 +38,10 @@ export class StorageResourcesComponent implements OnInit {
     );
 
     this.store.dispatch({ type: StorageResourcesActionTypes.LoadResources, payload: 'tezedge' });
+  }
+
+  togglePanel(): void {
+    this.expandedPanel = !this.expandedPanel;
   }
 
 }

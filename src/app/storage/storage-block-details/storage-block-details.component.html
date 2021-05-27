@@ -10,16 +10,11 @@
     <div class="storage-block-header text-gray"
          fxLayoutAlign="space-between center">
       CONTEXT CHECKOUT
-      <mat-form-field class="combo-box">
-        <mat-select #contextSelect
-                    [value]="'tezedge'"
-                    panelClass="storage-details-select"
-                    disableOptionCentering
-                    (selectionChange)="getBlockDetails($event)">
-          <mat-option value="tezedge">TezEdge</mat-option>
-          <mat-option value="irmin">Irmin</mat-option>
-        </mat-select>
-      </mat-form-field>
+      <mat-icon (click)="getBlockDetails()"
+                svgIcon="arrow-around" class="icon-20 icon-white-4 pointer node-switcher"
+                [matTooltip]="'Current: ' + activeContextNode"
+                matTooltipPosition="left"
+                matTooltipShowDelay="600"></mat-icon>
     </div>
     <div fxLayoutAlign="start center"
          fxLayout="row"

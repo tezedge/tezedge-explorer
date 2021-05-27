@@ -13,7 +13,6 @@ import { StorageBlockDetails } from '../../shared/types/storage/storage-block/st
 import { Overlay, OverlayRef } from '@angular/cdk/overlay';
 import { StorageBlockDetailsOperationContext } from '../../shared/types/storage/storage-block/storage-block-details-operation-context.type';
 import { TemplatePortal } from '@angular/cdk/portal';
-import { MatSelect, MatSelectChange } from '@angular/material/select';
 import { Store } from '@ngrx/store';
 import { State } from '../../app.reducers';
 
@@ -29,7 +28,8 @@ export class StorageBlockDetailsComponent implements OnChanges, OnDestroy {
   @Input() blockHash: string;
 
   @ViewChild('tooltipTemplate') private tooltipTemplate: TemplateRef<any>;
-  @ViewChild('contextSelect') private contextSelect: MatSelect;
+
+  activeContextNode: 'tezedge' | 'irmin';
 
   private overlayRef: OverlayRef;
 
@@ -38,17 +38,19 @@ export class StorageBlockDetailsComponent implements OnChanges, OnDestroy {
               private viewContainerRef: ViewContainerRef) { }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (this.contextSelect && changes.blockHash && changes.blockHash.previousValue !== changes.blockHash.currentValue) {
-      this.contextSelect.value = 'tezedge';
+    if (changes.blockHash && changes.blockHash.previousValue !== changes.blockHash.currentValue) {
+      this.activeContextNode = 'tezedge';
     }
   }
 
-  getBlockDetails(event: MatSelectChange): void {
+  getBlockDetails(): void {
+    this.activeContextNode = this.activeContextNode === 'tezedge' ? 'irmin' : 'tezedge';
+
     this.store.dispatch({
       type: 'STORAGE_BLOCK_DETAILS_LOAD',
       payload: {
         hash: this.blockHash,
-        context: event.value
+        context: this.activeContextNode
       }
     });
   }

@@ -58,7 +58,6 @@ export class StorageResourcesMiniGraphComponent implements OnDestroy {
   @Input() graphData: ResourceStorageQuery;
   @Input() operationName: string;
   @Input() isMainGraph: boolean;
-  @Input() isOverviewGraph: boolean;
   @Input() tooltipHeaders: string[];
   @Input() xSteps: string[] = X_STEPS;
   @Input() ySteps: string[] = Y_STEPS;

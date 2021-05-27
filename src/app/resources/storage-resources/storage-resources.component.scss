@@ -1,64 +1,101 @@
-:host {
-  height: 100%;
-}
-
+$bezier:  cubic-bezier(0.76, 0, 0.24, 1);
 $border-color: rgba(255, 255, 255, 0.1);
 
-.storage-resources {
-  padding: 10px;
+:host {
   height: 100%;
+  display: flex;
+  flex-direction: row;
+  font-size: 12px;
+}
 
-  .operation {
-    border: 1px solid $border-color;
-    border-radius: 5px;
-    padding-top: 7px;
 
-    .overview {
-      font-size: 14px;
-      padding: 10px;
+.storage-toolbar {
+  .toolbar-right {
+    width: 100px;
+    transition: all 0.18s $bezier;
+
+    &.expanded {
+      width: 300px;
+      border-bottom-color: transparent;
+    }
+  }
+}
+
+.storage-container {
+  &.expanded {
+    .operation-list {
+      width: calc(100% - 300px);
+    }
+
+    .side-panel {
+      right: 0;
+    }
+  }
+
+  .operation-list {
+    padding: 10px;
+    height: 100%;
+    width: 100%;
+    transition: width 0.18s $bezier;
+
+    .operation {
       border: 1px solid $border-color;
       border-radius: 4px;
-    }
+      padding-top: 7px;
 
-    .overview-graph-box {
-      border: 1px solid $border-color;
-      border-radius: 4px;
-      padding: 10px;
-      margin-right: 10px;
-      background-color: lighten(#1b1b1d, 5);
-    }
+      .overview {
+        font-size: 14px;
+        padding: 10px;
+        border: 1px solid $border-color;
+        border-radius: 4px;
+      }
 
-    &:first-child {
-      padding-top: 10px;
-    }
+      .overview-graph-box {
+        border: 1px solid $border-color;
+        border-radius: 4px;
+        padding: 10px;
+        margin-right: 10px;
+        background-color: lighten(#1b1b1d, 5);
+      }
 
-    .slice-header {
-      border-bottom: 1px solid $border-color;
-      margin-bottom: 10px;
-    }
+      &:first-child {
+        padding-top: 10px;
+      }
 
-    .text-uppercase {
-      color: #fff;
-      font-size: 12px;
-      font-weight: 500;
-      letter-spacing: 0.4px;
-      padding-left: 10px;
-    }
+      .slice-header {
+        border-bottom: 1px solid $border-color;
+        margin-bottom: 10px;
+      }
 
-    .total-time {
-      margin-left: 10px;
-      font-size: 12px;
-      color: rgba(255, 255, 255, 0.7);
+      .text-uppercase {
+        color: #fff;
+        font-size: 12px;
+        font-weight: 500;
+        letter-spacing: 0.4px;
+        padding-left: 10px;
+      }
 
-      .grayish {
-        color: rgba(255, 255, 255, 0.4);
+      .total-time {
+        margin-left: 10px;
+        font-size: 12px;
+        color: rgba(255, 255, 255, 0.7);
+
+        .grayish {
+          color: rgba(255, 255, 255, 0.4);
+        }
+      }
+
+      .graph-list {
+        padding-left: 10px;
+        padding-bottom: 10px;
+        overflow-x: auto;
       }
     }
+  }
 
-    .graph-list {
-      padding-left: 10px;
-      padding-bottom: 10px;
-      overflow-x: auto;
-    }
+  .side-panel {
+    right: -300px;
+    width: 300px;
+    transition: right 0.18s $bezier;
   }
 }

@@ -17,6 +17,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { SystemResourcesComponent } from './system-resources/system-resources.component';
+import { StorageResourcesOverviewComponent } from './storage-resources-overview/storage-resources-overview.component';
 
 
 @NgModule({
@@ -28,6 +29,7 @@ import { SystemResourcesComponent } from './system-resources/system-resources.co
     StorageResourcesMiniGraphComponent,
     MemoryResourcesComponent,
     SystemResourcesComponent,
+    StorageResourcesOverviewComponent,
   ],
   imports: [
     CommonModule,

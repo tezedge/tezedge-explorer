@@ -1,6 +1,10 @@
 $faded-white: rgba(255, 255, 255, 0.1);
 $text-color: rgb(164, 164, 165);
 
+:host {
+  height: 100%;
+}
+
 .resources-container {
   margin-left: auto;
   margin-right: auto;

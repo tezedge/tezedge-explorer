@@ -57,10 +57,10 @@ export class ResourcesService {
       resource.disk = new DiskResource();
       resource.disk.blockStorage = responseItem.disk.block_storage / GB_DIVISOR;
       resource.disk.contextIrmin = responseItem.disk.context_irmin / GB_DIVISOR;
-      resource.disk.mainDb = responseItem.disk.main_db / GB_DIVISOR;
+      resource.disk.mainDb = (responseItem.disk.main_db !== undefined) ? responseItem.disk.main_db / GB_DIVISOR : undefined;
       resource.disk.debugger = responseItem.disk.debugger / GB_DIVISOR;
-      resource.disk.contextActions = responseItem.disk.context_actions / GB_DIVISOR;
-      resource.disk.contextMerkleRocksDb = responseItem.disk.context_merkle_rocksdb / GB_DIVISOR;
+      resource.disk.contextActions = (responseItem.disk.context_actions !== undefined) ? responseItem.disk.context_actions / GB_DIVISOR : undefined;
+      resource.disk.contextMerkleRocksDb = (responseItem.disk.context_merkle_rocksdb !== undefined) ? responseItem.disk.context_merkle_rocksdb / GB_DIVISOR : undefined;
       resource.disk.total = Object.values(resource.disk).filter(Boolean).reduce((total: number, current: number) => total + current, 0);
       return resource;
     });

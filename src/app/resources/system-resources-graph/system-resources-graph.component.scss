@@ -4,7 +4,7 @@ $text-color: rgb(164, 164, 165);
 .resource-category-block {
   position: relative;
   opacity: 0;
-  padding: 2vh 3vw 4vh 0;
+  padding: 2vh 35px 4vh 0;
   transition: opacity 1s;
   border-radius: 5px;
   background-color: $faded-white;
@@ -48,7 +48,7 @@ $text-color: rgb(164, 164, 165);
       height: 110px;
       left: 0;
       width: 0;
-      background-color: rgba(255,255,255,0.3);
+      background-color: rgba(255, 255, 255, 0.3);
     }
   }
 

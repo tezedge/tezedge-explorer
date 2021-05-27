@@ -23,7 +23,6 @@ export class ResourcesComponent implements OnInit, OnDestroy {
     { title: 'Storage', id: 2, link: 'storage' },
     { title: 'Memory', id: 3, link: 'memory' }
   ];
-  activeTabId: number = 1;
   storageNodeStats = 'tezedge';
   reversedCheckboxState = false;
   activeRoute: string;
@@ -56,7 +55,9 @@ export class ResourcesComponent implements OnInit, OnDestroy {
       select(state => state.settingsNode.activeNode),
     ).subscribe((settingsNode: SettingsNodeApi) => {
       if (settingsNode.id === 'ocaml' && this.tabs.find(tab => tab.title === 'Memory')) {
-        this.activeTabId = this.activeTabId === 3 ? 1 : this.activeTabId;
+        if (this.activeRoute === 'memory') {
+          this.router.navigate(['system'], { relativeTo: this.route.parent });
+        }
         this.tabs.splice(this.tabs.findIndex(tab => tab.title === 'Memory'), 1);
       } else if (settingsNode.id !== 'ocaml' && !this.tabs.find(tab => tab.title === 'Memory')) {
         this.tabs.push({ title: 'Memory', id: 3, link: 'memory' });

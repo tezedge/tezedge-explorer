@@ -9,6 +9,10 @@ context('app', () => {
     cy.wait('@getNodeHeader').its('response.statusCode').should('eq', 200);
   })
 
+  it('[app] should fail to test CI is dependent on tests', () => {
+    cy.wrap('I am not null').should('be.null');
+  })
+
   it('[app] should display available features in app menu', () => {
     cy.wait('@getNodeHeader')
       .then(() => {

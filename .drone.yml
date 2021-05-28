@@ -44,6 +44,8 @@ steps:
       from_secret: docker_hub_username
     password:
       from_secret: docker_hub_pswd
+  depends_on:
+    - test
 
 image_pull_secrets:
   - docker_pull_secret

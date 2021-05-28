@@ -1,4 +1,12 @@
-import { ChangeDetectionStrategy, Component, HostListener, OnInit, TemplateRef, ViewChild, ViewContainerRef } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  HostListener,
+  OnInit,
+  TemplateRef,
+  ViewChild,
+  ViewContainerRef
+} from '@angular/core';
 import { Observable } from 'rxjs';
 import { Store } from '@ngrx/store';
 import { CommitNumber } from '../../shared/types/commit-number/commit-number.type';
@@ -57,6 +65,7 @@ export class CommitNumberComponent implements OnInit {
 
   attachTooltip(event: MouseEvent): void {
     event.stopPropagation();
+
     if (this.overlayRef && this.overlayRef.hasAttached()) {
       this.detachTooltip();
       return;

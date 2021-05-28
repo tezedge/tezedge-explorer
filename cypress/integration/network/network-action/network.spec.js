@@ -2,7 +2,7 @@ context('network', () => {
   beforeEach(() => {
     cy.visit(Cypress.config().baseUrl);
     cy.wait(1000);
-    cy.visit(Cypress.config().baseUrl + '/#/network', {timeout: 10000});
+    cy.visit(Cypress.config().baseUrl + '/#/network', { timeout: 10000 });
     cy.wait(1000);
   })
 
@@ -19,7 +19,7 @@ context('network', () => {
   it('[network] fill the last row of the table with the last value received', () => {
     cy.wait(1000)
       .then(() => {
-        cy.get('#stopStreaming').click();
+        cy.get('.stop-stream').click();
 
         cy.window()
           .its('store')
@@ -31,66 +31,44 @@ context('network', () => {
 
                   cy.get('.virtual-scroll-container .virtualScrollRow.used')
                     .last()
-                    .find('.network-action-table-address a')
-                    .should(($a) => {
-                      expect($a.text().trim()).to.equal(lastRecord.remote_addr);
+                    .find('.network-action-table-address')
+                    .should((span) => {
+                      expect(span.text().trim()).to.equal(lastRecord.remote_addr);
                     })
                 } else {
-                  cy.get('#stopStreaming').click();
+                  cy.get('.stop-stream').click();
                 }
               })
-
           })
       })
-
   })
 
-  /*
-  it('[network] initially select the last record and fill the right details part with its message', () => {
+  it('[network] fill the right details part with the message of the clicked row - the second last record in our case', () => {
     cy.wait(1000)
       .then(() => {
-        cy.get('#stopStreaming').click();
+        cy.get('.stop-stream')
+          .then(element => {
+            element.click();
+          })
 
         cy.window()
           .its('store')
           .then((store) => {
             store.select('networkAction')
               .subscribe((data) => {
-                console.log(data);
-                const lastRecord = data.entities[data.ids[data.ids.length - 1]];
+                if (!data.stream) {
+                  const secondLastRecord = data.entities[data.ids[data.ids.length - 2]];
 
-                cy.get('#virtualScrollTableDetails .ngx-json-viewer')
-                  .contains(lastRecord.message);
+                  cy.get('.virtual-scroll-container .virtualScrollRow.used')
+                    .eq(-2).trigger('click')
+                  cy.get('.ngx-json-viewer').should('be.visible');
+
+                } else {
+                  cy.get('.stop-stream').click();
+                }
               })
-
           })
       })
-
-  })
-
-  it('[network] fill the right details part with the message of the hovered row - the second last record in our case', () => {
-    cy.wait(1000)
-      .then(() => {
-        cy.get('#stopStreaming').click();
-
-        cy.window()
-          .its('store')
-          .then((store) => {
-            store.select('networkAction')
-              .subscribe((data) => {
-                const secondLastRecord = data.entities[data.ids[data.ids.length - 2]];
-
-                cy.get('.virtual-scroll-container .virtualScrollRow.used')
-                  .eq(-2)
-                  .trigger('mouseenter');
-
-                cy.get('#virtualScrollTableDetails .ngx-json-viewer')
-                  .contains(secondLastRecord.message);
-              })
-
-          })
-      })
-
   })
 
   it('[network] change the value of the virtual scroll element when scrolling', () => {
@@ -98,7 +76,7 @@ context('network', () => {
 
     cy.wait(1000)
       .then(() => {
-        cy.get('#stopStreaming').click();
+        cy.get('.stop-stream').click();
 
         cy.window()
           .its('store')
@@ -108,9 +86,9 @@ context('network', () => {
                 if (!data.stream) {
                   cy.get('.virtual-scroll-container .virtualScrollRow.used')
                     .last()
-                    .find('.network-action-table-address a')
-                    .then(($a) => {
-                      beforeScrollValue = $a.text().trim();
+                    .find('.date-time')
+                    .then(($span) => {
+                      beforeScrollValue = $span.text().trim();
                     });
 
                   cy.wait(500);
@@ -118,18 +96,15 @@ context('network', () => {
 
                   cy.get('.virtual-scroll-container .virtualScrollRow.used')
                     .last()
-                    .find('.network-action-table-address a')
-                    .should(($a) => {
-                      expect($a.text()).to.not.equal(beforeScrollValue);
+                    .find('.date-time')
+                    .should(($span) => {
+                      expect($span.text()).to.not.equal(beforeScrollValue);
                     });
                 } else {
-                  cy.get('#stopStreaming').click();
+                  cy.get('.stop-stream').click();
                 }
               })
-
           })
       })
-
   })
-*/
 })

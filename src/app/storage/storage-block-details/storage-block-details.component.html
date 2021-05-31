@@ -32,6 +32,7 @@
           <th>TOTAL</th>
           <th>ACTIONS</th>
           <th>MEM</th>
+          <th>MEM TREE</th>
           <th>FIND</th>
           <th>FIND TREE</th>
           <th>ADD</th>
@@ -47,6 +48,7 @@
           <td [innerHTML]="row.data.totalTime | timeTransform: true: true"></td>
           <td [innerHTML]="row.data.actionsCount"></td>
           <td [innerHTML]="row.mem | timeTransform: true: true"></td>
+          <td [innerHTML]="row.memTree | timeTransform: true: true"></td>
           <td [innerHTML]="row.find | timeTransform: true: true">{{ row.find }}</td>
           <td [innerHTML]="row.findTree | timeTransform: true: true">{{ row.findTree }}</td>
           <td [innerHTML]="row.add | timeTransform: true: true">{{ row.add }}</td>

@@ -7,6 +7,7 @@ export class StorageBlockDetailsOperationContext {
     actionsCount: number;
   };
   mem: number;
+  memTree: number;
   find: number;
   findTree: number;
   add: number;

@@ -27,6 +27,7 @@ export class StorageResourceService {
     result.checkoutContext = this.buildTimeline(response.checkoutContext);
     result.operationsContext.forEach((operation) => {
       operation.mem = this.buildTimeline(operation.mem);
+      operation.memTree = this.buildTimeline(operation.memTree);
       operation.find = this.buildTimeline(operation.find);
       operation.findTree = this.buildTimeline(operation.findTree);
       operation.add = this.buildTimeline(operation.add);

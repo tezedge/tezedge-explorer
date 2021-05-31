@@ -45,32 +45,32 @@ $border-color: rgba(255, 255, 255, 0.1);
     }
 
     &:hover .square {
-      background-color: rgba(255, 255, 255, 0.7) !important;
+      background-color: rgba(255, 255, 255, 0.6) !important;
 
       &.yellow-square {
-        background-color: #FF9F0A !important;
+        background-color: #ff9600 !important;
       }
 
       &.red-square {
-        background-color: #EB5368 !important;
+        background-color: #ff3d58 !important;
       }
     }
 
     .square {
       width: 16px;
       height: 16px;
-      background-color: #747474;
+      background-color: #777;
 
       &:not(:last-child) {
         margin-top: 2px;
       }
 
       &.yellow-square {
-        background-color: rgba(255, 159, 10, 0.7);
+        background-color: rgba(255, 159, 10, 0.8);
       }
 
       &.red-square {
-        background-color: rgba(235, 83, 104, 0.7);
+        background-color: rgba(235, 83, 104, 0.8);
       }
     }
   }

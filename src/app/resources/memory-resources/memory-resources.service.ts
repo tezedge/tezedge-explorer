@@ -19,7 +19,7 @@ export class MemoryResourcesService {
 
   getMemoryResources(api: string, reversed: boolean, threshold: number = 512): Observable<MemoryResource> {
     // return of(this.serverData)
-    //   .pipe(map(response => this.mapMemoryResponse(response)));
+    //   .pipe(map(response => this.mapMemoryResponse(response, threshold)));
     api = 'http://debug.dev.tezedge.com:17832';
     return this.http.get<MemoryResource>(`${api}/v1/tree?threshold=${threshold}&reverse=${reversed}`)
       .pipe(map(response => this.mapMemoryResponse(response, threshold)));
@@ -56,13 +56,15 @@ export class MemoryResourcesService {
     if (typeof name === 'string') {
       return {
         executableName: name === 'underThreshold' ? name + ` (${threshold} kb)` : name,
-        functionName: null
+        functionName: null,
+        functionCategory: 'foreign-system'
       };
     }
 
     return {
       executableName: name.executable + '@' + name.offset,
-      functionName: name.functionName
+      functionName: name.functionName,
+      functionCategory: this.getSystemIcon(name.functionCategory)
     };
   }
 
@@ -75,6 +77,17 @@ export class MemoryResourcesService {
       return '#3f3f43';
     } else {
       return '#2a2a2e';
+    }
+  }
+
+  private getSystemIcon(functionCategory: string): string {
+    switch (functionCategory) {
+      case 'nodeRust':
+        return 'rust';
+      case 'systemLib':
+        return 'cpp';
+      default:
+        return 'foreign-system';
     }
   }
 }

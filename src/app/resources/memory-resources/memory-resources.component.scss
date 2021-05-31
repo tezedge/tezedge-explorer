@@ -142,6 +142,11 @@
       max-width: 65px;
     }
 
+    &:nth-child(8) {
+      min-width: 65px;
+      max-width: 65px;
+    }
+
     &:last-child {
       width: 100%;
       max-width: 100%;

@@ -19,9 +19,6 @@ import { MemoryResource } from '../../shared/types/resources/memory/memory-resou
 import { MemoryResourcesActionTypes } from './memory-resources.actions';
 import { delay, filter } from 'rxjs/operators';
 
-// @ts-ignore
-import * as tree from './small-tree.json';
-
 @UntilDestroy()
 @Component({
   selector: 'app-memory-resources',
@@ -31,18 +28,23 @@ import * as tree from './small-tree.json';
 })
 export class MemoryResourcesComponent implements AfterViewInit, OnInit, OnDestroy {
 
-  @ViewChild('treeMapChart') private treeMapRef: ElementRef<HTMLDivElement>;
-  @ViewChild('breadcrumbsRef') private breadcrumbsRef: ElementRef<HTMLDivElement>;
-
   activeResource: MemoryResource;
   runtime: Runtime & { setup: any };
   breadcrumbs: MemoryResource[] = [];
 
-  private serverData = (tree as any).default;
+  @ViewChild('treeMapChart') private treeMapRef: ElementRef<HTMLDivElement>;
+  @ViewChild('breadcrumbsRef') private breadcrumbsRef: ElementRef<HTMLDivElement>;
 
   @HostListener('window:resize')
   onResize(): void {
     this.createTreemap(this.activeResource);
+  }
+
+  @HostListener('document:keydown.escape')
+  onKeydownHandler(): void {
+    if (this.breadcrumbs.length > 1) {
+      this.zoomToNode(this.breadcrumbs[this.breadcrumbs.length - 2]);
+    }
   }
 
   constructor(private zone: NgZone,

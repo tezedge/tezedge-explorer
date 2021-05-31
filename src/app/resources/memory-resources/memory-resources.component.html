@@ -44,6 +44,7 @@
     <th>Size</th>
     <th>Cache</th>
     <th>Total size</th>
+    <th>Category</th>
     <th>Children</th>
     <th>Function</th>
   </tr>
@@ -79,6 +80,11 @@
       <td>{{ operation.value | number: '': 'fr' }} kb</td>
       <td>{{ operation.cacheValue | number: '': 'fr' }} kb</td>
       <td>{{ operation.total | number: '': 'fr' }} kb</td>
+      <td>
+        <div class="d-flex">
+          <mat-icon [svgIcon]="operation.name.functionCategory" class="icon-18"></mat-icon>
+        </div>
+      </td>
       <td>{{ operation.children.length }}</td>
       <td class="truncate">
         <div>{{ operation.name.functionName || '-' }}</div>

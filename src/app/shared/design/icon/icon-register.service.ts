@@ -13,6 +13,9 @@ export class IconRegisterService {
     'arrow-left',
     'arrow-around',
     'arrow-expanded',
+    'rust',
+    'cpp',
+    'foreign-system',
   ];
 
   constructor(private iconRegistry: MatIconRegistry,

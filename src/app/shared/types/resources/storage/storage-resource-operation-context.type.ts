@@ -7,6 +7,7 @@ export class StorageResourceOperationContext {
   totalTimeRead: number;
   totalTimeWrite: number;
   mem: ResourceStorageQuery;
+  memTree: ResourceStorageQuery;
   find: ResourceStorageQuery;
   findTree: ResourceStorageQuery;
   add: ResourceStorageQuery;

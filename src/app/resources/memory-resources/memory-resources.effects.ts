@@ -16,7 +16,7 @@ export class MemoryResourcesEffects {
     ofType(MemoryResourcesActionTypes.LoadResources),
     withLatestFrom(this.store, (action: any, state: ObservedValueOf<Store<State>>) => ({ action, state })),
     switchMap(({ action, state }) =>
-      this.resourcesService.getMemoryResources(state.settingsNode.memoryProfiler, action.payload.reversed)
+      this.resourcesService.getStorageResources(state.settingsNode.memoryProfiler, action.payload.reversed)
         .pipe(
           map((resource: MemoryResource) => ({
             type: MemoryResourcesActionTypes.ResourcesLoadSuccess,

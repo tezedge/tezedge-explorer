@@ -4,7 +4,7 @@ context('storage-action', () => {
     cy.intercept('GET', '/dev/chains/main/actions/blocks/*/*').as('getStorageActionRequest');
     cy.visit(Cypress.config().baseUrl);
     cy.wait(5000);
-    cy.visit(Cypress.config().baseUrl + '/#/storage', {timeout: 10000});
+    cy.visit(Cypress.config().baseUrl + '/#/storage', { timeout: 10000 });
     cy.wait('@getStorageBlockRequest')
       .then(() => {
         cy.wait(2000);
@@ -15,7 +15,7 @@ context('storage-action', () => {
             $span.click();
           });
       });
-  })
+  });
 
   // it('[storage-action] perform storage-action request successfully', () => {
   //   cy.wait('@getStorageActionRequest').its('response.statusCode').should('eq', 200);
@@ -55,4 +55,4 @@ context('storage-action', () => {
   //     })
   //
   // })
-})
+});

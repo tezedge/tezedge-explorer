@@ -17,7 +17,7 @@ export class MemoryResourcesService {
 
   private serverData = (tree as any).default;
 
-  getMemoryResources(api: string, reversed: boolean, threshold: number = 512): Observable<MemoryResource> {
+  getStorageResources(api: string, reversed: boolean, threshold: number = 512): Observable<MemoryResource> {
     // return of(this.serverData)
     //   .pipe(map(response => this.mapMemoryResponse(response, threshold)));
     api = 'http://debug.dev.tezedge.com:17832';
@@ -55,7 +55,7 @@ export class MemoryResourcesService {
   private getFrameName(name: any, threshold: number): MemoryResourceName {
     if (typeof name === 'string') {
       return {
-        executableName: name === 'underThreshold' ? name + ` (${threshold} kb)` : name,
+        executableName: name === 'underThreshold' ? `below ${threshold} kb` : name,
         functionName: null,
         functionCategory: 'foreign-system'
       };

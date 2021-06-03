@@ -30,7 +30,6 @@ context('network', () => {
               .subscribe((data) => {
                 if (!data.stream) {
                   const lastRecord = data.entities[data.ids[data.ids.length - 1]];
-
                   cy.get('.virtual-scroll-container .virtualScrollRow.used')
                     .last()
                     .find('.network-action-table-address')
@@ -57,9 +56,7 @@ context('network', () => {
           .its('store')
           .then((store) => {
             store.subscribe(data => {
-              if (data.settingsNode.activeNode.id.includes('ocaml')) {
-                cy.onlyOn(false);
-              } else {
+              if (!data.settingsNode.activeNode.id.includes('ocaml')) {
                 store.select('networkAction')
                   .subscribe((data) => {
                     if (!data.stream) {

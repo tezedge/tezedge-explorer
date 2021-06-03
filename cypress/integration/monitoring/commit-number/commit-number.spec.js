@@ -1,4 +1,3 @@
-
 const isOcaml = (data) => data.settingsNode.activeNode.id.includes('ocaml');
 
 context('commit-number', () => {
@@ -15,23 +14,19 @@ context('commit-number', () => {
       .its('store')
       .then((store) => {
         store.subscribe(data => {
-          if (isOcaml(data)) {
-            cy.onlyOn(false);
-          } else {
+          if (!isOcaml(data)) {
             cy.wait('@getNodeTagRequest').its('response.statusCode').should('eq', 200);
           }
         });
       });
   });
-/*
+
   it('[commit-number] display the Node release tag in the UI', () => {
     cy.window()
       .its('store')
       .then((store) => {
         store.subscribe(data => {
-          if (isOcaml(data)) {
-            cy.onlyOn(false);
-          } else {
+          if (!isOcaml(data)) {
             cy.wait('@getNodeTagRequest')
               .then(() => {
                 store.select('commitNumber')
@@ -52,9 +47,7 @@ context('commit-number', () => {
       .its('store')
       .then((store) => {
         store.subscribe(data => {
-          if (isOcaml(data)) {
-            cy.onlyOn(false);
-          } else {
+          if (!isOcaml(data)) {
             cy.wait('@getNodeLastCommitRequest').its('response.statusCode').should('eq', 200);
           }
         });
@@ -62,15 +55,14 @@ context('commit-number', () => {
   });
 
   it('[commit-number] display Node anchor with an url to the last commit, when click on the Node Tag', () => {
-    cy.wait('@getNodeLastCommitRequest')
-      .then(() => {
-        cy.window()
-          .its('store')
-          .then((store) => {
-            store.subscribe(data => {
-              if (isOcaml(data)) {
-                cy.onlyOn(false);
-              } else {
+
+    cy.window()
+      .its('store')
+      .then((store) => {
+        store.subscribe(data => {
+          if (!isOcaml(data)) {
+            cy.wait('@getNodeLastCommitRequest')
+              .then(() => {
                 store.select('commitNumber')
                   .subscribe((commitNumber) => {
                     cy.get('app-commit-number')
@@ -82,9 +74,9 @@ context('commit-number', () => {
                           .should('have.attr', 'href', 'https://github.com/simplestaking/tezedge/commit/' + commitNumber.nodeCommit);
                       });
                   });
-              }
-            });
-          });
+              });
+          }
+        });
       });
   });
 
@@ -93,9 +85,7 @@ context('commit-number', () => {
       .its('store')
       .then((store) => {
         store.subscribe(data => {
-          if (isOcaml(data)) {
-            cy.onlyOn(false);
-          } else {
+          if (!isOcaml(data)) {
             cy.wait('@getDebuggerLastCommitRequest').its('response.statusCode').should('eq', 200);
           }
         });
@@ -107,9 +97,7 @@ context('commit-number', () => {
       .its('store')
       .then((store) => {
         store.subscribe(data => {
-          if (isOcaml(data)) {
-            cy.onlyOn(false);
-          } else {
+          if (!isOcaml(data)) {
             cy.wait('@getNodeLastCommitRequest')
               .then(() => {
                 store.select('commitNumber')
@@ -136,9 +124,7 @@ context('commit-number', () => {
       .its('store')
       .then((store) => {
         store.subscribe(data => {
-          if (isOcaml(data)) {
-            cy.onlyOn(false);
-          } else {
+          if (!isOcaml(data)) {
             cy.wait(1000)
               .then(() => {
                 store.select('commitNumber')
@@ -160,5 +146,5 @@ context('commit-number', () => {
           }
         });
       });
-  });*/
+  });
 });

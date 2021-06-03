@@ -29,8 +29,9 @@ import { delay, filter } from 'rxjs/operators';
 export class MemoryResourcesComponent implements AfterViewInit, OnInit, OnDestroy {
 
   activeResource: MemoryResource;
-  runtime: Runtime & { setup: any };
   breadcrumbs: MemoryResource[] = [];
+
+  private runtime: Runtime & { setup: any };
 
   @ViewChild('treeMapChart') private treeMapRef: ElementRef<HTMLDivElement>;
   @ViewChild('breadcrumbsRef') private breadcrumbsRef: ElementRef<HTMLDivElement>;

@@ -2,7 +2,7 @@
   window["env"] = window["env"] || {};
 
   window["env"]["commit"] = '';
-  window['env']['memoryProfiler'] = 'http://debug.dev.tezedge.com:17832',
+  window['env']['memoryProfiler'] = 'http://develop.dev.tezedge.com:17832',
   window["env"]["sandbox"] = 'https://carthage.tezedge.com:3030';
   window["env"]["debugger"] = 'https://carthage.tezedge.com:8753';
   window["env"]["api"] = [

@@ -19,7 +19,7 @@ steps:
   environment:
     SANDBOX: 'http://develop.dev.tezedge.com:3030'
     DEBUGGER: 'http://develop.dev.tezedge.com:17732'
-    MEMORYPROFILER: 'http://debug.dev.tezedge.com:17832'
+    MEMORYPROFILER: 'http://develop.dev.tezedge.com:17832'
     API: '[{"id":"drone","name":"drone-test-node","http":"http://develop.dev.tezedge.com:18732","monitoring":"http://develop.dev.tezedge.com:38732/resources/tezedge","ws":"ws://develop.dev.tezedge.com:4927","p2p_port":"9732","features":["MONITORING", "RESOURCES", "MEMPOOL_ACTION", "STORAGE_BLOCK", "NETWORK_ACTION", "LOGS_ACTION"]}]'
   depends_on:
     - build
@@ -83,7 +83,7 @@ steps:
   environment:
     SANDBOX: 'http://develop.dev.tezedge.com:3030'
     DEBUGGER: 'http://develop.dev.tezedge.com:17732'
-    MEMORYPROFILER: 'http://debug.dev.tezedge.com:17832'
+    MEMORYPROFILER: 'http://develop.dev.tezedge.com:17832'
     API: '[{"id":"drone","name":"drone-test-node","http":"http://develop.dev.tezedge.com:18732","monitoring":"http://develop.dev.tezedge.com:38732/resources/tezedge","ws":"ws://develop.dev.tezedge.com:4927","p2p_port":"9732","features":["MONITORING", "RESOURCES", "MEMPOOL_ACTION", "STORAGE_BLOCK", "NETWORK_ACTION", "LOGS_ACTION"]}]'
   depends_on:
     - build

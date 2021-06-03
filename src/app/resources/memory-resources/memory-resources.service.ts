@@ -20,7 +20,7 @@ export class MemoryResourcesService {
   getStorageResources(api: string, reversed: boolean, threshold: number = 512): Observable<MemoryResource> {
     // return of(this.serverData)
     //   .pipe(map(response => this.mapMemoryResponse(response, threshold)));
-    api = 'http://debug.dev.tezedge.com:17832';
+    // api = 'http://debug.dev.tezedge.com:17832';
     return this.http.get<MemoryResource>(`${api}/v1/tree?threshold=${threshold}&reverse=${reversed}`)
       .pipe(map(response => this.mapMemoryResponse(response, threshold)));
   }

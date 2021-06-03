@@ -1,4 +1,3 @@
-import { onlyOn } from '@cypress/skip-test';
 
 const isOcaml = (data) => data.settingsNode.activeNode.id.includes('ocaml');
 
@@ -11,19 +10,19 @@ context('commit-number', () => {
     cy.wait(2000);
   });
 
-  // it('[commit-number] perform Node tag request successfully', () => {
-    // cy.window()
-    //   .its('store')
-    //   .then((store) => {
-    //     store.subscribe(data => {
-    //       if (isOcaml(data)) {
-    //         onlyOn(false);
-    //       } else {
-    //         cy.wait('@getNodeTagRequest').its('response.statusCode').should('eq', 200);
-      //     }
-      //   });
-      // });
-  // });
+  it('[commit-number] perform Node tag request successfully', () => {
+    cy.window()
+      .its('store')
+      .then((store) => {
+        store.subscribe(data => {
+          if (isOcaml(data)) {
+            cy.onlyOn(false);
+          } else {
+            cy.wait('@getNodeTagRequest').its('response.statusCode').should('eq', 200);
+          }
+        });
+      });
+  });
 /*
   it('[commit-number] display the Node release tag in the UI', () => {
     cy.window()
@@ -31,7 +30,7 @@ context('commit-number', () => {
       .then((store) => {
         store.subscribe(data => {
           if (isOcaml(data)) {
-            onlyOn(false);
+            cy.onlyOn(false);
           } else {
             cy.wait('@getNodeTagRequest')
               .then(() => {
@@ -54,7 +53,7 @@ context('commit-number', () => {
       .then((store) => {
         store.subscribe(data => {
           if (isOcaml(data)) {
-            onlyOn(false);
+            cy.onlyOn(false);
           } else {
             cy.wait('@getNodeLastCommitRequest').its('response.statusCode').should('eq', 200);
           }
@@ -70,7 +69,7 @@ context('commit-number', () => {
           .then((store) => {
             store.subscribe(data => {
               if (isOcaml(data)) {
-                onlyOn(false);
+                cy.onlyOn(false);
               } else {
                 store.select('commitNumber')
                   .subscribe((commitNumber) => {
@@ -95,7 +94,7 @@ context('commit-number', () => {
       .then((store) => {
         store.subscribe(data => {
           if (isOcaml(data)) {
-            onlyOn(false);
+            cy.onlyOn(false);
           } else {
             cy.wait('@getDebuggerLastCommitRequest').its('response.statusCode').should('eq', 200);
           }
@@ -109,7 +108,7 @@ context('commit-number', () => {
       .then((store) => {
         store.subscribe(data => {
           if (isOcaml(data)) {
-            onlyOn(false);
+            cy.onlyOn(false);
           } else {
             cy.wait('@getNodeLastCommitRequest')
               .then(() => {
@@ -138,7 +137,7 @@ context('commit-number', () => {
       .then((store) => {
         store.subscribe(data => {
           if (isOcaml(data)) {
-            onlyOn(false);
+            cy.onlyOn(false);
           } else {
             cy.wait(1000)
               .then(() => {

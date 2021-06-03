@@ -1,4 +1,3 @@
-import { onlyOn } from '@cypress/skip-test';
 
 context('STORAGE RESOURCES', () => {
   beforeEach(() => {
@@ -10,7 +9,7 @@ context('STORAGE RESOURCES', () => {
         store.subscribe(data => {
           const isOcaml = data.settingsNode.activeNode.id.includes('ocaml');
           if (isOcaml) {
-            onlyOn(false);
+            cy.onlyOn(false);
           } else {
             cy.visit(Cypress.config().baseUrl + '/#/resources/storage', { timeout: 10000 });
             cy.intercept('GET', '/stats/context*').as('getStorageResources');

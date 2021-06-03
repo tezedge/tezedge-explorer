@@ -1,15 +1,15 @@
-import { onlyOn } from '@cypress/skip-test';
 
 context('network', () => {
   beforeEach(() => {
     cy.visit(Cypress.config().baseUrl);
+    cy.wait(1000);
+    cy.intercept('GET', '/v2/p2p/*').as('getNetworkRequest');
     cy.wait(1000);
     cy.visit(Cypress.config().baseUrl + '/#/network', { timeout: 10000 });
     cy.wait(1000);
   });
 
   it('[network] perform network request successfully', () => {
-    cy.intercept('GET', '/v2/p2p/*').as('getNetworkRequest');
     cy.wait('@getNetworkRequest').its('response.statusCode').should('eq', 200);
   });
 
@@ -58,7 +58,7 @@ context('network', () => {
           .then((store) => {
             store.subscribe(data => {
               if (data.settingsNode.activeNode.id.includes('ocaml')) {
-                onlyOn(false);
+                cy.onlyOn(false);
               } else {
                 store.select('networkAction')
                   .subscribe((data) => {

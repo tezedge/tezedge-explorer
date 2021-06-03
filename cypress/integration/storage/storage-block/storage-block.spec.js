@@ -1,4 +1,3 @@
-import { onlyOn } from '@cypress/skip-test';
 
 context('STORAGE BLOCK', () => {
   beforeEach(() => {
@@ -11,7 +10,7 @@ context('STORAGE BLOCK', () => {
         store.subscribe(data => {
           const isOcaml = data.settingsNode.activeNode.id.includes('ocaml');
           if (isOcaml) {
-            onlyOn(false);
+            cy.onlyOn(false);
           } else {
             cy.visit(Cypress.config().baseUrl + '/#/storage', { timeout: 10000 });
             cy.wait(1000);

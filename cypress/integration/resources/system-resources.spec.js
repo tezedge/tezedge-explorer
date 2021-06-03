@@ -1,4 +1,3 @@
-import { onlyOn } from '@cypress/skip-test';
 
 const isOcaml = (data) => data.settingsNode.activeNode.id.includes('ocaml');
 
@@ -16,7 +15,7 @@ describe('SYSTEM RESOURCES', () => {
       .then((store) => {
         store.subscribe(data => {
           if (isOcaml(store)) {
-            onlyOn(false); // ocaml is currently unavailable
+            cy.onlyOn(false); // ocaml is currently unavailable
             return;
           }
           const nodeId = data.settingsNode.activeNode.id.includes('ocaml') ? 'ocaml' : 'tezedge';
@@ -38,7 +37,7 @@ describe('SYSTEM RESOURCES', () => {
             store.subscribe(store => {
               const ocaml = store.settingsNode.activeNode.id.includes('ocaml');
               if (ocaml) {
-                onlyOn(false); // ocaml is currently unavailable
+                cy.onlyOn(false); // ocaml is currently unavailable
                 return;
               }
               cy.wrap(store.resources.systemResources.colorScheme.domain).should('have.length', 7);
@@ -86,7 +85,7 @@ describe('SYSTEM RESOURCES', () => {
           .then((store) => {
             store.subscribe(store => {
               if (isOcaml(store)) {
-                onlyOn(false); // ocaml is currently unavailable
+                cy.onlyOn(false); // ocaml is currently unavailable
                 return;
               }
               store.select('resources')
@@ -111,7 +110,7 @@ describe('SYSTEM RESOURCES', () => {
           .then((store) => {
             store.subscribe(store => {
               if (isOcaml(store)) {
-                onlyOn(false); // ocaml is currently unavailable
+                cy.onlyOn(false); // ocaml is currently unavailable
               }
               store.select('resources')
                 .subscribe(() => {

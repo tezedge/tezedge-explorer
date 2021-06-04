@@ -65,11 +65,11 @@ export class MemoryResourcesService {
   }
 
   private appendColorForFrame(value: number): string {
-    if (value > 999999) {
+    if (value > 999.99) {
       return '#eb5368';
-    } else if (value > 99999) {
+    } else if (value > 99.99) {
       return '#555558';
-    } else if (value > 9999) {
+    } else if (value > 9.99) {
       return '#3f3f43';
     } else {
       return '#2a2a2e';

@@ -21,7 +21,7 @@ export const environment = {
       features: ['MONITORING', 'RESOURCES', 'MEMPOOL_ACTION', 'NETWORK_ACTION', 'LOGS_ACTION'],
     }
   ],
-  memoryProfiler: 'http://debug.dev.tezedge.com:17832',
+  memoryProfiler: 'http://develop.dev.tezedge.com:17832',
   debugger: 'http://develop.dev.tezedge.com:17732',
   sandbox: 'https://carthage.tezedge.com:3030',
   commit: ''

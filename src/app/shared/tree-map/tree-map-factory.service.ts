@@ -95,7 +95,7 @@ export class TreeMapFactoryService {
                   .html(`
                     <div style="padding: 8px 8px 2px 8px">
                       ${name(dataSet)}<br/>
-                      <div style="margin-top: 5px">${dataSet.value.toLocaleString('fr-FR')} kb<span class="text-white-4"> size</span></div>
+                      <div style="margin-top: 5px">${dataSet.value} mb<span class="text-white-4"> size</span></div>
                     </div>
                     <div style="border-top: 1px solid rgb(27, 27, 29); padding: 6px 8px 8px 8px; margin-top: 4px;">
                       ${dataSet.children ? dataSet.children.length : 0}<span class="text-white-4"> children</span>
@@ -133,10 +133,10 @@ export class TreeMapFactoryService {
                   .split(
                     // /(?=[A-Z][^A-Z])/g
                   )
-                  .concat([d.value.toLocaleString('fr-FR') + ' kb'])
+                  .concat([d.value + ' mb'])
               )
               .join('tspan')
-              .attr('x', (d, i) => i === 0 ? 25 : 7)
+              .attr('x', 7)
               .attr('y', (d, i, nodes) => {
                 const amplifier = i === nodes.length - 1 ? 1.6 : 0;
                 return `${0.5 + (amplifier * 0.3 + 1.1 + i * 0.9)}em`;
@@ -145,14 +145,6 @@ export class TreeMapFactoryService {
               .attr('fill-opacity', (d, i, nodes) => i === nodes.length - 2 ? 0.7 : null)
               .attr('font-weight', (d, i, nodes) => i === nodes.length - 2 ? 'normal' : null)
               .text(d => d);
-
-            node.append('image')
-              .attr('x', 6)
-              .attr('y', 6)
-              .attr('width', 16)
-              .attr('height', 16)
-              .attr('href', d => 'assets/icon/' + d.data.name.functionCategory + '.svg')
-              .attr('visibility', d => x(d.x1) - x(d.x0) < 80 || y(d.y0) - y(d.y1) < 60 ? 'hidden' : '');
 
             const g = node.append('g');
             g
@@ -170,13 +162,6 @@ export class TreeMapFactoryService {
               .attr('y', () => 54)
               .text(d => d.data.children ? d.data.children.length : 0);
 
-            // node.append('circle')
-            //   .attr('visibility', d => x(d.x1) - x(d.x0) < 80 ? 'hidden' : '')
-            //   .attr('cx', 14)
-            //   .attr('r', 9)
-            //   .attr('cy', 48)
-            //   .attr('fill', 'rgba(255,255,255,0.1)')
-
             groupParam.call(position, root);
           }
 
@@ -189,9 +174,6 @@ export class TreeMapFactoryService {
               .attr('height', d => d === root ? 0 : y(d.y1) - y(d.y0));
             g
               .select('text')
-              .attr('visibility', d => x(d.x1) - x(d.x0) < 80 || y(d.y1) - y(d.y0) < 60 ? 'hidden' : '');
-            g
-              .select('image')
               .attr('visibility', d => x(d.x1) - x(d.x0) < 80 || y(d.y1) - y(d.y0) < 60 ? 'hidden' : '');
 
             groupParam.selectAll('g.nested')

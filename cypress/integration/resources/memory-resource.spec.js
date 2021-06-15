@@ -29,11 +29,11 @@ context('MEMORY RESOURCES', () => {
                 cy.wrap(child.value).should('not.be.undefined');
                 cy.wrap(child.total >= child.value).should('be.true');
                 let expectedColor;
-                if (child.value > 999999) {
+                if (child.value > 999.99) {
                   expectedColor = '#eb5368';
-                } else if (child.value > 99999) {
+                } else if (child.value > 99.99) {
                   expectedColor = '#555558';
-                } else if (child.value > 9999) {
+                } else if (child.value > 9.99) {
                   expectedColor = '#3f3f43';
                 } else {
                   expectedColor = '#2a2a2e';

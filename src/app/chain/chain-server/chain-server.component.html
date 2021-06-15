@@ -234,23 +234,37 @@
 		</div>
 
 		<!-- Higher peer treshold -->
-		<div class="form-field">
-			<p class="from-field-title">Higher peer treshold</p>
-			<div class="inline-wrapper">
-				<mat-form-field class="small-size">
-					<input matInput #higherPeerTreshold type="number" formControlName="higherPeerTreshold" />
-				</mat-form-field>
-				<p class="from-field-description">
-					Set maximum number of connected peers, running node will not try to connect to any more peers, if
-					this
-					threshold is met.
-				</p>
-			</div>
-			<mat-error *ngIf="chainServerForm.controls.higherPeerTreshold.invalid">
-				<span *ngIf="chainServerForm.controls.higherPeerTreshold.errors.required">This field is required</span>
-				<span *ngIf="chainServerForm.controls.higherPeerTreshold.errors.serverError">{{error.message}}</span>
-			</mat-error>
-		</div>
+    <div class="form-field">
+      <p class="from-field-title">Higher peer treshold</p>
+      <div class="inline-wrapper">
+        <mat-form-field class="small-size">
+          <input matInput #higherPeerTreshold type="number" formControlName="higherPeerTreshold" />
+        </mat-form-field>
+        <p class="from-field-description">
+          Set maximum number of connected peers, running node will not try to connect to any more peers, if
+          this
+          threshold is met.
+        </p>
+      </div>
+      <mat-error *ngIf="chainServerForm.controls.higherPeerTreshold.invalid">
+        <span *ngIf="chainServerForm.controls.higherPeerTreshold.errors.required">This field is required</span>
+        <span *ngIf="chainServerForm.controls.higherPeerTreshold.errors.serverError">{{error.message}}</span>
+      </mat-error>
+    </div>
+
+    <div class="form-field">
+      <p class="from-field-title">Synchronization threshold</p>
+      <div class="inline-wrapper">
+        <mat-form-field class="small-size">
+          <input matInput type="number" formControlName="synchronizationThresh" />
+        </mat-form-field>
+        <p class="from-field-description">Set synchronization minimum threshold</p>
+      </div>
+      <mat-error *ngIf="chainServerForm.controls.synchronizationThresh.invalid">
+        <span *ngIf="chainServerForm.controls.synchronizationThresh.errors.required">This field is required</span>
+        <span *ngIf="chainServerForm.controls.synchronizationThresh.errors.serverError">{{error.message}}</span>
+      </mat-error>
+    </div>
 
 		<!-- Private node mode -->
 		<div class="form-field">
@@ -345,7 +359,7 @@
 		<div class="form-field">
 			<p class="from-field-title">Recording context actions</p>
 			<div class="inline-wrapper">
-				<mat-slide-toggle #recordingContextActions formControlName="recordingContextActions">
+				<mat-slide-toggle disabled #recordingContextActions formControlName="recordingContextActions">
 				</mat-slide-toggle>
 				<p class="from-field-description">Activate recording of context storage actions</p>
 			</div>
@@ -354,25 +368,6 @@
 					required</span>
 				<span
 					*ngIf="chainServerForm.controls.recordingContextActions.errors.serverError">{{error.message}}</span>
-			</mat-error>
-		</div>
-
-		<!-- db cfg max threads -->
-		<div class="form-field">
-			<p class="from-field-title">RocksDB max threads (optional)</p>
-			<div class="inline-wrapper">
-				<mat-form-field class="small-size">
-					<input matInput #maxThreads type="number" formControlName="maxThreads" />
-				</mat-form-field>
-				<p class="from-field-description">
-					Max number of threads used by database configuration. If not specified, then the number of threads
-					is equal to
-					the number of CPU cores.
-				</p>
-			</div>
-			<mat-error *ngIf="chainServerForm.controls.maxThreads.invalid">
-				<span *ngIf="chainServerForm.controls.maxThreads.errors.required">This field is required</span>
-				<span *ngIf="chainServerForm.controls.maxThreads.errors.serverError">{{error.message}}</span>
 			</mat-error>
 		</div>
 

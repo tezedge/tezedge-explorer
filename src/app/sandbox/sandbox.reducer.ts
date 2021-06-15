@@ -106,11 +106,12 @@ export function mapChainServerForEndpoint(formData: any){
         network: 'sandbox',
         peer_thresh_low: formData.lowerPeerTreshold,
         peer_thresh_high: formData.higherPeerTreshold,
+        synchronization_thresh: formData.synchronizationThresh.toString(),
         sandbox_patch_context_json: JSON.parse(formData.sandboxContextPatching),
         tezos_data_dir: formData.tezosDataDir,
         identity_file: formData.identityFile,
         bootstrap_db_path: formData.bootstrapDbPath,
-        db_cfg_max_threads: formData.maxThreads ? formData.maxThreads.toString() : undefined,
+        db_cfg_max_threads: '0',
         log_file: formData.loggingFile ? formData.loggingFile : undefined,
         log_format: formData.loggingFormat,
         log_level: formData.loggingLevel,
@@ -125,10 +126,20 @@ export function mapChainServerForEndpoint(formData: any){
         ffi_pool_connection_timeout_in_secs: formData.ffiConnTimeout,
         ffi_pool_max_lifetime_in_secs: formData.ffiPoolLifetime,
         ffi_pool_idle_timeout_in_secs: formData.ffiPoolUnusedTimeout,
-        store_context_actions: formData.recordingContextActions,
+        actions_store_backend: formData.recordingContextActions || 'none',
         tokio_threads: formData.tokioThreads,
         enable_testchain: formData.testChain,
-    }
+        // Static values
+        ffi_trpap_pool_max_connections: 10,
+        ffi_trpap_pool_connection_timeout_in_secs: 60,
+        ffi_trpap_pool_max_lifetime_in_secs: 21600,
+        ffi_trpap_pool_idle_timeout_in_secs: 1800,
+        ffi_twcap_pool_max_connections: 10,
+        ffi_twcap_pool_connection_timeout_in_secs: 60,
+        ffi_twcap_pool_max_lifetime_in_secs: 21600,
+        ffi_twcap_pool_idle_timeout_in_secs: 1800,
+        one_context: '',
+    };
 }
 
 export function mapChainWalletsForEndpoint(wallets: any[]){

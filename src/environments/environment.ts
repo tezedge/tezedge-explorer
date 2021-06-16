@@ -2,12 +2,12 @@ export const environment = {
   production: false,
   api: [
     {
-      id: 'rust.sandbox.dev.tezedge.com',
-      name: 'rust.sandbox.dev.tezedge.com',
-      http: 'http://sandbox.dev.tezedge.com:18732',
-      debugger: 'https://sandbox.dev.tezedge.com:8753',
-      monitoring: 'http://sandbox.dev.tezedge.com:38732/resources/tezedge',
-      ws: 'ws://sandbox.dev.tezedge.com:4927',
+      id: 'rust.develop.dev.tezedge.com',
+      name: 'rust.develop.dev.tezedge.com',
+      http: 'http://develop.dev.tezedge.com:18732',
+      debugger: 'https://develop.dev.tezedge.com:8753',
+      monitoring: 'http://develop.dev.tezedge.com:38732/resources/tezedge',
+      ws: 'ws://develop.dev.tezedge.com:4927',
       p2p_port: '9732',
       features: ['MONITORING', 'RESOURCES', 'MEMPOOL_ACTION', 'STORAGE_BLOCK', 'NETWORK_ACTION', 'LOGS_ACTION']
     },

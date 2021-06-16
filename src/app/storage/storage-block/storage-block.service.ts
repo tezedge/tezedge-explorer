@@ -18,11 +18,12 @@ export class StorageBlockService {
   }
 
   private mapGetStorageBlockContextDetailsResponse(response: any, context: string): StorageBlockDetails {
-    const block = response;
+    const block: StorageBlockDetails = response;
     block.checkoutContextTime = response[context + 'CheckoutContextTime'];
     block.commitContextTime = response[context + 'CommitContextTime'];
     block.operationsContext.forEach((op: StorageBlockDetailsOperationContext, i: number) => {
       const operation = response.operationsContext[i];
+      op.data.actionsCount = operation.data[context + 'Count'];
       op.data.maxTime = operation.data[context + 'MaxTime'];
       op.data.meanTime = operation.data[context + 'MeanTime'];
       op.data.totalTime = operation.data[context + 'TotalTime'];
@@ -31,6 +32,7 @@ export class StorageBlockService {
       op.find = operation[context + 'Find'];
       op.findTree = operation[context + 'FindTree'];
       op.mem = operation[context + 'Mem'];
+      op.memTree = operation[context + 'MemTree'];
       op.remove = operation[context + 'Remove'];
     });
     return block;

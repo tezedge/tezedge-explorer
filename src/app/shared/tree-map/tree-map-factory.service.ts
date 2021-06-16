@@ -22,10 +22,6 @@ export class TreeMapFactoryService {
             .attr('viewBox', [0, 0, width, height])
             .style('font', '12px sans-serif');
 
-          // d3Library.select('body').append('div')
-          //   .attr('class', 'tooltip')
-          //   .style('opacity', 0);
-
           let group = svg.append('g')
             .call(render, treemapData);
 
@@ -76,10 +72,9 @@ export class TreeMapFactoryService {
             //     }
             // });
 
-
-            const myScale = d3Library.scaleLinear()
-              .domain([0, d3Library.max(root.leaves().map(leaves => leaves.data.value))])
-              .range([1, 0.4]).clamp(true);
+            // const myScale = d3Library.scaleLinear()
+            //   .domain([0, d3Library.max(root.leaves().map(leaves => leaves.data.value))])
+            //   .range([1, 0.4]).clamp(true);
 
             // tooltip
             // node.append("title")
@@ -87,28 +82,25 @@ export class TreeMapFactoryService {
 
             node.append('rect')
               .attr('id', d => (d.leafUid = DOM.uid('leaf')).id)
-              .attr('fill', d => {
-                // while (d.depth > 1) {
-                //   d = d.parent;
-                // }
-                return d.data.color;
-              })
-              .attr('fill-opacity', d => d.depth <= 1 ? 0.45 : 0.45)
+              .attr('fill', d => d.data.color)
+              .attr('fill-opacity', () => 0.45)
               // .attr("fill-opacity", d => {
               //  let min = d3Library.min(root.leaves().map(leaf => leaf.data.value))
               //  let max = d3Library.max(root.leaves().map(leaf => leaf.data.value))
               //  return (d.value-min)/(max-min)})
-              .attr('stroke', d => {
-                // while (d.depth > 1) {
-                //   d = d.parent;
-                // }
-                // return d.data.color;
-                return 'rgba(255, 255, 255, 0.2)';
-              })
+              .attr('stroke', () => 'rgba(255, 255, 255, 0.2)')
               .attr('touch-action', 'none')
               .on('mouseover', (d, dataSet) => {
                 tooltip
-                  .html(`${name(dataSet)}<br/><div style="margin-top: 5px">${dataSet.value.toLocaleString('fr-FR')} kb<span class="text-white-4"> size</span></div>`)
+                  .html(`
+                    <div style="padding: 8px 8px 2px 8px">
+                      ${name(dataSet)}<br/>
+                      <div style="margin-top: 5px">${dataSet.value} mb<span class="text-white-4"> size</span></div>
+                    </div>
+                    <div style="border-top: 1px solid rgb(27, 27, 29); padding: 6px 8px 8px 8px; margin-top: 4px;">
+                      ${dataSet.children ? dataSet.children.length : 0}<span class="text-white-4"> children</span>
+                    </div>
+                  `)
                   .style('visibility', 'visible');
               })
               .on('mousemove', (d) => {
@@ -134,28 +126,47 @@ export class TreeMapFactoryService {
               .attr('clip-path', d => d.clipUid)
               .attr('font-weight', d => d === root ? 'bold' : null)
               .attr('pointer-events', 'none')
-              .attr('visibility', d => x(d.x1) - x(d.x0) < 80 ? 'hidden' : '')
+              .attr('visibility', d => x(d.x1) - x(d.x0) < 80 || y(d.y1) - y(d.y0) < 60 ? 'hidden' : '')
               .selectAll('tspan')
               .data(d =>
                 d.data.name.executableName
                   .split(
                     // /(?=[A-Z][^A-Z])/g
                   )
-                  .concat(d.value.toLocaleString('fr-FR') + ' kb')
+                  .concat([d.value + ' mb'])
               )
               .join('tspan')
               .attr('x', 7)
-              .attr('y', (d, i, nodes) => `${0.5 + ((i === nodes.length - 1 ? 1 : 0) * 0.3 + 1.1 + i * 0.9)}em`)
+              .attr('y', (d, i, nodes) => {
+                const amplifier = i === nodes.length - 1 ? 1.6 : 0;
+                return `${0.5 + (amplifier * 0.3 + 1.1 + i * 0.9)}em`;
+              })
               .attr('fill', '#fff')
-              .attr('fill-opacity', (d, i, nodes) => i === nodes.length - 1 ? 0.7 : null)
-              .attr('font-weight', (d, i, nodes) => i === nodes.length - 1 ? 'normal' : null)
+              .attr('fill-opacity', (d, i, nodes) => i === nodes.length - 2 ? 0.7 : null)
+              .attr('font-weight', (d, i, nodes) => i === nodes.length - 2 ? 'normal' : null)
               .text(d => d);
+
+            const g = node.append('g');
+            g
+              .attr('class', () => 'nested')
+              .attr('visibility', d => x(d.x1) - x(d.x0) < 80 || y(d.y1) - y(d.y0) < 60 ? 'hidden' : '');
+            g.append('circle')
+              .attr('cx', d => d.data.children && d.data.children.length > 9 ? 18 : 15)
+              .attr('cy', () => 50)
+              .attr('r', d => d.data.children && d.data.children.length > 9 ? 11 : 8)
+              .attr('fill', 'rgba(255,255,255,0.2)');
+
+            g.append('text')
+              .attr('fill', '#fff')
+              .attr('x', () => 12)
+              .attr('y', () => 54)
+              .text(d => d.data.children ? d.data.children.length : 0);
 
             groupParam.call(position, root);
           }
 
           function position(groupParam, root) {
-            const g = groupParam.selectAll('g');
+            const g = groupParam.selectAll('g:not(.nested)');
             g
               .attr('transform', d => `translate(${x(d.x0)},${y(d.y0)})`)
               .select('rect')
@@ -163,7 +174,10 @@ export class TreeMapFactoryService {
               .attr('height', d => d === root ? 0 : y(d.y1) - y(d.y0));
             g
               .select('text')
-              .attr('visibility', d => x(d.x1) - x(d.x0) < 80 ? 'hidden' : '');
+              .attr('visibility', d => x(d.x1) - x(d.x0) < 80 || y(d.y1) - y(d.y0) < 60 ? 'hidden' : '');
+
+            groupParam.selectAll('g.nested')
+              .attr('visibility', d => x(d.x1) - x(d.x0) < 80 || y(d.y1) - y(d.y0) < 60 ? 'hidden' : '');
           }
 
           // When zooming in, draw the new nodes on top, and fade them in.
@@ -272,7 +286,6 @@ export class TreeMapFactoryService {
         .style('box-shadow', '0 4px 4px rgba(0, 0, 0, 0.25)')
         .style('visibility', 'hidden')
         .style('color', 'rgba(255, 255, 255, 0.4)')
-        .style('padding', '8px')
         .style('background', '#2a2a2e')
         .style('border-radius', '4px')
         .style('color', '#fff');

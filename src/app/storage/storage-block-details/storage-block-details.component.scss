@@ -14,9 +14,14 @@
     .storage-block-header {
       margin-bottom: 15px;
 
-      .combo-box {
-        line-height: 1.35;
-        width: 135px;
+      .node-switcher {
+        background-color: rgba(255, 255, 255, 0.05);
+        border-radius: 3px;
+        padding: 2px 4px;
+
+        &:hover {
+          background-color: rgba(255, 255, 255, 0.25);
+        }
       }
     }
 

@@ -1,16 +1,7 @@
 $border-color: rgba(255, 255, 255, 0.1);
 
-
 .mini-graph {
   padding-right: 30px;
-
-  &.overview-graph {
-    padding-right: 0;
-
-    .graph-overview {
-      margin-bottom: 8px;
-    }
-  }
 
   .graph-overview {
     margin-bottom: 14px;
@@ -44,11 +35,6 @@ $border-color: rgba(255, 255, 255, 0.1);
   padding-top: 2px;
   margin-right: 10px;
 
-  &.overview-graph-col {
-    width: 322px;
-    background: repeating-linear-gradient(0deg, lighten(#1b1b1d, 5), lighten(#1b1b1d, 5) 16px, $border-color 0.05em, $border-color 18px);
-  }
-
   .gr-col {
     min-width: 16px;
     cursor: pointer;
@@ -59,24 +45,32 @@ $border-color: rgba(255, 255, 255, 0.1);
     }
 
     &:hover .square {
-      background-color: #fff !important;
+      background-color: rgba(255, 255, 255, 0.6) !important;
+
+      &.yellow-square {
+        background-color: #ff9600 !important;
+      }
+
+      &.red-square {
+        background-color: #ff3d58 !important;
+      }
     }
 
     .square {
       width: 16px;
       height: 16px;
-      background-color: rgba(255, 255, 255, 0.4);
+      background-color: #777;
 
       &:not(:last-child) {
         margin-top: 2px;
       }
 
       &.yellow-square {
-        background-color: #FF9F0A;
+        background-color: rgba(255, 159, 10, 0.8);
       }
 
       &.red-square {
-        background-color: #FF2D55;
+        background-color: rgba(235, 83, 104, 0.8);
       }
     }
   }

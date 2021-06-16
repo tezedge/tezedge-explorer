@@ -133,11 +133,6 @@
     }
 
     &:nth-child(6) {
-      min-width: 90px;
-      max-width: 90px;
-    }
-
-    &:nth-child(7) {
       min-width: 65px;
       max-width: 65px;
     }
@@ -182,6 +177,7 @@
 
       .progress-background {
         min-width: 4px;
+        background-color: rgba(255, 255, 255, 0.22);
 
         &.yellow {
           background-color: #FF9F0A;

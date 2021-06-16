@@ -10,7 +10,7 @@
               class="icon-14 icon-white-7"></mat-icon>
   </div>
   <span class="text-white-7 font-500">{{ activeResource.name.executableName }}</span>
-  <span class="text-white-4">&nbsp;- {{ activeResource.value | number: '': 'fr' }} kb</span>
+  <span class="text-white-4">&nbsp;- {{ activeResource.value }} mb</span>
 </div>
 
 <div #treeMapChart
@@ -34,7 +34,7 @@
   </ng-container>
 </div>
 
-<table class="memory-table overflow-y-auto "
+<table class="memory-table overflow-y-auto"
        *ngIf="activeResource">
   <thead>
   <tr>
@@ -42,7 +42,6 @@
     <th>Percentage</th>
     <th>Executable</th>
     <th>Size</th>
-    <th>Cache</th>
     <th>Total size</th>
     <th>Children</th>
     <th>Function</th>
@@ -52,38 +51,35 @@
   <tr *ngFor="let operation of activeResource.children"
       [class.non-clickable]="!operation.children.length"
       (click)="zoomToNode(operation)">
-    <ng-container *ngIf="operation.value / activeResource.value * 100 as percent">
-      <td>{{ percent | number: '1.0-1' }}%</td>
-      <td>
-        <div class="progress-background">
-          <div class="progress-background"
-               [class.red]="percent > 50"
-               [class.yellow]="percent > 10"
-               [style.width.%]="percent"></div>
-        </div>
-      </td>
-      <td class="text-nowrap">
-        <div class="truncate"
-             fxLayoutAlign="start center"
-             fxLayoutGap="8px"
-             fxLayout="row">
-          <mat-icon svgIcon="folder"
-                    class="icon-16"
-                    [class.red]="operation.color === '#eb5368'"
-                    [class.light]="operation.color === '#555558'"
-                    [class.gray]="operation.color === '#3f3f43'"
-                    [class.dark]="operation.color === '#2a2a2e'">
-          </mat-icon>
-          <span>{{ operation.name.executableName }}</span></div>
-      </td>
-      <td>{{ operation.value | number: '': 'fr' }} kb</td>
-      <td>{{ operation.cacheValue | number: '': 'fr' }} kb</td>
-      <td>{{ operation.total | number: '': 'fr' }} kb</td>
-      <td>{{ operation.children.length }}</td>
-      <td class="truncate">
-        <div>{{ operation.name.functionName || '-' }}</div>
-      </td>
-    </ng-container>
+    <td>{{ operation.value / activeResource.value * 100 | number: '1.0-1' }}%</td>
+    <td>
+      <div class="progress-background">
+        <div class="progress-background"
+             [class.red]="operation.value / activeResource.value * 100 > 50"
+             [class.yellow]="operation.value / activeResource.value * 100 > 10"
+             [style.width.%]="operation.value / activeResource.value * 100"></div>
+      </div>
+    </td>
+    <td class="text-nowrap">
+      <div class="truncate"
+           fxLayoutAlign="start center"
+           fxLayoutGap="8px"
+           fxLayout="row">
+        <mat-icon svgIcon="folder"
+                  class="icon-16"
+                  [class.red]="operation.color === '#eb5368'"
+                  [class.light]="operation.color === '#555558'"
+                  [class.gray]="operation.color === '#3f3f43'"
+                  [class.dark]="operation.color === '#2a2a2e'">
+        </mat-icon>
+        <span>{{ operation.name.executableName }}</span></div>
+    </td>
+    <td>{{ operation.value }} mb</td>
+    <td>{{ operation.total }} mb</td>
+    <td>{{ operation.children.length }}</td>
+    <td class="truncate">
+      <div>{{ operation.name.functionName || '-' }}</div>
+    </td>
   </tr>
   </tbody>
 </table>

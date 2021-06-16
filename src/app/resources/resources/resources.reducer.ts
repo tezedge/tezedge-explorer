@@ -1,30 +1,28 @@
-import { ResourcesActions, ResourcesActionTypes } from './resources.actions';
-import { Resource } from '../../shared/types/resources/resource.type';
+import { SystemResourcesActions, SystemResourcesActionTypes } from '../system-resources/system-resources.actions';
+import { SystemResources } from '../../shared/types/resources/system/system-resources.type';
 import { StorageResourcesStats } from '../../shared/types/resources/storage/storage-resources-stats.type';
 import { StorageResourcesActions, StorageResourcesActionTypes } from '../storage-resources/storage-resources.actions';
 import { MemoryResource } from '../../shared/types/resources/memory/memory-resource.type';
 import { MemoryResourcesActions, MemoryResourcesActionTypes } from '../memory-resources/memory-resources.actions';
 
 export interface ResourcesState {
-  resources: Resource[];
+  systemResources: SystemResources;
   storageResources: StorageResourcesStats;
   memoryResources: MemoryResource;
-  reversedMemoryResources: boolean;
 }
 
 const initialState: ResourcesState = {
-  resources: [],
+  systemResources: null,
   storageResources: null,
   memoryResources: null,
-  reversedMemoryResources: false
 };
 
-export function reducer(state: ResourcesState = initialState, action: ResourcesActions | StorageResourcesActions | MemoryResourcesActions): ResourcesState {
+export function reducer(state: ResourcesState = initialState, action: SystemResourcesActions | StorageResourcesActions | MemoryResourcesActions): ResourcesState {
   switch (action.type) {
-    case ResourcesActionTypes.ResourcesLoadSuccess: {
+    case SystemResourcesActionTypes.ResourcesLoadSuccess: {
       return {
         ...state,
-        resources: [...action.payload]
+        systemResources: { ...action.payload }
       };
     }
     case StorageResourcesActionTypes.ResourcesLoadSuccess: {

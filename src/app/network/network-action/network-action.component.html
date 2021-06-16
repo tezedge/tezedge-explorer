@@ -159,9 +159,9 @@
 
             <span class="item-loading" [class.displayed]="!event?.datetime">&nbsp;</span>
 
-            <span class="truncate">{{event?.datetime}}</span>
+            <span class="truncate date-time">{{event?.datetime}}</span>
             <span class="truncate">
-              <span class="network-action-table-address" (click)="filterAddress(event?.remote_addr)"> {{ event?.remote_addr }}</span>
+              <span class="network-action-table-address" (click)="filterAddress(event?.remote_addr)">{{ event?.remote_addr }}</span>
             </span>
             <span>
               <span *ngIf="event?.datetime && (event?.source_type==='local' || event?.source_type==='remote')">

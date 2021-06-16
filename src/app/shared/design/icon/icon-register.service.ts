@@ -11,7 +11,11 @@ export class IconRegisterService {
     'folder',
     'chevron-right',
     'arrow-left',
-    'switch',
+    'arrow-around',
+    'arrow-expanded',
+    'rust',
+    'cpp',
+    'foreign-system',
   ];
 
   constructor(private iconRegistry: MatIconRegistry,

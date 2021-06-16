@@ -141,18 +141,6 @@
         <span class="text-nowrap">Logs</span>
       </span>
       </a>
-
-      <!--
-
-      <a mat-list-item class="menu-item" routerLink="/mempool"
-          [style.color]="app.sidenav.color">
-          <span>
-              Mempool
-          </span>
-      </a>
-    -->
-
-
     </div>
 
     <!-- <div class="app-submenu">
@@ -224,33 +212,31 @@
         <span class="text-nowrap">Wallets</span>
       </span>
       </a>
-      <!--
       <span>
           <button style="font-size: 12px;line-height: 32px;color:white; background: #323234; " mat-flat-button>
               START SANDBOX NODE
           </button>
       </span>
-      -->
     </div>
     <div class="app-submenu"
-         *ngIf="settingsNode.entities['sandbox-carthage-tezedge']?.connected === false">
+         *ngIf="settingsNode.sandbox">
       <div class="text-nowrap">SANDBOX</div>
       <div style="padding: 5px 0 0 20px">
         <button mat-flat-button
                 (click)="nodeSandboxAdd();"
                 id="menu-add-sandbox-node"
-                style="font-size: 12px;line-height: 24px;color:white; background: #8C6141; font-weight:300">
+                style="font-size: 12px;line-height: 24px;color:white; background: #8c6141; font-weight:300">
           ADD SANDBOX NODE
         </button>
       </div>
 
-      <!-- <div style="padding: 0px 0px 0px 20px;">
-          <button mat-flat-button (click)="odeSandboxStop();"
-              *ngIf="settingsNode.entities['sandbox-carthage-tezedge']?.connected === true"
-              style="font-size: 12px;line-height: 24px;color:white; background: #8C6141; font-weight:300">
-              STOP SANDBOX NODE
-          </button>
-      </div> -->
+      <div style="padding: 0px 0px 0px 20px;">
+        <button mat-flat-button (click)="nodeSandboxStop();"
+                *ngIf="settingsNode.entities['sandbox-carthage-tezedge']?.connected === true"
+                style="font-size: 12px;line-height: 24px;color:white; background: #8c6141; font-weight:300">
+          STOP SANDBOX NODE
+        </button>
+      </div>
     </div>
 
     <div class="app-submenu">

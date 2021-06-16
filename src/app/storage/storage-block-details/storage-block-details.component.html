@@ -10,16 +10,11 @@
     <div class="storage-block-header text-gray"
          fxLayoutAlign="space-between center">
       CONTEXT CHECKOUT
-      <mat-form-field class="combo-box">
-        <mat-select #contextSelect
-                    [value]="'tezedge'"
-                    panelClass="storage-details-select"
-                    disableOptionCentering
-                    (selectionChange)="getBlockDetails($event)">
-          <mat-option value="tezedge">TezEdge</mat-option>
-          <mat-option value="irmin">Irmin</mat-option>
-        </mat-select>
-      </mat-form-field>
+      <mat-icon (click)="getBlockDetails()"
+                svgIcon="arrow-around" class="icon-20 icon-white-4 pointer node-switcher"
+                [matTooltip]="'Current: ' + activeContextNode"
+                matTooltipPosition="left"
+                matTooltipShowDelay="600"></mat-icon>
     </div>
     <div fxLayoutAlign="start center"
          fxLayout="row"
@@ -37,6 +32,7 @@
           <th>TOTAL</th>
           <th>ACTIONS</th>
           <th>MEM</th>
+          <th>MEM TREE</th>
           <th>FIND</th>
           <th>FIND TREE</th>
           <th>ADD</th>
@@ -52,6 +48,7 @@
           <td [innerHTML]="row.data.totalTime | timeTransform: true: true"></td>
           <td [innerHTML]="row.data.actionsCount"></td>
           <td [innerHTML]="row.mem | timeTransform: true: true"></td>
+          <td [innerHTML]="row.memTree | timeTransform: true: true"></td>
           <td [innerHTML]="row.find | timeTransform: true: true">{{ row.find }}</td>
           <td [innerHTML]="row.findTree | timeTransform: true: true">{{ row.findTree }}</td>
           <td [innerHTML]="row.add | timeTransform: true: true">{{ row.add }}</td>

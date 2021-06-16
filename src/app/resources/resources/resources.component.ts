@@ -1,8 +1,7 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
-import { select, Store } from '@ngrx/store';
+import { Store } from '@ngrx/store';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { State } from '../../app.reducers';
-import { SettingsNodeApi } from '../../shared/types/settings-node/settings-node-api.type';
 import { StorageResourcesActionTypes } from '../storage-resources/storage-resources.actions';
 import { MemoryResourcesActionTypes } from '../memory-resources/memory-resources.actions';
 import { MatCheckboxChange } from '@angular/material/checkbox';
@@ -23,7 +22,6 @@ export class ResourcesComponent implements OnInit, OnDestroy {
     { title: 'Storage', id: 2, link: 'storage' },
     { title: 'Memory', id: 3, link: 'memory' }
   ];
-  activeTabId: number = 1;
   storageNodeStats = 'tezedge';
   reversedCheckboxState = false;
   activeRoute: string;
@@ -34,7 +32,6 @@ export class ResourcesComponent implements OnInit, OnDestroy {
               private cdRef: ChangeDetectorRef) { }
 
   ngOnInit(): void {
-    this.listenToNodeChange();
     this.listenToRouteChange();
   }
 
@@ -48,21 +45,6 @@ export class ResourcesComponent implements OnInit, OnDestroy {
     this.router.events
       .pipe(untilDestroyed(this), filter(ev => ev instanceof NavigationEnd))
       .subscribe((ev: NavigationEnd) => this.activeRoute = ev.urlAfterRedirects.split('/').pop());
-  }
-
-  private listenToNodeChange(): void {
-    this.store.pipe(
-      untilDestroyed(this),
-      select(state => state.settingsNode.activeNode),
-    ).subscribe((settingsNode: SettingsNodeApi) => {
-      if (settingsNode.id === 'ocaml' && this.tabs.find(tab => tab.title === 'Memory')) {
-        this.activeTabId = this.activeTabId === 3 ? 1 : this.activeTabId;
-        this.tabs.splice(this.tabs.findIndex(tab => tab.title === 'Memory'), 1);
-      } else if (settingsNode.id !== 'ocaml' && !this.tabs.find(tab => tab.title === 'Memory')) {
-        this.tabs.push({ title: 'Memory', id: 3, link: 'memory' });
-      }
-      this.cdRef.detectChanges();
-    });
   }
 
   getStorageStatistics(): void {

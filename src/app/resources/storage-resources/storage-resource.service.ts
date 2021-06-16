@@ -27,6 +27,7 @@ export class StorageResourceService {
     result.checkoutContext = this.buildTimeline(response.checkoutContext);
     result.operationsContext.forEach((operation) => {
       operation.mem = this.buildTimeline(operation.mem);
+      operation.memTree = this.buildTimeline(operation.memTree);
       operation.find = this.buildTimeline(operation.find);
       operation.findTree = this.buildTimeline(operation.findTree);
       operation.add = this.buildTimeline(operation.add);
@@ -49,7 +50,7 @@ export class StorageResourceService {
         totalTime: operation.totalTime,
         maxTime: undefined,
         meanTime: undefined,
-        squareCount: this.getSquareCount(operation.totalTime, 100)
+        squareCount: undefined
       }));
 
     result.contextSliceNames = ['commit', 'checkout', ...result.operationsContext.map(op => op.root)]
@@ -79,16 +80,13 @@ export class StorageResourceService {
     };
   }
 
-  private getSquareCount(totalTimeInSeconds: number, step: number = 1): number {
-    const TEN_MICROSECONDS_FACTOR = 100000 / step;
+  private getSquareCount(totalTimeInSeconds: number): number {
+    const TEN_MICROSECONDS_FACTOR = 100000;
     let squareCount = 0;
     let timeInTenMicroseconds = totalTimeInSeconds * TEN_MICROSECONDS_FACTOR;
     while (timeInTenMicroseconds > 1) {
       timeInTenMicroseconds /= 10;
       squareCount++;
-    }
-    if (timeInTenMicroseconds > 0 && squareCount === 0) {
-      squareCount = 1;
     }
     return Math.min(squareCount, 8);
   }

@@ -40,7 +40,8 @@
                 "input": "src/styles.dark.scss",
                 "bundleName": "styles.dark",
                 "inject": false
-              }
+              },
+              "./node_modules/swagger-ui/dist/swagger-ui.css"
             ],
             "extractCss": true
           },

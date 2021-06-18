@@ -26,8 +26,8 @@ const initialState: App = {
     },
     menu: {
         sandbox: {
-            chain: true,
-            wallets: true,
+            chain: false,
+            wallets: false,
         }
     },
     theme: {

@@ -54,7 +54,7 @@ export function reducer(state: NetworkStats = initialState, action): NetworkStat
                 currentBlockCount: action.payload.timestamp === state.blockTimestamp ? action.payload.level :
                     Math.floor(moment().diff(moment(action.payload.timestamp), 'minutes') /
                         // TODO: refactor and use constans
-                        (moment(action.payload.timestamp).diff(moment(state.blockTimestamp), 'minutes') /
+                        (moment(action.payload.timestamp).diff(moment(state.blockTimestamp === 0 ? action.payload.timestamp : state.blockTimestamp), 'minutes') /
                             (action.payload.level - state.lastAppliedBlock.level)
                         )
                     ),
@@ -63,7 +63,7 @@ export function reducer(state: NetworkStats = initialState, action): NetworkStat
                 lastAppliedBlock: {
                     level: action.payload.level,
                 },
-                etaApplications: etaApplicationSeconds === 0 ? getETA(etaApplicationSeconds) : 'Infinity'
+                etaApplications: etaApplicationSeconds !== 0 ? getETA(etaApplicationSeconds) : 'Infinity'
             };
         }
 

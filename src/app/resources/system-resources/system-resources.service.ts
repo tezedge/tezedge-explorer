@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, throwError } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
-import { map } from 'rxjs/operators';
+import { catchError, map } from 'rxjs/operators';
 import { SystemResources } from '../../shared/types/resources/system/system-resources.type';
 import { DatePipe } from '@angular/common';
 import { SystemResourcesSummary } from '../../shared/types/resources/system/system-resources-summary.type';
@@ -31,7 +31,10 @@ export class SystemResourcesService {
 
   getSystemResources(endpoint: string, isSmallDevice: boolean): Observable<SystemResources> {
     return this.http.get<SystemResources>(endpoint)
-      .pipe(map(response => this.mapGetSystemResourcesResponse(response, isSmallDevice)));
+      .pipe(
+        map(response => this.mapGetSystemResourcesResponse(response, isSmallDevice)),
+        catchError(err => throwError(err))
+      );
   }
 
   private mapGetSystemResourcesResponse(response: any, isSmallDevice: boolean): SystemResources {

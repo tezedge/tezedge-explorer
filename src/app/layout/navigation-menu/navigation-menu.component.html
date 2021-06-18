@@ -178,11 +178,12 @@
     </div> -->
 
     <div class="app-submenu"
-         *ngIf="app.menu.sandbox.chain || app.menu.sandbox.wallets">
+         *ngIf="features['CHAINS'] || features['WALLETS'] || settingsNode.sandbox">
       <div class="text-nowrap">SANDBOX</div>
 
-      <a *ngIf="app.menu.sandbox.chain"
+      <a *ngIf="features['CHAINS']"
          mat-list-item
+         id="chains-trigger"
          class="menu-item"
          routerLink="/chain"
          routerLinkActive="active"
@@ -197,8 +198,9 @@
       </span>
       </a>
 
-      <a *ngIf="app.menu.sandbox.wallets"
+      <a *ngIf="features['WALLETS']"
          mat-list-item
+         id="wallets-trigger"
          class="menu-item"
          routerLink="/wallets"
          routerLinkActive="active"
@@ -212,29 +214,19 @@
         <span class="text-nowrap">Wallets</span>
       </span>
       </a>
-      <span>
-          <button style="font-size: 12px;line-height: 32px;color:white; background: #323234; " mat-flat-button>
-              START SANDBOX NODE
-          </button>
-      </span>
-    </div>
-    <div class="app-submenu"
-         *ngIf="settingsNode.sandbox">
-      <div class="text-nowrap">SANDBOX</div>
-      <div style="padding: 5px 0 0 20px">
+
+      <div class="sandbox-button" *ngIf="settingsNode.sandbox">
         <button mat-flat-button
-                (click)="nodeSandboxAdd();"
-                id="menu-add-sandbox-node"
-                style="font-size: 12px;line-height: 24px;color:white; background: #8c6141; font-weight:300">
-          ADD SANDBOX NODE
+                (click)="addSandboxNode()"
+                id="menu-add-sandbox-node">
+          {{ app.sidenav.collapsed ? '+' : 'ADD SANDBOX NODE' }}
         </button>
       </div>
 
-      <div style="padding: 0px 0px 0px 20px;">
-        <button mat-flat-button (click)="nodeSandboxStop();"
-                *ngIf="settingsNode.entities['sandbox-carthage-tezedge']?.connected === true"
-                style="font-size: 12px;line-height: 24px;color:white; background: #8c6141; font-weight:300">
-          STOP SANDBOX NODE
+      <div>
+        <button mat-flat-button (click)="stopSandboxNode();"
+                *ngIf="settingsNode.entities['sandbox-carthage-tezedge']?.connected === true">
+          {{ app.sidenav.collapsed ? '+' : 'STOP SANDBOX NODE' }}
         </button>
       </div>
     </div>

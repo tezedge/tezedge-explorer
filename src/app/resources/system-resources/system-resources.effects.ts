@@ -7,6 +7,7 @@ import { SystemResourcesActionTypes } from './system-resources.actions';
 import { SystemResourcesService } from './system-resources.service';
 import { SystemResources } from '../../shared/types/resources/system/system-resources.type';
 import { State } from '../../app.reducers';
+import { ErrorActionTypes } from '../../shared/error-popup/error-popup.action';
 
 @Injectable({ providedIn: 'root' })
 export class SystemResourcesEffects {
@@ -24,7 +25,7 @@ export class SystemResourcesEffects {
             type: SystemResourcesActionTypes.ResourcesLoadSuccess,
             payload: resources
           })),
-          catchError(error => of({ type: SystemResourcesActionTypes.ResourcesLoadError, payload: error }))
+          catchError(error => of({ type: ErrorActionTypes.ADD_ERROR, payload: { title: 'System resources http error', message: error.message } }))
         );
 
       if (action.payload && action.payload.initialLoad) {

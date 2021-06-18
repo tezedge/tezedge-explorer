@@ -1,5 +1,3 @@
-// /// <reference types="cypress" />
-//
 // context('sandbox', () => {
 //   beforeEach(() => {
 //     cy.visit(Cypress.config().baseUrl);

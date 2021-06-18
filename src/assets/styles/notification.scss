@@ -1,0 +1,10 @@
+@import 'node_modules/angular-notifier/styles';
+
+.notifier__notification--material {
+  padding: 0;
+  max-width: 400px;
+}
+
+.notifier__notification--error {
+  background-color: rgba(173, 60, 75, 0.8);
+}

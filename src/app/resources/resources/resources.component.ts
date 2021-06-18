@@ -1,5 +1,5 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
-import { Store } from '@ngrx/store';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { select, Store } from '@ngrx/store';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { State } from '../../app.reducers';
 import { StorageResourcesActionTypes } from '../storage-resources/storage-resources.actions';
@@ -15,16 +15,17 @@ import { filter } from 'rxjs/operators';
   styleUrls: ['./resources.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class ResourcesComponent implements OnInit, OnDestroy {
+export class ResourcesComponent implements OnInit {
 
   tabs = [
     { title: 'System overview', id: 1, link: 'system' },
     { title: 'Storage', id: 2, link: 'storage' },
     { title: 'Memory', id: 3, link: 'memory' }
   ];
-  storageNodeStats = 'tezedge';
   reversedCheckboxState = false;
   activeRoute: string;
+  storageResourcesContext = 'tezedge';
+  displayContextSwitcher: boolean;
 
   constructor(private store: Store<State>,
               private router: Router,
@@ -33,11 +34,7 @@ export class ResourcesComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.listenToRouteChange();
-  }
-
-  onTabChange(): void {
-    this.reversedCheckboxState = false;
-    this.storageNodeStats = 'tezedge';
+    this.listenToStorageStateChange();
   }
 
   private listenToRouteChange(): void {
@@ -47,15 +44,28 @@ export class ResourcesComponent implements OnInit, OnDestroy {
       .subscribe((ev: NavigationEnd) => this.activeRoute = ev.urlAfterRedirects.split('/').pop());
   }
 
-  getStorageStatistics(): void {
-    this.storageNodeStats = this.storageNodeStats === 'tezedge' ? 'irmin' : 'tezedge';
-    this.store.dispatch({
-      type: StorageResourcesActionTypes.LoadResources,
-      payload: this.storageNodeStats
+  private listenToStorageStateChange(): void {
+    this.store.pipe(
+      untilDestroyed(this),
+      select(state => state.resources.storageResourcesState),
+      filter(value => !!value),
+    ).subscribe(storageResourcesState => {
+      this.storageResourcesContext = storageResourcesState.availableContexts[0];
+      this.displayContextSwitcher = storageResourcesState.availableContexts.length > 1;
+      this.cdRef.detectChanges();
     });
   }
 
-  ngOnDestroy(): void {
+  onTabChange(): void {
+    this.reversedCheckboxState = false;
+  }
+
+  getStorageStatistics(): void {
+    this.storageResourcesContext = this.storageResourcesContext === 'tezedge' ? 'irmin' : 'tezedge';
+    this.store.dispatch({
+      type: StorageResourcesActionTypes.LOAD_RESOURCES,
+      payload: this.storageResourcesContext
+    });
   }
 
   onReversedCheckboxChange(event: MatCheckboxChange): void {

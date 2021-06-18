@@ -248,6 +248,20 @@
         <span class="text-nowrap">Documentation</span>
       </span>
       </a>
+      <a mat-list-item
+         class="menu-item"
+         routerLink="/swagger"
+         routerLinkActive="active"
+         matTooltip="Swagger"
+         matTooltipPosition="right"
+         [matTooltipDisabled]="!app.sidenav.collapsed"
+         rel="noreferrer"
+         [style.color]="app.sidenav.color">
+      <span class="menu-content">
+        <svg-icon icon="swagger"></svg-icon>
+        <span class="text-nowrap">Swagger</span>
+      </span>
+      </a>
     </div>
 
     <app-commit-number class="app-github-version"></app-commit-number>

@@ -13,7 +13,8 @@
       monitoring: 'https://carthage.tezedge.com:8754/resources/tezedge',
       ws: 'wss://carthage.tezedge.com:443',
       p2p_port: '9732',
-      features: ['MONITORING', 'RESOURCES', 'MEMPOOL_ACTION', 'STORAGE_BLOCK', 'NETWORK_ACTION', 'LOGS_ACTION']
+      features: ['MONITORING', 'RESOURCES', 'MEMPOOL_ACTION', 'STORAGE_BLOCK', 'NETWORK_ACTION', 'LOGS_ACTION'],
+      resources: ['system', 'storage', 'memory']
     },
     {
       id: 'ocaml.carthage.tezedge.com',
@@ -23,6 +24,7 @@
       ws: false,
       p2p_port: '9733',
       features: ['MONITORING', 'RESOURCES', 'MEMPOOL_ACTION', 'NETWORK_ACTION', 'LOGS_ACTION'],
+      resources: ['system', 'storage', 'memory']
     }
   ];
 })(this);

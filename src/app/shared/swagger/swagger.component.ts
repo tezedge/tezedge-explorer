@@ -1,25 +1,33 @@
-import { AfterViewInit, Component, OnDestroy } from '@angular/core';
-import SwaggerUI from 'swagger-ui';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+
+declare const SwaggerUIBundle: any;
 
 @Component({
   selector: 'app-swagger',
   templateUrl: './swagger.component.html',
   styleUrls: ['./swagger.component.scss']
 })
-export class SwaggerComponent implements AfterViewInit, OnDestroy {
+export class SwaggerComponent implements OnInit, OnDestroy {
 
-  // private swaggerElement: HTMLElement;
+  private swaggerElement: HTMLElement;
 
-  ngAfterViewInit(): void {
-    // this.swaggerElement = document.getElementById('tezedge-swagger');
-    // this.swaggerElement.style.display = 'block';
-    // SwaggerUI({
-    //   dom_id: '#tezedge-swagger',
-    //   spec: 'assets/swagger.json',
-    // });
+  ngOnInit(): void {
+    this.swaggerElement = document.getElementById('tezedge-swagger');
+    this.swaggerElement.style.display = 'block';
+    SwaggerUIBundle({
+      dom_id: '#tezedge-swagger',
+      layout: 'BaseLayout',
+      presets: [
+        SwaggerUIBundle.presets.apis,
+        SwaggerUIBundle.SwaggerUIStandalonePreset
+      ],
+      url: 'https://raw.githubusercontent.com/mambisi/tezedge/rpc-open-api-spec/spec/tezedge-openapi.json',
+      docExpansion: 'none',
+      operationsSorter: 'alpha'
+    });
   }
 
   ngOnDestroy(): void {
-    // this.swaggerElement.style.display = 'none';
+    this.swaggerElement.style.display = 'none';
   }
 }

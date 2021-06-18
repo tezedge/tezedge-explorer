@@ -7,4 +7,5 @@ export class SettingsNodeApi {
   monitoring: string;
   connected: boolean | string;
   features: string[];
+  resources: string[];
 }

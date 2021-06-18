@@ -2,6 +2,7 @@ import * as moment from 'moment-mini-ts';
 import { environment } from '../../../environments/environment';
 import { SettingsNode } from '../../shared/types/settings-node/settings-node.type';
 import { SettingsNodeEntityHeader } from '../../shared/types/settings-node/settings-node-entity-header.type';
+import { State } from '../../app.reducers';
 
 const initialState: SettingsNode = {
   activeNode: null,
@@ -18,7 +19,7 @@ export function reducer(state: SettingsNode = initialState, action): SettingsNod
     // load node settings from environment
     case 'SETTINGS_NODE_LOAD': {
       // console.log("[SETTINGS_NODE_LOAD][reducer]", environment, action, environment.api);
-      return {
+      const settingsNode = {
         activeNode: state.activeNode && state.activeNode.connected ? state.activeNode : environment.api[0],
         ids: environment.api.map(node => node.id),
         entities: environment.api.reduce((accumulator, node) => ({
@@ -31,7 +32,16 @@ export function reducer(state: SettingsNode = initialState, action): SettingsNod
         memoryProfiler: environment.memoryProfiler,
         debugger: environment.debugger,
         sandbox: environment.sandbox
-      } as SettingsNode;
+      };
+      if (!settingsNode.activeNode.resources) {
+        settingsNode.activeNode.resources = ['system', 'storage', 'memory'];
+      }
+      settingsNode.ids.forEach(id => {
+        if (!settingsNode.entities[id].resources) {
+          settingsNode.entities[id].resources = ['system', 'storage', 'memory'];
+        }
+      });
+      return settingsNode as SettingsNode;
     }
 
     // save connected node
@@ -133,3 +143,5 @@ export function reducer(state: SettingsNode = initialState, action): SettingsNod
       return state;
   }
 }
+
+export const selectActiveNode = (state: State) => state.settingsNode.activeNode;

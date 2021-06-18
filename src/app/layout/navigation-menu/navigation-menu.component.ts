@@ -63,11 +63,11 @@ export class NavigationMenuComponent implements OnInit, AfterViewInit {
     });
   }
 
-  nodeSandboxAdd() {
+  addSandboxNode() {
     this.router.navigate(['/sandbox']);
   }
 
-  nodeSandboxStop() {
+  stopSandboxNode() {
     this.store.dispatch({
       type: 'SANDBOX_NODE_STOP',
       payload: '',

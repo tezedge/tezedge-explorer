@@ -1,5 +1,4 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
-
 import { Store } from '@ngrx/store';
 import { debounceTime } from 'rxjs/operators';
 import { State } from '../../app.reducers';

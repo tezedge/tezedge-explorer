@@ -22,7 +22,10 @@ export class SettingsNodeEffects {
           this.settingsNodeService.getSettingsHeader(activeNode.http),
           this.settingsNodeService.getNodeFeatures(activeNode.http, activeNode.id),
         ]).pipe(
-          map(([header, features]) => ({ type: 'SETTINGS_NODE_LOAD_SUCCESS', payload: { activeNode, header, features } })),
+          map(([header, features]) => ({
+            type: 'SETTINGS_NODE_LOAD_SUCCESS',
+            payload: { activeNode, header, features }
+          })),
           catchError((error) => of({ type: 'SETTINGS_NODE_LOAD_ERROR', payload: { activeNode, response: error } })),
         );
         //
@@ -71,7 +74,10 @@ export class SettingsNodeEffects {
         // dispatch action
         map((response) => ({ type: 'SETTINGS_NODE_LOAD_SANDBOX_SUCCESS', payload: { api: sandbox, response } })),
         // dispatch error
-        catchError((error) => of({ type: 'SETTINGS_NODE_LOAD_SANDBOX_ERROR', payload: { api: sandbox, response: error } })),
+        catchError((error) => of({
+          type: 'SETTINGS_NODE_LOAD_SANDBOX_ERROR',
+          payload: { api: sandbox, response: error }
+        })),
       );
     }),
   );

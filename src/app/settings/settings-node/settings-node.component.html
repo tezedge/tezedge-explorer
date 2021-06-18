@@ -3,7 +3,7 @@
 
   <mat-form-field class="settings-node-select">
 
-    <mat-select #nodeSelect class="hide-arrow"
+    <mat-select class="hide-arrow"
                 [value]="activeNode.id"
                 (click)="onOpeningNodeSelect()"
                 disableOptionCentering
@@ -22,7 +22,7 @@
         <!-- TODO: remove hardcoded 'sandbox-carthage-tezedge' everywhere and use some flag -->
         <mat-option *ngIf="node.id !== 'sandbox-carthage-tezedge' || node.connected === true || node.connected === 'pending'"
                     [value]="node.id"
-                    (click)="onNodeChange(node.id)"
+                    (click)="selectNode(node.id)"
                     class="settings-node-option">
           <div fxLayout="row"
                fxLayoutAlign="start center">
@@ -68,12 +68,12 @@
       <div class="sandbox-button-wrapper">
         <button *ngIf="sandbox?.connected === false"
                 mat-flat-button
-                (click)="navigateToSandboxAdd(); nodeSelect.close()">
+                (click)="navigateToSandboxAdd()">
           ADD SANDBOX NODE
         </button>
         <button *ngIf="sandbox?.connected === true"
                 mat-flat-button
-                (click)="stopSandboxNode(); nodeSelect.close()">
+                (click)="stopSandboxNode()">
           STOP SANDBOX NODE
         </button>
       </div>

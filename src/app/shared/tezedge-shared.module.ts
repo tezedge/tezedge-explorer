@@ -6,6 +6,7 @@ import { ReplaceCharacterPipe } from './pipes/replace-character.pipe';
 import { TimeTransformPipe } from './pipes/time-transform.pipe';
 import { ThousandTransformPipe } from './pipes/thousand-transform.pipe';
 import { EtaTimePipe } from './pipes/eta-time.pipe';
+import { SwaggerComponent } from './swagger/swagger.component';
 
 
 @NgModule({
@@ -15,6 +16,7 @@ import { EtaTimePipe } from './pipes/eta-time.pipe';
     TimeTransformPipe,
     ThousandTransformPipe,
     EtaTimePipe,
+    SwaggerComponent,
   ],
   imports: [
     CommonModule,

@@ -1,6 +1,5 @@
 context('SETTINGS NODE', () => {
   beforeEach(() => {
-    Cypress.config('defaultCommandTimeout', 10);
     cy.intercept('GET', '/chains/main/blocks/head/header').as('getNodeHeader');
     cy.visit(Cypress.config().baseUrl);
     cy.wait(3000);
@@ -9,6 +8,7 @@ context('SETTINGS NODE', () => {
   it('[SETTINGS NODE] should perform get node header request successfully', () => {
     cy.wait('@getNodeHeader').its('response.statusCode').should('eq', 200);
   });
+
   it('[SETTINGS NODE] should change backend node using the switcher', () => {
     cy.wait('@getNodeHeader')
       .then(() => {
@@ -18,7 +18,6 @@ context('SETTINGS NODE', () => {
           .then((store) => {
             store.select('settingsNode')
               .subscribe((settingsNode) => {
-                cy.log(123);
                 if (Object.keys(settingsNode.entities).length <= 1
                   || settingsNode.activeNode.id === settingsNode.entities[settingsNode.ids[1]].id) {
                   // quit if there is only one node available
@@ -136,7 +135,6 @@ context('SETTINGS NODE', () => {
                 });
             });
           });
-
       });
   });
 

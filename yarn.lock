@@ -180,7 +180,7 @@
     "universal-analytics" "0.4.23"
     "uuid" "8.3.2"
 
-"@angular/common@^11.2.13":
+"@angular/common@^11.2.13", "@angular/common@>= 11.0.0 < 12.0.0":
   "integrity" "sha512-96iZ4wlZado78yG6eY/ZmY6+H2X2hJi2XsK7iXKzc5h3oeILEkt+ulfBNkCNjMm8xPYBmLrSBueG96/T4/Bi5w=="
   "resolved" "https://registry.npmjs.org/@angular/common/-/common-11.2.13.tgz"
   "version" "11.2.13"
@@ -220,7 +220,7 @@
   "resolved" "https://registry.npmjs.org/@angular/compiler/-/compiler-9.0.0.tgz"
   "version" "9.0.0"
 
-"@angular/core@^11.2.13", "@angular/core@>=7.0.0":
+"@angular/core@^11.2.13", "@angular/core@>= 11.0.0 < 12.0.0", "@angular/core@>=7.0.0":
   "integrity" "sha512-xMKskq/Sbf8dkX/vx4WCwXMpDTJJ77rGlP8fVTB8az8QeOa14i6AdpmSXaJ8sl68R3v8Y1Pa9yBQytbKuxShqQ=="
   "resolved" "https://registry.npmjs.org/@angular/core/-/core-11.2.13.tgz"
   "version" "11.2.13"
@@ -2052,6 +2052,13 @@
   "integrity" "sha1-l6ERlkmyEa0zaR2fn0hqjsn74KM="
   "resolved" "https://registry.npmjs.org/alphanum-sort/-/alphanum-sort-1.0.2.tgz"
   "version" "1.0.2"
+
+"angular-notifier@^9.0.1":
+  "integrity" "sha512-XXDrENSUXIv3bcCI0tKa3pHw/SRMr8znM7gFKO+LDStzmyN+a6GqjaalZXElqMg0Up/QuCbEPQK0RFZiYEn9ZQ=="
+  "resolved" "https://registry.npmjs.org/angular-notifier/-/angular-notifier-9.0.1.tgz"
+  "version" "9.0.1"
+  dependencies:
+    "tslib" "2.0.x"
 
 "ansi-colors@^3.0.0":
   "integrity" "sha512-hHUXGagefjN2iRrID63xckIvotOXOojhQKWIPUZ4mNUZ9nLZW+7FMNoE1lOkEhNWYsx/7ysGIuJYCiMAA9FnrA=="
@@ -9848,7 +9855,7 @@
   "resolved" "https://registry.npmjs.org/rw/-/rw-1.3.3.tgz"
   "version" "1.3.3"
 
-"rxjs@^6.3.3", "rxjs@^6.5.3", "rxjs@>=6.0.0", "rxjs@~6.5.5":
+"rxjs@^6.3.3", "rxjs@^6.5.3", "rxjs@>= 6.0.0 < 7.0.0", "rxjs@>=6.0.0", "rxjs@~6.5.5":
   "integrity" "sha512-WfQI+1gohdf0Dai/Bbmk5L5ItH5tYqm3ki2c5GdWhKjalzjg93N3avFjVStyZZz+A2Em+ZxKH5bNghw9UeylGQ=="
   "resolved" "https://registry.npmjs.org/rxjs/-/rxjs-6.5.5.tgz"
   "version" "6.5.5"
@@ -11216,7 +11223,7 @@
   "resolved" "https://registry.npmjs.org/tslib/-/tslib-1.14.1.tgz"
   "version" "1.14.1"
 
-"tslib@^2.0.0":
+"tslib@^2.0.0", "tslib@2.0.x":
   "integrity" "sha512-SgIkNheinmEBgx1IUNirK0TUD4X9yjjBRTqqjggWCU3pUEqIk3/Uwl3yRixYKT6WjQuGiwDv4NomL3wqRCj+CQ=="
   "resolved" "https://registry.npmjs.org/tslib/-/tslib-2.0.1.tgz"
   "version" "2.0.1"

@@ -58,7 +58,6 @@ export class ResourcesComponent implements OnInit {
 
   onTabChange(): void {
     this.reversedCheckboxState = false;
-    // this.storageResourcesContext = 'tezedge';
   }
 
   getStorageStatistics(): void {

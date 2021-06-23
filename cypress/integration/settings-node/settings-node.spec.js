@@ -9,7 +9,6 @@ context('SETTINGS NODE', () => {
   it('[SETTINGS NODE] should perform get node header request successfully', () => {
     cy.wait('@getNodeHeader').its('response.statusCode').should('eq', 200);
   });
-
   it('[SETTINGS NODE] should change backend node using the switcher', () => {
     cy.wait('@getNodeHeader')
       .then(() => {
@@ -63,13 +62,19 @@ context('SETTINGS NODE', () => {
         cy.window()
           .its('store')
           .then((store) => {
+            let isNodeSwitchingAvailable = false;
+
             store.select('settingsNode')
               .subscribe((settingsNode) => {
-                if (!settingsNode.ids.some(id => id.includes('ocaml'))) {
-                  cy.log('exit');
+
+                isNodeSwitchingAvailable = (settingsNode.ids.some(id => id.includes('ocaml'))
+                  && settingsNode.ids.length > 1
+                  && !settingsNode.entities[settingsNode.ids[0]].id.includes('ocaml'));
+                if (!isNodeSwitchingAvailable) {
                   // quit if ocaml is absent
                   return;
                 }
+
                 if (!settingsNode.activeNode.id.includes('ocaml')) {
                   cy.get('.settings-node-select').click();
                   cy.wait(1000);
@@ -77,10 +82,16 @@ context('SETTINGS NODE', () => {
                   cy.wait(2000);
                 }
               });
+            cy.wait(4000).then(() => {
+              store.select('settingsNode')
+                .subscribe(() => {
+                  if (isNodeSwitchingAvailable) {
+                    cy.wait('@peers');
+                    cy.get('@peers.all').should('have.length', 6);
+                  }
+                });
+            });
           });
-        cy.wait(4000);
-        cy.wait('@peers');
-        cy.get('@peers.all').should('have.length', 6);
       });
   });
 

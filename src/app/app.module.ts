@@ -118,6 +118,7 @@ import { IconRegisterService } from './shared/design/icon/icon-register.service'
 import localeFr from '@angular/common/locales/fr';
 import localeEnGb from '@angular/common/locales/en-GB';
 import { ReplaceCharacterPipe } from './shared/pipes/replace-character.pipe';
+import { ErrorPopupEffects } from './shared/error-popup/error-popup.effects';
 
 registerLocaleData(localeFr, 'fr');
 registerLocaleData(localeEnGb, 'en');
@@ -214,6 +215,7 @@ function loadIcons(matIconService: IconRegisterService): Function {
       SystemResourcesEffects,
       StorageResourcesEffects,
       MemoryResourcesEffects,
+      ErrorPopupEffects,
     ]),
 
     // https://github.com/zalmoxisus/redux-devtools-extension

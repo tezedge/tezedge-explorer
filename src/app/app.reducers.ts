@@ -129,6 +129,7 @@ export function nodeSwitchStateMetaReducer(reducer: ActionReducer<State>): Actio
           ids: [...state.settingsNode.ids],
           debugger: state.settingsNode.debugger,
           memoryProfiler: state.settingsNode.memoryProfiler,
+          sandbox: state.settingsNode.sandbox,
         } as SettingsNode
       } as State;
     }

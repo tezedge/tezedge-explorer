@@ -9,47 +9,35 @@ import { State } from './app.reducers';
 @Injectable()
 export class AppEffects {
 
-  // load node settings
   @Effect()
   SettingsNodeLoadEffect$ = this.actions$.pipe(
     ofType('@ngrx/effects/init'),
-    // get current url
     map(() => ({ type: 'SETTINGS_NODE_LOAD', payload: window.location.hostname }))
   );
 
-  // initialize app features
   @Effect()
   AppInitEffect$ = this.actions$.pipe(
     ofType('APP_INIT'),
-
-    // merge state
-    withLatestFrom(this.store, (action: any, state) => ({ action, state })),
+    withLatestFrom(this.store, (action: any, state: ObservedValueOf<Store<State>>) => ({ action, state })),
 
     // TODO: refactor and add checks for every featured api (node, debugger, monitoring )
-
     flatMap(({ action, state }) => state.app.initialized ? empty() : of({ type: 'APP_INIT_SUCCESS' }))
   );
 
   @Effect()
   AppNodeChangeEffect$ = this.actions$.pipe(
     ofType('APP_NODE_CHANGE'),
-
     withLatestFrom(this.store, (action: any, state: ObservedValueOf<Store<State>>) => ({ action, state })),
-
     map(({ action, state }) => ({ type: 'SETTINGS_NODE_CHANGE', payload: state.settingsNode }))
   );
 
-  // initialize empty app
   @Effect()
   AppInitDefaultEffect$ = this.actions$.pipe(
     ofType('APP_INIT_DEFAULT'),
-
-    // merge state
     withLatestFrom(this.store, (action: any, state: ObservedValueOf<Store<State>>) => ({ action, state })),
 
     // TODO: refactor and add checks for every featured api (node, debugger, monitoring )
     tap(({ action, state }) => {
-      // force url reload
       this.router.navigateByUrl('/', { skipLocationChange: false }).then(() =>
         this.router.navigate([''])
       );
@@ -103,7 +91,7 @@ export class AppEffects {
 
   constructor(
     private actions$: Actions,
-    private store: Store<any>,
+    private store: Store<State>,
     private router: Router,
   ) { }
 

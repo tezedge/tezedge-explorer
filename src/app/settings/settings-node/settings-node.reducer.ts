@@ -8,7 +8,8 @@ const initialState: SettingsNode = {
   ids: [],
   entities: {},
   debugger: '',
-  memoryProfiler: ''
+  memoryProfiler: '',
+  sandbox: ''
 };
 
 export function reducer(state: SettingsNode = initialState, action): SettingsNode {

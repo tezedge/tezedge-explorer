@@ -19,6 +19,10 @@ export class StorageResourceService {
       .pipe(map(response => this.mapStorageResourcesResponse(response)));
   }
 
+  checkStorageResourcesContext(api: string, contextName: string): Observable<StorageResourcesStats> {
+    return this.http.get<StorageResourcesStats>(`${api}/stats/context`, { params: { context_name: contextName } });
+  }
+
   private mapStorageResourcesResponse(response: any): StorageResourcesStats {
     const result: StorageResourcesStats = response;
     result.operationsContext.sort((o1, o2) => o2.totalTime - o1.totalTime);

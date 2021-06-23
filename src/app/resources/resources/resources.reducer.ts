@@ -1,19 +1,19 @@
 import { SystemResourcesActions, SystemResourcesActionTypes } from '../system-resources/system-resources.actions';
 import { SystemResources } from '../../shared/types/resources/system/system-resources.type';
-import { StorageResourcesStats } from '../../shared/types/resources/storage/storage-resources-stats.type';
 import { StorageResourcesActions, StorageResourcesActionTypes } from '../storage-resources/storage-resources.actions';
 import { MemoryResource } from '../../shared/types/resources/memory/memory-resource.type';
 import { MemoryResourcesActions, MemoryResourcesActionTypes } from '../memory-resources/memory-resources.actions';
+import { StorageResourcesState } from '../../shared/types/resources/storage/storage-resources-state.type';
 
 export interface ResourcesState {
   systemResources: SystemResources;
-  storageResources: StorageResourcesStats;
+  storageResourcesState: StorageResourcesState;
   memoryResources: MemoryResource;
 }
 
 const initialState: ResourcesState = {
   systemResources: null,
-  storageResources: null,
+  storageResourcesState: { storageResources: null, availableContexts: [] },
   memoryResources: null,
 };
 
@@ -25,10 +25,13 @@ export function reducer(state: ResourcesState = initialState, action: SystemReso
         systemResources: { ...action.payload }
       };
     }
-    case StorageResourcesActionTypes.ResourcesLoadSuccess: {
+    case StorageResourcesActionTypes.STORAGE_RESOURCES_LOAD_SUCCESS: {
       return {
         ...state,
-        storageResources: action.payload
+        storageResourcesState: {
+          availableContexts: state.storageResourcesState.availableContexts,
+          storageResources: action.payload
+        }
       };
     }
     case MemoryResourcesActionTypes.ResourcesLoadSuccess: {
@@ -37,8 +40,16 @@ export function reducer(state: ResourcesState = initialState, action: SystemReso
         memoryResources: action.payload
       };
     }
+    case StorageResourcesActionTypes.MAP_AVAILABLE_CONTEXTS: {
+      return {
+        ...state,
+        storageResourcesState: {
+          ...state.storageResourcesState,
+          availableContexts: action.payload,
+        }
+      };
+    }
     default:
       return state;
   }
 }
-

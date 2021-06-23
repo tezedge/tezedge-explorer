@@ -1,7 +1,6 @@
 const isOcaml = (data) => data.settingsNode.activeNode.id.includes('ocaml');
 
 context('COMMIT NUMBER', () => {
-
   it('[COMMIT NUMBER] display the Node release tag in the UI', () => {
     cy.intercept('GET', '/dev/version/').as('getNodeTagRequest');
     cy.visit(Cypress.config().baseUrl);

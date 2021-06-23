@@ -5,7 +5,7 @@ import { StorageResourcesActionTypes } from './storage-resources.actions';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { StorageResourcesStats } from '../../shared/types/resources/storage/storage-resources-stats.type';
 import { Observable } from 'rxjs';
-import { filter } from 'rxjs/operators';
+import { filter, map } from 'rxjs/operators';
 
 @UntilDestroy()
 @Component({
@@ -33,11 +33,12 @@ export class StorageResourcesComponent implements OnInit {
   ngOnInit(): void {
     this.storageStats$ = this.store.pipe(
       untilDestroyed(this),
-      select(state => state.resources.storageResources),
+      select(state => state.resources.storageResourcesState),
       filter(value => !!value),
+      map(value => value.storageResources)
     );
 
-    this.store.dispatch({ type: StorageResourcesActionTypes.LoadResources, payload: 'tezedge' });
+    this.store.dispatch({ type: StorageResourcesActionTypes.CHECK_AVAILABLE_CONTEXTS, payload: ['tezedge', 'irmin'] });
   }
 
   togglePanel(): void {

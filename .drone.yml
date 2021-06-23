@@ -119,7 +119,10 @@ steps:
     - name: static_page
       path: /etc/static_page
   commands:
+    - rm -rf /etc/static_page/*
     - cp -R /usr/share/nginx/html/* /etc/static_page
+  depends_on:
+    - build
 
 - name: publish-firebase
   image: devillex/docker-firebase

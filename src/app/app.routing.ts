@@ -11,6 +11,7 @@ import { StorageActionComponent } from './storage/storage-action/storage-action.
 import { ChainComponent } from './chain/chain.component';
 import { SandboxComponent } from './sandbox/sandbox.component';
 import { WalletsComponent } from './wallets/wallets.component';
+import { SwaggerComponent } from './shared/swagger/swagger.component';
 
 export const AppRouting: Routes = [
 
@@ -37,6 +38,8 @@ export const AppRouting: Routes = [
   { path: 'sandbox', component: SandboxComponent },
 
   { path: 'wallets', component: WalletsComponent },
+
+  { path: 'swagger', component: SwaggerComponent },
 
   { path: '', redirectTo: 'monitoring', pathMatch: 'full' },
   // { path: '**', component: PageNotFoundComponent }

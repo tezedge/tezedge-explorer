@@ -89,7 +89,7 @@ steps:
     - build
 
 - name: test
-  image: cypress/included:6.2.1 --spec "cypress/integration/storage/storage-block/storage-block.spec.js"
+  image: cypress/included:6.2.1
   environment:
     CYPRESS_baseUrl: http://frontend-server:80
   depends_on:

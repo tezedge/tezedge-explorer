@@ -31,6 +31,7 @@
               "src/assets"
             ],
             "styles": [
+              "./node_modules/swagger-ui-dist/swagger-ui.css",
               {
                 "input": "src/styles.light.scss",
                 "bundleName": "styles.light",
@@ -41,7 +42,6 @@
                 "bundleName": "styles.dark",
                 "inject": false
               },
-              "./node_modules/swagger-ui-dist/swagger-ui.css"
             ],
             "scripts": [
               "node_modules/swagger-ui-dist/swagger-ui-bundle.js",

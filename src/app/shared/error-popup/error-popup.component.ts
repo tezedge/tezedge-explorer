@@ -14,7 +14,8 @@ import { ErrorActionTypes } from './error-popup.action';
 })
 export class ErrorPopupComponent implements OnInit {
 
-  @ViewChild('popupTemplate', { static: true }) private template: TemplateRef<{ title, message }>;
+  @ViewChild('popupTemplate', { static: true })
+  private template: TemplateRef<{ title: string, message: string }>;
 
   constructor(private store: Store<State>,
               private notifierService: NotifierService) { }
@@ -31,7 +32,6 @@ export class ErrorPopupComponent implements OnInit {
         } as any);
       });
     });
-
   }
 
 }

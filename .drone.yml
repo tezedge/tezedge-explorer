@@ -27,8 +27,7 @@ steps:
 - name: test
   image: cypress/included:6.2.1
   commands:
-    - echo "$PWD"
-    - ls
+    - cypress run --spec "cypress/integration/app/app.spec.js"
     - cypress run --spec "cypress/integration/storage/storage-block/storage-block.spec.js"
   environment:
     CYPRESS_baseUrl: http://frontend-server:80
@@ -95,10 +94,9 @@ steps:
 - name: test
   image: cypress/included:6.2.1
   commands:
-    - echo "$PWD"
-    - ls
+    - cypress run --spec "cypress/integration/app/app.spec.js"
     - cypress run --spec "cypress/integration/storage/storage-block/storage-block.spec.js"
-  environment:
+ environment:
     CYPRESS_baseUrl: http://frontend-server:80
   depends_on:
     - frontend-server

@@ -11,19 +11,6 @@ steps:
       - name: docker_sock
         path: /var/run/docker.sock
 
-  - name: frontend-server
-    image: drone-tezedge-explorer:latest
-    pull: if-not-exists
-    detach: true
-    privileged: true
-    environment:
-      SANDBOX: 'http://develop.dev.tezedge.com:3030'
-      DEBUGGER: 'http://develop.dev.tezedge.com:17732'
-      MEMORYPROFILER: 'http://develop.dev.tezedge.com:17832'
-      API: '[{"id":"drone","name":"drone-test-node","http":"http://develop.dev.tezedge.com:18732","monitoring":"http://develop.dev.tezedge.com:38732/resources/tezedge","ws":"ws://develop.dev.tezedge.com:4927","p2p_port":"9732","features":["MONITORING", "RESOURCES", "MEMPOOL_ACTION", "STORAGE_BLOCK", "NETWORK_ACTION", "LOGS_ACTION"],"resources":["system","storage","memory"]}]'
-    depends_on:
-      - build
-
 image_pull_secrets:
   - docker_pull_secret
 
@@ -42,6 +29,17 @@ name: integration-tests-ci
 type: docker
 
 steps:
+  - name: frontend-server
+    image: drone-tezedge-explorer:latest
+    pull: if-not-exists
+    detach: true
+    privileged: true
+    environment:
+      SANDBOX: 'http://develop.dev.tezedge.com:3030'
+      DEBUGGER: 'http://develop.dev.tezedge.com:17732'
+      MEMORYPROFILER: 'http://develop.dev.tezedge.com:17832'
+      API: '[{"id":"drone","name":"drone-test-node","http":"http://develop.dev.tezedge.com:18732","monitoring":"http://develop.dev.tezedge.com:38732/resources/tezedge","ws":"ws://develop.dev.tezedge.com:4927","p2p_port":"9732","features":["MONITORING", "RESOURCES", "MEMPOOL_ACTION", "STORAGE_BLOCK", "NETWORK_ACTION", "LOGS_ACTION"],"resources":["system","storage","memory"]}]'
+
   - name: test
     image: cypress/included:6.2.1
     commands:
@@ -71,50 +69,50 @@ name: development-ci
 type: docker
 
 steps:
-- name: build #build the frontend docker image
-  image: docker:latest
-  commands:
-    - docker build --no-cache --build-arg branch=${DRONE_BRANCH} -t drone-tezedge-explorer:latest -f Dockerfile .
-  volumes:
-    - name: docker_sock
-      path: /var/run/docker.sock
+  - name: build #build the frontend docker image
+    image: docker:latest
+    commands:
+      - docker build --no-cache --build-arg branch=${DRONE_BRANCH} -t drone-tezedge-explorer:latest -f Dockerfile .
+    volumes:
+      - name: docker_sock
+        path: /var/run/docker.sock
 
-- name: frontend-server
-  image: drone-tezedge-explorer:latest
-  pull: if-not-exists
-  detach: true
-  privileged: true
-  environment:
-    SANDBOX: 'http://develop.dev.tezedge.com:3030'
-    DEBUGGER: 'http://develop.dev.tezedge.com:17732'
-    MEMORYPROFILER: 'http://develop.dev.tezedge.com:17832'
-    API: '[{"id":"drone","name":"drone-test-node","http":"http://develop.dev.tezedge.com:18732","monitoring":"http://develop.dev.tezedge.com:38732/resources/tezedge","ws":"ws://develop.dev.tezedge.com:4927","p2p_port":"9732","features":["MONITORING", "RESOURCES", "MEMPOOL_ACTION", "STORAGE_BLOCK", "NETWORK_ACTION", "LOGS_ACTION"],"resources":["system","storage","memory"]}]'
-  depends_on:
-    - build
+  - name: frontend-server
+    image: drone-tezedge-explorer:latest
+    pull: if-not-exists
+    detach: true
+    privileged: true
+    environment:
+      SANDBOX: 'http://develop.dev.tezedge.com:3030'
+      DEBUGGER: 'http://develop.dev.tezedge.com:17732'
+      MEMORYPROFILER: 'http://develop.dev.tezedge.com:17832'
+      API: '[{"id":"drone","name":"drone-test-node","http":"http://develop.dev.tezedge.com:18732","monitoring":"http://develop.dev.tezedge.com:38732/resources/tezedge","ws":"ws://develop.dev.tezedge.com:4927","p2p_port":"9732","features":["MONITORING", "RESOURCES", "MEMPOOL_ACTION", "STORAGE_BLOCK", "NETWORK_ACTION", "LOGS_ACTION"],"resources":["system","storage","memory"]}]'
+    depends_on:
+      - build
 
-- name: publish
-  image: plugins/docker
-  settings:
-    repo: simplestakingcom/tezedge-explorer
-    tags: latest
-    dockerfile: Dockerfile
-    build_args:
-      - branch=develop
-      - commit=${DRONE_COMMIT}
-    username:
-      from_secret: docker_hub_username
-    password:
-      from_secret: docker_hub_pswd
-  depends_on:
-    - frontend-server
+  - name: publish
+    image: plugins/docker
+    settings:
+      repo: simplestakingcom/tezedge-explorer
+      tags: latest
+      dockerfile: Dockerfile
+      build_args:
+        - branch=develop
+        - commit=${DRONE_COMMIT}
+      username:
+        from_secret: docker_hub_username
+      password:
+        from_secret: docker_hub_pswd
+    depends_on:
+      - frontend-server
 
 image_pull_secrets:
   - docker_pull_secret
 
 volumes:
-- name: docker_sock
-  host:
-    path: /var/run/docker.sock
+  - name: docker_sock
+    host:
+      path: /var/run/docker.sock
 
 trigger:
   branch:
@@ -131,88 +129,88 @@ name: deployment-ci
 type: docker
 
 steps:
-- name: build #build the frontend docker image
-  image: docker:latest
-  commands:
-    - docker build --no-cache --build-arg branch=master -t drone-tezedge-explorer:latest -f Dockerfile .
-  volumes:
-    - name: docker_sock
-      path: /var/run/docker.sock
+  - name: build #build the frontend docker image
+    image: docker:latest
+    commands:
+      - docker build --no-cache --build-arg branch=master -t drone-tezedge-explorer:latest -f Dockerfile .
+    volumes:
+      - name: docker_sock
+        path: /var/run/docker.sock
 
-- name: frontend-server #detach it to access it inside test step
-  image: drone-tezedge-explorer:latest
-  pull: if-not-exists
-  detach: true
-  privileged: true
-  environment:
-    SANDBOX: 'http://develop.dev.tezedge.com:3030'
-    DEBUGGER: 'http://develop.dev.tezedge.com:17732'
-    MEMORYPROFILER: 'http://develop.dev.tezedge.com:17832'
-    API: '[{"id":"drone","name":"drone-test-node","http":"http://develop.dev.tezedge.com:18732","monitoring":"http://develop.dev.tezedge.com:38732/resources/tezedge","ws":"ws://develop.dev.tezedge.com:4927","p2p_port":"9732","features":["MONITORING", "RESOURCES", "MEMPOOL_ACTION", "STORAGE_BLOCK", "NETWORK_ACTION", "LOGS_ACTION"],"resources":["system","storage","memory"]}]'
-  depends_on:
-    - build
+  - name: frontend-server #detach it to access it inside test step
+    image: drone-tezedge-explorer:latest
+    pull: if-not-exists
+    detach: true
+    privileged: true
+    environment:
+      SANDBOX: 'http://develop.dev.tezedge.com:3030'
+      DEBUGGER: 'http://develop.dev.tezedge.com:17732'
+      MEMORYPROFILER: 'http://develop.dev.tezedge.com:17832'
+      API: '[{"id":"drone","name":"drone-test-node","http":"http://develop.dev.tezedge.com:18732","monitoring":"http://develop.dev.tezedge.com:38732/resources/tezedge","ws":"ws://develop.dev.tezedge.com:4927","p2p_port":"9732","features":["MONITORING", "RESOURCES", "MEMPOOL_ACTION", "STORAGE_BLOCK", "NETWORK_ACTION", "LOGS_ACTION"],"resources":["system","storage","memory"]}]'
+    depends_on:
+      - build
 
-- name: test
-  image: cypress/included:6.2.1
-  environment:
-    CYPRESS_baseUrl: http://frontend-server:80
-  depends_on:
-    - frontend-server
+  - name: test
+    image: cypress/included:6.2.1
+    environment:
+      CYPRESS_baseUrl: http://frontend-server:80
+    depends_on:
+      - frontend-server
 
-- name: publish
-  image: plugins/docker
-  settings:
-    repo: simplestakingcom/tezedge-explorer
-    tags:
-      - ${DRONE_TAG}
-      - latest-release
-    dockerfile: Dockerfile
-    build_args:
-      - branch=master
-      - commit=${DRONE_COMMIT}
-    username:
-      from_secret: docker_hub_username
-    password:
-      from_secret: docker_hub_pswd
+  - name: publish
+    image: plugins/docker
+    settings:
+      repo: simplestakingcom/tezedge-explorer
+      tags:
+        - ${DRONE_TAG}
+        - latest-release
+      dockerfile: Dockerfile
+      build_args:
+        - branch=master
+        - commit=${DRONE_COMMIT}
+      username:
+        from_secret: docker_hub_username
+      password:
+        from_secret: docker_hub_pswd
 
-- name: cp-static
-  image: drone-tezedge-explorer:latest
-  privileged: true
-  pull: if-not-exists
-  volumes:
-    - name: static_page
-      path: /etc/static_page
-  commands:
-    - rm -rf /etc/static_page/*
-    - cp -R /usr/share/nginx/html/* /etc/static_page
-  depends_on:
-    - build
+  - name: cp-static
+    image: drone-tezedge-explorer:latest
+    privileged: true
+    pull: if-not-exists
+    volumes:
+      - name: static_page
+        path: /etc/static_page
+    commands:
+      - rm -rf /etc/static_page/*
+      - cp -R /usr/share/nginx/html/* /etc/static_page
+    depends_on:
+      - build
 
-- name: publish-firebase
-  image: devillex/docker-firebase
-  pull: if-not-exists
-  volumes:
-    - name: static_page
-      path: /drone/src/dist/tezedge-explorer
-  environment:
-    FIREBASE_API_TOKEN:
-      from_secret: FIREBASE_API_TOKEN
-  depends_on:
-    - cp-static
-    - publish
-  commands:
-    - firebase deploy --token=$${FIREBASE_API_TOKEN}
+  - name: publish-firebase
+    image: devillex/docker-firebase
+    pull: if-not-exists
+    volumes:
+      - name: static_page
+        path: /drone/src/dist/tezedge-explorer
+    environment:
+      FIREBASE_API_TOKEN:
+        from_secret: FIREBASE_API_TOKEN
+    depends_on:
+      - cp-static
+      - publish
+    commands:
+      - firebase deploy --token=$${FIREBASE_API_TOKEN}
 
 image_pull_secrets:
-- docker_pull_secret
+  - docker_pull_secret
 
 volumes:
-- name: docker_sock
-  host:
-    path: /var/run/docker.sock
-- name: static_page
-  host:
-    path: /etc/tezedge-ci/tezedge-explorer/
+  - name: docker_sock
+    host:
+      path: /var/run/docker.sock
+  - name: static_page
+    host:
+      path: /etc/tezedge-ci/tezedge-explorer/
 
 trigger:
   ref: refs/tags/**

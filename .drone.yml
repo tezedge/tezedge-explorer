@@ -41,21 +41,77 @@ steps:
       MEMORYPROFILER: 'http://develop.dev.tezedge.com:17832'
       API: '[{"id":"drone","name":"drone-test-node","http":"http://develop.dev.tezedge.com:18732","monitoring":"http://develop.dev.tezedge.com:38732/resources/tezedge","ws":"ws://develop.dev.tezedge.com:4927","p2p_port":"9732","features":["MONITORING", "RESOURCES", "MEMPOOL_ACTION", "STORAGE_BLOCK", "NETWORK_ACTION", "LOGS_ACTION"],"resources":["system","storage","memory"]}]'
 
-  - name: app
+  - name: test-app
     image: cypress/included:6.2.1
     commands:
       - cypress run --spec "cypress/integration/app/app.spec.js"
     environment:
       CYPRESS_baseUrl: http://frontend-server:80
 
-  - name: logs
+  - name: test-logs
     image: cypress/included:6.2.1
     commands:
       - cypress run --spec "cypress/integration/logs/logs.spec.js"
     environment:
       CYPRESS_baseUrl: http://frontend-server:80
 
-  - name: storage-block
+  - name: test-commit-number
+    image: cypress/included:6.2.1
+    commands:
+      - cypress run --spec "cypress/integration/monitoring/commit-number/commit-number.spec.js"
+    environment:
+      CYPRESS_baseUrl: http://frontend-server:80
+
+  - name: test-network
+    image: cypress/included:6.2.1
+    commands:
+      - cypress run --spec "cypress/integration/network/network-action/network.spec.js"
+    environment:
+      CYPRESS_baseUrl: http://frontend-server:80
+
+  - name: test-system-resources
+    image: cypress/included:6.2.1
+    commands:
+      - cypress run --spec "cypress/integration/resources/system-resources.spec.js"
+    environment:
+      CYPRESS_baseUrl: http://frontend-server:80
+
+  - name: test-storage-resources
+    image: cypress/included:6.2.1
+    commands:
+      - cypress run --spec "cypress/integration/resources/storage-resources.spec.js"
+    environment:
+      CYPRESS_baseUrl: http://frontend-server:80
+
+  - name: test-memory-resources
+    image: cypress/included:6.2.1
+    commands:
+      - cypress run --spec "cypress/integration/resources/memory-resources.spec.js"
+    environment:
+      CYPRESS_baseUrl: http://frontend-server:80
+
+  - name: test-sandbox
+    image: cypress/included:6.2.1
+    commands:
+      - cypress run --spec "cypress/integration/sandbox/sandbox.spec.js"
+    environment:
+      CYPRESS_baseUrl: http://frontend-server:80
+
+  - name: test-settings-node
+    image: cypress/included:6.2.1
+    commands:
+      - cypress run --spec "cypress/integration/settings-node/settings-node.spec.js"
+    environment:
+      CYPRESS_baseUrl: http://frontend-server:80
+
+  - name: test-storage-action
+    image: cypress/included:6.2.1
+    commands:
+      - cypress run --spec "cypress/integration/storage/storage-action/storage-action.spec.js"
+    environment:
+      CYPRESS_baseUrl: http://frontend-server:80
+
+  - name: test-storage-block
     image: cypress/included:6.2.1
     commands:
       - cypress run --spec "cypress/integration/storage/storage-block/storage-block.spec.js"

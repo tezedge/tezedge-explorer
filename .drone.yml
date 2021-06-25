@@ -24,6 +24,7 @@ trigger:
     - develop
 
 ---
+
 kind: pipeline
 name: integration-tests-ci
 type: docker
@@ -40,7 +41,21 @@ steps:
       MEMORYPROFILER: 'http://develop.dev.tezedge.com:17832'
       API: '[{"id":"drone","name":"drone-test-node","http":"http://develop.dev.tezedge.com:18732","monitoring":"http://develop.dev.tezedge.com:38732/resources/tezedge","ws":"ws://develop.dev.tezedge.com:4927","p2p_port":"9732","features":["MONITORING", "RESOURCES", "MEMPOOL_ACTION", "STORAGE_BLOCK", "NETWORK_ACTION", "LOGS_ACTION"],"resources":["system","storage","memory"]}]'
 
-  - name: test
+  - name: app
+    image: cypress/included:6.2.1
+    commands:
+      - cypress run --spec "cypress/integration/app/app.spec.js"
+    environment:
+      CYPRESS_baseUrl: http://frontend-server:80
+
+  - name: logs
+    image: cypress/included:6.2.1
+    commands:
+      - cypress run --spec "cypress/integration/logs/logs.spec.js"
+    environment:
+      CYPRESS_baseUrl: http://frontend-server:80
+
+  - name: storage-block
     image: cypress/included:6.2.1
     commands:
       - cypress run --spec "cypress/integration/storage/storage-block/storage-block.spec.js"
@@ -82,8 +97,6 @@ steps:
         from_secret: docker_hub_username
       password:
         from_secret: docker_hub_pswd
-    depends_on:
-      - frontend-server
 
 image_pull_secrets:
   - docker_pull_secret

@@ -94,9 +94,7 @@ steps:
 
 - name: test
   image: cypress/included:6.2.1
-  commands:
-    - cypress run --spec "cypress/integration/resources/memory-resource.spec.js"
- environment:
+  environment:
     CYPRESS_baseUrl: http://frontend-server:80
   depends_on:
     - frontend-server

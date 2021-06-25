@@ -19,7 +19,7 @@ export function reducer(state: SettingsNode = initialState, action): SettingsNod
     // load node settings from environment
     case 'SETTINGS_NODE_LOAD': {
       // console.log("[SETTINGS_NODE_LOAD][reducer]", environment, action, environment.api);
-      return {
+      const settingsNode = {
         activeNode: state.activeNode && state.activeNode.connected ? state.activeNode : environment.api[0],
         ids: environment.api.map(node => node.id),
         entities: environment.api.reduce((accumulator, node) => ({
@@ -32,7 +32,16 @@ export function reducer(state: SettingsNode = initialState, action): SettingsNod
         memoryProfiler: environment.memoryProfiler,
         debugger: environment.debugger,
         sandbox: environment.sandbox
-      } as SettingsNode;
+      };
+      if (!settingsNode.activeNode.resources) {
+        settingsNode.activeNode.resources = ['system', 'storage', 'memory'];
+      }
+      settingsNode.ids.forEach(id => {
+        if (!settingsNode.entities[id].resources) {
+          settingsNode.entities[id].resources = ['system', 'storage', 'memory'];
+        }
+      });
+      return settingsNode as SettingsNode;
     }
 
     // save connected node

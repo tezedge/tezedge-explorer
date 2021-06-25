@@ -73,13 +73,6 @@ steps:
   depends_on:
     - build
 
-- name: test
-  image: cypress/included:6.2.1
-  environment:
-    CYPRESS_baseUrl: http://frontend-server:80
-  depends_on:
-    - frontend-server
-
 - name: publish
   image: plugins/docker
   settings:
@@ -94,7 +87,7 @@ steps:
     password:
       from_secret: docker_hub_pswd
   depends_on:
-    - test
+    - frontend-server
 
 image_pull_secrets:
   - docker_pull_secret
@@ -108,6 +101,9 @@ trigger:
   branch:
     - develop
   event: push
+
+depends_on:
+  - test-ci
 
 ---
 

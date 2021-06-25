@@ -1,5 +1,5 @@
 kind: pipeline
-name: test-ci
+name: build-docker-image
 type: docker
 
 steps:
@@ -24,14 +24,30 @@ steps:
     depends_on:
       - build
 
+image_pull_secrets:
+  - docker_pull_secret
+
+volumes:
+  - name: docker_sock
+    host:
+      path: /var/run/docker.sock
+
+trigger:
+  branch:
+    - develop
+
+---
+kind: pipeline
+name: integration-tests-ci
+type: docker
+
+steps:
   - name: test
     image: cypress/included:6.2.1
     commands:
       - cypress run --spec "cypress/integration/storage/storage-block/storage-block.spec.js"
     environment:
       CYPRESS_baseUrl: http://frontend-server:80
-    depends_on:
-      - frontend-server
 
 image_pull_secrets:
   - docker_pull_secret
@@ -44,6 +60,9 @@ volumes:
 trigger:
   branch:
     - develop
+
+depends_on:
+  - build-docker-image
 
 ---
 
@@ -103,7 +122,7 @@ trigger:
   event: push
 
 depends_on:
-  - test-ci
+  - integration-tests-ci
 
 ---
 

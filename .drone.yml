@@ -35,29 +35,57 @@ steps:
   depends_on:
     - frontend-server
 
-- name: publish
-  image: plugins/docker
-  settings:
-    repo: simplestakingcom/tezedge-explorer
-    tags: latest
-    dockerfile: Dockerfile
-    build_args:
-      - branch=develop
-      - commit=${DRONE_COMMIT}
-    username:
-      from_secret: docker_hub_username
-    password:
-      from_secret: docker_hub_pswd
-  depends_on:
-    - test
+---
+
+kind: pipeline
+name: development-ci
+type: docker
+
+steps:
+  - name: build #build the frontend docker image
+    image: docker:latest
+    commands:
+      - docker build --no-cache --build-arg branch=${DRONE_BRANCH} -t drone-tezedge-explorer:latest -f Dockerfile .
+    volumes:
+      - name: docker_sock
+        path: /var/run/docker.sock
+
+  - name: frontend-server
+    image: drone-tezedge-explorer:latest
+    pull: if-not-exists
+    detach: true
+    privileged: true
+    environment:
+      SANDBOX: 'http://develop.dev.tezedge.com:3030'
+      DEBUGGER: 'http://develop.dev.tezedge.com:17732'
+      MEMORYPROFILER: 'http://develop.dev.tezedge.com:17832'
+      API: '[{"id":"drone","name":"drone-test-node","http":"http://develop.dev.tezedge.com:18732","monitoring":"http://develop.dev.tezedge.com:38732/resources/tezedge","ws":"ws://develop.dev.tezedge.com:4927","p2p_port":"9732","features":["MONITORING", "RESOURCES", "MEMPOOL_ACTION", "STORAGE_BLOCK", "NETWORK_ACTION", "LOGS_ACTION"]}]'
+    depends_on:
+      - build
+
+  - name: publish
+    image: plugins/docker
+    settings:
+      repo: simplestakingcom/tezedge-explorer
+      tags: latest
+      dockerfile: Dockerfile
+      build_args:
+        - branch=develop
+        - commit=${DRONE_COMMIT}
+      username:
+        from_secret: docker_hub_username
+      password:
+        from_secret: docker_hub_pswd
+    depends_on:
+      - test
 
 image_pull_secrets:
   - docker_pull_secret
 
 volumes:
-- name: docker_sock
-  host:
-    path: /var/run/docker.sock
+  - name: docker_sock
+    host:
+      path: /var/run/docker.sock
 
 trigger:
   branch:

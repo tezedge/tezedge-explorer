@@ -1,5 +1,5 @@
 kind: pipeline
-name: development-ci
+name: test-ci
 type: docker
 
 steps:

@@ -43,6 +43,9 @@ volumes:
     host:
       path: /var/run/docker.sock
 
+trigger:
+  branch:
+    - develop
 ---
 
 kind: pipeline

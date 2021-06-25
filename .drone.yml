@@ -25,7 +25,8 @@ steps:
     - build
 
 - name: test
-  image: cypress/included:6.2.1
+  commands:
+    - docker run -it -v $PWD:/e2e -w /e2e cypress/included:6.2.1 --spec "cypress/integration/storage/storage-block/storage-block.spec.js"
   environment:
     CYPRESS_baseUrl: http://frontend-server:80
   depends_on:
@@ -89,7 +90,6 @@ steps:
     - build
 
 - name: test
-  image: cypress/included:6.2.1
   commands:
     - docker run -it -v $PWD:/e2e -w /e2e cypress/included:6.2.1 --spec "cypress/integration/storage/storage-block/storage-block.spec.js"
   environment:

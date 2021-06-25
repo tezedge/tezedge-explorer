@@ -6,7 +6,15 @@ import { StorageResourcesActionTypes } from '../storage-resources/storage-resour
 import { MemoryResourcesActionTypes } from '../memory-resources/memory-resources.actions';
 import { MatCheckboxChange } from '@angular/material/checkbox';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
-import { filter } from 'rxjs/operators';
+import { filter, map, tap } from 'rxjs/operators';
+import { selectActiveNode } from '../../settings/settings-node/settings-node.reducer';
+import { Observable } from 'rxjs';
+
+const AVAILABLE_TABS = [
+  { title: 'System overview', id: 1, link: 'system' },
+  { title: 'Storage', id: 2, link: 'storage' },
+  { title: 'Memory', id: 3, link: 'memory' }
+];
 
 @UntilDestroy()
 @Component({
@@ -17,11 +25,7 @@ import { filter } from 'rxjs/operators';
 })
 export class ResourcesComponent implements OnInit {
 
-  tabs = [
-    { title: 'System overview', id: 1, link: 'system' },
-    { title: 'Storage', id: 2, link: 'storage' },
-    { title: 'Memory', id: 3, link: 'memory' }
-  ];
+  tabs$: Observable<any>;
   reversedCheckboxState = false;
   activeRoute: string;
   storageResourcesContext = 'tezedge';
@@ -33,8 +37,25 @@ export class ResourcesComponent implements OnInit {
               private cdRef: ChangeDetectorRef) { }
 
   ngOnInit(): void {
+    this.listenToNodeChange();
     this.listenToRouteChange();
     this.listenToStorageStateChange();
+  }
+
+  private listenToNodeChange(): void {
+    this.tabs$ = this.store.pipe(
+      untilDestroyed(this),
+      select(selectActiveNode),
+      filter(node => !!node),
+      tap(node => {
+        if (!node.resources.includes(this.activeRoute)) {
+          this.router.navigate([node.resources[0]], { relativeTo: this.route });
+        }
+      }),
+      map(node => AVAILABLE_TABS
+        .filter(tab => node.resources.includes(tab.link))
+      )
+    );
   }
 
   private listenToRouteChange(): void {

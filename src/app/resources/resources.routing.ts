@@ -4,6 +4,7 @@ import { ResourcesComponent } from './resources/resources.component';
 import { SystemResourcesComponent } from './system-resources/system-resources.component';
 import { StorageResourcesComponent } from './storage-resources/storage-resources.component';
 import { MemoryResourcesComponent } from './memory-resources/memory-resources.component';
+import { ResourcesGuard } from './resources.guard';
 
 const routes: Routes = [
   {
@@ -12,20 +13,23 @@ const routes: Routes = [
     children: [
       {
         path: 'system',
+        canActivate: [ResourcesGuard],
         component: SystemResourcesComponent
       },
       {
         path: 'storage',
+        canActivate: [ResourcesGuard],
         component: StorageResourcesComponent
       },
       {
         path: 'memory',
+        canActivate: [ResourcesGuard],
         component: MemoryResourcesComponent
       },
-      {
-        path: '',
-        redirectTo: 'system'
-      }
+      // {
+      //   path: '',
+      //   redirectTo: 'system'
+      // }
     ]
   },
   {

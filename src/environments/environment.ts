@@ -9,7 +9,8 @@ export const environment = {
       monitoring: 'http://develop.dev.tezedge.com:38732/resources/tezedge',
       ws: 'ws://develop.dev.tezedge.com:4927',
       p2p_port: '9732',
-      features: ['MONITORING', 'RESOURCES', 'MEMPOOL_ACTION', 'STORAGE_BLOCK', 'NETWORK_ACTION', 'LOGS_ACTION']
+      features: ['MONITORING', 'RESOURCES', 'MEMPOOL_ACTION', 'STORAGE_BLOCK', 'NETWORK_ACTION', 'LOGS_ACTION'],
+      resources: ['system', 'storage'],
     },
     {
       id: 'ocaml',
@@ -19,6 +20,7 @@ export const environment = {
       monitoring: 'http://develop.dev.tezedge.com:38732/resources/ocaml',
       p2p_port: '9733',
       features: ['MONITORING', 'RESOURCES', 'MEMPOOL_ACTION', 'NETWORK_ACTION', 'LOGS_ACTION'],
+      resources: ['storage', 'memory'],
     }
   ],
   memoryProfiler: 'http://develop.dev.tezedge.com:17832',

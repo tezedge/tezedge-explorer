@@ -35,6 +35,14 @@ steps:
   depends_on:
     - frontend-server
 
+image_pull_secrets:
+  - docker_pull_secret
+
+volumes:
+  - name: docker_sock
+    host:
+      path: /var/run/docker.sock
+
 ---
 
 kind: pipeline

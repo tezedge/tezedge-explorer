@@ -2,6 +2,7 @@ import * as moment from 'moment-mini-ts';
 import { environment } from '../../../environments/environment';
 import { SettingsNode } from '../../shared/types/settings-node/settings-node.type';
 import { SettingsNodeEntityHeader } from '../../shared/types/settings-node/settings-node-entity-header.type';
+import { State } from '../../app.reducers';
 
 const initialState: SettingsNode = {
   activeNode: null,
@@ -133,3 +134,5 @@ export function reducer(state: SettingsNode = initialState, action): SettingsNod
       return state;
   }
 }
+
+export const selectActiveNode = (state: State) => state.settingsNode.activeNode;

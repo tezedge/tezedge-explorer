@@ -8,6 +8,7 @@ import { HttpClient } from '@angular/common/http';
 import { State } from '../app.reducers';
 import { SettingsNodeService } from '../settings/settings-node/settings-node.service';
 import { SettingsNodeEntityHeader } from '../shared/types/settings-node/settings-node-entity-header.type';
+import { ErrorActionTypes } from '../shared/error-popup/error-popup.action';
 
 let wsCounter = 0;
 
@@ -152,6 +153,14 @@ export class MonitoringEffects {
           }
           return state.monitoring.open || wsCounter < 6;
         }),
+        tap(data => {
+          if (data.type === 'blockApplicationStatus' && data.payload.lastAppliedBlock === null && wsCounter < 6) {
+            this.store.dispatch({
+              type: ErrorActionTypes.ADD_ERROR,
+              payload: { title: 'Websocket error', message: 'Block application status: "lastAppliedBlock" is null, shown values may be affected' }
+            });
+          }
+        })
       );
     }),
 

@@ -1,59 +1,23 @@
 kind: pipeline
-name: development-ci
+name: build-docker-image
 type: docker
 
 steps:
-- name: build #build the frontend docker image
-  image: docker:latest
-  commands:
-    - docker build --no-cache --build-arg branch=${DRONE_BRANCH} -t drone-tezedge-explorer:latest -f Dockerfile .
-  volumes:
-    - name: docker_sock
-      path: /var/run/docker.sock
-
-- name: frontend-server
-  image: drone-tezedge-explorer:latest
-  pull: if-not-exists
-  detach: true
-  privileged: true
-  environment:
-    SANDBOX: 'http://develop.dev.tezedge.com:3030'
-    DEBUGGER: 'http://develop.dev.tezedge.com:17732'
-    MEMORYPROFILER: 'http://develop.dev.tezedge.com:17832'
-    API: '[{"id":"drone","name":"drone-test-node","http":"http://develop.dev.tezedge.com:18732","monitoring":"http://develop.dev.tezedge.com:38732/resources/tezedge","ws":"ws://develop.dev.tezedge.com:4927","p2p_port":"9732","features":["MONITORING", "RESOURCES", "MEMPOOL_ACTION", "STORAGE_BLOCK", "NETWORK_ACTION", "LOGS_ACTION"]}]'
-  depends_on:
-    - build
-
-- name: test
-  image: cypress/included:6.2.1
-  environment:
-    CYPRESS_baseUrl: http://frontend-server:80
-  depends_on:
-    - frontend-server
-
-- name: publish
-  image: plugins/docker
-  settings:
-    repo: simplestakingcom/tezedge-explorer
-    tags: latest
-    dockerfile: Dockerfile
-    build_args:
-      - branch=develop
-      - commit=${DRONE_COMMIT}
-    username:
-      from_secret: docker_hub_username
-    password:
-      from_secret: docker_hub_pswd
-  depends_on:
-    - test
+  - name: build #build the frontend docker image
+    image: docker:latest
+    commands:
+      - docker build --no-cache --build-arg branch=${DRONE_BRANCH} -t drone-tezedge-explorer:latest -f Dockerfile .
+    volumes:
+      - name: docker_sock
+        path: /var/run/docker.sock
 
 image_pull_secrets:
   - docker_pull_secret
 
 volumes:
-- name: docker_sock
-  host:
-    path: /var/run/docker.sock
+  - name: docker_sock
+    host:
+      path: /var/run/docker.sock
 
 trigger:
   branch:
@@ -63,93 +27,361 @@ trigger:
 ---
 
 kind: pipeline
-name: deployment-ci
+name: integration-tests-ci
 type: docker
 
 steps:
-- name: build #build the frontend docker image
-  image: docker:latest
-  commands:
-    - docker build --no-cache --build-arg branch=master -t drone-tezedge-explorer:latest -f Dockerfile .
-  volumes:
-    - name: docker_sock
-      path: /var/run/docker.sock
+  - name: frontend-server
+    image: drone-tezedge-explorer:latest
+    pull: if-not-exists
+    detach: true
+    privileged: true
+    environment:
+      SANDBOX: 'http://develop.dev.tezedge.com:3030'
+      DEBUGGER: 'http://develop.dev.tezedge.com:17732'
+      MEMORYPROFILER: 'http://develop.dev.tezedge.com:17832'
+      API: '[{"id":"drone","name":"drone-test-node","http":"http://develop.dev.tezedge.com:18732","monitoring":"http://develop.dev.tezedge.com:38732/resources/tezedge","ws":"ws://develop.dev.tezedge.com:4927","p2p_port":"9732","features":["MONITORING", "RESOURCES", "MEMPOOL_ACTION", "STORAGE_BLOCK", "NETWORK_ACTION", "LOGS_ACTION"],"resources":["system","storage","memory"]}]'
 
-- name: frontend-server #detach it to access it inside test step
-  image: drone-tezedge-explorer:latest
-  pull: if-not-exists
-  detach: true
-  privileged: true
-  environment:
-    SANDBOX: 'http://develop.dev.tezedge.com:3030'
-    DEBUGGER: 'http://develop.dev.tezedge.com:17732'
-    MEMORYPROFILER: 'http://develop.dev.tezedge.com:17832'
-    API: '[{"id":"drone","name":"drone-test-node","http":"http://develop.dev.tezedge.com:18732","monitoring":"http://develop.dev.tezedge.com:38732/resources/tezedge","ws":"ws://develop.dev.tezedge.com:4927","p2p_port":"9732","features":["MONITORING", "RESOURCES", "MEMPOOL_ACTION", "STORAGE_BLOCK", "NETWORK_ACTION", "LOGS_ACTION"]}]'
-  depends_on:
-    - build
+  - name: test-app
+    image: cypress/included:6.2.1
+    commands:
+      - cypress run --spec "cypress/integration/app/app.spec.js"
+    environment:
+      CYPRESS_baseUrl: http://frontend-server:80
 
-- name: test
-  image: cypress/included:6.2.1
-  environment:
-    CYPRESS_baseUrl: http://frontend-server:80
-  depends_on:
-    - frontend-server
+  - name: test-logs
+    image: cypress/included:6.2.1
+    commands:
+      - cypress run --spec "cypress/integration/logs/logs.spec.js"
+    environment:
+      CYPRESS_baseUrl: http://frontend-server:80
 
-- name: publish
-  image: plugins/docker
-  settings:
-    repo: simplestakingcom/tezedge-explorer
-    tags:
-      - ${DRONE_TAG}
-      - latest-release
-    dockerfile: Dockerfile
-    build_args:
-      - branch=master
-      - commit=${DRONE_COMMIT}
-    username:
-      from_secret: docker_hub_username
-    password:
-      from_secret: docker_hub_pswd
+  - name: test-commit-number
+    image: cypress/included:6.2.1
+    commands:
+      - cypress run --spec "cypress/integration/monitoring/commit-number/commit-number.spec.js"
+    environment:
+      CYPRESS_baseUrl: http://frontend-server:80
 
-- name: cp-static
-  image: drone-tezedge-explorer:latest
-  privileged: true
-  pull: if-not-exists
-  volumes:
-    - name: static_page
-      path: /etc/static_page
-  commands:
-    - rm -rf /etc/static_page/*
-    - cp -R /usr/share/nginx/html/* /etc/static_page
-  depends_on:
-    - build
+  - name: test-network
+    image: cypress/included:6.2.1
+    commands:
+      - cypress run --spec "cypress/integration/network/network-action/network.spec.js"
+    environment:
+      CYPRESS_baseUrl: http://frontend-server:80
 
-- name: publish-firebase
-  image: devillex/docker-firebase
-  pull: if-not-exists
-  volumes:
-    - name: static_page
-      path: /drone/src/dist/tezedge-explorer
-  environment:
-    FIREBASE_API_TOKEN:
-      from_secret: FIREBASE_API_TOKEN
-  depends_on:
-    - cp-static
-    - publish
-  commands:
-    - firebase deploy --token=$${FIREBASE_API_TOKEN}
+  - name: test-system-resources
+    image: cypress/included:6.2.1
+    commands:
+      - cypress run --spec "cypress/integration/resources/system-resources.spec.js"
+    environment:
+      CYPRESS_baseUrl: http://frontend-server:80
+
+  - name: test-storage-resources
+    image: cypress/included:6.2.1
+    commands:
+      - cypress run --spec "cypress/integration/resources/storage-resources.spec.js"
+    environment:
+      CYPRESS_baseUrl: http://frontend-server:80
+
+  - name: test-memory-resources
+    image: cypress/included:6.2.1
+    commands:
+      - cypress run --spec "cypress/integration/resources/memory-resources.spec.js"
+    environment:
+      CYPRESS_baseUrl: http://frontend-server:80
+
+  - name: test-sandbox
+    image: cypress/included:6.2.1
+    commands:
+      - cypress run --spec "cypress/integration/sandbox/sandbox.spec.js"
+    environment:
+      CYPRESS_baseUrl: http://frontend-server:80
+
+  - name: test-settings-node
+    image: cypress/included:6.2.1
+    commands:
+      - cypress run --spec "cypress/integration/settings-node/settings-node.spec.js"
+    environment:
+      CYPRESS_baseUrl: http://frontend-server:80
+
+  - name: test-storage-action
+    image: cypress/included:6.2.1
+    commands:
+      - cypress run --spec "cypress/integration/storage/storage-action/storage-action.spec.js"
+    environment:
+      CYPRESS_baseUrl: http://frontend-server:80
+
+  - name: test-storage-block
+    image: cypress/included:6.2.1
+    commands:
+      - cypress run --spec "cypress/integration/storage/storage-block/storage-block.spec.js"
+    environment:
+      CYPRESS_baseUrl: http://frontend-server:80
 
 image_pull_secrets:
-- docker_pull_secret
+  - docker_pull_secret
 
 volumes:
-- name: docker_sock
-  host:
-    path: /var/run/docker.sock
-- name: static_page
-  host:
-    path: /etc/tezedge-ci/tezedge-explorer/
+  - name: docker_sock
+    host:
+      path: /var/run/docker.sock
+
+trigger:
+  branch:
+    - develop
+  event: push
+
+depends_on:
+  - build-docker-image
+
+---
+
+kind: pipeline
+name: publishing-ci
+type: docker
+
+steps:
+  - name: publish
+    image: plugins/docker
+    settings:
+      repo: simplestakingcom/tezedge-explorer
+      tags: latest
+      dockerfile: Dockerfile
+      build_args:
+        - branch=develop
+        - commit=${DRONE_COMMIT}
+      username:
+        from_secret: docker_hub_username
+      password:
+        from_secret: docker_hub_pswd
+
+image_pull_secrets:
+  - docker_pull_secret
+
+volumes:
+  - name: docker_sock
+    host:
+      path: /var/run/docker.sock
+
+trigger:
+  branch:
+    - develop
+  event: push
+
+depends_on:
+  - integration-tests-ci
+
+---
+
+
+
+
+
+# when pushing on master these pipelines are executed
+
+kind: pipeline
+name: build-lastest-docker-image
+type: docker
+
+steps:
+  - name: build #build the frontend docker image
+    image: docker:latest
+    commands:
+      - docker build --no-cache --build-arg branch=master -t drone-tezedge-explorer:latest -f Dockerfile .
+    volumes:
+      - name: docker_sock
+        path: /var/run/docker.sock
+
+image_pull_secrets:
+  - docker_pull_secret
+
+volumes:
+  - name: docker_sock
+    host:
+      path: /var/run/docker.sock
+  - name: static_page
+    host:
+      path: /etc/tezedge-ci/tezedge-explorer/
+
+trigger:
+  ref: refs/tags/**
+
+---
+
+kind: pipeline
+name: integration-tests-ci-master
+type: docker
+
+steps:
+  - name: frontend-server #detach it to access it inside test step
+    image: drone-tezedge-explorer:latest
+    pull: if-not-exists
+    detach: true
+    privileged: true
+    environment:
+      SANDBOX: 'http://develop.dev.tezedge.com:3030'
+      DEBUGGER: 'http://develop.dev.tezedge.com:17732'
+      MEMORYPROFILER: 'http://develop.dev.tezedge.com:17832'
+      API: '[{"id":"drone","name":"drone-test-node","http":"http://develop.dev.tezedge.com:18732","monitoring":"http://develop.dev.tezedge.com:38732/resources/tezedge","ws":"ws://develop.dev.tezedge.com:4927","p2p_port":"9732","features":["MONITORING", "RESOURCES", "MEMPOOL_ACTION", "STORAGE_BLOCK", "NETWORK_ACTION", "LOGS_ACTION"],"resources":["system","storage","memory"]}]'
+
+  - name: test-app
+    image: cypress/included:6.2.1
+    commands:
+      - cypress run --spec "cypress/integration/app/app.spec.js"
+    environment:
+      CYPRESS_baseUrl: http://frontend-server:80
+
+  - name: test-logs
+    image: cypress/included:6.2.1
+    commands:
+      - cypress run --spec "cypress/integration/logs/logs.spec.js"
+    environment:
+      CYPRESS_baseUrl: http://frontend-server:80
+
+  - name: test-commit-number
+    image: cypress/included:6.2.1
+    commands:
+      - cypress run --spec "cypress/integration/monitoring/commit-number/commit-number.spec.js"
+    environment:
+      CYPRESS_baseUrl: http://frontend-server:80
+
+  - name: test-network
+    image: cypress/included:6.2.1
+    commands:
+      - cypress run --spec "cypress/integration/network/network-action/network.spec.js"
+    environment:
+      CYPRESS_baseUrl: http://frontend-server:80
+
+  - name: test-system-resources
+    image: cypress/included:6.2.1
+    commands:
+      - cypress run --spec "cypress/integration/resources/system-resources.spec.js"
+    environment:
+      CYPRESS_baseUrl: http://frontend-server:80
+
+  - name: test-storage-resources
+    image: cypress/included:6.2.1
+    commands:
+      - cypress run --spec "cypress/integration/resources/storage-resources.spec.js"
+    environment:
+      CYPRESS_baseUrl: http://frontend-server:80
+
+  - name: test-memory-resources
+    image: cypress/included:6.2.1
+    commands:
+      - cypress run --spec "cypress/integration/resources/memory-resources.spec.js"
+    environment:
+      CYPRESS_baseUrl: http://frontend-server:80
+
+  - name: test-sandbox
+    image: cypress/included:6.2.1
+    commands:
+      - cypress run --spec "cypress/integration/sandbox/sandbox.spec.js"
+    environment:
+      CYPRESS_baseUrl: http://frontend-server:80
+
+  - name: test-settings-node
+    image: cypress/included:6.2.1
+    commands:
+      - cypress run --spec "cypress/integration/settings-node/settings-node.spec.js"
+    environment:
+      CYPRESS_baseUrl: http://frontend-server:80
+
+  - name: test-storage-action
+    image: cypress/included:6.2.1
+    commands:
+      - cypress run --spec "cypress/integration/storage/storage-action/storage-action.spec.js"
+    environment:
+      CYPRESS_baseUrl: http://frontend-server:80
+
+  - name: test-storage-block
+    image: cypress/included:6.2.1
+    commands:
+      - cypress run --spec "cypress/integration/storage/storage-block/storage-block.spec.js"
+    environment:
+      CYPRESS_baseUrl: http://frontend-server:80
+
+image_pull_secrets:
+  - docker_pull_secret
+
+volumes:
+  - name: docker_sock
+    host:
+      path: /var/run/docker.sock
+  - name: static_page
+    host:
+      path: /etc/tezedge-ci/tezedge-explorer/
+
+trigger:
+  ref: refs/tags/**
+
+depends_on:
+  - build-lastest-docker-image
+
+---
+
+kind: pipeline
+name: publish-ci
+type: docker
+
+steps:
+  - name: publish
+    image: plugins/docker
+    settings:
+      repo: simplestakingcom/tezedge-explorer
+      tags:
+        - ${DRONE_TAG}
+        - latest-release
+      dockerfile: Dockerfile
+      build_args:
+        - branch=master
+        - commit=${DRONE_COMMIT}
+      username:
+        from_secret: docker_hub_username
+      password:
+        from_secret: docker_hub_pswd
+
+  - name: cp-static
+    image: drone-tezedge-explorer:latest
+    privileged: true
+    pull: if-not-exists
+    volumes:
+      - name: static_page
+        path: /etc/static_page
+    commands:
+      - rm -rf /etc/static_page/*
+      - cp -R /usr/share/nginx/html/* /etc/static_page
+
+  - name: publish-firebase
+    image: devillex/docker-firebase
+    pull: if-not-exists
+    volumes:
+      - name: static_page
+        path: /drone/src/dist/tezedge-explorer
+    environment:
+      FIREBASE_API_TOKEN:
+        from_secret: FIREBASE_API_TOKEN
+    depends_on:
+      - cp-static
+      - publish
+    commands:
+      - firebase deploy --token=$${FIREBASE_API_TOKEN}
+
+image_pull_secrets:
+  - docker_pull_secret
+
+volumes:
+  - name: docker_sock
+    host:
+      path: /var/run/docker.sock
+  - name: static_page
+    host:
+      path: /etc/tezedge-ci/tezedge-explorer/
 
 trigger:
   ref: refs/tags/**
   event: tag
+
+depends_on:
+  - integration-tests-ci-master

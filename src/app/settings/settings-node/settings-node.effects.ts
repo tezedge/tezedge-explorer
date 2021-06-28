@@ -18,23 +18,17 @@ export class SettingsNodeEffects {
     withLatestFrom(this.store, (action: any, state: ObservedValueOf<Store<State>>) => ({ action, state })),
     flatMap(({ action, state }) => state.settingsNode.ids.map(id => state.settingsNode.entities[id])),
     flatMap((activeNode: SettingsNodeEntity) => {
-        return forkJoin([
-          this.settingsNodeService.getSettingsHeader(activeNode.http),
-          this.settingsNodeService.getNodeFeatures(activeNode.http, activeNode.id),
-        ]).pipe(
-          map(([header, features]) => ({
-            type: 'SETTINGS_NODE_LOAD_SUCCESS',
-            payload: { activeNode, header, features }
-          })),
-          catchError((error) => of({ type: 'SETTINGS_NODE_LOAD_ERROR', payload: { activeNode, response: error } })),
-        );
-        //
-        // return this.settingsNodeService.getSettingsHeader(activeNode.http).pipe(
-        //   map((response: SettingsNodeEntityHeader) => ({ type: 'SETTINGS_NODE_LOAD_SUCCESS', payload: { activeNode, response } })),
-        //   catchError((error) => of({ type: 'SETTINGS_NODE_LOAD_ERROR', payload: { activeNode, response: error } })),
-        // );
-      }
-    ),
+      return forkJoin([
+        this.settingsNodeService.getSettingsHeader(activeNode.http),
+        this.settingsNodeService.getNodeFeatures(activeNode.http, activeNode.id),
+      ]).pipe(
+        map(([header, features]) => ({
+          type: 'SETTINGS_NODE_LOAD_SUCCESS',
+          payload: { activeNode, header, features }
+        })),
+        catchError((error) => of({ type: 'SETTINGS_NODE_LOAD_ERROR', payload: { activeNode, response: error } })),
+      );
+    }),
   );
 
   @Effect()

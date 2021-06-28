@@ -1,8 +1,8 @@
 <notifier-container></notifier-container>
 
-<ng-template #popupTemplate let-notificationData="notification">
+<ng-template #popupTemplate let-data="notification">
   <div class="custom-notification">
-    <div class="title">{{ notificationData.title }}</div>
-    <div class="message">{{ notificationData.message }}</div>
+    <div class="title">{{ data.title }}</div>
+    <div class="message">{{ data.message }}</div>
   </div>
 </ng-template>

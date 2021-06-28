@@ -8,7 +8,7 @@
          fxLayoutAlign="space-between center">
       <div fxLayoutAlign="start"
            fxLayoutGap="16px">
-        <div *ngFor="let tab of tabs"
+        <div *ngFor="let tab of tabs$ | async"
              [routerLink]="'/resources/' + tab.link"
              (click)="onTabChange()"
              routerLinkActive="selected"

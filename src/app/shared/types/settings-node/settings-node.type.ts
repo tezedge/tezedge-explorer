@@ -5,7 +5,4 @@ export interface SettingsNode {
   activeNode: SettingsNodeApi;
   ids: string[];
   entities: { [node: string]: SettingsNodeEntity };
-  debugger: string;
-  memoryProfiler: string;
-  sandbox?: string;
 }

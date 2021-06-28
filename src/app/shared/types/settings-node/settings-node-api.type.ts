@@ -6,6 +6,5 @@ export class SettingsNodeApi {
   ws: boolean | string;
   monitoring: string;
   connected: boolean | string;
-  features: string[];
-  resources: string[];
+  features: { name: string, [p: string]: any }[];
 }

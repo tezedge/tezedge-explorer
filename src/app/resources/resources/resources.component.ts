@@ -7,13 +7,13 @@ import { MemoryResourcesActionTypes } from '../memory-resources/memory-resources
 import { MatCheckboxChange } from '@angular/material/checkbox';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { filter, map, tap } from 'rxjs/operators';
-import { selectActiveNode } from '../../settings/settings-node/settings-node.reducer';
+import { selectFeatures } from '../../settings/settings-node/settings-node.reducer';
 import { Observable } from 'rxjs';
 
 const AVAILABLE_TABS = [
-  { title: 'System overview', id: 1, link: 'system' },
-  { title: 'Storage', id: 2, link: 'storage' },
-  { title: 'Memory', id: 3, link: 'memory' }
+  { title: 'System overview', link: 'system' },
+  { title: 'Storage', link: 'storage' },
+  { title: 'Memory', link: 'memory' }
 ];
 
 @UntilDestroy()
@@ -45,16 +45,16 @@ export class ResourcesComponent implements OnInit {
   private listenToNodeChange(): void {
     this.tabs$ = this.store.pipe(
       untilDestroyed(this),
-      select(selectActiveNode),
-      filter(node => !!node),
-      tap(node => {
-        if (!node.resources.includes(this.activeRoute)) {
-          this.router.navigate([node.resources[0]], { relativeTo: this.route });
+      select(selectFeatures),
+      map(features => features.map(f => f.name).filter(name => name.includes('resources'))),
+      tap(resourceFeatureNames => {
+        if (!resourceFeatureNames.some(n => n.includes(this.activeRoute))) {
+          this.router.navigate([resourceFeatureNames[0]], { relativeTo: this.route });
         }
       }),
-      map(node => AVAILABLE_TABS
-        .filter(tab => node.resources.includes(tab.link))
-      )
+      map(resourceFeatureNames => (
+        AVAILABLE_TABS.filter(tab => resourceFeatureNames.some(name => name.includes(tab.link)))
+      ))
     );
   }
 
@@ -84,7 +84,7 @@ export class ResourcesComponent implements OnInit {
   getStorageStatistics(): void {
     this.storageResourcesContext = this.storageResourcesContext === 'tezedge' ? 'irmin' : 'tezedge';
     this.store.dispatch({
-      type: StorageResourcesActionTypes.LOAD_RESOURCES,
+      type: StorageResourcesActionTypes.STORAGE_RESOURCES_LOAD,
       payload: this.storageResourcesContext
     });
   }
@@ -93,7 +93,7 @@ export class ResourcesComponent implements OnInit {
     this.reversedCheckboxState = event.checked;
     this.cdRef.detectChanges();
     this.store.dispatch({
-      type: MemoryResourcesActionTypes.LoadResources,
+      type: MemoryResourcesActionTypes.MEMORY_RESOURCES_LOAD,
       payload: { reversed: this.reversedCheckboxState }
     });
   }

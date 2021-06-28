@@ -59,7 +59,7 @@ export class SettingsNodeEffects {
     ofType('SETTINGS_NODE_LOAD_SANDBOX'),
 
     // merge state
-    withLatestFrom(this.store, (action: any, state) => ({ action, state })),
+    withLatestFrom(this.store, (action: any, state: ObservedValueOf<Store<State>>) => ({ action, state })),
 
     // check if api is available
     flatMap(({ action, state }) => {
@@ -81,7 +81,7 @@ export class SettingsNodeEffects {
     ofType('SETTINGS_NODE_LOAD_SANDBOX_SUCCESS'),
 
     // merge state
-    withLatestFrom(this.store, (action: any, state) => ({ action, state })),
+    withLatestFrom(this.store, (action: any, state: ObservedValueOf<Store<State>>) => ({ action, state })),
 
     flatMap(({ action, state }) => {
       return of({ type: 'APP_INIT', payload: state.settingsNode.entities['sandbox-carthage-tezedge'] });
@@ -91,7 +91,7 @@ export class SettingsNodeEffects {
   constructor(
     private http: HttpClient,
     private actions$: Actions,
-    private store: Store<any>,
+    private store: Store<State>,
     private settingsNodeService: SettingsNodeService
   ) { }
 

@@ -6,11 +6,14 @@ import { map, switchMap, flatMap, takeUntil, withLatestFrom, catchError, tap } f
 import { of, interval, Subject, empty } from 'rxjs';
 import { Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { State } from '../app.reducers';
 
 const sandboxStopPending$ = new Subject();
 
 @Injectable()
 export class SandboxEffects {
+
+  sandbox = (state: State) => state.settingsNode.activeNode.features.find(f => f.name === 'sandbox').url;
 
     @Effect()
     SandboxNodeStart$ = this.actions$.pipe(
@@ -21,7 +24,7 @@ export class SandboxEffects {
 
         switchMap(({ action, state }) => {
             console.log('[CHAIN_SERVER_FORM_SUBMIT]', state.settingsNode);
-            return this.http.post(state.settingsNode.sandbox + '/start', state.sandbox.endpoints.start);
+            return this.http.post(this.sandbox(state) + '/start', state.sandbox.endpoints.start);
         }),
 
         // dispatch actions
@@ -49,7 +52,7 @@ export class SandboxEffects {
 
         switchMap(({ action, state }) => {
             console.log('[SANDBOX_NODE_STOP]', state.settingsNode);
-            return this.http.get(state.settingsNode.sandbox + '/stop');
+            return this.http.get(this.sandbox(state) + '/stop');
         }),
 
         // dispatch actions
@@ -136,7 +139,7 @@ export class SandboxEffects {
 
         switchMap(({ action, state }) => {
             console.log('[CHAIN_WALLETS_SUBMIT]', state.settingsNode);
-            return this.http.post(state.settingsNode.sandbox + '/init_client', state.sandbox.endpoints.initClient)
+            return this.http.post(this.sandbox(state) + '/init_client', state.sandbox.endpoints.initClient)
         }),
 
         // dispatch actions
@@ -176,7 +179,7 @@ export class SandboxEffects {
 
         switchMap(({ action, state }) => {
             console.log('[CHAIN_CONFIG_FORM_SUBMIT]', state.settingsNode);
-            return this.http.post(state.settingsNode.sandbox + '/activate_protocol', state.sandbox.endpoints.activateProtocol)
+            return this.http.post(this.sandbox(state) + '/activate_protocol', state.sandbox.endpoints.activateProtocol)
         }),
 
         // dispatch actions
@@ -207,7 +210,7 @@ export class SandboxEffects {
 
         switchMap(({ action, state }) => {
             console.log('[SANDBOX_BAKE_BLOCK]', state.settingsNode);
-            return this.http.get(state.settingsNode.sandbox + '/bake')
+            return this.http.get(this.sandbox(state) + '/bake');
         }),
 
         // dispatch action
@@ -244,7 +247,7 @@ export class SandboxEffects {
     constructor(
         private http: HttpClient,
         private actions$: Actions,
-        private store: Store<any>,
+        private store: Store<State>,
         private router: Router,
         private snackBar: MatSnackBar,
     ) { }

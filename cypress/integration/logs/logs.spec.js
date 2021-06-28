@@ -1,4 +1,4 @@
-context('logs', () => {
+context('LOGS', () => {
   beforeEach(() => {
     cy.visit(Cypress.config().baseUrl);
     cy.wait(1000);
@@ -6,17 +6,17 @@ context('logs', () => {
     cy.wait(2500);
   });
 
-  it('[logs] perform logs request successfully', () => {
+  it('[LOGS] perform logs request successfully', () => {
     cy.intercept('GET', '/v2/log?*').as('getLogRequest');
     cy.wait('@getLogRequest').its('response.statusCode').should('eq', 200);
   });
 
-  it('[logs] create rows for the virtual scroll table', () => {
+  it('[LOGS] create rows for the virtual scroll table', () => {
     cy.get('.virtual-scroll-container')
       .find('.virtualScrollRow');
   });
 
-  it('[logs] fill the last row of the table with the last value received', () => {
+  it('[LOGS] fill the last row of the table with the last value received', () => {
     cy.wait(1000)
       .then(() => {
         cy.get('.stop-stream').click();
@@ -43,7 +43,7 @@ context('logs', () => {
       });
   });
 
-  // it('[logs] initially select the last record and fill the right details part with its message', () => {
+  // it('[LOGS] initially select the last record and fill the right details part with its message', () => {
   //   cy.wait(1000)
   //     .then(() => {
   //       cy.get('.stop-stream').click();
@@ -66,7 +66,7 @@ context('logs', () => {
   //     });
   // });
 
-  it('[logs] fill the right details part with the message of the clicked row - the second last record in our case', () => {
+  it('[LOGS] fill the right details part with the message of the clicked row - the second last record in our case', () => {
     cy.wait(1000)
       .then(() => {
         cy.get('.stop-stream').click();
@@ -93,7 +93,7 @@ context('logs', () => {
       });
   });
 
-  it('[logs] change the value of the virtual scroll element when scrolling', () => {
+  it('[LOGS] change the value of the virtual scroll element when scrolling', () => {
     let beforeScrollValue;
 
     cy.wait(1000)

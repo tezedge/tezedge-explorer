@@ -1,7 +1,7 @@
 version: '3'
 services:
   tezedge-explorer:
-    image: simplestakingcom/tezedge-explorer:latest
+    image: tezedge/tezedge-explorer:latest
     build:
       context: .
       dockerfile: Dockerfile

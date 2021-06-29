@@ -1,0 +1,139 @@
+$white-7: rgba(255, 255, 255, 0.7);
+
+#tezedge-open-api,
+#debugger-open-api,
+#protocol-open-api {
+  .swagger-ui {
+    color: $white-7;
+    font-family: Roboto, "Helvetica Neue", sans-serif;
+
+    .scheme-container {
+      background-color: transparent;
+    }
+
+    .info .title,
+    .info p,
+    .opblock-tag,
+    .opblock-description-wrapper p,
+    table thead tr td,
+    table thead tr th,
+    .parameter__name,
+    .parameter__type,
+    .tab li,
+    section.models h4 span,
+    .model-title,
+    .model,
+    tr > td {
+      color: $white-7;
+    }
+
+    h4 {
+      font-weight: 400;
+    }
+
+    .parameter__name .required {
+      font-weight: 300;
+    }
+
+    .information-container,
+    .scheme-container {
+      display: none;
+    }
+
+    div {
+      .wrapper {
+        padding: 0 10px;
+
+        &:nth-child(4) {
+          padding: 10px;
+
+          .block-desktop {
+            border: 1px solid rgba(255, 255, 255, 0.1);
+
+            span:nth-child(odd) div .opblock-tag {
+              background: rgba(255, 255, 255, 0.04);
+            }
+          }
+        }
+      }
+    }
+
+    section.models,
+    section.models.is-open h4 {
+      border-color: rgba(255, 255, 255, 0.1);
+    }
+
+    .model-toggle:after {
+      filter: invert(0.8);
+      margin-top: -13px;
+      margin-left: -13px;
+    }
+
+    .model-toggle.collapsed:after {
+      margin-top: -10px;
+      margin-left: 0;
+    }
+
+    tr.property-row td {
+      line-height: 20px;
+    }
+
+    button.model-box-control span:last-child {
+      margin-top: 3px;
+    }
+
+    .model-title {
+      font-weight: 300;
+    }
+
+    .opblock-tag-section {
+      .opblock-tag {
+        transition: none;
+        padding: 5px 20px 5px 10px;
+        margin-bottom: 0;
+
+        &:hover {
+          background: rgba(255, 255, 255, 0.1) !important;
+        }
+
+        a {
+          font-weight: 400;
+          font-size: 16px;
+        }
+      }
+
+      > .no-margin .operation-tag-content {
+        padding: 10px;
+
+        span:last-child .opblock {
+          margin-bottom: 0;
+        }
+
+        .opblock .opblock-summary {
+          padding: 10px;
+        }
+      }
+    }
+
+    svg.arrow,
+    .models-control svg {
+      fill: $white-7 !important;
+    }
+
+    button {
+      line-height: 1;
+      display: flex;
+
+      &:focus {
+        outline: none;
+      }
+    }
+
+    .operation-tag-content {
+      .opblock-summary-path {
+        color: white;
+        font-weight: 300;
+      }
+    }
+  }
+}

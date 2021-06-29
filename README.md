@@ -105,3 +105,16 @@ export const environment = {
 ```
 
 Please open `mock` folder to view/edit each server files.
+
+
+## Running Tests
+
+TezEdge Explorer uses Cypress to run the integration tests.
+
+To run the tests make sure the application is running and in a separate terminal execute
+
+`npx cypress run`
+
+Additionally, if you want to see the progress of the tests use the following command instead:
+
+`npx cypress run --headed`

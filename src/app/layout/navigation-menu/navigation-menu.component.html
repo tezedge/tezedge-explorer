@@ -236,6 +236,20 @@
 
       <a mat-list-item
          class="menu-item"
+         routerLink="/open-api"
+         routerLinkActive="active"
+         matTooltip="Open API"
+         matTooltipPosition="right"
+         [matTooltipDisabled]="!app.sidenav.collapsed"
+         rel="noreferrer"
+         [style.color]="app.sidenav.color">
+      <span class="menu-content">
+        <svg-icon icon="swagger"></svg-icon>
+        <span class="text-nowrap">Open API</span>
+      </span>
+      </a>
+      <a mat-list-item
+         class="menu-item"
          href="https://docs.tezedge.com"
          target="_blank"
          matTooltip="Documentation"
@@ -246,20 +260,6 @@
       <span class="menu-content">
         <svg-icon icon="documentation"></svg-icon>
         <span class="text-nowrap">Documentation</span>
-      </span>
-      </a>
-      <a mat-list-item
-         class="menu-item"
-         routerLink="/swagger"
-         routerLinkActive="active"
-         matTooltip="Swagger"
-         matTooltipPosition="right"
-         [matTooltipDisabled]="!app.sidenav.collapsed"
-         rel="noreferrer"
-         [style.color]="app.sidenav.color">
-      <span class="menu-content">
-        <svg-icon icon="swagger"></svg-icon>
-        <span class="text-nowrap">Swagger</span>
       </span>
       </a>
     </div>

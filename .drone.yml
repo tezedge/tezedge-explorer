@@ -145,7 +145,7 @@ steps:
   - name: publish
     image: plugins/docker
     settings:
-      repo: simplestakingcom/tezedge-explorer
+      repo: tezedge/tezedge-explorer
       tags: latest
       dockerfile: Dockerfile
       build_args:
@@ -329,7 +329,7 @@ steps:
   - name: publish
     image: plugins/docker
     settings:
-      repo: simplestakingcom/tezedge-explorer
+      repo: tezedge/tezedge-explorer
       tags:
         - ${DRONE_TAG}
         - latest-release

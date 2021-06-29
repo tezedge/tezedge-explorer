@@ -1,0 +1,21 @@
+<div fxFlexFill
+     class="open-api-wizard overflow-hidden d-flex flex-column">
+  <div class="tabs border-bottom"
+       fxFlex="40px"
+       fxLayoutAlign="space-between center">
+    <div fxLayoutAlign="start"
+         fxLayoutGap="16px">
+      <div *ngFor="let tab of tabs"
+           [routerLink]="'/open-api/' + tab"
+           routerLinkActive="selected"
+           class="tab text-uppercase font-12 pointer">
+        {{ tab }}
+      </div>
+    </div>
+  </div>
+
+  <div fxFlex="calc(100% - 40px)" class="overflow-y-scroll">
+    <router-outlet></router-outlet>
+  </div>
+
+</div>

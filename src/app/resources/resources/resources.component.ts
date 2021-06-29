@@ -11,9 +11,9 @@ import { selectActiveNode } from '../../settings/settings-node/settings-node.red
 import { Observable } from 'rxjs';
 
 const AVAILABLE_TABS = [
-  { title: 'System overview', id: 1, link: 'system' },
-  { title: 'Storage', id: 2, link: 'storage' },
-  { title: 'Memory', id: 3, link: 'memory' }
+  { title: 'System overview', link: 'system' },
+  { title: 'Storage', link: 'storage' },
+  { title: 'Memory', link: 'memory' }
 ];
 
 @UntilDestroy()

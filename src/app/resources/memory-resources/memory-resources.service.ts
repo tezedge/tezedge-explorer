@@ -5,9 +5,6 @@ import { MemoryResource } from '../../shared/types/resources/memory/memory-resou
 import { MemoryResourceName } from '../../shared/types/resources/memory/memory-resource-name.type';
 import { map } from 'rxjs/operators';
 
-// @ts-ignore
-import * as tree from './tree.json';
-
 @Injectable({
   providedIn: 'root'
 })
@@ -15,11 +12,7 @@ export class MemoryResourcesService {
 
   constructor(private http: HttpClient) { }
 
-  private serverData = (tree as any).default;
-
   getStorageResources(api: string, reversed: boolean, threshold: number = 512): Observable<MemoryResource> {
-    // return of(this.serverData)
-    //   .pipe(map(response => this.mapMemoryResponse(response, threshold)));
     return this.http.get<MemoryResource>(`${api}/v1/tree?threshold=${threshold}&reverse=${reversed}`)
       .pipe(map(response => this.mapMemoryResponse(response, threshold)));
   }

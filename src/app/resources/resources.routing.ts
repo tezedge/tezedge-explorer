@@ -26,10 +26,10 @@ const routes: Routes = [
         canActivate: [ResourcesGuard],
         component: MemoryResourcesComponent
       },
-      // {
-      //   path: '',
-      //   redirectTo: 'system'
-      // }
+      {
+        path: '',
+        redirectTo: 'system'
+      }
     ]
   },
   {

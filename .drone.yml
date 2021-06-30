@@ -37,10 +37,7 @@ steps:
     detach: true
     privileged: true
     environment:
-      SANDBOX: 'http://develop.dev.tezedge.com:3030'
-      DEBUGGER: 'http://develop.dev.tezedge.com:17732'
-      MEMORYPROFILER: 'http://develop.dev.tezedge.com:17832'
-      API: '[{"id":"drone","name":"drone-test-node","http":"http://develop.dev.tezedge.com:18732","monitoring":"http://develop.dev.tezedge.com:38732/resources/tezedge","ws":"ws://develop.dev.tezedge.com:4927","p2p_port":"9732","features":["MONITORING", "RESOURCES", "MEMPOOL_ACTION", "STORAGE_BLOCK", "NETWORK_ACTION", "LOGS_ACTION"],"resources":["system","storage","memory"]}]'
+      API: '[{"id":"drone","name":"drone-test-node","http":"http://develop.dev.tezedge.com:18732","p2p_port":"9732","features": [{ "name": "ws", "url": "ws://develop.dev.tezedge.com:4927" },{ "name": "debugger", "url": "http://develop.dev.tezedge.com:17732" },{ "name": "sandbox", "url": "http://localhost:3030" },{ "name": "commit", "id": "develop" },{ "name": "monitoring" },{ "name": "resources/system", "monitoringUrl": "http://develop.dev.tezedge.com:38732/resources/tezedge" },{ "name": "resources/memory", "memoryProfilerUrl": "http://develop.dev.tezedge.com:17832" },{ "name": "resources/storage" },{ "name": "mempool" },{ "name": "storage" },{ "name": "network" },{ "name": "logs" }]}]'
 
   - name: test-app
     image: cypress/included:6.2.1
@@ -220,10 +217,7 @@ steps:
     detach: true
     privileged: true
     environment:
-      SANDBOX: 'http://develop.dev.tezedge.com:3030'
-      DEBUGGER: 'http://develop.dev.tezedge.com:17732'
-      MEMORYPROFILER: 'http://develop.dev.tezedge.com:17832'
-      API: '[{"id":"drone","name":"drone-test-node","http":"http://develop.dev.tezedge.com:18732","monitoring":"http://develop.dev.tezedge.com:38732/resources/tezedge","ws":"ws://develop.dev.tezedge.com:4927","p2p_port":"9732","features":["MONITORING", "RESOURCES", "MEMPOOL_ACTION", "STORAGE_BLOCK", "NETWORK_ACTION", "LOGS_ACTION"],"resources":["system","storage","memory"]}]'
+      API: '[{"id":"drone","name":"drone-test-node","http":"http://develop.dev.tezedge.com:18732","p2p_port":"9732","features": [{ "name": "ws", "url": "ws://develop.dev.tezedge.com:4927" },{ "name": "debugger", "url": "http://develop.dev.tezedge.com:17732" },{ "name": "sandbox", "url": "http://localhost:3030" },{ "name": "commit", "id": "develop" },{ "name": "monitoring" },{ "name": "resources/system", "monitoringUrl": "http://develop.dev.tezedge.com:38732/resources/tezedge" },{ "name": "resources/memory", "memoryProfilerUrl": "http://develop.dev.tezedge.com:17832" },{ "name": "resources/storage" },{ "name": "mempool" },{ "name": "storage" },{ "name": "network" },{ "name": "logs" }]}]'
 
   - name: test-app
     image: cypress/included:6.2.1

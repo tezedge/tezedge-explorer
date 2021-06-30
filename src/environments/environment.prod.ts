@@ -4,11 +4,7 @@
 
 export const environment = {
   production: true,
-  memoryProfiler: window['env']['memoryProfiler'] || false,
-  sandbox: window['env']['sandbox'] || false,
-  debugger: window['env']['debugger'] || false,
   api: window['env']['api'] || [],
-  commit: window['env']['commit'] || ''
   //   [
   //   // {
   //   //   id: 'localhost',

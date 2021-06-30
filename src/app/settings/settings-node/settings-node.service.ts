@@ -12,7 +12,7 @@ export class SettingsNodeService {
 
   constructor(private http: HttpClient) { }
 
-  getNodeFeatures(apiHttp: string, nodeId: string): Observable<string[]> {
+  getNodeFeatures(apiHttp: string, nodeId: string): Observable<any[]> {
     return of(environment.api.find(node => node.id === nodeId).features);
     // TODO: get features from backend, not from environment variables
     // this.http.get<SettingsNodeFeature[]>(apiHttp + '/pathToFeatures')

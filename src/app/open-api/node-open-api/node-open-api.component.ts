@@ -3,10 +3,10 @@ import { Component, OnInit } from '@angular/core';
 declare const SwaggerUIBundle: any;
 
 @Component({
-  selector: 'app-tezedge-open-api',
-  template: `<div id="tezedge-open-api"></div>`
+  selector: 'app-node-open-api',
+  template: `<div id="node-open-api"></div>`
 })
-export class TezedgeOpenApiComponent implements OnInit {
+export class NodeOpenApiComponent implements OnInit {
 
   ngOnInit(): void {
     this.initOpenAPI();
@@ -14,7 +14,7 @@ export class TezedgeOpenApiComponent implements OnInit {
 
   private initOpenAPI(): void {
     SwaggerUIBundle({
-      dom_id: '#tezedge-open-api',
+      dom_id: '#node-open-api',
       layout: 'BaseLayout',
       presets: [
         SwaggerUIBundle.presets.apis,

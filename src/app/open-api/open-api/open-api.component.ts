@@ -8,5 +8,5 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
 })
 export class OpenApiComponent {
 
-  readonly tabs = ['tezedge', 'debugger', 'protocol'];
+  readonly tabs = ['node'];
 }

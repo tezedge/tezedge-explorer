@@ -44,7 +44,7 @@ context('COMMIT NUMBER', () => {
                         cy.wait(1000);
                         cy.get('#nodeCommit')
                           .find('a')
-                          .should('have.attr', 'href', 'https://github.com/simplestaking/tezedge/commit/' + commitNumber.nodeCommit);
+                          .should('have.attr', 'href', 'https://github.com/tezedge/tezedge/commit/' + commitNumber.nodeCommit);
                       });
                   });
               });
@@ -89,7 +89,7 @@ context('COMMIT NUMBER', () => {
                           if (data.debuggerCommit) {
                             cy.get('#debuggerCommit')
                               .find('a')
-                              .should('have.attr', 'href', 'https://github.com/simplestaking/tezedge-debugger/commit/' + data.debuggerCommit);
+                              .should('have.attr', 'href', 'https://github.com/tezedge/tezedge-debugger/commit/' + data.debuggerCommit);
                           }
                         });
                     });
@@ -119,7 +119,7 @@ context('COMMIT NUMBER', () => {
                             cy.wait(1000);
                             cy.get('#explorerCommit')
                               .find('a')
-                              .should('have.attr', 'href', 'https://github.com/simplestaking/tezedge-explorer/commit/' + data.explorerCommit);
+                              .should('have.attr', 'href', 'https://github.com/tezedge/tezedge-explorer/commit/' + data.explorerCommit);
                           });
                       } else {
                         return true;

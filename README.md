@@ -30,7 +30,7 @@ npm i -g angular-cli
 
 ### 1. Clone the repo
 ```
-git clone https://github.com/simplestaking/tezedge-explorer.git
+git clone https://github.com/tezedge/tezedge-explorer.git
 cd tezedge-explorer
 ```
 

@@ -26,9 +26,9 @@ export class CommitNumberComponent implements OnInit {
 
   commitNumber$: Observable<CommitNumber>;
   githubRepositories = {
-    explorer: 'https://github.com/simplestaking/tezedge-explorer/commit/',
-    node: 'https://github.com/simplestaking/tezedge/commit/',
-    debugger: 'https://github.com/simplestaking/tezedge-debugger/commit/'
+    explorer: 'https://github.com/tezedge/tezedge-explorer/commit/',
+    node: 'https://github.com/tezedge/tezedge/commit/',
+    debugger: 'https://github.com/tezedge/tezedge-debugger/commit/'
   };
   hideComponent = false;
 

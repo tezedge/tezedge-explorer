@@ -46,9 +46,9 @@ export const environment = {
   //     ws: 'wss://sandbox.carthage.tezedge.com',
   //   },
   //   // {
-  //   //   id: 'ocaml-mainnet-simplestaking-com',
-  //   //   name: 'ocaml.mainnet.simplestaking.com',
-  //   //   http: 'https://mainnet.simplestaking.com:3000',
+  //   //   id: 'ocaml-mainnet-tezedge-com',
+  //   //   name: 'ocaml.mainnet.tezedge.com',
+  //   //   http: 'https://mainnet.tezedge.com:3000',
   //   //   debugger: false,
   //   //   ws: false,
   //   // }

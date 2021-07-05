@@ -1,10 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 
 declare const SwaggerUIBundle: any;
 
 @Component({
   selector: 'app-node-open-api',
-  template: `<div id="node-open-api"></div>`
+  template: `<div id="node-open-api"></div>`,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class NodeOpenApiComponent implements OnInit {
 

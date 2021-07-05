@@ -8,5 +8,5 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
 })
 export class OpenApiComponent {
 
-  readonly tabs = ['node'];
+  readonly tabs = ['node', 'memory profiler', 'network recorder'];
 }

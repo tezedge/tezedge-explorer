@@ -113,7 +113,6 @@ export function reducer(state: NetworkAction = initialState, action): NetworkAct
 }
 
 export function setDetails(action): NetworkActionDetails {
-  console.log( action);
   if (!action.payload) {
     return {};
   }

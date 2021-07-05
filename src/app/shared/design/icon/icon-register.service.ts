@@ -17,6 +17,8 @@ export class IconRegisterService {
     'cpp',
     'foreign-system',
     'fuzzing',
+    'local',
+    'remote',
   ];
 
   constructor(private iconRegistry: MatIconRegistry,

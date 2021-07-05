@@ -6,7 +6,7 @@
     <div fxLayoutAlign="start"
          fxLayoutGap="16px">
       <div *ngFor="let tab of tabs"
-           [routerLink]="'/open-api/' + tab"
+           [routerLink]="'/open-api/' + tab.replace(' ', '-')"
            routerLinkActive="selected"
            class="tab text-uppercase font-12 pointer">
         {{ tab }}

@@ -79,8 +79,7 @@
 
   .filters-row {
     display: flex;
-    padding: 5px 11px;
-    //height: 26px;
+    padding: 5px 10px;
   }
 
   button {
@@ -185,7 +184,7 @@
   height: calc(100vh - 154px);
 
   &.network-filters-expanded {
-    height: calc(100vh - 207px);
+    height: calc(100vh - 227px);
   }
 
   &.logs-filters-expanded {

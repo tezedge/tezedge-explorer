@@ -1,10 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 
 declare const SwaggerUIBundle: any;
 
 @Component({
   selector: 'app-protocol-open-api',
-  template: `<div id="protocol-open-api"></div>`
+  template: `<div id="protocol-open-api"></div>`,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ProtocolOpenApiComponent implements OnInit {
 
@@ -20,7 +21,7 @@ export class ProtocolOpenApiComponent implements OnInit {
         SwaggerUIBundle.presets.apis,
         SwaggerUIBundle.SwaggerUIStandalonePreset
       ],
-      url: 'https://raw.githubusercontent.com/mambisi/tezedge/rpc-open-api-spec/spec/tezedge-openapi.json',
+      url: 'https://raw.githubusercontent.com/tezedge/tezedge-debugger/develop/network-recorder-openapi.json',
       docExpansion: 'none',
       operationsSorter: 'alpha'
     });

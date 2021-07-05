@@ -27,7 +27,7 @@ trigger:
 ---
 
 kind: pipeline
-name: integration-tests-ci
+name: running-tests
 type: docker
 
 steps:
@@ -135,7 +135,7 @@ depends_on:
 ---
 
 kind: pipeline
-name: publishing-ci
+name: publish
 type: docker
 
 steps:
@@ -167,7 +167,7 @@ trigger:
   event: push
 
 depends_on:
-  - integration-tests-ci
+  - running-tests
 
 ---
 
@@ -207,7 +207,7 @@ trigger:
 ---
 
 kind: pipeline
-name: integration-tests-ci-master
+name: running-integration-tests
 type: docker
 
 steps:
@@ -316,7 +316,7 @@ depends_on:
 ---
 
 kind: pipeline
-name: publish-ci
+name: publishing
 type: docker
 
 steps:
@@ -378,4 +378,4 @@ trigger:
   event: tag
 
 depends_on:
-  - integration-tests-ci-master
+  - running-integration-tests

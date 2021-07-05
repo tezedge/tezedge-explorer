@@ -13,7 +13,7 @@ export class StorageResourcesEffects {
 
   @Effect()
   ResourcesCheckAvailableContextsEffect$ = this.actions$.pipe(
-    ofType(StorageResourcesActionTypes.CHECK_AVAILABLE_CONTEXTS),
+    ofType(StorageResourcesActionTypes.STORAGE_RESOURCES_CHECK_AVAILABLE_CONTEXTS),
     withLatestFrom(this.store, (action: any, state: ObservedValueOf<Store<State>>) => ({ action, state })),
     switchMap(({ action, state }) =>
       forkJoin(
@@ -23,20 +23,20 @@ export class StorageResourcesEffects {
       )
     ),
     switchMap(availableContexts => [
-      { type: StorageResourcesActionTypes.LOAD_RESOURCES, payload: availableContexts[0] },
-      { type: StorageResourcesActionTypes.MAP_AVAILABLE_CONTEXTS, payload: availableContexts }
+      { type: StorageResourcesActionTypes.STORAGE_RESOURCES_LOAD, payload: availableContexts[0] },
+      { type: StorageResourcesActionTypes.STORAGE_RESOURCES_MAP_AVAILABLE_CONTEXTS, payload: availableContexts }
     ])
   );
 
   @Effect()
   ResourcesLoadEffect$ = this.actions$.pipe(
-    ofType(StorageResourcesActionTypes.LOAD_RESOURCES),
+    ofType(StorageResourcesActionTypes.STORAGE_RESOURCES_LOAD),
     withLatestFrom(this.store, (action: any, state: ObservedValueOf<Store<State>>) => ({ action, state })),
     switchMap(({ action, state }) =>
       this.storageResourcesService.getStorageResources(state.settingsNode.activeNode.http, action.payload)
         .pipe(
           map((stats: StorageResourcesStats) => ({ type: StorageResourcesActionTypes.STORAGE_RESOURCES_LOAD_SUCCESS, payload: stats })),
-          catchError(error => of({ type: StorageResourcesActionTypes.RESOURCES_LOAD_ERROR, payload: error }))
+          catchError(error => of({ type: StorageResourcesActionTypes.STORAGE_RESOURCES_LOAD_ERROR, payload: error }))
         ))
   );
 

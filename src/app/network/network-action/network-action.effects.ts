@@ -84,12 +84,8 @@ export class NetworkActionEffects {
   @Effect()
   NetworkActionStartEffect$ = this.actions$.pipe(
     ofType('NETWORK_ACTION_START'),
-
-    // merge state
     withLatestFrom(this.store, (action: any, state: ObservedValueOf<Store<State>>) => ({action, state})),
-
     switchMap(({action, state}) =>
-      // get header data every second
       timer(0, 2000).pipe(
         takeUntil(networkActionDestroy$),
         switchMap(() => {
@@ -151,7 +147,7 @@ export class NetworkActionEffects {
 }
 
 export function setUrl(action, state) {
-  const url = `${state.settingsNode.debugger}/v2/p2p/?node_name=${state.settingsNode.activeNode.p2p_port}&`;
+  const url = `${state.settingsNode.activeNode.features.find(f => f.name === 'debugger').url}/v2/p2p/?node_name=${state.settingsNode.activeNode.p2p_port}&`;
   const cursor = networkActionCursor(action);
   const filters = networkActionFilter(action, state);
   const limit = networkActionLimit(action);
@@ -160,7 +156,7 @@ export function setUrl(action, state) {
 }
 
 export function setDetailsUrl(action, state) {
-  return `${state.settingsNode.debugger}/v2/p2p/${action.payload.originalId}`;
+  return `${state.settingsNode.activeNode.features.find(f => f.name === 'debugger').url}/v2/p2p/${action.payload.originalId}`;
 }
 
 // use limit to load just the necessary number of records

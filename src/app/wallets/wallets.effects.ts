@@ -8,9 +8,12 @@ import { of, Observable } from 'rxjs';
 import { initializeWallet, getWallet, transaction, confirmOperation } from 'tezos-wallet';
 import { environment } from 'src/environments/environment';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { State } from '../app.reducers';
 
 @Injectable()
 export class WalletsEffects {
+
+  sandbox = (state: State) => state.settingsNode.activeNode.features.find(f => f.name === 'sandbox').url;
 
     @Effect()
     WalletsListInit$ = this.actions$.pipe(
@@ -20,7 +23,7 @@ export class WalletsEffects {
         withLatestFrom(this.store, (action: any, state) => ({ action, state })),
 
         switchMap(({ action, state }) => {
-            return this.http.get(state.settingsNode.sandbox + '/wallets');
+            return this.http.get(this.sandbox(state) + '/wallets');
         }),
 
         // dispatch action
@@ -57,7 +60,7 @@ export class WalletsEffects {
                 node: {
                     display: 'Sandbox',
                     name: 'sandbox',
-                    // url: 'http://sandbox.dev.tezedge.com:18732', 
+                    // url: 'http://sandbox.dev.tezedge.com:18732',
                     url: state.settingsNode.activeNode.http,
                     tzstats: {
                         url: 'https://tzstats.com/',
@@ -70,9 +73,9 @@ export class WalletsEffects {
 
         // wait for animation to finish
         delay(500),
-    
+
         flatMap((state: any) => of([]).pipe(
-            // initialize 
+            // initialize
             initializeWallet(stateWallet => ({
                 publicKeyHash: state.detail.publicKeyHash,
                 node: state.node
@@ -117,7 +120,7 @@ export class WalletsEffects {
                 node: {
                     display: 'Sandbox',
                     name: 'sandbox',
-                    //url: 'http://sandbox.dev.tezedge.com:18732', 
+                    //url: 'http://sandbox.dev.tezedge.com:18732',
                     url: state.settingsNode.activeNode.http,
                     tzstats: {
                         url: 'https://tzstats.com/',
@@ -130,7 +133,7 @@ export class WalletsEffects {
                 path: undefined
             })),
 
-            // send xtz 
+            // send xtz
             transaction(stateWallet => ({
                 to: state.wallets.form.to,
                 amount: state.wallets.form.amount,
@@ -175,7 +178,7 @@ export class WalletsEffects {
     constructor(
         private http: HttpClient,
         private actions$: Actions,
-        private store: Store<any>,
+        private store: Store<State>,
         private router: Router,
         private zone: NgZone,
         private snackBar: MatSnackBar

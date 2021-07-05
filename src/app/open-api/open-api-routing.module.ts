@@ -1,9 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { OpenApiComponent } from './open-api/open-api.component';
-import { TezedgeOpenApiComponent } from './tezedge-open-api/tezedge-open-api.component';
-import { DebuggerOpenApiComponent } from './debugger-open-api/debugger-open-api.component';
-import { ProtocolOpenApiComponent } from './protocol-open-api/protocol-open-api.component';
+import { NodeOpenApiComponent } from './node-open-api/node-open-api.component';
 
 const routes: Routes = [
   {
@@ -11,21 +9,17 @@ const routes: Routes = [
     component: OpenApiComponent,
     children: [
       {
-        path: 'tezedge',
-        component: TezedgeOpenApiComponent,
-      },
-      {
-        path: 'debugger',
-        component: DebuggerOpenApiComponent,
-      },
-      {
-        path: 'protocol',
-        component: ProtocolOpenApiComponent,
+        path: 'node',
+        component: NodeOpenApiComponent,
       },
       {
         path: '**',
         pathMatch: 'full',
-        redirectTo: 'tezedge'
+        redirectTo: 'node'
+      },
+      {
+        path: '',
+        redirectTo: 'node'
       }
     ]
   }
@@ -35,4 +29,4 @@ const routes: Routes = [
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule]
 })
-export class OpenApiRoutingModule { }
+export class OpenApiRoutingModule {}

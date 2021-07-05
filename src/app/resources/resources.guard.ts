@@ -5,6 +5,7 @@ import { Store } from '@ngrx/store';
 import { State } from '../app.reducers';
 import { selectActiveNode } from '../settings/settings-node/settings-node.reducer';
 import { map } from 'rxjs/operators';
+import { SettingsNodeApi } from '../shared/types/settings-node/settings-node-api.type';
 
 @Injectable({
   providedIn: 'root'
@@ -17,7 +18,7 @@ export class ResourcesGuard implements CanActivate {
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
     return this.store.select(selectActiveNode).pipe(
-      map(node => node.resources.includes(route.url[0].path))
+      map((node: SettingsNodeApi) => node.features.some(f => f.name.includes(route.url[0].path)))
     );
   }
 

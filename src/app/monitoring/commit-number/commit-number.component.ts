@@ -1,19 +1,13 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  HostListener,
-  OnInit,
-  TemplateRef,
-  ViewChild,
-  ViewContainerRef
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, HostListener, OnInit, TemplateRef, ViewChild, ViewContainerRef } from '@angular/core';
 import { Observable } from 'rxjs';
-import { Store } from '@ngrx/store';
+import { select, Store } from '@ngrx/store';
 import { CommitNumber } from '../../shared/types/commit-number/commit-number.type';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { State } from '../../app.reducers';
 import { Overlay, OverlayRef } from '@angular/cdk/overlay';
 import { TemplatePortal } from '@angular/cdk/portal';
+import { selectActiveNode } from '../../settings/settings-node/settings-node.reducer';
+import { SettingsNodeApi } from '../../shared/types/settings-node/settings-node-api.type';
 
 @UntilDestroy()
 @Component({
@@ -25,7 +19,7 @@ import { TemplatePortal } from '@angular/cdk/portal';
 export class CommitNumberComponent implements OnInit {
 
   commitNumber$: Observable<CommitNumber>;
-  githubRepositories = {
+  readonly githubRepositories = {
     explorer: 'https://github.com/tezedge/tezedge-explorer/commit/',
     node: 'https://github.com/tezedge/tezedge/commit/',
     debugger: 'https://github.com/tezedge/tezedge-debugger/commit/'
@@ -54,6 +48,14 @@ export class CommitNumberComponent implements OnInit {
 
     this.commitNumber$ = this.store.select('commitNumber')
       .pipe(untilDestroyed(this));
+
+    this.store.pipe(
+      untilDestroyed(this),
+      select(selectActiveNode)
+    ).subscribe((activeNode: SettingsNodeApi) => {
+      const commit = activeNode.features.find(f => f.name === 'commit');
+      return this.store.dispatch({ type: 'VERSION_EXPLORER_LOAD', payload: commit ? commit.id : '' });
+    });
 
     // TODO: commitNumber for ocaml is not the same, find a solution
     this.store.select('settingsNode')

@@ -17,9 +17,12 @@ context('APP', () => {
           .then((store) => {
             store.select('settingsNode')
               .subscribe((data) => {
-                const features = data.activeNode.features.map(f => f.toLowerCase().replace('_', '-'));
-                features.forEach(feature => {
-                  cy.get(`#${feature}-trigger`).should('exist');
+                const possibleMenus = ['monitoring', 'mempool', 'storage', 'resources', 'network', 'logs'];
+
+                possibleMenus.forEach(menu => {
+                  if (data.activeNode.features.some(f => f.name.includes(menu))) {
+                    cy.get(`#${menu}-trigger`).should('exist');
+                  }
                 });
               });
           });

@@ -16,13 +16,15 @@ export class SystemResourcesEffects {
 
   @Effect()
   ResourcesLoadEffect$ = this.actions$.pipe(
-    ofType(SystemResourcesActionTypes.LoadResources),
+    ofType(SystemResourcesActionTypes.SYSTEM_RESOURCES_LOAD),
     withLatestFrom(this.store, (action: any, state: ObservedValueOf<Store<State>>) => ({ action, state })),
     switchMap(({ action, state }) => {
-      const resourcesData$ = this.resourcesService.getSystemResources(state.settingsNode.activeNode.monitoring, action.payload.isSmallDevice)
+      const endpoint = state.settingsNode.activeNode.features
+        .find(c => c.name === 'resources/system').monitoringUrl;
+      const resourcesData$ = this.resourcesService.getSystemResources(endpoint, action.payload.isSmallDevice)
         .pipe(
           map((resources: SystemResources) => ({
-            type: SystemResourcesActionTypes.ResourcesLoadSuccess,
+            type: SystemResourcesActionTypes.SYSTEM_RESOURCES_LOAD_SUCCESS,
             payload: resources
           })),
           catchError(error => of({ type: ErrorActionTypes.ADD_ERROR, payload: { title: 'System resources http error', message: error.message } }))
@@ -44,7 +46,7 @@ export class SystemResourcesEffects {
 
   @Effect({ dispatch: false })
   ResourcesCloseEffect$ = this.actions$.pipe(
-    ofType(SystemResourcesActionTypes.ResourcesClose),
+    ofType(SystemResourcesActionTypes.SYSTEM_RESOURCES_CLOSE),
     withLatestFrom(this.store, (action: any, state: ObservedValueOf<Store<State>>) => ({ action, state })),
     tap(({ action, state }) => {
       this.resourcesDestroy$.next();

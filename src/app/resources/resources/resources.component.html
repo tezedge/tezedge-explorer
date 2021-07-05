@@ -3,7 +3,7 @@
   <div fxFlexFill
        fxLayout="column"
        fxLayoutAlign="start stretch">
-    <div class="tabs border-bottom text-uppercase"
+    <div class="tabs border-bottom"
          fxFlex="40px"
          fxLayoutAlign="space-between center">
       <div fxLayoutAlign="start"
@@ -12,7 +12,7 @@
              [routerLink]="'/resources/' + tab.link"
              (click)="onTabChange()"
              routerLinkActive="selected"
-             class="tab font-12 pointer">
+             class="tab font-12 pointer text-uppercase">
           {{ tab.title }}
         </div>
       </div>

@@ -3,9 +3,33 @@ import { Actions, Effect, ofType } from '@ngrx/effects';
 import { HttpClient } from '@angular/common/http';
 import { Store } from '@ngrx/store';
 import { catchError, map, switchMap, withLatestFrom } from 'rxjs/operators';
+import { State } from '../../app.reducers';
 
 @Injectable()
 export class CommitNumberEffects {
+
+  @Effect()
+  ExplorerNodeLoad$ = this.actions$.pipe(
+    ofType('SETTINGS_NODE_LOAD_SUCCESS'),
+
+    // merge state
+    withLatestFrom(this.store, (action: any, state) => ({ action, state })),
+
+    switchMap(({ action, state }) => {
+      return this.http.get(setNodeCommitUrl(state));
+    }),
+
+    // dispatch action
+    map((payload) => ({ type: 'VERSION_NODE_LOAD_SUCCESS', payload })),
+    catchError((error, caught) => {
+      console.error(error);
+      this.store.dispatch({
+        type: 'VERSION_NODE_LOAD_ERROR',
+        payload: error
+      });
+      return caught;
+    })
+  );
 
   @Effect()
   VersionNodeLoad$ = this.actions$.pipe(
@@ -76,12 +100,9 @@ export class CommitNumberEffects {
     })
   );
 
-  constructor(
-    private http: HttpClient,
-    private actions$: Actions,
-    private store: Store<any>
-  ) {
-  }
+  constructor(private http: HttpClient,
+              private actions$: Actions,
+              private store: Store<State>) { }
 
 }
 
@@ -97,5 +118,5 @@ export function setNodeTagUrl(state) {
 }
 
 export function setDebuggerCommitUrl(state) {
-  return `${state.settingsNode.debugger}/v2/version/`;
+  return `${state.settingsNode.activeNode.features.find(f => f.name === 'debugger').url}/v2/version/`;
 }

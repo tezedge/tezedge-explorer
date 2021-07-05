@@ -16,6 +16,7 @@ export class IconRegisterService {
     'rust',
     'cpp',
     'foreign-system',
+    'fuzzing',
   ];
 
   constructor(private iconRegistry: MatIconRegistry,

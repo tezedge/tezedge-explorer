@@ -3,14 +3,12 @@ import { environment } from '../../../environments/environment';
 import { SettingsNode } from '../../shared/types/settings-node/settings-node.type';
 import { SettingsNodeEntityHeader } from '../../shared/types/settings-node/settings-node-entity-header.type';
 import { State } from '../../app.reducers';
+import { SettingsNodeApi } from '../../shared/types/settings-node/settings-node-api.type';
 
 const initialState: SettingsNode = {
   activeNode: null,
   ids: [],
   entities: {},
-  debugger: '',
-  memoryProfiler: '',
-  sandbox: ''
 };
 
 export function reducer(state: SettingsNode = initialState, action): SettingsNode {
@@ -29,18 +27,7 @@ export function reducer(state: SettingsNode = initialState, action): SettingsNod
             connected: 'pending'
           }
         }), {}),
-        memoryProfiler: environment.memoryProfiler,
-        debugger: environment.debugger,
-        sandbox: environment.sandbox
       };
-      if (!settingsNode.activeNode.resources) {
-        settingsNode.activeNode.resources = ['system', 'storage', 'memory'];
-      }
-      settingsNode.ids.forEach(id => {
-        if (!settingsNode.entities[id].resources) {
-          settingsNode.entities[id].resources = ['system', 'storage', 'memory'];
-        }
-      });
       return settingsNode as SettingsNode;
     }
 
@@ -144,4 +131,6 @@ export function reducer(state: SettingsNode = initialState, action): SettingsNod
   }
 }
 
-export const selectActiveNode = (state: State) => state.settingsNode.activeNode;
+export const selectActiveNode = (state: State): SettingsNodeApi => state.settingsNode.activeNode;
+
+export const selectFeatures = (state: State) => state.settingsNode.activeNode.features;

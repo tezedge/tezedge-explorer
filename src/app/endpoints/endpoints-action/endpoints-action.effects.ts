@@ -17,7 +17,7 @@ export class EndpointsActionEffects {
         withLatestFrom(this.store, (action: any, state: ObservedValueOf<State<Store>>) => ({ action, state })),
 
         switchMap(({ action, state }) => {
-            return this.http.get(state.settingsNode.activeNode.debugger + '/v2/rpc?limit=30' + action.payload);
+            return this.http.get(state.settingsNode.activeNode.features.find(f => f.name === 'debugger').url + '/v2/rpc?limit=30' + action.payload);
         }),
 
         map((payload) => ({ type: 'ENDPOINTS_ACTION_LOAD_SUCCESS', payload })),
@@ -46,7 +46,7 @@ export class EndpointsActionEffects {
             timer(0, 2000).pipe(
                 takeUntil(endpointsActionDestroy$),
                 switchMap(() =>
-                    this.http.get(state.settingsNode.activeNode.debugger + '/v2/rpc/?limit=30').pipe(
+                    this.http.get(state.settingsNode.activeNode.features.find(f => f.name === 'debugger').url + '/v2/rpc/?limit=30').pipe(
                         map(response => ({ type: 'ENDPOINTS_ACTION_START_SUCCESS', payload: response })),
                         catchError(error => of({ type: 'ENDPOINTS_ACTION_START_ERROR', payload: error })),
                     )

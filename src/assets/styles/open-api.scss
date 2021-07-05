@@ -1,6 +1,6 @@
 $white-7: rgba(255, 255, 255, 0.7);
 
-#tezedge-open-api,
+#node-open-api,
 #debugger-open-api,
 #protocol-open-api {
   .swagger-ui {
@@ -121,6 +121,7 @@ $white-7: rgba(255, 255, 255, 0.7);
     }
 
     button {
+      margin-bottom: 0;
       line-height: 1;
       display: flex;
 

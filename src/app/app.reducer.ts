@@ -1,4 +1,5 @@
 import { App } from './shared/types/app/app.type';
+import { State } from './app.reducers';
 
 const initialState: App = {
     initialized: false,
@@ -169,3 +170,5 @@ export function reducer(state: App = initialState, action): App {
     }
 
 }
+
+export const appState = (state: State) => state.app;

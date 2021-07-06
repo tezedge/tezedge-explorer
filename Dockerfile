@@ -34,11 +34,11 @@ COPY --from=BUILD_IMAGE /dist /usr/share/nginx/html
 ARG commit=local
 ENV COMMIT=$commit
 
-RUN cat /usr/share/nginx/html/assets/env.template.js
-RUN cat /usr/share/nginx/html/assets/env.js
-
 # When the container starts, replace the env.js with values from environment variables
 CMD ["/bin/sh",  "-c",  "envsubst < /usr/share/nginx/html/assets/env.template.js > /usr/share/nginx/html/assets/env.js && exec nginx -g 'daemon off;'"]
+
+RUN cat /usr/share/nginx/html/assets/env.template.js
+RUN cat /usr/share/nginx/html/assets/env.js
 
 # Example of how to run
 # docker run --env SANDBOX='https://carthage.tezedge.com:3030' --env API='[{"id":"master","name":"master.dev.tezedge","http":"http://master.dev.tezedge.com:18733","monitoring":"http://master.dev.tezedge.com:38733/resources/tezedge","debugger":"http://master.dev.tezedge.com:17733","ws":false,"features":["MONITORING", "RESOURCES", "MEMPOOL_ACTION", "STORAGE_BLOCK", "NETWORK_ACTION", "LOGS_ACTION"],"resources":["system","storage","memory"]}]'  -p 8080:80  tezedge-explorer:latest

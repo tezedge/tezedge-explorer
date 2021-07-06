@@ -19,10 +19,12 @@ context('APP', () => {
               .subscribe(nodeSettings => {
                 const possibleMenus = ['monitoring', 'mempool', 'storage', 'resources', 'network', 'logs'];
                 cy.log(JSON.stringify(nodeSettings.activeNode));
-                possibleMenus.forEach(menu => {
-                  if (nodeSettings.activeNode.features.some(f => f.name.includes(menu))) {
-                    cy.get(`#${menu}-trigger`).should('exist');
-                  }
+                cy.wait(2000).then(() => {
+                  possibleMenus.forEach(menu => {
+                    if (nodeSettings.activeNode.features.some(f => f.name.includes(menu))) {
+                      cy.get(`#${menu}-trigger`).should('be.visible');
+                    }
+                  });
                 });
               });
           });

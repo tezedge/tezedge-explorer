@@ -8,19 +8,19 @@ context('NETWORK', () => {
     cy.wait(1000);
   });
 
-  it('[NETWORK] perform network request successfully', () => {
+  it('[NETWORK] should perform network request successfully', () => {
     cy.wait(1000).then(() => {
       cy.get('@getNetworkRequest').its('response.statusCode').should('eq', 200);
     });
   });
 
-  it('[NETWORK] create rows for the virtual scroll table', () => {
+  it('[NETWORK] should create rows for the virtual scroll table', () => {
     cy.get('.virtual-scroll-container')
       .find('.virtualScrollRow')
-      .should('exist');
+      .should('be.visible');
   });
 
-  it('[NETWORK] change the value of the virtual scroll element when scrolling', () => {
+  it('[NETWORK] should change the value of the virtual scroll element when scrolling', () => {
     let beforeScrollValue;
 
     cy.wait(1000)
@@ -57,7 +57,7 @@ context('NETWORK', () => {
       });
   });
 
-  it('[NETWORK] fill the last row of the table with the last value received', () => {
+  it('[NETWORK] should fill the last row of the table with the last value received', () => {
     cy.wait(1000).then(() => {
       cy.get('.stop-stream').click();
 
@@ -81,7 +81,7 @@ context('NETWORK', () => {
     });
   });
 
-  it('[NETWORK] fill the right details part with the message of the clicked row - the second last record in our case', () => {
+  it('[NETWORK] should fill the right details part with the message of the clicked row - the second last record in our case', () => {
     cy.wait(1000)
       .then(() => {
         cy.get('.stop-stream')

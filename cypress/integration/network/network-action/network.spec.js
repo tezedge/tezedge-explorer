@@ -2,7 +2,7 @@ context('NETWORK', () => {
   beforeEach(() => {
     cy.visit(Cypress.config().baseUrl);
     cy.wait(1000);
-    cy.intercept('GET', '/v2/p2p*').as('getNetworkRequest');
+    cy.intercept('GET', '/v2/p2p?*').as('getNetworkRequest');
     cy.wait(1000);
     cy.visit(Cypress.config().baseUrl + '/#/network', { timeout: 10000 });
     cy.wait(1000);

@@ -34,6 +34,9 @@ COPY --from=BUILD_IMAGE /dist /usr/share/nginx/html
 ARG commit=local
 ENV COMMIT=$commit
 
+RUN cat /usr/share/nginx/html/assets/env.template.js
+RUN cat /usr/share/nginx/html/assets/env.js
+
 # When the container starts, replace the env.js with values from environment variables
 CMD ["/bin/sh",  "-c",  "envsubst < /usr/share/nginx/html/assets/env.template.js > /usr/share/nginx/html/assets/env.js && exec nginx -g 'daemon off;'"]
 

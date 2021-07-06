@@ -16,11 +16,11 @@ context('APP', () => {
           .its('store')
           .then((store) => {
             store.select('settingsNode')
-              .subscribe((data) => {
+              .subscribe(nodeSettings => {
                 const possibleMenus = ['monitoring', 'mempool', 'storage', 'resources', 'network', 'logs'];
-                cy.log(JSON.stringify(data.activeNode));
+                cy.log(JSON.stringify(nodeSettings.activeNode));
                 possibleMenus.forEach(menu => {
-                  if (data.activeNode.features.some(f => f.name.includes(menu))) {
+                  if (nodeSettings.activeNode.features.some(f => f.name.includes(menu))) {
                     cy.get(`#${menu}-trigger`).should('exist');
                   }
                 });

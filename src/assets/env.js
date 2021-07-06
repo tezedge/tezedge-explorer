@@ -3,8 +3,8 @@
 
   window['env']['api'] = [
     {
-      id: 'tezedge.carthage.tezedge.com',
-      name: 'tezedge.carthage.tezedge.com',
+      id: 'tezedge.master.dev.tezedge.com',
+      name: 'tezedge.master.dev.tezedge.com',
       http: 'https://master.dev.tezedge.com:8752',
       p2p_port: '9732',
       features: [

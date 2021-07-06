@@ -19,15 +19,15 @@ export class SystemResourcesEffects {
     ofType(SystemResourcesActionTypes.SYSTEM_RESOURCES_LOAD),
     withLatestFrom(this.store, (action: any, state: ObservedValueOf<Store<State>>) => ({ action, state })),
     switchMap(({ action, state }) => {
-      const endpoint = state.settingsNode.activeNode.features
+      const url = state.settingsNode.activeNode.features
         .find(c => c.name === 'resources/system').monitoringUrl;
-      const resourcesData$ = this.resourcesService.getSystemResources(endpoint, action.payload.isSmallDevice)
+      const resourcesData$ = this.resourcesService.getSystemResources(url, action.payload.isSmallDevice)
         .pipe(
           map((resources: SystemResources) => ({
             type: SystemResourcesActionTypes.SYSTEM_RESOURCES_LOAD_SUCCESS,
             payload: resources
           })),
-          catchError(error => of({ type: ErrorActionTypes.ADD_ERROR, payload: { title: 'System resources http error', message: error.message } }))
+          catchError(error => of({ type: ErrorActionTypes.ADD_ERROR, payload: { title: 'System resources error', message: error.message } }))
         );
 
       if (action.payload && action.payload.initialLoad) {

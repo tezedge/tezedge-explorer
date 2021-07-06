@@ -1,8 +1,8 @@
 $white-7: rgba(255, 255, 255, 0.7);
 
 #node-open-api,
-#debugger-open-api,
-#protocol-open-api {
+#memory-profiler-open-api,
+#network-recorder-open-api {
   .swagger-ui {
     color: $white-7;
     font-family: Roboto, "Helvetica Neue", sans-serif;
@@ -27,12 +27,90 @@ $white-7: rgba(255, 255, 255, 0.7);
       color: $white-7;
     }
 
+    .opblock-description p,
+    .parameters-col_description .renderedMarkdown,
+    .response-col_description .renderedMarkdown {
+      font-size: 12px;
+    }
+
+    .opblock .opblock-summary-path a span {
+      font-size: 12px;
+      color: rgba(255, 255, 255, 0.7);
+    }
+
+    .opblock .opblock-summary-method {
+      min-width: 59px;
+      padding: 7px 12px;
+      font-size: 12px;
+      font-weight: 400;
+    }
+
+    .opblock.opblock-patch {
+      border-color: rgba(50, 215, 75, 0.2);
+      background: unset;
+
+      .opblock-summary {
+        border-color: rgba(50, 215, 75, 0.2);
+      }
+
+      .opblock-summary-method {
+        background: rgba(50, 215, 75, 0.3);
+      }
+    }
+
+    .opblock.opblock-get {
+      border-color: rgba(10, 132, 255, 0.2);
+      background: unset;
+
+      .opblock-summary {
+        border-color: rgba(10, 132, 255, 0.2);
+      }
+
+      .opblock-summary-method {
+        background: rgba(10, 132, 255, 0.3);
+      }
+    }
+
+    .opblock.opblock-delete {
+      border-color: rgba(255, 69, 58, 0.2);
+      background: unset;
+
+      .opblock-summary {
+        border-color: rgba(255, 69, 58, 0.2);
+      }
+
+      .opblock-summary-method {
+        background: rgba(255, 69, 58, 0.3);
+      }
+    }
+
+    .opblock.opblock-post {
+      border-color: rgba(100, 210, 255, 0.2);
+      background: unset;
+
+      .opblock-summary {
+        border-color: rgba(100, 210, 255, 0.2);
+      }
+
+      .opblock-summary-method {
+        background: rgba(100, 210, 255, 0.3);
+      }
+    }
+
+    select {
+      font-weight: 400;
+    }
+
     h4 {
       font-weight: 400;
     }
 
     .parameter__name .required {
       font-weight: 300;
+    }
+
+    .response-control-media-type__accept-message {
+      font-size: 12px;
     }
 
     .information-container,
@@ -86,10 +164,66 @@ $white-7: rgba(255, 255, 255, 0.7);
       font-weight: 300;
     }
 
+    .btn.execute {
+      font-weight: 400;
+      background-color: rgba(10, 132, 255, 0.3);
+      border: unset;
+      padding: 8px 24px;
+      max-width: 100px;
+      margin-right: 20px;
+      border-radius: 4px;
+      align-items: center;
+    }
+
+    input, textarea, select {
+      background: #444 !important;
+      outline: unset !important;
+      border: unset !important;
+      color: $white-7;
+
+      &:disabled {
+        background: transparent !important;
+        border: 1px solid #444 !important;
+      }
+    }
+
     .opblock-tag-section {
+
+      .opblock-section-header {
+        background: #3F3F43;
+
+        h4 {
+          color: $white-7;
+        }
+
+        .opblock-title {
+          font-family: Roboto, "Helvetica Neue", sans-serif;
+
+          span::after {
+            display: none;
+          }
+        }
+
+        .try-out .btn {
+          box-shadow: unset;
+          background: rgba(255, 255, 255, 0.1);
+          border: unset;
+          color: $white-7;
+          line-height: initial;
+          font-weight: 400;
+          font-size: 12px;
+          padding: 7px 10px;
+
+          &:hover {
+            background: rgba(255, 255, 255, 0.25);
+          }
+        }
+      }
+
       .opblock-tag {
         transition: none;
         padding: 5px 20px 5px 10px;
+        height: 36px;
         margin-bottom: 0;
 
         &:hover {

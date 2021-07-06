@@ -3,11 +3,11 @@ import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 declare const SwaggerUIBundle: any;
 
 @Component({
-  selector: 'app-debugger-open-api',
-  template: `<div id="debugger-open-api"></div>`,
+  selector: 'app-memory-profiler-open-api',
+  template: `<div id="memory-profiler-open-api"></div>`,
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class DebuggerOpenApiComponent implements OnInit {
+export class MemoryProfilerOpenApiComponent implements OnInit {
 
   ngOnInit(): void {
     this.initOpenAPI();
@@ -15,7 +15,7 @@ export class DebuggerOpenApiComponent implements OnInit {
 
   private initOpenAPI(): void {
     SwaggerUIBundle({
-      dom_id: '#debugger-open-api',
+      dom_id: '#memory-profiler-open-api',
       layout: 'BaseLayout',
       presets: [
         SwaggerUIBundle.presets.apis,

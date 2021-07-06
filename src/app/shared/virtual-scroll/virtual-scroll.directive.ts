@@ -6,7 +6,6 @@ import {
 import {fromEvent, Subject, Observable, Subscription} from 'rxjs';
 import {debounceTime} from 'rxjs/operators';
 
-// tslint:disable-next-line: no-conflicting-lifecycle
 @Directive({
   selector: '[vsFor][vsForOf]'
 })
@@ -32,7 +31,7 @@ export class VirtualScrollDirective implements AfterViewInit, OnDestroy, OnChang
 
   private previousLastCursorId = 0;
 
-  private offsetScrollElements = 30;
+  private offsetScrollElements = 5;
 
   private $scroller: HTMLDivElement = document.createElement('div');
   private $viewport: HTMLElement;
@@ -108,10 +107,9 @@ export class VirtualScrollDirective implements AfterViewInit, OnDestroy, OnChang
     this.previousLastCursorId = this.vsForOf.lastCursorId;
     this.$viewport.scrollTop = this.virtualScrollItemsCount * this.itemHeight - this.viewportHeight;
     this.maximumScrollTop = this.$viewport.scrollTop;
-
   }
 
-  private onScroll(event) {
+  private onScroll(event): void {
     if (this.$viewport.scrollTop > this.maximumScrollTop) {
       this.$viewport.scrollTop = this.maximumScrollTop;
       event.stopPropagation();
@@ -133,7 +131,7 @@ export class VirtualScrollDirective implements AfterViewInit, OnDestroy, OnChang
 
   }
 
-  private preparePositionsAndCreateViewElements() {
+  private preparePositionsAndCreateViewElements(): void {
 
     if (!this.$viewport) {
       return;
@@ -209,7 +207,7 @@ export class VirtualScrollDirective implements AfterViewInit, OnDestroy, OnChang
     this.$scroller.style.height = `${this.virtualScrollHeight}px`;
   }
 
-  private renderViewportItems() {
+  private renderViewportItems(): void {
     for (let index = 0; index < this.embeddedViews.length; index++) {
       const virtualScrollPosition = this.scrollPositionStart + index;
 

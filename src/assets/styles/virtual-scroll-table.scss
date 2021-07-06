@@ -80,6 +80,27 @@
   .filters-row {
     display: flex;
     padding: 5px 10px;
+      button {
+        padding: 0 7px 0 10px;
+      }
+
+      .filters-label,
+      button {
+        height: 26px;
+        line-height: 26px;
+      }
+
+      .pre-icon {
+        margin-top: -7px;
+      }
+
+    &:first-child:not(:last-child) {
+      padding-bottom: 0;
+    }
+
+    &:last-child:not(:first-child) {
+      padding-top: 4px;
+    }
   }
 
   button {
@@ -91,7 +112,7 @@
     color: rgba(255, 255, 255, 1);
     margin-right: 4px;
     text-transform: capitalize;
-    border-radius: 16px;
+    border-radius: 4px;
     font-weight: 200;
     opacity: .4;
   }
@@ -184,11 +205,11 @@
   height: calc(100vh - 154px);
 
   &.network-filters-expanded {
-    height: calc(100vh - 227px);
+    height: calc(100vh - 221px);
   }
 
   &.logs-filters-expanded {
-    height: calc(100vh - 181px);
+    height: calc(100vh - 191px);
   }
 
   .virtual-scroll-container,
@@ -277,7 +298,7 @@
 
   .rectangle-button {
     width: 90px;
-    border-radius: 6px;
+    border-radius: 2px;
     font-weight: 300;
     font-size: 14px;
 
@@ -304,8 +325,6 @@
     &:hover {
       background-color: rgba(255, 255, 255, 0.2);
     }
-
-
   }
 
   [disabled] {

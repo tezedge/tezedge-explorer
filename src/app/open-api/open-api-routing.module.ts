@@ -1,9 +1,9 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { OpenApiComponent } from './open-api/open-api.component';
-import { DebuggerOpenApiComponent } from './debugger-open-api/debugger-open-api.component';
+import { MemoryProfilerOpenApiComponent } from './memory-profiler-open-api/memory-profiler-open-api.component';
 import { NodeOpenApiComponent } from './node-open-api/node-open-api.component';
-import { ProtocolOpenApiComponent } from './protocol-open-api/protocol-open-api.component';
+import { NetworkRecorderOpenApiComponent } from './network-recorder-open-api/network-recorder-open-api.component';
 
 const routes: Routes = [
   {
@@ -16,11 +16,11 @@ const routes: Routes = [
       },
       {
         path: 'memory-profiler',
-        component: DebuggerOpenApiComponent,
+        component: MemoryProfilerOpenApiComponent,
       },
       {
         path: 'network-recorder',
-        component: ProtocolOpenApiComponent,
+        component: NetworkRecorderOpenApiComponent,
       },
       {
         path: '**',

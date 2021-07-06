@@ -5,7 +5,7 @@ FROM node:latest AS BUILD_IMAGE
 WORKDIR /app
 
 # install angular cli
-RUN npm install -g @angular/cli@10.1.0
+RUN npm install -g @angular/cli@11.2.14
 
 # clone & install deps for repo
 ARG branch=develop
@@ -36,9 +36,6 @@ ENV COMMIT=$commit
 
 # When the container starts, replace the env.js with values from environment variables
 CMD ["/bin/sh",  "-c",  "envsubst < /usr/share/nginx/html/assets/env.template.js > /usr/share/nginx/html/assets/env.js && exec nginx -g 'daemon off;'"]
-
-RUN cat /usr/share/nginx/html/assets/env.template.js
-RUN cat /usr/share/nginx/html/assets/env.js
 
 # Example of how to run
 # docker run --env SANDBOX='https://carthage.tezedge.com:3030' --env API='[{"id":"master","name":"master.dev.tezedge","http":"http://master.dev.tezedge.com:18733","monitoring":"http://master.dev.tezedge.com:38733/resources/tezedge","debugger":"http://master.dev.tezedge.com:17733","ws":false,"features":["MONITORING", "RESOURCES", "MEMPOOL_ACTION", "STORAGE_BLOCK", "NETWORK_ACTION", "LOGS_ACTION"],"resources":["system","storage","memory"]}]'  -p 8080:80  tezedge-explorer:latest

@@ -7,6 +7,7 @@ import { StorageResourcesActionTypes } from './storage-resources.actions';
 import { State } from '../../app.reducers';
 import { StorageResourceService } from './storage-resource.service';
 import { StorageResourcesStats } from '../../shared/types/resources/storage/storage-resources-stats.type';
+import { ErrorActionTypes } from '../../shared/error-popup/error-popup.action';
 
 @Injectable({ providedIn: 'root' })
 export class StorageResourcesEffects {
@@ -25,7 +26,8 @@ export class StorageResourcesEffects {
     switchMap(availableContexts => [
       { type: StorageResourcesActionTypes.STORAGE_RESOURCES_LOAD, payload: availableContexts[0] },
       { type: StorageResourcesActionTypes.STORAGE_RESOURCES_MAP_AVAILABLE_CONTEXTS, payload: availableContexts }
-    ])
+    ]),
+    catchError(error => of({ type: ErrorActionTypes.ADD_ERROR, payload: { title: 'Storage resources error', message: error.message } }))
   );
 
   @Effect()
@@ -36,11 +38,10 @@ export class StorageResourcesEffects {
       this.storageResourcesService.getStorageResources(state.settingsNode.activeNode.http, action.payload)
         .pipe(
           map((stats: StorageResourcesStats) => ({ type: StorageResourcesActionTypes.STORAGE_RESOURCES_LOAD_SUCCESS, payload: stats })),
-          catchError(error => of({ type: StorageResourcesActionTypes.STORAGE_RESOURCES_LOAD_ERROR, payload: error }))
         ))
   );
 
   constructor(private storageResourcesService: StorageResourceService,
               private actions$: Actions,
-              private store: Store<any>) { }
+              private store: Store<State>) { }
 }

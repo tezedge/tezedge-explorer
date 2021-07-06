@@ -18,6 +18,8 @@ import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { MemoryResource } from '../../shared/types/resources/memory/memory-resource.type';
 import { MemoryResourcesActionTypes } from './memory-resources.actions';
 import { delay, filter } from 'rxjs/operators';
+import { memoryResources } from '../resources/resources.reducer';
+import { appState } from '../../app.reducer';
 
 @UntilDestroy()
 @Component({
@@ -54,10 +56,10 @@ export class MemoryResourcesComponent implements AfterViewInit, OnInit, OnDestro
               private treeMapFactory: TreeMapFactoryService) { }
 
   ngOnInit(): void {
-    this.store.dispatch({ type: MemoryResourcesActionTypes.LoadResources, payload: { reversed: false } });
+    this.store.dispatch({ type: MemoryResourcesActionTypes.MEMORY_RESOURCES_LOAD, payload: { reversed: false } });
     this.store.pipe(
       untilDestroyed(this),
-      select(state => state.app),
+      select(appState),
       filter(() => !!this.activeResource),
       delay(400)
     ).subscribe(() => this.createTreemap(this.activeResource));
@@ -66,7 +68,7 @@ export class MemoryResourcesComponent implements AfterViewInit, OnInit, OnDestro
   ngAfterViewInit(): void {
     this.store.pipe(
       untilDestroyed(this),
-      select(state => state.resources.memoryResources),
+      select(memoryResources),
       filter(Boolean)
     ).subscribe((resource: MemoryResource) => {
       this.breadcrumbs = [];
@@ -117,7 +119,7 @@ export class MemoryResourcesComponent implements AfterViewInit, OnInit, OnDestro
   }
 
   ngOnDestroy(): void {
-    this.store.dispatch({ type: MemoryResourcesActionTypes.ResourcesClose });
+    this.store.dispatch({ type: MemoryResourcesActionTypes.MEMORY_RESOURCES_CLOSE });
     this.removeD3Tooltip();
   }
 

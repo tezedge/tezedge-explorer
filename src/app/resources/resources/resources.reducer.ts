@@ -4,6 +4,7 @@ import { StorageResourcesActions, StorageResourcesActionTypes } from '../storage
 import { MemoryResource } from '../../shared/types/resources/memory/memory-resource.type';
 import { MemoryResourcesActions, MemoryResourcesActionTypes } from '../memory-resources/memory-resources.actions';
 import { StorageResourcesState } from '../../shared/types/resources/storage/storage-resources-state.type';
+import { State } from '../../app.reducers';
 
 export interface ResourcesState {
   systemResources: SystemResources;
@@ -19,7 +20,7 @@ const initialState: ResourcesState = {
 
 export function reducer(state: ResourcesState = initialState, action: SystemResourcesActions | StorageResourcesActions | MemoryResourcesActions): ResourcesState {
   switch (action.type) {
-    case SystemResourcesActionTypes.ResourcesLoadSuccess: {
+    case SystemResourcesActionTypes.SYSTEM_RESOURCES_LOAD_SUCCESS: {
       return {
         ...state,
         systemResources: { ...action.payload }
@@ -34,13 +35,13 @@ export function reducer(state: ResourcesState = initialState, action: SystemReso
         }
       };
     }
-    case MemoryResourcesActionTypes.ResourcesLoadSuccess: {
+    case MemoryResourcesActionTypes.MEMORY_RESOURCES_LOAD_SUCCESS: {
       return {
         ...state,
         memoryResources: action.payload
       };
     }
-    case StorageResourcesActionTypes.MAP_AVAILABLE_CONTEXTS: {
+    case StorageResourcesActionTypes.STORAGE_RESOURCES_MAP_AVAILABLE_CONTEXTS: {
       return {
         ...state,
         storageResourcesState: {
@@ -53,3 +54,7 @@ export function reducer(state: ResourcesState = initialState, action: SystemReso
       return state;
   }
 }
+
+export const systemResources = (state: State) =>  state.resources.systemResources;
+export const storageResources = (state: State) =>  state.resources.storageResourcesState;
+export const memoryResources = (state: State) =>  state.resources.memoryResources;

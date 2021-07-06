@@ -17,7 +17,7 @@ context('SETTINGS NODE', () => {
           .its('store')
           .then((store) => {
             store.select('settingsNode')
-              .subscribe((settingsNode) => {
+              .subscribe(settingsNode => {
                 if (Object.keys(settingsNode.entities).length <= 1
                   || settingsNode.activeNode.id === settingsNode.entities[settingsNode.ids[1]].id) {
                   // quit if there is only one node available
@@ -31,7 +31,7 @@ context('SETTINGS NODE', () => {
               });
             cy.wait(3000).then(() => {
               store.select('settingsNode')
-                .subscribe((settingsNode) => {
+                .subscribe(settingsNode => {
                   expect(settingsNode.activeNode.id).to.not.equal(initialActiveNodeId);
                 });
             });
@@ -46,7 +46,7 @@ context('SETTINGS NODE', () => {
           .its('store')
           .then((store) => {
             store.select('settingsNode')
-              .subscribe((settingsNode) => {
+              .subscribe(settingsNode => {
                 const featuresArrayIsNotEmpty = settingsNode.activeNode.features.length > 0;
                 cy.wrap(featuresArrayIsNotEmpty).should('eq', true);
               });
@@ -61,15 +61,15 @@ context('SETTINGS NODE', () => {
         cy.window()
           .its('store')
           .then((store) => {
-            let isNodeSwitchingAvailable = false;
+            let isOcamlSwitchingAvailable = false;
 
             store.select('settingsNode')
               .subscribe((settingsNode) => {
 
-                isNodeSwitchingAvailable = (settingsNode.ids.some(id => id.includes('ocaml'))
+                isOcamlSwitchingAvailable = (settingsNode.ids.some(id => id.includes('ocaml'))
                   && settingsNode.ids.length > 1
-                  && !settingsNode.entities[settingsNode.ids[0]].id.includes('ocaml'));
-                if (!isNodeSwitchingAvailable) {
+                  && !settingsNode.activeNode.id.includes('ocaml'));
+                if (!isOcamlSwitchingAvailable) {
                   // quit if ocaml is absent
                   return;
                 }
@@ -84,9 +84,9 @@ context('SETTINGS NODE', () => {
             cy.wait(4000).then(() => {
               store.select('settingsNode')
                 .subscribe(() => {
-                  if (isNodeSwitchingAvailable) {
+                  if (isOcamlSwitchingAvailable) {
                     cy.wait('@peers');
-                    cy.get('@peers.all').should('have.length', 6);
+                    cy.get('@peers.all').should('have.length', 7);
                   }
                 });
             });
@@ -102,37 +102,37 @@ context('SETTINGS NODE', () => {
         cy.window()
           .its('store')
           .then((store) => {
-            let isNodeSwitchingAvailable = false;
+            let isOcamlSwitchingAvailable = false;
 
-            store.select('settingsNode')
-              .subscribe((settingsNode) => {
+            store.select('settingsNode').subscribe((settingsNode) => {
 
-                isNodeSwitchingAvailable = (settingsNode.ids.some(id => id.includes('ocaml'))
-                  && settingsNode.ids.length > 1
-                  && !settingsNode.entities[settingsNode.ids[0]].id.includes('ocaml'));
-                if (!isNodeSwitchingAvailable) {
-                  // quit if ocaml is absent
-                  return;
-                }
+              isOcamlSwitchingAvailable = (settingsNode.ids.some(id => id.includes('ocaml'))
+                && settingsNode.ids.length > 1
+                && !settingsNode.activeNode.id.includes('ocaml'));
+              if (!isOcamlSwitchingAvailable) {
+                // quit if ocaml is absent
+                return;
+              }
 
-                if (!settingsNode.activeNode.id.includes('ocaml')) {
-                  cy.get('.settings-node-select').click();
-                  cy.wait(1000);
-                  cy.get('.settings-node-option').last().click();
-                  cy.wait(2000);
-                }
-              });
+              if (!settingsNode.activeNode.id.includes('ocaml')) {
+                cy.get('.settings-node-select').click();
+                cy.wait(1000);
+                cy.get('.settings-node-option').last().click();
+                cy.wait(2000);
+              }
+            });
+
 
             cy.wait(5000).then(() => {
-              store.select('settingsNode')
-                .subscribe(() => {
-                  if (isNodeSwitchingAvailable) {
-                    cy.visit(Cypress.config().baseUrl + '/#/resources/system', { timeout: 2000 });
-                    cy.wait(8000);
+              store.select('settingsNode').subscribe(() => {
+                if (isOcamlSwitchingAvailable) {
+                  cy.visit(Cypress.config().baseUrl + '/#/resources/system', { timeout: 2000 });
+                  cy.wait(7500).then(() => {
                     cy.wait('@peers');
-                    cy.get('@peers.all').should('have.length', 8);
-                  }
-                });
+                    cy.get('@peers.all').should('have.length', 10);
+                  });
+                }
+              });
             });
           });
       });

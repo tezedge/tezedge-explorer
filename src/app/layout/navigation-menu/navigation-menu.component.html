@@ -10,27 +10,26 @@
 
   <ng-container *ngIf="appFeatures$ | async as features">
     <div class="app-submenu"
-         *ngIf="features['MONITORING'] || features['RESOURCES']">
+         *ngIf="features['monitoring'] || haveResources">
       <div class="text-nowrap">MONITORING</div>
 
-      <a *ngIf="features['MONITORING']"
+      <a *ngIf="features['monitoring']"
          mat-list-item
          class="menu-item"
+         id="monitoring-trigger"
          routerLink="/monitoring"
          routerLinkActive="active"
          matTooltip="Synchronization"
          matTooltipPosition="right"
          [matTooltipDisabled]="!app.sidenav.collapsed"
-         id="monitoring-trigger"
-         (click)="closeMenu()"
-         [style.color]="app.sidenav.color">
+         (click)="closeMenu()">
       <span class="menu-content">
         <svg-icon icon="history"></svg-icon>
         <span class="text-nowrap">Synchronization</span>
       </span>
       </a>
 
-      <a *ngIf="features['RESOURCES']"
+      <a *ngIf="haveResources"
          mat-list-item
          class="menu-item"
          routerLink="/resources"
@@ -39,8 +38,7 @@
          matTooltip="Resources"
          matTooltipPosition="right"
          [matTooltipDisabled]="!app.sidenav.collapsed"
-         (click)="closeMenu()"
-         [style.color]="app.sidenav.color">
+         (click)="closeMenu()">
       <span class="menu-content">
         <svg-icon icon="resources"></svg-icon>
         <span class="text-nowrap">Resources</span>
@@ -49,93 +47,83 @@
 
     </div>
 
-    <div *ngIf="features['NETWORK_ACTION']
-           || features['STORAGE_BLOCK']
-           || features['MEMPOOL_ACTION']
-           || features['LOGS_ACTION']
-           || features['ENDPOINTS_ACTION']"
+    <div *ngIf="haveExplorer"
          class="app-submenu">
       <div class="text-nowrap">EXPLORER</div>
 
-      <a *ngIf="features['MEMPOOL_ACTION']"
+      <a *ngIf="features['mempool']"
          mat-list-item
          class="menu-item"
          routerLink="/mempool"
          routerLinkActive="active"
-         id="mempool-action-trigger"
+         id="mempool-trigger"
          matTooltip="Mempool"
          matTooltipPosition="right"
          [matTooltipDisabled]="!app.sidenav.collapsed"
-         (click)="closeMenu()"
-         [style.color]="app.sidenav.color">
+         (click)="closeMenu()">
       <span class="menu-content">
         <svg-icon icon="mempool"></svg-icon>
         <span class="text-nowrap">Mempool</span>
       </span>
       </a>
 
-      <a *ngIf="features['STORAGE_BLOCK']"
+      <a *ngIf="features['storage']"
          mat-list-item
          class="menu-item"
          routerLink="/storage"
          routerLinkActive="active"
-         id="storage-block-trigger"
+         id="storage-trigger"
          matTooltip="Storage"
          matTooltipPosition="right"
          [matTooltipDisabled]="!app.sidenav.collapsed"
-         (click)="closeMenu()"
-         [style.color]="app.sidenav.color">
+         (click)="closeMenu()">
       <span class="menu-content">
         <svg-icon icon="storage"></svg-icon>
         <span class="text-nowrap">Storage</span>
       </span>
       </a>
 
-      <a *ngIf="features['NETWORK_ACTION']"
+      <a *ngIf="features['network']"
          mat-list-item
          class="menu-item"
          routerLink="/network"
          routerLinkActive="active"
-         id="network-action-trigger"
+         id="network-trigger"
          matTooltip="Network"
          matTooltipPosition="right"
          [matTooltipDisabled]="!app.sidenav.collapsed"
-         (click)="closeMenu()"
-         [style.color]="app.sidenav.color">
+         (click)="closeMenu()">
       <span class="menu-content">
         <svg-icon icon="peer"></svg-icon>
         <span class="text-nowrap">Network</span>
       </span>
       </a>
-      <a *ngIf="features['ENDPOINTS_ACTION']"
+      <a *ngIf="features['endpoints']"
          mat-list-item
          class="menu-item"
          routerLink="/endpoints"
          routerLinkActive="active"
-         id="endpoints-action-trigger"
+         id="endpoints-trigger"
          matTooltip="Endpoints"
          matTooltipPosition="right"
          [matTooltipDisabled]="!app.sidenav.collapsed"
-         (click)="closeMenu()"
-         [style.color]="app.sidenav.color">
+         (click)="closeMenu()">
       <span class="menu-content">
         <svg-icon icon="endpoints"></svg-icon>
         <span class="text-nowrap">Endpoints</span>
       </span>
       </a>
 
-
-      <a *ngIf="features['LOGS_ACTION']"
+      <a *ngIf="features['logs']"
          mat-list-item
          class="menu-item"
          routerLink="/logs"
          routerLinkActive="active"
-         id="logs-action-trigger"
+         id="logs-trigger"
          matTooltip="Logs"
          matTooltipPosition="right"
          [matTooltipDisabled]="!app.sidenav.collapsed"
-         (click)="closeMenu()"
-         [style.color]="app.sidenav.color">
+         (click)="closeMenu()">
       <span class="menu-content">
         <svg-icon icon="logs"></svg-icon>
         <span class="text-nowrap">Logs</span>
@@ -178,10 +166,11 @@
     </div> -->
 
     <div class="app-submenu"
-         *ngIf="features['CHAINS'] || features['WALLETS'] || settingsNode.sandbox">
+         *ngIf="false && haveSandbox">
+      <!-- enable when we have sandbox working back -->
       <div class="text-nowrap">SANDBOX</div>
 
-      <a *ngIf="features['CHAINS']"
+      <a *ngIf="features['chains']"
          mat-list-item
          id="chains-trigger"
          class="menu-item"
@@ -190,15 +179,14 @@
          matTooltip="Chain"
          matTooltipPosition="right"
          [matTooltipDisabled]="!app.sidenav.collapsed"
-         rel="noreferrer"
-         [style.color]="app.sidenav.color">
+         rel="noreferrer">
       <span class="menu-content">
         <svg-icon icon="chain-settings"></svg-icon>
         <span class="text-nowrap">Chain</span>
       </span>
       </a>
 
-      <a *ngIf="features['WALLETS']"
+      <a *ngIf="features['wallets']"
          mat-list-item
          id="wallets-trigger"
          class="menu-item"
@@ -207,15 +195,14 @@
          matTooltip="Wallets"
          matTooltipPosition="right"
          [matTooltipDisabled]="!app.sidenav.collapsed"
-         rel="noreferrer"
-         [style.color]="app.sidenav.color">
+         rel="noreferrer">
       <span class="menu-content">
         <svg-icon icon="chain-wallets"></svg-icon>
         <span class="text-nowrap">Wallets</span>
       </span>
       </a>
 
-      <div class="sandbox-button" *ngIf="settingsNode.sandbox">
+      <div class="sandbox-button">
         <button mat-flat-button
                 (click)="addSandboxNode()"
                 id="menu-add-sandbox-node">
@@ -232,8 +219,38 @@
     </div>
 
     <div class="app-submenu">
-      <div class="text-nowrap">LEARN</div>
+      <div class="text-nowrap">DEVELOPMENT</div>
 
+      <a mat-list-item
+         class="menu-item"
+         routerLink="/open-api"
+         routerLinkActive="active"
+         matTooltip="Open API"
+         matTooltipPosition="right"
+         [matTooltipDisabled]="!app.sidenav.collapsed"
+         rel="noreferrer">
+      <span class="menu-content">
+        <svg-icon icon="swagger"></svg-icon>
+        <span class="text-nowrap">Open API</span>
+      </span>
+      </a>
+      <a mat-list-item
+         class="menu-item"
+         href="http://fuzz.tezedge.com"
+         target="_blank"
+         matTooltip="Fuzzing"
+         matTooltipPosition="right"
+         [matTooltipDisabled]="!app.sidenav.collapsed"
+         rel="noreferrer">
+      <span class="menu-content">
+        <mat-icon svgIcon="fuzzing" class="icon-18"></mat-icon>
+        <span class="text-nowrap">Fuzzing</span>
+      </span>
+      </a>
+    </div>
+
+    <div class="app-submenu">
+      <div class="text-nowrap">LEARN</div>
       <a mat-list-item
          class="menu-item"
          href="https://docs.tezedge.com"
@@ -241,25 +258,10 @@
          matTooltip="Documentation"
          matTooltipPosition="right"
          [matTooltipDisabled]="!app.sidenav.collapsed"
-         rel="noreferrer"
-         [style.color]="app.sidenav.color">
+         rel="noreferrer">
       <span class="menu-content">
         <svg-icon icon="documentation"></svg-icon>
         <span class="text-nowrap">Documentation</span>
-      </span>
-      </a>
-      <a mat-list-item
-         class="menu-item"
-         routerLink="/swagger"
-         routerLinkActive="active"
-         matTooltip="Swagger"
-         matTooltipPosition="right"
-         [matTooltipDisabled]="!app.sidenav.collapsed"
-         rel="noreferrer"
-         [style.color]="app.sidenav.color">
-      <span class="menu-content">
-        <svg-icon icon="swagger"></svg-icon>
-        <span class="text-nowrap">Swagger</span>
       </span>
       </a>
     </div>

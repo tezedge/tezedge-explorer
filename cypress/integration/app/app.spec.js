@@ -16,10 +16,15 @@ context('APP', () => {
           .its('store')
           .then((store) => {
             store.select('settingsNode')
-              .subscribe((data) => {
-                const features = data.activeNode.features.map(f => f.toLowerCase().replace('_', '-'));
-                features.forEach(feature => {
-                  cy.get(`#${feature}-trigger`).should('exist');
+              .subscribe(nodeSettings => {
+                const possibleMenus = ['monitoring', 'mempool', 'storage', 'resources', 'network', 'logs'];
+                cy.log(JSON.stringify(nodeSettings.activeNode));
+                cy.wait(2000).then(() => {
+                  possibleMenus.forEach(menu => {
+                    if (nodeSettings.activeNode.features.some(f => f.name.includes(menu))) {
+                      cy.get(`#${menu}-trigger`).should('be.visible');
+                    }
+                  });
                 });
               });
           });

@@ -1,17 +1,14 @@
 version: '3'
 services:
   tezedge-explorer:
-    image: simplestakingcom/tezedge-explorer:latest
+    image: tezedge/tezedge-explorer:latest
     build:
       context: .
       dockerfile: Dockerfile
     ports:
       - "8080:80"
     environment:
-      - SANDBOX=https://carthage.tezedge.com:3030
-      - DEBUGGER=http://master.dev.tezedge.com:17733
-      - MEMORYPROFILER=http://develop.dev.tezedge.com:17832
-      - API=[{"id":"rust","name":"rust.master.dev.tezedge","http":"http://master.dev.tezedge.com:18733","monitoring":"http://master.dev.tezedge.com:38733/resources/tezedge","ws":"ws://master.dev.tezedge.com:4927","p2p_port":"9732", "features":["MONITORING", "RESOURCES", "MEMPOOL_ACTION", "STORAGE_BLOCK", "NETWORK_ACTION", "LOGS_ACTION"],"resources":["system","storage","memory"]}]
+      - API=[{"id":"rust","name":"rust.master.dev.tezedge","http":"http://master.dev.tezedge.com:18732","p2p_port":"9732","features":[{"name":"ws","url":"ws://develop.dev.tezedge.com:4927"}, {"name":"debugger", "url":"http://develop.dev.tezedge.com:17732" },{ "name":"sandbox", "url":"http://localhost:3030" },{ "name":"commit", "id":"develop" },{ "name":"monitoring" },{ "name":"resources/system", "monitoringUrl":"http://develop.dev.tezedge.com:38732/resources/tezedge" },{ "name":"resources/memory", "memoryProfilerUrl":"http://develop.dev.tezedge.com:17832" },{ "name":"resources/storage" },{ "name":"mempool" },{ "name":"storage" },{ "name":"network" },{ "name":"logs"}]}]
     hostname: tezedge-explorer
     # network_mode: host
   cypress:

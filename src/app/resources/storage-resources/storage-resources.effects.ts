@@ -7,13 +7,14 @@ import { StorageResourcesActionTypes } from './storage-resources.actions';
 import { State } from '../../app.reducers';
 import { StorageResourceService } from './storage-resource.service';
 import { StorageResourcesStats } from '../../shared/types/resources/storage/storage-resources-stats.type';
+import { ErrorActionTypes } from '../../shared/error-popup/error-popup.action';
 
 @Injectable({ providedIn: 'root' })
 export class StorageResourcesEffects {
 
   @Effect()
   ResourcesCheckAvailableContextsEffect$ = this.actions$.pipe(
-    ofType(StorageResourcesActionTypes.CHECK_AVAILABLE_CONTEXTS),
+    ofType(StorageResourcesActionTypes.STORAGE_RESOURCES_CHECK_AVAILABLE_CONTEXTS),
     withLatestFrom(this.store, (action: any, state: ObservedValueOf<Store<State>>) => ({ action, state })),
     switchMap(({ action, state }) =>
       forkJoin(
@@ -23,24 +24,24 @@ export class StorageResourcesEffects {
       )
     ),
     switchMap(availableContexts => [
-      { type: StorageResourcesActionTypes.LOAD_RESOURCES, payload: availableContexts[0] },
-      { type: StorageResourcesActionTypes.MAP_AVAILABLE_CONTEXTS, payload: availableContexts }
-    ])
+      { type: StorageResourcesActionTypes.STORAGE_RESOURCES_LOAD, payload: availableContexts[0] },
+      { type: StorageResourcesActionTypes.STORAGE_RESOURCES_MAP_AVAILABLE_CONTEXTS, payload: availableContexts }
+    ]),
+    catchError(error => of({ type: ErrorActionTypes.ADD_ERROR, payload: { title: 'Storage resources error', message: error.message } }))
   );
 
   @Effect()
   ResourcesLoadEffect$ = this.actions$.pipe(
-    ofType(StorageResourcesActionTypes.LOAD_RESOURCES),
+    ofType(StorageResourcesActionTypes.STORAGE_RESOURCES_LOAD),
     withLatestFrom(this.store, (action: any, state: ObservedValueOf<Store<State>>) => ({ action, state })),
     switchMap(({ action, state }) =>
       this.storageResourcesService.getStorageResources(state.settingsNode.activeNode.http, action.payload)
         .pipe(
           map((stats: StorageResourcesStats) => ({ type: StorageResourcesActionTypes.STORAGE_RESOURCES_LOAD_SUCCESS, payload: stats })),
-          catchError(error => of({ type: StorageResourcesActionTypes.RESOURCES_LOAD_ERROR, payload: error }))
         ))
   );
 
   constructor(private storageResourcesService: StorageResourceService,
               private actions$: Actions,
-              private store: Store<any>) { }
+              private store: Store<State>) { }
 }

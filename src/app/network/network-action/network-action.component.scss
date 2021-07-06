@@ -1,10 +1,9 @@
+
 .network-action-container {
     display: flex;
     align-items: center;
-    // justify-content: center;
     flex-direction: column;
 }
-
 
 .network-action th.mat-header-cell.cdk-column-datetime.mat-column-datetime {
     text-overflow: ellipsis;
@@ -15,7 +14,6 @@
     padding: 20px;
     width: 140px;
 }
-
 
 .network-action th.mat-header-cell.cdk-column-address.mat-column-address {
     text-overflow: ellipsis;

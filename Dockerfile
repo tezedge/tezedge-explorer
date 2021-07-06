@@ -5,11 +5,11 @@ FROM node:latest AS BUILD_IMAGE
 WORKDIR /app
 
 # install angular cli
-RUN npm install -g @angular/cli@10.1.0
+RUN npm install -g @angular/cli@11.2.14
 
 # clone & install deps for repo
 ARG branch=develop
-ARG node_explorer_git="https://github.com/simplestaking/tezedge-explorer"
+ARG node_explorer_git="https://github.com/tezedge/tezedge-explorer"
 RUN git clone ${node_explorer_git} && \
     cd tezedge-explorer && \
     git checkout ${branch} && \

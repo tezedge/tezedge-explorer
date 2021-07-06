@@ -1,8 +1,7 @@
-import { environment } from '../../../environments/environment';
 import { CommitNumber } from '../../shared/types/commit-number/commit-number.type';
 
 const initialState: CommitNumber = {
-  explorerCommit: environment.commit,
+  explorerCommit: '',
   nodeCommit: '',
   debuggerCommit: '',
   nodeTag: ''
@@ -11,9 +10,15 @@ const initialState: CommitNumber = {
 export function reducer(state: CommitNumber = initialState, action): CommitNumber {
   switch (action.type) {
 
-    // initialize or reset state
     case 'VERSION_INIT': {
       return initialState;
+    }
+
+    case 'VERSION_EXPLORER_LOAD': {
+      return {
+        ...state,
+        explorerCommit: action.payload
+      };
     }
 
     case 'VERSION_NODE_LOAD_SUCCESS': {

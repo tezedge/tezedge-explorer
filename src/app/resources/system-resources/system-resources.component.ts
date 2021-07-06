@@ -7,6 +7,7 @@ import { BreakpointObserver } from '@angular/cdk/layout';
 import { delay, filter, skip } from 'rxjs/operators';
 import { SystemResourcesActionTypes } from './system-resources.actions';
 import { SystemResources } from '../../shared/types/resources/system/system-resources.type';
+import { systemResources } from '../resources/resources.reducer';
 
 export type ResourceType = 'cpu' | 'memory' | 'disk';
 
@@ -37,7 +38,6 @@ export class SystemResourcesComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.handleSmallDevices();
     this.listenToResourcesChange();
-    this.getResources();
   }
 
   toggleActiveSummary(value: ResourceType): void {
@@ -47,8 +47,8 @@ export class SystemResourcesComponent implements OnInit, OnDestroy {
   private listenToResourcesChange(): void {
     this.systemResources$ = this.store.pipe(
       untilDestroyed(this),
-      select(state => state.resources.systemResources),
-      filter(systemResources => !!systemResources),
+      select(systemResources),
+      filter(resources => !!resources),
     );
     this.store.pipe(
       untilDestroyed(this),
@@ -69,12 +69,12 @@ export class SystemResourcesComponent implements OnInit, OnDestroy {
 
   private getResources(): void {
     this.store.dispatch({
-      type: SystemResourcesActionTypes.LoadResources,
+      type: SystemResourcesActionTypes.SYSTEM_RESOURCES_LOAD,
       payload: { isSmallDevice: this.isSmallDevice }
     });
   }
 
   ngOnDestroy(): void {
-    this.store.dispatch({ type: SystemResourcesActionTypes.ResourcesClose });
+    this.store.dispatch({ type: SystemResourcesActionTypes.SYSTEM_RESOURCES_CLOSE });
   }
 }

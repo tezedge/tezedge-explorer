@@ -7,27 +7,32 @@ import { State } from '../../app.reducers';
 import { MemoryResourcesActionTypes } from './memory-resources.actions';
 import { MemoryResourcesService } from './memory-resources.service';
 import { MemoryResource } from '../../shared/types/resources/memory/memory-resource.type';
+import { ErrorActionTypes } from '../../shared/error-popup/error-popup.action';
 
 @Injectable({ providedIn: 'root' })
 export class MemoryResourcesEffects {
 
   @Effect()
   ResourcesLoadEffect$ = this.actions$.pipe(
-    ofType(MemoryResourcesActionTypes.LoadResources),
+    ofType(MemoryResourcesActionTypes.MEMORY_RESOURCES_LOAD),
     withLatestFrom(this.store, (action: any, state: ObservedValueOf<Store<State>>) => ({ action, state })),
     switchMap(({ action, state }) =>
-      this.resourcesService.getStorageResources(state.settingsNode.memoryProfiler, action.payload.reversed)
+      this.resourcesService
+        .getStorageResources(
+          state.settingsNode.activeNode.features.find(f => f.name === 'resources/memory').memoryProfilerUrl,
+          action.payload.reversed
+        )
         .pipe(
           map((resource: MemoryResource) => ({
-            type: MemoryResourcesActionTypes.ResourcesLoadSuccess,
+            type: MemoryResourcesActionTypes.MEMORY_RESOURCES_LOAD_SUCCESS,
             payload: resource
           })),
-          catchError(error => of({ type: MemoryResourcesActionTypes.ResourcesLoadError, payload: error }))
+          catchError(error => of({ type: ErrorActionTypes.ADD_ERROR, payload: { title: 'Memory resources error', message: error.message } }))
         )
     )
   );
 
   constructor(private resourcesService: MemoryResourcesService,
               private actions$: Actions,
-              private store: Store<any>) { }
+              private store: Store<State>) { }
 }

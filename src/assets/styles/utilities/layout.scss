@@ -38,6 +38,10 @@
   overflow-y: auto;
 }
 
+.overflow-y-scroll {
+  overflow-y: scroll;
+}
+
 .hidden {
   visibility: hidden !important;
 }

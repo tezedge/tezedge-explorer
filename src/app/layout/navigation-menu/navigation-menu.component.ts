@@ -7,6 +7,8 @@ import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { App } from '../../shared/types/app/app.type';
+import { selectFeatures } from '../../settings/settings-node/settings-node.reducer';
+import { appState } from '../../app.reducer';
 
 @UntilDestroy()
 @Component({
@@ -21,27 +23,32 @@ export class NavigationMenuComponent implements OnInit, AfterViewInit {
   settingsNode: SettingsNode;
   appFeatures$: Observable<{ [p: string]: string }>;
 
+  haveResources: boolean;
+  haveExplorer: boolean;
+  haveSandbox: boolean;
+
   constructor(private store: Store<State>,
               private router: Router) { }
 
   ngOnInit(): void {
-    this.store.select('app')
+    this.store.select(appState)
       .pipe(untilDestroyed(this))
       .subscribe(data => this.app = data);
 
     this.store.select('settingsNode')
       .pipe(untilDestroyed(this))
-      .subscribe(settingsNode => {
-        this.settingsNode = settingsNode;
-      });
+      .subscribe(settingsNode => this.settingsNode = settingsNode);
 
-    this.appFeatures$ = this.store.select('settingsNode')
+    this.appFeatures$ = this.store.select(selectFeatures)
       .pipe(
         untilDestroyed(this),
-        map((state: SettingsNode) => {
-          const response = {};
-          state.activeNode.features.forEach((feature: string) => response[feature] = feature);
-          return response;
+        map((featuresArray: any[]) => {
+          const features = {};
+          featuresArray.forEach(feature => features[feature.name] = feature);
+          this.haveResources = features['resources/system'] || features['resources/storage'] || features['resources/memory'];
+          this.haveExplorer = features['network'] || features['storage'] || features['mempool'] || features['logs'] || features['endpoints'];
+          this.haveSandbox = features['chains'] || features['wallets'] || features['sandbox'];
+          return features;
         }),
       );
   }

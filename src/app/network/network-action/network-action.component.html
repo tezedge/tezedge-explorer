@@ -10,7 +10,7 @@
         </button>
 
         <div class="filters-content">
-          <button class="active" *ngFor="let filter of activeFilters" mat-flat-button (click)=" filterType(filter)">
+          <button class="active" *ngFor="let filter of activeFilters" mat-flat-button (click)="filterType(filter)">
             {{filter}}
             <svg-icon icon="close" scale="0.8"></svg-icon>
           </button>
@@ -79,12 +79,12 @@
 
               <span class="filters-label source-filters-label">Source</span>
               <button mat-flat-button [class.active]="virtualScrollItems.filter.local || !activeFilters.length" (click)=" filterType('local')">
-                <svg-icon icon="local" scale="0.8"></svg-icon>
+                <mat-icon svgIcon="local" class="icon-14 pre-icon"></mat-icon>
                 Local
                 <svg-icon icon="close" scale="0.8"></svg-icon>
               </button>
               <button mat-flat-button [class.active]="virtualScrollItems.filter.remote || !activeFilters.length" (click)=" filterType('remote')">
-                <svg-icon icon="remote" scale="0.8"></svg-icon>
+                <mat-icon svgIcon="remote" class="icon-14 pre-icon"></mat-icon>
                 Remote
                 <svg-icon icon="close" scale="0.8"></svg-icon>
               </button>

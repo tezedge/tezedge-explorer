@@ -2,19 +2,22 @@ context('NETWORK', () => {
   beforeEach(() => {
     cy.visit(Cypress.config().baseUrl);
     cy.wait(1000);
-    cy.intercept('GET', '/v2/p2p?*').as('getNetworkRequest');
+    cy.intercept('GET', '/v2/p2p?node_name=*').as('getNetworkRequest');
     cy.wait(1000);
     cy.visit(Cypress.config().baseUrl + '/#/network', { timeout: 10000 });
     cy.wait(1000);
   });
 
   it('[NETWORK] perform network request successfully', () => {
-    cy.wait('@getNetworkRequest').its('response.statusCode').should('eq', 200);
+    cy.wait(1000).then(() => {
+      cy.get('@getNetworkRequest').its('response.statusCode').should('eq', 200);
+    });
   });
 
   it('[NETWORK] create rows for the virtual scroll table', () => {
     cy.get('.virtual-scroll-container')
-      .find('.virtualScrollRow');
+      .find('.virtualScrollRow')
+      .should('exist');
   });
 
   it('[NETWORK] change the value of the virtual scroll element when scrolling', () => {

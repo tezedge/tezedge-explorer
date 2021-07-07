@@ -13,14 +13,12 @@ export class ErrorPopupEffects {
   ClearErrorsEffect$ = this.actions$.pipe(
     ofType(ErrorActionTypes.SCHEDULE_ERROR_DELETION),
     withLatestFrom(this.store, (action: any, state: ObservedValueOf<Store<State>>) => ({ action, state })),
-    switchMap(({ action, state }) => {
-
-      return timer(0, 30000)
+    switchMap(({ action, state }) =>
+      timer(0, 30000)
         .pipe(
           skip(1),
           switchMap(() => of({ type: ErrorActionTypes.REMOVE_ERRORS }))
-        );
-    })
+        ))
   );
 
   constructor(private actions$: Actions,

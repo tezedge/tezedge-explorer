@@ -155,7 +155,7 @@ export class MonitoringEffects {
           if (data.type === 'blockApplicationStatus' && data.payload.lastAppliedBlock === null && wsCounter < 6) {
             this.store.dispatch({
               type: ErrorActionTypes.ADD_ERROR,
-              payload: { title: 'Websocket error', message: 'Block application status: "lastAppliedBlock" is null, shown values may be affected' }
+              payload: { title: 'Websocket error', message: 'Block application status: "lastAppliedBlock" is null, synchronization values may be affected' }
             });
           }
         })

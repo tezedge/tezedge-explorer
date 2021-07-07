@@ -1,66 +1,68 @@
-<div fxFlex="grow"
-     fxLayout="column"
-     fxLayout.gt-md="row-reverse"
-     fxLayoutAlign="start stretch"
-     class="resources-container"
-     *ngIf="systemResources$ | async as resource">
-  <div class="info-container"
-       fxFlex.gt-md="20vw"
-       fxLayout="column">
-    <div class="info-content-container"
-         fxFlex="grow"
-         fxLayout="column"
-         fxLayoutAlign="space-between">
-      <div class="additional-info"
-           [class.fade]="resource"
-           [style.transition-delay.s]="0.2">
-        <app-system-resources-summary [summaryBlocks]="resource.resourcesSummary[activeSummary]"
-                                      [time]="resource.resourcesSummary.timestamp"
-                                      [resourceType]="activeSummary"></app-system-resources-summary>
+<ng-container *ngIf="systemResources$ | async as resource">
+  <div fxFlex="grow"
+       fxLayout="column"
+       fxLayout.gt-md="row-reverse"
+       fxLayoutAlign="start stretch"
+       class="resources-container"
+       *ngIf="resource.cpu.length">
+    <div class="info-container"
+         fxFlex.gt-md="20vw"
+         fxLayout="column">
+      <div class="info-content-container"
+           fxFlex="grow"
+           fxLayout="column"
+           fxLayoutAlign="space-between">
+        <div class="additional-info"
+             [class.fade]="resource"
+             [style.transition-delay.s]="0.2">
+          <app-system-resources-summary [summaryBlocks]="resource.resourcesSummary[activeSummary]"
+                                        [time]="resource.resourcesSummary.timestamp"
+                                        [resourceType]="activeSummary"></app-system-resources-summary>
+        </div>
       </div>
     </div>
+    <div fxFlex.gt-md="calc(100% - 20vw)"
+         fxFlex.lt-lg="grow"
+         fxLayout="column"
+         fxLayoutAlign="start stretch"
+         fxLayoutGap="10px"
+         class="centered-container">
+
+      <app-system-resources-graph [chartData]="resource?.cpu"
+                                  [transitionDelay]="0.2"
+                                  [labelList]="resource.resourcesSummary.cpu"
+                                  [resourceType]="'cpu'"
+                                  [graphTitle]="'CPU'"
+                                  [rotatedLabel]="'Load'"
+                                  [yAxisTickFormatting]="yAxisPercentageConversion"
+                                  [xTicksValues]="resource.xTicksValues"
+                                  [colorScheme]="resource.colorScheme"
+                                  [formattingType]="'percentage'"
+                                  (graphHover)="toggleActiveSummary($event)"></app-system-resources-graph>
+
+      <app-system-resources-graph [chartData]="resource?.memory"
+                                  [transitionDelay]="0.4"
+                                  [labelList]="resource.resourcesSummary.memory"
+                                  [resourceType]="'memory'"
+                                  [graphTitle]="'RAM'"
+                                  [rotatedLabel]="'Usage'"
+                                  [yAxisTickFormatting]="yAxisMegaBytesConversion"
+                                  [xTicksValues]="resource.xTicksValues"
+                                  [colorScheme]="resource.colorScheme"
+                                  [formattingType]="'MB'"
+                                  (graphHover)="toggleActiveSummary($event)"></app-system-resources-graph>
+
+      <app-system-resources-graph [chartData]="resource?.disk"
+                                  [transitionDelay]="0.6"
+                                  [labelList]="resource.resourcesSummary.disk"
+                                  [resourceType]="'disk'"
+                                  [graphTitle]="'DISK'"
+                                  [rotatedLabel]="'Storage'"
+                                  [yAxisTickFormatting]="yAxisGigaBytesConversion"
+                                  [xTicksValues]="resource.xTicksValues"
+                                  [colorScheme]="resource.colorScheme"
+                                  (graphHover)="toggleActiveSummary($event)"></app-system-resources-graph>
+
+    </div>
   </div>
-  <div fxFlex.gt-md="calc(100% - 20vw)"
-       fxFlex.lt-lg="grow"
-       fxLayout="column"
-       fxLayoutAlign="start stretch"
-       fxLayoutGap="10px"
-       class="centered-container">
-
-    <app-system-resources-graph [chartData]="resource?.cpu"
-                                [transitionDelay]="0.2"
-                                [labelList]="resource.resourcesSummary.cpu"
-                                [resourceType]="'cpu'"
-                                [graphTitle]="'CPU'"
-                                [rotatedLabel]="'Load'"
-                                [yAxisTickFormatting]="yAxisPercentageConversion"
-                                [xTicksValues]="resource.xTicksValues"
-                                [colorScheme]="resource.colorScheme"
-                                [formattingType]="'percentage'"
-                                (graphHover)="toggleActiveSummary($event)"></app-system-resources-graph>
-
-    <app-system-resources-graph [chartData]="resource?.memory"
-                                [transitionDelay]="0.4"
-                                [labelList]="resource.resourcesSummary.memory"
-                                [resourceType]="'memory'"
-                                [graphTitle]="'RAM'"
-                                [rotatedLabel]="'Usage'"
-                                [yAxisTickFormatting]="yAxisMegaBytesConversion"
-                                [xTicksValues]="resource.xTicksValues"
-                                [colorScheme]="resource.colorScheme"
-                                [formattingType]="'MB'"
-                                (graphHover)="toggleActiveSummary($event)"></app-system-resources-graph>
-
-    <app-system-resources-graph [chartData]="resource?.disk"
-                                [transitionDelay]="0.6"
-                                [labelList]="resource.resourcesSummary.disk"
-                                [resourceType]="'disk'"
-                                [graphTitle]="'DISK'"
-                                [rotatedLabel]="'Storage'"
-                                [yAxisTickFormatting]="yAxisGigaBytesConversion"
-                                [xTicksValues]="resource.xTicksValues"
-                                [colorScheme]="resource.colorScheme"
-                                (graphHover)="toggleActiveSummary($event)"></app-system-resources-graph>
-
-  </div>
-</div>
+</ng-container>

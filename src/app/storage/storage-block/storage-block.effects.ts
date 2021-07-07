@@ -63,7 +63,7 @@ export class StorageBlockEffects {
       timer(0, 30000).pipe(
         takeUntil(this.storageBlockDestroy$),
         switchMap(() =>
-          this.http.get(setUrl(action, state)).pipe(
+          this.http.get(setUrl(action, state), { reportProgress: true }).pipe(
             map(response => ({ type: 'STORAGE_BLOCK_START_SUCCESS', payload: response })),
             catchError(error => of({ type: 'STORAGE_BLOCK_START_ERROR', payload: error }))
           )
@@ -114,7 +114,7 @@ export class StorageBlockEffects {
     switchMap(({ action, state }) => {
       return combineLatest(
         this.http.get(setDetailsUrl(action, state)),
-        this.storageBlockService.getStorageBlockContextDetails(state.settingsNode.activeNode.http, action.payload.hash, action.payload.context)
+        this.storageBlockService.getStorageBlockContextDetails(state.settingsNode.activeNode.http, action.payload.hash, action.payload.context),
       );
     }),
 

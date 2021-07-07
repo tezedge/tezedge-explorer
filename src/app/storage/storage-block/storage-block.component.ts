@@ -4,6 +4,8 @@ import { VirtualScrollDirective } from '../../shared/virtual-scroll/virtual-scro
 import { Router } from '@angular/router';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { StorageBlock } from '../../shared/types/storage/storage-block/storage-block.type';
+import { selectActiveNode } from '../../settings/settings-node/settings-node.reducer';
+import { State } from '../../app.reducers';
 
 @UntilDestroy()
 @Component({
@@ -21,16 +23,14 @@ export class StorageBlockComponent implements OnInit, OnDestroy {
   };
   virtualPageSize = 1000;
 
-
   @ViewChild(VirtualScrollDirective) vrFor: VirtualScrollDirective;
   @ViewChild('vsContainer') vsContainer: ElementRef<HTMLDivElement>;
 
-  constructor(
-    public store: Store<any>,
-    private changeDetector: ChangeDetectorRef,
-    private router: Router
-  ) {
-  }
+  private isStorageActionFeatureEnabled: boolean;
+
+  constructor(private store: Store<State>,
+              private changeDetector: ChangeDetectorRef,
+              private router: Router) { }
 
   ngOnInit() {
     this.store.dispatch({ type: 'STORAGE_BLOCK_RESET' });
@@ -47,6 +47,15 @@ export class StorageBlockComponent implements OnInit, OnDestroy {
         // }
 
         this.changeDetector.detectChanges();
+      });
+    this.listenToActiveNode();
+  }
+
+  private listenToActiveNode(): void {
+    this.store.select(selectActiveNode)
+      .pipe(untilDestroyed(this))
+      .subscribe(node => {
+        this.isStorageActionFeatureEnabled = node.features.some(f => f.name === 'storage-action');
       });
   }
 
@@ -153,7 +162,7 @@ export class StorageBlockComponent implements OnInit, OnDestroy {
   }
 
   goToStorageActions(hash): void {
-    if (!hash) {
+    if (!hash || !this.isStorageActionFeatureEnabled) {
       return;
     }
     this.router.navigate(['storage', hash]);

@@ -15,7 +15,6 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import { MatIconModule } from '@angular/material/icon';
 import { MatCheckboxModule } from '@angular/material/checkbox';
-import { MatTooltipModule } from '@angular/material/tooltip';
 import { SystemResourcesComponent } from './system-resources/system-resources.component';
 import { StorageResourcesOverviewComponent } from './storage-resources-overview/storage-resources-overview.component';
 
@@ -41,7 +40,6 @@ import { StorageResourcesOverviewComponent } from './storage-resources-overview/
     MatSelectModule,
     MatIconModule,
     MatCheckboxModule,
-    MatTooltipModule,
   ],
 })
 export class ResourcesModule {}

@@ -10,11 +10,12 @@
     <div class="storage-block-header text-gray"
          fxLayoutAlign="space-between center">
       CONTEXT CHECKOUT
-      <mat-icon (click)="getBlockDetails()"
-                svgIcon="arrow-around" class="icon-20 icon-white-4 pointer node-switcher"
-                [matTooltip]="'Current: ' + activeContextNode"
-                matTooltipPosition="left"
-                matTooltipShowDelay="600"></mat-icon>
+      <div class="d-flex align-center">
+        <span class="context">Current context: {{ activeContextNode }}</span>
+        <mat-icon (click)="getBlockDetails()"
+                  class="icon-20 icon-white-4 pointer node-switcher"
+                  svgIcon="arrow-around"></mat-icon>
+      </div>
     </div>
     <div fxLayoutAlign="start center"
          fxLayout="row"

@@ -28,7 +28,7 @@
       http: 'https://master.dev.tezedge.com:8742',
       p2p_port: '9733',
       features: [
-        { name: 'debugger', url: 'https://master.dev.tezedge.com:8743' },
+        { name: 'debugger', url: 'https://master.dev.tezedge.com:8753' },
         { name: 'sandbox', url: 'http://localhost:3030' },
         { name: 'monitoring' },
         { name: 'resources/system', monitoringUrl: 'https://master.dev.tezedge.com:8754/resources/ocaml' },

@@ -16,12 +16,6 @@
           {{ tab.title }}
         </div>
       </div>
-      <mat-icon *ngIf="activeRoute === 'storage' && displayContextSwitcher" (click)="getStorageStatistics()"
-                svgIcon="arrow-around" class="icon-20 icon-white-4 pointer node-switcher"
-                [matTooltip]="'Context: ' + storageResourcesContext"
-                matTooltipPosition="left"
-                matTooltipShowDelay="600"></mat-icon>
-      <div *ngIf="activeRoute === 'storage' && !displayContextSwitcher" class="text-white-4 font-12">Context: {{ storageResourcesContext }}</div>
       <mat-checkbox *ngIf="activeRoute === 'memory'"
                     disableRipple
                     class="reversed-checkbox text-white-7"

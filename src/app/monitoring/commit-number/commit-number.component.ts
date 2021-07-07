@@ -54,7 +54,10 @@ export class CommitNumberComponent implements OnInit {
       select(selectActiveNode)
     ).subscribe((activeNode: SettingsNodeApi) => {
       const commit = activeNode.features.find(f => f.name === 'commit');
-      return this.store.dispatch({ type: 'VERSION_EXPLORER_LOAD', payload: commit ? commit.id : '' });
+      this.store.dispatch({ type: 'VERSION_EXPLORER_LOAD', payload: commit ? commit.id : '' });
+      this.store.dispatch({ type: 'VERSION_NODE_TAG_LOAD' });
+      this.store.dispatch({ type: 'VERSION_NODE_LOAD' });
+      this.store.dispatch({ type: 'VERSION_DEBUGGER_LOAD' });
     });
 
     // TODO: commitNumber for ocaml is not the same, find a solution

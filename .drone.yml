@@ -124,9 +124,6 @@ trigger:
   event: push
 
 ---
-
-
-
 # when pushing on master these pipelines are executed
 
 kind: pipeline
@@ -263,9 +260,6 @@ steps:
     environment:
       FIREBASE_API_TOKEN:
         from_secret: FIREBASE_API_TOKEN
-    depends_on:
-      - cp-static
-      - publish
     commands:
       - firebase deploy --token=$${FIREBASE_API_TOKEN}
 

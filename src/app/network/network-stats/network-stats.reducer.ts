@@ -33,7 +33,7 @@ export function reducer(state: NetworkStats = initialState, action): NetworkStat
                 ...state,
                 currentApplicationSpeed: action.payload.currentApplicationSpeed,
                 averageApplicationSpeed: action.payload.averageApplicationSpeed,
-                lastAppliedBlock: action.payload.lastAppliedBlock ? action.payload.lastAppliedBlock : state.lastAppliedBlock,
+                lastAppliedBlock: action.payload.lastAppliedBlock ?? state.lastAppliedBlock,
                 etaApplications: action.payload.currentApplicationSpeed !== 0
                   ? getETA((state.currentBlockCount - state.lastAppliedBlock.level) / action.payload.currentApplicationSpeed * 60)
                   : 'Infinity'

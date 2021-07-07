@@ -155,7 +155,7 @@ export class MonitoringEffects {
           if (data.type === 'blockApplicationStatus' && data.payload.lastAppliedBlock === null && wsCounter < 6) {
             this.store.dispatch({
               type: ErrorActionTypes.ADD_ERROR,
-              payload: { title: 'Websocket error', message: 'Block application status: "lastAppliedBlock" is null, shown values may be affected' }
+              payload: { title: 'Websocket error', message: 'Block application status: "lastAppliedBlock" is null, synchronization values may be affected' }
             });
           }
         })
@@ -165,12 +165,11 @@ export class MonitoringEffects {
     // TODO: handle errors
     // dispatch action from ws
     map((data) => ({ ...data })),
-
     catchError((error, caught) => {
       console.error(error);
       this.store.dispatch({
-        type: 'NETWORK_WEBSOCKET_ERROR',
-        payload: error,
+        type: ErrorActionTypes.ADD_ERROR,
+        payload: { title: 'Websocket error', message: 'Connection failed' }
       });
       return caught;
     })
@@ -182,6 +181,7 @@ export class MonitoringEffects {
     private store: Store<State>,
     private router: Router,
     private settingsNodeService: SettingsNodeService,
-  ) { }
+  ) {
+  }
 
 }

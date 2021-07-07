@@ -14,7 +14,9 @@ export function reducer(state: ErrorState = initialState, action: ErrorActions):
   switch (action.type) {
     case ErrorActionTypes.ADD_ERROR: {
       return {
-        errors: [...state.errors, action.payload]
+        errors: state.errors.findIndex(err => err.title === action.payload.title && err.message === action.payload.message) !== -1
+          ? state.errors
+          : [...state.errors, action.payload]
       };
     }
     case ErrorActionTypes.REMOVE_ERRORS: {

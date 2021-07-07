@@ -15,7 +15,7 @@ export class StorageResourceService {
               private replacePipe: ReplaceCharacterPipe) { }
 
   getStorageResources(api: string, contextName: string): Observable<StorageResourcesStats> {
-    return this.http.get<StorageResourcesStats>(`${api}/stats/context`, { params: { context_name: contextName } })
+    return this.http.get<StorageResourcesStats>(`${api}/stats/context`, { params: { context_name: contextName }, reportProgress: true })
       .pipe(map(response => this.mapStorageResourcesResponse(response)));
   }
 

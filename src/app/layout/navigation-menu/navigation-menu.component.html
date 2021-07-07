@@ -129,6 +129,22 @@
         <span class="text-nowrap">Logs</span>
       </span>
       </a>
+
+<!--      <a *ngIf="features['state']"-->
+<!--         mat-list-item-->
+<!--         class="menu-item"-->
+<!--         routerLink="/state"-->
+<!--         routerLinkActive="active"-->
+<!--         id="state-trigger"-->
+<!--         matTooltip="State"-->
+<!--         matTooltipPosition="right"-->
+<!--         [matTooltipDisabled]="!app.sidenav.collapsed"-->
+<!--         (click)="closeMenu()">-->
+<!--      <span class="menu-content">-->
+<!--        <svg-icon icon="logs"></svg-icon>-->
+<!--        <span class="text-nowrap">State</span>-->
+<!--      </span>-->
+<!--      </a>-->
     </div>
 
     <!-- <div class="app-submenu">
@@ -210,7 +226,7 @@
         </button>
       </div>
 
-      <div>
+      <div *ngIf="settingsNode">
         <button mat-flat-button (click)="stopSandboxNode();"
                 *ngIf="settingsNode.entities['sandbox-carthage-tezedge']?.connected === true">
           {{ app.sidenav.collapsed ? '+' : 'STOP SANDBOX NODE' }}
@@ -266,6 +282,6 @@
       </a>
     </div>
 
-    <app-commit-number class="app-github-version"></app-commit-number>
+    <app-commit-number *ngIf="haveDebugger" class="app-github-version"></app-commit-number>
   </ng-container>
 </div>

@@ -47,6 +47,13 @@ steps:
     environment:
       CYPRESS_baseUrl: http://frontend-server:80
 
+  - name: test-open-api
+    image: cypress/included:6.2.1
+    commands:
+      - cypress run --spec "cypress/integration/open-api/open-api.spec.js"
+    environment:
+      CYPRESS_baseUrl: http://frontend-server:80
+
   - name: test-system-resources
     image: cypress/included:6.2.1
     commands:
@@ -68,6 +75,13 @@ steps:
     environment:
       CYPRESS_baseUrl: http://frontend-server:80
 
+  - name: test-routing
+    image: cypress/included:6.2.1
+    commands:
+      - cypress run --spec "cypress/integration/routing/routing.spec.js"
+    environment:
+      CYPRESS_baseUrl: http://frontend-server:80
+
   - name: test-sandbox
     image: cypress/included:6.2.1
     commands:
@@ -79,6 +93,13 @@ steps:
     image: cypress/included:6.2.1
     commands:
       - cypress run --spec "cypress/integration/settings-node/settings-node.spec.js"
+    environment:
+      CYPRESS_baseUrl: http://frontend-server:80
+
+  - name: test-progress-bar
+    image: cypress/included:6.2.1
+    commands:
+      - cypress run --spec "cypress/integration/shared/progress-bar.spec.js"
     environment:
       CYPRESS_baseUrl: http://frontend-server:80
 
@@ -175,6 +196,13 @@ steps:
     environment:
       CYPRESS_baseUrl: http://frontend-server:80
 
+  - name: test-open-api
+    image: cypress/included:6.2.1
+    commands:
+      - cypress run --spec "cypress/integration/open-api/open-api.spec.js"
+    environment:
+      CYPRESS_baseUrl: http://frontend-server:80
+
   - name: test-system-resources
     image: cypress/included:6.2.1
     commands:
@@ -196,6 +224,13 @@ steps:
     environment:
       CYPRESS_baseUrl: http://frontend-server:80
 
+  - name: test-routing
+    image: cypress/included:6.2.1
+    commands:
+      - cypress run --spec "cypress/integration/routing/routing.spec.js"
+    environment:
+      CYPRESS_baseUrl: http://frontend-server:80
+
   - name: test-sandbox
     image: cypress/included:6.2.1
     commands:
@@ -207,6 +242,13 @@ steps:
     image: cypress/included:6.2.1
     commands:
       - cypress run --spec "cypress/integration/settings-node/settings-node.spec.js"
+    environment:
+      CYPRESS_baseUrl: http://frontend-server:80
+
+  - name: test-progress-bar
+    image: cypress/included:6.2.1
+    commands:
+      - cypress run --spec "cypress/integration/shared/progress-bar.spec.js"
     environment:
       CYPRESS_baseUrl: http://frontend-server:80
 

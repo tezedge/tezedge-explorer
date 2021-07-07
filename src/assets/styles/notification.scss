@@ -3,6 +3,10 @@
 .notifier__notification--material {
   padding: 0;
   max-width: 400px;
+
+  @media (max-width: 600px) {
+    max-width: 70vw;
+  }
 }
 
 .notifier__notification--error {

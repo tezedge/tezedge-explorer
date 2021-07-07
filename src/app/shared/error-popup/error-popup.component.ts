@@ -22,8 +22,12 @@ export class ErrorPopupComponent implements OnInit {
 
   ngOnInit(): void {
     this.store.dispatch({ type: ErrorActionTypes.SCHEDULE_ERROR_DELETION });
+    this.listenToErrorEvents();
+  }
+
+  private listenToErrorEvents(): void {
     this.store.select(selectErrors).subscribe((errors: HttpError[]) => {
-      errors.forEach(error => {
+      errors.filter(() => !document.hidden).forEach(error => {
         this.notifierService.show({
           type: 'error',
           title: error.title,
@@ -33,5 +37,4 @@ export class ErrorPopupComponent implements OnInit {
       });
     });
   }
-
 }

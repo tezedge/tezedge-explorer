@@ -11,37 +11,29 @@ import { RouterStateUrl } from './app.routing';
 //   const logrocketMiddleware = createNgrxMiddleware(LogRocket);
 // meta reducer for dynamic forms
 import * as fromNgrxForm from './shared/ngrx-form.reducer';
-
-
 import * as fromApp from './app.reducer';
 import * as fromSettingsNode from './settings/settings-node/settings-node.reducer';
-
 import * as fromMonitoring from './monitoring/monitoring.reducer';
-
 import * as fromMempoolAction from './mempool/mempool-action/mempool-action.reducer';
-
 import * as fromNetworkAction from './network/network-action/network-action.reducer';
 import * as fromNetworkPeers from './network/network-peers/network-peers.reducer';
 import * as fromNetworkStats from './network/network-stats/network-stats.reducer';
 import * as fromNetworkHistory from './network/network-history/network-history.reducer';
-
 import * as fromEndpointsAction from './endpoints/endpoints-action/endpoints-action.reducer';
-
 import * as fromChainServer from './chain/chain-server/chain-server.reducer';
 import * as fromChainWallets from './chain/chain-wallets/chain-wallets.reducer';
 import * as fromChainConfig from './chain/chain-config/chain-config.reducer';
 import * as fromChainFinish from './chain/chain-finish/chain-finish.reducer';
-
 import * as fromLogsAction from './logs/logs-action/logs-action.reducer';
-
 import * as fromStorageBlock from './storage/storage-block/storage-block.reducer';
 import * as fromStorageAction from './storage/storage-action/storage-action.reducer';
-
 import * as fromSandbox from './sandbox/sandbox.reducer';
 import * as fromWallets from './wallets/wallets.reducer';
 import * as fromVersion from './monitoring/commit-number/commit-number.reducer';
 import * as fromResource from './resources/resources/resources.reducer';
+import { ResourcesState } from './resources/resources/resources.reducer';
 import * as fromError from './shared/error-popup/error-popup.reducer';
+import { ErrorState } from './shared/error-popup/error-popup.reducer';
 
 import { SettingsNode } from './shared/types/settings-node/settings-node.type';
 import { NetworkStats } from './shared/types/network/network-stats.type';
@@ -53,8 +45,6 @@ import { Monitoring } from './shared/types/monitoring/monitoring.type';
 import { LogsAction } from './shared/types/logs/logs-action.type';
 import { StorageBlock } from './shared/types/storage/storage-block/storage-block.type';
 import { CommitNumber } from './shared/types/commit-number/commit-number.type';
-import { ResourcesState } from './resources/resources/resources.reducer';
-import { ErrorState } from './shared/error-popup/error-popup.reducer';
 
 export interface State {
   app: App;

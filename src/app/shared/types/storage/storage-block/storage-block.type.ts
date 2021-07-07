@@ -10,6 +10,7 @@ export class StorageBlock {
   stream: boolean;
   selected: StorageBlockSelection;
   blockDetails: StorageBlockDetails;
+  availableContexts: string[];
   activePage: VirtualScrollActivePage;
   pages: number[];
 }

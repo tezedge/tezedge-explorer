@@ -93,14 +93,13 @@ context('NETWORK', () => {
           .its('store')
           .then((store) => {
             store.subscribe(data => {
-              if (!data.settingsNode.activeNode.id.includes('ocaml')) {
+              if (data.settingsNode.activeNode.type !== 'octez') {
                 store.select('networkAction')
                   .subscribe((data) => {
                     if (!data.stream) {
                       cy.get('.virtual-scroll-container .virtualScrollRow.used')
                         .eq(-2).trigger('click');
                       cy.get('.ngx-json-viewer').should('be.visible');
-
                     } else {
                       cy.get('.stop-stream').click();
                     }

@@ -77,6 +77,7 @@ function getETA(eta: number): string {
     const hours = Math.floor((eta / 3600) % 24);
     const minutes = Math.floor((eta / 60) % 60);
     const seconds = Math.floor(eta % 60);
+
     return numberOrSpace(days, 'd ')
       + numberOrSpace(hours, 'h ', days > 0)
       + numberOrSpace(minutes, 'm ', days > 0 || hours > 0)
@@ -84,7 +85,7 @@ function getETA(eta: number): string {
 }
 
 function numberOrSpace(value: number, mu: string, canBeZero?: boolean): string {
-    return value >= 1 || (value < 1 && canBeZero)
+    return (value >= 1 && value !== Infinity) || (value < 1 && canBeZero)
       ? (value > 9 ? value + mu : `0${value}${mu}`)
       : '';
 }

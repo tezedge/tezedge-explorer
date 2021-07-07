@@ -1,5 +1,6 @@
 export class SettingsNodeApi {
   id: string;
+  type: 'tezedge' | 'octez';
   name: string;
   http: string;
   debugger: string;

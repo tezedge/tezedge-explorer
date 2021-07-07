@@ -26,10 +26,11 @@ export class StorageBlockDetailsComponent implements OnChanges, OnDestroy {
 
   @Input() block: StorageBlockDetails;
   @Input() blockHash: string;
+  @Input() availableContexts: string[];
 
   @ViewChild('tooltipTemplate') private tooltipTemplate: TemplateRef<any>;
 
-  activeContextNode: 'tezedge' | 'irmin';
+  activeContextNode: string;
 
   private overlayRef: OverlayRef;
 
@@ -39,11 +40,11 @@ export class StorageBlockDetailsComponent implements OnChanges, OnDestroy {
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.blockHash && changes.blockHash.previousValue !== changes.blockHash.currentValue) {
-      this.activeContextNode = 'tezedge';
+      this.activeContextNode = this.availableContexts[0];
     }
   }
 
-  getBlockDetails(): void {
+  switchContext(): void {
     this.activeContextNode = this.activeContextNode === 'tezedge' ? 'irmin' : 'tezedge';
 
     this.store.dispatch({

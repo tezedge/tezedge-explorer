@@ -61,7 +61,8 @@
       <div class="action-table-detail" id="virtualScrollTableDetails">
         <app-storage-block-details *ngIf="virtualScrollItems.selected"
                                    [block]="virtualScrollItems.blockDetails"
-                                   [blockHash]="virtualScrollItems.selected.hash"></app-storage-block-details>
+                                   [blockHash]="virtualScrollItems.selected.hash"
+                                   [availableContexts]="virtualScrollItems.availableContexts"></app-storage-block-details>
 
         <div class="json-wrap"
              *ngIf="virtualScrollItems?.selected?.hash">

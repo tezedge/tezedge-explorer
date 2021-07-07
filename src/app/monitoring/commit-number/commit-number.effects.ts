@@ -52,7 +52,7 @@ export class CommitNumberEffects {
     ofType('VERSION_NODE_LOAD'),
     withLatestFrom(this.store, (action: any, state: ObservedValueOf<Store<State>>) => ({ action, state })),
     switchMap(({ action, state }) => {
-      const url = state.settingsNode.activeNode.id === 'ocaml'
+      const url = state.settingsNode.activeNode.type === 'octez'
         ? state.settingsNode.activeNode.http + '/version/'
         : state.settingsNode.activeNode.http + '/dev/version/';
       return this.http.get(url);

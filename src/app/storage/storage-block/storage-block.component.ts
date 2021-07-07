@@ -6,6 +6,8 @@ import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { StorageBlock } from '../../shared/types/storage/storage-block/storage-block.type';
 import { selectActiveNode } from '../../settings/settings-node/settings-node.reducer';
 import { State } from '../../app.reducers';
+import { StorageBlockActionTypes } from './storage-block.actions';
+import { filter } from 'rxjs/operators';
 
 @UntilDestroy()
 @Component({
@@ -27,6 +29,9 @@ export class StorageBlockComponent implements OnInit, OnDestroy {
   @ViewChild('vsContainer') vsContainer: ElementRef<HTMLDivElement>;
 
   private isStorageActionFeatureEnabled: boolean;
+
+  displayContextSwitcher: boolean;
+  storageResourcesContext: string;
 
   constructor(private store: Store<State>,
               private changeDetector: ChangeDetectorRef,
@@ -59,12 +64,12 @@ export class StorageBlockComponent implements OnInit, OnDestroy {
       });
   }
 
-  getItemDetails($event, context: string = 'tezedge'): void {
+  getItemDetails($event): void {
     this.store.dispatch({
       type: 'STORAGE_BLOCK_DETAILS_LOAD',
       payload: {
         hash: $event?.hash,
-        context
+        context: this.virtualScrollItems.availableContexts[0]
       }
     });
   }

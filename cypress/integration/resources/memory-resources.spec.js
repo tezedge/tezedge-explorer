@@ -21,13 +21,11 @@ context('MEMORY RESOURCES', () => {
             cy.wrap(resources).should('not.be.undefined');
             cy.wrap(resources.name.executableName).should('eq', 'root');
             cy.wrap(resources.value).should('not.be.undefined');
-            cy.wrap(resources.total >= resources.value).should('be.true');
 
             const recursiveAssertion = (children) => {
               children.forEach(child => {
                 cy.wrap(child.name.executableName).should('not.be.undefined');
                 cy.wrap(child.value).should('not.be.undefined');
-                cy.wrap(child.total >= child.value).should('be.true');
                 let expectedColor;
                 if (child.value > 999.99) {
                   expectedColor = '#eb5368';

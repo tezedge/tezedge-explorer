@@ -1,23 +1,6 @@
 export const environment = {
   production: false,
   api: [
-
-    //
-    // {
-    //   id: 'tezedge_with_tezedge_context',
-    //   name: 'tezedge-with-tezedge-context',
-    //   http: 'http://trace.dev.tezedge.com:3333',
-    //   p2p_port: 3332,
-    //   features: [
-    //     { name: 'ws', url: 'ws://trace.dev.tezedge.com:3334' },
-    //     { name: 'monitoring' },
-    //     { name: 'resources/storage' },
-    //     { name: 'mempool' },
-    //     { name: 'storage' }
-    //   ]
-    // }
-
-
     {
       id: 'rust.develop.dev.tezedge.com',
       name: 'rust.develop.dev.tezedge.com',

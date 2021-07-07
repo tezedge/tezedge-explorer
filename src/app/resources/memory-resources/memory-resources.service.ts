@@ -21,7 +21,6 @@ export class MemoryResourcesService {
     return {
       name: { ...response.name, executableName: 'root' },
       value: round(response.value - (response.cacheValue || 0)),
-      total: round(response.value),
       children: this.build(response.frames, threshold)
     };
   }
@@ -34,7 +33,6 @@ export class MemoryResourcesService {
         const items: MemoryResource = {
           name: this.getFrameName(frame.name, threshold),
           value: size,
-          total: round(frame.value),
           children: this.build(frame.frames || [], threshold),
           color: this.appendColorForFrame(size)
         };

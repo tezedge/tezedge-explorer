@@ -11,26 +11,6 @@ steps:
       - name: docker_sock
         path: /var/run/docker.sock
 
-image_pull_secrets:
-  - docker_pull_secret
-
-volumes:
-  - name: docker_sock
-    host:
-      path: /var/run/docker.sock
-
-trigger:
-  branch:
-    - develop
-  event: push
-
----
-
-kind: pipeline
-name: running-tests
-type: docker
-
-steps:
   - name: frontend-server
     image: drone-tezedge-explorer:latest
     pull: if-not-exists
@@ -116,29 +96,6 @@ steps:
     environment:
       CYPRESS_baseUrl: http://frontend-server:80
 
-image_pull_secrets:
-  - docker_pull_secret
-
-volumes:
-  - name: docker_sock
-    host:
-      path: /var/run/docker.sock
-
-trigger:
-  branch:
-    - develop
-  event: push
-
-depends_on:
-  - build-docker-image
-
----
-
-kind: pipeline
-name: publish
-type: docker
-
-steps:
   - name: publish
     image: plugins/docker
     settings:
@@ -166,12 +123,7 @@ trigger:
     - develop
   event: push
 
-depends_on:
-  - running-tests
-
 ---
-
-
 
 
 
@@ -190,27 +142,6 @@ steps:
       - name: docker_sock
         path: /var/run/docker.sock
 
-image_pull_secrets:
-  - docker_pull_secret
-
-volumes:
-  - name: docker_sock
-    host:
-      path: /var/run/docker.sock
-  - name: static_page
-    host:
-      path: /etc/tezedge-ci/tezedge-explorer/
-
-trigger:
-  ref: refs/tags/**
-
----
-
-kind: pipeline
-name: running-integration-tests
-type: docker
-
-steps:
   - name: frontend-server #detach it to access it inside test step
     image: drone-tezedge-explorer:latest
     pull: if-not-exists
@@ -296,30 +227,6 @@ steps:
     environment:
       CYPRESS_baseUrl: http://frontend-server:80
 
-image_pull_secrets:
-  - docker_pull_secret
-
-volumes:
-  - name: docker_sock
-    host:
-      path: /var/run/docker.sock
-  - name: static_page
-    host:
-      path: /etc/tezedge-ci/tezedge-explorer/
-
-trigger:
-  ref: refs/tags/**
-
-depends_on:
-  - build-lastest-docker-image
-
----
-
-kind: pipeline
-name: publishing
-type: docker
-
-steps:
   - name: publish
     image: plugins/docker
     settings:
@@ -375,7 +282,3 @@ volumes:
 
 trigger:
   ref: refs/tags/**
-  event: tag
-
-depends_on:
-  - running-integration-tests

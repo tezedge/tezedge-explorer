@@ -1,4 +1,4 @@
-const isOcaml = (data) => data.settingsNode.activeNode.id.includes('ocaml');
+const isOctez = (data) => data.settingsNode.activeNode.type === 'octez';
 
 describe('SYSTEM RESOURCES', () => {
   beforeEach(() => {
@@ -13,8 +13,8 @@ describe('SYSTEM RESOURCES', () => {
       .its('store')
       .then((store) => {
         store.subscribe(data => {
-          if (!isOcaml(store)) {
-            const nodeId = data.settingsNode.activeNode.id.includes('ocaml') ? 'ocaml' : 'tezedge';
+          if (!isOctez(store)) {
+            const nodeId = data.settingsNode.activeNode.type === 'octez' ? 'ocaml' : 'tezedge';
             cy.intercept('GET', '/resources/' + nodeId).as('getSystemResources');
 
             cy.visit(Cypress.config().baseUrl + '/#/resources/system', { timeout: 2000 });
@@ -32,11 +32,11 @@ describe('SYSTEM RESOURCES', () => {
           .its('store')
           .then((store) => {
             store.subscribe(store => {
-              const ocaml = store.settingsNode.activeNode.id.includes('ocaml');
-              if (!ocaml) {
+              const octez = store.settingsNode.activeNode.type === 'octez';
+              if (!octez) {
                 cy.wrap(store.resources.systemResources.colorScheme.domain).should('have.length', 7);
 
-                if (!ocaml) {
+                if (!octez) {
                   cy.wrap(store.resources.systemResources.cpu).should('have.length', 3);
                   cy.wrap(store.resources.systemResources.cpu[0].name).should('eq', 'TOTAL');
                   cy.wrap(store.resources.systemResources.cpu[1].name).should('eq', 'NODE');
@@ -79,7 +79,7 @@ describe('SYSTEM RESOURCES', () => {
           .its('store')
           .then((store) => {
             store.subscribe(store => {
-              if (!isOcaml(store)) {
+              if (!isOctez(store)) {
                 store.select('resources')
                   .subscribe(() => {
                     cy.get('.resource-category-block')
@@ -102,7 +102,7 @@ describe('SYSTEM RESOURCES', () => {
           .its('store')
           .then((store) => {
             store.subscribe(store => {
-              if (!isOcaml(store)) {
+              if (!isOctez(store)) {
                 store.select('resources')
                   .subscribe(() => {
                     cy.get('.tooltip-area')

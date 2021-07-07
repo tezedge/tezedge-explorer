@@ -6,6 +6,7 @@ export const environment = {
       name: 'rust.develop.dev.tezedge.com',
       http: 'http://develop.dev.tezedge.com:18732',
       p2p_port: '9732',
+      type: 'tezedge',
       features: [
         { name: 'ws', url: 'ws://develop.dev.tezedge.com:4927' },
         { name: 'debugger', url: 'http://develop.dev.tezedge.com:17732' },
@@ -23,10 +24,11 @@ export const environment = {
       ]
     },
     {
-      id: 'ocaml',
-      name: 'ocaml.develop.dev.tezedge.com',
+      id: 'octez',
+      name: 'octez.develop.dev.tezedge.com',
       http: 'http://develop.dev.tezedge.com:18733',
       p2p_port: '9733',
+      type: 'octez',
       features: [
         { name: 'debugger', url: 'http://develop.dev.tezedge.com:17732' },
         { name: 'sandbox', url: 'http://localhost:3030' },

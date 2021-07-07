@@ -54,27 +54,27 @@ context('SETTINGS NODE', () => {
       });
   });
 
-  it('[SETTINGS NODE] should update ocaml synchronization every second', () => {
+  it('[SETTINGS NODE] should update octez synchronization every second', () => {
     cy.intercept('GET', '/network/peers').as('peers');
     cy.wait('@getNodeHeader')
       .then(() => {
         cy.window()
           .its('store')
           .then((store) => {
-            let isOcamlSwitchingAvailable = false;
+            let isOctezSwitchingAvailable = false;
 
             store.select('settingsNode')
               .subscribe((settingsNode) => {
 
-                isOcamlSwitchingAvailable = (settingsNode.ids.some(id => id.includes('ocaml'))
+                isOctezSwitchingAvailable = (Object.keys(settingsNode.entities).some(key => settingsNode.entities[key].type === 'octez')
                   && settingsNode.ids.length > 1
-                  && !settingsNode.activeNode.id.includes('ocaml'));
-                if (!isOcamlSwitchingAvailable) {
-                  // quit if ocaml is absent
+                  && settingsNode.activeNode.type !== 'octez');
+                if (!isOctezSwitchingAvailable) {
+                  // quit if octez is absent
                   return;
                 }
 
-                if (!settingsNode.activeNode.id.includes('ocaml')) {
+                if (settingsNode.activeNode.type !== 'octez') {
                   cy.get('.settings-node-select').click();
                   cy.wait(1000);
                   cy.get('.settings-node-option').last().click();
@@ -84,7 +84,7 @@ context('SETTINGS NODE', () => {
             cy.wait(4000).then(() => {
               store.select('settingsNode')
                 .subscribe(() => {
-                  if (isOcamlSwitchingAvailable) {
+                  if (isOctezSwitchingAvailable) {
                     cy.wait('@peers');
                     cy.get('@peers.all').should('have.length', 7);
                   }
@@ -94,7 +94,7 @@ context('SETTINGS NODE', () => {
       });
   });
 
-  it('[SETTINGS NODE] should update ocaml synchronization every 5 seconds on a different page', () => {
+  it('[SETTINGS NODE] should update octez synchronization every 5 seconds on a different page', () => {
     cy.intercept('GET', '/network/peers').as('peers');
 
     cy.wait('@getNodeHeader')
@@ -102,19 +102,19 @@ context('SETTINGS NODE', () => {
         cy.window()
           .its('store')
           .then((store) => {
-            let isOcamlSwitchingAvailable = false;
+            let isOctezSwitchingAvailable = false;
 
             store.select('settingsNode').subscribe((settingsNode) => {
 
-              isOcamlSwitchingAvailable = (settingsNode.ids.some(id => id.includes('ocaml'))
+              isOctezSwitchingAvailable = (Object.keys(settingsNode.entities).some(key => settingsNode.entities[key].type === 'octez')
                 && settingsNode.ids.length > 1
-                && !settingsNode.activeNode.id.includes('ocaml'));
-              if (!isOcamlSwitchingAvailable) {
-                // quit if ocaml is absent
+                && settingsNode.activeNode.type !== 'octez');
+              if (!isOctezSwitchingAvailable) {
+                // quit if octez is absent
                 return;
               }
 
-              if (!settingsNode.activeNode.id.includes('ocaml')) {
+              if (settingsNode.activeNode.type !== 'octez') {
                 cy.get('.settings-node-select').click();
                 cy.wait(1000);
                 cy.get('.settings-node-option').last().click();
@@ -125,7 +125,7 @@ context('SETTINGS NODE', () => {
 
             cy.wait(5000).then(() => {
               store.select('settingsNode').subscribe(() => {
-                if (isOcamlSwitchingAvailable) {
+                if (isOctezSwitchingAvailable) {
                   cy.visit(Cypress.config().baseUrl + '/#/resources/system', { timeout: 2000 });
                   cy.wait(7500).then(() => {
                     cy.wait('@peers');

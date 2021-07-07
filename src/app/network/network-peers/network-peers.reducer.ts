@@ -5,21 +5,17 @@ const initialState: NetworkPeers = {
   entities: {},
   metrics: {
     totalAvgSpeed: 0,
-    totalPeers: 0
   },
 };
 
 export function reducer(state: NetworkPeers = initialState, action): NetworkPeers {
   switch (action.type) {
 
-    // TODO: refactor actions name
-    case 'peersMetrics': {
+    case 'WS_NETWORK_PEERS_LOAD_SUCCESS': {
       return {
         ids: [
           ...action.payload
-            // remove peers without id
             .filter(peer => peer.id !== null)
-            // sort rows according to average speed
             .sort((a, b) => b.averageTransferSpeed - a.averageTransferSpeed)
             .map(peer => peer.id)
         ],
@@ -31,12 +27,11 @@ export function reducer(state: NetworkPeers = initialState, action): NetworkPeer
               ...state.entities[peer.id],
               ...peer
             }
-          }), {}),
+          })),
         metrics: {
-          totalAvgSpeed:
-            (action.payload.reduce((accumulator, peer) =>
-              Math.floor(accumulator + peer.currentTransferSpeed), 0)),
-          totalPeers: action.payload.length,
+          totalAvgSpeed: action.payload.reduce(
+            (accumulator, peer) => Math.floor(accumulator + peer.currentTransferSpeed), 0
+          ),
         }
       };
     }
@@ -46,7 +41,6 @@ export function reducer(state: NetworkPeers = initialState, action): NetworkPeer
       return initialState;
 
     case 'NETWORK_PEERS_LOAD_SUCCESS': {
-      // console.log('[NETWORK_PEERS_LOAD_SUCCESS]', action);
       return {
         ids: [
           ...action.payload
@@ -72,14 +66,12 @@ export function reducer(state: NetworkPeers = initialState, action): NetworkPeer
             }
           }), {}),
         metrics: {
-          totalAvgSpeed:
-            (action.payload.reduce((accumulator, peer) =>
-              Math.floor(accumulator + peer[1].stat.total_recv), 0)),
-          totalPeers: action.payload.length,
+          totalAvgSpeed: action.payload.reduce((accumulator, peer) =>
+            Math.floor(accumulator + peer[1].stat.total_recv), 0
+          ),
         }
       };
     }
-
 
     default:
       return state;

@@ -43,13 +43,11 @@ mat-form-field.custom-bottom-form-field {
       height: 100%;
 
       .mat-form-field-infix {
-        max-width: 75px;
         height: 100%;
 
         input {
-          cursor: pointer;
           height: 100%;
-          text-align: center;
+          padding-left: 7px;
         }
 
         input {

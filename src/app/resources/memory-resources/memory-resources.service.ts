@@ -12,7 +12,7 @@ export class MemoryResourcesService {
 
   constructor(private http: HttpClient) { }
 
-  getStorageResources(api: string, reversed: boolean, threshold: number = 512): Observable<MemoryResource> {
+  getStorageResources(api: string, reversed: boolean = false, threshold: number = 512): Observable<MemoryResource> {
     return this.http.get<MemoryResource>(`${api}/v1/tree?threshold=${threshold}&reverse=${reversed}`, { reportProgress: true })
       .pipe(map(response => this.mapMemoryResponse(response, threshold)));
   }
@@ -57,7 +57,7 @@ export class MemoryResourcesService {
 
   private appendColorForFrame(value: number): string {
     if (value > 99.99) {
-      return '#eb5368';
+      return '#793541';
     } else if (value > 49.99) {
       return '#555558';
     } else if (value > 9.99) {

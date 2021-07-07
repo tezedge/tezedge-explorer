@@ -9,7 +9,7 @@
       p2p_port: '9732',
       features: [
         { name: 'ws', url: 'wss://master.dev.tezedge.com:443' },
-        { name: 'debugger', url: 'http://master.dev.tezedge.com:8753' },
+        { name: 'debugger', url: 'https://master.dev.tezedge.com:8753' },
         { name: 'sandbox', url: 'http://localhost:3030' },
         { name: 'commit', id: '' },
         { name: 'monitoring' },

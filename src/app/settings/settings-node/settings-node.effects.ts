@@ -16,15 +16,18 @@ export class SettingsNodeEffects {
   SettingsNodeLoadEffect$ = this.actions$.pipe(
     ofType('SETTINGS_NODE_LOAD'),
     withLatestFrom(this.store, (action: any, state: ObservedValueOf<Store<State>>) => ({ action, state })),
-    flatMap(({ action, state }) => state.settingsNode.ids.map(id => state.settingsNode.entities[id])),
-    flatMap((activeNode: SettingsNodeEntity) => {
+    flatMap(({ action, state }: { action: any, state: State }) =>
+      state.settingsNode.ids
+        .map(id => state.settingsNode.entities[id])
+        .map(activeNode => ({ action, activeNode }))),
+    flatMap(({ action, activeNode }: { action: any, activeNode: SettingsNodeEntity }) => {
       return forkJoin([
         this.settingsNodeService.getSettingsHeader(activeNode.http),
         this.settingsNodeService.getNodeFeatures(activeNode.http, activeNode.id),
       ]).pipe(
         map(([header, features]) => ({
           type: 'SETTINGS_NODE_LOAD_SUCCESS',
-          payload: { activeNode, header, features }
+          payload: { activeNode, header, features, checkOnly: action.payload.checkOnly }
         })),
         catchError((error) => of({ type: 'SETTINGS_NODE_LOAD_ERROR', payload: { activeNode, response: error } })),
       );
@@ -34,11 +37,13 @@ export class SettingsNodeEffects {
   @Effect()
   SettingsNodeInitEffect$ = this.actions$.pipe(
     ofType('SETTINGS_NODE_LOAD_SUCCESS'),
-
     withLatestFrom(this.store, (action: any, state: ObservedValueOf<Store<State>>) => ({ action, state })),
-
     flatMap(({ action, state }) => {
-        return state.settingsNode && state.settingsNode.activeNode && action.payload && action.payload.activeNode.id === state.settingsNode.activeNode.id
+        return (
+          state.settingsNode && state.settingsNode.activeNode
+          && action.payload && action.payload.activeNode.id === state.settingsNode.activeNode.id
+          && !action.payload.checkOnly
+        )
           ? of({ type: 'APP_INIT', payload: state.settingsNode.activeNode })
           : empty();
       }
@@ -48,9 +53,7 @@ export class SettingsNodeEffects {
   @Effect()
   SettingsNodeChangeEffect$ = this.actions$.pipe(
     ofType('SETTINGS_NODE_CHANGE'),
-
     withLatestFrom(this.store, (action: any, state: ObservedValueOf<Store<State>>) => ({ action, state })),
-
     flatMap(({ action, state }) => of({ type: 'APP_REFRESH', payload: state.settingsNode.activeNode })),
   );
 

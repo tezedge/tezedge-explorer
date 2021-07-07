@@ -149,68 +149,28 @@
               [disabled]="!virtualScrollItems?.pages?.length || virtualScrollItems.activePage.id === virtualScrollItems?.pages[virtualScrollItems?.pages?.length - 1]">
         <svg-icon icon="greater-than"></svg-icon>
       </button>
-<!--      <form [formGroup]="formGroup"-->
-<!--            (ngSubmit)="searchByTime()"-->
-<!--            class="d-flex">-->
-<!--        <mat-form-field appearance="fill"-->
-<!--                        class="custom-bottom-form-field pointer">-->
-<!--          <input matInput-->
-<!--                 [matDatepicker]="picker"-->
-<!--                 formControlName="date"-->
-<!--                 placeholder="Date"-->
-<!--                 autocomplete="off"-->
-<!--                 [max]="dateNow"-->
-<!--                 (click)="picker.open()">-->
-<!--          <mat-datepicker #picker></mat-datepicker>-->
-<!--        </mat-form-field>-->
-<!--        <mat-form-field appearance="fill"-->
-<!--                        class="custom-bottom-form-field time-field">-->
-<!--          <input matInput-->
-<!--                 type="text" pattern="\d*"-->
-<!--                 formControlName="hour"-->
-<!--                 placeholder="hh"-->
-<!--                 maxlength="2"-->
-<!--                 max="23"-->
-<!--                 autocomplete="off">-->
-<!--        </mat-form-field>-->
-<!--        <mat-form-field appearance="fill"-->
-<!--                        class="custom-bottom-form-field time-field">-->
-<!--          <input matInput-->
-<!--                 type="text" pattern="\d*"-->
-<!--                 formControlName="minute"-->
-<!--                 placeholder="mm"-->
-<!--                 maxlength="2"-->
-<!--                 max="59"-->
-<!--                 autocomplete="off">-->
-<!--        </mat-form-field>-->
-<!--        <mat-form-field appearance="fill"-->
-<!--                        class="custom-bottom-form-field time-field">-->
-<!--          <input matInput-->
-<!--                 type="text" pattern="\d*"-->
-<!--                 formControlName="second"-->
-<!--                 placeholder="ss"-->
-<!--                 maxlength="2"-->
-<!--                 max="59"-->
-<!--                 autocomplete="off">-->
-<!--        </mat-form-field>-->
-<!--        <mat-form-field appearance="fill"-->
-<!--                        class="custom-bottom-form-field time-field">-->
-<!--          <input matInput-->
-<!--                 type="text" pattern="\d*"-->
-<!--                 maxlength="3"-->
-<!--                 formControlName="millisecond"-->
-<!--                 placeholder="ms"-->
-<!--                 autocomplete="off">-->
-<!--        </mat-form-field>-->
-<!--        <button fxLayout="row"-->
-<!--                type="submit"-->
-<!--                fxLayoutAlign="center center"-->
-<!--                class="square-button"-->
-<!--                mat-icon-button-->
-<!--                matTooltip="Go">-->
-<!--          <svg-icon icon="greater-than"></svg-icon>-->
-<!--        </button>-->
-<!--      </form>-->
+      <form [formGroup]="formGroup"
+            (ngSubmit)="searchByTime()"
+            class="d-flex">
+        <mat-form-field appearance="fill"
+                        class="custom-bottom-form-field">
+          <input matInput
+                 type="text"
+                 formControlName="time"
+                 matTooltip="Search logs by time"
+                 [placeholder]="currentDatePlaceholder"
+                 maxlength="24"
+                 autocomplete="off">
+        </mat-form-field>
+        <button fxLayout="row"
+                type="submit"
+                fxLayoutAlign="center center"
+                class="square-button"
+                mat-icon-button
+                matTooltip="Go">
+          <svg-icon icon="greater-than"></svg-icon>
+        </button>
+      </form>
 
       <span>
         Active Page:

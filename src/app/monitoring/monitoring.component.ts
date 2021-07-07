@@ -1,30 +1,28 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { UntilDestroy } from '@ngneat/until-destroy';
 import { State } from '../app.reducers';
+import { MonitoringActionTypes } from './monitoring.actions';
 
-@UntilDestroy()
 @Component({
   selector: 'app-monitoring',
   templateUrl: './monitoring.component.html',
-  styleUrls: ['./monitoring.component.scss']
+  styleUrls: ['./monitoring.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class MonitoringComponent implements OnInit, OnDestroy {
 
-  constructor(
-    private store: Store<State>,
-  ) { }
+  constructor(private store: Store<State>) { }
 
   ngOnInit(): void {
     this.initMonitoring();
   }
 
   private initMonitoring(): void {
-    this.store.dispatch({ type: 'MONITORING_LOAD' });
+    this.store.dispatch({ type: MonitoringActionTypes.MONITORING_LOAD });
   }
 
   ngOnDestroy(): void {
-    this.store.dispatch({ type: 'MONITORING_CLOSE' });
+    this.store.dispatch({ type: MonitoringActionTypes.MONITORING_CLOSE });
   }
 
 }

@@ -20,6 +20,8 @@ export class StorageResourcesComponent implements OnInit {
   storageStats$: Observable<StorageResourcesStats>;
   miniGraphRef: ElementRef;
   expandedPanel: boolean = true;
+  displayContextSwitcher: boolean;
+  storageResourcesContext: string;
 
   @ViewChild('miniGraph', { read: ElementRef }) set miniGraph(content: ElementRef) {
     if (content) {
@@ -32,6 +34,7 @@ export class StorageResourcesComponent implements OnInit {
               private cdRef: ChangeDetectorRef) { }
 
   ngOnInit(): void {
+    this.listenToStorageStateChange();
     this.storageStats$ = this.store.pipe(
       untilDestroyed(this),
       select(storageResources),
@@ -46,4 +49,29 @@ export class StorageResourcesComponent implements OnInit {
     this.expandedPanel = !this.expandedPanel;
   }
 
+  getStorageStatistics(): void {
+    const newContext = this.storageResourcesContext === 'tezedge' ? 'irmin' : 'tezedge';
+    this.store.dispatch({
+      type: StorageResourcesActionTypes.STORAGE_RESOURCES_LOAD,
+      payload: newContext
+    });
+    setTimeout(() => {
+      this.storageResourcesContext = newContext;
+      this.cdRef.detectChanges();
+    }, 50);
+  }
+
+  private listenToStorageStateChange(): void {
+    this.store.pipe(
+      untilDestroyed(this),
+      select(storageResources),
+      filter(value => !!value),
+    ).subscribe(storageResourcesState => {
+      if (!this.storageResourcesContext) {
+        this.storageResourcesContext = storageResourcesState.availableContexts[0];
+      }
+      this.displayContextSwitcher = storageResourcesState.availableContexts.length > 1;
+      this.cdRef.detectChanges();
+    });
+  }
 }

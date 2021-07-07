@@ -137,17 +137,19 @@ context('MEMORY RESOURCES', () => {
       cy.window()
         .its('store')
         .then((store) => {
-          store.select('resources').subscribe(root => {
-            if (root.memoryResources.children[1].children.length) {
-              cy.wait(2000);
-              cy.get('table.memory-table tbody tr:nth-child(1)').click();
-              cy.wait(2000);
+          cy.wait(1000).then(() => {
+            store.select('resources').subscribe(res => {
+              if (res.memoryResources.children[0].children.length) {
+                cy.wait(2000);
+                cy.get('table.memory-table tbody tr:nth-child(1)').click();
+                cy.wait(2000);
 
-              cy.get('.breadcrumbs > :nth-last-child(2)')
-                .should(div => {
-                  expect(div.text()).to.equal(root.memoryResources.children[0].name.executableName);
-                });
-            }
+                cy.get('.breadcrumbs > :nth-last-child(2)')
+                  .should(div => {
+                    expect(div.text()).to.equal(res.memoryResources.children[0].name.executableName);
+                  });
+              }
+            });
           });
         });
     });
@@ -159,7 +161,7 @@ context('MEMORY RESOURCES', () => {
         .its('store')
         .then((store) => {
           store.select('resources').subscribe(root => {
-            if (root.memoryResources.children[1].children.length) {
+            if (root.memoryResources.children[0].children.length) {
               cy.wait(2000);
               cy.get('table.memory-table tbody tr:nth-child(1)').click();
               cy.wait(2000);

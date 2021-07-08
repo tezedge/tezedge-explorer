@@ -210,6 +210,13 @@ steps:
     environment:
       CYPRESS_baseUrl: http://frontend-server:80
 
+  - name: test-settings-node
+    image: cypress/included:6.2.1
+    commands:
+      - cypress run --spec "cypress/integration/shared/progress-bar.spec.js"
+    environment:
+      CYPRESS_baseUrl: http://frontend-server:80
+
   - name: test-storage-action
     image: cypress/included:6.2.1
     commands:

@@ -49,7 +49,6 @@ import { MatInputModule } from '@angular/material/input';
 import { MatListModule } from '@angular/material/list';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatTableModule } from '@angular/material/table';
-import { MatTabsModule } from '@angular/material/tabs';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
@@ -69,10 +68,6 @@ import { NetworkHistoryComponent } from './network/network-history/network-histo
 
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BandwidthPipe } from './shared/pipes/bandwidth.pipe';
-import { StorageComponent } from './storage/storage.component';
-import { StorageBlockComponent } from './storage/storage-block/storage-block.component';
-import { StorageActionComponent } from './storage/storage-action/storage-action.component';
-import { StorageSearchComponent } from './storage/storage-search/storage-search.component';
 import { NetworkActionComponent } from './network/network-action/network-action.component';
 import { NetworkSearchComponent } from './network/network-search/network-search.component';
 import { MonitoringComponent } from './monitoring/monitoring.component';
@@ -98,8 +93,6 @@ import { SandboxComponent } from './sandbox/sandbox.component';
 
 import { NgrxFormDirective } from './shared/ngrx-form.directive';
 import { NgrxVirtualScrollDirective } from './shared/ngrx-virtual-scroll.directive';
-import { VirtualScrollDirective } from './shared/virtual-scroll/virtual-scroll.directive';
-import { VirtualScrollFromTopDirective } from './shared/virtual-scroll/virtual-scroll-from-top.directive';
 
 import { SandboxStatusBarComponent } from './sandbox/sandbox-status-bar/sandbox-status-bar.component';
 import { WalletsComponent } from './wallets/wallets.component';
@@ -111,7 +104,6 @@ import { SystemResourcesEffects } from './resources/system-resources/system-reso
 import { TezedgeSharedModule } from './shared/tezedge-shared.module';
 import { NavigationMenuComponent } from './layout/navigation-menu/navigation-menu.component';
 import { DatePipe, registerLocaleData } from '@angular/common';
-import { StorageBlockDetailsComponent } from './storage/storage-block-details/storage-block-details.component';
 import { StorageResourcesEffects } from './resources/storage-resources/storage-resources.effects';
 import { MemoryResourcesEffects } from './resources/memory-resources/memory-resources.effects';
 import { IconRegisterService } from './shared/design/icon/icon-register.service';
@@ -119,6 +111,7 @@ import localeFr from '@angular/common/locales/fr';
 import localeEnGb from '@angular/common/locales/en-GB';
 import { ReplaceCharacterPipe } from './shared/pipes/replace-character.pipe';
 import { ErrorPopupEffects } from './shared/error-popup/error-popup.effects';
+import { VarDirective } from './shared/directives/var.directive';
 
 registerLocaleData(localeFr, 'fr');
 registerLocaleData(localeEnGb, 'en');
@@ -135,10 +128,6 @@ function loadIcons(matIconService: IconRegisterService): Function {
     NetworkStatsComponent,
     NetworkHistoryComponent,
     BandwidthPipe,
-    StorageComponent,
-    StorageBlockComponent,
-    StorageActionComponent,
-    StorageSearchComponent,
     NetworkActionComponent,
     NetworkSearchComponent,
     MonitoringComponent,
@@ -158,8 +147,6 @@ function loadIcons(matIconService: IconRegisterService): Function {
     ChainOtherComponent,
     NgrxFormDirective,
     NgrxVirtualScrollDirective,
-    VirtualScrollDirective,
-    VirtualScrollFromTopDirective,
     SandboxComponent,
     SandboxStatusBarComponent,
     WalletsComponent,
@@ -167,7 +154,6 @@ function loadIcons(matIconService: IconRegisterService): Function {
     MempoolActionComponent,
     CommitNumberComponent,
     NavigationMenuComponent,
-    StorageBlockDetailsComponent,
   ],
   imports: [
     BrowserModule,
@@ -240,7 +226,6 @@ function loadIcons(matIconService: IconRegisterService): Function {
     MatSlideToggleModule,
     MatSnackBarModule,
     MatStepperModule,
-    MatTabsModule,
     MatToolbarModule,
     MatTooltipModule,
     ClipboardModule,
@@ -262,8 +247,11 @@ function loadIcons(matIconService: IconRegisterService): Function {
       deps: [IconRegisterService],
       multi: true
     },
-    { provide: LOCALE_ID, useValue: 'fr'},
-    { provide: LOCALE_ID, useValue: 'en'},
+    { provide: LOCALE_ID, useValue: 'fr' },
+    { provide: LOCALE_ID, useValue: 'en' },
+  ],
+  exports: [
+    VarDirective
   ],
   bootstrap: [AppComponent]
 })

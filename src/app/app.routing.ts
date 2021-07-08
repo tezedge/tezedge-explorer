@@ -27,8 +27,10 @@ export const AppRouting: Routes = [
 
   { path: 'endpoints', component: EndpointsComponent },
 
-  { path: 'storage', component: StorageComponent },
-  { path: 'storage/:search', component: StorageActionComponent },
+  {
+    path: 'storage',
+    loadChildren: () => import('./storage/storage.module').then(module => module.StorageModule)
+  },
 
   { path: 'logs', component: LogsComponent },
 

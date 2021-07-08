@@ -8,6 +8,15 @@ import { ThousandTransformPipe } from './pipes/thousand-transform.pipe';
 import { EtaTimePipe } from './pipes/eta-time.pipe';
 import { ErrorPopupComponent } from './error-popup/error-popup.component';
 import { NotifierModule } from 'angular-notifier';
+import { ProgressBarComponent } from './progress-bar/progress-bar.component';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { ProgressBarInterceptor } from './progress-bar/progress-bar.interceptor.service';
+import { VarDirective } from './directives/var.directive';
+import { VirtualScrollDirective } from './virtual-scroll/virtual-scroll.directive';
+import { VirtualScrollFromTopDirective } from './virtual-scroll/virtual-scroll-from-top.directive';
+import { MatTabsModule } from '@angular/material/tabs';
+import { MatButtonModule } from '@angular/material/button';
 
 
 @NgModule({
@@ -18,6 +27,10 @@ import { NotifierModule } from 'angular-notifier';
     ThousandTransformPipe,
     EtaTimePipe,
     ErrorPopupComponent,
+    ProgressBarComponent,
+    VarDirective,
+    VirtualScrollDirective,
+    VirtualScrollFromTopDirective,
   ],
   imports: [
     CommonModule,
@@ -30,8 +43,14 @@ import { NotifierModule } from 'angular-notifier';
         vertical: {
           position: 'top'
         }
+      },
+      behaviour: {
+        onMouseover: 'pauseAutoHide'
       }
     }),
+    MatTabsModule,
+    MatProgressBarModule,
+    MatButtonModule,
   ],
   exports: [
     FlexLayoutModule,
@@ -41,6 +60,20 @@ import { NotifierModule } from 'angular-notifier';
     ThousandTransformPipe,
     EtaTimePipe,
     ErrorPopupComponent,
+    ProgressBarComponent,
+    VarDirective,
+    VirtualScrollDirective,
+    VirtualScrollFromTopDirective,
+    MatTabsModule,
+    MatProgressBarModule,
+    MatButtonModule,
+  ],
+  providers: [
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: ProgressBarInterceptor,
+      multi: true
+    },
   ]
 })
 export class TezedgeSharedModule {}

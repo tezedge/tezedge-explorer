@@ -30,7 +30,7 @@ export class SystemResourcesService {
               private datePipe: DatePipe) {}
 
   getSystemResources(endpoint: string, isSmallDevice: boolean): Observable<SystemResources> {
-    return this.http.get<SystemResources>(endpoint)
+    return this.http.get<SystemResources>(endpoint, { reportProgress: true })
       .pipe(
         map(response => this.mapGetSystemResourcesResponse(response, isSmallDevice)),
         catchError(err => throwError(err))
@@ -89,6 +89,11 @@ export class SystemResourcesService {
     chartData.memory = [];
     chartData.disk = [];
     chartData.cpu = [];
+
+    if (!resources.length) {
+      return chartData;
+    }
+
     if (resources[0].cpu.protocolRunners !== undefined) {
       chartData.cpu.push({
         name: 'TOTAL',
@@ -199,6 +204,11 @@ export class SystemResourcesService {
       memory: [],
       timestamp: ''
     };
+
+    if (!resources.length) {
+      return summary;
+    }
+
     const lastResource = resources[resources.length - 1];
     summary.timestamp = lastResource.timestamp;
     if (lastResource.memory.protocolRunners !== undefined) {

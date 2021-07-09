@@ -4,7 +4,7 @@ export const environment = {
     {
       id: 'rust.develop.dev.tezedge.com',
       name: 'rust.develop.dev.tezedge.com',
-      http: 'https://master.dev.tezedge.com:8752',
+      http: 'http://develop.dev.tezedge.com:18732',
       p2p_port: '9732',
       features: [
         { name: 'ws', url: 'ws://develop.dev.tezedge.com:4927' },
@@ -13,7 +13,7 @@ export const environment = {
         { name: 'commit', id: 'develop' },
         { name: 'monitoring' },
         { name: 'resources/system', monitoringUrl: 'http://develop.dev.tezedge.com:38732/resources/tezedge' },
-        { name: 'resources/memory', memoryProfilerUrl: 'https://master.dev.tezedge.com:8764' },
+        { name: 'resources/memory', memoryProfilerUrl: 'http://develop.dev.tezedge.com:17832' },
         { name: 'resources/storage' },
         { name: 'mempool' },
         { name: 'storage' },
@@ -37,6 +37,6 @@ export const environment = {
         { name: 'network' },
         { name: 'logs' },
       ]
-    }
+    },
   ]
 };

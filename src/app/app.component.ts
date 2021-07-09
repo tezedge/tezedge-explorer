@@ -1,5 +1,4 @@
-import { Component, HostListener, OnDestroy, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { Component, HostListener, NgZone, OnDestroy, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { debounceTime, filter, map, takeUntil } from 'rxjs/operators';
 import { Observable, Subject } from 'rxjs';
@@ -35,13 +34,12 @@ export class AppComponent implements OnInit, OnDestroy {
     }
   }
 
-  constructor(
-    public store: Store<State>,
-    public router: Router,
-  ) {
+  constructor(private store: Store<State>,
+              zone: NgZone) {
     // when inside Cypress testing environment, put the store on window so Cypress have access to it
     if ((window as any).Cypress) {
       (window as any).store = this.store;
+      (window as any).zone = zone;
     }
 
     this.isMobile = window.innerWidth < 600;

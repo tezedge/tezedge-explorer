@@ -182,6 +182,7 @@ export class MonitoringEffects {
     private store: Store<State>,
     private router: Router,
     private settingsNodeService: SettingsNodeService,
-  ) { }
+  ) {
+  }
 
 }

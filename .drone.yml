@@ -68,6 +68,13 @@ steps:
     environment:
       CYPRESS_baseUrl: http://frontend-server:80
 
+  - name: test-routing
+    image: cypress/included:6.2.1
+    commands:
+      - cypress run --spec "cypress/integration/routing/routing.spec.js"
+    environment:
+      CYPRESS_baseUrl: http://frontend-server:80
+
   - name: test-sandbox
     image: cypress/included:6.2.1
     commands:
@@ -200,6 +207,13 @@ steps:
     image: cypress/included:6.2.1
     commands:
       - cypress run --spec "cypress/integration/resources/memory-resources.spec.js"
+    environment:
+      CYPRESS_baseUrl: http://frontend-server:80
+
+  - name: test-routing
+    image: cypress/included:6.2.1
+    commands:
+      - cypress run --spec "cypress/integration/routing/routing.spec.js"
     environment:
       CYPRESS_baseUrl: http://frontend-server:80
 

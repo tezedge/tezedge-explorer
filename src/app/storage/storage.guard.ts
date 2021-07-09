@@ -18,7 +18,6 @@ export class StorageGuard implements CanActivate {
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
     return this.store.select(selectActiveNode).pipe(
       map((node: SettingsNodeApi) => {
-        console.log(route.params.search)
         if (route.params.search && node.features.some(f => f.name === 'storage-action')) {
           return true;
         } else if (!route.params.search && node.features.some(f => f.name === 'storage')) {

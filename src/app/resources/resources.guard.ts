@@ -18,7 +18,7 @@ export class ResourcesGuard implements CanActivate {
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
     return this.store.select(selectActiveNode).pipe(
       map((node: SettingsNodeApi) => {
-        if (node.features.some(f => f.name.includes(route.url[0].path))) {
+        if (node.features.some(f => f.name.includes('/' + route.url[0].path))) {
           return true;
         } else if (node.features.some(f => f.name.includes('resources'))) {
           const url = node.features.find(f => f.name.includes('resources')).name;

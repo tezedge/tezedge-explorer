@@ -9,7 +9,7 @@
   //   rust.features.push({ name: 'commit', id: commitId });
   // }
   //
-  // console.log(rust);
+  console.log('${COMMIT}');
   // console.log(commitId);
 
 })(this);

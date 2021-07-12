@@ -26,31 +26,44 @@ export class NavigationMenuComponent implements OnInit, AfterViewInit {
   haveResources: boolean;
   haveExplorer: boolean;
   haveSandbox: boolean;
+  haveDebugger: boolean;
 
   constructor(private store: Store<State>,
               private router: Router) { }
 
   ngOnInit(): void {
+    this.getAppState();
+    this.getNodeState();
+    this.getFeatures();
+  }
+
+  private getAppState(): void {
     this.store.select(appState)
       .pipe(untilDestroyed(this))
-      .subscribe(data => this.app = data);
+      .subscribe(state => this.app = state);
+  }
 
+  private getNodeState(): void {
     this.store.select('settingsNode')
       .pipe(untilDestroyed(this))
-      .subscribe(settingsNode => this.settingsNode = settingsNode);
+      .subscribe(node => {
+        this.haveDebugger = node.activeNode.features.some(f => f.name === 'debugger');
+        this.settingsNode = node;
+      });
+  }
 
-    this.appFeatures$ = this.store.select(selectFeatures)
-      .pipe(
-        untilDestroyed(this),
-        map((featuresArray: any[]) => {
-          const features = {};
-          featuresArray.forEach(feature => features[feature.name] = feature);
-          this.haveResources = features['resources/system'] || features['resources/storage'] || features['resources/memory'];
-          this.haveExplorer = features['network'] || features['storage'] || features['mempool'] || features['logs'] || features['endpoints'];
-          this.haveSandbox = features['chains'] || features['wallets'] || features['sandbox'];
-          return features;
-        }),
-      );
+  private getFeatures(): void {
+    this.appFeatures$ = this.store.select(selectFeatures).pipe(
+      untilDestroyed(this),
+      map((featuresArray: any[]) => {
+        const features = {};
+        featuresArray.forEach(feature => features[feature.name] = feature);
+        this.haveResources = features['resources/system'] || features['resources/storage'] || features['resources/memory'];
+        this.haveExplorer = features['network'] || features['storage'] || features['mempool'] || features['logs'] || features['endpoints'];
+        this.haveSandbox = features['chains'] || features['wallets'] || features['sandbox'];
+        return features;
+      }),
+    );
   }
 
   ngAfterViewInit(): void {
@@ -70,22 +83,22 @@ export class NavigationMenuComponent implements OnInit, AfterViewInit {
     });
   }
 
-  addSandboxNode() {
+  addSandboxNode(): void {
     this.router.navigate(['/sandbox']);
   }
 
-  stopSandboxNode() {
+  stopSandboxNode(): void {
     this.store.dispatch({
       type: 'SANDBOX_NODE_STOP',
       payload: '',
     });
   }
 
-  sandboxBakeBlock() {
-    if (this.app.statusbar.sandbox) {
-      this.store.dispatch({
-        type: 'SANDBOX_BAKE_BLOCK',
-      });
-    }
-  }
+  // sandboxBakeBlock(): void {
+  //   if (this.app.statusbar.sandbox) {
+  //     this.store.dispatch({
+  //       type: 'SANDBOX_BAKE_BLOCK',
+  //     });
+  //   }
+  // }
 }

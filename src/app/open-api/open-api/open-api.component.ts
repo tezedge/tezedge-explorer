@@ -27,11 +27,17 @@ export class OpenApiComponent implements OnInit {
     this.store.select(selectActiveNode)
       .pipe(untilDestroyed(this))
       .subscribe((node: SettingsNodeApi) => {
-        const memoryFeature = node.features.find(f => f.name === 'resources/memory');
-        if (memoryFeature) {
+        const showMemoryFeature = node.features.find(f => f.name === 'resources/memory');
+        if (showMemoryFeature) {
           this.tabs.add('memory profiler');
         } else {
           this.tabs.delete('memory profiler');
+        }
+        const showNetworkRecorderFeature = node.features.find(f => f.name === 'debugger');
+        if (showNetworkRecorderFeature) {
+          this.tabs.add('network recorder');
+        } else {
+          this.tabs.delete('network recorder');
         }
         this.cdRef.detectChanges();
       });

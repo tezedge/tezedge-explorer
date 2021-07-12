@@ -1,15 +1,14 @@
 (function (window) {
   window['env'] = window['env'] || {};
 
-  window['env']['api'] = JSON.parse('${API}') || [];
+  const api = window['env']['api'];
+  const commitId = '${COMMIT}';
+  const rust = api.find(node => !node.name.includes('ocaml') && !node.name.includes('octez'));
+  if (rust && commitId) {
+    rust.features.push({ name: 'commit', id: commitId });
+  }
 
-  // const rust = window['env']['api'].find(node => !node.name.includes('ocaml'));
-  // const commitId = JSON.parse('${COMMIT}');
-  // if (rust && commitId) {
-  //   rust.features.push({ name: 'commit', id: commitId });
-  // }
-  //
+  window['env']['api'] = api || [];
   console.log('${COMMIT}');
-  // console.log(commitId);
 
 })(this);

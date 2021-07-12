@@ -57,15 +57,10 @@ export class CommitNumberEffects {
   @Effect()
   VersionDebuggerLoad$ = this.actions$.pipe(
     ofType('VERSION_DEBUGGER_LOAD'),
-
-    // merge state
     withLatestFrom(this.store, (action: any, state) => ({ action, state })),
-
     switchMap(({ action, state }) => {
       return this.http.get(setDebuggerCommitUrl(state));
     }),
-
-    // dispatch action
     map((payload) => ({ type: 'VERSION_DEBUGGER_LOAD_SUCCESS', payload })),
     catchError((error, caught) => {
       console.error(error);

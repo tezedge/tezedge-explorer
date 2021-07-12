@@ -165,12 +165,11 @@ export class MonitoringEffects {
     // TODO: handle errors
     // dispatch action from ws
     map((data) => ({ ...data })),
-
     catchError((error, caught) => {
       console.error(error);
       this.store.dispatch({
-        type: 'NETWORK_WEBSOCKET_ERROR',
-        payload: error,
+        type: ErrorActionTypes.ADD_ERROR,
+        payload: { title: 'Websocket error', message: 'Connection failed' }
       });
       return caught;
     })

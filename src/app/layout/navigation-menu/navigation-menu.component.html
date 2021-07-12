@@ -210,7 +210,7 @@
         </button>
       </div>
 
-      <div>
+      <div *ngIf="settingsNode">
         <button mat-flat-button (click)="stopSandboxNode();"
                 *ngIf="settingsNode.entities['sandbox-carthage-tezedge']?.connected === true">
           {{ app.sidenav.collapsed ? '+' : 'STOP SANDBOX NODE' }}
@@ -266,6 +266,6 @@
       </a>
     </div>
 
-    <app-commit-number class="app-github-version"></app-commit-number>
+    <app-commit-number *ngIf="haveDebugger" class="app-github-version"></app-commit-number>
   </ng-container>
 </div>

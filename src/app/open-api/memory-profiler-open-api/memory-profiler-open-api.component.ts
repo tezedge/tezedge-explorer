@@ -14,37 +14,42 @@ declare const SwaggerUIBundle: any;
   template: `<div id="memory-profiler-open-api"></div>`,
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class MemoryProfilerOpenApiComponent implements OnInit, AfterViewInit {
+export class MemoryProfilerOpenApiComponent implements OnInit {
 
   private readonly URL = 'https://raw.githubusercontent.com/tezedge/tezedge-debugger/develop/memory-profiler-openapi.json';
 
   private activeNode: SettingsNodeApi;
-  private openApiData: any;
 
   constructor(private http: HttpClient,
               private store: Store<State>) { }
 
   ngOnInit(): void {
+    this.listenToActiveNode();
+    this.parseOpenApiResponse();
+  }
+
+  private listenToActiveNode(): void {
     this.store.select(selectActiveNode)
       .pipe(untilDestroyed(this))
       .subscribe((node: SettingsNodeApi) => this.activeNode = node);
   }
 
-  ngAfterViewInit(): void {
+  private parseOpenApiResponse(): void {
     this.http.get(this.URL).subscribe((response: any) => {
       const server = response.servers[0];
       const memoryFeature = this.activeNode.features.find(f => f.name === 'resources/memory');
-      const httpChunks = memoryFeature.memoryProfilerUrl.split(':');
-      server.url = httpChunks[0] + ':' + httpChunks[1] + ':{port}';
-      server.variables.port.enum = [httpChunks[2]];
-      server.variables.port.default = httpChunks[2];
-      response.servers = [server];
-      this.openApiData = response;
-      this.initOpenAPI();
+      if (memoryFeature) {
+        const httpChunks = memoryFeature.memoryProfilerUrl.split(':');
+        server.url = httpChunks[0] + ':' + httpChunks[1] + ':{port}';
+        server.variables.port.enum = [httpChunks[2]];
+        server.variables.port.default = httpChunks[2];
+        response.servers = [server];
+        this.initOpenAPI(response);
+      }
     });
   }
 
-  private initOpenAPI(): void {
+  private initOpenAPI(data: any): void {
     SwaggerUIBundle({
       dom_id: '#memory-profiler-open-api',
       layout: 'BaseLayout',
@@ -52,7 +57,7 @@ export class MemoryProfilerOpenApiComponent implements OnInit, AfterViewInit {
         SwaggerUIBundle.presets.apis,
         SwaggerUIBundle.SwaggerUIStandalonePreset
       ],
-      spec: this.openApiData,
+      spec: data,
       docExpansion: 'none',
       operationsSorter: 'alpha'
     });

@@ -58,11 +58,11 @@ export class CommitNumberComponent implements OnInit {
       }
     });
 
-    // TODO: commitNumber for ocaml is not the same, find a solution
+    // TODO: commitNumber for octez is not the same, find a solution
     this.store.select('settingsNode')
       .pipe(untilDestroyed(this))
       .subscribe(data => {
-        this.hideComponent = data.activeNode.id.includes('ocaml');
+        this.hideComponent = data.activeNode.type === 'octez';
       });
   }
 

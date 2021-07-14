@@ -12,8 +12,13 @@ export class StorageBlockService {
 
   constructor(private http: HttpClient) { }
 
-  getStorageBlockContextDetails(sandbox: string, blockId: string, context: string): Observable<StorageBlockDetails> {
-    return this.http.get<StorageBlockDetails>(`${sandbox}/stats/main/blocks/${blockId}`)
+  checkStorageBlockAvailableContexts(api: string, hash: string): Observable<string[]> {
+    return this.http.get<string[]>(`${api}/stats/main/blocks/${hash}`)
+      .pipe(map(response => this.mapCheckContexts(response)));
+  }
+
+  getStorageBlockContextDetails(api: string, hash: string, context: string): Observable<StorageBlockDetails> {
+    return this.http.get<StorageBlockDetails>(`${api}/stats/main/blocks/${hash}`)
       .pipe(map(response => this.mapGetStorageBlockContextDetailsResponse(response, context)));
   }
 
@@ -36,5 +41,37 @@ export class StorageBlockService {
       op.remove = operation[context + 'Remove'];
     });
     return block;
+  }
+
+  private mapCheckContexts(response: any): string[] {
+    const contexts = [];
+    if (!this.areAllEmpty('irmin', response)) {
+      contexts.push('irmin');
+    }
+    if (!this.areAllEmpty('tezedge', response)) {
+      contexts.push('tezedge');
+    }
+    return contexts;
+  }
+
+  private areAllEmpty(context, response): boolean {
+    const operation = response.operationsContext[0];
+    const values = [
+      response[context + 'CheckoutContextTime'],
+      response[context + 'CommitContextTime'],
+      operation.data[context + 'Count'],
+      operation.data[context + 'MaxTime'],
+      operation.data[context + 'MeanTime'],
+      operation.data[context + 'TotalTime'],
+      operation[context + 'Add'],
+      operation[context + 'AddTree'],
+      operation[context + 'Find'],
+      operation[context + 'FindTree'],
+      operation[context + 'Mem'],
+      operation[context + 'MemTree'],
+      operation[context + 'Remove']
+    ];
+
+    return values.every(val => !val);
   }
 }

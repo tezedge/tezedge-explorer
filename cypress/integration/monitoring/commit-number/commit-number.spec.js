@@ -1,4 +1,4 @@
-const isOcaml = (data) => data.settingsNode.activeNode.id.includes('ocaml');
+const isOctez = (data) => data.settingsNode.activeNode.type === 'octez';
 
 context('COMMIT NUMBER', () => {
   it('[COMMIT NUMBER] display the Node release tag in the UI', () => {
@@ -9,7 +9,7 @@ context('COMMIT NUMBER', () => {
         .its('store')
         .then((store) => {
           store.subscribe(data => {
-            if (!isOcaml(data)) {
+            if (!isOctez(data)) {
               cy.wait(1000).then(() => {
                 cy.get('@getNodeTagRequest').its('response.statusCode').should('eq', 200)
                   .then(() => {
@@ -38,7 +38,7 @@ context('COMMIT NUMBER', () => {
         .its('store')
         .then((store) => {
           store.subscribe(data => {
-            if (!isOcaml(data)) {
+            if (!isOctez(data)) {
               cy.get('@getNodeLastCommitRequest').its('response.statusCode').should('eq', 200).then(() => {
                 cy.wait(2000).then(() => {
                   store.select('commitNumber')
@@ -69,7 +69,7 @@ context('COMMIT NUMBER', () => {
         .its('store')
         .then((store) => {
           store.subscribe(data => {
-            if (!isOcaml(data)) {
+            if (!isOctez(data)) {
               cy.wait(2000).then(() => {
                 cy.wait('@getDebuggerLastCommitRequest').its('response.statusCode').should('eq', 200);
               });
@@ -86,7 +86,7 @@ context('COMMIT NUMBER', () => {
         .its('store')
         .then((store) => {
           store.subscribe(data => {
-            if (!isOcaml(data)) {
+            if (!isOctez(data)) {
               cy.wait(3000).then(() => {
                 store.select('commitNumber')
                   .subscribe((data) => {
@@ -116,7 +116,7 @@ context('COMMIT NUMBER', () => {
         .its('store')
         .then((store) => {
           store.subscribe(data => {
-            if (!isOcaml(data)) {
+            if (!isOctez(data)) {
               cy.wait(3000).then(() => {
                 store.select('commitNumber')
                   .subscribe((data) => {

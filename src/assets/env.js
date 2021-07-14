@@ -7,6 +7,7 @@
       name: 'tezedge.master.dev.tezedge.com',
       http: 'https://master.dev.tezedge.com:8752',
       p2p_port: '9732',
+      type: 'tezedge',
       features: [
         { name: 'ws', url: 'wss://master.dev.tezedge.com:443' },
         { name: 'debugger', url: 'https://master.dev.tezedge.com:8753' },
@@ -27,6 +28,7 @@
       name: 'octez.master.dev.tezedge.com',
       http: 'https://master.dev.tezedge.com:8742',
       p2p_port: '9733',
+      type: 'octez',
       features: [
         { name: 'debugger', url: 'https://master.dev.tezedge.com:8753' },
         { name: 'sandbox', url: 'http://localhost:3030' },

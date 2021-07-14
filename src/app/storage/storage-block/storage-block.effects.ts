@@ -6,6 +6,8 @@ import { catchError, map, switchMap, takeUntil, tap, withLatestFrom } from 'rxjs
 import { combineLatest, ObservedValueOf, of, Subject, timer } from 'rxjs';
 import { State } from '../../app.reducers';
 import { StorageBlockService } from './storage-block.service';
+import { ErrorActionTypes } from '../../shared/error-popup/error-popup.action';
+import { StorageBlockActionTypes } from './storage-block.actions';
 
 
 @Injectable()
@@ -73,6 +75,13 @@ export class StorageBlockEffects {
   );
 
   @Effect()
+  StorageBlockStartSuccessEffect$ = this.actions$.pipe(
+    ofType('STORAGE_BLOCK_START_SUCCESS'),
+    withLatestFrom(this.store, (action: any, state: ObservedValueOf<Store<State>>) => ({ action, state })),
+    map(({ action, state }) => ({ type: StorageBlockActionTypes.STORAGE_BLOCK_CHECK_AVAILABLE_CONTEXTS }))
+  );
+
+  @Effect()
   StorageBlockGetNextBlockDetailsEffect$ = this.actions$.pipe(
     ofType('STORAGE_BLOCK_NEIGHBOUR_BLOCK_DETAILS'),
     withLatestFrom(this.store, (action: any, state: ObservedValueOf<Store<State>>) => ({ action, state })),
@@ -103,6 +112,17 @@ export class StorageBlockEffects {
     tap(({ action, state }) => {
       this.storageBlockDestroy$.next();
     })
+  );
+
+  @Effect()
+  StorageBlockCheckAvailableContextsEffect$ = this.actions$.pipe(
+    ofType(StorageBlockActionTypes.STORAGE_BLOCK_CHECK_AVAILABLE_CONTEXTS),
+    withLatestFrom(this.store, (action: any, state: ObservedValueOf<Store<State>>) => ({ action, state })),
+    switchMap(({ action, state }) =>
+      this.storageBlockService.checkStorageBlockAvailableContexts(state.settingsNode.activeNode.http, state.storageBlock.entities[0].hash)
+        .pipe(map((contexts: string[]) => ({ type: StorageBlockActionTypes.STORAGE_BLOCK_MAP_AVAILABLE_CONTEXTS, payload: contexts })))
+    ),
+    catchError(error => of({ type: ErrorActionTypes.ADD_ERROR, payload: { title: 'Storage block details error', message: error.message } }))
   );
 
   @Effect()

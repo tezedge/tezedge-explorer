@@ -12,7 +12,8 @@
       CONTEXT CHECKOUT
       <div class="d-flex align-center">
         <span class="context">Current context: {{ activeContextNode }}</span>
-        <mat-icon (click)="getBlockDetails()"
+        <mat-icon (click)="switchContext()"
+                  *ngIf="activeContextNode.length === 2"
                   class="icon-20 icon-white-4 pointer node-switcher"
                   svgIcon="arrow-around"></mat-icon>
       </div>

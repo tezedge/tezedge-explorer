@@ -3,6 +3,7 @@ import { setVirtualScrollId } from '../../network/network-action/network-action.
 import { VirtualScrollActivePage } from '../../shared/types/shared/virtual-scroll-active-page.type';
 import { StorageBlock } from '../../shared/types/storage/storage-block/storage-block.type';
 import { StorageBlockEntity } from '../../shared/types/storage/storage-block/storage-block-entity.type';
+import { StorageBlockActionTypes } from './storage-block.actions';
 
 const initialState: StorageBlock = {
   ids: [],
@@ -18,6 +19,7 @@ const initialState: StorageBlock = {
     operations: [],
   },
   blockDetails: null,
+  availableContexts: [],
   activePage: {},
   pages: []
 };
@@ -68,6 +70,13 @@ export function reducer(state: StorageBlock = initialState, action): StorageBloc
         ...state,
         selected: action.payload.selected,
         blockDetails: action.payload.blockDetails
+      };
+    }
+
+    case StorageBlockActionTypes.STORAGE_BLOCK_MAP_AVAILABLE_CONTEXTS: {
+      return {
+        ...state,
+        availableContexts: action.payload
       };
     }
 

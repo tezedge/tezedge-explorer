@@ -1,7 +1,7 @@
 (function (window) {
   window['env'] = window['env'] || {};
 
-  const api = window['env']['api'];
+  const api = JSON.parse('${API}');
   const commitId = '${COMMIT}';
   const rust = api.find(node => !node.name.includes('ocaml') && !node.name.includes('octez'));
   if (rust && commitId) {

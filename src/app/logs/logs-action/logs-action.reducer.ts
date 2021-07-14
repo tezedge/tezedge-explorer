@@ -87,9 +87,9 @@ export function setIds(action): number[] {
 }
 
 export function setEntities(action, state): { [id: string]: LogsActionEntity } {
-  return action.payload.length === 0 ?
-    {} :
-    action.payload
+  return action.payload.length === 0
+    ? {}
+    : action.payload
       .reduce((accumulator, logsAction) => {
         const virtualScrollId = setVirtualScrollId(action, state, accumulator);
 
@@ -116,7 +116,7 @@ export function setVirtualScrollId(action, state, accumulator): number {
 
 export function setActivePage(entities, action): VirtualScrollActivePage {
   if (!action.payload.length) {
-    return {};
+    return null;
   }
 
   return {
@@ -128,7 +128,7 @@ export function setActivePage(entities, action): VirtualScrollActivePage {
 }
 
 export function setPages(activePage, state): number[] {
-  if (!activePage.id) {
+  if (!activePage) {
     return [];
   }
 

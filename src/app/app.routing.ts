@@ -1,13 +1,9 @@
 import { Params, RouterStateSnapshot, Routes } from '@angular/router';
 import { RouterStateSerializer } from '@ngrx/router-store';
-
-import { LogsComponent } from './logs/logs.component';
 import { MempoolComponent } from './mempool/mempool.component';
 import { NetworkComponent } from './network/network.component';
 import { EndpointsComponent } from './endpoints/endpoints.component';
 import { MonitoringComponent } from './monitoring/monitoring.component';
-import { StorageComponent } from './storage/storage.component';
-import { StorageActionComponent } from './storage/storage-action/storage-action.component';
 import { ChainComponent } from './chain/chain.component';
 import { SandboxComponent } from './sandbox/sandbox.component';
 import { WalletsComponent } from './wallets/wallets.component';
@@ -27,10 +23,18 @@ export const AppRouting: Routes = [
 
   { path: 'endpoints', component: EndpointsComponent },
 
-  { path: 'storage', component: StorageComponent },
-  { path: 'storage/:search', component: StorageActionComponent },
-
-  { path: 'logs', component: LogsComponent },
+  {
+    path: 'storage',
+    loadChildren: () => import('./storage/storage.module').then(module => module.StorageModule)
+  },
+  {
+    path: 'state',
+    loadChildren: () => import('./state-chart/state-chart.module').then(module => module.StateChartModule)
+  },
+  {
+    path: 'logs',
+    loadChildren: () => import('./logs/logs.module').then(module => module.LogsModule)
+  },
 
   { path: 'chain', component: ChainComponent },
 

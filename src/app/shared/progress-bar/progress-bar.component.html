@@ -1,0 +1,8 @@
+<ng-container [var]="{ value: progress$ | async }"
+              #progress="var">
+  <mat-progress-bar *ngIf="showProgressBar"
+                    [style.visibility]="progress.value === 0 ? 'hidden' : ''"
+                    [class.fading]="progress.value === 100"
+                    [value]="progress.value || 0"
+                    mode="determinate"></mat-progress-bar>
+</ng-container>

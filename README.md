@@ -70,6 +70,7 @@ export const environment = {
         { name: 'resources/storage' },
         { name: 'mempool' },
         { name: 'storage' },
+        { name: 'storage-action' },
         { name: 'network' },
         { name: 'logs' },
       ]

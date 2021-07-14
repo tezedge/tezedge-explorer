@@ -39,13 +39,9 @@ export class CommitNumberComponent implements OnInit {
 
   constructor(private store: Store<State>,
               private overlay: Overlay,
-              private viewContainerRef: ViewContainerRef) {}
+              private viewContainerRef: ViewContainerRef) { }
 
   ngOnInit(): void {
-    this.store.dispatch({ type: 'VERSION_NODE_TAG_LOAD' });
-    this.store.dispatch({ type: 'VERSION_NODE_LOAD' });
-    this.store.dispatch({ type: 'VERSION_DEBUGGER_LOAD' });
-
     this.commitNumber$ = this.store.select('commitNumber')
       .pipe(untilDestroyed(this));
 
@@ -57,7 +53,9 @@ export class CommitNumberComponent implements OnInit {
       this.store.dispatch({ type: 'VERSION_EXPLORER_LOAD', payload: commit ? commit.id : '' });
       this.store.dispatch({ type: 'VERSION_NODE_TAG_LOAD' });
       this.store.dispatch({ type: 'VERSION_NODE_LOAD' });
-      this.store.dispatch({ type: 'VERSION_DEBUGGER_LOAD' });
+      if (activeNode.features.some(f => f.name === 'debugger')) {
+        this.store.dispatch({ type: 'VERSION_DEBUGGER_LOAD' });
+      }
     });
 
     // TODO: commitNumber for ocaml is not the same, find a solution

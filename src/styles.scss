@@ -6,6 +6,7 @@
 @import 'assets/styles/material/material-tooltip';
 @import 'assets/styles/material/material-form';
 @import 'assets/styles/material/material-icon';
+@import 'assets/styles/material/material-progress-bar';
 @import 'assets/styles/notification';
 @import 'assets/styles/open-api';
 
@@ -360,11 +361,11 @@ input.mat-input-element {
 }
 
 .storage-action-filter .mat-form-field-wrapper {
-  padding-bottom: 0px;
+  padding-bottom: 0;
 }
 
 .storage-action-filter .mat-form-field-infix {
-  border-top: 0px;
+  border-top: 0;
 }
 
 .storage-action-filter .mat-icon {
@@ -375,23 +376,10 @@ input.mat-input-element {
   font-size: 14px !important;
 }
 
-/* progress bar */
-.mat-progress-bar-fill::after {
-  background-color: #2e3648;
-}
-
-.mat-progress-bar-buffer {
-  background: #f6f9fc;
-}
-
-.mat-progress-bar {
-  border-radius: 2px;
-}
-
 .mat-tab-label {
   min-width: 90px !important;
   height: 36px !important;
-  padding: 0px 0px 0px 0px !important;
+  padding: 0 0 0 0 !important;
   opacity: 0.9 !important;
   font-size: 12px;
   font-weight: 300;

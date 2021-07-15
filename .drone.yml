@@ -26,6 +26,7 @@ steps:
       - cypress run --spec "cypress/integration/app/app.spec.js"
     environment:
       CYPRESS_baseUrl: http://frontend-server:80
+    depends_on: [ build ]
 
   - name: test-logs
     image: cypress/included:6.2.1
@@ -33,6 +34,7 @@ steps:
       - cypress run --spec "cypress/integration/logs/logs.spec.js"
     environment:
       CYPRESS_baseUrl: http://frontend-server:80
+    depends_on: [ build ]
 
   - name: test-commit-number
     image: cypress/included:6.2.1
@@ -40,6 +42,7 @@ steps:
       - cypress run --spec "cypress/integration/monitoring/commit-number/commit-number.spec.js"
     environment:
       CYPRESS_baseUrl: http://frontend-server:80
+    depends_on: [ build ]
 
   - name: test-network
     image: cypress/included:6.2.1
@@ -47,6 +50,7 @@ steps:
       - cypress run --spec "cypress/integration/network/network-action/network.spec.js"
     environment:
       CYPRESS_baseUrl: http://frontend-server:80
+    depends_on: [ build ]
 
   - name: test-open-api
     image: cypress/included:6.2.1
@@ -54,6 +58,7 @@ steps:
       - cypress run --spec "cypress/integration/open-api/open-api.spec.js"
     environment:
       CYPRESS_baseUrl: http://frontend-server:80
+    depends_on: [ build ]
 
   - name: test-system-resources
     image: cypress/included:6.2.1
@@ -61,6 +66,7 @@ steps:
       - cypress run --spec "cypress/integration/resources/system-resources.spec.js"
     environment:
       CYPRESS_baseUrl: http://frontend-server:80
+    depends_on: [ build ]
 
   - name: test-storage-resources
     image: cypress/included:6.2.1
@@ -68,6 +74,7 @@ steps:
       - cypress run --spec "cypress/integration/resources/storage-resources.spec.js"
     environment:
       CYPRESS_baseUrl: http://frontend-server:80
+    depends_on: [ build ]
 
   - name: test-memory-resources
     image: cypress/included:6.2.1
@@ -75,6 +82,7 @@ steps:
       - cypress run --spec "cypress/integration/resources/memory-resources.spec.js"
     environment:
       CYPRESS_baseUrl: http://frontend-server:80
+    depends_on: [ build ]
 
   - name: test-routing
     image: cypress/included:6.2.1
@@ -82,6 +90,7 @@ steps:
       - cypress run --spec "cypress/integration/routing/routing.spec.js"
     environment:
       CYPRESS_baseUrl: http://frontend-server:80
+    depends_on: [ build ]
 
   - name: test-sandbox
     image: cypress/included:6.2.1
@@ -89,6 +98,7 @@ steps:
       - cypress run --spec "cypress/integration/sandbox/sandbox.spec.js"
     environment:
       CYPRESS_baseUrl: http://frontend-server:80
+    depends_on: [ build ]
 
   - name: test-settings-node
     image: cypress/included:6.2.1
@@ -96,6 +106,7 @@ steps:
       - cypress run --spec "cypress/integration/settings-node/settings-node.spec.js"
     environment:
       CYPRESS_baseUrl: http://frontend-server:80
+    depends_on: [ build ]
 
   - name: test-progress-bar
     image: cypress/included:6.2.1
@@ -103,6 +114,7 @@ steps:
       - cypress run --spec "cypress/integration/shared/progress-bar.spec.js"
     environment:
       CYPRESS_baseUrl: http://frontend-server:80
+    depends_on: [ build ]
 
   - name: test-error-popup
     image: cypress/included:6.2.1
@@ -110,6 +122,7 @@ steps:
       - cypress run --spec "cypress/integration/shared/error-popup.spec.js"
     environment:
       CYPRESS_baseUrl: http://frontend-server:80
+    depends_on: [ build ]
 
   - name: test-storage-action
     image: cypress/included:6.2.1
@@ -117,6 +130,7 @@ steps:
       - cypress run --spec "cypress/integration/storage/storage-action/storage-action.spec.js"
     environment:
       CYPRESS_baseUrl: http://frontend-server:80
+    depends_on: [ build ]
 
   - name: test-storage-block
     image: cypress/included:6.2.1
@@ -124,6 +138,7 @@ steps:
       - cypress run --spec "cypress/integration/storage/storage-block/storage-block.spec.js"
     environment:
       CYPRESS_baseUrl: http://frontend-server:80
+    depends_on: [ build ]
 
   - name: publish
     image: plugins/docker

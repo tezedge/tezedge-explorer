@@ -28,8 +28,8 @@ export class LogsActionComponent implements OnInit, OnDestroy {
 
   @ViewChild(VirtualScrollDirective) vrFor: VirtualScrollDirective;
 
-  readonly dateNow = new Date();
   formGroup: FormGroup;
+  currentDatePlaceholder: string;
 
   constructor(private store: Store<State>,
               private changeDetector: ChangeDetectorRef,
@@ -67,12 +67,20 @@ export class LogsActionComponent implements OnInit, OnDestroy {
   }
 
   private initForm(): void {
+    const now = new Date();
+
+    const twoDigit = (val) => val < 10 ? `0${val}` : val;
+
+    this.currentDatePlaceholder = 'e.g: ' + twoDigit(now.getHours())
+      + ':' + twoDigit(now.getMinutes())
+      + ':' + twoDigit(now.getSeconds())
+      + '.' + twoDigit(now.getMilliseconds())
+      + ', ' + twoDigit(now.getUTCDate())
+      + ' ' + now.toLocaleString('default', { month: 'short' })
+      + ' ' + now.getFullYear().toString().substring(2);
+
     this.formGroup = this.formBuilder.group({
-      date: new FormControl('', [Validators.required, TezedgeTimeValidator.isDate]),
-      hour: new FormControl('', [Validators.required, TezedgeTimeValidator.isHour]),
-      minute: new FormControl('', [Validators.required, Validators.max(59)]),
-      second: new FormControl('', [Validators.required, Validators.max(59)]),
-      millisecond: new FormControl('', [Validators.required, Validators.max(999)]),
+      time: new FormControl('', [Validators.required, TezedgeTimeValidator.isTime]),
     });
   }
 

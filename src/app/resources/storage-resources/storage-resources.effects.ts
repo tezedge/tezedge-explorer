@@ -23,7 +23,7 @@ export class StorageResourcesEffects {
         map((result: any[]) => result.map((contextResponse, index: number) => contextResponse.operationsContext.length ? action.payload[index] : null).filter(Boolean))
       )
     ),
-    switchMap(availableContexts => [
+    switchMap(availableContexts => !availableContexts.length ? [] : [
       { type: StorageResourcesActionTypes.STORAGE_RESOURCES_LOAD, payload: availableContexts[0] },
       { type: StorageResourcesActionTypes.STORAGE_RESOURCES_MAP_AVAILABLE_CONTEXTS, payload: availableContexts }
     ]),

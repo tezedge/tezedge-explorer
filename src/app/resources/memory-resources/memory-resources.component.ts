@@ -17,9 +17,10 @@ import { State } from '../../app.reducers';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { MemoryResource } from '../../shared/types/resources/memory/memory-resource.type';
 import { MemoryResourcesActionTypes } from './memory-resources.actions';
-import { delay, filter } from 'rxjs/operators';
+import { delay, filter, skip } from 'rxjs/operators';
 import { memoryResources } from '../resources/resources.reducer';
 import { appState } from '../../app.reducer';
+import { App } from '../../shared/types/app/app.type';
 
 @UntilDestroy()
 @Component({
@@ -34,6 +35,7 @@ export class MemoryResourcesComponent implements AfterViewInit, OnInit, OnDestro
   breadcrumbs: MemoryResource[] = [];
 
   private runtime: Runtime & { setup: any };
+  private menuCollapsed: boolean;
 
   @ViewChild('treeMapChart') private treeMapRef: ElementRef<HTMLDivElement>;
   @ViewChild('breadcrumbsRef') private breadcrumbsRef: ElementRef<HTMLDivElement>;
@@ -61,8 +63,15 @@ export class MemoryResourcesComponent implements AfterViewInit, OnInit, OnDestro
       untilDestroyed(this),
       select(appState),
       filter(() => !!this.activeResource),
-      delay(400)
-    ).subscribe(() => this.createTreemap(this.activeResource));
+      delay(400),
+    ).subscribe((app: App) => {
+      if (this.menuCollapsed !== app.sidenav.collapsed) {
+        this.createTreemap(this.activeResource);
+      } else {
+        this.store.dispatch({ type: MemoryResourcesActionTypes.MEMORY_RESOURCES_LOAD, payload: { reversed: false } });
+      }
+      this.menuCollapsed = app.sidenav.collapsed;
+    });
   }
 
   ngAfterViewInit(): void {

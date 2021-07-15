@@ -14,7 +14,7 @@ export class ErrorPopupEffects {
     ofType(ErrorActionTypes.SCHEDULE_ERROR_DELETION),
     withLatestFrom(this.store, (action: any, state: ObservedValueOf<Store<State>>) => ({ action, state })),
     switchMap(({ action, state }) =>
-      timer(0, 60000)
+      timer(0, 20000)
         .pipe(
           skip(1),
           switchMap(() => of({ type: ErrorActionTypes.REMOVE_ERRORS }))

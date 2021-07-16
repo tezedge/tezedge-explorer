@@ -12,6 +12,10 @@ const routes: Routes = [
         path: '',
         component: LogsActionComponent
       },
+      {
+        path: ':timestamp',
+        component: LogsActionComponent
+      },
     ]
   },
   {

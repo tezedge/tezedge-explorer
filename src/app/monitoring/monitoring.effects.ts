@@ -168,7 +168,7 @@ export class MonitoringEffects {
         payload: { title: 'Websocket error', message: 'Connection failed' }
       });
       return caught;
-    })
+    }),
   );
 
   constructor(

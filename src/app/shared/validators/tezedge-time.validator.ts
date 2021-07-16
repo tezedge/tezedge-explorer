@@ -5,7 +5,7 @@ import { locale } from 'moment-mini-ts';
 export class TezedgeTimeValidator {
 
   static isTime(control: FormControl): { [key: string]: any } {
-    const pattern = /(2[0-3]|[01]?[0-9]):([0-5]?[0-9]):([0-5]?[0-9])(.[0-9]?[0-9]?[0-9]|)(, |,)([0-3]?[0-9])( ([A-Za-z]{1,3}) |(([./-])[0-1]?[0-9]([./-])))([0-9]?[0-9])( |)/g;
+    const pattern = /(2[0-3]|[01]?[0-9]):([0-5]?[0-9]):([0-5]?[0-9])(.[0-9]?[0-9]?[0-9]|)(, |,)([0-3]?[0-9])( ([A-Za-z]{1,3}) |(([./-])[0-1]?[0-9]([./-])))([0-9][0-9])( |)/g;
     const value = control.value.toString();
     if (value.match(pattern) === null || !moment(TezedgeTimeValidator.getDateFormat(value)).isValid()) {
       return { invalidTime: true };

@@ -44,7 +44,6 @@ export class NetworkActionComponent implements OnInit, OnDestroy {
     this.store.dispatch({type: 'NETWORK_ACTION_RESET'});
     this.scrollStart(null);
 
-    // wait for data changes from redux
     this.store.select('networkAction')
       .pipe(takeUntil(this.onDestroy$))
       .subscribe((data: NetworkAction) => {

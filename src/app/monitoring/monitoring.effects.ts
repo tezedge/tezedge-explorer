@@ -90,9 +90,11 @@ export class MonitoringEffects {
         );
 
       return this.networkInterval$.pipe(
-        switchMap(value => interval(value * 1000).pipe(
-          startWith(1),
-          takeUntil(this.networkDestroy$))
+        switchMap(value => interval(value * 1000)
+          .pipe(
+            startWith(1),
+            takeUntil(this.networkDestroy$)
+          )
         ),
         switchMap(() => headerData$)
       );
@@ -112,9 +114,11 @@ export class MonitoringEffects {
       );
 
       return this.networkInterval$.pipe(
-        switchMap(value => interval(value * 1000).pipe(
-          startWith(1),
-          takeUntil(this.networkDestroy$))
+        switchMap(value => interval(value * 1000)
+          .pipe(
+            startWith(1),
+            takeUntil(this.networkDestroy$)
+          )
         ),
         switchMap(() => peersData$)
       );
@@ -140,27 +144,35 @@ export class MonitoringEffects {
         takeUntil(this.websocketDestroy$),
         filter((data: any) => {
           // even if ws is turned off update state cca 5 sec
-          wsCounter = wsCounter < 25 ? wsCounter + 1 : 0;
+          wsCounter = wsCounter < 10 ? wsCounter + 1 : 0;
 
           // ignore ws when we got all 5 type of actions from the backend
           // (this case is only if we are on another route than monitoring)
           const lazyCalls = action.payload && action.payload.lazyCalls;
-          if (lazyCalls && wsCounter > 5) {
+          if (lazyCalls && wsCounter > 2) {
             return false;
           }
-          return state.monitoring.open || wsCounter < 6;
+          return state.monitoring.open || wsCounter < 3;
         }),
-        tap(data => {
-          if (data.type === 'blockApplicationStatus' && data.payload.lastAppliedBlock === null && wsCounter < 6) {
-            this.store.dispatch({
-              type: ErrorActionTypes.ADD_ERROR,
-              payload: { title: 'Websocket error', message: 'Block application status: "lastAppliedBlock" is null, synchronization values may be affected' }
-            });
-          }
-        })
       );
     }),
-    map((data) => ({ ...data })),
+    switchMap((wsArrayMessage: any[]) => {
+      if (wsArrayMessage.length === 4) {
+        const historyPayload = {
+          blocks: wsArrayMessage[1].payload,
+          chain: wsArrayMessage[3].payload.chain
+        };
+        const statsPayload = { ...wsArrayMessage[0].payload, ...wsArrayMessage[2].payload };
+        return [
+          { type: 'WS_NETWORK_HISTORY_LOAD', payload: historyPayload },
+          { type: 'WS_NETWORK_STATS_LOAD', payload: statsPayload },
+        ];
+      } else if (Array.isArray(wsArrayMessage[0].payload)) {
+        wsArrayMessage[0].type = 'WS_NETWORK_PEERS_LOAD_SUCCESS';
+        return wsArrayMessage;
+      }
+      return [];
+    }),
     catchError((error, caught) => {
       console.error(error);
       this.store.dispatch({
@@ -177,7 +189,6 @@ export class MonitoringEffects {
     private store: Store<State>,
     private router: Router,
     private settingsNodeService: SettingsNodeService,
-  ) {
-  }
+  ) { }
 
 }

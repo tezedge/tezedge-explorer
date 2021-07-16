@@ -9,12 +9,9 @@ const initialState: NetworkHistory = {
 export function reducer(state: NetworkHistory = initialState, action): NetworkHistory {
   switch (action.type) {
 
-    case 'chainStatus': {
+    case 'WS_NETWORK_HISTORY_LOAD': {
       return {
-        ...state,
-        ids: [
-          ...action.payload.chain.map(cycle => cycle.id)
-        ],
+        ids: [...action.payload.chain.map(cycle => cycle.id)],
         entities: action.payload.chain.reduce((accumulator, cycle) => ({
           ...accumulator,
           [cycle.id]: {
@@ -22,24 +19,12 @@ export function reducer(state: NetworkHistory = initialState, action): NetworkHi
             ...cycle
           }
         }), {}),
-        // downloadDurationSeries: action.payload.chain
-        //     .filter(cycle => cycle.duration)
-        //     .map((cycle) => ({
-        //         name: cycle.id,
-        //         value: Math.floor(action.payload.blocksPerCycle/cycle.duration)
-        //     }), {})
-      };
-    }
-
-    case 'blockStatus': {
-      return {
-        ...state,
-        downloadDurationSeries: action.payload
+        downloadDurationSeries: action.payload.blocks
           .filter(cycle => cycle.downloadDuration)
-          .map((cycle) => ({
+          .map(cycle => ({
             name: cycle.group,
             value: Math.floor(4096 / cycle.downloadDuration)
-          }), {})
+          }))
       };
     }
 

@@ -32,7 +32,6 @@ export class NetworkPeersComponent implements OnInit {
         this.tableDataSource.data = data.ids.map((id: string) => ({ id, ...data.entities[id] }));
         this.tableDataSource.paginator = this.paginator;
       });
-
   }
 
   readonly trackByPeerId = (index: number, peer: any) => peer.id;

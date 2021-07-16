@@ -161,8 +161,6 @@ steps:
     settings:
       repo: tezedge/tezedge-explorer
       tags: latest
-      commands:
-        - docker login -u docker_hub_username -p docker_hub_pswd
       dockerfile: Dockerfile
       build_args:
         - branch=develop
@@ -184,7 +182,7 @@ volumes:
 trigger:
   branch:
     - develop
-  event: pull_request
+  event: push
 
 ---
 # when pushing on master these pipelines are executed

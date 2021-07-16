@@ -12,7 +12,6 @@ const initialState: NetworkAction = {
   filter: {
     local: false,
     remote: false,
-
     connection: false,
     meta: false,
     acknowledge: false,
@@ -20,7 +19,6 @@ const initialState: NetworkAction = {
     advertise: false,
     swap: false,
     deactivate: false,
-
     currentHead: false,
     currentBranch: false,
     operation: false,
@@ -32,7 +30,8 @@ const initialState: NetworkAction = {
   stream: false,
   urlParams: '',
   activePage: {},
-  pages: []
+  pages: [],
+  timestamp: undefined
 };
 
 export function reducer(state: NetworkAction = initialState, action): NetworkAction {
@@ -42,14 +41,6 @@ export function reducer(state: NetworkAction = initialState, action): NetworkAct
     case 'NETWORK_ACTION_RESET': {
       return initialState;
     }
-
-    // add network url params
-    // case 'NETWORK_ACTION_LOAD': {
-    //   return {
-    //     ...state,
-    //     urlParams: action.payload.filter ? action.payload.filter : ''
-    //   };
-    // }
 
     case 'NETWORK_ACTION_START_SUCCESS':
     case 'NETWORK_ACTION_LOAD_SUCCESS': {
@@ -62,20 +53,25 @@ export function reducer(state: NetworkAction = initialState, action): NetworkAct
         entities,
         lastCursorId: setLastCursorId(action),
         activePage,
-        pages: setPages(activePage, state)
+        pages: setPages(activePage, state),
+        timestamp: action.payload.timestamp
       };
     }
 
+    case 'NETWORK_ACTION_TIME_LOAD':
     case 'NETWORK_ACTION_FILTER': {
       const stateFilter = {
         ...state.filter,
-        [action.payload]: !state.filter[action.payload],
+        [action.payload.filterType]: action.payload.filterType ? !state.filter[action.payload.filterType] : false
       };
 
       return {
-        ...initialState,
+        ...state,
+        selected: {},
+        stream: false,
         urlParams: state.urlParams,
-        filter: stateFilter
+        filter: stateFilter,
+        timestamp: action.payload.timestamp ?? state.timestamp
       };
     }
 
@@ -138,37 +134,36 @@ export function setDetails(action): NetworkActionDetails {
 }
 
 export function setIds(action): number[] {
-  if (!action.payload.length) {
+  if (!action.payload.network.length) {
     return [];
   }
 
-  return action.payload
+  return action.payload.network
     .map((item, index) => index)
     .sort((a, b) => a - b);
 }
 
 export function setEntities(action, state): { [id: string]: NetworkActionEntity } {
-  return action.payload.length === 0 ?
-    {} :
-    action.payload
-      .reduce((accumulator, networkAction) => {
-        const virtualScrollId = setVirtualScrollId(action, state, accumulator);
+  return action.payload.network.length === 0
+    ? {}
+    : action.payload.network.reduce((accumulator, networkAction) => {
+      const virtualScrollId = setVirtualScrollId(action, state, accumulator);
 
-        return {
-          ...accumulator,
-          [virtualScrollId]: {
-            ...networkAction,
-            id: virtualScrollId,
-            originalId: networkAction.id,
-            payload: networkAction.message,
-            datetime: moment(Math.ceil(networkAction.timestamp / 1000000)).format('HH:mm:ss.SSS, DD MMM YY')
-          }
-        };
-      }, {});
+      return {
+        ...accumulator,
+        [virtualScrollId]: {
+          ...networkAction,
+          id: virtualScrollId,
+          originalId: networkAction.id,
+          payload: networkAction.message,
+          datetime: moment(Math.ceil(networkAction.timestamp / 1000000)).format('HH:mm:ss.SSS, DD MMM YY')
+        }
+      };
+    }, {});
 }
 
 export function setLastCursorId(action): number {
-  return action.payload.length - 1;
+  return action.payload.network.length - 1;
 }
 
 export function setHexValues(bytes): string[][] {
@@ -194,24 +189,24 @@ export function setHexValues(bytes): string[][] {
 
 export function setVirtualScrollId(action, state, accumulator): number {
   const alreadySetRecords = Object.keys(accumulator);
-  return action.payload.length - (alreadySetRecords.length + 1);
+  return action.payload.network.length - (alreadySetRecords.length + 1);
 }
 
 export function setActivePage(entities, action): VirtualScrollActivePage {
-  if (!action.payload.length) {
-    return {};
+  if (!action.payload.network.length) {
+    return null;
   }
 
   return {
-    id: entities[action.payload.length - 1].originalId,
+    id: entities[action.payload.network.length - 1].originalId,
     start: entities[0],
-    end: entities[action.payload.length - 1],
-    numberOfRecords: action.payload.length
+    end: entities[action.payload.network.length - 1],
+    numberOfRecords: action.payload.network.length
   };
 }
 
 export function setPages(activePage, state): number[] {
-  if (!activePage.id) {
+  if (!activePage) {
     return [];
   }
 

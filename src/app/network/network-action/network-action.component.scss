@@ -90,3 +90,26 @@
 .mat-cell.cdk-column-datetime.mat-column-datetime {
     padding: 7px 0px 7px 20px !important;
 }
+
+form {
+  height: 24px;
+  margin-right: 5px;
+
+  .custom-bottom-form-field {
+    margin: 0 4px;
+    width: 174px;
+
+    .p-absolute {
+      right: 6px;
+      height: 100%;
+    }
+  }
+}
+
+.square-button {
+  border: none;
+
+  &:not(:disabled) {
+    cursor: pointer;
+  }
+}

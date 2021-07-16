@@ -27,7 +27,7 @@ export class OpenApiComponent implements OnInit {
     this.store.select(selectActiveNode)
       .pipe(untilDestroyed(this))
       .subscribe((node: SettingsNodeApi) => {
-        const showMemoryFeature = node.features.find(f => f.name === 'resources/memory');
+        const showMemoryFeature = node.features.find(f => f.memoryProfilerUrl);
         if (showMemoryFeature) {
           this.tabs.add('memory profiler');
         } else {

@@ -12,4 +12,5 @@ export class NetworkAction {
   urlParams: string;
   activePage: VirtualScrollActivePage;
   pages: number[];
+  timestamp: number;
 }

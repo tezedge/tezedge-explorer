@@ -1,3 +1,5 @@
+const isNotOctez = (data) => data.settingsNode.activeNode.type !== 'octez';
+
 context('STORAGE RESOURCES', () => {
   beforeEach(() => {
     cy.visit(Cypress.config().baseUrl);
@@ -11,8 +13,8 @@ context('STORAGE RESOURCES', () => {
     cy.window()
       .its('store')
       .then((store) => {
-        store.select('settingsNode').subscribe((settingsNode) => {
-          if (settingsNode.activeNode.type !== 'octez') {
+        store.subscribe((store) => {
+          if (isNotOctez(store)) {
             cy.wait('@getStorageResources').its('response.statusCode').should('eq', 200);
           }
         });
@@ -25,54 +27,56 @@ context('STORAGE RESOURCES', () => {
         .its('store')
         .then((store) => {
           store.subscribe(data => {
-            store.select('resources').subscribe(store => {
-              const resources = store.storageResourcesState.storageResources;
-              if (resources) {
-                cy.wrap(resources).should('not.be.undefined');
-                Object.keys(resources).forEach(key => {
-                  cy.wrap(resources[key]).should('not.be.undefined');
-                });
+            if (isNotOctez(data)) {
+              store.select('resources').subscribe(store => {
+                const resources = store.storageResourcesState.storageResources;
+                if (resources) {
+                  cy.wrap(resources).should('not.be.undefined');
+                  Object.keys(resources).forEach(key => {
+                    cy.wrap(resources[key]).should('not.be.undefined');
+                  });
 
-                const isOperationArraySortedByTotalTime = (array) => {
-                  for (let i = 0; i < array.length - 1; i++) {
-                    if (array[i].totalTime < array[i + 1].totalTime) {
-                      return false;
-                    }
-                  }
-                  return true;
-                };
-
-                cy.wrap(isOperationArraySortedByTotalTime(resources.operationsContext)).should('eq', true);
-
-                const assertContext = (ctx) => {
-                  cy.wrap(ctx.actionsCount).should('not.be.undefined');
-                  cy.wrap(ctx.totalTime).should('not.be.undefined');
-                  if (ctx.columns.length) {
-                    ctx.columns.forEach(col => {
-                      let squareCount = 0;
-                      let timeInTenMicroseconds = col.totalTime * 100000;
-                      while (timeInTenMicroseconds > 1) {
-                        timeInTenMicroseconds /= 10;
-                        squareCount++;
+                  const isOperationArraySortedByTotalTime = (array) => {
+                    for (let i = 0; i < array.length - 1; i++) {
+                      if (array[i].totalTime < array[i + 1].totalTime) {
+                        return false;
                       }
-                      cy.wrap(col.squareCount).should('eq', Math.min(squareCount, 8));
-                    });
-                  }
-                };
+                    }
+                    return true;
+                  };
 
-                assertContext(resources.commitContext);
-                assertContext(resources.checkoutContext);
-                resources.operationsContext.forEach((operation) => {
-                  assertContext(operation.mem);
-                  assertContext(operation.find);
-                  assertContext(operation.findTree);
-                  assertContext(operation.add);
-                  assertContext(operation.addTree);
-                  assertContext(operation.remove);
-                });
-                cy.wrap(resources.contextSliceNames.some(slice => slice.includes('_'))).should('be.false');
-              }
-            });
+                  cy.wrap(isOperationArraySortedByTotalTime(resources.operationsContext)).should('eq', true);
+
+                  const assertContext = (ctx) => {
+                    cy.wrap(ctx.actionsCount).should('not.be.undefined');
+                    cy.wrap(ctx.totalTime).should('not.be.undefined');
+                    if (ctx.columns.length) {
+                      ctx.columns.forEach(col => {
+                        let squareCount = 0;
+                        let timeInTenMicroseconds = col.totalTime * 100000;
+                        while (timeInTenMicroseconds > 1) {
+                          timeInTenMicroseconds /= 10;
+                          squareCount++;
+                        }
+                        cy.wrap(col.squareCount).should('eq', Math.min(squareCount, 8));
+                      });
+                    }
+                  };
+
+                  assertContext(resources.commitContext);
+                  assertContext(resources.checkoutContext);
+                  resources.operationsContext.forEach((operation) => {
+                    assertContext(operation.mem);
+                    assertContext(operation.find);
+                    assertContext(operation.findTree);
+                    assertContext(operation.add);
+                    assertContext(operation.addTree);
+                    assertContext(operation.remove);
+                  });
+                  cy.wrap(resources.contextSliceNames.some(slice => slice.includes('_'))).should('be.false');
+                }
+              });
+            }
           });
         });
     });
@@ -83,17 +87,19 @@ context('STORAGE RESOURCES', () => {
       cy.window()
         .its('store')
         .then((store) => {
-          store.select('resources').subscribe(store => {
-            const resources = store.storageResourcesState.storageResources;
-            if (store.storageResourcesState.availableContexts.length) {
-              cy.get('.operation-list .operation').should('have.length', resources.operationsContext.length + 1);
+          store.subscribe(data => {
+            if (isNotOctez(data)) {
+              store.select('resources').subscribe(store => {
+                const resources = store.storageResourcesState.storageResources;
+                cy.get('.operation-list .operation').should('have.length', resources.operationsContext.length + 1);
 
-              cy.get(`.operation-list .operation:nth-child(1) app-storage-resources-mini-graph`).should('have.length', 2);
+                cy.get(`.operation-list .operation:nth-child(1) app-storage-resources-mini-graph`).should('have.length', 2);
 
-              resources.operationsContext.forEach((operation, i) => {
-                cy.get(`.operation-list .operation:nth-child(${i + 2}) app-storage-resources-mini-graph`).should('have.length', 7);
-                cy.get(`.operation-list .operation:nth-child(${i + 2}) .slice-header span.text-uppercase`).should((span) => {
-                  expect(span.text()).to.equal(resources.contextSliceNames[i + 2]);
+                resources.operationsContext.forEach((operation, i) => {
+                  cy.get(`.operation-list .operation:nth-child(${i + 2}) app-storage-resources-mini-graph`).should('have.length', 7);
+                  cy.get(`.operation-list .operation:nth-child(${i + 2}) .slice-header span.text-uppercase`).should((span) => {
+                    expect(span.text()).to.equal(resources.contextSliceNames[i + 2]);
+                  });
                 });
               });
             }
@@ -107,20 +113,24 @@ context('STORAGE RESOURCES', () => {
       cy.window()
         .its('store')
         .then((store) => {
-          store.select('resources').subscribe(resources => {
-            if (resources.storageResourcesState && resources.storageResourcesState.availableContexts.length) {
-              cy.get('app-storage-resources .storage-toolbar .context').should('be.visible');
-              cy.get('app-storage-resources .storage-toolbar .toolbar-right').should('be.visible');
+          store.subscribe(data => {
+            if (isNotOctez(data)) {
+              store.select('resources').subscribe(resources => {
+                if (resources.storageResourcesState && resources.storageResourcesState.availableContexts.length) {
+                  cy.get('app-storage-resources .storage-toolbar .context').should('be.visible');
+                  cy.get('app-storage-resources .storage-toolbar .toolbar-right').should('be.visible');
 
-              const contexts = resources.storageResourcesState.availableContexts;
-              if (contexts.length === 2) {
-                cy.get('app-storage-resources .storage-toolbar .node-switcher').should('be.visible');
-              } else if (contexts.length === 1) {
-                cy.get('app-storage-resources .storage-toolbar .context').should(element => {
-                  expect(element.text()).to.contain(contexts[0]);
-                });
-                cy.get('app-storage-resources .storage-toolbar .node-switcher').should('not.exist');
-              }
+                  const contexts = resources.storageResourcesState.availableContexts;
+                  if (contexts.length === 2) {
+                    cy.get('app-storage-resources .storage-toolbar .node-switcher').should('be.visible');
+                  } else if (contexts.length === 1) {
+                    cy.get('app-storage-resources .storage-toolbar .context').should(element => {
+                      expect(element.text()).to.contain(contexts[0]);
+                    });
+                    cy.get('app-storage-resources .storage-toolbar .node-switcher').should('not.exist');
+                  }
+                }
+              });
             }
           });
         });
@@ -132,28 +142,32 @@ context('STORAGE RESOURCES', () => {
       cy.window()
         .its('store')
         .then((store) => {
-          store.select('resources').subscribe(resources => {
-            if (resources.storageResourcesState && resources.storageResourcesState.availableContexts.length) {
-              cy.get('app-storage-resources .storage-toolbar .context').should('be.visible');
+          store.subscribe(data => {
+            if (isNotOctez(data)) {
+              store.select('resources').subscribe(resources => {
+                if (resources.storageResourcesState) {
+                  cy.get('app-storage-resources .storage-toolbar .context').should('be.visible');
 
-              let currentContext = '';
-              cy.get('app-storage-resources .storage-toolbar .context').should(div => {
-                currentContext = div.text();
-              });
-              const contexts = resources.storageResourcesState.availableContexts;
-              if (contexts.length === 2) {
-                cy.get('app-storage-resources .storage-toolbar .node-switcher').should('be.visible');
-
-                const secondContext = resources.storageResourcesState.availableContexts[1];
-                if (!currentContext.includes(secondContext)) {
-                  cy.get('app-storage-resources .storage-toolbar .node-switcher').click();
-                  cy.wait(1000).then(() => {
-                    cy.get('app-storage-resources .storage-toolbar .context').should(div => {
-                      expect(div.text()).to.contain(secondContext);
-                    });
+                  let currentContext = '';
+                  cy.get('app-storage-resources .storage-toolbar .context').should(div => {
+                    currentContext = div.text();
                   });
+                  const contexts = resources.storageResourcesState.availableContexts;
+                  if (contexts.length === 2) {
+                    cy.get('app-storage-resources .storage-toolbar .node-switcher').should('be.visible');
+
+                    const secondContext = resources.storageResourcesState.availableContexts[1];
+                    if (!currentContext.includes(secondContext)) {
+                      cy.get('app-storage-resources .storage-toolbar .node-switcher').click();
+                      cy.wait(1000).then(() => {
+                        cy.get('app-storage-resources .storage-toolbar .context').should(div => {
+                          expect(div.text()).to.contain(secondContext);
+                        });
+                      });
+                    }
+                  }
                 }
-              }
+              });
             }
           });
         });

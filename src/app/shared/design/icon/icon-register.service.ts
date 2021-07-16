@@ -2,9 +2,7 @@ import { Injectable } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import { MatIconRegistry } from '@angular/material/icon';
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable({ providedIn: 'root' })
 export class IconRegisterService {
 
   private readonly icons = [
@@ -19,6 +17,15 @@ export class IconRegisterService {
     'fuzzing',
     'local',
     'remote',
+    'swagger',
+    'arrow-left-stop',
+    'arrow-right-stop',
+    'less-than',
+    'greater-than',
+    'close-blank',
+    'peer',
+    'logs',
+    'arrow-circle-right',
   ];
 
   constructor(private iconRegistry: MatIconRegistry,

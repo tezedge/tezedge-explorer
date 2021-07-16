@@ -40,7 +40,7 @@
                 "input": "src/styles.dark.scss",
                 "bundleName": "styles.dark",
                 "inject": false
-              },
+              }
             ],
             "scripts": [
               "node_modules/swagger-ui-dist/swagger-ui-bundle.js",

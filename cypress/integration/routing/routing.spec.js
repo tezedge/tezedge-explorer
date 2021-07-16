@@ -70,7 +70,7 @@ context('ROUTING', () => {
     });
   });
 
-  it('[ROUTING] guard should block routing to storage page if memory storage feature is missing', () => {
+  it('[ROUTING] guard should block routing to storage page if storage feature is missing', () => {
     cy.wait(1000).then(() => {
       cy.window().its('zone').then((zone) => {
         cy.window()
@@ -92,7 +92,7 @@ context('ROUTING', () => {
     });
   });
 
-  it('[ROUTING] guard should block routing to storage action page if memory storage action feature is missing', () => {
+  it('[ROUTING] guard should block routing to storage action page if storage action feature is missing', () => {
     cy.wait(1000).then(() => {
       cy.window().its('zone').then((zone) => {
         cy.window()
@@ -106,6 +106,28 @@ context('ROUTING', () => {
                 if (!settingsNode.activeNode.features.some(f => f.name === featureName)) {
                   cy.visit(Cypress.config().baseUrl + '/#/storage/123456', { timeout: 2000 });
                   cy.url().should('not.include', '/storage/123456');
+                }
+              });
+            });
+          });
+      });
+    });
+  });
+
+  it('[ROUTING] guard should block routing to logs page if logs feature is missing', () => {
+    cy.wait(1000).then(() => {
+      cy.window().its('zone').then((zone) => {
+        cy.window()
+          .its('store')
+          .then((store) => {
+            const featureName = 'logs';
+            disableFeatureAndExpectToBeDisabled(store, zone, featureName);
+
+            cy.wait(1000).then(() => {
+              store.select('settingsNode').subscribe(settingsNode => {
+                if (!settingsNode.activeNode.features.some(f => f.name === featureName)) {
+                  cy.visit(Cypress.config().baseUrl + '/#/logs', { timeout: 2000 });
+                  cy.url().should('not.include', '/logs');
                 }
               });
             });

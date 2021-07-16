@@ -5,9 +5,18 @@ form {
   .custom-bottom-form-field {
     margin: 0 4px;
     width: 174px;
-  }
 
-  button {
-    margin-left: 4px;
+    .p-absolute {
+      right: 6px;
+      height: 100%;
+    }
+  }
+}
+
+.square-button {
+  border: none;
+
+  &:not(:disabled) {
+    cursor: pointer;
   }
 }

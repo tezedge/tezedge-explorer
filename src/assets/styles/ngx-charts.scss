@@ -12,6 +12,7 @@ app-tezedge-line-chart {
   border-radius: 4px !important;
   border: 1px solid rgba(0, 0, 0, 0.2);
   box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
+  z-index: 999 !important;
 
   .tooltip-template {
     padding: 5px;

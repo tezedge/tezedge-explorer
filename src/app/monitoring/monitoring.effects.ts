@@ -25,7 +25,9 @@ export class MonitoringEffects {
 
   @Effect()
   MonitoringLoadEffect$ = this.actions$.pipe(
-    ofType(MonitoringActionTypes.MONITORING_LOAD, 'APP_REFRESH', 'APP_INIT_SUCCESS'),
+    ofType(MonitoringActionTypes.MONITORING_LOAD
+      // , 'APP_REFRESH', 'APP_INIT_SUCCESS'
+    ),
     withLatestFrom(this.store, (action: any, state: ObservedValueOf<Store<State>>) => ({ action, state })),
     switchMap(({ action, state }) => {
 

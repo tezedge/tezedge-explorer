@@ -6,12 +6,15 @@
       <div class="active-filters-row">
         <button class="add-filters" mat-flat-button (click)="filtersState.open=true" [disabled]="filtersState.open">
           <svg-icon icon="filter" scale="0.8"></svg-icon>
-          {{filtersState.open ? 'Active Filters' : 'ADD FILTER'}}
+          {{ filtersState.open ? 'Active Filters' : 'ADD FILTER' }}
         </button>
 
         <div class="filters-content">
-          <button class="active" *ngFor="let filter of activeFilters" mat-flat-button (click)=" filterType(filter)">
-            {{filter}}
+          <button class="active"
+                  *ngFor="let filter of activeFilters"
+                  mat-flat-button
+                  (click)="filterByType(filter)">
+            {{ filter }}
             <svg-icon icon="close" scale="0.8"></svg-icon>
           </button>
         </div>
@@ -35,37 +38,37 @@
             <div class="filters-row">
               <span class="filters-label">Level</span>
               <button mat-flat-button [class.active]="virtualScrollItems.filter.info || !activeFilters.length"
-                      (click)=" filterType('info')">
+                      (click)="filterByType('info')">
                 Info
                 <svg-icon icon="close" scale="0.8"></svg-icon>
               </button>
               <button mat-flat-button [class.active]="virtualScrollItems.filter.warning || !activeFilters.length"
-                      (click)=" filterType('warning')">
+                      (click)="filterByType('warning')">
                 Warning
                 <svg-icon icon="close" scale="0.8"></svg-icon>
               </button>
               <button mat-flat-button [class.active]="virtualScrollItems.filter.error || !activeFilters.length"
-                      (click)=" filterType('error')">
+                      (click)="filterByType('error')">
                 Error
                 <svg-icon icon="close" scale="0.8"></svg-icon>
               </button>
               <button mat-flat-button [class.active]="virtualScrollItems.filter.fatal || !activeFilters.length"
-                      (click)=" filterType('fatal')">
+                      (click)="filterByType('fatal')">
                 Fatal
                 <svg-icon icon="close" scale="0.8"></svg-icon>
               </button>
               <button mat-flat-button [class.active]="virtualScrollItems.filter.trace || !activeFilters.length"
-                      (click)=" filterType('trace')">
+                      (click)="filterByType('trace')">
                 Trace
                 <svg-icon icon="close" scale="0.8"></svg-icon>
               </button>
               <button mat-flat-button [class.active]="virtualScrollItems.filter.debug || !activeFilters.length"
-                      (click)="filterType('debug')">
+                      (click)="filterByType('debug')">
                 Debug
                 <svg-icon icon="close" scale="0.8"></svg-icon>
               </button>
               <button mat-flat-button [class.active]="virtualScrollItems.filter.notice || !activeFilters.length"
-                      (click)=" filterType('notice')">
+                      (click)="filterByType('notice')">
                 Notice
                 <svg-icon icon="close" scale="0.8"></svg-icon>
               </button>
@@ -86,19 +89,25 @@
     <div class="table-virtual-scroll-body" [class.logs-filters-expanded]="filtersState.open">
 
       <div class="virtual-scroll-container">
-        <ng-template vsFor let-event [vsForOf]="virtualScrollItems" let-position="position"
-                     (getItems)="getItems($event)" (startStopDataStream)="startStopDataStream($event)">
+        <ng-template vsFor
+                     let-event
+                     let-position="position"
+                     [vsForOf]="virtualScrollItems"
+                     [initialSelectedIndex]="initialSelectedIndex"
+                     (getItems)="getItems($event)"
+                     (startStopDataStream)="startStopDataStream($event)">
           <span class="virtualScrollRow logs-row"
                 [style.transform]="position !== undefined ? 'translateY(' + position + 'px)' : ''"
-                [class.virtualScrollRowEven]="event?.index % 2" (click)="tableMouseEnter(event)"
-                [class.hover]="event?.datetime && logsActionItem.id === event?.id"
+                [class.virtualScrollRowEven]="event?.index % 2"
+                (click)="selectRow(event)"
+                [class.hover]="logsActionItem.id === event?.id"
                 [class.used]="event?.datetime">
 
             <span class="item-loading" [class.displayed]="!event?.datetime">&nbsp;</span>
 
-            <span class="truncate">{{event?.datetime}}</span>
-            <span class="truncate">{{event?.level}}</span>
-            <span class="log-message truncate">{{event?.message}}</span>
+            <span class="truncate">{{ event?.datetime }}</span>
+            <span class="truncate">{{ event?.level }}</span>
+            <span class="log-message truncate">{{ event?.message }}</span>
 
           </span>
         </ng-template>
@@ -112,7 +121,7 @@
                 <span>MESSAGE</span>
               </ng-template>
               <ng-template matTabContent>
-                <div class="non-json-container">{{logsActionItem?.message}}</div>
+                <div class="non-json-container">{{ logsActionItem?.message }}</div>
               </ng-template>
             </mat-tab>
           </mat-tab-group>
@@ -121,47 +130,65 @@
     </div>
 
     <div class="table-virtual-scroll-footer" fxLayout="row" fxLayoutAlign="start center">
-      <button fxLayout="row" fxLayoutAlign="center center" class="square-button" mat-icon-button
-              matTooltip="Last page" (click)="scrollToEnd()">
+      <button class="square-button d-flex flex-center align-center" mat-icon-button
+              matTooltip="Scroll to bottom" (click)="scrollToEnd()">
         <svg-icon icon="arrow-bottom"></svg-icon>
       </button>
 
-      <button fxLayout="row" fxLayoutAlign="center center" class="rectangle-button start-stream" mat-icon-button
-              matTooltip="Start Streaming" (click)="scrollStart(null)" [class.inactive]="!virtualScrollItems?.stream">
+      <button class="rectangle-button start-stream d-flex flex-center align-center" mat-icon-button
+              matTooltip="Start Streaming" (click)="scrollStart()" [class.inactive]="!virtualScrollItems?.stream">
         <svg-icon icon="play-circle"></svg-icon>
         <span>LIVE</span>
       </button>
 
-      <button fxLayout="row" fxLayoutAlign="center center" class="rectangle-button stop-stream" mat-icon-button
+      <button class="rectangle-button stop-stream d-flex flex-center align-center" mat-icon-button
               matTooltip="Stop Streaming" (click)="scrollStop()" [class.inactive]="virtualScrollItems?.stream">
         <svg-icon icon="pause-circle"></svg-icon>
         <span>PAUSED</span>
       </button>
 
-      <button fxLayout="row" fxLayoutAlign="center center" class="square-button" id="previousPage" mat-icon-button
-              matTooltip="Previous Page" (click)="loadPreviousPage()"
-              [disabled]="!virtualScrollItems?.pages?.length || virtualScrollItems.ids.length < virtualPageSize">
-        <svg-icon icon="less-than"></svg-icon>
+      <button class="square-button d-flex align-center" id="firstPage"
+              matTooltip="First Page"
+              (click)="loadFirstPage()"
+              [disabled]="!virtualScrollItems.pages.length || virtualScrollItems.ids.length < virtualPageSize">
+        <mat-icon svgIcon="arrow-left-stop" class="icon-16"></mat-icon>
+      </button>
+      <button class="square-button d-flex align-center flex-center" id="previousPage"
+              matTooltip="Previous Page"
+              (click)="loadPreviousPage()"
+              [disabled]="!virtualScrollItems.pages.length || virtualScrollItems.ids.length < virtualPageSize">
+        <mat-icon svgIcon="less-than" class="icon-8 d-flex"></mat-icon>
+      </button>
+      <button class="square-button d-flex align-center flex-center" id="nextPage"
+              matTooltip="Next Page"
+              (click)="loadNextPage()"
+              [disabled]="!virtualScrollItems.pages.length || virtualScrollItems.activePage.id === virtualScrollItems.pages[virtualScrollItems.pages.length - 1]">
+        <mat-icon svgIcon="greater-than" class="icon-8 d-flex"></mat-icon>
+      </button>
+      <button class="square-button d-flex align-center" id="lastPage"
+              matTooltip="Last Page"
+              (click)="loadLastPage()"
+              [disabled]="!virtualScrollItems.pages.length || virtualScrollItems.activePage.id === virtualScrollItems.pages[virtualScrollItems.pages.length - 1]">
+        <mat-icon svgIcon="arrow-right-stop" class="icon-16"></mat-icon>
       </button>
 
-      <button fxLayout="row" fxLayoutAlign="center center" class="square-button" id="nextPage" mat-icon-button
-              matTooltip="Next Page" (click)="loadNextPage()"
-              [disabled]="!virtualScrollItems?.pages?.length || virtualScrollItems.activePage.id === virtualScrollItems?.pages[virtualScrollItems?.pages?.length - 1]">
-        <svg-icon icon="greater-than"></svg-icon>
-      </button>
-<!--      <form [formGroup]="formGroup"-->
-<!--            class="d-flex">-->
-<!--        <mat-form-field appearance="fill"-->
-<!--                        class="custom-bottom-form-field">-->
-<!--          <input matInput-->
-<!--                 type="text"-->
-<!--                 formControlName="time"-->
-<!--                 matTooltip="Search logs by time"-->
-<!--                 [placeholder]="currentDatePlaceholder"-->
-<!--                 maxlength="24"-->
-<!--                 autocomplete="off">-->
-<!--        </mat-form-field>-->
-<!--      </form>-->
+      <form [formGroup]="formGroup"
+            class="d-flex">
+        <mat-form-field appearance="fill"
+                        class="custom-bottom-form-field p-relative">
+          <input matInput
+                 type="text"
+                 formControlName="time"
+                 matTooltip="Filtering logs based on time frame"
+                 [placeholder]="currentDatePlaceholder"
+                 maxlength="24"
+                 autocomplete="off">
+          <mat-icon *ngIf="formGroup.get('time').value"
+                    (click)="formGroup.get('time').setValue('')"
+                    svgIcon="close-blank"
+                    class="p-absolute icon-10 icon-white-7 fill-opacity-1"></mat-icon>
+        </mat-form-field>
+      </form>
 
       <span>
         Active Page:

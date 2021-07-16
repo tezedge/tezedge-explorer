@@ -17,18 +17,16 @@ export class MemoryResourcesEffects {
     ofType(MemoryResourcesActionTypes.MEMORY_RESOURCES_LOAD),
     withLatestFrom(this.store, (action: any, state: ObservedValueOf<Store<State>>) => ({ action, state })),
     switchMap(({ action, state }) =>
-      this.resourcesService
-        .getStorageResources(
-          state.settingsNode.activeNode.features.find(f => f.name === 'resources/memory').memoryProfilerUrl,
-          action.payload.reversed
-        )
-        .pipe(
-          map((resource: MemoryResource) => ({
-            type: MemoryResourcesActionTypes.MEMORY_RESOURCES_LOAD_SUCCESS,
-            payload: resource
-          })),
-          catchError(error => of({ type: ErrorActionTypes.ADD_ERROR, payload: { title: 'Memory resources error', message: error.message } }))
-        )
+      this.resourcesService.getStorageResources(
+        state.settingsNode.activeNode.features.find(f => f.name === 'resources/memory').memoryProfilerUrl,
+        action.payload.reversed
+      ).pipe(
+        map((resource: MemoryResource) => ({
+          type: MemoryResourcesActionTypes.MEMORY_RESOURCES_LOAD_SUCCESS,
+          payload: resource
+        })),
+        catchError(error => of({ type: ErrorActionTypes.ADD_ERROR, payload: { title: 'Memory resources error', message: error.message } }))
+      )
     )
   );
 

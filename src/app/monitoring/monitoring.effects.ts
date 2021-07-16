@@ -3,13 +3,15 @@ import { Actions, Effect, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { BehaviorSubject, empty, interval, ObservedValueOf, of, Subject } from 'rxjs';
 import { catchError, filter, flatMap, map, startWith, switchMap, takeUntil, tap, withLatestFrom } from 'rxjs/operators';
-import { webSocket } from 'rxjs/webSocket';
+import { webSocket, WebSocketSubject } from 'rxjs/webSocket';
 import { HttpClient } from '@angular/common/http';
 import { State } from '../app.reducers';
 import { SettingsNodeService } from '../settings/settings-node/settings-node.service';
 import { SettingsNodeEntityHeader } from '../shared/types/settings-node/settings-node-entity-header.type';
 import { ErrorActionTypes } from '../shared/error-popup/error-popup.action';
 import { Router } from '@angular/router';
+import { MonitoringActionTypes } from './monitoring.actions';
+import { AnonymousSubject } from 'rxjs/internal-compatibility';
 
 let wsCounter = 0;
 
@@ -18,12 +20,12 @@ export class MonitoringEffects {
 
   private websocketDestroy$: Subject<void>;
   private networkDestroy$: Subject<void>;
-
   private networkInterval$: BehaviorSubject<number> = new BehaviorSubject(1);
+  private webSocketConnection$: AnonymousSubject<any>;
 
   @Effect()
   MonitoringLoadEffect$ = this.actions$.pipe(
-    ofType('MONITORING_LOAD', 'APP_REFRESH', 'APP_INIT_SUCCESS'),
+    ofType(MonitoringActionTypes.MONITORING_LOAD, 'APP_REFRESH', 'APP_INIT_SUCCESS'),
     withLatestFrom(this.store, (action: any, state: ObservedValueOf<Store<State>>) => ({ action, state })),
     switchMap(({ action, state }) => {
 
@@ -43,6 +45,7 @@ export class MonitoringEffects {
       if (this.websocketDestroy$) {
         this.websocketDestroy$.next();
         this.websocketDestroy$.complete();
+        this.webSocketConnection$.unsubscribe();
       }
 
       if (state.settingsNode.activeNode.features.some(f => f.name === 'ws')) {
@@ -61,7 +64,7 @@ export class MonitoringEffects {
 
   @Effect()
   MonitoringCloseEffect$ = this.actions$.pipe(
-    ofType('MONITORING_CLOSE'),
+    ofType(MonitoringActionTypes.MONITORING_CLOSE),
     withLatestFrom(this.store, (action: any, state: ObservedValueOf<Store<State>>) => ({ action, state })),
     flatMap(({ action, state }) => {
       if (!state.settingsNode.activeNode.features.some(f => f.name === 'ws')) {
@@ -87,9 +90,11 @@ export class MonitoringEffects {
         );
 
       return this.networkInterval$.pipe(
-        switchMap(value => interval(value * 1000).pipe(
-          startWith(1),
-          takeUntil(this.networkDestroy$))
+        switchMap(value => interval(value * 1000)
+          .pipe(
+            startWith(1),
+            takeUntil(this.networkDestroy$)
+          )
         ),
         switchMap(() => headerData$)
       );
@@ -109,9 +114,11 @@ export class MonitoringEffects {
       );
 
       return this.networkInterval$.pipe(
-        switchMap(value => interval(value * 1000).pipe(
-          startWith(1),
-          takeUntil(this.networkDestroy$))
+        switchMap(value => interval(value * 1000)
+          .pipe(
+            startWith(1),
+            takeUntil(this.networkDestroy$)
+          )
         ),
         switchMap(() => peersData$)
       );
@@ -121,50 +128,51 @@ export class MonitoringEffects {
   @Effect()
   NetworkWebsocketLoadEffect$ = this.actions$.pipe(
     ofType('NETWORK_WEBSOCKET_LOAD'),
-
     withLatestFrom(this.store, (action: any, state: ObservedValueOf<Store<State>>) => ({ action, state })),
-
-    // connect to ws
     switchMap(({ action, state }) => {
-      // return empty observable
       if (!state.settingsNode.activeNode.features.some(f => f.name === 'ws')) {
         return empty();
       }
 
       wsCounter = 0;
-      const webSocketConnection$ = webSocket({
+      this.webSocketConnection$ = webSocket({
         url: state.settingsNode.activeNode.features.find(f => f.name === 'ws').url,
         WebSocketCtor: WebSocket,
-      });
+      }) as WebSocketSubject<any>;
 
-      return webSocketConnection$.pipe(
+      return this.webSocketConnection$.pipe(
         takeUntil(this.websocketDestroy$),
         filter((data: any) => {
           // even if ws is turned off update state cca 5 sec
-          wsCounter = wsCounter < 25 ? wsCounter + 1 : 0;
+          wsCounter = wsCounter < 10 ? wsCounter + 1 : 0;
 
-          // stop ws when we got all 5 type of data from the backend
+          // ignore ws when we got all 5 type of actions from the backend
           // (this case is only if we are on another route than monitoring)
           const lazyCalls = action.payload && action.payload.lazyCalls;
-          if (lazyCalls && wsCounter > 5) {
+          if (lazyCalls && wsCounter > 2) {
             return false;
           }
-          return state.monitoring.open || wsCounter < 6;
+          return state.monitoring.open || wsCounter < 3;
         }),
-        tap(data => {
-          if (data.type === 'blockApplicationStatus' && data.payload.lastAppliedBlock === null && wsCounter < 6) {
-            this.store.dispatch({
-              type: ErrorActionTypes.ADD_ERROR,
-              payload: { title: 'Websocket error', message: 'Block application status: "lastAppliedBlock" is null, synchronization values may be affected' }
-            });
-          }
-        })
       );
     }),
-
-    // TODO: handle errors
-    // dispatch action from ws
-    map((data) => ({ ...data })),
+    switchMap((wsArrayMessage: any[]) => {
+      if (wsArrayMessage.length === 4) {
+        const historyPayload = {
+          blocks: wsArrayMessage[1].payload,
+          chain: wsArrayMessage[3].payload.chain
+        };
+        const statsPayload = { ...wsArrayMessage[0].payload, ...wsArrayMessage[2].payload };
+        return [
+          { type: 'WS_NETWORK_HISTORY_LOAD', payload: historyPayload },
+          { type: 'WS_NETWORK_STATS_LOAD', payload: statsPayload },
+        ];
+      } else if (Array.isArray(wsArrayMessage[0].payload)) {
+        wsArrayMessage[0].type = 'WS_NETWORK_PEERS_LOAD_SUCCESS';
+        return wsArrayMessage;
+      }
+      return [];
+    }),
     catchError((error, caught) => {
       console.error(error);
       this.store.dispatch({
@@ -172,7 +180,7 @@ export class MonitoringEffects {
         payload: { title: 'Websocket error', message: 'Connection failed' }
       });
       return caught;
-    })
+    }),
   );
 
   constructor(
@@ -181,7 +189,6 @@ export class MonitoringEffects {
     private store: Store<State>,
     private router: Router,
     private settingsNodeService: SettingsNodeService,
-  ) {
-  }
+  ) { }
 
 }

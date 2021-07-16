@@ -83,7 +83,7 @@ export class TreeMapFactoryService {
             node.append('rect')
               .attr('id', d => (d.leafUid = DOM.uid('leaf')).id)
               .attr('fill', d => d.data.color)
-              .attr('fill-opacity', () => 0.45)
+              // .attr('fill-opacity', () => 0.45)
               // .attr("fill-opacity", d => {
               //  let min = d3Library.min(root.leaves().map(leaf => leaf.data.value))
               //  let max = d3Library.max(root.leaves().map(leaf => leaf.data.value))
@@ -301,26 +301,6 @@ export class TreeMapFactoryService {
     });
     main.variable(observer('format')).define('format', ['d3'], (d3Library) => {
       return d3Library.format(',d');
-    });
-    main.variable(observer('colors')).define('colors', () => {
-      return (name) => {
-        const colors = {
-          flare: '#fff',
-          analytics: '#596f7e',
-          animate: '#168b98',
-          data: '#ed5b67',
-          display: '#fd8f24',
-          flex: '#919c4c',
-          physics: '#919c4c',
-          query: '#fd8f24',
-          scale: '#596f7e',
-          util: '#919c4c',
-          vis: '#919c4c',
-          interpolate: '#168b98',
-          methods: '#fd8f24'
-        };
-        return colors[name];
-      };
     });
     main.variable(observer('color')).define('color', ['d3', 'treemap', 'data'], (d3Library, treemap, data) => {
       return d3Library.scaleOrdinal()

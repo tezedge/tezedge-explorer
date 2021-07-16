@@ -8,6 +8,7 @@ import { delay, filter, skip } from 'rxjs/operators';
 import { SystemResourcesActionTypes } from './system-resources.actions';
 import { SystemResources } from '../../shared/types/resources/system/system-resources.type';
 import { systemResources } from '../resources/resources.reducer';
+import { appState } from '../../app.reducer';
 
 export type ResourceType = 'cpu' | 'memory' | 'storage';
 
@@ -52,9 +53,11 @@ export class SystemResourcesComponent implements OnInit, OnDestroy {
     );
     this.store.pipe(
       untilDestroyed(this),
-      select(state => state.app),
+      select(appState),
       delay(400)
-    ).subscribe(() => this.getResources());
+    ).subscribe(() => {
+      this.getResources()
+    });
   }
 
   private handleSmallDevices(): void {

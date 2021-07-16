@@ -7,6 +7,7 @@
 .custom-notification {
   padding-top: 5px;
   padding-bottom: 5px;
+  width: 100%;
 
   .title {
     padding-left: 10px;
@@ -22,5 +23,7 @@
     padding-top: 5px;
     padding-left: 10px;
     padding-right: 10px;
+    width: 100%;
+    word-wrap: break-word;
   }
 }

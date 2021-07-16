@@ -6,3 +6,4 @@ export class NetworkPeers {
   entities: { [entityId: string]: NetworkPeersEntity };
   metrics: NetworkPeersMetrics;
 }
+

@@ -55,9 +55,7 @@ export class SystemResourcesComponent implements OnInit, OnDestroy {
       untilDestroyed(this),
       select(appState),
       delay(400)
-    ).subscribe(() => {
-      this.getResources()
-    });
+    ).subscribe(() => this.getResources());
   }
 
   private handleSmallDevices(): void {

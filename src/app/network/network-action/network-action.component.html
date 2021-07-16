@@ -6,18 +6,22 @@
       <div class="active-filters-row">
         <button class="add-filters" mat-flat-button (click)="filtersState.open=true" [disabled]="filtersState.open">
           <svg-icon icon="filter" scale="0.8"></svg-icon>
-          {{filtersState.open ? 'Active Filters' : 'ADD FILTER'}}
+          {{ filtersState.open ? 'Active Filters' : 'ADD FILTER' }}
         </button>
 
         <div class="filters-content">
-          <button class="active" *ngFor="let filter of activeFilters" mat-flat-button (click)="filterType(filter)">
-            {{filter}}
+          <button *ngFor="let filter of activeFilters"
+                  class="active" mat-flat-button
+                  (click)="filterType(filter)">
+            {{ filter }}
             <svg-icon icon="close" scale="0.8"></svg-icon>
           </button>
         </div>
 
         <div class="filters-content">
-          <button class="active" *ngIf="virtualScrollItems.urlParams" mat-flat-button (click)="filterAddress(virtualScrollItems.urlParams)">
+          <button *ngIf="virtualScrollItems.urlParams"
+                  class="active" mat-flat-button
+                  (click)="filterAddress(virtualScrollItems.urlParams)">
             Address:
             {{ virtualScrollItems.urlParams }}
             <svg-icon icon="close" scale="0.8"></svg-icon>
@@ -29,41 +33,30 @@
       <mat-accordion class="filters-accordion">
         <mat-expansion-panel [expanded]="filtersState.open" hideToggle="true">
           <ng-template matExpansionPanelContent class="filters-content">
-            <!--            <div class="filters-row">-->
-            <!--              <button class="close-filters-btn" mat-flat-button (click)="filtersState.open=false">-->
-            <!--                <span>-->
-            <!--                  <svg-icon icon="close"></svg-icon>-->
-            <!--                </span>-->
-            <!--              </button>-->
-
-            <!--              <span class="filters-label">-->
-            <!--                Available Filters-->
-            <!--              </span>-->
-            <!--            </div>-->
-
             <div class="filters-row">
               <span class="filters-label">Control</span>
               <button mat-flat-button [class.active]="virtualScrollItems.filter.connection || !activeFilters.length"
-                      (click)=" filterType('connection')">
+                      (click)="filterType('connection')">
                 Connection
                 <svg-icon icon="close" scale="0.8"></svg-icon>
               </button>
-              <button mat-flat-button [class.active]="virtualScrollItems.filter.meta || !activeFilters.length" (click)="filterType('meta')">
+              <button mat-flat-button [class.active]="virtualScrollItems.filter.meta || !activeFilters.length"
+                      (click)="filterType('meta')">
                 Meta
                 <svg-icon icon="close" scale="0.8"></svg-icon>
               </button>
               <button mat-flat-button [class.active]="virtualScrollItems.filter.acknowledge || !activeFilters.length"
-                      (click)=" filterType('acknowledge')">
+                      (click)="filterType('acknowledge')">
                 Acknowledge
                 <svg-icon icon="close" scale="0.8"></svg-icon>
               </button>
               <button mat-flat-button [class.active]="virtualScrollItems.filter.bootstrap || !activeFilters.length"
-                      (click)=" filterType('bootstrap')">
+                      (click)="filterType('bootstrap')">
                 Bootstrap
                 <svg-icon icon="close" scale="0.8"></svg-icon>
               </button>
               <button mat-flat-button [class.active]="virtualScrollItems.filter.advertise || !activeFilters.length"
-                      (click)=" filterType('advertise')">
+                      (click)="filterType('advertise')">
                 Advertise
                 <svg-icon icon="close" scale="0.8"></svg-icon>
               </button>
@@ -72,18 +65,20 @@
                 <svg-icon icon="close" scale="0.8"></svg-icon>
               </button>
               <button mat-flat-button [class.active]="virtualScrollItems.filter.deactivate || !activeFilters.length"
-                      (click)=" filterType('deactivate')">
+                      (click)="filterType('deactivate')">
                 Deactivate
                 <svg-icon icon="close" scale="0.8"></svg-icon>
               </button>
 
               <span class="filters-label source-filters-label">Source</span>
-              <button mat-flat-button [class.active]="virtualScrollItems.filter.local || !activeFilters.length" (click)=" filterType('local')">
+              <button mat-flat-button [class.active]="virtualScrollItems.filter.local || !activeFilters.length"
+                      (click)="filterType('local')">
                 <mat-icon svgIcon="local" class="icon-14 pre-icon"></mat-icon>
                 Local
                 <svg-icon icon="close" scale="0.8"></svg-icon>
               </button>
-              <button mat-flat-button [class.active]="virtualScrollItems.filter.remote || !activeFilters.length" (click)=" filterType('remote')">
+              <button mat-flat-button [class.active]="virtualScrollItems.filter.remote || !activeFilters.length"
+                      (click)="filterType('remote')">
                 <mat-icon svgIcon="remote" class="icon-14 pre-icon"></mat-icon>
                 Remote
                 <svg-icon icon="close" scale="0.8"></svg-icon>
@@ -93,39 +88,40 @@
             <div class="filters-row">
 
               <span class="filters-label">Messages</span>
-
               <button mat-flat-button [class.active]="virtualScrollItems.filter.currentHead || !activeFilters.length"
-                      (click)=" filterType('currentHead')">
+                      (click)="filterType('currentHead')">
                 Current Head
                 <svg-icon icon="close" scale="0.8"></svg-icon>
               </button>
               <button mat-flat-button [class.active]="virtualScrollItems.filter.currentBranch || !activeFilters.length"
-                      (click)=" filterType('currentBranch')">
+                      (click)="filterType('currentBranch')">
                 Current Branch
                 <svg-icon icon="close" scale="0.8"></svg-icon>
               </button>
               <button mat-flat-button [class.active]="virtualScrollItems.filter.operation || !activeFilters.length"
-                      (click)=" filterType('operation')">
+                      (click)="filterType('operation')">
                 Operation
                 <svg-icon icon="close" scale="0.8"></svg-icon>
               </button>
               <button mat-flat-button [class.active]="virtualScrollItems.filter.protocol || !activeFilters.length"
-                      (click)=" filterType('protocol')">
+                      (click)="filterType('protocol')">
                 Protocol
                 <svg-icon icon="close" scale="0.8"></svg-icon>
               </button>
               <button mat-flat-button [class.active]="virtualScrollItems.filter.blockHeaders || !activeFilters.length"
-                      (click)=" filterType('blockHeaders')">
+                      (click)="filterType('blockHeaders')">
                 Block Headers
                 <svg-icon icon="close" scale="0.8"></svg-icon>
               </button>
-              <button mat-flat-button [class.active]="virtualScrollItems.filter.blockOperations || !activeFilters.length"
-                      (click)=" filterType('blockOperations')">
+              <button mat-flat-button
+                      [class.active]="virtualScrollItems.filter.blockOperations || !activeFilters.length"
+                      (click)="filterType('blockOperations')">
                 Block Operations
                 <svg-icon icon="close" scale="0.8"></svg-icon>
               </button>
-              <button mat-flat-button [class.active]="virtualScrollItems.filter.blockOperationsHashes || !activeFilters.length"
-                      (click)=" filterType('blockOperationsHashes')">
+              <button mat-flat-button
+                      [class.active]="virtualScrollItems.filter.blockOperationsHashes || !activeFilters.length"
+                      (click)="filterType('blockOperationsHashes')">
                 Block Operations Hashes
                 <svg-icon icon="close" scale="0.8"></svg-icon>
               </button>
@@ -161,7 +157,8 @@
 
             <span class="truncate date-time">{{event?.datetime}}</span>
             <span class="truncate">
-              <span class="network-action-table-address" (click)="filterAddress(event?.remote_addr)">{{ event?.remote_addr }}</span>
+              <span class="network-action-table-address"
+                    (click)="filterAddress(event?.remote_addr)">{{ event?.remote_addr }}</span>
             </span>
             <span>
               <span *ngIf="event?.datetime && (event?.source_type==='local' || event?.source_type==='remote')">

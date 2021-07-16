@@ -80,19 +80,20 @@
   .filters-row {
     display: flex;
     padding: 5px 10px;
-      button {
-        padding: 0 7px 0 10px;
-      }
 
-      .filters-label,
-      button {
-        height: 26px;
-        line-height: 26px;
-      }
+    button {
+      padding: 0 7px 0 10px;
+    }
 
-      .pre-icon {
-        margin-top: -7px;
-      }
+    .filters-label,
+    button {
+      height: 26px;
+      line-height: 26px;
+    }
+
+    .pre-icon {
+      margin-top: -7px;
+    }
 
     &:first-child:not(:last-child) {
       padding-bottom: 0;

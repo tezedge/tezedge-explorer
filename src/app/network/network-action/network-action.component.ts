@@ -1,13 +1,13 @@
-import {ChangeDetectionStrategy, ChangeDetectorRef, Component, NgZone, OnDestroy, OnInit, ViewChild} from '@angular/core';
-import {Router, ActivatedRoute} from '@angular/router';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, NgZone, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Router, ActivatedRoute } from '@angular/router';
 
-import {Store} from '@ngrx/store';
-import {Subject} from 'rxjs';
-import {takeUntil} from 'rxjs/operators';
-import {VirtualScrollDirective} from '../../shared/virtual-scroll/virtual-scroll.directive';
-import {MatAccordion} from '@angular/material/expansion';
-import {State} from '../../app.reducers';
-import {NetworkAction} from '../../shared/types/network/network-action.type';
+import { Store } from '@ngrx/store';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
+import { VirtualScrollDirective } from '../../shared/virtual-scroll/virtual-scroll.directive';
+import { MatAccordion } from '@angular/material/expansion';
+import { State } from '../../app.reducers';
+import { NetworkAction } from '../../shared/types/network/network-action.type';
 
 @Component({
   selector: 'app-network-action',
@@ -41,7 +41,7 @@ export class NetworkActionComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.store.dispatch({type: 'NETWORK_ACTION_RESET'});
+    this.store.dispatch({ type: 'NETWORK_ACTION_RESET' });
     this.scrollStart(null);
 
     this.store.select('networkAction')
@@ -144,13 +144,11 @@ export class NetworkActionComponent implements OnInit, OnDestroy {
   }
 
   filterType(filterType) {
-
     // dispatch action
     this.store.dispatch({
       type: 'NETWORK_ACTION_FILTER',
       payload: filterType
     });
-
   }
 
   filterAddress(addressParam) {
@@ -169,17 +167,9 @@ export class NetworkActionComponent implements OnInit, OnDestroy {
   }
 
   setActiveFilters(): string[] {
-    return Object.keys(this.virtualScrollItems.filter)
-      .reduce((accumulator, filter) => {
-        if (this.virtualScrollItems.filter[filter]) {
-          return [
-            ...accumulator,
-            filter
-          ];
-        } else {
-          return accumulator;
-        }
-      }, []);
+    return Object.keys(this.virtualScrollItems.filter).reduce((accumulator, filter: string) =>
+      this.virtualScrollItems.filter[filter] ? [...accumulator, filter] : accumulator, []
+    );
   }
 
   tableMouseEnter(item) {

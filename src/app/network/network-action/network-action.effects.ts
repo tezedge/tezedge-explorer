@@ -194,7 +194,6 @@ export function networkActionFilter(action, state) {
     filterType = stateFilter.blockHeaders ? filterType + 'get_block_headers,block_header,' : filterType;
     filterType = stateFilter.blockOperations ? filterType + 'get_operations_for_blocks,operations_for_blocks,' : filterType;
     filterType = stateFilter.blockOperationsHashes ? filterType + 'get_operation_hashes_for_blocks,operation_hashes_for_block,' : filterType;
-
     // remove the last ,
     filterType = filterType.length > 0 ? 'types=' + filterType.slice(0, -1) : '';
 

@@ -3,8 +3,8 @@ import {
   Input, Output, EventEmitter, ElementRef, ViewContainerRef,
   Renderer2, TemplateRef, SimpleChanges, OnDestroy, NgZone
 } from '@angular/core';
-import {fromEvent, Subject, Observable, Subscription} from 'rxjs';
-import {debounceTime} from 'rxjs/operators';
+import { fromEvent, Subject, Observable, Subscription } from 'rxjs';
+import { debounceTime } from 'rxjs/operators';
 
 @Directive({
   selector: '[vsFor][vsForOf]'
@@ -43,6 +43,7 @@ export class VirtualScrollDirective implements AfterViewInit, OnDestroy, OnChang
   private onDestroy$ = new Subject();
 
   @Input() vsForOf: any;
+  @Input() initialSelectedIndex: number;
 
   @Output() getItems = new EventEmitter<any>();
 
@@ -92,7 +93,11 @@ export class VirtualScrollDirective implements AfterViewInit, OnDestroy, OnChang
     this.load();
 
     // if (this.vsForOf.stream || this.previousLastCursorId === 0) {
+
     this.scrollToBottom();
+    if (this.initialSelectedIndex !== undefined) {
+      this.$viewport.scrollTo(0, this.initialSelectedIndex * this.itemHeight - (this.viewportHeight / 2));
+    }
     // }
 
     this.preparePositionsAndCreateViewElements();

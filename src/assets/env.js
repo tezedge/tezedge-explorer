@@ -35,7 +35,6 @@
         { name: 'monitoring' },
         { name: 'resources/system', monitoringUrl: 'https://master.dev.tezedge.com:8754/resources/ocaml' },
         { name: 'resources/memory', memoryProfilerUrl: 'https://master.dev.tezedge.com:8764' },
-        { name: 'resources/storage' },
         { name: 'mempool' },
         { name: 'network' },
         { name: 'logs' },

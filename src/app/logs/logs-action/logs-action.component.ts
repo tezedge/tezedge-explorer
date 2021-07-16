@@ -7,6 +7,7 @@ import { State } from '../../app.reducers';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { TezedgeTimeValidator } from '../../shared/validators/tezedge-time.validator';
+import { filter } from 'rxjs/operators';
 
 @UntilDestroy()
 @Component({
@@ -82,15 +83,13 @@ export class LogsActionComponent implements OnInit, OnDestroy {
     this.formGroup = this.formBuilder.group({
       time: new FormControl('', [Validators.required, TezedgeTimeValidator.isTime]),
     });
-  }
-
-  searchByTime(): void {
-    this.formGroup.markAllAsTouched();
-    console.log(this.formGroup);
-    if (this.formGroup.valid) {
+    this.formGroup.valueChanges.pipe(
+      untilDestroyed(this),
+      filter(() => this.formGroup.valid)
+    ).subscribe(value => {
       this.scrollStop();
-
-    }
+      console.log(this.formGroup);
+    });
   }
 
   getItems($event) {

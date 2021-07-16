@@ -11,8 +11,10 @@ context('STORAGE RESOURCES', () => {
     cy.window()
       .its('store')
       .then((store) => {
-        store.subscribe(() => {
-          cy.wait('@getStorageResources').its('response.statusCode').should('eq', 200);
+        store.select('settingsNode').subscribe((settingsNode) => {
+          if (settingsNode.activeNode.type !== 'octez') {
+            cy.wait('@getStorageResources').its('response.statusCode').should('eq', 200);
+          }
         });
       });
   });
@@ -81,9 +83,9 @@ context('STORAGE RESOURCES', () => {
       cy.window()
         .its('store')
         .then((store) => {
-          store.subscribe(data => {
-            store.select('resources').subscribe(store => {
-              const resources = store.storageResourcesState.storageResources;
+          store.select('resources').subscribe(store => {
+            const resources = store.storageResourcesState.storageResources;
+            if (store.storageResourcesState.availableContexts.length) {
               cy.get('.operation-list .operation').should('have.length', resources.operationsContext.length + 1);
 
               cy.get(`.operation-list .operation:nth-child(1) app-storage-resources-mini-graph`).should('have.length', 2);
@@ -94,7 +96,7 @@ context('STORAGE RESOURCES', () => {
                   expect(span.text()).to.equal(resources.contextSliceNames[i + 2]);
                 });
               });
-            });
+            }
           });
         });
     });
@@ -106,7 +108,7 @@ context('STORAGE RESOURCES', () => {
         .its('store')
         .then((store) => {
           store.select('resources').subscribe(resources => {
-            if (resources.storageResourcesState) {
+            if (resources.storageResourcesState && resources.storageResourcesState.availableContexts.length) {
               cy.get('app-storage-resources .storage-toolbar .context').should('be.visible');
               cy.get('app-storage-resources .storage-toolbar .toolbar-right').should('be.visible');
 
@@ -131,7 +133,7 @@ context('STORAGE RESOURCES', () => {
         .its('store')
         .then((store) => {
           store.select('resources').subscribe(resources => {
-            if (resources.storageResourcesState) {
+            if (resources.storageResourcesState && resources.storageResourcesState.availableContexts.length) {
               cy.get('app-storage-resources .storage-toolbar .context').should('be.visible');
 
               let currentContext = '';

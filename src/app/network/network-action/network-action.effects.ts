@@ -168,7 +168,7 @@ export function networkActionLimit(action) {
 // use cursor to load previous pages
 export function networkActionCursor(action) {
   return action.payload && action.payload.cursor_id ?
-    `cursor_id=${action.payload.cursor_id}` :
+    `cursor=${action.payload.cursor_id}` :
     '';
 }
 

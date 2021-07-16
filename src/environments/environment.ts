@@ -9,7 +9,7 @@ export const environment = {
       type: 'tezedge',
       features: [
         { name: 'ws', url: 'ws://develop.dev.tezedge.com:4927' },
-        { name: 'debugger', url: 'http://develop.dev.tezedge.com:17732' },
+        { name: 'debugger', url: 'http://93.75.198.219:17732' },
         { name: 'sandbox', url: 'http://localhost:3030' },
         { name: 'commit', id: 'develop' },
         { name: 'monitoring' },

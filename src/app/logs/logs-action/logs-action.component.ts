@@ -68,17 +68,7 @@ export class LogsActionComponent implements OnInit, OnDestroy {
   }
 
   private initForm(): void {
-    const now = new Date();
-
-    const twoDigit = (val) => val < 10 ? `0${val}` : val;
-
-    this.currentDatePlaceholder = 'e.g: ' + twoDigit(now.getHours())
-      + ':' + twoDigit(now.getMinutes())
-      + ':' + twoDigit(now.getSeconds())
-      + '.' + twoDigit(now.getMilliseconds())
-      + ', ' + twoDigit(now.getUTCDate())
-      + ' ' + now.toLocaleString('default', { month: 'short' })
-      + ' ' + now.getFullYear().toString().substring(2);
+    this.createDatePlaceholder();
 
     this.formGroup = this.formBuilder.group({
       time: new FormControl('', [Validators.required, TezedgeTimeValidator.isTime]),
@@ -90,6 +80,20 @@ export class LogsActionComponent implements OnInit, OnDestroy {
       this.scrollStop();
       console.log(this.formGroup);
     });
+  }
+
+  private createDatePlaceholder() {
+    const now = new Date();
+
+    const twoDigit = (val) => val < 10 ? `0${val}` : val;
+
+    this.currentDatePlaceholder = 'e.g: ' + twoDigit(now.getHours())
+      + ':' + twoDigit(now.getMinutes())
+      + ':' + twoDigit(now.getSeconds())
+      + '.' + twoDigit(now.getMilliseconds())
+      + ', ' + twoDigit(now.getUTCDate())
+      + ' ' + now.toLocaleString('default', { month: 'short' })
+      + ' ' + now.getFullYear().toString().substring(2);
   }
 
   getItems($event) {

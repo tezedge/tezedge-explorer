@@ -34,4 +34,34 @@ context('APP', () => {
     });
   });
 
+  it('[APP] should have fuzzing option rendered successfully', () => {
+    cy.wait(1000).then(() => {
+      cy.get('app-navigation-menu .app-submenu a').should(elements => {
+        const fuzzing = Array.from(elements).find(elem => elem.textContent.includes('Fuzzing'));
+        expect(fuzzing).to.have.attr('href', 'http://fuzz.tezedge.com');
+        expect(fuzzing).to.have.attr('target', '_blank');
+      });
+    });
+  });
+
+  it('[APP] should have documentation option rendered successfully', () => {
+    cy.wait(1000).then(() => {
+      cy.get('app-navigation-menu .app-submenu a').should(elements => {
+        const documentationElement = Array.from(elements).find(elem => elem.textContent.includes('Documentation'));
+        expect(documentationElement).to.have.attr('href', 'https://docs.tezedge.com');
+        expect(documentationElement).to.have.attr('target', '_blank');
+      });
+    });
+  });
+
+  it('[APP] should have open api option rendered successfully', () => {
+    cy.wait(1000).then(() => {
+      cy.get('app-navigation-menu .app-submenu a').should(elements => {
+        const openApiElement = Array.from(elements).find(elem => elem.textContent.includes('Open API'));
+        expect(openApiElement).to.have.attr('routerLink', '/open-api');
+        expect(openApiElement).to.have.attr('routerLinkActive', 'active');
+      });
+    });
+  });
+
 });

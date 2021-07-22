@@ -12,7 +12,6 @@ const initialState: NetworkAction = {
   filter: {
     local: false,
     remote: false,
-
     connection: false,
     meta: false,
     acknowledge: false,
@@ -20,7 +19,6 @@ const initialState: NetworkAction = {
     advertise: false,
     swap: false,
     deactivate: false,
-
     currentHead: false,
     currentBranch: false,
     operation: false,
@@ -150,21 +148,20 @@ export function setIds(action): number[] {
 export function setEntities(action, state): { [id: string]: NetworkActionEntity } {
   return action.payload.length === 0 ?
     {} :
-    action.payload
-      .reduce((accumulator, networkAction) => {
-        const virtualScrollId = setVirtualScrollId(action, state, accumulator);
+    action.payload.reduce((accumulator, networkAction) => {
+      const virtualScrollId = setVirtualScrollId(action, state, accumulator);
 
-        return {
-          ...accumulator,
-          [virtualScrollId]: {
-            ...networkAction,
-            id: virtualScrollId,
-            originalId: networkAction.id,
-            payload: networkAction.message,
-            datetime: moment(Math.ceil(networkAction.timestamp / 1000000)).format('HH:mm:ss.SSS, DD MMM YY')
-          }
-        };
-      }, {});
+      return {
+        ...accumulator,
+        [virtualScrollId]: {
+          ...networkAction,
+          id: virtualScrollId,
+          originalId: networkAction.id,
+          payload: networkAction.message,
+          datetime: moment(Math.ceil(networkAction.timestamp / 1000000)).format('HH:mm:ss.SSS, DD MMM YY')
+        }
+      };
+    }, {});
 }
 
 export function setLastCursorId(action): number {

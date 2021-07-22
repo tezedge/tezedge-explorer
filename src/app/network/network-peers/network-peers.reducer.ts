@@ -27,7 +27,7 @@ export function reducer(state: NetworkPeers = initialState, action): NetworkPeer
               ...state.entities[peer.id],
               ...peer
             }
-          })),
+          }), {}),
         metrics: {
           totalAvgSpeed: action.payload.reduce(
             (accumulator, peer) => Math.floor(accumulator + peer.currentTransferSpeed), 0

@@ -28,7 +28,7 @@ export function reducer(state = initialState, action) {
                     }
                 }), {}),
                 transferError: false,
-            }
+            };
         }
         case 'WALLET_LIST_LOAD_SUCCESS': {
             return {
@@ -64,7 +64,7 @@ export function reducer(state = initialState, action) {
                 transferError: true
             }
         }
-        
+
         default:
             return state;
     }

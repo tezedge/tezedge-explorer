@@ -5,9 +5,10 @@ import {LogsActionEntity} from './logs-action-entity.type';
 export class LogsAction {
   ids: number[];
   entities: { [id: string]: LogsActionEntity };
-  lastCursorId: number;
   filter: LogsActionFilter;
-  stream: boolean;
   activePage: VirtualScrollActivePage;
   pages: number[];
+  lastCursorId: number;
+  stream: boolean;
+  timestamp: number;
 }

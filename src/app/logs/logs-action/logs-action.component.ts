@@ -1,13 +1,13 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, NgZone, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, NgZone, OnDestroy, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { VirtualScrollDirective } from '../../shared/virtual-scroll/virtual-scroll.directive';
 import { LogsAction } from '../../shared/types/logs/logs-action.type';
 import { LogsActionEntity } from '../../shared/types/logs/logs-action-entity.type';
 import { State } from '../../app.reducers';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { TezedgeTimeValidator } from '../../shared/validators/tezedge-time.validator';
 import { filter } from 'rxjs/operators';
+import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 
 @UntilDestroy()
 @Component({
@@ -27,21 +27,41 @@ export class LogsActionComponent implements OnInit, OnDestroy {
   virtualPageSize = 1000;
   activeFilters = [];
 
-  @ViewChild(VirtualScrollDirective) vrFor: VirtualScrollDirective;
-
   formGroup: FormGroup;
   currentDatePlaceholder: string;
+  initialSelectedIndex: number;
 
   constructor(private store: Store<State>,
               private changeDetector: ChangeDetectorRef,
               private ngZone: NgZone,
+              private router: Router,
+              private route: ActivatedRoute,
               private formBuilder: FormBuilder) { }
 
-  ngOnInit() {
-    this.store.dispatch({ type: 'LOGS_ACTION_RESET' });
-    this.scrollStart(null);
+  ngOnInit(): void {
+    this.getLogs();
     this.initForm();
+    this.listenToFormChange();
+    this.listenToRouteChange();
+    this.selectLogs();
+  }
 
+  private getLogs(): void {
+    this.store.dispatch({ type: 'LOGS_ACTION_RESET' });
+    if (this.routeTimestamp) {
+      this.store.dispatch({
+        type: 'LOGS_ACTION_TIME_LOAD',
+        payload: {
+          limit: 500,
+          timestamp: this.routeTimestamp
+        }
+      });
+    } else {
+      this.scrollStart(null);
+    }
+  }
+
+  private selectLogs(): void {
     this.store.select('logsAction')
       .pipe(untilDestroyed(this))
       .subscribe((data: LogsAction) => {
@@ -53,6 +73,7 @@ export class LogsActionComponent implements OnInit, OnDestroy {
         if (this.logsActionShow && !this.logsActionItem) {
           this.logsActionItem = this.virtualScrollItems.entities[this.virtualScrollItems.ids[this.virtualScrollItems.ids.length - 1]];
         }
+        this.preselectRow();
 
         this.changeDetector.detectChanges();
 
@@ -60,43 +81,100 @@ export class LogsActionComponent implements OnInit, OnDestroy {
         //   this.vrFor.afterReceivingData();
         // }
         // this.logsActionList = data.ids.map(id => ({id, ...data.entities[id]}));
-
       });
+  }
 
-    // this.logsAction$ = this.store.select('logsAction');
-    // this.logsDataSource = new LogsDataSource(this.logsAction$, this.store);
+  private preselectRow(): void {
+    if (this.virtualScrollItems.timestamp && this.virtualScrollItems.ids.length) {
+      const currentLogs = Object.keys(this.virtualScrollItems.entities).map(key => this.virtualScrollItems.entities[key]);
+      const timestampToFind = Number(this.virtualScrollItems.timestamp);
+      const closestLogToTimestamp = currentLogs.reduce((prev: LogsActionEntity, curr: LogsActionEntity) => {
+        return Math.abs(Math.floor(curr.timestamp / 1000000) - timestampToFind) < Math.abs(Math.floor(prev.timestamp / 1000000) - timestampToFind)
+          ? curr
+          : prev;
+      });
+      this.logsActionItem = undefined;
+      this.selectRow(closestLogToTimestamp);
+      this.initialSelectedIndex = currentLogs.findIndex(log => log.id === this.logsActionItem.id);
+    } else {
+      this.initialSelectedIndex = undefined;
+    }
+  }
+
+  private listenToRouteChange(): void {
+    this.router.events
+      .pipe(
+        untilDestroyed(this),
+        filter(ev => ev instanceof NavigationEnd),
+      )
+      .subscribe(() => {
+        const urlTimestamp = this.routeTimestamp;
+        if (urlTimestamp) {
+          const formDateFormat = this.getFormDateFormat(Number(urlTimestamp));
+          if (this.formGroup.get('time').value !== formDateFormat) {
+            this.formGroup.get('time').patchValue(formDateFormat);
+          }
+        }
+        this.changeDetector.detectChanges();
+
+        if (this.routeTimestamp) {
+          this.store.dispatch({
+            type: 'LOGS_ACTION_TIME_LOAD',
+            payload: {
+              limit: 500,
+              timestamp: this.routeTimestamp
+            }
+          });
+        }
+      });
   }
 
   private initForm(): void {
-    this.createDatePlaceholder();
-
+    this.currentDatePlaceholder = 'e.g: ' + this.getFormDateFormat();
+    const urlTimestamp = this.routeTimestamp;
     this.formGroup = this.formBuilder.group({
-      time: new FormControl('', [Validators.required, TezedgeTimeValidator.isTime]),
-    });
-    this.formGroup.valueChanges.pipe(
-      untilDestroyed(this),
-      filter(() => this.formGroup.valid)
-    ).subscribe(value => {
-      this.scrollStop();
-      console.log(this.formGroup);
+      time: new FormControl(
+        urlTimestamp ? this.getFormDateFormat(Number(urlTimestamp)) : '',
+        TezedgeTimeValidator.isTime
+      ),
     });
   }
 
-  private createDatePlaceholder() {
-    const now = new Date();
+  private listenToFormChange(): void {
+    this.formGroup.valueChanges.pipe(
+      untilDestroyed(this),
+      filter(() => this.formGroup.valid),
+    ).subscribe(value => {
+      this.scrollStop();
+      const date = TezedgeTimeValidator.getDateFormat(value.time.toString());
+      const timestamp = value.time.toString() ? date.getTime() : null;
+      this.router.navigate([], {
+        queryParams: { timestamp },
+        queryParamsHandling: 'merge',
+      });
+    });
+  }
+
+  private getFormDateFormat(timestamp?: number): string {
+    const now = timestamp ? new Date(timestamp) : new Date();
 
     const twoDigit = (val) => val < 10 ? `0${val}` : val;
+    const threeDigit = (val) => Number(val) < 100 ? `0${val}` : val;
 
-    this.currentDatePlaceholder = 'e.g: ' + twoDigit(now.getHours())
+    return twoDigit(now.getHours())
       + ':' + twoDigit(now.getMinutes())
       + ':' + twoDigit(now.getSeconds())
-      + '.' + twoDigit(now.getMilliseconds())
-      + ', ' + twoDigit(now.getUTCDate())
+      + '.' + threeDigit(twoDigit(now.getMilliseconds()))
+      + ', ' + twoDigit(now.getDate())
       + ' ' + now.toLocaleString('default', { month: 'short' })
       + ' ' + now.getFullYear().toString().substring(2);
   }
 
-  getItems($event) {
+  private get routeTimestamp(): number {
+    return Number(this.route.snapshot.queryParams['timestamp']);
+  }
+
+  getItems($event): void {
     this.store.dispatch({
       type: 'LOGS_ACTION_LOAD',
       payload: {
@@ -106,7 +184,7 @@ export class LogsActionComponent implements OnInit, OnDestroy {
     });
   }
 
-  loadPreviousPage() {
+  loadPreviousPage(): void {
     if (this.virtualScrollItems.stream) {
       this.scrollStop();
     }
@@ -116,7 +194,7 @@ export class LogsActionComponent implements OnInit, OnDestroy {
     });
   }
 
-  loadNextPage() {
+  loadNextPage(): void {
     const actualPageIndex = this.virtualScrollItems.pages.findIndex(pageId => Number(pageId) === this.virtualScrollItems.activePage.id);
 
     if (actualPageIndex === this.virtualScrollItems.pages.length - 1) {
@@ -131,7 +209,7 @@ export class LogsActionComponent implements OnInit, OnDestroy {
     });
   }
 
-  startStopDataStream(event) {
+  startStopDataStream(event): void {
     if (event.stop) {
       this.scrollStop();
     } else {
@@ -139,11 +217,16 @@ export class LogsActionComponent implements OnInit, OnDestroy {
     }
   }
 
-  scrollStart($event) {
+  scrollStart($event): void {
     if (this.virtualScrollItems && this.virtualScrollItems.stream) {
       return;
     }
-    this.initForm();
+
+    if (this.routeTimestamp) {
+      this.formGroup.get('time').patchValue('');
+    }
+
+    this.logsActionItem = undefined;
     this.store.dispatch({
       type: 'LOGS_ACTION_START',
       payload: {
@@ -152,7 +235,7 @@ export class LogsActionComponent implements OnInit, OnDestroy {
     });
   }
 
-  scrollStop() {
+  scrollStop(): void {
     if (!this.virtualScrollItems.stream) {
       return;
     }
@@ -162,7 +245,7 @@ export class LogsActionComponent implements OnInit, OnDestroy {
     });
   }
 
-  scrollToEnd() {
+  scrollToEnd(): void {
     this.scrollStart(null);
   }
 
@@ -173,36 +256,59 @@ export class LogsActionComponent implements OnInit, OnDestroy {
   //   window.dispatchEvent(new Event('resize'));
   // }
 
-  filterType(filterType) {
-    // dispatch action
-    this.store.dispatch({
-      type: 'LOGS_ACTION_FILTER',
-      payload: filterType
+  filterByType(filterType: string): void {
+    if (this.routeTimestamp) {
+      this.store.dispatch({
+        type: 'LOGS_ACTION_TIME_LOAD',
+        payload: {
+          filterType,
+          limit: 500,
+          timestamp: this.routeTimestamp
+        }
+      });
+    } else {
+      this.store.dispatch({
+        type: 'LOGS_ACTION_FILTER',
+        payload: { filterType }
+      });
+    }
+  }
+
+  loadFirstPage(): void {
+    if (this.virtualScrollItems.stream) {
+      this.scrollStop();
+    }
+
+    this.getItems({
+      nextCursorId: this.virtualPageSize - 2,
+      limit: this.virtualPageSize
+    });
+  }
+
+  loadLastPage(): void {
+    const nextPageId = this.virtualScrollItems.pages[this.virtualScrollItems.pages.length - 1];
+
+    this.getItems({
+      nextCursorId: nextPageId,
+      limit: this.virtualPageSize
     });
   }
 
   setActiveFilters(): string[] {
     return Object.keys(this.virtualScrollItems.filter)
-      .reduce((accumulator, filter) => {
-        if (this.virtualScrollItems.filter[filter]) {
-          return [
-            ...accumulator,
-            filter
-          ];
-        } else {
-          return accumulator;
-        }
-      }, []);
+      .reduce((accumulator, term) =>
+        this.virtualScrollItems.filter[term] ? [...accumulator, term] : accumulator, []
+      );
   }
 
-  tableMouseEnter(item) {
+  selectRow(log: LogsActionEntity): void {
     this.ngZone.runOutsideAngular(() => {
-      if (this.logsActionItem && this.logsActionItem.id === item.id) {
+      if (this.logsActionItem && this.logsActionItem.originalId === log.originalId) {
         return;
       }
 
       this.ngZone.run(() => {
-        this.logsActionItem = item;
+        this.logsActionItem = log;
       });
     });
   }

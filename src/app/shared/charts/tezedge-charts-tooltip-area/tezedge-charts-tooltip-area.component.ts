@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component, ElementRef, Inject, Input, PLATFORM_ID, ViewChild } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
 import { TooltipArea, TooltipDirective } from '@swimlane/ngx-charts';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'g[tezedge-charts-tooltip-area]',
@@ -13,9 +14,10 @@ export class TezedgeChartsTooltipAreaComponent extends TooltipArea {
 
   @ViewChild(TooltipDirective) private tooltipDirective: TooltipDirective;
 
-  constructor(@Inject(PLATFORM_ID) private platformId: any) { super(); }
+  constructor(@Inject(PLATFORM_ID) private platformId: any,
+              private router: Router) { super(); }
 
-  mouseMove(event) {
+  mouseMove(event): void {
     if (!isPlatformBrowser(this.platformId)) {
       return;
     }
@@ -45,6 +47,14 @@ export class TezedgeChartsTooltipAreaComponent extends TooltipArea {
 
       this.lastAnchorPos = this.anchorPos;
     }
+  }
+
+  navigateToLogsSpecificTime(): void {
+    let time = this.anchorValues[0].name;
+    time = time.replace(',', '/' + new Date().getFullYear() + ',');
+    this.router.navigate(['logs'], {
+      queryParams: { timestamp: Date.parse(time) }
+    });
   }
 
   showTooltip(): void {

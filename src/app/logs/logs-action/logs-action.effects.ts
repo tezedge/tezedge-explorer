@@ -3,8 +3,9 @@ import { Actions, Effect, ofType } from '@ngrx/effects';
 import { HttpClient } from '@angular/common/http';
 import { Store } from '@ngrx/store';
 import { catchError, map, switchMap, takeUntil, tap, withLatestFrom } from 'rxjs/operators';
-import { ObservedValueOf, of, Subject, timer } from 'rxjs';
+import { forkJoin, ObservedValueOf, of, Subject, timer } from 'rxjs';
 import { State } from '../../app.reducers';
+import { ErrorActionTypes } from '../../shared/error-popup/error-popup.action';
 
 const logActionDestroy$ = new Subject();
 
@@ -14,19 +15,48 @@ export class LogsActionEffects {
   @Effect()
   LogsActionLoad$ = this.actions$.pipe(
     ofType('LOGS_ACTION_LOAD'),
-
-    withLatestFrom(this.store, (action: any, state: ObservedValueOf<Store<State>>) => ({action, state})),
-
+    withLatestFrom(this.store, (action: any, state: ObservedValueOf<Store<State>>) => ({ action, state })),
     switchMap(({ action, state }) => {
-      return this.http.get(setUrl(action, state));
+      return this.http.get<any[]>(setUrl(action, state));
     }),
-
-    map((payload) => ({type: 'LOGS_ACTION_LOAD_SUCCESS', payload})),
+    map((logs) => ({ type: 'LOGS_ACTION_LOAD_SUCCESS', payload: { logs } })),
     catchError((error, caught) => {
       console.error(error);
       this.store.dispatch({
-        type: 'LOGS_ACTION_LOAD_ERROR',
-        payload: error
+        type: ErrorActionTypes.ADD_ERROR,
+        payload: { title: 'Error when loading Logs:', message: error.message }
+      });
+      return caught;
+    })
+  );
+
+  @Effect()
+  LogsActionLoadByTime$ = this.actions$.pipe(
+    ofType('LOGS_ACTION_TIME_LOAD'),
+    withLatestFrom(this.store, (action: any, state: ObservedValueOf<Store<State>>) => ({ action, state })),
+    tap(() => logActionDestroy$.next()),
+    switchMap(({ action, state }) => {
+      const urlBackward = setUrl(action, state) + logsActionTimestamp(action, 'backward');
+      const urlForward = setUrl(action, state) + logsActionTimestamp(action, 'forward');
+
+      return forkJoin([
+        this.http.get<any[]>(urlBackward),
+        this.http.get<any[]>(urlForward, { reportProgress: true })
+      ]).pipe(
+        map(([backwardSlice, forwardSlice]) => ({
+          type: 'LOGS_ACTION_LOAD_SUCCESS',
+          payload: {
+            timestamp: action.payload.timestamp,
+            logs: [...forwardSlice.reverse(), ...backwardSlice]
+          }
+        }))
+      );
+    }),
+    catchError((error, caught) => {
+      console.error(error);
+      this.store.dispatch({
+        type: ErrorActionTypes.ADD_ERROR,
+        payload: { title: 'Error when loading Logs:', message: error.message }
       });
       return caught;
     })
@@ -35,58 +65,47 @@ export class LogsActionEffects {
   @Effect()
   LogsActionFilter$ = this.actions$.pipe(
     ofType('LOGS_ACTION_FILTER'),
-
-    // merge state
-    withLatestFrom(this.store, (action: any, state: ObservedValueOf<Store<State>>) => ({action, state})),
-
+    withLatestFrom(this.store, (action: any, state: ObservedValueOf<Store<State>>) => ({ action, state })),
     tap(response => {
       logActionDestroy$.next();
       logsActionFilter(response.action, response.state);
     }),
-
-    // dispatch action
     map((payload) => ({ type: 'LOGS_ACTION_LOAD', payload })),
     catchError((error, caught) => {
       console.error(error);
       this.store.dispatch({
-        type: 'LOGS_ACTION_FILTER_ERROR',
-        payload: error
+        type: ErrorActionTypes.ADD_ERROR,
+        payload: { title: 'Error when loading Logs:', message: error.message }
       });
       return caught;
     })
   );
 
-  // load logs actions
   @Effect()
   LogsActionStartEffect$ = this.actions$.pipe(
     ofType('LOGS_ACTION_START'),
-
-    // merge state
-    withLatestFrom(this.store, (action: any, state: ObservedValueOf<Store<State>>) => ({action, state})),
-
+    withLatestFrom(this.store, (action: any, state: ObservedValueOf<Store<State>>) => ({ action, state })),
     switchMap(({ action, state }) =>
-      // get header data every second
       timer(0, 2000).pipe(
         takeUntil(logActionDestroy$),
         switchMap(() =>
-          this.http.get(setUrl(action, state)).pipe(
-            map(response => ({ type: 'LOGS_ACTION_START_SUCCESS', payload: response })),
-            catchError(error => of({ type: 'LOGS_ACTION_START_ERROR', payload: error }))
+          this.http.get<any[]>(setUrl(action, state)).pipe(
+            map(logs => ({ type: 'LOGS_ACTION_START_SUCCESS', payload: { logs } })),
+            catchError(error => of({
+              type: ErrorActionTypes.ADD_ERROR,
+              payload: { title: 'Error when loading Logs:', message: error.message }
+            }))
           )
         )
       )
     )
   );
 
-  // stop logs action download
   @Effect({ dispatch: false })
   LogsActionStopEffect$ = this.actions$.pipe(
     ofType('LOGS_ACTION_STOP'),
-    // merge state
-    withLatestFrom(this.store, (action: any, state: ObservedValueOf<Store<State>>) => ({action, state})),
-    // init app modules
+    withLatestFrom(this.store, (action: any, state: ObservedValueOf<Store<State>>) => ({ action, state })),
     tap(({ action, state }) => {
-      // console.log('[LOGS_ACTION_STOP] stream', state.logsAction.stream);
       // close all open observables
       // if (state.logsAction.stream) {
       logActionDestroy$.next();
@@ -94,12 +113,9 @@ export class LogsActionEffects {
     })
   );
 
-  constructor(
-    private http: HttpClient,
-    private actions$: Actions,
-    private store: Store<State>
-  ) {
-  }
+  constructor(private http: HttpClient,
+              private actions$: Actions,
+              private store: Store<State>) { }
 
 }
 
@@ -112,6 +128,13 @@ export function setUrl(action, state) {
   const limit = logsActionLimit(action);
 
   return `${url}${filters.length ? `${filters}&` : ''}${cursor.length ? `${cursor}&` : ''}${timeInterval}${limit}`;
+}
+
+// use limit to load just the necessary number of records
+export function logsActionTimestamp(action, direction: string): string {
+  return action.payload && action.payload.timestamp
+    ? `&timestamp=${action.payload.timestamp}&direction=${direction}`
+    : '';
 }
 
 // use limit to load just the necessary number of records
@@ -147,7 +170,7 @@ export function logsActionFilter(action, state) {
     filterType = stateFilter.debug ? filterType + 'debug,' : filterType;
     filterType = stateFilter.info ? filterType + 'info,' : filterType;
     filterType = stateFilter.notice ? filterType + 'notice,' : filterType;
-    filterType = stateFilter.warning ? filterType + 'warning,warn,' : filterType;
+    filterType = stateFilter.warning ? filterType + 'warning,' : filterType;
     filterType = stateFilter.error ? filterType + 'error,' : filterType;
     filterType = stateFilter.fatal ? filterType + 'fatal,' : filterType;
 

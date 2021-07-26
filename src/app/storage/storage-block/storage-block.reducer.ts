@@ -1,5 +1,4 @@
 import * as moment from 'moment-mini-ts';
-import { setVirtualScrollId } from '../../network/network-action/network-action.reducer';
 import { VirtualScrollActivePage } from '../../shared/types/shared/virtual-scroll-active-page.type';
 import { StorageBlock } from '../../shared/types/storage/storage-block/storage-block.type';
 import { StorageBlockEntity } from '../../shared/types/storage/storage-block/storage-block-entity.type';
@@ -130,6 +129,11 @@ export function setEntities(action, state): { [id: string]: StorageBlockEntity }
   //       }
   //     };
   //   }, {});
+}
+
+function setVirtualScrollId(action, state, accumulator): number {
+  const alreadySetRecords = Object.keys(accumulator);
+  return action.payload.length - (alreadySetRecords.length + 1);
 }
 
 export function setLastCursorId(action): number {

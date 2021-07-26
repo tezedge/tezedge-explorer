@@ -74,7 +74,6 @@ export class LogsActionComponent implements OnInit, OnDestroy {
   }
 
   private preselectRow(): void {
-    console.log(1243);
     if (this.virtualScrollItems.timestamp && this.virtualScrollItems.ids.length) {
       const currentLogs = Object.keys(this.virtualScrollItems.entities).map(key => this.virtualScrollItems.entities[key]);
       const timestampToFind = Number(this.virtualScrollItems.timestamp);

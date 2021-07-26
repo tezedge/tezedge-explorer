@@ -136,7 +136,7 @@
       </button>
 
       <button class="rectangle-button start-stream d-flex flex-center align-center" mat-icon-button
-              matTooltip="Start Streaming" (click)="scrollStart(null)" [class.inactive]="!virtualScrollItems?.stream">
+              matTooltip="Start Streaming" (click)="scrollStart()" [class.inactive]="!virtualScrollItems?.stream">
         <svg-icon icon="play-circle"></svg-icon>
         <span>LIVE</span>
       </button>
@@ -148,22 +148,26 @@
       </button>
 
       <button class="square-button d-flex align-center" id="firstPage"
-              matTooltip="First Page" (click)="loadFirstPage()"
+              matTooltip="First Page"
+              (click)="loadFirstPage()"
               [disabled]="!virtualScrollItems.pages.length || virtualScrollItems.ids.length < virtualPageSize">
         <mat-icon svgIcon="arrow-left-stop" class="icon-16"></mat-icon>
       </button>
       <button class="square-button d-flex align-center flex-center" id="previousPage"
-              matTooltip="Previous Page" (click)="loadPreviousPage()"
+              matTooltip="Previous Page"
+              (click)="loadPreviousPage()"
               [disabled]="!virtualScrollItems.pages.length || virtualScrollItems.ids.length < virtualPageSize">
         <mat-icon svgIcon="less-than" class="icon-8 d-flex"></mat-icon>
       </button>
       <button class="square-button d-flex align-center flex-center" id="nextPage"
-              matTooltip="Next Page" (click)="loadNextPage()"
+              matTooltip="Next Page"
+              (click)="loadNextPage()"
               [disabled]="!virtualScrollItems.pages.length || virtualScrollItems.activePage.id === virtualScrollItems.pages[virtualScrollItems.pages.length - 1]">
         <mat-icon svgIcon="greater-than" class="icon-8 d-flex"></mat-icon>
       </button>
       <button class="square-button d-flex align-center" id="lastPage"
-              matTooltip="Last Page" (click)="loadLastPage()"
+              matTooltip="Last Page"
+              (click)="loadLastPage()"
               [disabled]="!virtualScrollItems.pages.length || virtualScrollItems.activePage.id === virtualScrollItems.pages[virtualScrollItems.pages.length - 1]">
         <mat-icon svgIcon="arrow-right-stop" class="icon-16"></mat-icon>
       </button>

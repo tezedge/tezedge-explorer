@@ -56,7 +56,7 @@ export class LogsActionEffects {
       console.error(error);
       this.store.dispatch({
         type: ErrorActionTypes.ADD_ERROR,
-        payload: { title: 'Error when loading Logs:', message: error.message }
+        payload: { title: 'Error when loading Logs by time:', message: error.message }
       });
       return caught;
     })
@@ -75,7 +75,7 @@ export class LogsActionEffects {
       console.error(error);
       this.store.dispatch({
         type: ErrorActionTypes.ADD_ERROR,
-        payload: { title: 'Error when loading Logs:', message: error.message }
+        payload: { title: 'Error when loading Logs with filters:', message: error.message }
       });
       return caught;
     })
@@ -105,12 +105,7 @@ export class LogsActionEffects {
   LogsActionStopEffect$ = this.actions$.pipe(
     ofType('LOGS_ACTION_STOP'),
     withLatestFrom(this.store, (action: any, state: ObservedValueOf<Store<State>>) => ({ action, state })),
-    tap(({ action, state }) => {
-      // close all open observables
-      // if (state.logsAction.stream) {
-      logActionDestroy$.next();
-      // }
-    })
+    tap(({ action, state }) => logActionDestroy$.next())
   );
 
   constructor(private http: HttpClient,
@@ -124,13 +119,11 @@ export function setUrl(action, state) {
 
   const filters = logsActionFilter(action, state);
   const cursor = logsActionCursor(action);
-  const timeInterval = logsActionTimeInterval(action);
   const limit = logsActionLimit(action);
 
-  return `${url}${filters.length ? `${filters}&` : ''}${cursor.length ? `${cursor}&` : ''}${timeInterval}${limit}`;
+  return `${url}${filters.length ? `${filters}&` : ''}${cursor.length ? `${cursor}&` : ''}${limit}`;
 }
 
-// use limit to load just the necessary number of records
 export function logsActionTimestamp(action, direction: string): string {
   return action.payload && action.payload.timestamp
     ? `&timestamp=${action.payload.timestamp}&direction=${direction}`
@@ -150,12 +143,6 @@ export function logsActionLimit(action) {
 export function logsActionCursor(action) {
   return action.payload && action.payload.cursor_id ?
     `cursor=${action.payload.cursor_id}` :
-    '';
-}
-
-export function logsActionTimeInterval(action): string {
-  return action.payload && action.payload.from && action.payload.to ?
-    `from=${action.payload.from}&to=${action.payload.to}&` :
     '';
 }
 

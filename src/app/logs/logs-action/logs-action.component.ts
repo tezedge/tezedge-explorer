@@ -49,15 +49,9 @@ export class LogsActionComponent implements OnInit, OnDestroy {
   private getLogs(): void {
     this.store.dispatch({ type: 'LOGS_ACTION_RESET' });
     if (this.routeTimestamp) {
-      this.store.dispatch({
-        type: 'LOGS_ACTION_TIME_LOAD',
-        payload: {
-          limit: 500,
-          timestamp: this.routeTimestamp
-        }
-      });
+      this.triggerLogsTimeLoad();
     } else {
-      this.scrollStart(null);
+      this.scrollStart();
     }
   }
 
@@ -76,23 +70,18 @@ export class LogsActionComponent implements OnInit, OnDestroy {
         this.preselectRow();
 
         this.changeDetector.detectChanges();
-
-        // if (this.virtualScrollItems.ids.length > 0 && this.vrFor) {
-        //   this.vrFor.afterReceivingData();
-        // }
-        // this.logsActionList = data.ids.map(id => ({id, ...data.entities[id]}));
       });
   }
 
   private preselectRow(): void {
+    console.log(1243);
     if (this.virtualScrollItems.timestamp && this.virtualScrollItems.ids.length) {
       const currentLogs = Object.keys(this.virtualScrollItems.entities).map(key => this.virtualScrollItems.entities[key]);
       const timestampToFind = Number(this.virtualScrollItems.timestamp);
-      const closestLogToTimestamp = currentLogs.reduce((prev: LogsActionEntity, curr: LogsActionEntity) => {
-        return Math.abs(Math.floor(curr.timestamp / 1000000) - timestampToFind) < Math.abs(Math.floor(prev.timestamp / 1000000) - timestampToFind)
+      const closestLogToTimestamp = currentLogs.reduce((prev: LogsActionEntity, curr: LogsActionEntity) =>
+        Math.abs(Math.floor(curr.timestamp / 1000000) - timestampToFind) < Math.abs(Math.floor(prev.timestamp / 1000000) - timestampToFind)
           ? curr
-          : prev;
-      });
+          : prev);
       this.logsActionItem = undefined;
       this.selectRow(closestLogToTimestamp);
       this.initialSelectedIndex = currentLogs.findIndex(log => log.id === this.logsActionItem.id);
@@ -114,19 +103,24 @@ export class LogsActionComponent implements OnInit, OnDestroy {
           if (this.formGroup.get('time').value !== formDateFormat) {
             this.formGroup.get('time').patchValue(formDateFormat);
           }
+          this.triggerLogsTimeLoad();
+        } else {
+          this.formGroup.get('time').patchValue('');
         }
-        this.changeDetector.detectChanges();
 
-        if (this.routeTimestamp) {
-          this.store.dispatch({
-            type: 'LOGS_ACTION_TIME_LOAD',
-            payload: {
-              limit: 500,
-              timestamp: this.routeTimestamp
-            }
-          });
-        }
+        this.changeDetector.detectChanges();
       });
+  }
+
+  private triggerLogsTimeLoad(filterType?: string): void {
+    this.store.dispatch({
+      type: 'LOGS_ACTION_TIME_LOAD',
+      payload: {
+        filterType,
+        limit: 500,
+        timestamp: this.routeTimestamp
+      }
+    });
   }
 
   private initForm(): void {
@@ -174,12 +168,12 @@ export class LogsActionComponent implements OnInit, OnDestroy {
     return Number(this.route.snapshot.queryParams['timestamp']);
   }
 
-  getItems($event): void {
+  getItems(params: { nextCursorId: number, limit: number }): void {
     this.store.dispatch({
       type: 'LOGS_ACTION_LOAD',
       payload: {
-        cursor_id: $event?.nextCursorId,
-        limit: $event?.limit
+        cursor_id: params.nextCursorId,
+        limit: params.limit
       }
     });
   }
@@ -195,13 +189,13 @@ export class LogsActionComponent implements OnInit, OnDestroy {
   }
 
   loadNextPage(): void {
-    const actualPageIndex = this.virtualScrollItems.pages.findIndex(pageId => Number(pageId) === this.virtualScrollItems.activePage.id);
+    const actualPageIndex = this.virtualScrollItems.pages.findIndex(pageId => pageId === this.virtualScrollItems.activePage.id);
 
     if (actualPageIndex === this.virtualScrollItems.pages.length - 1) {
       return;
     }
 
-    const nextPageId = this.virtualScrollItems.pages[actualPageIndex + 1];
+    const nextPageId = this.virtualScrollItems.pages[actualPageIndex] + this.virtualPageSize;
 
     this.getItems({
       nextCursorId: nextPageId,
@@ -209,15 +203,15 @@ export class LogsActionComponent implements OnInit, OnDestroy {
     });
   }
 
-  startStopDataStream(event): void {
-    if (event.stop) {
+  startStopDataStream(value: { stop: boolean, limit: number }): void {
+    if (value.stop) {
       this.scrollStop();
     } else {
-      this.scrollStart(event);
+      this.scrollStart(value);
     }
   }
 
-  scrollStart($event): void {
+  scrollStart(value?: { stop: boolean, limit: number }): void {
     if (this.virtualScrollItems && this.virtualScrollItems.stream) {
       return;
     }
@@ -227,10 +221,11 @@ export class LogsActionComponent implements OnInit, OnDestroy {
     }
 
     this.logsActionItem = undefined;
+
     this.store.dispatch({
       type: 'LOGS_ACTION_START',
       payload: {
-        limit: $event?.limit ? $event.limit : this.virtualPageSize
+        limit: value ? value.limit : this.virtualPageSize
       }
     });
   }
@@ -240,13 +235,11 @@ export class LogsActionComponent implements OnInit, OnDestroy {
       return;
     }
 
-    this.store.dispatch({
-      type: 'LOGS_ACTION_STOP'
-    });
+    this.store.dispatch({ type: 'LOGS_ACTION_STOP' });
   }
 
   scrollToEnd(): void {
-    this.scrollStart(null);
+    this.scrollStart();
   }
 
   // setFiltersVisibility(show): void {
@@ -258,14 +251,7 @@ export class LogsActionComponent implements OnInit, OnDestroy {
 
   filterByType(filterType: string): void {
     if (this.routeTimestamp) {
-      this.store.dispatch({
-        type: 'LOGS_ACTION_TIME_LOAD',
-        payload: {
-          filterType,
-          limit: 500,
-          timestamp: this.routeTimestamp
-        }
-      });
+      this.triggerLogsTimeLoad(filterType);
     } else {
       this.store.dispatch({
         type: 'LOGS_ACTION_FILTER',
@@ -313,10 +299,7 @@ export class LogsActionComponent implements OnInit, OnDestroy {
     });
   }
 
-  ngOnDestroy() {
-    // stop logs stream
-    this.store.dispatch({
-      type: 'LOGS_ACTION_STOP'
-    });
+  ngOnDestroy(): void {
+    this.store.dispatch({ type: 'LOGS_ACTION_STOP' });
   }
 }

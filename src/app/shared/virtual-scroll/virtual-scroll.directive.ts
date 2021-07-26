@@ -96,7 +96,7 @@ export class VirtualScrollDirective implements AfterViewInit, OnDestroy, OnChang
 
     this.scrollToBottom();
     if (this.initialSelectedIndex !== undefined) {
-      this.$viewport.scrollTo(0, this.initialSelectedIndex * this.itemHeight - (this.viewportHeight / 2));
+      this.$viewport.scrollTop = this.initialSelectedIndex * this.itemHeight - (this.viewportHeight / 2);
     }
     // }
 
@@ -194,6 +194,7 @@ export class VirtualScrollDirective implements AfterViewInit, OnDestroy, OnChang
     const limit = 1000;
 
     this.ngZone.run(() => {
+      console.log(this.initialSelectedIndex);
       this.startStopDataStream.emit({
         limit,
         stop

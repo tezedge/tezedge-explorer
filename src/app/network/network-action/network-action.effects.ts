@@ -1,10 +1,11 @@
 import { Injectable } from '@angular/core';
-import { Effect, Actions, ofType } from '@ngrx/effects';
+import { Actions, Effect, ofType } from '@ngrx/effects';
 import { HttpClient } from '@angular/common/http';
 import { Store } from '@ngrx/store';
-import { map, switchMap, withLatestFrom, catchError, tap, takeUntil } from 'rxjs/operators';
-import { ObservedValueOf, of, Subject, timer } from 'rxjs';
+import { catchError, map, switchMap, takeUntil, tap, withLatestFrom } from 'rxjs/operators';
+import { forkJoin, ObservedValueOf, of, Subject, timer } from 'rxjs';
 import { State } from '../../app.reducers';
+import { ErrorActionTypes } from '../../shared/error-popup/error-popup.action';
 
 const networkActionDestroy$ = new Subject();
 
@@ -14,19 +15,48 @@ export class NetworkActionEffects {
   @Effect()
   NetworkActionLoad$ = this.actions$.pipe(
     ofType('NETWORK_ACTION_LOAD'),
-
     withLatestFrom(this.store, (action: any, state: ObservedValueOf<Store<State>>) => ({ action, state })),
-
     switchMap(({ action, state }) => {
       return this.http.get(setUrl(action, state));
     }),
-
-    map((payload) => ({ type: 'NETWORK_ACTION_LOAD_SUCCESS', payload })),
+    map((network) => ({ type: 'NETWORK_ACTION_LOAD_SUCCESS', payload: { network } })),
     catchError((error, caught) => {
       console.error(error);
       this.store.dispatch({
-        type: 'NETWORK_ACTION_LOAD_ERROR',
-        payload: error
+        type: ErrorActionTypes.ADD_ERROR,
+        payload: { title: 'Error when loading Network:', message: error.message }
+      });
+      return caught;
+    })
+  );
+
+  @Effect()
+  NetworkActionLoadByTime$ = this.actions$.pipe(
+    ofType('NETWORK_ACTION_TIME_LOAD'),
+    withLatestFrom(this.store, (action: any, state: ObservedValueOf<Store<State>>) => ({ action, state })),
+    tap(() => networkActionDestroy$.next()),
+    switchMap(({ action, state }) => {
+      const urlBackward = setUrl(action, state) + networkActionTimestamp(action, 'backward');
+      const urlForward = setUrl(action, state) + networkActionTimestamp(action, 'forward');
+
+      return forkJoin([
+        this.http.get<any[]>(urlBackward),
+        this.http.get<any[]>(urlForward, { reportProgress: true })
+      ]).pipe(
+        map(([backwardSlice, forwardSlice]) => ({
+          type: 'NETWORK_ACTION_LOAD_SUCCESS',
+          payload: {
+            timestamp: action.payload.timestamp,
+            network: [...forwardSlice.reverse(), ...backwardSlice]
+          }
+        }))
+      );
+    }),
+    catchError((error, caught) => {
+      console.error(error);
+      this.store.dispatch({
+        type: ErrorActionTypes.ADD_ERROR,
+        payload: { title: 'Error when loading Network by time:', message: error.message }
       });
       return caught;
     })
@@ -35,22 +65,17 @@ export class NetworkActionEffects {
   @Effect()
   NetworkActionFilter$ = this.actions$.pipe(
     ofType('NETWORK_ACTION_FILTER'),
-
-    // merge state
     withLatestFrom(this.store, (action: any, state: ObservedValueOf<Store<State>>) => ({ action, state })),
-
     tap(response => {
       networkActionDestroy$.next();
       networkActionFilter(response.action, response.state);
     }),
-
-    // dispatch action
     map((payload) => ({ type: 'NETWORK_ACTION_LOAD', payload })),
     catchError((error, caught) => {
       console.error(error);
       this.store.dispatch({
-        type: 'NETWORK_ACTION_FILTER_ERROR',
-        payload: error
+        type: ErrorActionTypes.ADD_ERROR,
+        payload: { title: 'Error when loading Network with filters:', message: error.message }
       });
       return caught;
     })
@@ -59,28 +84,22 @@ export class NetworkActionEffects {
   @Effect()
   NetworkActionAddress$ = this.actions$.pipe(
     ofType('NETWORK_ACTION_ADDRESS'),
-
-    // merge state
     withLatestFrom(this.store, (action: any, state: ObservedValueOf<Store<State>>) => ({ action, state })),
-
     tap(response => {
       networkActionDestroy$.next();
       networkActionFilter(response.action, response.state);
     }),
-
-    // dispatch action
     map((payload) => ({ type: 'NETWORK_ACTION_LOAD', payload })),
     catchError((error, caught) => {
       console.error(error);
       this.store.dispatch({
-        type: 'NETWORK_ACTION_ADDRESS_ERROR',
-        payload: error
+        type: ErrorActionTypes.ADD_ERROR,
+        payload: { title: 'Error when loading Network by address:', message: error.message }
       });
       return caught;
     })
   );
 
-  // load network actions
   @Effect()
   NetworkActionStartEffect$ = this.actions$.pipe(
     ofType('NETWORK_ACTION_START'),
@@ -88,44 +107,26 @@ export class NetworkActionEffects {
     switchMap(({ action, state }) =>
       timer(0, 2000).pipe(
         takeUntil(networkActionDestroy$),
-        switchMap(() => {
-            return this.http.get(setUrl(action, state)).pipe(
-              map(response => ({ type: 'NETWORK_ACTION_START_SUCCESS', payload: response })),
-              catchError(error => of({ type: 'NETWORK_ACTION_START_ERROR', payload: error }))
-            );
-          }
+        switchMap(() =>
+          this.http.get<any[]>(setUrl(action, state)).pipe(
+            map(network => ({ type: 'NETWORK_ACTION_START_SUCCESS', payload: { network } })),
+            catchError(error => of({
+              type: ErrorActionTypes.ADD_ERROR,
+              payload: { title: 'Error when loading Network:', message: error.message }
+            }))
+          )
         )
       )
     )
   );
 
-  // stop network action download
-  @Effect({ dispatch: false })
-  NetworkActionStopEffect$ = this.actions$.pipe(
-    ofType('NETWORK_ACTION_STOP'),
-    // merge state
-    withLatestFrom(this.store, (action: any, state: ObservedValueOf<Store<State>>) => ({ action, state })),
-    // init app modules
-    tap(({ action, state }) => {
-      // console.log('[LOGS_ACTION_STOP] stream', state.logsAction.stream);
-      // close all open observables
-      // if (state.logsAction.stream) {
-      networkActionDestroy$.next();
-      // }
-    })
-  );
-
   @Effect()
-  StorageBlockDetailsLoad$ = this.actions$.pipe(
+  NetworkActionDetailsLoad$ = this.actions$.pipe(
     ofType('NETWORK_ACTION_DETAILS_LOAD'),
-
-    // merge state
     withLatestFrom(this.store, (action: any, state: ObservedValueOf<Store<State>>) => ({ action, state })),
     switchMap(({ action, state }) => {
       return this.http.get(setDetailsUrl(action, state));
     }),
-
-    // dispatch action
     map((payload) => ({ type: 'NETWORK_ACTION_DETAILS_LOAD_SUCCESS', payload })),
     catchError((error, caught) => {
       console.error(error);
@@ -135,6 +136,13 @@ export class NetworkActionEffects {
       });
       return caught;
     })
+  );
+
+  @Effect({ dispatch: false })
+  NetworkActionStopEffect$ = this.actions$.pipe(
+    ofType('NETWORK_ACTION_STOP'),
+    withLatestFrom(this.store, (action: any, state: ObservedValueOf<Store<State>>) => ({ action, state })),
+    tap(({ action, state }) => networkActionDestroy$.next())
   );
 
   constructor(private http: HttpClient,
@@ -150,6 +158,12 @@ export function setUrl(action, state) {
   const limit = networkActionLimit(action);
 
   return `${url}${filters.length ? `${filters}&` : ''}${cursor.length ? `${cursor}&` : ''}${limit}`;
+}
+
+export function networkActionTimestamp(action, direction: string): string {
+  return action.payload && action.payload.timestamp
+    ? `&timestamp=${action.payload.timestamp}&direction=${direction}`
+    : '';
 }
 
 export function setDetailsUrl(action, state) {

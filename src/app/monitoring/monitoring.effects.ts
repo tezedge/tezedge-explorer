@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Actions, Effect, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { BehaviorSubject, empty, interval, ObservedValueOf, of, Subject } from 'rxjs';
-import { catchError, filter, flatMap, map, startWith, switchMap, takeUntil, tap, withLatestFrom } from 'rxjs/operators';
+import { catchError, filter, flatMap, map, startWith, switchMap, takeUntil, withLatestFrom } from 'rxjs/operators';
 import { webSocket, WebSocketSubject } from 'rxjs/webSocket';
 import { HttpClient } from '@angular/common/http';
 import { State } from '../app.reducers';
@@ -25,9 +25,7 @@ export class MonitoringEffects {
 
   @Effect()
   MonitoringLoadEffect$ = this.actions$.pipe(
-    ofType(MonitoringActionTypes.MONITORING_LOAD
-      // , 'APP_REFRESH', 'APP_INIT_SUCCESS'
-    ),
+    ofType(MonitoringActionTypes.MONITORING_LOAD, 'APP_REFRESH', 'APP_INIT_SUCCESS'),
     withLatestFrom(this.store, (action: any, state: ObservedValueOf<Store<State>>) => ({ action, state })),
     switchMap(({ action, state }) => {
 

@@ -61,19 +61,6 @@
         />
       </svg:g>
       <svg:g (mouseleave)="hideCircles()">
-        <svg:g *ngIf="!tooltipDisabled"
-               tezedge-charts-tooltip-area
-               [dims]="dims"
-               [xSet]="xSet"
-               [xScale]="xScale"
-               [yScale]="yScale"
-               [results]="lineResults"
-               [colors]="colors"
-               [chartElement]="chartElementRef"
-               [tooltipDisabled]="tooltipDisabled"
-               [tooltipTemplate]="seriesTooltipTemplate"
-               (hover)="updateHoveredVertical($event)"
-        />
         <svg:g *ngFor="let series of lineResults">
           <svg:g tezedge-charts-circle-series
                  [xScale]="xScale"
@@ -91,6 +78,19 @@
                  (deactivate)="onDeactivate($event)"
           />
         </svg:g>
+        <svg:g *ngIf="!tooltipDisabled"
+               tezedge-charts-tooltip-area
+               [dims]="dims"
+               [xSet]="xSet"
+               [xScale]="xScale"
+               [yScale]="yScale"
+               [results]="lineResults"
+               [colors]="colors"
+               [chartElement]="chartElementRef"
+               [tooltipDisabled]="tooltipDisabled"
+               [tooltipTemplate]="seriesTooltipTemplate"
+               (hover)="updateHoveredVertical($event)"
+        />
       </svg:g>
     </svg:g>
   </svg:g>

@@ -1,4 +1,9 @@
 .mat-icon {
+  &.icon-8 {
+    width: 8px;
+    height: 8px;
+  }
+
   &.icon-10 {
     width: 10px;
     height: 10px;
@@ -44,5 +49,9 @@
 
   &.icon-white-1 svg * {
     fill: rgba(255, 255, 255, 0.1);
+  }
+
+  &.fill-opacity-1 svg * {
+    fill-opacity: 1;
   }
 }

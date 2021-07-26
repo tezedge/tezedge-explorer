@@ -18,7 +18,8 @@ const initialState: LogsAction = {
   },
   stream: false,
   activePage: {},
-  pages: []
+  pages: [],
+  timestamp: undefined
 };
 
 export function reducer(state: LogsAction = initialState, action): LogsAction {
@@ -32,21 +33,24 @@ export function reducer(state: LogsAction = initialState, action): LogsAction {
       return {
         ...state,
         ids: setIds(action),
-        entities: setEntities(action, state),
-        lastCursorId: setLastCursorId(action),
+        entities,
         activePage,
-        pages: setPages(activePage, state)
+        lastCursorId: setLastCursorId(action),
+        pages: setPages(activePage, state),
+        timestamp: action.payload.timestamp
       };
     }
 
+    case 'LOGS_ACTION_TIME_LOAD':
     case 'LOGS_ACTION_FILTER': {
       const stateFilter = {
         ...state.filter,
-        [action.payload]: !state.filter[action.payload]
+        [action.payload.filterType]: action.payload.filterType ? !state.filter[action.payload.filterType] : false
       };
 
       return {
-        ...initialState,
+        ...state,
+        stream: false,
         filter: stateFilter
       };
     }
@@ -77,53 +81,52 @@ export function reducer(state: LogsAction = initialState, action): LogsAction {
 }
 
 export function setIds(action): number[] {
-  if (!action.payload.length) {
+  if (!action.payload.logs.length) {
     return [];
   }
 
-  return action.payload
+  return action.payload.logs
     .map((item, index) => index)
     .sort((a, b) => a - b);
 }
 
 export function setEntities(action, state): { [id: string]: LogsActionEntity } {
-  return action.payload.length === 0
+  return action.payload.logs.length === 0
     ? {}
-    : action.payload
-      .reduce((accumulator, logsAction) => {
-        const virtualScrollId = setVirtualScrollId(action, state, accumulator);
+    : action.payload.logs.reduce((accumulator, log) => {
+      const virtualScrollId = setVirtualScrollId(action, state, accumulator);
 
-        return {
-          ...accumulator,
-          [virtualScrollId]: {
-            ...logsAction,
-            id: virtualScrollId,
-            originalId: logsAction.id,
-            datetime: moment(Math.ceil(logsAction.timestamp / 1000000)).format('HH:mm:ss.SSS, DD MMM YY')
-          }
-        };
-      }, {});
+      return {
+        ...accumulator,
+        [virtualScrollId]: {
+          ...log,
+          id: virtualScrollId,
+          originalId: log.id,
+          datetime: moment(Math.ceil(log.timestamp / 1000000)).format('HH:mm:ss.SSS, DD MMM YY')
+        }
+      };
+    }, {});
 }
 
 export function setLastCursorId(action): number {
-  return action.payload.length - 1;
+  return action.payload.logs.length - 1;
 }
 
 export function setVirtualScrollId(action, state, accumulator): number {
   const alreadySetRecords = Object.keys(accumulator);
-  return action.payload.length - (alreadySetRecords.length + 1);
+  return action.payload.logs.length - (alreadySetRecords.length + 1);
 }
 
 export function setActivePage(entities, action): VirtualScrollActivePage {
-  if (!action.payload.length) {
+  if (!action.payload.logs.length) {
     return null;
   }
 
   return {
-    id: entities[action.payload.length - 1].originalId,
+    id: entities[action.payload.logs.length - 1].originalId,
     start: entities[0],
-    end: entities[action.payload.length - 1],
-    numberOfRecords: action.payload.length
+    end: entities[action.payload.logs.length - 1],
+    numberOfRecords: action.payload.logs.length
   };
 }
 

@@ -1,65 +1,29 @@
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
-import { SettingsNodeApi } from '../../shared/types/settings-node/settings-node-api.type';
+import { ChangeDetectionStrategy, Component, ElementRef, ViewChild } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Store } from '@ngrx/store';
 import { State } from '../../app.reducers';
-import { selectActiveNode } from '../../settings/settings-node/settings-node.reducer';
-import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
+import { BaseOpenApiComponent } from '../base-open-api.component';
 
-declare const SwaggerUIBundle: any;
-
-@UntilDestroy()
 @Component({
   selector: 'app-network-recorder-open-api',
-  template: `<div id="network-recorder-open-api"></div>`,
+  template: `
+    <div #insertionPoint id="network-recorder-open-api"></div>
+  `,
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class NetworkRecorderOpenApiComponent implements OnInit {
+export class NetworkRecorderOpenApiComponent extends BaseOpenApiComponent {
 
-  private readonly URL = 'https://raw.githubusercontent.com/tezedge/tezedge-debugger/develop/network-recorder-openapi.json';
+  @ViewChild('insertionPoint', { static: true })
+  protected insertionPoint: ElementRef<HTMLDivElement>;
+  protected URL: string;
 
-  private activeNode: SettingsNodeApi;
-
-  constructor(private http: HttpClient,
-              private store: Store<State>) { }
-
-  ngOnInit(): void {
-    this.listenToActiveNode();
-    this.parseOpenApiResponse();
+  constructor(http: HttpClient,
+              store: Store<State>) {
+    super(http, store);
   }
 
-  private listenToActiveNode(): void {
-    this.store.select(selectActiveNode)
-      .pipe(untilDestroyed(this))
-      .subscribe((node: SettingsNodeApi) => this.activeNode = node);
-  }
-
-  private parseOpenApiResponse(): void {
-    this.http.get(this.URL).subscribe((response: any) => {
-      const server = response.servers[0];
-      const feature = this.activeNode.features.find(f => f.name === 'debugger');
-      if (feature) {
-        const httpChunks = feature.url.split(':');
-        server.url = httpChunks[0] + ':' + httpChunks[1] + ':{port}';
-        server.variables.port.enum = [httpChunks[2]];
-        server.variables.port.default = httpChunks[2];
-        response.servers = [server];
-        this.initOpenAPI(response);
-      }
-    });
-  }
-
-  private initOpenAPI(data: any): void {
-    SwaggerUIBundle({
-      dom_id: '#network-recorder-open-api',
-      layout: 'BaseLayout',
-      presets: [
-        SwaggerUIBundle.presets.apis,
-        SwaggerUIBundle.SwaggerUIStandalonePreset
-      ],
-      spec: data,
-      docExpansion: 'none',
-      operationsSorter: 'alpha'
-    });
+  protected buildUrl(): void {
+    const hostName = this.activeNode.features.find(f => f.name === 'debugger').url;
+    this.URL = hostName + '/openapi/network-recorder-openapi.json';
   }
 }

@@ -132,7 +132,7 @@ export function setUrl(action, state): string {
 
 export function logsActionQuery(action): string {
   return action.payload && action.payload.query
-    ? `query=${action.payload.query}`
+    ? `query="${action.payload.query}"`
     : '';
 }
 

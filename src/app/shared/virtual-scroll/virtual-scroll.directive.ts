@@ -31,7 +31,7 @@ export class VirtualScrollDirective implements AfterViewInit, OnDestroy, OnChang
 
   private previousLastCursorId = 0;
 
-  private offsetScrollElements = 30;
+  private offsetScrollElements = 5;
 
   private $scroller: HTMLDivElement = document.createElement('div');
   private $viewport: HTMLElement;
@@ -58,7 +58,9 @@ export class VirtualScrollDirective implements AfterViewInit, OnDestroy, OnChang
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    if (changes.vsForOf.previousValue !== undefined && this.isEquivalent(changes.vsForOf.currentValue.entities, changes.vsForOf.previousValue.entities)) {
+    const sameInitialSelectedIndex = changes.initialSelectedIndex === undefined || changes.initialSelectedIndex.currentValue === changes.initialSelectedIndex.previousValue;
+    if (changes.vsForOf.previousValue !== undefined && this.isEquivalent(changes.vsForOf.currentValue.entities, changes.vsForOf.previousValue.entities)
+      && sameInitialSelectedIndex) {
       return;
     }
     this.afterReceivingData();
@@ -75,11 +77,9 @@ export class VirtualScrollDirective implements AfterViewInit, OnDestroy, OnChang
         this.onResize();
       });
     });
-
-    // this.afterReceivingData();
   }
 
-  private afterReceivingData() {
+  private afterReceivingData(): void {
     if (!this.$viewport) {
       return;
     }
@@ -99,7 +99,7 @@ export class VirtualScrollDirective implements AfterViewInit, OnDestroy, OnChang
 
     this.preparePositionsAndCreateViewElements();
     this.renderViewportItems();
-    if (this.initialSelectedIndex !== undefined) {
+    if (this.initialSelectedIndex !== undefined) { // force scroll to specific element index
       if (Math.floor(this.viewportHeight / this.itemHeight) / 2 >= this.initialSelectedIndex) {
         this.$viewport.scrollTop = 0;
       } else {
@@ -137,7 +137,6 @@ export class VirtualScrollDirective implements AfterViewInit, OnDestroy, OnChang
     this.renderViewportItems();
     this.prevScrollTop = this.$viewport.scrollTop;
     // }
-
   }
 
   private preparePositionsAndCreateViewElements(): void {
@@ -167,8 +166,10 @@ export class VirtualScrollDirective implements AfterViewInit, OnDestroy, OnChang
     this.createViewElements();
   }
 
-  private onResize(): void {
+  public onResize(): void {
     this.initDimensions();
+    this.preparePositionsAndCreateViewElements();
+    this.renderViewportItems();
     this.scrollToBottom();
   }
 

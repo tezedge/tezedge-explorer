@@ -5,7 +5,8 @@ import { StateMachineComponent } from './state-machine/state-machine.component';
 import { TezedgeSharedModule } from '@shared/tezedge-shared.module';
 import { StateMachineDiagramComponent } from './state-machine-diagram/state-machine-diagram.component';
 import { StateMachineTableComponent } from './state-machine-table/state-machine-table.component';
-import { NgxJsonViewerModule } from 'ngx-json-viewer';
+import { NgxObjectDiffModule } from 'ngx-object-diff';
+import { StateMachineActionDetailsComponent } from './state-machine-action-details/state-machine-action-details.component';
 import { MatSliderModule } from '@angular/material/slider';
 
 
@@ -13,13 +14,14 @@ import { MatSliderModule } from '@angular/material/slider';
   declarations: [
     StateMachineComponent,
     StateMachineDiagramComponent,
-    StateMachineTableComponent
+    StateMachineTableComponent,
+    StateMachineActionDetailsComponent
   ],
   imports: [
     CommonModule,
     StateMachineRoutingModule,
     TezedgeSharedModule,
-    NgxJsonViewerModule,
+    NgxObjectDiffModule,
     MatSliderModule,
   ]
 })

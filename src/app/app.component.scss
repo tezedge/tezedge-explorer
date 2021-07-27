@@ -98,9 +98,9 @@
   min-height: calc(100vh - 38px);
   height: calc(100vh - 38px) !important;
   transition: margin-left 0.18s ease-in;
+  margin-left: 200px !important;
 
   .sidenav-content-container {
     overflow: auto;
-    padding-bottom: 20px;
   }
 }

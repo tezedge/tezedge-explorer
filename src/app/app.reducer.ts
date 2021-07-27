@@ -6,7 +6,7 @@ const initialState: App = {
   sidenav: {
     isVisible: true,
     mode: 'side',
-    collapsed: false,
+    collapsed: JSON.parse(localStorage.getItem('sidenavCollapsed')),
     // backgroundColor: '#2E3748',
     // color: '#F6F9FC',
     backgroundColor: '#1b1b1d',
@@ -106,6 +106,7 @@ export function reducer(state: App = initialState, action): App {
     }
 
     case 'APP_MENU_SIZE_CHANGE': {
+      localStorage.setItem('sidenavCollapsed', action.payload.collapsed);
       return {
         ...state,
         sidenav: {

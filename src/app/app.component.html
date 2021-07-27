@@ -6,14 +6,9 @@
        *ngIf="app?.toolbar?.isVisible"
        [class.app-status-bar-sanbox]="app.statusbar.sandbox">
 
-    <div fxLayout="row"
-         fxLayoutAlign="start center">
-      <button *ngIf="isMobile"
-              class="app-menu-toggle"
-              mat-icon-button>
-        <mat-icon (click)="toggleMenuOnMobile()"
-                  svgIcon="menu"
-                  class="icon-18"></mat-icon>
+    <div fxLayout="row" fxLayoutAlign="start center">
+      <button *ngIf="isMobile" class="app-menu-toggle" mat-icon-button>
+        <mat-icon (click)="toggleMenuOnMobile()" svgIcon="menu" class="icon-18"></mat-icon>
       </button>
 
       <app-settings-node></app-settings-node>
@@ -41,9 +36,12 @@
             %
           </span>
         </div>
-        <div>CURRENT BLOCK <span class="text-white">{{ networkStats.lastAppliedBlock.level }}</span></div>
+        <div>CURRENT BLOCK
+          <span class="text-white">{{ networkStats.lastAppliedBlock.level }}</span>
+        </div>
         <div *ngIf="settingsNodeProtocol$ | async as protocol">PROTOCOL
-          <span class="text-white">{{ protocol | slice: 0: 10 }}</span></div>
+          <span class="text-white">{{ protocol | slice: 0: 10 }}</span>
+        </div>
       </div>
       <div fxLayout="row"
            fxLayoutAlign="center center">
@@ -54,8 +52,7 @@
                 [disabled]="!app.statusbar.sandbox">
                 <span>{{pendingTransactions.length + ' pending transaction' + (pendingTransactions.length > 1 ? 's' : '')}}
                 </span>
-          <span *ngIf="app.statusbar.sandbox"
-                class="action">BAKE</span>
+          <span *ngIf="app.statusbar.sandbox" class="action">BAKE</span>
         </button>
 
         <button class="theme-switcher font-12"
@@ -89,8 +86,7 @@
     </mat-sidenav>
 
     <mat-sidenav-content class="sidenav-content">
-      <div class="sidenav-content-container"
-           fxFlexFill>
+      <div class="sidenav-content-container" fxFlexFill>
         <router-outlet></router-outlet>
       </div>
     </mat-sidenav-content>

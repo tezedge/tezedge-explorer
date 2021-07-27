@@ -1,14 +1,35 @@
+:host {
+  display: flex;
+  height: 100%;
+}
+
 .state-machine {
   background-color: #2A2A2E;
+  border-top-left-radius: 4px;
 
-  .tabs {
-    padding: 9px 10px 9px 15px;
+  //.tabs {
+  //  padding: 9px 10px 9px 15px;
+  //
+  //  > div {
+  //    &.active,
+  //    &:hover {
+  //      color: white !important;
+  //    }
+  //  }
+  //}
+  //
+  //pre {
+  //  background: rgba(255, 255, 255, 0.1);
+  //  border-radius: 4px;
+  //}
 
-    > div {
-      &.active,
-      &:hover {
-        color: white !important;
-      }
-    }
+  .bottom-container {
+    background-color: #2A2A2E;
+  }
+
+  .bottom-container,
+  .upper-container {
+    transition: ease-in 0.2s;
+    min-height: 0;
   }
 }

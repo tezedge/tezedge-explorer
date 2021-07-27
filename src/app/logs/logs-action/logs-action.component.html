@@ -13,7 +13,6 @@
           <input #search
                  type="text"
                  class="search-box"
-                 placeholder="Searching Query"
                  [class.active]="searchFocused"
                  (keydown.enter)="searchByText(search.value)">
           <button *ngIf="searchText"
@@ -108,7 +107,7 @@
                 [style.transform]="position !== undefined ? 'translateY(' + position + 'px)' : ''"
                 [class.virtualScrollRowEven]="event?.index % 2"
                 (click)="selectRow(event)"
-                [class.hover]="logsActionItem.id === event?.id"
+                [class.hover]="logsActionItem?.id === event?.id"
                 [class.used]="event?.datetime">
 
             <span class="item-loading" [class.displayed]="!event?.datetime">&nbsp;</span>

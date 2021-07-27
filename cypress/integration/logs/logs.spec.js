@@ -119,6 +119,7 @@ context('LOGS', () => {
         });
     });
   });
+
   it('[LOGS] should jump to the first page', () => {
     cy.get('.stop-stream').click();
     cy.wait(300).then(() => cy.get('#firstPage').click());
@@ -159,8 +160,7 @@ context('LOGS', () => {
     });
   });
 
-  it('[LOGS] should search by time', () => {
-
+  it('[LOGS] should search logs by time', () => {
     let placeholder;
     cy.get('.custom-bottom-form-field input').invoke('attr', 'placeholder').should(value => {
       placeholder = value.replace('e.g: ', '');

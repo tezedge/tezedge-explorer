@@ -22,7 +22,7 @@ export class MonitoringEffects {
   private networkInterval$: BehaviorSubject<number> = new BehaviorSubject(1);
   private webSocketConnection$: WebSocketSubject<any>;
 
-  MonitoringLoadEffect$ = createEffect(() => this.actions$.pipe(
+  monitoringLoadEffect$ = createEffect(() => this.actions$.pipe(
     ofType(MonitoringActionTypes.MONITORING_LOAD, 'APP_REFRESH', 'APP_INIT_SUCCESS'),
     withLatestFrom(this.store, (action: any, state: ObservedValueOf<Store<State>>) => ({ action, state })),
     switchMap(({ action, state }) => {
@@ -60,7 +60,7 @@ export class MonitoringEffects {
     })
   ));
 
-  MonitoringCloseEffect$ = createEffect(() => this.actions$.pipe(
+  monitoringCloseEffect$ = createEffect(() => this.actions$.pipe(
     ofType(MonitoringActionTypes.MONITORING_CLOSE),
     withLatestFrom(this.store, (action: any, state: ObservedValueOf<Store<State>>) => ({ action, state })),
     flatMap(({ action, state }) => {
@@ -75,7 +75,7 @@ export class MonitoringEffects {
   ));
 
   // load network stats
-  NetworkStatsLoadEffect$ = createEffect(() => this.actions$.pipe(
+  networkStatsLoadEffect$ = createEffect(() => this.actions$.pipe(
     ofType('NETWORK_STATS_LOAD'),
     withLatestFrom(this.store, (action: any, state: ObservedValueOf<Store<State>>) => ({ action, state })),
     switchMap(({ action, state }) => {
@@ -98,7 +98,7 @@ export class MonitoringEffects {
   ));
 
   // load network peers
-  NetworkPeersLoadEffect$ = createEffect(() => this.actions$.pipe(
+  networkPeersLoadEffect$ = createEffect(() => this.actions$.pipe(
     ofType('NETWORK_PEERS_LOAD'),
     withLatestFrom(this.store, (action: any, state: ObservedValueOf<Store<State>>) => ({ action, state })),
     switchMap(({ action, state }) => {
@@ -120,7 +120,7 @@ export class MonitoringEffects {
     }),
   ));
 
-  NetworkWebsocketLoadEffect$ = createEffect(() => this.actions$.pipe(
+  networkWebsocketLoadEffect$ = createEffect(() => this.actions$.pipe(
     ofType('NETWORK_WEBSOCKET_LOAD'),
     withLatestFrom(this.store, (action: any, state: ObservedValueOf<Store<State>>) => ({ action, state })),
     switchMap(({ action, state }) => {

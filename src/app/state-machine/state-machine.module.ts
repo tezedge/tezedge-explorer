@@ -8,6 +8,7 @@ import { StateMachineTableComponent } from './state-machine-table/state-machine-
 import { NgxObjectDiffModule } from 'ngx-object-diff';
 import { StateMachineActionDetailsComponent } from './state-machine-action-details/state-machine-action-details.component';
 import { MatSliderModule } from '@angular/material/slider';
+import { StateMachineActionDurationPipe } from '@state-machine/state-machine-table/state-machine-action-duration.pipe';
 
 
 @NgModule({
@@ -15,7 +16,8 @@ import { MatSliderModule } from '@angular/material/slider';
     StateMachineComponent,
     StateMachineDiagramComponent,
     StateMachineTableComponent,
-    StateMachineActionDetailsComponent
+    StateMachineActionDetailsComponent,
+    StateMachineActionDurationPipe,
   ],
   imports: [
     CommonModule,

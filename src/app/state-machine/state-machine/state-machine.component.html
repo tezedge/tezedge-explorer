@@ -1,13 +1,9 @@
-<div fxFlexFill
-     fxLayout.lg="row"
-     fxLayout.xs="column"
-     class="overflow-hidden">
-  <div fxFlex.lg="400px"
-       class="border">
-    <app-state-machine-table></app-state-machine-table>
-  </div>
-  <div fxFlex.lg="calc(100% - 400px)"
-       class="padding-10">
+<div class="state-machine d-flex flex-column overflow-hidden h-100">
+  <div fxFlex="calc(100% - 400px)"
+       class="overflow-hidden padding-10">
     <app-state-machine-diagram></app-state-machine-diagram>
+  </div>
+  <div fxFlex="400px">
+    <app-state-machine-table></app-state-machine-table>
   </div>
 </div>

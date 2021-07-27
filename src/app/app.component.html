@@ -85,7 +85,7 @@
       </mat-nav-list>
     </mat-sidenav>
 
-    <mat-sidenav-content class="sidenav-content">
+    <mat-sidenav-content class="sidenav-content" [class.is-mobile]="isMobile">
       <div class="sidenav-content-container" fxFlexFill>
         <router-outlet></router-outlet>
       </div>

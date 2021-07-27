@@ -4,127 +4,157 @@
     <div class="filters-container">
 
       <div class="active-filters-row">
-        <button class="add-filters" mat-flat-button (click)="filtersState.open=true" [disabled]="filtersState.open">
-          <svg-icon icon="filter" scale="0.8"></svg-icon>
+        <button class="add-filters"
+                mat-flat-button
+                (click)="filtersState.open=true"
+                [disabled]="filtersState.open">
+          <mat-icon svgIcon="filter"
+                    class="icon-14 margin-right-5 margin-left-5"></mat-icon>
           {{ filtersState.open ? 'Active Filters' : 'ADD FILTER' }}
         </button>
 
         <div class="filters-content">
           <button *ngFor="let filter of activeFilters"
-                  class="active" mat-flat-button
+                  class="active"
+                  mat-flat-button
                   (click)="filterByType(filter)">
-            {{ filter }}
-            <svg-icon icon="close" scale="0.8"></svg-icon>
+            <span class="d-flex align-center flex-center">
+              {{ filter }}
+              <mat-icon svgIcon="close"
+                        class="icon-12 margin-left-5"></mat-icon>
+            </span>
           </button>
         </div>
 
         <div class="filters-content">
           <button *ngIf="virtualScrollItems.urlParams"
-                  class="active" mat-flat-button
+                  class="active"
+                  mat-flat-button
                   (click)="filterAddress(virtualScrollItems.urlParams)">
-            Address:
-            {{ virtualScrollItems.urlParams }}
-            <svg-icon icon="close" scale="0.8"></svg-icon>
+            <span class="d-flex align-center flex-center">
+              Address:
+              {{ virtualScrollItems.urlParams }}
+              <mat-icon svgIcon="close"
+                        class="icon-12 margin-left-5"></mat-icon>
+            </span>
           </button>
         </div>
 
       </div>
 
       <mat-accordion class="filters-accordion">
-        <mat-expansion-panel [expanded]="filtersState.open" hideToggle="true">
-          <ng-template matExpansionPanelContent class="filters-content">
+        <mat-expansion-panel [expanded]="filtersState.open"
+                             hideToggle="true">
+          <ng-template matExpansionPanelContent
+                       class="filters-content">
             <div class="filters-row">
               <span class="filters-label">Control</span>
-              <button mat-flat-button [class.active]="virtualScrollItems.filter.connection || !activeFilters.length"
+              <button [class.active]="virtualScrollItems.filter.connection || !activeFilters.length"
                       (click)="filterByType('connection')">
                 Connection
-                <svg-icon icon="close" scale="0.8"></svg-icon>
+                <mat-icon svgIcon="close"
+                          class="icon-12 margin-left-5"></mat-icon>
               </button>
-              <button mat-flat-button [class.active]="virtualScrollItems.filter.meta || !activeFilters.length"
+              <button [class.active]="virtualScrollItems.filter.meta || !activeFilters.length"
                       (click)="filterByType('meta')">
                 Meta
-                <svg-icon icon="close" scale="0.8"></svg-icon>
+                <mat-icon svgIcon="close"
+                          class="icon-12 margin-left-5"></mat-icon>
               </button>
-              <button mat-flat-button [class.active]="virtualScrollItems.filter.acknowledge || !activeFilters.length"
+              <button [class.active]="virtualScrollItems.filter.acknowledge || !activeFilters.length"
                       (click)="filterByType('acknowledge')">
                 Acknowledge
-                <svg-icon icon="close" scale="0.8"></svg-icon>
+                <mat-icon svgIcon="close"
+                          class="icon-12 margin-left-5"></mat-icon>
               </button>
-              <button mat-flat-button [class.active]="virtualScrollItems.filter.bootstrap || !activeFilters.length"
+              <button [class.active]="virtualScrollItems.filter.bootstrap || !activeFilters.length"
                       (click)="filterByType('bootstrap')">
                 Bootstrap
-                <svg-icon icon="close" scale="0.8"></svg-icon>
+                <mat-icon svgIcon="close"
+                          class="icon-12 margin-left-5"></mat-icon>
               </button>
-              <button mat-flat-button [class.active]="virtualScrollItems.filter.advertise || !activeFilters.length"
+              <button [class.active]="virtualScrollItems.filter.advertise || !activeFilters.length"
                       (click)="filterByType('advertise')">
                 Advertise
-                <svg-icon icon="close" scale="0.8"></svg-icon>
+                <mat-icon svgIcon="close"
+                          class="icon-12 margin-left-5"></mat-icon>
               </button>
-              <button mat-flat-button [class.active]="virtualScrollItems.filter.swap || !activeFilters.length"
+              <button [class.active]="virtualScrollItems.filter.swap || !activeFilters.length"
                       (click)=" filterByType('swap')">
                 Swap
-                <svg-icon icon="close" scale="0.8"></svg-icon>
+                <mat-icon svgIcon="close"
+                          class="icon-12 margin-left-5"></mat-icon>
               </button>
-              <button mat-flat-button [class.active]="virtualScrollItems.filter.deactivate || !activeFilters.length"
+              <button [class.active]="virtualScrollItems.filter.deactivate || !activeFilters.length"
                       (click)="filterByType('deactivate')">
                 Deactivate
-                <svg-icon icon="close" scale="0.8"></svg-icon>
+                <mat-icon svgIcon="close"
+                          class="icon-12 margin-left-5"></mat-icon>
               </button>
 
               <span class="filters-label source-filters-label">Source</span>
-              <button mat-flat-button [class.active]="virtualScrollItems.filter.local || !activeFilters.length"
+              <button [class.active]="virtualScrollItems.filter.local || !activeFilters.length"
                       (click)="filterByType('local')">
-                <mat-icon svgIcon="local" class="icon-14 pre-icon"></mat-icon>
+                <mat-icon svgIcon="local"
+                          class="icon-14 margin-right-5"></mat-icon>
                 Local
-                <svg-icon icon="close" scale="0.8"></svg-icon>
+                <mat-icon svgIcon="close"
+                          class="icon-12 margin-left-5"></mat-icon>
               </button>
-              <button mat-flat-button [class.active]="virtualScrollItems.filter.remote || !activeFilters.length"
+              <button [class.active]="virtualScrollItems.filter.remote || !activeFilters.length"
                       (click)="filterByType('remote')">
-                <mat-icon svgIcon="remote" class="icon-14 pre-icon"></mat-icon>
+                <mat-icon svgIcon="remote"
+                          class="icon-14 margin-right-5"></mat-icon>
                 Remote
-                <svg-icon icon="close" scale="0.8"></svg-icon>
+                <mat-icon svgIcon="close"
+                          class="icon-12 margin-left-5"></mat-icon>
               </button>
             </div>
 
             <div class="filters-row">
 
               <span class="filters-label">Messages</span>
-              <button mat-flat-button [class.active]="virtualScrollItems.filter.currentHead || !activeFilters.length"
+              <button [class.active]="virtualScrollItems.filter.currentHead || !activeFilters.length"
                       (click)="filterByType('currentHead')">
                 Current Head
-                <svg-icon icon="close" scale="0.8"></svg-icon>
+                <mat-icon svgIcon="close"
+                          class="icon-12 margin-left-5"></mat-icon>
               </button>
-              <button mat-flat-button [class.active]="virtualScrollItems.filter.currentBranch || !activeFilters.length"
+              <button [class.active]="virtualScrollItems.filter.currentBranch || !activeFilters.length"
                       (click)="filterByType('currentBranch')">
                 Current Branch
-                <svg-icon icon="close" scale="0.8"></svg-icon>
+                <mat-icon svgIcon="close"
+                          class="icon-12 margin-left-5"></mat-icon>
               </button>
-              <button mat-flat-button [class.active]="virtualScrollItems.filter.operation || !activeFilters.length"
+              <button [class.active]="virtualScrollItems.filter.operation || !activeFilters.length"
                       (click)="filterByType('operation')">
                 Operation
-                <svg-icon icon="close" scale="0.8"></svg-icon>
+                <mat-icon svgIcon="close"
+                          class="icon-12 margin-left-5"></mat-icon>
               </button>
-              <button mat-flat-button [class.active]="virtualScrollItems.filter.protocol || !activeFilters.length"
+              <button [class.active]="virtualScrollItems.filter.protocol || !activeFilters.length"
                       (click)="filterByType('protocol')">
                 Protocol
-                <svg-icon icon="close" scale="0.8"></svg-icon>
+                <mat-icon svgIcon="close"
+                          class="icon-12 margin-left-5"></mat-icon>
               </button>
-              <button mat-flat-button [class.active]="virtualScrollItems.filter.blockHeaders || !activeFilters.length"
+              <button [class.active]="virtualScrollItems.filter.blockHeaders || !activeFilters.length"
                       (click)="filterByType('blockHeaders')">
                 Block Headers
-                <svg-icon icon="close" scale="0.8"></svg-icon>
+                <mat-icon svgIcon="close"
+                          class="icon-12 margin-left-5"></mat-icon>
               </button>
-              <button mat-flat-button
-                      [class.active]="virtualScrollItems.filter.blockOperations || !activeFilters.length"
+              <button [class.active]="virtualScrollItems.filter.blockOperations || !activeFilters.length"
                       (click)="filterByType('blockOperations')">
                 Block Operations
-                <svg-icon icon="close" scale="0.8"></svg-icon>
+                <mat-icon svgIcon="close"
+                          class="icon-12 margin-left-5"></mat-icon>
               </button>
-              <button mat-flat-button
-                      [class.active]="virtualScrollItems.filter.blockOperationsHashes || !activeFilters.length"
+              <button [class.active]="virtualScrollItems.filter.blockOperationsHashes || !activeFilters.length"
                       (click)="filterByType('blockOperationsHashes')">
                 Block Operations Hashes
-                <svg-icon icon="close" scale="0.8"></svg-icon>
+                <mat-icon svgIcon="close"
+                          class="icon-12 margin-left-5"></mat-icon>
               </button>
 
 
@@ -143,7 +173,8 @@
       <span>MESSAGE</span>
     </div>
 
-    <div class="table-virtual-scroll-body" [class.network-filters-expanded]="filtersState.open">
+    <div class="table-virtual-scroll-body"
+         [class.network-filters-expanded]="filtersState.open">
 
       <div class="virtual-scroll-container">
         <ng-template vsFor
@@ -156,27 +187,29 @@
           <span class="virtualScrollRow network-row"
                 [style.transform]="position !== undefined ? 'translateY(' + position + 'px)' : ''"
                 [class.virtualScrollRowEven]="event?.index % 2"
-                (click)="event ? getItemDetails(event) : null"
-                [class.hover]="event?.datetime && selectedNetworkId===event?.originalId"
+                (click)="event ? getItemDetails(event) : null; selectedNetworkId = event.originalId"
+                [class.hover]="event?.datetime && selectedNetworkId === event?.originalId"
                 [class.used]="event?.datetime">
 
-            <span class="item-loading" [class.displayed]="!event?.datetime">&nbsp;</span>
+            <span class="item-loading"
+                  [class.displayed]="!event?.datetime">&nbsp;</span>
 
             <span class="truncate date-time">{{event?.datetime}}</span>
             <span class="truncate">
               <span class="network-action-table-address"
                     (click)="filterAddress(event?.remote_addr)">{{ event?.remote_addr }}</span>
             </span>
-            <span>
-              <span *ngIf="event?.datetime && (event?.source_type==='local' || event?.source_type==='remote')">
-                <svg-icon icon="{{event?.source_type==='local' ? 'local' : 'remote'}}"></svg-icon>
-                <svg-icon
-                  icon="{{event?.source_type==='local' && !event?.incoming  || event?.source_type==='remote' && event?.incoming ? 'arrow-right' : 'arrow-left'}}"></svg-icon>
-                <svg-icon icon="{{event?.source_type==='local' ? 'remote' : 'local'}}"></svg-icon>
-              </span>
+            <span *ngIf="event?.datetime && (event.source_type === 'local' || event.source_type === 'remote')"
+                  class="d-flex align-center">
+              <mat-icon svgIcon="{{event.source_type === 'local' ? 'local' : 'remote'}}"
+                        class="icon-16"></mat-icon>
+              <mat-icon svgIcon="{{event.source_type === 'local' && !event.incoming || event.source_type === 'remote' && event.incoming ? 'arrow-right' : 'arrow-left'}}"
+                        class="icon-16"></mat-icon>
+              <mat-icon svgIcon="{{event.source_type === 'local' ? 'remote' : 'local'}}"
+                        class="icon-16"></mat-icon>
             </span>
             <span class="truncate">
-              {{event?.category}}<span *ngIf="event?.kind"> | {{ event?.kind }}</span>
+              {{event?.category}}<span *ngIf="event?.kind"> | {{ event.kind }}</span>
             </span>
 
             <span class="truncate">{{event?.message_preview === 'null' ? '' : event?.message_preview}}</span>
@@ -185,7 +218,8 @@
         </ng-template>
       </div>
 
-      <div class="action-table-detail" id="virtualScrollTableDetails">
+      <div class="action-table-detail"
+           id="virtualScrollTableDetails">
         <mat-tab-group>
           <mat-tab *ngIf="virtualScrollItems?.selected?.message">
             <ng-template mat-tab-label>
@@ -202,9 +236,12 @@
               <span>Hex Values</span>
             </ng-template>
             <ng-template matTabContent>
-              <div fxLayout="column" class="non-json-container hex-values-container">
-                <span *ngFor="let hexRow of virtualScrollItems?.selected?.hexValues" class="hex-row">
-                  <span *ngFor="let hexItem of hexRow" class="hex-value">{{hexItem}}</span>
+              <div fxLayout="column"
+                   class="non-json-container hex-values-container">
+                <span *ngFor="let hexRow of virtualScrollItems?.selected?.hexValues"
+                      class="hex-row">
+                  <span *ngFor="let hexItem of hexRow"
+                        class="hex-value">{{hexItem}}</span>
                 </span>
               </div>
             </ng-template>
@@ -221,49 +258,65 @@
       </div>
     </div>
 
-    <div class="table-virtual-scroll-footer" fxLayout="row" fxLayoutAlign="start center">
+    <div class="table-virtual-scroll-footer"
+         fxLayout="row"
+         fxLayoutAlign="start center">
       <button class="square-button d-flex flex-center align-center"
-              matTooltip="Scroll to bottom" mat-icon-button
+              mat-icon-button
+              matTooltip="Scroll to bottom"
               (click)="scrollToEnd()">
-        <svg-icon icon="arrow-bottom"></svg-icon>
+        <mat-icon svgIcon="arrow-bottom"
+                  class="icon-12 d-flex"></mat-icon>
       </button>
-      <button class="rectangle-button start-stream d-flex flex-center align-center"
-              matTooltip="Start Streaming" mat-icon-button
+      <button class="rectangle-button start-stream d-flex flex-center align-center text-white border-remove"
+              mat-icon-button
+              matTooltip="Start Streaming"
               (click)="scrollStart()"
               [class.inactive]="!virtualScrollItems?.stream">
-        <svg-icon icon="play-circle"></svg-icon>
+        <mat-icon svgIcon="play-circle"
+                  class="icon-14 margin-right-5"></mat-icon>
         <span>LIVE</span>
       </button>
       <button class="rectangle-button stop-stream d-flex flex-center align-center"
-              matTooltip="Stop Streaming" mat-icon-button
+              mat-icon-button
+              matTooltip="Stop Streaming"
               (click)="scrollStop()"
               [class.inactive]="virtualScrollItems?.stream">
-        <svg-icon icon="pause-circle"></svg-icon>
+        <mat-icon svgIcon="pause-circle"
+                  class="icon-14 margin-right-5"></mat-icon>
         <span>PAUSED</span>
       </button>
-
-      <button class="square-button d-flex align-center" id="firstPage"
+      <button class="square-button d-flex align-center"
+              id="firstPage"
               matTooltip="First Page"
               (click)="loadFirstPage()"
               [disabled]="!virtualScrollItems.pages.length || virtualScrollItems.ids.length < virtualPageSize">
-        <mat-icon svgIcon="arrow-left-stop" class="icon-16"></mat-icon>
+        <mat-icon svgIcon="arrow-left-stop"
+                  class="icon-16"></mat-icon>
       </button>
-      <button class="square-button d-flex align-center flex-center" id="previousPage"
+      <button class="square-button d-flex align-center flex-center"
+              id="previousPage"
               matTooltip="Previous Page"
               (click)="loadPreviousPage()"
               [disabled]="!virtualScrollItems.pages.length || virtualScrollItems.ids.length < virtualPageSize">
-        <mat-icon svgIcon="less-than" class="icon-8 d-flex"></mat-icon>
+        <mat-icon svgIcon="less-than"
+                  class="icon-8 d-flex"></mat-icon>
       </button>
-      <button class="square-button d-flex align-center flex-center" id="nextPage"
+      <button class="square-button d-flex align-center flex-center"
+              id="nextPage"
               matTooltip="Next Page"
               (click)="loadNextPage()"
               [disabled]="!virtualScrollItems.pages.length || virtualScrollItems.activePage.id == virtualScrollItems.pages[virtualScrollItems.pages.length - 1]">
-        <mat-icon svgIcon="greater-than" class="icon-8 d-flex"></mat-icon>
+        <mat-icon svgIcon="greater-than"
+                  class="icon-8 d-flex"></mat-icon>
       </button>
-      <button class="square-button d-flex align-center" id="lastPage"
-              matTooltip="Last Page" (click)="loadLastPage()"
+      <button class="square-button d-flex align-center"
+              id="lastPage"
+              matTooltip="Last Page"
+              (click)="loadLastPage()"
               [disabled]="!virtualScrollItems.pages.length || virtualScrollItems.activePage.id === virtualScrollItems.pages[virtualScrollItems.pages.length - 1]">
-        <mat-icon svgIcon="arrow-right-stop" class="icon-16"></mat-icon>
+        <mat-icon svgIcon="arrow-right-stop"
+                  class="icon-16"></mat-icon>
       </button>
 
       <form [formGroup]="formGroup"
@@ -290,9 +343,9 @@
         records
         <span *ngIf="virtualScrollItems?.activePage?.numberOfRecords">
           , from:
-          {{virtualScrollItems?.activePage?.start?.datetime}}
+          {{virtualScrollItems.activePage.start?.datetime}}
           to:
-          {{virtualScrollItems?.activePage?.end?.datetime}}
+          {{virtualScrollItems.activePage.end?.datetime}}
           </span>
       </span>
     </div>

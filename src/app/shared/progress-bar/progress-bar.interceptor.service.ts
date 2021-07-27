@@ -30,9 +30,7 @@ export class ProgressBarInterceptor implements HttpInterceptor {
           } else if (event.type === HttpEventType.Response) {
             this.progressBarService.updateGlobalProgress(0);
           }
-        }, () => {
-          this.progressBarService.updateGlobalProgress(0);
-        })
+        }, () => this.progressBarService.updateGlobalProgress(0))
       );
     } else {
       return next.handle(req);

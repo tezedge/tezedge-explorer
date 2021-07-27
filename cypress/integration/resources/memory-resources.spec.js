@@ -67,7 +67,7 @@ context('MEMORY RESOURCES', () => {
         .its('store')
         .then((store) => {
           store.select('resources').subscribe(root => {
-            cy.get('table.memory-table').should('be.visible');
+            cy.get('table.memory-table', { timeout: 10000 }).should('be.visible');
             cy.get('table.memory-table tbody tr')
               .should((trArray) => {
                 expect(trArray).to.have.length(root.memoryResources.children.length);
@@ -84,7 +84,7 @@ context('MEMORY RESOURCES', () => {
         .then((store) => {
           store.select('resources').subscribe(root => {
             cy.wait(1000);
-            cy.get('.tree-map.observablehq svg').should('be.visible');
+            cy.get('.tree-map.observablehq svg', { timeout: 10000 }).should('be.visible');
             cy.get('.tree-map.observablehq svg > g > g')
               .should((trArray) => {
                 expect(trArray).to.have.length(root.memoryResources.children.length);
@@ -102,10 +102,10 @@ context('MEMORY RESOURCES', () => {
           store.select('resources').subscribe(root => {
             if (root.memoryResources.children[1].children.length) {
               cy.wait(2000);
-              cy.get('table.memory-table tbody tr:nth-child(2)').click();
+              cy.get('table.memory-table tbody tr:nth-child(2)', { timeout: 10000 }).click();
               cy.wait(2000);
               root.memoryResources.children[1].children.forEach((child, i) => {
-                cy.get(`table.memory-table tbody tr:nth-child(${i + 1}) td:nth-child(3) div span`)
+                cy.get(`table.memory-table tbody tr:nth-child(${i + 1}) td:nth-child(3) div span`, { timeout: 10000 })
                   .should(span => {
                     expect(span.text()).to.equal(child.name.executableName);
                   });
@@ -139,7 +139,7 @@ context('MEMORY RESOURCES', () => {
             store.select('resources').subscribe(res => {
               if (res.memoryResources.children[0].children.length) {
                 cy.wait(2000);
-                cy.get('table.memory-table tbody tr:nth-child(1)').click();
+                cy.get('table.memory-table tbody tr:nth-child(1)', { timeout: 10000 }).click();
                 cy.wait(2000);
 
                 cy.get('.breadcrumbs > :nth-last-child(2)')
@@ -161,7 +161,7 @@ context('MEMORY RESOURCES', () => {
           store.select('resources').subscribe(root => {
             if (root.memoryResources.children[0].children.length) {
               cy.wait(2000);
-              cy.get('table.memory-table tbody tr:nth-child(1)').click();
+              cy.get('table.memory-table tbody tr:nth-child(1)', { timeout: 10000 }).click();
               cy.wait(2000);
 
               cy.get(`table.memory-table tbody tr:nth-child(1) td:nth-child(3) div span`)
@@ -190,7 +190,7 @@ context('MEMORY RESOURCES', () => {
             if (root.memoryResources.children[0].children.length) {
               const clicked = root.memoryResources.children[0];
               cy.wait(2000);
-              cy.get('.tree-map.observablehq svg g > g:first-child').click();
+              cy.get('.tree-map.observablehq svg g > g:first-child', { timeout: 10000 }).click();
               cy.wait(1000);
 
 
@@ -223,7 +223,7 @@ context('MEMORY RESOURCES', () => {
             if (root.memoryResources.children.length > 1 && root.memoryResources.children[0].children.length) {
               const hovered = root.memoryResources.children[1];
               cy.wait(2000);
-              cy.get('.tree-map.observablehq svg g > g:nth-child(2)').trigger('mouseover');
+              cy.get('.tree-map.observablehq svg g > g:nth-child(2)', { timeout: 10000 }).trigger('mouseover');
               cy.wait(1000);
 
 
@@ -253,7 +253,7 @@ context('MEMORY RESOURCES', () => {
             if (root.memoryResources.children[0].children.length) {
               const clicked = root.memoryResources.children[0];
               cy.wait(2000);
-              cy.get('.tree-map.observablehq svg g > g:first-child').click();
+              cy.get('.tree-map.observablehq svg g > g:first-child', { timeout: 10000 }).click();
               cy.wait(1000);
 
               cy.get('.active-resources span')

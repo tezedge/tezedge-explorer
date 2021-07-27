@@ -1,32 +1,23 @@
-<div class="network-history">
-
-    <div class="history-cycle-panel"
-         fxLayoutAlign.lt-md="center center">
-                 
-        <span class="history-voting-period-row" *ngFor="let votingPeriodRow of formattedNetworkHistory; trackBy: trackByRowPosition">
-            <span class="history-voting-period" *ngFor="let votingPeriod of votingPeriodRow.votingPeriodRows; trackBy: trackByRowPeriod">
-
-                <div class="history-voting-period-label">Proposal</div>
-
-                <span class="history-voting-period-panel">
-                    <span *ngFor="let cycle of votingPeriod.cycles; trackBy: trackByCycle">
-
-                        <div *ngIf="cycle.operations>=4094" class="history-cycle"
-                             [style.opacity]="0.15+cycle.applications/4096">
-                        </div>
-                        <span *ngIf="cycle.operations<4094">
-                            <div class="history-cycle-headers" [style.opacity]="cycle.headers/4096">
-                            </div>
-                            <div class="history-cycle-operations" [style.opacity]="cycle.operations/4096">
-                            </div>
-                        </span>
-
-                    </span>
-                </span>
-            </span>
-
-        </span>
-
+<div class="history-cycle-panel d-flex flex-wrap"
+     fxLayoutAlign.lt-md="center center">
+  <div class="history-voting-period-row d-flex"
+       *ngFor="let votingPeriodRow of formattedNetworkHistory; trackBy: trackByRowPosition">
+    <div class="history-voting-period border-rad-4"
+         *ngFor="let votingPeriod of votingPeriodRow.votingPeriodRows; trackBy: trackByRowPeriod">
+      <div class="history-voting-period-label text-white-2 font-12">Proposal</div>
+      <div class="d-flex">
+        <ng-container *ngFor="let cycle of votingPeriod.cycles; trackBy: trackByCycle">
+          <span *ngIf="cycle.operations >= 4094"
+                class="history-cycle border-rad-2"
+                [style.opacity]="0.15 + cycle.applications / 4096"></span>
+          <span *ngIf="cycle.operations < 4094">
+            <span class="history-cycle-headers"
+                  [style.opacity]="cycle.headers / 4096"></span>
+            <span class="history-cycle-operations"
+                  [style.opacity]="cycle.operations / 4096"></span>
+          </span>
+        </ng-container>
+      </div>
     </div>
-
+  </div>
 </div>

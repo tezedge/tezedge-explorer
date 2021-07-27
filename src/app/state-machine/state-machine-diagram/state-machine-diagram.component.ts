@@ -1,14 +1,32 @@
-import { AfterViewInit, ChangeDetectionStrategy, Component, ElementRef, HostListener, NgZone, ViewChild } from '@angular/core';
+import { AfterViewInit, ChangeDetectionStrategy, Component, ElementRef, HostListener, NgZone, OnInit, ViewChild } from '@angular/core';
 import { StateMachineDiagramBlock } from '@shared/types/state-machine/state-machine-diagram-block.type';
 import { select, Store } from '@ngrx/store';
 import { State } from '@app/app.reducers';
-import { selectStateMachineDiagram } from '../state-machine/state-machine.reducer';
+import {
+  selectStateMachine,
+  selectStateMachineActiveAction,
+  selectStateMachineCollapsedDiagram,
+  selectStateMachineDiagramBlocks
+} from '@state-machine/state-machine/state-machine.reducer';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { appState } from '@app/app.reducer';
-import { delay, filter } from 'rxjs/operators';
+import { debounceTime, delay, distinctUntilChanged, filter, mergeMap, skip, tap } from 'rxjs/operators';
 import * as d3 from 'd3';
 import { curveBasis } from 'd3';
 import * as dagreD3 from 'dagre-d3';
+import { StateMachineAction } from '@shared/types/state-machine/state-machine-action.type';
+import {
+  StateMachineActionsStopStream,
+  StateMachineActionTypes,
+  StateMachineCollapseDiagram,
+  StateMachineSetActiveAction,
+  StateMachineStartPlaying,
+  StateMachineStopPlaying
+} from '@state-machine/state-machine/state-machine.actions';
+import { StateMachine } from '@shared/types/state-machine/state-machine.type';
+import { FormControl } from '@angular/forms';
+import { StateMachineActionTableAutoscrollType } from '@shared/types/state-machine/state-machine-action-table.type';
+import { Observable, of } from 'rxjs';
 
 @UntilDestroy()
 @Component({
@@ -17,22 +35,93 @@ import * as dagreD3 from 'dagre-d3';
   styleUrls: ['./state-machine-diagram.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class StateMachineDiagramComponent implements AfterViewInit {
+export class StateMachineDiagramComponent implements OnInit, AfterViewInit {
 
   @ViewChild('d3Diagram', { static: true }) private d3Diagram: ElementRef<HTMLDivElement>;
+
+  stateMachine$: Observable<StateMachine>;
+  formControl: FormControl;
+  private stateMachine: StateMachine;
 
   private g: any;
   private svg: any;
   private svgGroup: any;
-  private diagram: StateMachineDiagramBlock[];
+  private zoom: any;
 
-  private isLoaded: boolean;
+  private diagram: StateMachineDiagramBlock[];
+  private collapsedDiagram: boolean;
+  private diagramHeight: number = -1;
 
   constructor(private store: Store<State>,
               private zone: NgZone) { }
 
+  ngOnInit(): void {
+    this.stateMachine$ = this.store.select(selectStateMachine);
+  }
+
   ngAfterViewInit(): void {
+    this.formControl = new FormControl();
+    this.formControl.valueChanges
+      .pipe(
+        untilDestroyed(this),
+        debounceTime(200)
+      )
+      .subscribe(value => {
+        this.pausePlaying();
+        this.selectAction(this.stateMachine.actionTable.entities[value], 'any');
+      });
+
     this.listenToDiagramChange();
+  }
+
+  selectPrevAction(): void {
+    this.selectAction(this.stateMachine.actionTable.entities[this.stateMachine.activeAction.id - 1], 'up');
+    this.pausePlaying();
+  }
+
+  selectNextAction(): void {
+    this.selectAction(this.stateMachine.actionTable.entities[this.stateMachine.activeAction.id + 1], 'down');
+    this.pausePlaying();
+  }
+
+  private pausePlaying(): void {
+    if (this.stateMachine.isPlaying) {
+      this.store.dispatch<StateMachineStopPlaying>({ type: StateMachineActionTypes.STATE_MACHINE_PAUSE_PLAYING });
+    }
+  }
+
+  togglePlayPause(): void {
+    if (this.stateMachine.isPlaying) {
+      this.pausePlaying();
+    } else {
+      this.stopStream();
+      this.store.dispatch<StateMachineStartPlaying>({ type: StateMachineActionTypes.STATE_MACHINE_START_PLAYING });
+    }
+  }
+
+  selectAction(action: StateMachineAction, autoScroll: StateMachineActionTableAutoscrollType): void {
+    if (this.stateMachine.activeAction !== action) {
+      this.store.dispatch<StateMachineSetActiveAction>({
+        type: StateMachineActionTypes.STATE_MACHINE_SET_ACTIVE_ACTION,
+        payload: { action, autoScroll }
+      });
+      this.stopStream();
+    }
+  }
+
+  stopStream(): void {
+    if (this.stateMachine.actionTable.stream) {
+      this.store.dispatch<StateMachineActionsStopStream>({
+        type: StateMachineActionTypes.STATE_MACHINE_ACTIONS_STOP_STEAM
+      });
+    }
+  }
+
+  toggleDiagramCollapsing(): void {
+    this.pausePlaying();
+    this.store.dispatch<StateMachineCollapseDiagram>({
+      type: StateMachineActionTypes.STATE_MACHINE_COLLAPSE_DIAGRAM
+    });
   }
 
   private listenToDiagramChange(): void {
@@ -42,23 +131,66 @@ export class StateMachineDiagramComponent implements AfterViewInit {
         .setDefaultEdgeLabel(() => ({}));
       this.g.graph().rankDir = 'LR';
     });
-
-    this.store.select(selectStateMachineDiagram)
+    this.stateMachine$
       .pipe(
         untilDestroyed(this),
-        // TODO: remove this
-        filter(() => !this.isLoaded)
+        tap(state => this.stateMachine = state),
+        filter(state => this.diagram && this.diagramHeight !== state.diagramHeight),
       )
-      .subscribe((diagram: StateMachineDiagramBlock[]) => {
-        this.diagram = diagram;
-        this.generateDiagram();
-        this.isLoaded = true;
+      .subscribe((state: StateMachine) => {
+        this.collapsedDiagram = state.collapsedDiagram;
+        this.diagramHeight = state.diagramHeight;
+        if (!this.collapsedDiagram && this.diagram.length > 0) {
+          this.generateDiagram();
+        }
+      });
+
+    this.store.select(selectStateMachineDiagramBlocks)
+      .pipe(
+        untilDestroyed(this),
+        distinctUntilChanged()
+      )
+      .subscribe((blocks: StateMachineDiagramBlock[]) => {
+        this.diagram = blocks;
+        if (!this.collapsedDiagram && this.diagram.length > 0) {
+          this.generateDiagram();
+        }
+      });
+
+    this.zone.runOutsideAngular(() =>
+      this.store.select(selectStateMachineActiveAction)
+        .pipe(
+          untilDestroyed(this),
+          distinctUntilChanged(),
+          filter(Boolean)
+        )
+        .subscribe((action: StateMachineAction) => {
+          this.highlightActiveActionInDiagram(action);
+        })
+    );
+
+    this.store.select(selectStateMachineCollapsedDiagram)
+      .pipe(
+        untilDestroyed(this),
+        filter(value => this.collapsedDiagram !== value),
+        distinctUntilChanged(),
+        skip(1),
+        mergeMap(collapsedDiagram =>
+          of(collapsedDiagram).pipe(delay(collapsedDiagram !== this.collapsedDiagram ? 250 : 0))
+        )
+      )
+      .subscribe((collapsedDiagram: boolean) => {
+        this.collapsedDiagram = collapsedDiagram;
+        if (!this.collapsedDiagram) {
+          this.generateDiagram();
+        }
       });
 
     this.store.pipe(
       untilDestroyed(this),
       select(appState),
-      delay(400)
+      delay(400),
+      skip(1)
     ).subscribe(() => this.generateDiagram());
   }
 
@@ -68,23 +200,24 @@ export class StateMachineDiagramComponent implements AfterViewInit {
       d3.selectAll('#d3Diagram svg > *').remove();
 
       this.diagram.forEach(block => {
-        const cls = block.status
-          + (block.type === 'error' ? ' error' : '')
-          + (block.type === 'error' && block.status !== 'active' ? ' hidden-svg' : '');
-        this.g.setNode(block.id, { // Create
-          label: block.title,
-          class: cls,
+        // const cls = block.status
+        //   + (block.type === 'error' ? ' error' : '')
+        //   + (block.type === 'error' && block.status !== 'active' ? ' hidden-svg' : '');
+        this.g.setNode(block.actionId, { // Create
+          label: block.actionName,
+          // class: cls,
           data: block,
-          id: 'g' + block.id,
+          id: block.actionName
+          // id: 'g' + block.actionId
         });
       });
 
       this.diagram
-        .filter(block => block.next.length)
+        .filter(block => block.nextActions.length)
         .forEach(block => {
-          block.next.forEach((next, i) => {
-            const isNextBlockAnError = this.diagram.find(b => b.id === next).type === 'error';
-            this.g.setEdge(block.id, next, { // Connect
+          block.nextActions.forEach((next, i) => {
+            const isNextBlockAnError = this.diagram.find(b => b.actionId === next).type === 'error';
+            this.g.setEdge(block.actionId, next, { // Connect
               arrowheadStyle: isNextBlockAnError ? 'display: none' : 'fill: #7f7f82; stroke: none',
               style: (isNextBlockAnError ? 'stroke: #e05537; stroke-dasharray: 5, 5;' : 'stroke: #7f7f82;') + 'fill: none',
               curve: curveBasis
@@ -95,7 +228,6 @@ export class StateMachineDiagramComponent implements AfterViewInit {
       this.g.nodes().forEach((v) => {
         const node = this.g.node(v);
         node.rx = node.ry = 5;
-        node.height = node.data.type === 'action' ? 4 : 16;
       });
 
       const render = new dagreD3.render();
@@ -104,11 +236,16 @@ export class StateMachineDiagramComponent implements AfterViewInit {
 
       render(d3.select('#d3Diagram svg g'), this.g); // Run the renderer. This is what draws the final graph.
 
-      this.toggleErrorStatesVisibilityOnHover();
+      // this.toggleErrorStatesVisibilityOnHover();
 
       this.svg
         .attr('width', this.d3Diagram.nativeElement.offsetWidth)
         .attr('height', this.d3Diagram.nativeElement.offsetHeight);
+
+      this.zoom = d3.zoom()
+        .scaleExtent([0.075 , 2])
+        .on('zoom', (e) => this.svg.select('g').attr('transform', e.transform));
+      this.svg.call(this.zoom);
 
       this.zoomToFit();
     });
@@ -121,10 +258,11 @@ export class StateMachineDiagramComponent implements AfterViewInit {
     this.svg.call(zoom);
 
     const graph = this.g.graph();
+    const zoomCoefficient = 0.005;
     const initialScale = Math.min(
       this.d3Diagram.nativeElement.offsetWidth / graph.width,
       this.d3Diagram.nativeElement.offsetHeight / graph.height
-    ) - 0.02;
+    ) - zoomCoefficient;
     const y = (Number(this.svg.attr('height')) - graph.height * initialScale) / 2;
     const x = (Number(this.svg.attr('width')) - graph.width * initialScale) / 2;
     const transform = d3.zoomIdentity
@@ -136,13 +274,36 @@ export class StateMachineDiagramComponent implements AfterViewInit {
       .call(zoom.transform as any, transform);
   }
 
+  zoomIn(): void {
+    this.svg.transition().call(this.zoom.scaleBy, 2);
+  }
+
+  zoomOut(): void {
+    this.svg.transition().call(this.zoom.scaleBy, 0.5);
+  }
+
+  private highlightActiveActionInDiagram(action: StateMachineAction): void {
+    const activeBlock = this.svgGroup.select('g.active');
+    if (activeBlock) {
+      activeBlock.classed('active', false);
+      // debugger;
+    }
+    const dd: any = d3;
+    const newActiveNode = this.svgGroup
+      .select(`#${action.type}`);
+    newActiveNode
+      .classed('active', true);
+    // debugger;
+    // this.centerNode(dd.select('svg g #' + action.type).node().getBoundingClientRect());
+  }
+
   private toggleErrorStatesVisibilityOnHover(): void {
     const toggleVisibilityOfErrorBlocks = (id: string, visible: boolean) => {
-      const nextBlockIds = this.diagram.find(bl => bl.id === Number(id)).next;
-      const nextErrorBlockIds = this.diagram.filter(bl => nextBlockIds.includes(bl.id) && bl.type === 'error');
+      const nextBlockIds = this.diagram.find(bl => bl.actionId === Number(id)).nextActions;
+      const nextErrorBlockIds = this.diagram.filter(bl => nextBlockIds.includes(bl.actionId) && bl.type === 'error');
       nextErrorBlockIds.forEach(bl => {
         d3.select('#d3Diagram svg g')
-          .select(`#g${bl.id}`)
+          .select(`#g${bl.actionId}`)
           .classed('hidden-svg', visible);
       });
     };
@@ -152,4 +313,36 @@ export class StateMachineDiagramComponent implements AfterViewInit {
       .on('mouseenter', (event, id: string) => toggleVisibilityOfErrorBlocks(id, false))
       .on('mouseleave', (event, id: string) => toggleVisibilityOfErrorBlocks(id, true));
   }
+
+  centerNode(source) {
+    const x0 = source.x;
+    const x1 = source.x + source.width;
+    const y0 = source.y;
+    const y1 = source.y + source.height;
+    this.svg.transition().duration(750).call(
+      this.zoom.transform,
+      d3.zoomIdentity
+        // .translate(this.d3Diagram.nativeElement.offsetWidth / 2, this.d3Diagram.nativeElement.offsetHeight / 2)
+        .scale(1)
+        .translate(source.x, source.y),
+      d3.pointer(event, this.svg.node())
+    );
+
+    console.log(source);
+    // let t = d3.zoomTransform(this.svg.node());
+    // let x = source.x;
+    // let y = source.y;
+    // x = x * t.k + this.d3Diagram.nativeElement.offsetWidth / 2;
+    // y = y * t.k + this.d3Diagram.nativeElement.offsetHeight / 2;
+    // d3.select('#d3Diagram svg')
+    //   .transition()
+    //   .duration(200)
+    //   .call(this.zoom.transform, d3.zoomIdentity.translate(source.x, source.y).scale(1.2));
+
+    // this.svg
+    //   .transition()
+    //   .duration(1000)
+    //   .attr('transform', 'translate(' + (this.d3Diagram.nativeElement.offsetWidth / 2 - source.x) + ',' + (this.d3Diagram.nativeElement.offsetHeight / 2 - source.y) + ')');
+  }
+
 }

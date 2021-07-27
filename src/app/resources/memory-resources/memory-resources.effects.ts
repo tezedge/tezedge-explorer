@@ -12,7 +12,7 @@ import { ErrorActionTypes } from '@shared/error-popup/error-popup.actions';
 @Injectable({ providedIn: 'root' })
 export class MemoryResourcesEffects {
 
-  ResourcesLoadEffect$ = createEffect(() => this.actions$.pipe(
+  resourcesLoadEffect$ = createEffect(() => this.actions$.pipe(
     ofType(MemoryResourcesActionTypes.MEMORY_RESOURCES_LOAD),
     withLatestFrom(this.store, (action: any, state: ObservedValueOf<Store<State>>) => ({ action, state })),
     switchMap(({ action, state }) =>

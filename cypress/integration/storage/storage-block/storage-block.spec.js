@@ -18,7 +18,7 @@ context('STORAGE BLOCK', () => {
   });
 
   it('[STORAGE BLOCK] perform storage-block request successfully', () => {
-    cy.wait(2000).then(() => {
+    cy.wait(5000).then(() => {
       cy.window()
         .its('store')
         .then((store) => {
@@ -32,16 +32,16 @@ context('STORAGE BLOCK', () => {
   });
 
   it('[STORAGE BLOCK] create rows for the virtual scroll table', () => {
-    cy.wait(3000).then(() => {
+    cy.wait(5000).then(() => {
       cy.window()
         .its('store')
         .then((store) => {
           store.subscribe(data => {
             if (!isOctez(data)) {
               cy.visit(Cypress.config().baseUrl + '/#/storage', { timeout: 10000 });
-              cy.wait('@getStorageBlockRequest').then(() => {
+              cy.wait('@getStorageBlockRequest', { timeout: 10000 }).then(() => {
                 cy.wait(5000).then(() => {
-                  cy.get('.virtual-scroll-container')
+                  cy.get('.virtual-scroll-container', { timeout: 10000 })
                     .find('.virtualScrollRow');
                 });
               });
@@ -65,7 +65,7 @@ context('STORAGE BLOCK', () => {
                   store.select('storageBlock').subscribe((data) => {
                     if (!data.stream) {
                       const lastRecord = data.entities[data.ids[data.ids.length - 1]];
-                      cy.get('.virtual-scroll-container .virtualScrollRow.used')
+                      cy.get('.virtual-scroll-container .virtualScrollRow.used', { timeout: 10000 })
                         .last()
                         .find('.cycle-position')
                         .should(($span) => {
@@ -105,7 +105,7 @@ context('STORAGE BLOCK', () => {
           cy.wait(2000).then(() => {
             cy.get('.stop-stream').click();
 
-            cy.get('.virtual-scroll-container .virtualScrollRow.used')
+            cy.get('.virtual-scroll-container .virtualScrollRow.used', { timeout: 10000 })
               .last()
               .find('.storage-block-level')
               .then(($span) => {

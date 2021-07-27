@@ -2,11 +2,11 @@ import { Injectable } from '@angular/core';
 import { createEffect, Actions, ofType } from '@ngrx/effects';
 import { HttpClient } from '@angular/common/http';
 import { Store } from '@ngrx/store';
-import { map, switchMap, flatMap, takeUntil, withLatestFrom, catchError, tap } from 'rxjs/operators';
+import { map, switchMap, takeUntil, withLatestFrom, catchError, tap } from 'rxjs/operators';
 import { of, interval, Subject, empty } from 'rxjs';
 import { Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { State } from '../app.reducers';
+import { State } from '@app/app.reducers';
 
 const sandboxStopPending$ = new Subject();
 

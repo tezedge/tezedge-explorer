@@ -18,7 +18,7 @@ import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { MemoryResource } from '@shared/types/resources/memory/memory-resource.type';
 import { MemoryResourcesActionTypes } from './memory-resources.actions';
 import { delay, filter } from 'rxjs/operators';
-import { memoryResources } from '../resources/resources.reducer';
+import { memoryResources } from '@resources/resources/resources.reducer';
 import { appState } from '@app/app.reducer';
 import { App } from '@shared/types/app/app.type';
 

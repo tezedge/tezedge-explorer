@@ -2,9 +2,9 @@ import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { HttpClient } from '@angular/common/http';
 import { Store } from '@ngrx/store';
+import { State } from '@app/app.reducers';
 import { catchError, map, switchMap, takeUntil, tap, withLatestFrom } from 'rxjs/operators';
 import { forkJoin, ObservedValueOf, of, Subject, timer } from 'rxjs';
-import { State } from '@app/app.reducers';
 import { ErrorActionTypes } from '@shared/error-popup/error-popup.actions';
 
 const logActionDestroy$ = new Subject();

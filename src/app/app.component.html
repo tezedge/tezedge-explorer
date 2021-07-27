@@ -2,102 +2,95 @@
 <app-progress-bar></app-progress-bar>
 <div class="sidenav-area h-100">
 
-    <div class="app-status-bar"
-         *ngIf="app?.toolbar?.isVisible"
-         [class.app-status-bar-sanbox]="app.statusbar.sandbox">
+  <div class="app-status-bar"
+       *ngIf="app?.toolbar?.isVisible"
+       [class.app-status-bar-sanbox]="app.statusbar.sandbox">
 
-        <div fxLayout="row"
-             fxLayoutAlign="start center">
-            <button *ngIf="isMobile"
-                    class="app-menu-toggle"
-                    mat-icon-button>
-                <mat-icon (click)="toggleMenuOnMobile()">dehaze</mat-icon>
-            </button>
+    <div fxLayout="row" fxLayoutAlign="start center">
+      <button *ngIf="isMobile" class="app-menu-toggle" mat-icon-button>
+        <mat-icon (click)="toggleMenuOnMobile()" svgIcon="menu" class="icon-18"></mat-icon>
+      </button>
 
-            <app-settings-node></app-settings-node>
-        </div>
-
-        <div fxFlex="grow"
-             fxLayoutAlign="space-between stretch"
-             fxLayoutAlign.lt-sm="end stretch">
-            <div *ngIf="networkStats$ | async as networkStats"
-                 fxHide.lt-sm
-                 fxLayout="row"
-                 fxLayoutGap="10px"
-                 fxLayoutAlign="start center">
-                <div class="toolbar-divider"></div>
-                <div>
-                    BOOTSTRAP
-                    <span class="text-white">
-                        {{ (networkStats?.downloadedBlocks / (networkStats?.currentBlockCount * 0.01)) || 0.0 | number:'1.1-1'}}%
-                    </span>
-                </div>
-                <div>
-                    APPLIED OPERATIONS
-                    <span class="text-white">
-                        {{ (networkStats?.lastAppliedBlock?.level / (networkStats?.currentBlockCount * 0.01)) || 0.0 | number:'1.1-1'}}%
-                    </span>
-                </div>
-                <div>CURRENT BLOCK <span class="text-white">{{ networkStats.lastAppliedBlock.level }}</span></div>
-                <div *ngIf="settingsNodeProtocol$ | async as protocol">PROTOCOL <span class="text-white">{{ protocol | slice: 0: 10 }}</span></div>
-            </div>
-            <div fxLayout="row"
-                 fxLayoutAlign="center center">
-                <button *ngIf="pendingTransactions.length"
-                        mat-button
-                        class="pending-transactions"
-                        (click)="sandboxBakeBlock()"
-                        [disabled]="!app.statusbar.sandbox">
-                <span>{{pendingTransactions.length + ' pending transaction' + (pendingTransactions.length > 1 ? 's' : '')}}
-                </span>
-                    <span *ngIf="app.statusbar.sandbox"
-                          class="action">BAKE</span>
-                </button>
-
-                <button class="theme-switcher font-12 font-300"
-                        mat-button
-                        style="height: 28px; min-width: 24px; padding: 2px 6px 0 6px;">
-                    <mat-icon *ngIf="app.theme.name === 'dark'"
-                              style="opacity:0.3"
-                              class="font-12"
-                              (click)="changeTheme('light')">wb_sunny
-                    </mat-icon>
-                    <mat-icon *ngIf="app.theme.name === 'light'"
-                              style="opacity:0.3"
-                              class="font-12"
-                              (click)="changeTheme('dark')">bedtime
-                    </mat-icon>
-                </button>
-            </div>
-        </div>
+      <app-settings-node></app-settings-node>
     </div>
 
-    <mat-sidenav-container (backdropClick)="toggleMenuOnMobile()"
-                           [class.slim-sidenav]="app.sidenav.collapsed">
-        <!-- Sidebar -->
-        <mat-sidenav class="tezedge-sidenav"
-                     [mode]="app.sidenav.mode"
-                     [style.background-color]="app.sidenav.backgroundColor"
-                     [style.color]="app.sidenav.color"
-                     [opened]="app.sidenav.isVisible"
-                     [fixedInViewport]="true"
-                     [fixedTopGap]="34"
-                     [fixedBottomGap]="0">
+    <div fxFlex="grow"
+         fxLayoutAlign="space-between stretch"
+         fxLayoutAlign.lt-sm="end stretch">
+      <div *ngIf="networkStats$ | async as networkStats"
+           fxHide.lt-sm
+           fxLayout="row"
+           fxLayoutGap="10px"
+           fxLayoutAlign="start center">
+        <div class="toolbar-divider"></div>
+        <div>
+          BOOTSTRAP
+          <span class="text-white">
+            {{ (networkStats?.downloadedBlocks / (networkStats?.currentBlockCount * 0.01)) || 0.0 | number:'1.1-1'}}%
+          </span>
+        </div>
+        <div>
+          APPLIED OPERATIONS
+          <span class="text-white">
+            {{ (networkStats?.lastAppliedBlock?.level / (networkStats?.currentBlockCount * 0.01)) || 0.0 | number:'1.1-1'}}
+            %
+          </span>
+        </div>
+        <div>CURRENT BLOCK
+          <span class="text-white">{{ networkStats.lastAppliedBlock.level }}</span>
+        </div>
+        <div *ngIf="settingsNodeProtocol$ | async as protocol">PROTOCOL
+          <span class="text-white">{{ protocol | slice: 0: 10 }}</span>
+        </div>
+      </div>
+      <div fxLayout="row"
+           fxLayoutAlign="center center">
+        <button *ngIf="pendingTransactions.length"
+                mat-button
+                class="pending-transactions"
+                (click)="sandboxBakeBlock()"
+                [disabled]="!app.statusbar.sandbox">
+                <span>{{pendingTransactions.length + ' pending transaction' + (pendingTransactions.length > 1 ? 's' : '')}}
+                </span>
+          <span *ngIf="app.statusbar.sandbox" class="action">BAKE</span>
+        </button>
 
-            <mat-nav-list class="overflow-hidden">
-                <app-navigation-menu></app-navigation-menu>
-            </mat-nav-list>
+        <button class="theme-switcher font-12"
+                mat-icon-button>
+          <mat-icon *ngIf="app.theme.name === 'dark'"
+                    class="font-12 icon-16"
+                    svgIcon="sunny"
+                    (click)="changeTheme('light')"></mat-icon>
+          <mat-icon *ngIf="app.theme.name === 'light'"
+                    class="font-12 icon-16"
+                    svgIcon="night"
+                    (click)="changeTheme('dark')"></mat-icon>
+        </button>
+      </div>
+    </div>
+  </div>
 
-        </mat-sidenav>
+  <mat-sidenav-container (backdropClick)="toggleMenuOnMobile()"
+                         [class.slim-sidenav]="app.sidenav.collapsed">
+    <mat-sidenav class="tezedge-sidenav"
+                 [mode]="app.sidenav.mode"
+                 [style.background-color]="app.sidenav.backgroundColor"
+                 [style.color]="app.sidenav.color"
+                 [opened]="app.sidenav.isVisible"
+                 [fixedInViewport]="true"
+                 [fixedTopGap]="34"
+                 [fixedBottomGap]="0">
+      <mat-nav-list class="overflow-hidden">
+        <app-navigation-menu></app-navigation-menu>
+      </mat-nav-list>
+    </mat-sidenav>
 
-        <!-- Content -->
-        <mat-sidenav-content class="sidenav-content">
-            <div class="sidenav-content-container"
-                 fxFlexFill>
-                <router-outlet></router-outlet>
-            </div>
-        </mat-sidenav-content>
+    <mat-sidenav-content class="sidenav-content" [class.is-mobile]="isMobile">
+      <div class="sidenav-content-container" fxFlexFill>
+        <router-outlet></router-outlet>
+      </div>
+    </mat-sidenav-content>
 
-    </mat-sidenav-container>
+  </mat-sidenav-container>
 
 </div>

@@ -84,18 +84,19 @@ g.label-container {
   .node {
     rect {
       stroke-width: 1.5px;
+      fill: $white-1;
     }
 
     .label {
       pointer-events: none;
     }
 
-    &.active rect {
-      fill: rgba(32, 78, 138, 1);
-    }
-
     &.completed rect {
       fill: $white-1;
+    }
+
+    &.active rect {
+      fill: rgba(32, 78, 138, 1);
     }
 
     &.error {

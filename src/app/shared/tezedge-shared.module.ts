@@ -18,7 +18,7 @@ import { MaterialModule } from '@shared/material.module';
 import { NgxJsonViewerModule } from 'ngx-json-viewer';
 import { ReactiveFormsModule } from '@angular/forms';
 import { NgrxFormDirective } from '@shared/ngrx-form.directive';
-import { SvgIconComponent } from '@shared/svg-icon/svg-icon.component';
+import { ResizeDirective } from '@shared/directives/resize.directive';
 
 
 @NgModule({
@@ -34,7 +34,7 @@ import { SvgIconComponent } from '@shared/svg-icon/svg-icon.component';
     VirtualScrollFromTopDirective,
     ClickOutsideDirective,
     NgrxFormDirective,
-    SvgIconComponent,
+    ResizeDirective,
   ],
   imports: [
     CommonModule,
@@ -64,7 +64,6 @@ import { SvgIconComponent } from '@shared/svg-icon/svg-icon.component';
 
     ErrorPopupComponent,
     ProgressBarComponent,
-    SvgIconComponent,
 
     ReplaceCharacterPipe,
     TimeTransformPipe,
@@ -76,6 +75,7 @@ import { SvgIconComponent } from '@shared/svg-icon/svg-icon.component';
     VirtualScrollFromTopDirective,
     ClickOutsideDirective,
     NgrxFormDirective,
+    ResizeDirective,
   ],
   providers: [
     {

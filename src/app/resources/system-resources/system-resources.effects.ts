@@ -14,7 +14,7 @@ export class SystemResourcesEffects {
 
   private resourcesDestroy$ = new Subject<void>();
 
-  ResourcesLoadEffect$ = createEffect(() => this.actions$.pipe(
+  resourcesLoadEffect$ = createEffect(() => this.actions$.pipe(
     ofType(SystemResourcesActionTypes.SYSTEM_RESOURCES_LOAD),
     withLatestFrom(this.store, (action: any, state: ObservedValueOf<Store<State>>) => ({ action, state })),
     switchMap(({ action, state }) => {
@@ -43,7 +43,7 @@ export class SystemResourcesEffects {
     })
   ));
 
-  ResourcesCloseEffect$ = createEffect(() => this.actions$.pipe(
+  resourcesCloseEffect$ = createEffect(() => this.actions$.pipe(
     ofType(SystemResourcesActionTypes.SYSTEM_RESOURCES_CLOSE),
     withLatestFrom(this.store, (action: any, state: ObservedValueOf<Store<State>>) => ({ action, state })),
     tap(({ action, state }) => {

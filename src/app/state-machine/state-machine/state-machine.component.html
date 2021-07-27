@@ -1,23 +1,93 @@
-<div class="state-machine d-flex flex-column h-100">
-  <div fxFlex="40px" class="border-bottom tabs d-flex align-center font-12">
-    <div *ngFor="let tab of tabs"
-         (click)="activeTab = tab"
-         class="text-white-7 margin-right-10 pointer"
-         [class.active]="activeTab === tab">
-      {{ tab }}
+<div class="state-machine w-100 overflow-hidden"
+     *ngIf="state$ | async as stateMachine">
+  <!--  <div fxFlex="40px" class="border-bottom tabs d-flex align-center font-12">-->
+  <!--    <div *ngFor="let tab of tabs"-->
+  <!--         (click)="activeTab = tab"-->
+  <!--         class="text-white-7 margin-right-10 pointer"-->
+  <!--         [class.active]="activeTab === tab">-->
+  <!--      {{ tab }}-->
+  <!--    </div>-->
+  <!--  </div>-->
+  <div class="d-flex flex-column h-100">
+    <div class="filters-container">
+
+      <div class="active-filters-row">
+        <button class="add-filters" mat-flat-button>
+          <mat-icon svgIcon="filter" class="icon-14 margin-right-5 margin-left-5"></mat-icon>
+          Active Filters
+        </button>
+
+        <div class="filters-content">
+          <button *ngFor="let filter of activeFilters"
+                  class="active"
+                  mat-flat-button
+                  (click)="filterByType(filter)">
+            <span class="d-flex align-center flex-center">
+              {{ filter }}
+              <mat-icon svgIcon="close"
+                        class="icon-12 margin-left-5"></mat-icon>
+            </span>
+          </button>
+        </div>
+      </div>
+
+      <mat-accordion class="filters-accordion">
+        <mat-expansion-panel [expanded]="true" hideToggle="true">
+          <ng-template matExpansionPanelContent class="filters-content">
+            <div class="filters-row">
+              <span class="filters-label">Control</span>
+              <button [class.active]="activeFilters.includes('connection') || !activeFilters.length"
+                      (click)="filterByType('connection')">
+                Connection
+                <mat-icon svgIcon="close" class="icon-12 margin-left-5"></mat-icon>
+              </button>
+              <button [class.active]="activeFilters.includes('dnsLookup') || !activeFilters.length"
+                      (click)="filterByType('dnsLookup')">
+                DNS Lookup
+                <mat-icon svgIcon="close" class="icon-12 margin-left-5"></mat-icon>
+              </button>
+              <button [class.active]="activeFilters.includes('wakeUp') || !activeFilters.length"
+                      (click)="filterByType('wakeUp')">
+                Wake Up
+                <mat-icon svgIcon="close" class="icon-12 margin-left-5"></mat-icon>
+              </button>
+              <button [class.active]="activeFilters.includes('attempt') || !activeFilters.length"
+                      (click)="filterByType('attempt')">
+                Attempt
+                <mat-icon svgIcon="close" class="icon-12 margin-left-5"></mat-icon>
+              </button>
+            </div>
+          </ng-template>
+        </mat-expansion-panel>
+      </mat-accordion>
+
     </div>
-  </div>
-  <div fxFlex.gt-sm="calc(100% - 40px)"
-       fxFlex.xs="calc(100% - 40px)"
-       class="d-flex flex-column overflow-hidden">
-    <div fxFlex.gt-sm="calc(100% - 400px)"
-         fxFlex.xs="calc(100% - 500px)"
-         class="overflow-hidden padding-10">
-      <app-state-machine-diagram></app-state-machine-diagram>
-    </div>
-    <div fxFlex.gt-sm="400px"
-         fxFlex.xs="500px">
-      <app-state-machine-table></app-state-machine-table>
+    <div fxFlex class="d-flex flex-column w-100 flex-between">
+      <div class="upper-container"
+           [style.transition]="transition"
+           [class.collapsed]="stateMachine.collapsedDiagram"
+           [style.height]="stateMachine.collapsedDiagram
+                           ? '32px'
+                           : (stateMachine.diagramHeight ? stateMachine.diagramHeight + 'px' : '40%')">
+        <app-state-machine-diagram class="d-flex flex-column"></app-state-machine-diagram>
+        <div *ngIf="!stateMachine.collapsedDiagram"
+             class="resizer-element p-relative d-flex flex-center">
+          <div class="mid-content d-flex flex-column align-center"
+               resizer (resizeFinished)="onResizeFinished($event)">
+            <mat-icon svgIcon="rounded-triangle" class="up icon-white-4 icon-10"></mat-icon>
+            <div class="line"></div>
+            <mat-icon svgIcon="rounded-triangle" class="down icon-white-4 icon-10"></mat-icon>
+          </div>
+        </div>
+      </div>
+      <div class="bottom-container flex-1" fxLayout.gt-sm="row" fxLayout.lt-md="column"
+           [class.collapsed]="stateMachine.collapsedDiagram"
+           [style.transition]="transition">
+        <app-state-machine-table fxFlex.gt-sm="530px" fxFlex.lt-md="50%"></app-state-machine-table>
+        <div fxFlex.gt-sm="calc(100% - 530px)" fxFlex.lt-md="50%">
+          <app-state-machine-action-details></app-state-machine-action-details>
+        </div>
+      </div>
     </div>
   </div>
 </div>

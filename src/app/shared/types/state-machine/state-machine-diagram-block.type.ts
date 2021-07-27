@@ -1,10 +1,7 @@
 export interface StateMachineDiagramBlock {
-  title: string;
-  type: string;
   id: number;
+  type: 'info' | 'error';
+  status: 'completed' | 'active' | 'pending';
+  title: string;
   next: number[];
-  status: string;
-  currentState: any;
-  blocks: StateMachineDiagramBlock[];
-  labels?: string[];
 }

@@ -72,29 +72,6 @@ g.label-container {
 }
 
 #d3Diagram {
-  .clusters {
-    .cluster {
-      rect {
-        fill: transparent;
-        stroke: $white-7;
-        stroke-width: 1.5px;
-        stroke-dasharray: 7 10;
-        rx: 4px;
-        ry: 4px;
-      }
-
-      &.completed rect {
-        fill: rgba(63, 63, 67, 1);
-        stroke: $white-1;
-        stroke-dasharray: 0;
-      }
-    }
-
-    .cluster .label {
-      transform: translateY(6px);
-    }
-  }
-
   text {
     font-weight: 300;
     font-size: 12px;
@@ -109,9 +86,8 @@ g.label-container {
       stroke-width: 1.5px;
     }
 
-    &.action rect {
-      rx: 20;
-      ry: 20;
+    .label {
+      pointer-events: none;
     }
 
     &.active rect {
@@ -120,6 +96,19 @@ g.label-container {
 
     &.completed rect {
       fill: $white-1;
+    }
+
+    &.error {
+      transition: opacity 0.2s;
+
+      &.hidden-svg {
+        opacity: 0 !important;
+      }
+
+      rect {
+        stroke: #b14933;
+        fill: #5f352d;
+      }
     }
 
     &.pending {

@@ -1,23 +1,123 @@
+.player-wrapper {
+  background-color: #464648;
+  padding-left: 4px;
+  padding-right: 4px;
+  height: 32px;
+  margin-bottom: 6px;
 
-.state-table {
-  .table-title {
-    padding: 20px 10px;
-  }
+  .play-pause {
+    width: 24px;
+    height: 24px;
+    background-color: rgba(255, 255, 255, 0.1);
+    transition: 0.08s;
 
-  .action {
-    padding: 10px;
-    cursor: pointer;
-
-    &:nth-child(odd) {
-      background-color: rgba(255, 255, 255, 0.1);
+    &:hover:not(:disabled) {
+      background-color: rgba(255, 255, 255, 0.2);
     }
 
-    &:hover, &.active {
-      background-color: #204E8A;
+    &:last-child {
+      margin-left: 8px;
+    }
+
+    &.arrows {
+      border: none;
+
+      &:disabled {
+        cursor: context-menu;
+
+        mat-icon {
+          color: black;
+        }
+      }
+
+      mat-icon {
+        width: 7px;
+        height: 14.5px;
+      }
+    }
+  }
+}
+
+.table-wrapper {
+  height: calc(100% - 38px);
+
+  .row {
+    height: 32px;
+    display: grid;
+    grid-template-columns: 140px 1fr;
+
+    span {
+      line-height: 32px;
+      text-align: left;
+      font-weight: 300;
+      padding-left: 10px;
+    }
+  }
+
+  .state-table {
+    border-collapse: collapse;
+    height: calc(100% - 32px);
+
+    .action {
+      cursor: pointer;
+
+      &:nth-child(odd) {
+        background-color: rgba(255, 255, 255, 0.1);
+      }
+
+      &:hover, &.active {
+        background-color: #204E8A;
+      }
     }
   }
 
   .payload-view {
-    margin-bottom: 100px;
+    width: 40%;
+
+    .detail {
+      line-height: 32px;
+    }
+
+    .diagram-list {
+      .block-step {
+        position: relative;
+        height: 32px;
+        line-height: 32px;
+        padding-left: 18px;
+
+        &:first-child {
+          color: white !important;
+
+          &::after {
+            background-color: #0A84FF;
+          }
+        }
+
+        &.error::after {
+          background-color: rgba(235, 83, 104, 1);
+        }
+
+        &::after {
+          position: absolute;
+          content: '';
+          border-radius: 8px;
+          width: 8px;
+          height: 8px;
+          left: 0;
+          top: calc(50% - 4px);
+          background-color: #555558;
+        }
+
+        &:not(:last-child)::before {
+          position: absolute;
+          content: '';
+          width: 1px;
+          height: 28px;
+          left: 4px;
+          top: 20px;
+          background-color: #555558;
+        }
+      }
+    }
   }
 }

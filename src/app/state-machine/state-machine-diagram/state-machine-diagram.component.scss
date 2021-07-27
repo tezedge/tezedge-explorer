@@ -1,0 +1,11 @@
+.icon-background {
+  background-color: rgba(255, 255, 255, 0.1);
+  width: 24px;
+  height: 24px;
+  transition: 0.08s;
+  margin-left: 8px;
+
+  &:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+  }
+}

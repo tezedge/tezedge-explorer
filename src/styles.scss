@@ -1,4 +1,4 @@
-@import 'assets/styles/ngx-charts';
+@import 'assets/styles/charts';
 @import 'assets/styles/utilities/layout';
 @import 'assets/styles/utilities/design';
 @import 'assets/styles/utilities/text';
@@ -7,6 +7,7 @@
 @import 'assets/styles/material/material-form';
 @import 'assets/styles/material/material-icon';
 @import 'assets/styles/material/material-progress-bar';
+@import 'assets/styles/material/material-slider';
 @import 'assets/styles/notification';
 @import 'assets/styles/open-api';
 
@@ -206,7 +207,6 @@ tr.mat-row {
 }
 
 .ngx-json-viewer {
-  padding-top: 14px;
   font-family: Roboto, "Helvetica Neue", sans-serif !important;
   font-size: 14px !important;
 }

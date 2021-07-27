@@ -18,7 +18,6 @@ export class StorageBlockEffects {
   @Effect()
   StorageBlockReset$ = this.actions$.pipe(
     ofType('STORAGE_BLOCK_RESET', 'STORAGE_BLOCK_LOAD'),
-    // dispatch action
     map((payload) => ({ type: 'STORAGE_BLOCK_RESET_SUCCESS', payload })),
     catchError((error, caught) => {
       console.error(error);

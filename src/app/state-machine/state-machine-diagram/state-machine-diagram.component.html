@@ -1,5 +1,18 @@
-<div #d3Diagram
-     id="d3Diagram"
-     class="w-100 h-100">
-  <svg></svg>
+<div class="d-flex flex-column h-100">
+  <div fxFlex="24px"
+       class="flex-end text-white d-flex">
+    <div class="d-flex flex-row font-12 align-center">
+      <div>See full handshaking</div>
+      <div class="icon-background pointer border-rad-4 d-flex flex-center align-center"
+           (click)="zoomToFit(500)">
+        <mat-icon svgIcon="arrow-expanded"
+                  class="icon-white icon-12"></mat-icon>
+      </div>
+    </div>
+  </div>
+  <div class="flex-grow" fxFlex="calc(100% - 24px)">
+    <div #d3Diagram id="d3Diagram" class="h-100">
+      <svg></svg>
+    </div>
+  </div>
 </div>

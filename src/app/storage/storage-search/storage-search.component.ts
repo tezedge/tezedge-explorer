@@ -1,7 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Store } from '@ngrx/store'
-import { Subject } from 'rxjs'
-import { takeUntil } from 'rxjs/operators'
+import { Store } from '@ngrx/store';
 import { Router } from '@angular/router';
 
 @Component({
@@ -24,17 +22,17 @@ export class StorageSearchComponent implements OnInit {
   valueChange(input) {
 
     const searchInput = input;
-    
+
     // process block ID
     const blockPrefix = input.substr(0, 1);
     if (blockPrefix === "B" && input.length === 51) {
-      
+
       console.log('[storageSearchInput]', this.storageSearchInput, input, input.length);
 
       // clean search
       this.storageSearchInput = "";
 
-      // change route 
+      // change route
       this.store.dispatch({
         type: 'STORAGE_SEARCH',
         payload: searchInput,
@@ -52,7 +50,7 @@ export class StorageSearchComponent implements OnInit {
       // clean search
       this.storageSearchInput = "";
 
-      // change route 
+      // change route
       this.store.dispatch({
         type: 'STORAGE_SEARCH',
         payload: searchInput,

@@ -19,12 +19,11 @@ import { Overlay, OverlayRef } from '@angular/cdk/overlay';
 import { ComponentPortal } from '@angular/cdk/portal';
 import { GraphRedirectionOverlayComponent } from '../graph-redirection-overlay/graph-redirection-overlay.component';
 import { Store } from '@ngrx/store';
-import { State } from '../../../app.reducers';
-import { SystemResourcesActionTypes, SystemResourcesDetailsUpdateAction } from '../../../resources/system-resources/system-resources.actions';
-import { SystemResourcesResourceType } from '../../types/resources/system/system-resources-panel.type';
+import { State } from '@app/app.reducers';
+import { SystemResourcesActionTypes, SystemResourcesDetailsUpdateAction } from '@resources/system-resources/system-resources.actions';
+import { SystemResourcesResourceType } from '@shared/types/resources/system/system-resources-panel.type';
 import { fromEvent } from 'rxjs';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { debounceTime } from 'rxjs/operators';
 import { TezedgeChartsService } from '../tezedge-charts.service';
 
 @UntilDestroy()
@@ -70,27 +69,13 @@ export class TezedgeChartsTooltipAreaComponent extends TooltipArea implements Af
       this.document.querySelector('.centered-container').addEventListener('scroll', this.scrollListener);
 
       fromEvent(this.tooltipTrigger.nativeElement, 'mousemove')
-        .pipe(
-          untilDestroyed(this),
-          // debounceTime(150)
-        )
+        .pipe(untilDestroyed(this))
         .subscribe(() => {
             this.tezedgeChartsService.updateSystemResources({
               type: 'runnerGroups',
               resourceType: this.resourceType,
               timestamp: this.anchorValues[0].name
             });
-            // this.zone.run(() => {
-            //   console.log(this.resourceType);
-            //   this.store.dispatch<SystemResourcesDetailsUpdateAction>({
-            //     type: SystemResourcesActionTypes.SYSTEM_RESOURCES_DETAILS_UPDATE,
-            //     payload: {
-            //       type: 'runnerGroups',
-            //       resourceType: this.resourceType,
-            //       timestamp: this.anchorValues[0].name
-            //     }
-            //   });
-            // });
           }
         );
     });

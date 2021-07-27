@@ -1,15 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'app-endpoints',
   templateUrl: './endpoints.component.html',
   styleUrls: ['./endpoints.component.scss']
 })
-export class EndpointsComponent implements OnInit {
-
-  constructor() { }
-
-  ngOnInit(): void {
-  }
-
+export class EndpointsComponent {
 }

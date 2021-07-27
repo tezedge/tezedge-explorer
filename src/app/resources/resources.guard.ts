@@ -3,9 +3,9 @@ import { ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot, UrlTr
 import { Observable } from 'rxjs';
 import { Store } from '@ngrx/store';
 import { State } from '../app.reducers';
-import { selectActiveNode } from '../settings/settings-node/settings-node.reducer';
+import { selectActiveNode } from '@settings/settings-node.reducer';
 import { map } from 'rxjs/operators';
-import { SettingsNodeApi } from '../shared/types/settings-node/settings-node-api.type';
+import { SettingsNodeApi } from '@shared/types/settings-node/settings-node-api.type';
 
 @Injectable({
   providedIn: 'root'

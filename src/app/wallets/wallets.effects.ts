@@ -1,22 +1,20 @@
 import { Injectable, NgZone } from '@angular/core';
-import { Effect, Actions, ofType } from '@ngrx/effects';
+import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { HttpClient } from '@angular/common/http';
 import { Store } from '@ngrx/store';
-import { map, withLatestFrom, flatMap, switchMap, catchError, filter, tap, takeLast, first, delay } from 'rxjs/operators';
+import { catchError, delay, flatMap, map, switchMap, tap, withLatestFrom } from 'rxjs/operators';
 import { Router } from '@angular/router';
-import { of, Observable } from 'rxjs';
-import { initializeWallet, getWallet, transaction, confirmOperation } from 'tezos-wallet';
-import { environment } from 'src/environments/environment';
+import { Observable, of } from 'rxjs';
+import { getWallet, initializeWallet, transaction } from 'tezos-wallet';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { State } from '../app.reducers';
+import { State } from '@app/app.reducers';
 
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class WalletsEffects {
 
   sandbox = (state: State) => state.settingsNode.activeNode.features.find(f => f.name === 'sandbox').url;
 
-    @Effect()
-    WalletsListInit$ = this.actions$.pipe(
+    WalletsListInit$ = createEffect(() => this.actions$.pipe(
         ofType('WALLETS_LIST_INIT'),
 
         // merge state
@@ -40,11 +38,10 @@ export class WalletsEffects {
             return caught;
         })
 
-    );
+    ));
 
     // get wallets (to update ballance)
-    @Effect()
-    WalletsListLoad$ = this.actions$.pipe(
+    WalletsListLoad$ = createEffect(() => this.actions$.pipe(
         ofType('WALLET_LIST_LOAD'),
 
         // get state from store
@@ -99,10 +96,9 @@ export class WalletsEffects {
             return caught;
         }),
 
-    )
+    ));
 
-    @Effect()
-    TezosOperationTransaction$ = this.actions$.pipe(
+    TezosOperationTransaction$ = createEffect(() => this.actions$.pipe(
         ofType('WALLET_TRANSACTION'),
 
         // add state to effect
@@ -173,7 +169,7 @@ export class WalletsEffects {
                 horizontalPosition: 'right'
             });
         }),
-    )
+    ));
 
     constructor(
         private http: HttpClient,

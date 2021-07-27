@@ -22,8 +22,6 @@
 
 .tree-map {
   width: 100%;
-  min-height: 400px;
-  max-height: 400px;
   overflow: hidden;
   border-left: 1px solid rgba(255, 255, 255, 0.1);
   border-right: 1px solid rgba(255, 255, 255, 0.1);
@@ -57,7 +55,6 @@
   > :nth-last-child(2) {
     color: #fff;
     pointer-events: none;
-    padding-right: 20px;
   }
 
   > :last-child {
@@ -66,7 +63,6 @@
 }
 
 .memory-table {
-  height: calc(100% - 30px - 400px - 36px);
   display: inline-block;
   border-top: 1px solid rgba(255, 255, 255, 0.1);
   border-left: 1px solid rgba(255, 255, 255, 0.1);

@@ -2,11 +2,10 @@ import { Injectable } from '@angular/core';
 import { Observable, throwError } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { catchError, map } from 'rxjs/operators';
-import { SystemResources } from '../../shared/types/resources/system/system-resources.type';
+import { SystemResources } from '@shared/types/resources/system/system-resources.type';
 import { DatePipe } from '@angular/common';
-import { SystemResourcesPanel } from '../../shared/types/resources/system/system-resources-panel.type';
-import { SystemResourcesPanelBlock } from '../../shared/types/resources/system/system-resources-panel-block.type';
-import { SystemResourcesSubcategoryRunnerGroup } from '../../shared/types/resources/system/system-resources-subcategory-runner-group.type';
+import { SystemResourcesPanel } from '@shared/types/resources/system/system-resources-panel.type';
+import { SystemResourcesSubcategoryRunnerGroup } from '@shared/types/resources/system/system-resources-subcategory-runner-group.type';
 
 const MB_DIVISOR = 1048576;
 const GB_DIVISOR = 1073741824;
@@ -313,13 +312,13 @@ export class SystemResourcesService {
     panel.timestamp = lastResource.timestamp;
     if (lastResource.cpu.validators !== undefined) {
       panel.blocks = [
-        { name: 'Total', value: lastResource.cpu.total, formattingType: '%'},
-        { name: 'Node', value: lastResource.cpu.node, formattingType: '%'},
-        { name: 'Validators', value: lastResource.cpu.validators, formattingType: '%'},
+        { name: 'Total', value: lastResource.cpu.total, formattingType: '%' },
+        { name: 'Node', value: lastResource.cpu.node, formattingType: '%' },
+        { name: 'Validators', value: lastResource.cpu.validators, formattingType: '%' },
       ];
     } else {
       panel.blocks = [
-        { name: 'Node', value: lastResource.cpu.node, formattingType: '%'},
+        { name: 'Node', value: lastResource.cpu.node, formattingType: '%' },
       ];
     }
     panel.runnerGroups = lastResource.cpu.runnerGroups;

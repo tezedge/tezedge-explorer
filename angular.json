@@ -11,13 +11,23 @@
       "prefix": "app",
       "architect": {
         "build": {
-          "builder": "@angular-devkit/build-angular:browser",
+          "builder": "@angular-builders/custom-webpack:browser",
           "options": {
+            "customWebpackConfig": {
+              "path": "./custom-webpack.config.js"
+            },
+            "optimization": false,
             "outputPath": "dist/tezedge-explorer",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": "src/polyfills.ts",
             "tsConfig": "tsconfig.app.json",
+            "allowedCommonJsDependencies": [
+              "bs58check",
+              "bip39",
+              "buffer",
+              "dagre-d3"
+            ],
             "stylePreprocessorOptions": {
               "includePaths": [
                 "src/assets",
@@ -27,7 +37,11 @@
             "aot": true,
             "assets": [
               "src/manifest.webmanifest",
-              "src/assets"
+              {
+                "glob": "**/*",
+                "input": "src/assets",
+                "output": "assets"
+              }
             ],
             "styles": [
               "./node_modules/swagger-ui-dist/swagger-ui.css",
@@ -45,8 +59,7 @@
             "scripts": [
               "node_modules/swagger-ui-dist/swagger-ui-bundle.js",
               "node_modules/swagger-ui-dist/swagger-ui-standalone-preset.js"
-            ],
-            "extractCss": true
+            ]
           },
           "configurations": {
             "production": {
@@ -59,16 +72,15 @@
               "optimization": true,
               "outputHashing": "all",
               "sourceMap": false,
-              "extractCss": true,
               "namedChunks": false,
               "extractLicenses": true,
-              "vendorChunk": false,
+              "vendorChunk": true,
               "buildOptimizer": true,
               "budgets": [
                 {
                   "type": "initial",
                   "maximumWarning": "2mb",
-                  "maximumError": "7mb"
+                  "maximumError": "5mb"
                 },
                 {
                   "type": "anyComponentStyle",
@@ -89,7 +101,6 @@
               "optimization": true,
               "outputHashing": "all",
               "sourceMap": false,
-              "extractCss": true,
               "namedChunks": false,
               "extractLicenses": true,
               "vendorChunk": false,

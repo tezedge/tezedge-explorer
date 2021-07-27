@@ -1,0 +1,22 @@
+.proposals-slider.mat-slider-horizontal {
+  height: 32px;
+
+  .mat-slider-wrapper {
+    top: 15px;
+
+    .mat-slider-track-fill,
+    .mat-slider-track-background {
+      background-color: rgba(255, 255, 255, 0.2);
+    }
+
+    .mat-slider-thumb {
+      width: 16px;
+      height: 16px;
+      right: -8px;
+      bottom: -8px;
+      transform: none;
+      background-color: #6b6b6d;
+    }
+  }
+
+}

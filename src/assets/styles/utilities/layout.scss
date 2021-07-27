@@ -26,6 +26,11 @@
   overflow: hidden;
 }
 
+.overflow-auto {
+  overflow-x: auto;
+  overflow-y: auto;
+}
+
 .overflow-x-auto {
   overflow-x: auto;
 }
@@ -48,6 +53,10 @@
 
 .hidden {
   visibility: hidden !important;
+}
+
+.flex-1 {
+  flex: 1;
 }
 
 .flex-grow {
@@ -158,6 +167,14 @@
 
 .padding-bottom-remove {
   padding-bottom: 0 !important;
+}
+
+.padding-right-remove {
+  padding-right: 0 !important;
+}
+
+.padding-left-remove {
+  padding-left: 0 !important;
 }
 
 .margin-left-10 {

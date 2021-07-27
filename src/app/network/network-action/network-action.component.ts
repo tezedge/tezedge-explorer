@@ -3,12 +3,12 @@ import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 
 import { Store } from '@ngrx/store';
 import { debounceTime, filter } from 'rxjs/operators';
-import { State } from '../../app.reducers';
-import { NetworkAction } from '../../shared/types/network/network-action.type';
-import { NetworkActionEntity } from '../../shared/types/network/network-action-entity.type';
+import { State } from '@app/app.reducers';
+import { NetworkAction } from '@shared/types/network/network-action.type';
+import { NetworkActionEntity } from '@shared/types/network/network-action-entity.type';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { TezedgeTimeValidator } from '../../shared/validators/tezedge-time.validator';
+import { TezedgeTimeValidator } from '@shared/validators/tezedge-time.validator';
 
 @UntilDestroy()
 @Component({

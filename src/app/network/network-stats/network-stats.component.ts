@@ -1,9 +1,9 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { debounceTime } from 'rxjs/operators';
-import { State } from '../../app.reducers';
+import { State } from '@app/app.reducers';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { NetworkStats } from '../../shared/types/network/network-stats.type';
+import { NetworkStats } from '@shared/types/network/network-stats.type';
 
 @UntilDestroy()
 @Component({

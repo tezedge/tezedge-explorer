@@ -1,13 +1,13 @@
 import { ChangeDetectionStrategy, Component, HostListener, OnInit, TemplateRef, ViewChild, ViewContainerRef } from '@angular/core';
 import { Observable } from 'rxjs';
 import { select, Store } from '@ngrx/store';
-import { CommitNumber } from '../../shared/types/commit-number/commit-number.type';
+import { CommitNumber } from '@shared/types/commit-number/commit-number.type';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { State } from '../../app.reducers';
+import { State } from '@app/app.reducers';
 import { Overlay, OverlayRef } from '@angular/cdk/overlay';
 import { TemplatePortal } from '@angular/cdk/portal';
-import { selectActiveNode } from '../../settings/settings-node/settings-node.reducer';
-import { SettingsNodeApi } from '../../shared/types/settings-node/settings-node-api.type';
+import { selectActiveNode } from '@settings/settings-node.reducer';
+import { SettingsNodeApi } from '@shared/types/settings-node/settings-node-api.type';
 import { filter } from 'rxjs/operators';
 
 @UntilDestroy()

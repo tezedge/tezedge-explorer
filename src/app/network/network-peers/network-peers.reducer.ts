@@ -1,4 +1,4 @@
-import { NetworkPeers } from '../../shared/types/network/network-peers.type';
+import { NetworkPeers } from '@shared/types/network/network-peers.type';
 
 const initialState: NetworkPeers = {
   ids: [],

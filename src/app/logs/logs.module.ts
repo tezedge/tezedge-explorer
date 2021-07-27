@@ -4,8 +4,7 @@ import { CommonModule } from '@angular/common';
 import { LogsRoutingModule } from './logs.routing';
 import { LogsActionComponent } from './logs-action/logs-action.component';
 import { LogsComponent } from './logs/logs.component';
-import { TezedgeSharedModule } from '../shared/tezedge-shared.module';
-import { MatExpansionModule } from '@angular/material/expansion';
+import { TezedgeSharedModule } from '@shared/tezedge-shared.module';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { ReactiveFormsModule } from '@angular/forms';
 
@@ -19,7 +18,6 @@ import { ReactiveFormsModule } from '@angular/forms';
     CommonModule,
     LogsRoutingModule,
     TezedgeSharedModule,
-    MatExpansionModule,
     MatDatepickerModule,
     ReactiveFormsModule,
   ]

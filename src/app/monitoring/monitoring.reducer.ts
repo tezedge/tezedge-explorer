@@ -1,4 +1,4 @@
-import { Monitoring } from '../shared/types/monitoring/monitoring.type';
+import { Monitoring } from '@shared/types/monitoring/monitoring.type';
 import { MonitoringActions, MonitoringActionTypes } from './monitoring.actions';
 
 const initialState: Monitoring = {

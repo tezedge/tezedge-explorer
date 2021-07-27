@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { StorageBlockDetails } from '../../shared/types/storage/storage-block/storage-block-details.type';
+import { StorageBlockDetails } from '@shared/types/storage/storage-block/storage-block-details.type';
 import { map } from 'rxjs/operators';
-import { StorageBlockDetailsOperationContext } from '../../shared/types/storage/storage-block/storage-block-details-operation-context.type';
+import { StorageBlockDetailsOperationContext } from '@shared/types/storage/storage-block/storage-block-details-operation-context.type';
 
 @Injectable({
   providedIn: 'root'
@@ -28,7 +28,7 @@ export class StorageBlockService {
     block.commitContextTime = response[context + 'CommitContextTime'];
     block.operationsContext.forEach((op: StorageBlockDetailsOperationContext, i: number) => {
       const operation = response.operationsContext[i];
-      op.data.actionsCount = operation.data[context + 'Count'];
+      op.data.queriesCount = operation.data[context + 'Count'];
       op.data.maxTime = operation.data[context + 'MaxTime'];
       op.data.meanTime = operation.data[context + 'MeanTime'];
       op.data.totalTime = operation.data[context + 'TotalTime'];

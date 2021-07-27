@@ -1,18 +1,17 @@
-import {Component, OnInit, ViewChild, NgZone, ChangeDetectorRef, OnDestroy} from '@angular/core';
+import { ChangeDetectorRef, Component, NgZone, OnDestroy, OnInit, ViewChild } from '@angular/core';
 
-import {ActivatedRoute, Router} from '@angular/router';
-import {Store} from '@ngrx/store';
-import {Subject} from 'rxjs';
-import {takeUntil} from 'rxjs/operators';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Store } from '@ngrx/store';
 
-import { VirtualScrollFromTopDirective } from '../../shared/virtual-scroll/virtual-scroll-from-top.directive';
+import { VirtualScrollFromTopDirective } from '@shared/virtual-scroll/virtual-scroll-from-top.directive';
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 
+@UntilDestroy()
 @Component({
   selector: 'app-storage-action',
   templateUrl: './storage-action.component.html',
   styleUrls: ['./storage-action.component.scss']
 })
-
 export class StorageActionComponent implements OnInit, OnDestroy {
   virtualScrollItems;
   storageActionShow: boolean;
@@ -23,7 +22,6 @@ export class StorageActionComponent implements OnInit, OnDestroy {
   block: string;
   viewLast = 'block';
 
-  onDestroy$ = new Subject();
 
   // public search;
   // public block;
@@ -56,7 +54,7 @@ export class StorageActionComponent implements OnInit, OnDestroy {
   ngOnInit() {
     // wait for data changes from redux
     this.store.select('storageAction')
-      .pipe(takeUntil(this.onDestroy$))
+      .pipe(untilDestroyed(this))
       .subscribe(data => {
         this.virtualScrollItems = data;
         this.storageActionShow = data.ids.length > 0;
@@ -293,18 +291,11 @@ export class StorageActionComponent implements OnInit, OnDestroy {
   // }
 
   ngOnDestroy() {
-    console.log('[storage-action] OnDestroy');
-
     this.store.dispatch({
       type: 'STORAGE_BLOCK_ACTION_RESET'
     });
 
     // unsubscribe router
     this.routerParams.unsubscribe();
-
-    // close all observables
-    this.onDestroy$.next();
-    this.onDestroy$.complete();
-
   }
 }

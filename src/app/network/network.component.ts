@@ -6,5 +6,4 @@ import { Component } from '@angular/core';
   styleUrls: ['./network.component.scss']
 })
 export class NetworkComponent {
-
 }

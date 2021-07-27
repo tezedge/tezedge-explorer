@@ -1,11 +1,11 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, NgZone, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { LogsAction } from '../../shared/types/logs/logs-action.type';
-import { LogsActionEntity } from '../../shared/types/logs/logs-action-entity.type';
-import { State } from '../../app.reducers';
+import { LogsAction } from '@shared/types/logs/logs-action.type';
+import { LogsActionEntity } from '@shared/types/logs/logs-action-entity.type';
+import { State } from '@app/app.reducers';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { TezedgeTimeValidator } from '../../shared/validators/tezedge-time.validator';
+import { TezedgeTimeValidator } from '@shared/validators/tezedge-time.validator';
 import { filter } from 'rxjs/operators';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 

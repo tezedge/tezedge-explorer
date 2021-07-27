@@ -1,10 +1,10 @@
-import { Component, OnInit, OnDestroy, ViewChild, ChangeDetectionStrategy } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { Subject, Observable, Subscription } from 'rxjs';
-import { takeUntil, map, debounceTime, filter } from 'rxjs/operators';
-import { State } from '../../app.reducers';
-import { NetworkAction } from '../../shared/types/network/network-action.type';
+import { State } from '@app/app.reducers';
+import { NetworkAction } from '@shared/types/network/network-action.type';
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 
+@UntilDestroy()
 @Component({
   selector: 'app-mempool-action',
   templateUrl: './mempool-action.component.html',
@@ -14,14 +14,12 @@ export class MempoolActionComponent implements OnInit, OnDestroy {
 
   public mempoolAction;
   public mempoolActionList = [];
-  public displayedColumns: string[] = ["hash", "type"];
+  public displayedColumns: string[] = ['hash', 'type'];
   public mempoolSelectedItem: any;
   public mempoolClickedItem: any;
 
   public networkAction;
   public networkActionList = [];
-
-  public onDestroy$ = new Subject();
 
   public networkAction$;
   public networkDataSource;
@@ -35,15 +33,15 @@ export class MempoolActionComponent implements OnInit, OnDestroy {
 
     // wait for data changes from redux
     this.store.select('mempoolAction')
-      .pipe(takeUntil(this.onDestroy$))
+      .pipe(untilDestroyed(this))
       .subscribe(data => {
         this.mempoolAction = data;
         this.mempoolActionList = data.ids.map(id => ({ id, ...data.entities[id] }));
 
-        if(this.mempoolActionList.length){
-          this.mempoolSelectedItem = this.mempoolActionList[this.mempoolActionList.length-1];
+        if (this.mempoolActionList.length) {
+          this.mempoolSelectedItem = this.mempoolActionList[this.mempoolActionList.length - 1];
 
-          if(!this.mempoolClickedItem || !data.entities[this.mempoolClickedItem.id]){
+          if (!this.mempoolClickedItem || !data.entities[this.mempoolClickedItem.id]) {
             this.mempoolClickedItem = this.mempoolSelectedItem;
           }
         } else {
@@ -59,7 +57,7 @@ export class MempoolActionComponent implements OnInit, OnDestroy {
 
     // wait for data changes from redux
     this.store.select('networkAction')
-      .pipe(takeUntil(this.onDestroy$))
+      .pipe(untilDestroyed(this))
       .subscribe((data: NetworkAction) => {
 
         if (this.networkActionlastCursorId < data.lastCursorId) {
@@ -84,26 +82,20 @@ export class MempoolActionComponent implements OnInit, OnDestroy {
   }
 
   // set temporary select item on hover
-  tableMouseEnter(item: any){
+  tableMouseEnter(item: any) {
     this.mempoolSelectedItem = item;
   }
 
   // set clicked item again as selected on hover leave
-  tableMouseLeave(){
+  tableMouseLeave() {
     this.mempoolSelectedItem = this.mempoolClickedItem;
   }
 
   ngOnDestroy() {
-
     // stop streaming actions
     this.store.dispatch({
       type: 'MEMPOOL_ACTION_STOP'
     });
-
-    // close all observables
-    this.onDestroy$.next();
-    this.onDestroy$.complete();
-
   }
 
 }

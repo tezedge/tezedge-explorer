@@ -1,11 +1,13 @@
-import { SystemResourcesSeries } from './system-resources-series.type';
-import { SystemResourcesSummary } from './system-resources-summary.type';
+import { SystemResourcesPanel } from './system-resources-panel.type';
+import { SystemResourceCategory } from './system-resource-category.type';
 
 export class SystemResources {
-  cpu: SystemResourcesSeries[];
-  memory: SystemResourcesSeries[];
-  storage: SystemResourcesSeries[];
+  cpu: SystemResourceCategory;
+  memory: SystemResourceCategory;
+  storage: SystemResourceCategory;
+  io: SystemResourceCategory;
+  network: SystemResourceCategory;
   xTicksValues: string[];
-  resourcesSummary: SystemResourcesSummary;
+  resourcesSummary: SystemResourcesPanel;
   colorScheme: { domain: string[] };
 }

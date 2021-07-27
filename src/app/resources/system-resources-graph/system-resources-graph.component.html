@@ -1,7 +1,6 @@
 <div fxLayout="row"
      [class.fade]="chartData"
      [style.transition-delay.s]="transitionDelay"
-     (mouseenter)="toggleActiveSummary()"
      [ngClass.lt-md]="'small-device'"
      class="resource-category-block">
   <div class="rotated-label" fxFlex="33px" fxHide.lt-md><span>{{ rotatedLabel }}</span></div>
@@ -10,11 +9,11 @@
     <div class="graph-label-list"
          fxLayout="row wrap"
          fxLayoutAlign="end">
-     <span *ngFor="let label of labelList"
+     <span *ngFor="let label of labelList; let i=index"
            class="graph-label-item">
        <span class="label-color"
-             [style.background]="label.color"></span>
-       {{ label.name }}
+             [style.background]="colorScheme.domain[i]"></span>
+       {{ label }}
      </span>
     </div>
     <div fxFlex="grow"
@@ -30,6 +29,7 @@
                               [xAxis]="true"
                               [yAxis]="true"
                               [animations]="false"
+                              [resourceType]="resourceType"
                               [curve]="curve">
         <ng-template #seriesTooltipTemplate
                      let-model="model">
@@ -61,14 +61,8 @@
         <div class="color-square"
              [style.background]="entry.color"></div>
         <div>{{ entry.series }}:&nbsp;</div>
-        <div *ngIf="type === 'percentage'"
-             class="series-value">{{ entry.value }}%
-        </div>
-        <div *ngIf="type === 'GB'"
-             class="series-value">{{ entry.value | number: '1.2-2' }} GB
-        </div>
-        <div *ngIf="type === 'MB'"
-             class="series-value">{{ entry.value | number: '1.2-2' }} MB
+        <div class="series-value">
+          {{ entry.value | number: '1.2-2' }}{{ type }}
         </div>
       </div>
     </div>
@@ -88,6 +82,8 @@
             class="tooltip-val">{{ model.value | number: '1.2-2' }} GB</span>
       <span *ngIf="type === 'MB'"
             class="tooltip-val">{{ model.value | number: '1.2-2' }} MB</span>
+      <span *ngIf="type === ''"
+            class="tooltip-val">{{ model.value }}</span>
     </span>
   </div>
 </ng-template>

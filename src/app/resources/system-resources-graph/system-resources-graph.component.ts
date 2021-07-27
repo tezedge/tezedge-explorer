@@ -1,8 +1,8 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { curveCardinal } from 'd3-shape';
-import { ResourceType } from '../system-resources/system-resources.component';
-import { SystemResourcesSeries } from '../../shared/types/resources/system/system-resources-series.type';
-import { SystemResourcesSummaryBlock } from '../../shared/types/resources/system/system-resources-summary-block.type';
+import { SystemResourcesSubcategory } from '../../shared/types/resources/system/system-resources-subcategory.type';
+import { SystemResourcesFormattingType } from '../../shared/types/resources/system/system-resource-category.type';
+import { ResourceType } from '../../shared/types/resources/system/system-resources-panel.type';
 
 @Component({
   selector: 'app-system-resources-graph',
@@ -12,9 +12,9 @@ import { SystemResourcesSummaryBlock } from '../../shared/types/resources/system
 })
 export class SystemResourcesGraphComponent {
 
-  @Input() chartData: SystemResourcesSeries[];
+  @Input() chartData: SystemResourcesSubcategory[];
   @Input() transitionDelay: number;
-  @Input() labelList: SystemResourcesSummaryBlock[];
+  @Input() labelList: string[];
   @Input() graphTitle: string;
   @Input() resourceType: ResourceType;
   @Input() rotatedLabel: string;
@@ -22,11 +22,6 @@ export class SystemResourcesGraphComponent {
   @Input() xTicksValues: string[];
   @Input() colorScheme: { domain: string[] };
   @Input() curve: any = curveCardinal;
-  @Input() formattingType: 'percentage' | 'GB' | 'MB' = 'GB';
+  @Input() formattingType: SystemResourcesFormattingType = '';
 
-  @Output() graphHover = new EventEmitter<ResourceType>();
-
-  toggleActiveSummary(): void {
-    this.graphHover.emit(this.resourceType);
-  }
 }

@@ -21,6 +21,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
+import { ClickOutsideDirective } from './directives/click-outside.directive';
 
 
 @NgModule({
@@ -35,6 +36,7 @@ import { MatInputModule } from '@angular/material/input';
     VarDirective,
     VirtualScrollDirective,
     VirtualScrollFromTopDirective,
+    ClickOutsideDirective,
   ],
   imports: [
     CommonModule,
@@ -79,6 +81,7 @@ import { MatInputModule } from '@angular/material/input';
     MatTooltipModule,
     MatFormFieldModule,
     MatInputModule,
+    ClickOutsideDirective,
   ],
   providers: [
     {

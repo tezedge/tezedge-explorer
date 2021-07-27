@@ -6,6 +6,10 @@
   text-transform: uppercase;
 }
 
+.text-normal {
+  text-transform: unset !important;
+}
+
 .text-nowrap {
   white-space: nowrap;
 }
@@ -24,6 +28,10 @@
 
 .font-400 {
   font-weight: 400;
+}
+
+.font-300 {
+  font-weight: 300;
 }
 
 .text-right {

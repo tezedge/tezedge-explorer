@@ -8,6 +8,7 @@ import { Overlay, OverlayRef } from '@angular/cdk/overlay';
 import { TemplatePortal } from '@angular/cdk/portal';
 import { selectActiveNode } from '../../settings/settings-node/settings-node.reducer';
 import { SettingsNodeApi } from '../../shared/types/settings-node/settings-node-api.type';
+import { filter } from 'rxjs/operators';
 
 @UntilDestroy()
 @Component({
@@ -26,6 +27,7 @@ export class CommitNumberComponent implements OnInit {
   };
   hideComponent = false;
 
+  private currentNodeId: string;
   private overlayRef: OverlayRef;
 
   @ViewChild('versionTooltip') private versionTooltip: TemplateRef<void>;
@@ -47,8 +49,11 @@ export class CommitNumberComponent implements OnInit {
 
     this.store.pipe(
       untilDestroyed(this),
-      select(selectActiveNode)
+      select(selectActiveNode),
+      filter(node => node.id !== this.currentNodeId)
     ).subscribe((activeNode: SettingsNodeApi) => {
+      this.currentNodeId = activeNode.id;
+
       const commit = activeNode.features.find(f => f.name === 'commit');
       this.store.dispatch({ type: 'VERSION_EXPLORER_LOAD', payload: commit ? commit.id : '' });
       this.store.dispatch({ type: 'VERSION_NODE_TAG_LOAD' });

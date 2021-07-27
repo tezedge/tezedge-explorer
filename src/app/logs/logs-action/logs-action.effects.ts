@@ -114,14 +114,26 @@ export class LogsActionEffects {
 
 }
 
-export function setUrl(action, state) {
+export function setUrl(action, state): string {
   const url = `${state.settingsNode.activeNode.features.find(f => f.name === 'debugger').url}/v2/log?node_name=${state.settingsNode.activeNode.p2p_port}&`;
+
+  const limit = logsActionLimit(action);
+  const query = logsActionQuery(action);
+  if (query) {
+    return `${url}${query}&${limit}`;
+  }
 
   const filters = logsActionFilter(action, state);
   const cursor = logsActionCursor(action);
-  const limit = logsActionLimit(action);
+
 
   return `${url}${filters.length ? `${filters}&` : ''}${cursor.length ? `${cursor}&` : ''}${limit}`;
+}
+
+export function logsActionQuery(action): string {
+  return action.payload && action.payload.query
+    ? `query=${action.payload.query}`
+    : '';
 }
 
 export function logsActionTimestamp(action, direction: string): string {

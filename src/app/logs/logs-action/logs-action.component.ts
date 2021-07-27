@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, NgZone, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, NgZone, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { LogsAction } from '../../shared/types/logs/logs-action.type';
 import { LogsActionEntity } from '../../shared/types/logs/logs-action-entity.type';
@@ -27,9 +27,14 @@ export class LogsActionComponent implements OnInit, OnDestroy {
   virtualPageSize = 1000;
   activeFilters = [];
 
+  searchFocused: boolean;
+  searchText: string;
+
   formGroup: FormGroup;
   currentDatePlaceholder: string;
   initialSelectedIndex: number;
+
+  @ViewChild('search', { static: true }) private searchInput: ElementRef<HTMLInputElement>;
 
   constructor(private store: Store<State>,
               private changeDetector: ChangeDetectorRef,
@@ -102,6 +107,7 @@ export class LogsActionComponent implements OnInit, OnDestroy {
           if (this.formGroup.get('time').value !== formDateFormat) {
             this.formGroup.get('time').patchValue(formDateFormat);
           }
+          this.clearSearch();
           this.triggerLogsTimeLoad();
         } else {
           this.formGroup.get('time').patchValue('');
@@ -202,6 +208,26 @@ export class LogsActionComponent implements OnInit, OnDestroy {
     });
   }
 
+  clearSearch(): void {
+    this.searchText = '';
+    this.searchInput.nativeElement.value = '';
+  }
+
+  searchByText(value: string): void {
+    this.scrollStop();
+    this.searchText = value;
+    this.searchInput.nativeElement.value = '';
+    this.formGroup.get('time').patchValue('');
+
+    this.store.dispatch({
+      type: 'LOGS_ACTION_LOAD',
+      payload: {
+        limit: this.virtualPageSize,
+        query: this.searchText
+      }
+    });
+  }
+
   startStopDataStream(value: { stop: boolean, limit: number }): void {
     if (value.stop) {
       this.scrollStop();
@@ -218,6 +244,7 @@ export class LogsActionComponent implements OnInit, OnDestroy {
     if (this.routeTimestamp) {
       this.formGroup.get('time').patchValue('');
     }
+    this.clearSearch();
 
     this.logsActionItem = undefined;
 

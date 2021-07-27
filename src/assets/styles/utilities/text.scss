@@ -14,8 +14,16 @@
   white-space: nowrap;
 }
 
+.text-no-decoration {
+  text-decoration: none !important;
+}
+
 .font-12 {
   font-size: 12px;
+}
+
+.font-14 {
+  font-size: 14px;
 }
 
 .font-600 {
@@ -42,6 +50,10 @@
   cursor: pointer;
 }
 
+.pointer-none {
+  pointer-events: none;
+}
+
 .truncate {
   white-space: nowrap;
   overflow: hidden;
@@ -52,8 +64,16 @@
   color: white !important;
 }
 
+.text-white-2 {
+  color: rgba(255, 255, 255, 0.2) !important;
+}
+
 .text-white-4 {
   color: rgba(255, 255, 255, 0.4) !important;
+}
+
+.text-white-6 {
+  color: rgba(255, 255, 255, 0.6) !important;
 }
 
 .text-white-7 {

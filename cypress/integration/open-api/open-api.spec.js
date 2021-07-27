@@ -51,7 +51,7 @@ context('OPEN API', () => {
   });
 
   it('[OPEN API] should render RPC\'s details on click', () => {
-    cy.wait(1000).then(() => {
+    cy.wait(2000).then(() => {
       cy.get('.swagger-ui .wrapper:nth-child(4) section div span:nth-child(1) .opblock-tag-section h3').click();
       cy.wait(500).then(() => {
         cy.get('.operation-tag-content span:nth-child(1) .opblock-summary').should('be.visible');

@@ -37,18 +37,19 @@ import { SettingsNodeEffects } from '@settings/settings-node.effects';
 
 import { NgrxVirtualScrollDirective } from '@shared/ngrx-virtual-scroll.directive';
 import { TezedgeSharedModule } from '@shared/tezedge-shared.module';
-import { NavigationMenuComponent } from './layout/navigation-menu/navigation-menu.component';
-import { IconRegisterService } from '@app/core/icon-register.service';
+import { NavigationMenuComponent } from '@app/layout/navigation-menu/navigation-menu.component';
+import { IconRegisterService } from '@core/icon-register.service';
 import { ReplaceCharacterPipe } from '@shared/pipes/replace-character.pipe';
 import { GithubVersionComponent } from '@app/layout/github-version/github-version.component';
 import { SettingsNodeComponent } from '@settings/settings-node.component';
-import { ScriptLoaderService } from '@app/core/script-loader.service';
+import { ScriptLoaderService } from '@core/script-loader.service';
+import { SmartContractsEffects } from '@smart-contracts/smart-contracts/smart-contracts.effects';
 
 registerLocaleData(localeFr, 'fr');
 registerLocaleData(localeEnGb, 'en');
 
 function loadIcons(matIconService: IconRegisterService): Function {
-  return () => matIconService.loadIcons();
+  return () => matIconService.registerIcons();
 }
 
 function loadScripts(scriptLoaderService: ScriptLoaderService): Function {
@@ -101,6 +102,7 @@ function loadScripts(scriptLoaderService: ScriptLoaderService): Function {
       MemoryResourcesEffects,
       ErrorPopupEffects,
       StateMachineEffects,
+      SmartContractsEffects,
     ]),
 
     // https://github.com/zalmoxisus/redux-devtools-extension

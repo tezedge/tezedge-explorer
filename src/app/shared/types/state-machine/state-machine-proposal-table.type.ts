@@ -1,5 +1,5 @@
-import { VirtualScrollActivePage } from '../shared/virtual-scroll-active-page.type';
-import { StateMachineProposal } from './state-machine-proposal.type';
+import { VirtualScrollActivePage } from '@shared/types/shared/virtual-scroll-active-page.type';
+import { StateMachineProposal } from '@shared/types/state-machine/state-machine-proposal.type';
 
 export interface StateMachineProposalTable {
   ids: number[];

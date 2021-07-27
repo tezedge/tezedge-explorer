@@ -147,10 +147,6 @@
   &.active {
     background-color: #204E8A;
 
-    svg-icon {
-      filter: brightness(0) invert(1);
-    }
-
     .menu-content .text-nowrap {
       color: #fff;
     }

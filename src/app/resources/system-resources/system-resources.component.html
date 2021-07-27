@@ -1,31 +1,14 @@
 <div fxFlex="grow"
      fxLayout="column"
-     fxLayout.gt-md="row-reverse"
+     fxLayout.gt-md="row"
      fxLayoutAlign="start stretch"
      class="resources-container"
      *ngIf="systemResource?.cpu?.series.length">
-  <div class="info-container"
-       fxFlex.gt-md="20vw"
-       fxLayout="column">
-    <div class="info-content-container"
-         fxFlex="grow"
-         fxLayout="column"
-         fxLayoutAlign="space-between">
-      <div class="additional-info h-100"
-           [class.fade]="systemResource"
-           [style.transition-delay.s]="0.2">
-        <app-system-resources-panel class="h-100 overflow-y-auto d-block"
-                                    [colors]="systemResource.colorScheme.domain"></app-system-resources-panel>
-      </div>
-    </div>
-  </div>
   <div fxFlex.gt-md="calc(100% - 20vw)"
-       fxFlex.lt-lg="grow"
        fxLayout="column"
        fxLayoutAlign="start stretch"
        fxLayoutGap="10px"
        class="centered-container">
-
     <app-system-resources-graph [chartData]="systemResource.cpu.series"
                                 [transitionDelay]="0.3"
                                 [labelList]="systemResource.cpu.labels"
@@ -85,6 +68,21 @@
                                 [yAxisTickFormatting]="yAxisMegaBytesConversion"
                                 [xTicksValues]="systemResource.xTicksValues"
                                 [colorScheme]="systemResource.colorScheme"></app-system-resources-graph>
+  </div>
 
+  <div class="info-container"
+       fxFlex.gt-md="20vw"
+       fxLayout="column">
+    <div class="info-content-container"
+         fxFlex="grow"
+         fxLayout="column"
+         fxLayoutAlign="space-between">
+      <div class="additional-info h-100"
+           [class.fade]="systemResource"
+           [style.transition-delay.s]="0.2">
+        <app-system-resources-panel class="h-100 overflow-y-auto d-block"
+                                    [colors]="systemResource.colorScheme.domain"></app-system-resources-panel>
+      </div>
+    </div>
   </div>
 </div>

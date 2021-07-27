@@ -46,7 +46,7 @@
     display: grid;
     grid-template-columns: 140px 1fr;
 
-    span {
+    > span {
       line-height: 32px;
       text-align: left;
       font-weight: 300;
@@ -55,7 +55,6 @@
   }
 
   .state-table {
-    border-collapse: collapse;
     height: calc(100% - 32px);
 
     .action {
@@ -65,8 +64,12 @@
         background-color: rgba(255, 255, 255, 0.1);
       }
 
-      &:hover, &.active {
+      &.active {
         background-color: #204E8A;
+      }
+
+      &:hover:not(.active) {
+        background-color: rgba(255, 255, 255, 0.2);
       }
     }
   }

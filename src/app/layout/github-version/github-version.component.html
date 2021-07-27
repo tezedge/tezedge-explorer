@@ -1,37 +1,50 @@
-<div class="node-tag-number" *ngIf="!hideComponent && githubVersion$ | async as githubVersion"
+<div class="node-tag-number"
+     *ngIf="!hideComponent && githubVersion$ | async as githubVersion"
      (click)="attachTooltip($event)">
-  <span class="node-tag-number-and-icon">
-    {{ githubVersion.nodeTag }}
-    <svg-icon class="node-tag-icon" icon="caret-down" scale="0.5"></svg-icon>
+  <span class="pointer-none font-12">
+    {{ githubVersion.nodeTag }}&nbsp;
+    <mat-icon svgIcon="caret-down"
+              class="icon-8"></mat-icon>
   </span>
 </div>
 
 <ng-template #versionTooltip>
-  <div class="commit-numbers-container" *ngIf="githubVersion$ | async as githubVersion">
-    <div class="commit-numbers-container-item truncate" id="nodeCommit">
-      <a href="{{ githubRepositories.node + githubVersion.nodeCommit }}" target="_blank" rel="noreferrer">
-        <span>
-          <svg-icon icon="github" scale="0.8"></svg-icon>
-          Node
-        </span>
+  <div class="commit-numbers-container font-12"
+       *ngIf="githubVersion$ | async as githubVersion">
+    <div class="commit-numbers-container-item"
+         id="nodeCommit">
+      <a [href]="githubRepositories.node + githubVersion.nodeCommit"
+         class="d-flex align-center"
+         target="_blank"
+         rel="noreferrer">
+        <mat-icon svgIcon="github"
+                  class="icon-14 margin-right-10"></mat-icon>
+        Node
       </a>
     </div>
 
-    <div class="commit-numbers-container-item truncate" id="debuggerCommit">
-      <a href="{{ githubRepositories.debugger + githubVersion.debuggerCommit }}" target="_blank" rel="noreferrer">
-        <span>
-          <svg-icon icon="github" scale="0.8"></svg-icon>
-          Debugger
-        </span>
+    <div class="commit-numbers-container-item"
+         id="debuggerCommit">
+      <a [href]="githubRepositories.debugger + githubVersion.debuggerCommit"
+         class="d-flex align-center"
+         target="_blank"
+         rel="noreferrer">
+        <mat-icon svgIcon="github"
+                  class="icon-14 margin-right-10"></mat-icon>
+        Debugger
       </a>
     </div>
 
-    <div *ngIf="githubVersion.explorerCommit?.length" class="commit-numbers-container-item truncate" id="explorerCommit">
-      <a href="{{ githubRepositories.explorer + githubVersion.explorerCommit }}" target="_blank" rel="noreferrer">
-        <span>
-          <svg-icon icon="github" scale="0.8"></svg-icon>
-          Explorer
-        </span>
+    <div *ngIf="githubVersion.explorerCommit?.length"
+         class="commit-numbers-container-item"
+         id="explorerCommit">
+      <a [href]="githubRepositories.explorer + githubVersion.explorerCommit"
+         class="d-flex align-center"
+         target="_blank"
+         rel="noreferrer">
+        <mat-icon svgIcon="github"
+                  class="icon-14 margin-right-10"></mat-icon>
+        Explorer
       </a>
     </div>
   </div>

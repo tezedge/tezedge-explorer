@@ -59,6 +59,10 @@
   flex: 1;
 }
 
+.flex-wrap {
+  flex-wrap: wrap;
+}
+
 .flex-grow {
   flex-grow: 1;
 }
@@ -135,6 +139,14 @@
   padding: 10px;
 }
 
+.padding-5 {
+  padding: 5px;
+}
+
+.padding-left-8 {
+  padding-left: 8px;
+}
+
 .padding-vertical-10 {
   padding-top: 10px;
   padding-bottom: 10px;
@@ -191,4 +203,24 @@
 
 .margin-bottom-10 {
   margin-bottom: 10px;
+}
+
+.margin-5 {
+  margin: 5px;
+}
+
+.margin-left-5 {
+  margin-left: 5px;
+}
+
+.margin-right-5 {
+  margin-right: 5px;
+}
+
+.margin-top-5 {
+  margin-top: 5px;
+}
+
+.margin-bottom-5 {
+  margin-bottom: 5px;
 }

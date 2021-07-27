@@ -9,7 +9,7 @@
   <!--  </div>-->
   <div class="d-flex h-100">
     <div class="d-flex flex-column w-100 flex-between" *ngIf="state$ | async as stateMachine">
-      <div class="padding-left-10 padding-bottom-10 upper-container p-relative"
+      <div class="upper-container p-relative"
            [style.transition]="transition"
            [class.collapsed]="stateMachine.collapsedDiagram"
            [style.height]="stateMachine.collapsedDiagram

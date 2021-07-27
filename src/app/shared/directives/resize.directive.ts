@@ -1,9 +1,12 @@
-import { Directive, EventEmitter, ElementRef, HostListener, OnDestroy, OnInit, Output } from '@angular/core';
+import { Directive, ElementRef, EventEmitter, HostListener, OnDestroy, OnInit, Output } from '@angular/core';
 import { fromEvent, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
 @Directive({
-  selector: '[resizer]'
+  selector: '[resizer]',
+  host: {
+    '[class.dragging]': 'this.dragExisted'
+  },
 })
 export class ResizeDirective implements OnInit, OnDestroy {
 
@@ -14,7 +17,7 @@ export class ResizeDirective implements OnInit, OnDestroy {
   grabber = false;
   destroy$ = new Subject();
 
-  private dragExisted = false;
+  dragExisted = false;
 
   constructor(private el: ElementRef) { }
 
@@ -23,7 +26,7 @@ export class ResizeDirective implements OnInit, OnDestroy {
   }
 
   public calculateHeight(): void {
-    this.height = parseInt(this.el.nativeElement.parentNode.offsetHeight, 10);
+    this.height = parseInt(this.el.nativeElement.parentNode.parentNode.offsetHeight, 10);
   }
 
   @HostListener('document:mouseup', ['$event'])
@@ -47,7 +50,7 @@ export class ResizeDirective implements OnInit, OnDestroy {
 
   private resizer(offsetY: number): void {
     this.height += offsetY;
-    this.el.nativeElement.parentNode.style.height = this.height + 'px';
+    this.el.nativeElement.parentNode.parentNode.style.height = this.height + 'px';
   }
 
   private addMouseMoveListener(): void {

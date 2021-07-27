@@ -26,3 +26,36 @@
     }
   }
 }
+
+.thread-container {
+  .sorting {
+    padding: 8px 10px;
+
+    .line {
+      padding: 0 7px;
+    }
+
+    .sort-option {
+      &:hover,
+      &.active {
+        color: #fff !important;
+      }
+    }
+  }
+
+  .thread-group {
+    padding-bottom: 5px;
+
+    &:first-child {
+      border-top: unset;
+    }
+
+    &:not(:first-child) {
+      padding-top: 9px;
+    }
+  }
+
+  .thread-row {
+    height: 26px;
+  }
+}

@@ -177,20 +177,20 @@ export class StateMachineDiagramComponent implements AfterViewInit {
         const cls = block.status
           + (block.type === 'error' ? ' error' : '')
           + (block.type === 'error' && block.status !== 'active' ? ' hidden-svg' : '');
-        this.g.setNode(block.id, { // Create
-          label: block.title,
+        this.g.setNode(block.actionId, { // Create
+          label: block.actionName,
           class: cls,
           data: block,
-          id: 'g' + block.id,
+          id: 'g' + block.actionId,
         });
       });
 
       this.diagram
-        .filter(block => block.next.length)
+        .filter(block => block.nextActions.length)
         .forEach(block => {
-          block.next.forEach((next, i) => {
-            const isNextBlockAnError = this.diagram.find(b => b.id === next).type === 'error';
-            this.g.setEdge(block.id, next, { // Connect
+          block.nextActions.forEach((next, i) => {
+            const isNextBlockAnError = this.diagram.find(b => b.actionId === next).type === 'error';
+            this.g.setEdge(block.actionId, next, { // Connect
               arrowheadStyle: isNextBlockAnError ? 'display: none' : 'fill: #7f7f82; stroke: none',
               style: (isNextBlockAnError ? 'stroke: #e05537; stroke-dasharray: 5, 5;' : 'stroke: #7f7f82;') + 'fill: none',
               curve: curveBasis
@@ -244,11 +244,11 @@ export class StateMachineDiagramComponent implements AfterViewInit {
 
   private toggleErrorStatesVisibilityOnHover(): void {
     const toggleVisibilityOfErrorBlocks = (id: string, visible: boolean) => {
-      const nextBlockIds = this.diagram.find(bl => bl.id === Number(id)).next;
-      const nextErrorBlockIds = this.diagram.filter(bl => nextBlockIds.includes(bl.id) && bl.type === 'error');
+      const nextBlockIds = this.diagram.find(bl => bl.actionId === Number(id)).nextActions;
+      const nextErrorBlockIds = this.diagram.filter(bl => nextBlockIds.includes(bl.actionId) && bl.type === 'error');
       nextErrorBlockIds.forEach(bl => {
         d3.select('#d3Diagram svg g')
-          .select(`#g${bl.id}`)
+          .select(`#g${bl.actionId}`)
           .classed('hidden-svg', visible);
       });
     };

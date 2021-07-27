@@ -1,7 +1,7 @@
 export interface StateMachineDiagramBlock {
-  id: number;
+  actionId: number;
   type: 'info' | 'error';
   status: 'completed' | 'active' | 'pending';
-  title: string;
-  next: number[];
+  actionName: string;
+  nextActions: number[];
 }

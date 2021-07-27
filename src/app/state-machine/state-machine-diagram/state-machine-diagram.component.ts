@@ -1,6 +1,3 @@
-import { AfterViewInit, ChangeDetectionStrategy, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { StateMachineDiagramBlock } from '../../shared/types/state-machine/state-machine-diagram-block.type';
-import { Store } from '@ngrx/store';
 import { AfterViewInit, ChangeDetectionStrategy, Component, ElementRef, HostListener, ViewChild } from '@angular/core';
 import { StateMachineDiagramBlock } from '../../shared/types/state-machine/state-machine-diagram-block.type';
 import { select, Store } from '@ngrx/store';

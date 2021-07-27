@@ -91,16 +91,18 @@ context('STORAGE RESOURCES', () => {
             if (isNotOctez(data)) {
               store.select('resources').subscribe(store => {
                 const resources = store.storageResourcesState.storageResources;
-                cy.get('.operation-list .operation', { timeout: 10000 }).should('have.length', resources.operationsContext.length + 1);
+                if (resources) {
+                  cy.get('.operation-list .operation', { timeout: 10000 }).should('have.length', resources.operationsContext.length + 1);
 
-                cy.get(`.operation-list .operation:nth-child(1) app-storage-resources-mini-graph`).should('have.length', 2);
+                  cy.get(`.operation-list .operation:nth-child(1) app-storage-resources-mini-graph`).should('have.length', 2);
 
-                resources.operationsContext.forEach((operation, i) => {
-                  cy.get(`.operation-list .operation:nth-child(${i + 2}) app-storage-resources-mini-graph`).should('have.length', 7);
-                  cy.get(`.operation-list .operation:nth-child(${i + 2}) .slice-header span.text-uppercase`).should((span) => {
-                    expect(span.text()).to.equal(resources.contextSliceNames[i + 2]);
+                  resources.operationsContext.forEach((operation, i) => {
+                    cy.get(`.operation-list .operation:nth-child(${i + 2}) app-storage-resources-mini-graph`).should('have.length', 7);
+                    cy.get(`.operation-list .operation:nth-child(${i + 2}) .slice-header span.text-uppercase`).should((span) => {
+                      expect(span.text()).to.equal(resources.contextSliceNames[i + 2]);
+                    });
                   });
-                });
+                }
               });
             }
           });

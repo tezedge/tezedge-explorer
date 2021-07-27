@@ -29,7 +29,7 @@ import * as fromStorageBlock from './storage/storage-block/storage-block.reducer
 import * as fromStorageAction from './storage/storage-action/storage-action.reducer';
 import * as fromSandbox from './sandbox/sandbox.reducer';
 import * as fromWallets from './wallets/wallets.reducer';
-import * as fromVersion from './layout/commit-number/commit-number.reducer';
+import * as fromVersion from './layout/github-version/github-version.reducer';
 import * as fromResource from './resources/resources/resources.reducer';
 import * as fromError from './shared/error-popup/error-popup.reducer';
 import * as fromStateMachine from './state-machine/state-machine/state-machine.reducer';
@@ -45,7 +45,7 @@ import { App } from '@shared/types/app/app.type';
 import { Monitoring } from '@shared/types/monitoring/monitoring.type';
 import { LogsAction } from '@shared/types/logs/logs-action.type';
 import { StorageBlock } from '@shared/types/storage/storage-block/storage-block.type';
-import { CommitNumber } from '@shared/types/commit-number/commit-number.type';
+import { GithubVersion } from '@shared/types/github-version/github-version.type';
 import { StateMachine } from '@shared/types/state-machine/state-machine.type';
 
 export interface State {
@@ -69,7 +69,7 @@ export interface State {
   routerReducer: fromRouter.RouterReducerState<RouterStateUrl>;
   wallets: any;
   error: ErrorState;
-  commitNumber: CommitNumber;
+  githubVersion: GithubVersion;
   resources: ResourcesState;
   stateMachine: StateMachine;
 }
@@ -95,7 +95,7 @@ export const reducers: ActionReducerMap<State> = {
   settingsNode: fromSettingsNode.reducer,
   routerReducer: fromRouter.routerReducer,
   wallets: fromWallets.reducer,
-  commitNumber: fromVersion.reducer,
+  githubVersion: fromVersion.reducer,
   resources: fromResource.reducer,
   error: fromError.reducer,
   stateMachine: fromStateMachine.reducer,

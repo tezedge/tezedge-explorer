@@ -1,13 +1,13 @@
-import { CommitNumber } from '@shared/types/commit-number/commit-number.type';
+import { GithubVersion } from '@shared/types/github-version/github-version.type';
 
-const initialState: CommitNumber = {
+const initialState: GithubVersion = {
   explorerCommit: '',
   nodeCommit: '',
   debuggerCommit: '',
   nodeTag: ''
 };
 
-export function reducer(state: CommitNumber = initialState, action): CommitNumber {
+export function reducer(state: GithubVersion = initialState, action): GithubVersion {
   switch (action.type) {
 
     case 'VERSION_INIT': {

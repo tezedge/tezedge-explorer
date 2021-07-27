@@ -44,7 +44,11 @@
               }
             ],
             "styles": [
-              "./node_modules/swagger-ui-dist/swagger-ui.css",
+              {
+                "input": "./node_modules/swagger-ui-dist/swagger-ui.css",
+                "inject": false,
+                "bundleName": "swagger-ui"
+              },
               {
                 "input": "src/styles.light.scss",
                 "bundleName": "styles.light",
@@ -58,9 +62,9 @@
             ],
             "scripts": [
               {
-                "input": "node_modules/swagger-ui-dist/swagger-ui-bundle.js",
-                "inject": true,
-                "bundleName": "swagger-ui-bundle"
+                "input": "./node_modules/swagger-ui-dist/swagger-ui-bundle.js",
+                "inject": false,
+                "bundleName": "swagger-ui"
               }
             ]
           },

@@ -4,6 +4,7 @@ import { State } from '@app/app.reducers';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { SettingsNodeApi } from '@shared/types/settings-node/settings-node-api.type';
 import { selectActiveNode } from '@settings/settings-node.reducer';
+import { ScriptLoaderService } from '@app/core/script-loader.service';
 
 @UntilDestroy()
 @Component({
@@ -16,11 +17,22 @@ export class OpenApiComponent implements OnInit {
 
   readonly tabs = new Set(['node', 'memory profiler', 'network recorder']);
 
+  swaggerLoaded: boolean;
+
   constructor(private store: Store<State>,
-              private cdRef: ChangeDetectorRef) { }
+              private cdRef: ChangeDetectorRef,
+              private scriptLoaderService: ScriptLoaderService) { }
 
   ngOnInit(): void {
+    this.waitSwaggerToLoad();
     this.getActiveNode();
+  }
+
+  private waitSwaggerToLoad(): void {
+    this.scriptLoaderService.swaggerLoad.then(() => {
+      this.swaggerLoaded = true;
+      this.cdRef.detectChanges();
+    });
   }
 
   private getActiveNode(): void {

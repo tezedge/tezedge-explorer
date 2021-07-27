@@ -28,7 +28,7 @@ export class StorageBlockService {
     block.commitContextTime = response[context + 'CommitContextTime'];
     block.operationsContext.forEach((op: StorageBlockDetailsOperationContext, i: number) => {
       const operation = response.operationsContext[i];
-      op.data.actionsCount = operation.data[context + 'Count'];
+      op.data.queriesCount = operation.data[context + 'Count'];
       op.data.maxTime = operation.data[context + 'MaxTime'];
       op.data.meanTime = operation.data[context + 'MeanTime'];
       op.data.totalTime = operation.data[context + 'TotalTime'];

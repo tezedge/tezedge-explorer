@@ -54,7 +54,7 @@
         <div fxFlex="28px" class="slice-header">
           <span class="text-uppercase">{{ operation.root | replaceCharacter: '_': ' '}}</span>
           <span class="total-time">
-        {{ operation.actionsCount | thousandTransform }}<span class="grayish"> calls</span>
+        {{ operation.queriesCount | thousandTransform }}<span class="grayish"> calls</span>
         &nbsp;·&nbsp;
             {{ operation.totalTime | timeTransform: false: false: true }}<span class="grayish"> total duration </span>
         <span class="grayish">(</span>{{ operation.totalTimeRead | timeTransform: false: false: true }}<span

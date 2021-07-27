@@ -4,7 +4,7 @@
      *ngIf="block">
   <div class="storage-details-block">
     <div class="storage-block-header text-gray">ACTIONS</div>
-    <div class="actions-count">{{ block.actionsCount }} actions</div>
+    <div class="actions-count">{{ block.queriesCount }} actions</div>
   </div>
   <div class="storage-details-block">
     <div class="storage-block-header text-gray"
@@ -48,7 +48,7 @@
             (mouseleave)="detachTooltip()">
           <td>{{ row.data.root }}</td>
           <td [innerHTML]="row.data.totalTime | timeTransform: true: true"></td>
-          <td [innerHTML]="row.data.actionsCount"></td>
+          <td [innerHTML]="row.data.queriesCount"></td>
           <td [innerHTML]="row.mem | timeTransform: true: true"></td>
           <td [innerHTML]="row.memTree | timeTransform: true: true"></td>
           <td [innerHTML]="row.find | timeTransform: true: true">{{ row.find }}</td>

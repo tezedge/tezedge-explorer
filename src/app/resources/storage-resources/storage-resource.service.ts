@@ -39,18 +39,18 @@ export class StorageResourceService {
       operation.remove = this.buildTimeline(operation.remove);
     });
 
-    result.totalContext = { totalTime: 0, actionsCount: 0, columns: [] };
+    result.totalContext = { totalTime: 0, queriesCount: 0, columns: [] };
     result.totalContext.totalTime = result.operationsContext.reduce((sum, current) => sum + current.totalTime, 0);
     result.totalContext.totalTime += result.checkoutContext.totalTime;
     result.totalContext.totalTime += result.commitContext.totalTime;
-    result.totalContext.actionsCount = result.operationsContext.reduce((sum, current) => sum + current.actionsCount, 0);
-    result.totalContext.actionsCount += result.checkoutContext.actionsCount;
-    result.totalContext.actionsCount += result.commitContext.actionsCount;
+    result.totalContext.queriesCount = result.operationsContext.reduce((sum, current) => sum + current.queriesCount, 0);
+    result.totalContext.queriesCount += result.checkoutContext.queriesCount;
+    result.totalContext.queriesCount += result.commitContext.queriesCount;
     result.totalContext.totalTimeRead = result.operationsContext.reduce((sum, current) => sum + current.totalTimeRead, 0);
     result.totalContext.totalTimeWrite = result.operationsContext.reduce((sum, current) => sum + current.totalTimeWrite, 0);
     result.totalContext.columns = [result.commitContext, result.checkoutContext, ...result.operationsContext]
       .map(operation => ({
-        count: operation.actionsCount,
+        count: operation.queriesCount,
         totalTime: operation.totalTime,
         maxTime: undefined,
         meanTime: undefined,
@@ -67,7 +67,7 @@ export class StorageResourceService {
 
     Object
       .keys(graphData)
-      .filter(key => key !== 'totalTime' && key !== 'actionsCount')
+      .filter(key => key !== 'totalTime' && key !== 'queriesCount')
       .forEach((key: string, index: number) => {
         columns[index] = {
           ...graphData[key],
@@ -80,7 +80,7 @@ export class StorageResourceService {
     return {
       columns,
       totalTime: graphData.totalTime,
-      actionsCount: graphData.actionsCount
+      queriesCount: graphData.queriesCount
     };
   }
 

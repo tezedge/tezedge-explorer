@@ -2,7 +2,7 @@ import { ResourceStorageQuery } from './storage-resource-operation.type';
 
 export class StorageResourceOperationContext {
   root: string;
-  actionsCount: number;
+  queriesCount: number;
   totalTime: number;
   totalTimeRead: number;
   totalTimeWrite: number;

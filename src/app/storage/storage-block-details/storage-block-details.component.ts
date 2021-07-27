@@ -78,7 +78,7 @@ export class StorageBlockDetailsComponent implements OnChanges, OnDestroy {
       total: row.data.totalTime,
       mean: row.data.meanTime,
       max: row.data.maxTime,
-      actions: row.data.actionsCount
+      actions: row.data.queriesCount
     };
     const context = this.tooltipTemplate.createEmbeddedView(contextData).context;
     const portal = new TemplatePortal(this.tooltipTemplate, this.viewContainerRef, context);

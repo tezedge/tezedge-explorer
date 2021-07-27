@@ -4,7 +4,7 @@ export class StorageBlockDetailsOperationContext {
     meanTime: number;
     maxTime: number;
     totalTime: number;
-    actionsCount: number;
+    queriesCount: number;
   };
   mem: number;
   memTree: number;

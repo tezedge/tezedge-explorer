@@ -112,41 +112,41 @@ describe('SYSTEM RESOURCES', () => {
   });
 
   it('[SYSTEM RESOURCES] should sort threads by name', () => {
-    cy.wait(5000).then(() => {
-      cy.get('.thread-container .sort-option:first-child').click();
-      cy.wait(1000).then(() => {
-        cy.window()
-          .its('store')
-          .then((store) => {
-            store.subscribe(store => {
-              cy.wrap(store.resources.systemResources.resourcesPanel.sortBy).should('eq', 'name');
+    cy.wait(1000).then(() => {
+      cy.get('.thread-container .sort-option:first-child', { timeout: 20000 }).then((elem) => {
+        elem.click();
+        cy.wait(3000).then(() => {
+          cy.window()
+            .its('store')
+            .then((store) => {
+              store.subscribe(store => {
+                cy.wrap(store.resources.systemResources.resourcesPanel.sortBy).should('eq', 'name');
+              });
             });
-          });
+        });
       });
     });
   });
 
   it('[SYSTEM RESOURCES] should display charts', () => {
-    cy.wait(1000)
-      .then(() => {
-        cy.window()
-          .its('store')
-          .then((store) => {
-            store.subscribe(store => {
-              if (!isOctez(store)) {
-                store.select('resources')
-                  .subscribe(() => {
-                    cy.get('.resource-category-block')
-                      .its('length')
-                      .should(value => expect(value).to.equal(3));
-                    cy.get('app-tezedge-line-chart')
-                      .its('length')
-                      .should(value => expect(value).to.equal(3));
-                  });
-              }
-            });
+    cy.wait(1000).then(() => {
+      cy.window()
+        .its('store')
+        .then((store) => {
+          store.subscribe(store => {
+            if (!isOctez(store)) {
+              store.select('resources').subscribe(() => {
+                cy.get('.resource-category-block')
+                  .its('length')
+                  .should(value => expect(value).to.equal(3));
+                cy.get('app-tezedge-line-chart')
+                  .its('length')
+                  .should(value => expect(value).to.equal(3));
+              });
+            }
           });
-      });
+        });
+    });
   });
 
   it('[SYSTEM RESOURCES] should display tooltip on chart when hovering on it', () => {
@@ -156,7 +156,7 @@ describe('SYSTEM RESOURCES', () => {
         .then((store) => {
           store.subscribe(store => {
             if (!isOctez(store) && store.resources.systemResources) {
-              cy.get('svg g g g rect.tooltip-area')
+              cy.get('svg g g g rect.tooltip-area', { timeout: 20000 })
                 .its(2)
                 .trigger('mousemove')
                 .then(() => {

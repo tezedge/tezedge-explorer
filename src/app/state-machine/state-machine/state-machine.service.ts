@@ -17,7 +17,7 @@ export class StateMachineService {
   constructor(private http: HttpClient) { }
 
   getStateMachineDiagram(): Observable<StateMachineDiagramBlock[]> {
-    return of(diagramStructure);
+    return of(this.data);
   }
 
   getStateMachineProposals(): Observable<StateMachineProposal[]> {

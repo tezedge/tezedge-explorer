@@ -1,3 +1,46 @@
+
+.search-div {
+  position: relative;
+
+  mat-icon {
+    margin-top: -2px;
+  }
+
+  span {
+    position: absolute;
+    z-index: 1;
+    left: 32px;
+    color: rgba(255, 255, 255, 0.4);
+  }
+
+  .search-box {
+    position: relative;
+    z-index: 0;
+    opacity: 0;
+    border: none;
+    background: #2a2a2e;
+    margin-left: 8px;
+    caret-color: #fff;
+    color: rgba(255, 255, 255, 0.7);
+    font-weight: 400;
+    font-size: 12px;
+    width: 50px;
+    transition: all 0.2s ease-in-out;
+    cursor: pointer;
+
+    &.active {
+      cursor: initial;
+      width: 100px;
+      z-index: 2;
+      opacity: 1;
+
+      &::placeholder {
+        color: rgba(255, 255, 255, 0.7);
+      }
+    }
+  }
+}
+
 form {
   height: 24px;
   margin-right: 5px;

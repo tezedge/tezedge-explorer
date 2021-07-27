@@ -19,7 +19,7 @@ const initialState: LogsAction = {
   stream: false,
   activePage: {},
   pages: [],
-  timestamp: undefined
+  timestamp: undefined,
 };
 
 export function reducer(state: LogsAction = initialState, action): LogsAction {
@@ -37,7 +37,7 @@ export function reducer(state: LogsAction = initialState, action): LogsAction {
         activePage,
         lastCursorId: setLastCursorId(action),
         pages: setPages(activePage, state),
-        timestamp: action.payload.timestamp
+        timestamp: action.payload.timestamp,
       };
     }
 

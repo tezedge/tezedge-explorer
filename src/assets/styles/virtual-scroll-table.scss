@@ -18,7 +18,7 @@
   border-top: 1px solid $color-table-border;
 
   display: grid;
-  padding: 0 16px;
+  padding: 0 14px;
   height: 36px;
   line-height: 35px;
 
@@ -74,7 +74,7 @@
 
   .active-filters-row {
     display: flex;
-    padding: 6px 7px;
+    padding: 6px 0;
   }
 
   .filters-row {
@@ -167,7 +167,7 @@
       border-radius: 0 !important;
 
       .mat-expansion-panel-body {
-        padding: 4px 5px;
+        padding: 4px 3px;
         margin: 0;
       }
 
@@ -189,16 +189,6 @@
     text-decoration: underline !important;
   }
 }
-
-//.network-action-table-detail {
-//    align-items: flex-end;
-//    height: 489px; /* 36 height of item * 14 number of items - 15 padding top*/
-//    width: 40%;
-//    overflow-y: overlay;
-//    padding: 10px 10px 0px 20px;
-//    border-left: 1px solid $color-table-border;
-//
-//}
 
 .table-virtual-scroll-body {
   display: flex;

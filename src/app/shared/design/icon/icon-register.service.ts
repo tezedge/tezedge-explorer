@@ -26,6 +26,7 @@ export class IconRegisterService {
     'peer',
     'logs',
     'arrow-circle-right',
+    'magnifying-glass',
   ];
 
   constructor(private iconRegistry: MatIconRegistry,

@@ -31,7 +31,7 @@ export class VirtualScrollDirective implements AfterViewInit, OnDestroy, OnChang
 
   private previousLastCursorId = 0;
 
-  private offsetScrollElements = 5;
+  private offsetScrollElements = 30;
 
   private $scroller: HTMLDivElement = document.createElement('div');
   private $viewport: HTMLElement;
@@ -95,13 +95,17 @@ export class VirtualScrollDirective implements AfterViewInit, OnDestroy, OnChang
     // if (this.vsForOf.stream || this.previousLastCursorId === 0) {
 
     this.scrollToBottom();
-    if (this.initialSelectedIndex !== undefined) {
-      this.$viewport.scrollTop = this.initialSelectedIndex * this.itemHeight - (this.viewportHeight / 2);
-    }
     // }
 
     this.preparePositionsAndCreateViewElements();
     this.renderViewportItems();
+    if (this.initialSelectedIndex !== undefined) {
+      if (Math.floor(this.viewportHeight / this.itemHeight) / 2 >= this.initialSelectedIndex) {
+        this.$viewport.scrollTop = 0;
+      } else {
+        this.$viewport.scrollTop = this.initialSelectedIndex * this.itemHeight - (this.viewportHeight / 2);
+      }
+    }
     this.prevScrollTop = this.$viewport.scrollTop;
   }
 
@@ -194,7 +198,6 @@ export class VirtualScrollDirective implements AfterViewInit, OnDestroy, OnChang
     const limit = 1000;
 
     this.ngZone.run(() => {
-      console.log(this.initialSelectedIndex);
       this.startStopDataStream.emit({
         limit,
         stop
@@ -202,7 +205,7 @@ export class VirtualScrollDirective implements AfterViewInit, OnDestroy, OnChang
     });
   }
 
-  private load() {
+  private load(): void {
     this.virtualScrollItemsCount = this.vsForOf.lastCursorId > 0 ?
       Math.min(this.vsForOf.lastCursorId + 1, this.maxVirtualScrollElements) :
       0;

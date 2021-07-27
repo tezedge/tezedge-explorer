@@ -4,9 +4,29 @@
     <div class="filters-container">
 
       <div class="active-filters-row">
+        <div class="d-flex align-center search-div pointer"
+             (click)="searchFocused = true; search.focus()"
+             (clickOutside)="searchFocused = false">
+          <mat-icon svgIcon="magnifying-glass"
+                    class="icon-14 icon-white-4 margin-left-10"></mat-icon>
+          <span class="font-300 font-12">Search</span>
+          <input #search
+                 type="text"
+                 class="search-box"
+                 placeholder="Searching Query"
+                 [class.active]="searchFocused"
+                 (keydown.enter)="searchByText(search.value)">
+          <button *ngIf="searchText"
+                  (click)="searchByText(''); scrollStart()"
+                  mat-flat-button
+                  class="active text-normal">
+            {{ searchText }}
+            <svg-icon icon="close" scale="0.8"></svg-icon>
+          </button>
+        </div>
         <button class="add-filters" mat-flat-button (click)="filtersState.open=true" [disabled]="filtersState.open">
           <svg-icon icon="filter" scale="0.8"></svg-icon>
-          {{ filtersState.open ? 'Active Filters' : 'ADD FILTER' }}
+          Active Filters
         </button>
 
         <div class="filters-content">
@@ -23,18 +43,6 @@
       <mat-accordion class="filters-accordion">
         <mat-expansion-panel [expanded]="filtersState.open" hideToggle="true">
           <ng-template matExpansionPanelContent class="filters-content">
-            <!--            <div class="filters-row">-->
-            <!--              <button class="close-filters-btn" mat-flat-button (click)="filtersState.open=false">-->
-            <!--                <span>-->
-            <!--                  <svg-icon icon="close"></svg-icon>-->
-            <!--                </span>-->
-            <!--              </button>-->
-
-            <!--              <span class="filters-label">-->
-            <!--                Available Filters-->
-            <!--              </span>-->
-            <!--            </div>-->
-
             <div class="filters-row">
               <span class="filters-label">Level</span>
               <button mat-flat-button [class.active]="virtualScrollItems.filter.info || !activeFilters.length"
@@ -150,25 +158,25 @@
       <button class="square-button d-flex align-center" id="firstPage"
               matTooltip="First Page"
               (click)="loadFirstPage()"
-              [disabled]="!virtualScrollItems.pages.length || virtualScrollItems.ids.length < virtualPageSize">
+              [disabled]="searchText || (!searchText && (!virtualScrollItems?.pages.length || virtualScrollItems.ids.length < virtualPageSize))">
         <mat-icon svgIcon="arrow-left-stop" class="icon-16"></mat-icon>
       </button>
       <button class="square-button d-flex align-center flex-center" id="previousPage"
               matTooltip="Previous Page"
               (click)="loadPreviousPage()"
-              [disabled]="!virtualScrollItems.pages.length || virtualScrollItems.ids.length < virtualPageSize">
+              [disabled]="searchText || (!searchText && (!virtualScrollItems?.pages.length || virtualScrollItems.ids.length < virtualPageSize))">
         <mat-icon svgIcon="less-than" class="icon-8 d-flex"></mat-icon>
       </button>
       <button class="square-button d-flex align-center flex-center" id="nextPage"
               matTooltip="Next Page"
               (click)="loadNextPage()"
-              [disabled]="!virtualScrollItems.pages.length || virtualScrollItems.activePage.id === virtualScrollItems.pages[virtualScrollItems.pages.length - 1]">
+              [disabled]="searchText || (!searchText && (!virtualScrollItems?.pages.length || virtualScrollItems.activePage.id === virtualScrollItems.pages[virtualScrollItems.pages.length - 1]))">
         <mat-icon svgIcon="greater-than" class="icon-8 d-flex"></mat-icon>
       </button>
       <button class="square-button d-flex align-center" id="lastPage"
               matTooltip="Last Page"
               (click)="loadLastPage()"
-              [disabled]="!virtualScrollItems.pages.length || virtualScrollItems.activePage.id === virtualScrollItems.pages[virtualScrollItems.pages.length - 1]">
+              [disabled]="searchText || (!searchText && (!virtualScrollItems?.pages.length || virtualScrollItems.activePage.id === virtualScrollItems.pages[virtualScrollItems.pages.length - 1]))">
         <mat-icon svgIcon="arrow-right-stop" class="icon-16"></mat-icon>
       </button>
 

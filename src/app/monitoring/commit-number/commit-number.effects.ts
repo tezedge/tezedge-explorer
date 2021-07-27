@@ -12,7 +12,7 @@ export class CommitNumberEffects {
 
   @Effect()
   VersionNodeLoad$ = this.actions$.pipe(
-    ofType('SETTINGS_NODE_LOAD_SUCCESS', 'VERSION_NODE_LOAD'),
+    ofType('VERSION_NODE_LOAD'),
     withLatestFrom(this.store, (action: any, state: ObservedValueOf<Store<State>>) => ({ action, state })),
     switchMap(({ action, state }) => {
       return this.http.get(state.settingsNode.activeNode.http + '/monitor/commit_hash/');

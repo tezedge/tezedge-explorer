@@ -36,36 +36,36 @@ describe('SYSTEM RESOURCES', () => {
               if (!octez) {
                 cy.wrap(store.resources.systemResources.colorScheme.domain).should('have.length', 7);
 
-                if (!octez) {
-                  cy.wrap(store.resources.systemResources.cpu).should('have.length', 3);
-                  cy.wrap(store.resources.systemResources.cpu[0].name).should('eq', 'TOTAL');
-                  cy.wrap(store.resources.systemResources.cpu[1].name).should('eq', 'NODE');
-                  cy.wrap(store.resources.systemResources.cpu[2].name).should('eq', 'PROTOCOL RUNNERS');
-                  cy.wrap(store.resources.systemResources.memory).should('have.length', 3);
-                  cy.wrap(store.resources.systemResources.memory[0].name).should('eq', 'TOTAL');
-                  cy.wrap(store.resources.systemResources.memory[1].name).should('eq', 'NODE');
-                  cy.wrap(store.resources.systemResources.memory[2].name).should('eq', 'PROTOCOL RUNNERS');
-                  cy.wrap(store.resources.systemResources.storage).should('have.length', 7);
-                  cy.wrap(store.resources.systemResources.storage[0].name).should('eq', 'TOTAL');
-                  cy.wrap(store.resources.systemResources.storage[1].name).should('eq', 'BLOCK STORAGE');
-                  cy.wrap(store.resources.systemResources.storage[2].name).should('eq', 'CONTEXT IRMIN');
-                  cy.wrap(store.resources.systemResources.storage[3].name).should('eq', 'DEBUGGER');
-                  cy.wrap(store.resources.systemResources.storage[4].name).should('eq', 'CONTEXT ACTIONS');
-                  cy.wrap(store.resources.systemResources.storage[5].name).should('eq', 'CONTEXT MERKLE ROCKS DB');
-                  cy.wrap(store.resources.systemResources.storage[6].name).should('eq', 'MAIN DB');
-                  cy.wrap(store.resources.systemResources.xTicksValues.length > 0).should('eq', true);
-                  cy.wrap(store.resources.systemResources.resourcesSummary.cpu).should('have.length', 3);
-                  cy.wrap(store.resources.systemResources.resourcesSummary.memory).should('have.length', 3);
-                  cy.wrap(store.resources.systemResources.resourcesSummary.storage).should('have.length', 7);
-                  cy.wrap(store.resources.systemResources.resourcesSummary.timestamp).should('not.eq', undefined);
-                } else {
-                  cy.wrap(store.resources.systemResources.cpu).should('have.length', 1);
-                  cy.wrap(store.resources.systemResources.cpu[0].name).should('eq', 'NODE');
-                  cy.wrap(store.resources.systemResources.memory).should('have.length', 3);
-                  cy.wrap(store.resources.systemResources.memory[0].name).should('eq', 'TOTAL');
-                  cy.wrap(store.resources.systemResources.memory[1].name).should('eq', 'NODE');
-                  cy.wrap(store.resources.systemResources.memory[2].name).should('eq', 'VALIDATORS');
-                }
+                // if (!octez) {
+                //   cy.wrap(store.resources.systemResources.cpu).should('have.length', 3);
+                //   cy.wrap(store.resources.systemResources.cpu[0].name).should('eq', 'TOTAL');
+                //   cy.wrap(store.resources.systemResources.cpu[1].name).should('eq', 'NODE');
+                //   cy.wrap(store.resources.systemResources.cpu[2].name).should('eq', 'PROTOCOL RUNNERS');
+                //   cy.wrap(store.resources.systemResources.memory).should('have.length', 3);
+                //   cy.wrap(store.resources.systemResources.memory[0].name).should('eq', 'TOTAL');
+                //   cy.wrap(store.resources.systemResources.memory[1].name).should('eq', 'NODE');
+                //   cy.wrap(store.resources.systemResources.memory[2].name).should('eq', 'PROTOCOL RUNNERS');
+                //   cy.wrap(store.resources.systemResources.storage).should('have.length', 7);
+                //   cy.wrap(store.resources.systemResources.storage[0].name).should('eq', 'TOTAL');
+                //   cy.wrap(store.resources.systemResources.storage[1].name).should('eq', 'BLOCK STORAGE');
+                //   cy.wrap(store.resources.systemResources.storage[2].name).should('eq', 'CONTEXT IRMIN');
+                //   cy.wrap(store.resources.systemResources.storage[3].name).should('eq', 'DEBUGGER');
+                //   cy.wrap(store.resources.systemResources.storage[4].name).should('eq', 'CONTEXT ACTIONS');
+                //   cy.wrap(store.resources.systemResources.storage[5].name).should('eq', 'CONTEXT MERKLE ROCKS DB');
+                //   cy.wrap(store.resources.systemResources.storage[6].name).should('eq', 'MAIN DB');
+                //   cy.wrap(store.resources.systemResources.xTicksValues.length > 0).should('eq', true);
+                //   cy.wrap(store.resources.systemResources.resourcesSummary.cpu).should('have.length', 3);
+                //   cy.wrap(store.resources.systemResources.resourcesSummary.memory).should('have.length', 3);
+                //   cy.wrap(store.resources.systemResources.resourcesSummary.storage).should('have.length', 7);
+                //   cy.wrap(store.resources.systemResources.resourcesSummary.timestamp).should('not.eq', undefined);
+                // } else {
+                //   cy.wrap(store.resources.systemResources.cpu).should('have.length', 1);
+                //   cy.wrap(store.resources.systemResources.cpu[0].name).should('eq', 'NODE');
+                //   cy.wrap(store.resources.systemResources.memory).should('have.length', 3);
+                //   cy.wrap(store.resources.systemResources.memory[0].name).should('eq', 'TOTAL');
+                //   cy.wrap(store.resources.systemResources.memory[1].name).should('eq', 'NODE');
+                //   cy.wrap(store.resources.systemResources.memory[2].name).should('eq', 'VALIDATORS');
+                // }
               }
             });
           });

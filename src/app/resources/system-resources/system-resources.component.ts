@@ -4,13 +4,19 @@ import { Observable } from 'rxjs';
 import { select, Store } from '@ngrx/store';
 import { State } from '../../app.reducers';
 import { BreakpointObserver } from '@angular/cdk/layout';
-import { delay, filter, skip } from 'rxjs/operators';
-import { SystemResourcesActionTypes } from './system-resources.actions';
+import { delay, filter, skip, tap } from 'rxjs/operators';
+import {
+  SystemResourcesActionTypes,
+  SystemResourcesCloseAction,
+  SystemResourcesDetailsUpdateAction,
+  SystemResourcesLoadAction
+} from './system-resources.actions';
 import { SystemResources } from '../../shared/types/resources/system/system-resources.type';
 import { systemResources } from '../resources/resources.reducer';
 import { appState } from '../../app.reducer';
+import { SystemResourcesResourceType } from '../../shared/types/resources/system/system-resources-panel.type';
+import { SystemResourceCategory } from '../../shared/types/resources/system/system-resource-category.type';
 
-export type ResourceType = 'cpu' | 'memory' | 'storage';
 
 @UntilDestroy()
 @Component({
@@ -27,7 +33,7 @@ export class SystemResourcesComponent implements OnInit, OnDestroy {
   readonly yAxisGigaBytesConversion = (value) => (value < 1 ? value : (value + '.00')) + ' GB';
   readonly yAxisMegaBytesConversion = (value) => `${value} MB`;
 
-  activeSummary: ResourceType = 'storage';
+  activeSummary: SystemResourcesResourceType = 'cpu';
 
   private isSmallDevice: boolean;
 
@@ -41,8 +47,20 @@ export class SystemResourcesComponent implements OnInit, OnDestroy {
     this.listenToResourcesChange();
   }
 
-  toggleActiveSummary(value: ResourceType): void {
+  toggleActiveSummary(value: SystemResourcesResourceType, resource: SystemResourceCategory): void {
+    if (this.activeSummary === value) {
+      return;
+    }
     this.activeSummary = value;
+
+    this.store.dispatch<SystemResourcesDetailsUpdateAction>({
+      type: SystemResourcesActionTypes.SYSTEM_RESOURCES_DETAILS_UPDATE,
+      payload: {
+        type: 'recently',
+        resourceType: value,
+        timestamp: resource.series[0].series[resource.series[0].series.length - 1].name
+      }
+    });
   }
 
   private listenToResourcesChange(): void {
@@ -50,6 +68,7 @@ export class SystemResourcesComponent implements OnInit, OnDestroy {
       untilDestroyed(this),
       select(systemResources),
       filter(resources => !!resources),
+      tap(resources => this.activeSummary = resources.resourcesPanel?.resourceType)
     );
     this.store.pipe(
       untilDestroyed(this),
@@ -69,13 +88,13 @@ export class SystemResourcesComponent implements OnInit, OnDestroy {
   }
 
   private getResources(): void {
-    this.store.dispatch({
+    this.store.dispatch<SystemResourcesLoadAction>({
       type: SystemResourcesActionTypes.SYSTEM_RESOURCES_LOAD,
       payload: { isSmallDevice: this.isSmallDevice }
     });
   }
 
   ngOnDestroy(): void {
-    this.store.dispatch({ type: SystemResourcesActionTypes.SYSTEM_RESOURCES_CLOSE });
+    this.store.dispatch<SystemResourcesCloseAction>({ type: SystemResourcesActionTypes.SYSTEM_RESOURCES_CLOSE });
   }
 }

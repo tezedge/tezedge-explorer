@@ -14,7 +14,6 @@ export const environment = {
         { name: 'commit', id: 'develop' },
         { name: 'monitoring' },
         { name: 'resources/system', monitoringUrl: 'http://develop.dev.tezedge.com:38732/resources/tezedge' },
-        // { name: 'resources/system', monitoringUrl: 'http://116.202.128.230:38732/resources/tezedge' },
         { name: 'resources/memory', memoryProfilerUrl: 'http://develop.dev.tezedge.com:17832' },
         { name: 'resources/storage' },
         { name: 'mempool' },

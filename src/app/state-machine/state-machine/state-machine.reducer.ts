@@ -6,7 +6,7 @@ import { StateMachineAction } from '@shared/types/state-machine/state-machine-ac
 import { StateMachineActionsFilter } from '@shared/types/state-machine/state-machine-actions-filter.type';
 
 const NO_FILTERS: StateMachineActionsFilter = {
-  limit: 20,
+  limit: 100,
   cursor: null,
   queryFilters: []
 };

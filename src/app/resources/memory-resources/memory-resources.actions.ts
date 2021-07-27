@@ -18,4 +18,10 @@ export class MemoryResourcesLoaded implements Action {
   constructor(public payload: any) { }
 }
 
-export type MemoryResourcesActions = LoadMemoryResources | MemoryResourcesLoaded;
+export class MemoryResourcesLoad implements Action {
+  readonly type = MemoryResourcesActionTypes.MEMORY_RESOURCES_LOAD;
+
+  constructor(public payload: { reversed: boolean }) { }
+}
+
+export type MemoryResourcesActions = LoadMemoryResources | MemoryResourcesLoaded | MemoryResourcesLoad;

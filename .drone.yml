@@ -169,7 +169,7 @@ steps:
         from_secret: docker_hub_username
       password:
         from_secret: docker_hub_pswd
-    depends_on: [ test-app, test-logs, test-commit-number, test-network, test-open-api, test-system-resources, test-storage-resources, test-memory-resources, test-routing, test-settings-node, test-progress-bar, test-error-popup, test-storage-block ]
+    depends_on: [ test-app, test-logs, test-commit-number, test-network, test-open-api, test-system-resources, test-storage-resources, test-memory-resources, test-routing, test-sandbox, test-settings-node, test-progress-bar, test-error-popup, test-storage-action, test-storage-block ]
 
 image_pull_secrets:
   - docker_pull_secret
@@ -360,7 +360,7 @@ steps:
         from_secret: docker_hub_username
       password:
         from_secret: docker_hub_pswd
-      depends_on: [ test-app, test-logs, test-commit-number, test-network, test-open-api, test-system-resources, test-storage-resources, test-memory-resources, test-routing, test-settings-node, test-progress-bar, test-error-popup, test-storage-block ]
+      depends_on: [ test-app, test-logs, test-commit-number, test-network, test-open-api, test-system-resources, test-storage-resources, test-memory-resources, test-routing, test-sandbox, test-settings-node, test-progress-bar, test-error-popup, test-storage-action, test-storage-block ]
 
   - name: cp-static
     image: drone-tezedge-explorer:latest

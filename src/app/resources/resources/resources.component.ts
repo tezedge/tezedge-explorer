@@ -3,7 +3,7 @@ import { select, Store } from '@ngrx/store';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { State } from '../../app.reducers';
 import { StorageResourcesActionTypes } from '../storage-resources/storage-resources.actions';
-import { MemoryResourcesActionTypes } from '../memory-resources/memory-resources.actions';
+import { MemoryResourcesActionTypes, MemoryResourcesLoad, MemoryResourcesLoaded } from '../memory-resources/memory-resources.actions';
 import { MatCheckboxChange } from '@angular/material/checkbox';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { filter, map } from 'rxjs/operators';
@@ -64,7 +64,7 @@ export class ResourcesComponent implements OnInit {
   onReversedCheckboxChange(event: MatCheckboxChange): void {
     this.reversedCheckboxState = event.checked;
     this.cdRef.detectChanges();
-    this.store.dispatch({
+    this.store.dispatch<MemoryResourcesLoad>({
       type: MemoryResourcesActionTypes.MEMORY_RESOURCES_LOAD,
       payload: { reversed: this.reversedCheckboxState }
     });

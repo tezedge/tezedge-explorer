@@ -3,6 +3,13 @@ import { StateMachine } from '@shared/types/state-machine/state-machine.type';
 import { StateMachineActions, StateMachineActionTypes } from './state-machine.actions';
 import { VirtualScrollActivePage } from '@shared/types/shared/virtual-scroll-active-page.type';
 import { StateMachineAction } from '@shared/types/state-machine/state-machine-action.type';
+import { StateMachineActionsFilter } from '@shared/types/state-machine/state-machine-actions-filter.type';
+
+const NO_FILTERS: StateMachineActionsFilter = {
+  limit: 100,
+  cursor: null,
+  queryFilters: []
+};
 
 const initialState: StateMachine = {
   diagramBlocks: [],
@@ -10,10 +17,7 @@ const initialState: StateMachine = {
     ids: [],
     entities: {},
     lastCursorId: 0,
-    filter: {
-      limit: 1000,
-      cursor: null
-    },
+    filter: NO_FILTERS,
     stream: false,
     activePage: {},
     pages: [],
@@ -41,10 +45,7 @@ export function reducer(state: StateMachine = initialState, action: StateMachine
         actionTable: {
           ...state.actionTable,
           stream: true,
-          filter: {
-            ...state.actionTable.filter,
-            cursor: null
-          }
+          filter: NO_FILTERS
         }
       };
     }
@@ -93,7 +94,8 @@ export function reducer(state: StateMachine = initialState, action: StateMachine
           ...state.actionTable,
           filter: {
             ...state.actionTable.filter,
-            cursor: action.payload.cursor
+            cursor: action.payload.cursor,
+            queryFilters: action.payload.queryFilters || []
           }
         }
       };

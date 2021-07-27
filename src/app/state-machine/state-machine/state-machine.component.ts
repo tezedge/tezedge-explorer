@@ -1,19 +1,20 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, NgZone, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { State } from '@app/app.reducers';
 import {
   StateMachineActionsLoad,
   StateMachineActionTypes,
   StateMachineClose,
-  StateMachineDiagramLoad,
+  StateMachineDiagramLoad, StateMachineFilterActions,
   StateMachineResizeDiagram
 } from './state-machine.actions';
 import { selectStateMachine } from '@state-machine/state-machine/state-machine.reducer';
 import { Observable } from 'rxjs';
 import { StateMachine } from '@shared/types/state-machine/state-machine.type';
-import { distinctUntilChanged, map, tap } from 'rxjs/operators';
+import { distinctUntilChanged, map } from 'rxjs/operators';
 import { ResizeDirective } from '@shared/directives/resize.directive';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
+import { StateMachineActionsFilter } from '@shared/types/state-machine/state-machine-actions-filter.type';
 
 @UntilDestroy()
 @Component({
@@ -28,6 +29,7 @@ export class StateMachineComponent implements OnInit, OnDestroy {
   activeTab: string = 'HANDSHAKE';
   state$: Observable<StateMachine>;
   transition: string = '';
+  activeFilters = [];
 
   private resizeDirective: ResizeDirective;
 
@@ -37,7 +39,8 @@ export class StateMachineComponent implements OnInit, OnDestroy {
     }
   }
 
-  constructor(private store: Store<State>,
+  constructor(private zone: NgZone,
+              private store: Store<State>,
               private cdRef: ChangeDetectorRef) { }
 
   collapsedDiagram: boolean;
@@ -53,28 +56,27 @@ export class StateMachineComponent implements OnInit, OnDestroy {
 
     this.state$ = this.store.select(selectStateMachine);
 
-    this.store.select(selectStateMachine)
-      .pipe(
+    this.zone.runOutsideAngular(() =>
+      this.state$.pipe(
         untilDestroyed(this),
         map(state => state.collapsedDiagram),
-        distinctUntilChanged(),
-        tap(collapsedDiagram => {
-          if (collapsedDiagram !== this.collapsedDiagram) {
-            this.collapsedDiagram = collapsedDiagram;
-            if (this.collapsedDiagram) {
-              this.transition = 'ease 0.2s';
+        distinctUntilChanged()
+      ).subscribe(collapsedDiagram => {
+        if (collapsedDiagram !== this.collapsedDiagram) {
+          this.collapsedDiagram = collapsedDiagram;
+          if (this.collapsedDiagram) {
+            this.transition = 'ease 0.2s';
+            this.cdRef.detectChanges();
+          } else {
+            setTimeout(() => {
+              this.transition = '';
+              this.resizeDirective.calculateHeight();
               this.cdRef.detectChanges();
-            } else {
-              setTimeout(() => {
-                this.transition = '';
-                this.resizeDirective.calculateHeight();
-                this.cdRef.detectChanges();
-              }, 400);
-            }
+            }, 400);
           }
-        })
-      )
-      .subscribe();
+        }
+      })
+    );
   }
 
   onResizeFinished(height: number): void {
@@ -87,6 +89,20 @@ export class StateMachineComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.store.dispatch<StateMachineClose>({
       type: StateMachineActionTypes.STATE_MACHINE_CLOSE
+    });
+  }
+
+  filterByType(type: string): void {
+    if (this.activeFilters.includes(type)) {
+      this.activeFilters = this.activeFilters.filter(f => f !== type);
+    } else {
+      this.activeFilters = [...this.activeFilters, type];
+    }
+    this.store.dispatch<StateMachineFilterActions>({
+      type: StateMachineActionTypes.STATE_MACHINE_ACTIONS_FILTER_LOAD,
+      payload: {
+        queryFilters: this.activeFilters
+      }
     });
   }
 }

@@ -46,6 +46,7 @@ export class StateMachineDiagramComponent implements OnInit, AfterViewInit {
   private g: any;
   private svg: any;
   private svgGroup: any;
+  private zoom: any;
 
   private diagram: StateMachineDiagramBlock[];
   private collapsedDiagram: boolean;
@@ -206,7 +207,7 @@ export class StateMachineDiagramComponent implements OnInit, AfterViewInit {
           label: block.actionName,
           // class: cls,
           data: block,
-          id: 'g' + block.actionId,
+          id: block.actionName
         });
       });
 
@@ -240,6 +241,9 @@ export class StateMachineDiagramComponent implements OnInit, AfterViewInit {
         .attr('width', this.d3Diagram.nativeElement.offsetWidth)
         .attr('height', this.d3Diagram.nativeElement.offsetHeight);
 
+      this.zoom = d3.zoom().on('zoom', (e) => this.svg.select('g').attr('transform', e.transform));
+      this.svg.call(this.zoom);
+
       this.zoomToFit();
     });
   }
@@ -251,10 +255,11 @@ export class StateMachineDiagramComponent implements OnInit, AfterViewInit {
     this.svg.call(zoom);
 
     const graph = this.g.graph();
+    const zoomCoefficient = 0.005;
     const initialScale = Math.min(
       this.d3Diagram.nativeElement.offsetWidth / graph.width,
       this.d3Diagram.nativeElement.offsetHeight / graph.height
-    ) - 0.02;
+    ) - zoomCoefficient;
     const y = (Number(this.svg.attr('height')) - graph.height * initialScale) / 2;
     const x = (Number(this.svg.attr('width')) - graph.width * initialScale) / 2;
     const transform = d3.zoomIdentity
@@ -264,6 +269,24 @@ export class StateMachineDiagramComponent implements OnInit, AfterViewInit {
       .transition()
       .duration(duration)
       .call(zoom.transform as any, transform);
+  }
+
+  zoomIn(): void {
+    this.svg.transition().call(this.zoom.scaleBy, 2);
+  }
+
+  zoomOut(): void {
+    this.svg.transition().call(this.zoom.scaleBy, 0.5);
+  }
+
+  private highlightActiveActionInDiagram(action: StateMachineAction): void {
+    const activeBlock = this.svgGroup.select('g.active');
+    if (activeBlock) {
+      activeBlock.classed('active', false);
+    }
+    this.svgGroup
+      .select(`#${action.type}`)
+      .classed('active', true);
   }
 
   private toggleErrorStatesVisibilityOnHover(): void {
@@ -281,16 +304,5 @@ export class StateMachineDiagramComponent implements OnInit, AfterViewInit {
     nodes
       .on('mouseenter', (event, id: string) => toggleVisibilityOfErrorBlocks(id, false))
       .on('mouseleave', (event, id: string) => toggleVisibilityOfErrorBlocks(id, true));
-  }
-
-  private highlightActiveActionInDiagram(action: StateMachineAction): void {
-    const gElement = d3.select('#d3Diagram svg g');
-    const activeBlock = gElement.select('g.active');
-    if (activeBlock) {
-      activeBlock.classed('active', false);
-    }
-    gElement
-      .select(`#g${action.id}`)
-      .classed('active', true);
   }
 }

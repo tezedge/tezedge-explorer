@@ -1,12 +1,12 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { select, Store } from '@ngrx/store';
-import { State } from '../../app.reducers';
 import { StorageResourcesActionTypes } from './storage-resources.actions';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { StorageResourcesStats } from '../../shared/types/resources/storage/storage-resources-stats.type';
+import { StorageResourcesStats } from '@shared/types/resources/storage/storage-resources-stats.type';
 import { Observable } from 'rxjs';
 import { filter, map } from 'rxjs/operators';
 import { storageResources } from '../resources/resources.reducer';
+import { State } from '@app/app.reducers';
 
 @UntilDestroy()
 @Component({

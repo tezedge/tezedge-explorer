@@ -1,14 +1,14 @@
 import {Injectable} from '@angular/core';
-import {Effect, Actions, ofType} from '@ngrx/effects';
+import {createEffect, Actions, ofType} from '@ngrx/effects';
 import {HttpClient} from '@angular/common/http';
 import {Store} from '@ngrx/store';
 import {map, switchMap, withLatestFrom, catchError} from 'rxjs/operators';
 
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class StorageActionEffects {
 
-  @Effect()
-  StorageBlockAction$ = this.actions$.pipe(
+
+  StorageBlockAction$ = createEffect(() => this.actions$.pipe(
     ofType('STORAGE_BLOCK_ACTION_LOAD'),
 
     // merge state
@@ -27,10 +27,10 @@ export class StorageActionEffects {
       });
       return caught;
     })
-  );
+  ));
 
-  @Effect()
-  StorageBlockActionDetails$ = this.actions$.pipe(
+
+  StorageBlockActionDetails$ = createEffect(() => this.actions$.pipe(
     ofType('STORAGE_BLOCK_ACTION_DETAILS_LOAD'),
 
     // merge state
@@ -49,7 +49,7 @@ export class StorageActionEffects {
       });
       return caught;
     })
-  );
+  ));
 
   // @Effect()
   // StorageAddressAction$ = this.actions$.pipe(

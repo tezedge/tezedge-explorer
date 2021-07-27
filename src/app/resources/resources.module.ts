@@ -3,9 +3,9 @@ import { CommonModule } from '@angular/common';
 
 import { ResourcesRoutingModule } from './resources.routing';
 import { ResourcesComponent } from './resources/resources.component';
-import { TezedgeSharedModule } from '../shared/tezedge-shared.module';
+import { TezedgeSharedModule } from '@shared/tezedge-shared.module';
 import { SystemResourcesPanelComponent } from './system-resources-panel/system-resources-panel.component';
-import { TezedgeChartsModule } from '../shared/charts/tezedge-charts.module';
+import { TezedgeChartsModule } from '@shared/charts/tezedge-charts.module';
 import { SystemResourcesGraphComponent } from './system-resources-graph/system-resources-graph.component';
 import { MatTableModule } from '@angular/material/table';
 import { StorageResourcesComponent } from './storage-resources/storage-resources.component';

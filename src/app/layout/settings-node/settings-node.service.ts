@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
-import { SettingsNodeEntityHeader } from '../../shared/types/settings-node/settings-node-entity-header.type';
+import { SettingsNodeEntityHeader } from '@shared/types/settings-node/settings-node-entity-header.type';
 import { map } from 'rxjs/operators';
-import { environment } from '../../../environments/environment';
+import { environment } from '@environment/environment';
 
 @Injectable({
   providedIn: 'root'

@@ -1,7 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Store } from '@ngrx/store'
-import { Subject } from 'rxjs'
-import { takeUntil } from 'rxjs/operators'
+import { Store } from '@ngrx/store';
 import { Router } from '@angular/router';
 
 @Component({
@@ -10,8 +8,6 @@ import { Router } from '@angular/router';
   styleUrls: ['./network-search.component.scss']
 })
 export class NetworkSearchComponent implements OnInit {
-
-  public networkSearchInput = "";
 
   constructor(
     public store: Store<any>,

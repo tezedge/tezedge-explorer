@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
-import { ResourceStorageQuery } from '../../shared/types/resources/storage/storage-resource-operation.type';
+import { ResourceStorageQuery } from '@shared/types/resources/storage/storage-resource-operation.type';
 
 @Component({
   selector: 'app-storage-resources-overview',

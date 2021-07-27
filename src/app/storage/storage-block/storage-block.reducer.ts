@@ -1,7 +1,7 @@
 import * as moment from 'moment-mini-ts';
-import { VirtualScrollActivePage } from '../../shared/types/shared/virtual-scroll-active-page.type';
-import { StorageBlock } from '../../shared/types/storage/storage-block/storage-block.type';
-import { StorageBlockEntity } from '../../shared/types/storage/storage-block/storage-block-entity.type';
+import { VirtualScrollActivePage } from '@shared/types/shared/virtual-scroll-active-page.type';
+import { StorageBlock } from '@shared/types/storage/storage-block/storage-block.type';
+import { StorageBlockEntity } from '@shared/types/storage/storage-block/storage-block-entity.type';
 import { StorageBlockActionTypes } from './storage-block.actions';
 
 const initialState: StorageBlock = {

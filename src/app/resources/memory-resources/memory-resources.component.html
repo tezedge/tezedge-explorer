@@ -15,6 +15,8 @@
 
 <div #treeMapChart
      [class.hidden]="!activeResource"
+     fxFlex.gt-sm="400px"
+     fxFlex.lt-md="250px"
      class="tree-map">
 </div>
 
@@ -35,6 +37,8 @@
 </div>
 
 <table class="memory-table overflow-y-auto"
+       fxFlex.gt-sm="calc(100% - 30px - 400px - 36px)"
+       fxFlex.lt-md="calc(100% - 30px - 250px - 36px)"
        *ngIf="activeResource">
   <thead>
   <tr>

@@ -7,10 +7,10 @@ import {
   ViewChild,
   ViewContainerRef
 } from '@angular/core';
-import { ResourceStorageQuery } from '../../shared/types/resources/storage/storage-resource-operation.type';
+import { ResourceStorageQuery } from '@shared/types/resources/storage/storage-resource-operation.type';
 import { Overlay, OverlayRef } from '@angular/cdk/overlay';
 import { TemplatePortal } from '@angular/cdk/portal';
-import { ResourceStorageQueryDetails } from '../../shared/types/resources/storage/storage-resource-operation-usage-entry.type';
+import { ResourceStorageQueryDetails } from '@shared/types/resources/storage/storage-resource-operation-usage-entry.type';
 
 const RANGES = [
   'Range 1μs - 10μs',

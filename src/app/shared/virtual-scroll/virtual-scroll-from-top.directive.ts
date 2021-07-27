@@ -340,7 +340,7 @@ export class VirtualScrollFromTopDirective implements AfterViewInit, OnDestroy, 
 
     this.reset();
 
-    this.onDestroy$.next();
+    this.onDestroy$.next(null);
     this.onDestroy$.complete();
   }
 }

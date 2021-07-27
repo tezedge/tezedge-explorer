@@ -1,30 +1,28 @@
 import { Injectable } from '@angular/core';
-import { Actions, Effect, ofType } from '@ngrx/effects';
+import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { BehaviorSubject, empty, interval, ObservedValueOf, of, Subject } from 'rxjs';
 import { catchError, filter, flatMap, map, startWith, switchMap, takeUntil, withLatestFrom } from 'rxjs/operators';
 import { webSocket, WebSocketSubject } from 'rxjs/webSocket';
 import { HttpClient } from '@angular/common/http';
-import { State } from '../app.reducers';
-import { SettingsNodeService } from '../settings/settings-node/settings-node.service';
-import { SettingsNodeEntityHeader } from '../shared/types/settings-node/settings-node-entity-header.type';
-import { ErrorActionTypes } from '../shared/error-popup/error-popup.actions';
+import { State } from '@app/app.reducers';
+import { SettingsNodeEntityHeader } from '@shared/types/settings-node/settings-node-entity-header.type';
+import { ErrorActionTypes } from '@shared/error-popup/error-popup.actions';
 import { Router } from '@angular/router';
 import { MonitoringActionTypes } from './monitoring.actions';
-import { AnonymousSubject } from 'rxjs/internal-compatibility';
+import { SettingsNodeService } from '@settings/settings-node.service';
 
 let wsCounter = 0;
 
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class MonitoringEffects {
 
   private websocketDestroy$: Subject<void>;
   private networkDestroy$: Subject<void>;
   private networkInterval$: BehaviorSubject<number> = new BehaviorSubject(1);
-  private webSocketConnection$: AnonymousSubject<any>;
+  private webSocketConnection$: WebSocketSubject<any>;
 
-  @Effect()
-  MonitoringLoadEffect$ = this.actions$.pipe(
+  MonitoringLoadEffect$ = createEffect(() => this.actions$.pipe(
     ofType(MonitoringActionTypes.MONITORING_LOAD, 'APP_REFRESH', 'APP_INIT_SUCCESS'),
     withLatestFrom(this.store, (action: any, state: ObservedValueOf<Store<State>>) => ({ action, state })),
     switchMap(({ action, state }) => {
@@ -39,11 +37,11 @@ export class MonitoringEffects {
       const actions = [];
 
       if (this.networkDestroy$) {
-        this.networkDestroy$.next();
+        this.networkDestroy$.next(null);
         this.networkDestroy$.complete();
       }
       if (this.websocketDestroy$) {
-        this.websocketDestroy$.next();
+        this.websocketDestroy$.next(null);
         this.websocketDestroy$.complete();
         this.webSocketConnection$.unsubscribe();
       }
@@ -60,10 +58,9 @@ export class MonitoringEffects {
       }
       return actions;
     })
-  );
+  ));
 
-  @Effect()
-  MonitoringCloseEffect$ = this.actions$.pipe(
+  MonitoringCloseEffect$ = createEffect(() => this.actions$.pipe(
     ofType(MonitoringActionTypes.MONITORING_CLOSE),
     withLatestFrom(this.store, (action: any, state: ObservedValueOf<Store<State>>) => ({ action, state })),
     flatMap(({ action, state }) => {
@@ -71,15 +68,14 @@ export class MonitoringEffects {
         this.networkInterval$.next(5);
         return empty();
       } else {
-        this.websocketDestroy$.next();
+        this.websocketDestroy$.next(null);
         return of({ type: 'NETWORK_WEBSOCKET_LOAD', payload: { lazyCalls: true } });
       }
     })
-  );
+  ));
 
   // load network stats
-  @Effect()
-  NetworkStatsLoadEffect$ = this.actions$.pipe(
+  NetworkStatsLoadEffect$ = createEffect(() => this.actions$.pipe(
     ofType('NETWORK_STATS_LOAD'),
     withLatestFrom(this.store, (action: any, state: ObservedValueOf<Store<State>>) => ({ action, state })),
     switchMap(({ action, state }) => {
@@ -99,11 +95,10 @@ export class MonitoringEffects {
         switchMap(() => headerData$)
       );
     }),
-  );
+  ));
 
   // load network peers
-  @Effect()
-  NetworkPeersLoadEffect$ = this.actions$.pipe(
+  NetworkPeersLoadEffect$ = createEffect(() => this.actions$.pipe(
     ofType('NETWORK_PEERS_LOAD'),
     withLatestFrom(this.store, (action: any, state: ObservedValueOf<Store<State>>) => ({ action, state })),
     switchMap(({ action, state }) => {
@@ -123,10 +118,9 @@ export class MonitoringEffects {
         switchMap(() => peersData$)
       );
     }),
-  );
+  ));
 
-  @Effect()
-  NetworkWebsocketLoadEffect$ = this.actions$.pipe(
+  NetworkWebsocketLoadEffect$ = createEffect(() => this.actions$.pipe(
     ofType('NETWORK_WEBSOCKET_LOAD'),
     withLatestFrom(this.store, (action: any, state: ObservedValueOf<Store<State>>) => ({ action, state })),
     switchMap(({ action, state }) => {
@@ -181,7 +175,7 @@ export class MonitoringEffects {
       });
       return caught;
     }),
-  );
+  ));
 
   constructor(
     private http: HttpClient,

@@ -1,17 +1,14 @@
-import { Injectable, NgZone } from '@angular/core';
-import { Effect, Actions, ofType } from '@ngrx/effects';
+import { Injectable } from '@angular/core';
+import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { HttpClient } from '@angular/common/http';
 import { Store } from '@ngrx/store';
-import { tap, map, switchMap, withLatestFrom, catchError } from 'rxjs/operators';
+import { catchError, map, tap } from 'rxjs/operators';
 import { Router } from '@angular/router';
 
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class StorageSearchEffects {
 
-
-    
-    @Effect()
-    StorageSearch$ = this.actions$.pipe(
+    StorageSearch$ = createEffect(() => this.actions$.pipe(
         ofType('STORAGE_SEARCH'),
 
         // change data structure
@@ -19,7 +16,7 @@ export class StorageSearchEffects {
             console.log('[STORAGE_SEARCH]', action.payload)
             this.router.navigate(['/storage', action.payload]);
         }),
-        
+
         map((payload) => ({ type: 'STORAGE_SEARCH_SUCCESS', payload: payload })),
         catchError((error, caught) => {
             console.error(error)
@@ -30,7 +27,7 @@ export class StorageSearchEffects {
             return caught;
         })
 
-    )
+    ))
     constructor(
         private http: HttpClient,
         private actions$: Actions,

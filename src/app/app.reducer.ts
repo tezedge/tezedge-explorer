@@ -1,5 +1,5 @@
-import { App } from './shared/types/app/app.type';
-import { State } from './app.reducers';
+import { App } from '@shared/types/app/app.type';
+import { State } from '@app/app.reducers';
 
 const initialState: App = {
   initialized: false,

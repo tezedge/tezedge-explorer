@@ -1,6 +1,6 @@
 import { Action } from '@ngrx/store';
-import { StateMachineDiagramBlock } from '../../shared/types/state-machine/state-machine-diagram-block.type';
-import { StateMachineProposal } from '../../shared/types/state-machine/state-machine-proposal.type';
+import { StateMachineDiagramBlock } from '@shared/types/state-machine/state-machine-diagram-block.type';
+import { StateMachineProposal } from '@shared/types/state-machine/state-machine-proposal.type';
 
 export enum StateMachineActionTypes {
   STATE_MACHINE_DIAGRAM_LOAD = 'STATE_MACHINE_DIAGRAM_LOAD',

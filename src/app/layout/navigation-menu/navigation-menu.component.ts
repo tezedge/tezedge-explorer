@@ -1,14 +1,15 @@
 import { AfterViewInit, ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { State } from '../../app.reducers';
+import { State } from '@app/app.reducers';
 import { Router } from '@angular/router';
-import { SettingsNode } from '../../shared/types/settings-node/settings-node.type';
+import { SettingsNode } from '@shared/types/settings-node/settings-node.type';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { App } from '../../shared/types/app/app.type';
-import { selectFeatures } from '../../settings/settings-node/settings-node.reducer';
-import { appState } from '../../app.reducer';
+import { App } from '@shared/types/app/app.type';
+import { appState } from '@app/app.reducer';
+import { selectFeatures } from '@settings/settings-node.reducer';
+
 
 @UntilDestroy()
 @Component({

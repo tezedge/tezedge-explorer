@@ -303,7 +303,7 @@ export class VirtualScrollDirective implements AfterViewInit, OnDestroy, OnChang
 
     this.reset();
 
-    this.onDestroy$.next();
+    this.onDestroy$.next(null);
     this.onDestroy$.complete();
   }
 }

@@ -1,25 +1,23 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 
-import { Router, ActivatedRoute, Params } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
 
 import { Store } from '@ngrx/store';
-import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 
+@UntilDestroy()
 @Component({
   selector: 'app-endpoints-action',
   templateUrl: './endpoints-action.component.html',
   styleUrls: ['./endpoints-action.component.scss']
 })
-export class EndpointsActionComponent implements OnInit {
+export class EndpointsActionComponent implements OnInit, OnDestroy {
 
   public endpointsAction;
   public endpointsActionList;
   public endpointsActionShow;
   public endpointsActionItem;
-
-  public onDestroy$ = new Subject();
 
   public ITEM_SIZE = 36;
 
@@ -33,7 +31,7 @@ export class EndpointsActionComponent implements OnInit {
   ngOnInit(): void {
 
     this.activeRoute.params
-      .pipe(takeUntil(this.onDestroy$))
+      .pipe(untilDestroyed(this))
       .subscribe((params) => {
 
         // triger action and get endpoints data
@@ -46,7 +44,7 @@ export class EndpointsActionComponent implements OnInit {
 
     // wait for data changes from redux
     this.store.select('endpointsAction')
-      .pipe(takeUntil(this.onDestroy$))
+      .pipe(untilDestroyed(this))
       .subscribe(data => {
 
         this.endpointsAction = data;
@@ -133,16 +131,10 @@ export class EndpointsActionComponent implements OnInit {
   }
 
   ngOnDestroy() {
-
     // stop streaming logs actions
     this.store.dispatch({
       type: 'ENDPOINTS_ACTION_STOP',
     });
-
-    // close all observables
-    this.onDestroy$.next();
-    this.onDestroy$.complete();
-
   }
 
 }

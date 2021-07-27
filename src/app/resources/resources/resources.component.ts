@@ -1,13 +1,12 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { select, Store } from '@ngrx/store';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { State } from '../../app.reducers';
-import { StorageResourcesActionTypes } from '../storage-resources/storage-resources.actions';
-import { MemoryResourcesActionTypes, MemoryResourcesLoad, MemoryResourcesLoaded } from '../memory-resources/memory-resources.actions';
+import { State } from '@app/app.reducers';
+import { MemoryResourcesActionTypes, MemoryResourcesLoad } from '../memory-resources/memory-resources.actions';
 import { MatCheckboxChange } from '@angular/material/checkbox';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { filter, map } from 'rxjs/operators';
-import { selectFeatures } from '../../settings/settings-node/settings-node.reducer';
+import { selectFeatures } from '@settings/settings-node.reducer';
 import { Observable } from 'rxjs';
 
 const AVAILABLE_TABS = [

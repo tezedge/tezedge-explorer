@@ -3,8 +3,8 @@ import { enableDebugTools } from '@angular/platform-browser';
 
 import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
 
-import { AppModule } from './app/app.module';
-import { environment } from './environments/environment';
+import { AppModule } from '@app/app.module';
+import { environment } from '@environment/environment';
 
 
 if (environment.production) {

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 import { debounceTime, filter, tap } from 'rxjs/operators';
-import { SystemResourcesResourceType } from '../types/resources/system/system-resources-panel.type';
+import { SystemResourcesResourceType } from '@shared/types/resources/system/system-resources-panel.type';
 
 @Injectable({ providedIn: 'root' })
 export class TezedgeChartsService {

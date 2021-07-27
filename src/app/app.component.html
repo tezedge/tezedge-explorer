@@ -54,15 +54,17 @@
                           class="action">BAKE</span>
                 </button>
 
-                <button class="theme-switcher"
+                <button class="theme-switcher font-12 font-300"
                         mat-button
-                        style="font-size: 12px;font-weight: 300; height: 28px; min-width: 24px; padding: 2px 6px 0px 6px;">
+                        style="height: 28px; min-width: 24px; padding: 2px 6px 0 6px;">
                     <mat-icon *ngIf="app.theme.name === 'dark'"
-                              style="font-size:12px; opacity:0.3"
+                              style="opacity:0.3"
+                              class="font-12"
                               (click)="changeTheme('light')">wb_sunny
                     </mat-icon>
                     <mat-icon *ngIf="app.theme.name === 'light'"
-                              style="font-size:12px; opacity:0.3"
+                              style="opacity:0.3"
+                              class="font-12"
                               (click)="changeTheme('dark')">bedtime
                     </mat-icon>
                 </button>

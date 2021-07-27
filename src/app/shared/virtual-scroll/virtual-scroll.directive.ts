@@ -168,9 +168,10 @@ export class VirtualScrollDirective implements AfterViewInit, OnDestroy, OnChang
 
   public onResize(): void {
     this.initDimensions();
+    this.load();
+    this.scrollToBottom();
     this.preparePositionsAndCreateViewElements();
     this.renderViewportItems();
-    this.scrollToBottom();
   }
 
   private initDimensions(): void {
@@ -208,7 +209,7 @@ export class VirtualScrollDirective implements AfterViewInit, OnDestroy, OnChang
 
   private load(): void {
     this.virtualScrollItemsCount = this.vsForOf.lastCursorId > 0 ?
-      Math.min(this.vsForOf.lastCursorId + 1, this.maxVirtualScrollElements) :
+      Math.min(this.vsForOf.lastCursorId, this.maxVirtualScrollElements) :
       0;
 
     // set virtual scroll height in pixels
@@ -244,8 +245,7 @@ export class VirtualScrollDirective implements AfterViewInit, OnDestroy, OnChang
 
   private createViewElements(): void {
     if (!this.viewContainer.length) {
-      const numberOfElements = this.scrollPositionEnd - this.scrollPositionStart + 1;
-
+      const numberOfElements = (this.scrollPositionEnd - this.scrollPositionStart) + 1 - 1;
       // Initialize viewContainer with all need views (rows)
       // console.warn(`[renderViewportItems] viewContainer init (${this.scrollPositionEnd - this.scrollPositionStart} views)`);
       for (let index = 0; index < numberOfElements; index++) {

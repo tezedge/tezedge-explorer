@@ -18,6 +18,7 @@ import { MaterialModule } from '@shared/material.module';
 import { NgxJsonViewerModule } from 'ngx-json-viewer';
 import { ReactiveFormsModule } from '@angular/forms';
 import { NgrxFormDirective } from '@shared/ngrx-form.directive';
+import { ResizeDirective } from '@shared/directives/resize.directive';
 
 
 @NgModule({
@@ -33,6 +34,7 @@ import { NgrxFormDirective } from '@shared/ngrx-form.directive';
     VirtualScrollFromTopDirective,
     ClickOutsideDirective,
     NgrxFormDirective,
+    ResizeDirective,
   ],
   imports: [
     CommonModule,
@@ -73,6 +75,7 @@ import { NgrxFormDirective } from '@shared/ngrx-form.directive';
     VirtualScrollFromTopDirective,
     ClickOutsideDirective,
     NgrxFormDirective,
+    ResizeDirective,
   ],
   providers: [
     {

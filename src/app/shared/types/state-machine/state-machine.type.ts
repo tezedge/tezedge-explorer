@@ -3,10 +3,10 @@ import { StateMachineAction } from './state-machine-action.type';
 import { StateMachineActionTable } from '@shared/types/state-machine/state-machine-action-table.type';
 
 export interface StateMachine {
-  state: any;
   diagramBlocks: StateMachineDiagramBlock[];
   actionTable: StateMachineActionTable;
   activeAction: StateMachineAction;
   isPlaying: boolean;
   collapsedDiagram: boolean;
+  diagramHeight: number;
 }

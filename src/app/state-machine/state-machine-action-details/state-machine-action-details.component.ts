@@ -54,7 +54,7 @@ export class StateMachineActionDetailsComponent implements OnInit {
     const prevAction = state.actionTable.entities[state.activeAction.id - 1];
     if (this.currentAction.originalId !== 1 && !prevAction) {
       // TODO: diff should happen on the backend and we should not do these tricks here
-      this.api = 'http://prod.tezedge.com:18732/state?action_id=' + (this.currentAction.originalId - 1);
+      this.api = 'http://prod.tezedge.com:18732/dev/shell/automaton/state?action_id=' + (this.currentAction.originalId - 1);
       this.http.get<any>(this.api).subscribe(response => {
         this.stateDifferences = this.getDifferences(this.currentAction.state, response);
         this.cdRef.detectChanges();

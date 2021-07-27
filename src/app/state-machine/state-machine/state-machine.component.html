@@ -9,11 +9,20 @@
   <!--  </div>-->
   <div class="d-flex h-100">
     <div class="d-flex flex-column w-100 flex-between" *ngIf="state$ | async as stateMachine">
-      <div [fxFlex]="stateMachine.collapsedDiagram ? '32px' : '40%'" class="padding-left-10 padding-bottom-10 upper-container">
+      <div class="padding-left-10 padding-bottom-10 upper-container p-relative"
+           [style.transition]="transition"
+           [class.collapsed]="stateMachine.collapsedDiagram"
+           [style.height]="stateMachine.collapsedDiagram
+                           ? '32px'
+                           : (stateMachine.diagramHeight ? stateMachine.diagramHeight + 'px' : '40%')">
         <app-state-machine-diagram class="d-flex flex-column h-100"></app-state-machine-diagram>
+        <div *ngIf="!stateMachine.collapsedDiagram"
+             class="resizer-element p-absolute"
+             resizer (resizeFinished)="onResizeFinished($event)"></div>
       </div>
-      <div [fxFlex]="stateMachine.collapsedDiagram ? 'calc(100% - 40px)' : '60%'"
-           fxLayout.gt-sm="row" fxLayout.lt-md="column" class="border-top bottom-container">
+      <div class="border-top bottom-container flex-1" fxLayout.gt-sm="row" fxLayout.lt-md="column"
+           [class.collapsed]="stateMachine.collapsedDiagram"
+           [style.transition]="transition">
         <app-state-machine-table fxFlex.gt-sm="480px" fxFlex.lt-md="50%"></app-state-machine-table>
         <div fxFlex.gt-sm="calc(100% - 480px)" fxFlex.lt-md="50%">
           <app-state-machine-action-details></app-state-machine-action-details>

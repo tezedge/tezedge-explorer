@@ -2,17 +2,18 @@ import { AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, E
 import { StateMachineDiagramBlock } from '@shared/types/state-machine/state-machine-diagram-block.type';
 import { select, Store } from '@ngrx/store';
 import { State } from '@app/app.reducers';
-import { selectStateMachine, selectStateMachineDiagram } from '@state-machine/state-machine/state-machine.reducer';
+import { selectStateMachine, selectStateMachineCollapsedDiagram, selectStateMachineDiagramHeight } from '@state-machine/state-machine/state-machine.reducer';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { appState } from '@app/app.reducer';
-import { debounceTime, delay, filter, mergeMap, skip, throttleTime } from 'rxjs/operators';
+import { debounceTime, delay, distinctUntilChanged, filter, mergeMap, skip, tap, throttleTime } from 'rxjs/operators';
 import * as d3 from 'd3';
 import { curveBasis } from 'd3';
 import * as dagreD3 from 'dagre-d3';
 import { StateMachineAction } from '@shared/types/state-machine/state-machine-action.type';
 import {
   StateMachineActionsStopStream,
-  StateMachineActionTypes, StateMachineCollapseDiagram,
+  StateMachineActionTypes,
+  StateMachineCollapseDiagram,
   StateMachineSetActiveAction,
   StateMachineStartPlaying,
   StateMachineStopPlaying
@@ -39,8 +40,10 @@ export class StateMachineDiagramComponent implements AfterViewInit {
   private g: any;
   private svg: any;
   private svgGroup: any;
+
   private diagram: StateMachineDiagramBlock[];
   private collapsedDiagram: boolean;
+  private diagramHeight: number = -1;
 
   constructor(private cdRef: ChangeDetectorRef,
               private store: Store<State>,
@@ -56,13 +59,6 @@ export class StateMachineDiagramComponent implements AfterViewInit {
       .subscribe(value => {
         this.pausePlaying();
         this.selectAction(this.stateMachine.actionTable.entities[value], 'any');
-      });
-
-    this.store.select(selectStateMachine)
-      .pipe(untilDestroyed(this))
-      .subscribe(state => {
-        this.stateMachine = state;
-        this.cdRef.detectChanges();
       });
 
     this.listenToDiagramChange();
@@ -88,9 +84,7 @@ export class StateMachineDiagramComponent implements AfterViewInit {
     if (this.stateMachine.isPlaying) {
       this.pausePlaying();
     } else {
-      if (this.stateMachine.actionTable.stream) {
-        this.store.dispatch<StateMachineActionsStopStream>({ type: StateMachineActionTypes.STATE_MACHINE_ACTIONS_STOP_STEAM });
-      }
+      this.stopStream();
       this.store.dispatch<StateMachineStartPlaying>({ type: StateMachineActionTypes.STATE_MACHINE_START_PLAYING });
     }
   }
@@ -101,11 +95,15 @@ export class StateMachineDiagramComponent implements AfterViewInit {
         type: StateMachineActionTypes.STATE_MACHINE_SET_ACTIVE_ACTION,
         payload: { action, autoScroll }
       });
-      if (this.stateMachine.actionTable.stream) {
-        this.store.dispatch<StateMachineActionsStopStream>({
-          type: StateMachineActionTypes.STATE_MACHINE_ACTIONS_STOP_STEAM
-        });
-      }
+      this.stopStream();
+    }
+  }
+
+  stopStream(): void {
+    if (this.stateMachine.actionTable.stream) {
+      this.store.dispatch<StateMachineActionsStopStream>({
+        type: StateMachineActionTypes.STATE_MACHINE_ACTIONS_STOP_STEAM
+      });
     }
   }
 
@@ -126,17 +124,40 @@ export class StateMachineDiagramComponent implements AfterViewInit {
     this.store.select(selectStateMachine)
       .pipe(
         untilDestroyed(this),
-        filter(state => this.diagram !== state.diagramBlocks && !!state.diagramBlocks.length && this.collapsedDiagram !== state.collapsedDiagram && !state.collapsedDiagram),
-        mergeMap(state =>
-          of(state).pipe(delay(state.collapsedDiagram !== this.collapsedDiagram ? 250 : 0))
-        )
+        tap((state) => {
+          this.stateMachine = state;
+          this.cdRef.detectChanges();
+        }),
+        filter(state => {
+          const blocks = this.diagram !== state.diagramBlocks && !!state.diagramBlocks.length;
+          const heightChanged = !!this.diagram && this.diagramHeight !== state.diagramHeight && this.diagramHeight !== -1;
+          return blocks || heightChanged;
+        }),
       )
       .subscribe((state: StateMachine) => {
-        console.log('generate');
-        console.log('delay:', !state.collapsedDiagram && this.collapsedDiagram ? 250 : 0);
         this.diagram = state.diagramBlocks;
         this.collapsedDiagram = state.collapsedDiagram;
-        this.generateDiagram();
+        this.diagramHeight = state.diagramHeight;
+        if (!this.collapsedDiagram) {
+          this.generateDiagram();
+        }
+      });
+
+    this.store.select(selectStateMachineCollapsedDiagram)
+      .pipe(
+        untilDestroyed(this),
+        filter(value => this.collapsedDiagram !== value),
+        distinctUntilChanged(),
+        skip(1),
+        mergeMap(collapsedDiagram =>
+          of(collapsedDiagram).pipe(delay(collapsedDiagram !== this.collapsedDiagram ? 250 : 0))
+        )
+      )
+      .subscribe((collapsedDiagram: boolean) => {
+        this.collapsedDiagram = collapsedDiagram;
+        if (!this.collapsedDiagram) {
+          this.generateDiagram();
+        }
       });
 
     this.store.pipe(

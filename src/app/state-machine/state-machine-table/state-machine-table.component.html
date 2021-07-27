@@ -51,25 +51,25 @@
       <button class="square-button d-flex align-center"
               id="firstPage" matTooltip="First Page"
               (click)="loadFirstPage()"
-              [disabled]="stateMachine.actionTable.activePage.id === pageSize">
+              [disabled]="stateMachine.actionTable.activePage?.id === pageSize">
         <mat-icon svgIcon="arrow-left-stop" class="icon-16"></mat-icon>
       </button>
       <button class="square-button d-flex align-center flex-center"
               id="previousPage" matTooltip="Previous Page"
               (click)="loadPreviousPage()"
-              [disabled]="stateMachine.actionTable.activePage.id === pageSize">
+              [disabled]="stateMachine.actionTable.activePage?.id === pageSize">
         <mat-icon svgIcon="less-than" class="icon-8 d-flex"></mat-icon>
       </button>
       <button class="square-button d-flex align-center flex-center"
               id="nextPage" matTooltip="Next Page"
               (click)="loadNextPage()"
-              [disabled]="!stateMachine.actionTable.pages.length || stateMachine.actionTable.activePage.id == stateMachine.actionTable.pages[stateMachine.actionTable.pages.length - 1]">
+              [disabled]="!stateMachine.actionTable.pages.length || stateMachine.actionTable.activePage?.id == stateMachine.actionTable.pages[stateMachine.actionTable.pages.length - 1]">
         <mat-icon svgIcon="greater-than" class="icon-8 d-flex"></mat-icon>
       </button>
       <button class="square-button d-flex align-center"
               id="lastPage" matTooltip="Last Page"
               (click)="loadLastPage()"
-              [disabled]="!stateMachine.actionTable.pages.length || stateMachine.actionTable.activePage.id === stateMachine.actionTable.pages[stateMachine.actionTable.pages.length - 1]">
+              [disabled]="!stateMachine.actionTable.pages.length || stateMachine.actionTable.activePage?.id === stateMachine.actionTable.pages[stateMachine.actionTable.pages.length - 1]">
         <mat-icon svgIcon="arrow-right-stop" class="icon-16"></mat-icon>
       </button>
     </div>

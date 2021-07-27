@@ -15,15 +15,6 @@ export class StateMachineEffects {
   private playSubject$ = new Subject<void>();
   private stateMachineDestroy$ = new Subject<void>();
 
-  stateMachineStateLoad$ = createEffect(() => this.actions$.pipe(
-    ofType(StateMachineActionTypes.STATE_MACHINE_STATE_LOAD),
-    withLatestFrom(this.store, (action: any, state: ObservedValueOf<Store<State>>) => ({ action, state })),
-    switchMap(({ action, state }) =>
-      this.stateMachineService.getStateMachineState()
-    ),
-    map((payload: any) => ({ type: StateMachineActionTypes.STATE_MACHINE_STATE_LOAD_SUCCESS, payload })),
-  ));
-
   stateMachineDiagramLoad$ = createEffect(() => this.actions$.pipe(
     ofType(StateMachineActionTypes.STATE_MACHINE_DIAGRAM_LOAD),
     withLatestFrom(this.store, (action: any, state: ObservedValueOf<Store<State>>) => ({ action, state })),

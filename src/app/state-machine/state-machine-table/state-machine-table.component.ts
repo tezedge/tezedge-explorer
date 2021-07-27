@@ -1,20 +1,21 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, NgZone, OnInit, ViewChild } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { State } from '@app/app.reducers';
-import { selectStateMachine } from '@state-machine/state-machine/state-machine.reducer';
+import { selectStateMachine, selectStateMachineDiagramHeight } from '@state-machine/state-machine/state-machine.reducer';
 import { StateMachineAction } from '@shared/types/state-machine/state-machine-action.type';
 import {
   StateMachineActionsLoad,
   StateMachineActionsStopStream,
   StateMachineActionTypes,
   StateMachineFilterActions,
-  StateMachineSetActiveAction, StateMachineStopPlaying,
+  StateMachineSetActiveAction,
+  StateMachineStopPlaying,
 } from '@state-machine/state-machine/state-machine.actions';
 import { StateMachine } from '@shared/types/state-machine/state-machine.type';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { delay, of } from 'rxjs';
 import { VirtualScrollDirective } from '@shared/virtual-scroll/virtual-scroll.directive';
-import { filter, mergeMap } from 'rxjs/operators';
+import { distinctUntilChanged, filter, mergeMap } from 'rxjs/operators';
 
 @UntilDestroy()
 @Component({
@@ -53,6 +54,14 @@ export class StateMachineTableComponent implements OnInit {
         this.scrollToActiveAction(state);
         this.cdRef.detectChanges();
       });
+
+    this.store.select(selectStateMachineDiagramHeight)
+      .pipe(
+        untilDestroyed(this),
+        filter(Boolean),
+        distinctUntilChanged(),
+      )
+      .subscribe(() => this.vsFor?.onResize());
   }
 
   private scrollToActiveAction(state: StateMachine): void {
@@ -99,12 +108,11 @@ export class StateMachineTableComponent implements OnInit {
   }
 
   scrollStop(): void {
-    if (!this.stateMachine.actionTable.stream) {
-      return;
+    if (this.stateMachine.actionTable.stream) {
+      this.store.dispatch<StateMachineActionsStopStream>({
+        type: StateMachineActionTypes.STATE_MACHINE_ACTIONS_STOP_STEAM
+      });
     }
-    this.store.dispatch<StateMachineActionsStopStream>({
-      type: StateMachineActionTypes.STATE_MACHINE_ACTIONS_STOP_STEAM
-    });
   }
 
   loadFirstPage(): void {

@@ -195,7 +195,6 @@ export class StateMachineDiagramComponent implements OnInit, AfterViewInit {
 
   @HostListener('window:resize')
   generateDiagram(): void {
-    console.log('generating');
     this.zone.runOutsideAngular(() => {
       d3.selectAll('#d3Diagram svg > *').remove();
 
@@ -235,7 +234,7 @@ export class StateMachineDiagramComponent implements OnInit, AfterViewInit {
 
       render(d3.select('#d3Diagram svg g'), this.g); // Run the renderer. This is what draws the final graph.
 
-      this.toggleErrorStatesVisibilityOnHover();
+      // this.toggleErrorStatesVisibilityOnHover();
 
       this.svg
         .attr('width', this.d3Diagram.nativeElement.offsetWidth)

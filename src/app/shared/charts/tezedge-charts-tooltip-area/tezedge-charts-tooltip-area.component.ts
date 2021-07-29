@@ -21,7 +21,7 @@ import { GraphRedirectionOverlayComponent } from '../graph-redirection-overlay/g
 import { Store } from '@ngrx/store';
 import { State } from '../../../app.reducers';
 import { SystemResourcesActionTypes, SystemResourcesDetailsUpdateAction } from '../../../resources/system-resources/system-resources.actions';
-import { ResourceType } from '../../types/resources/system/system-resources-panel.type';
+import { SystemResourcesResourceType } from '../../types/resources/system/system-resources-panel.type';
 import { fromEvent } from 'rxjs';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { debounceTime } from 'rxjs/operators';
@@ -35,7 +35,7 @@ import { debounceTime } from 'rxjs/operators';
 export class TezedgeChartsTooltipAreaComponent extends TooltipArea implements AfterViewInit, OnDestroy {
 
   @Input() chartElement: SVGElement;
-  @Input() resourceType: ResourceType;
+  @Input() resourceType: SystemResourcesResourceType;
 
   @ViewChild(TooltipDirective) private tooltipDirective: TooltipDirective;
   @ViewChild('tooltipTrigger') private tooltipTrigger: ElementRef<SVGRectElement>;

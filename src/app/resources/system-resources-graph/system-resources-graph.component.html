@@ -1,8 +1,9 @@
 <div fxLayout="row"
      [class.fade]="chartData"
+     [class.active]="active"
      [style.transition-delay.s]="transitionDelay"
      [ngClass.lt-md]="'small-device'"
-     class="resource-category-block">
+     class="resource-category-block border">
   <div class="rotated-label" fxFlex="33px" fxHide.lt-md><span>{{ rotatedLabel }}</span></div>
   <div fxLayout="column" fxFlex="calc(100% - 33px)">
     <div class="graph-title">{{ graphTitle }}</div>

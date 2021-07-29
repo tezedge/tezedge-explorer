@@ -1,11 +1,7 @@
-export class SystemResourcesPanelBlock {
+import { SystemResourcesFormattingType } from './system-resource-category.type';
+
+export interface SystemResourcesPanelBlock {
   name: string;
   value: number;
-  formattingType: string;
-
-  constructor(name: string, value: number, formattingType: string) {
-    this.name = name;
-    this.value = value;
-    this.formattingType = formattingType;
-  }
+  formattingType: SystemResourcesFormattingType;
 }

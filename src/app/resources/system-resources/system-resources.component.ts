@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 import { select, Store } from '@ngrx/store';
 import { State } from '../../app.reducers';
 import { BreakpointObserver } from '@angular/cdk/layout';
-import { delay, filter, skip } from 'rxjs/operators';
+import { delay, filter, skip, tap } from 'rxjs/operators';
 import {
   SystemResourcesActionTypes,
   SystemResourcesCloseAction,
@@ -14,7 +14,7 @@ import {
 import { SystemResources } from '../../shared/types/resources/system/system-resources.type';
 import { systemResources } from '../resources/resources.reducer';
 import { appState } from '../../app.reducer';
-import { ResourceType } from '../../shared/types/resources/system/system-resources-panel.type';
+import { SystemResourcesResourceType } from '../../shared/types/resources/system/system-resources-panel.type';
 import { SystemResourceCategory } from '../../shared/types/resources/system/system-resource-category.type';
 
 
@@ -33,7 +33,7 @@ export class SystemResourcesComponent implements OnInit, OnDestroy {
   readonly yAxisGigaBytesConversion = (value) => (value < 1 ? value : (value + '.00')) + ' GB';
   readonly yAxisMegaBytesConversion = (value) => `${value} MB`;
 
-  activeSummary: ResourceType = 'cpu';
+  activeSummary: SystemResourcesResourceType = 'cpu';
 
   private isSmallDevice: boolean;
 
@@ -47,7 +47,7 @@ export class SystemResourcesComponent implements OnInit, OnDestroy {
     this.listenToResourcesChange();
   }
 
-  toggleActiveSummary(value: ResourceType, resource: SystemResourceCategory): void {
+  toggleActiveSummary(value: SystemResourcesResourceType, resource: SystemResourceCategory): void {
     if (this.activeSummary === value) {
       return;
     }
@@ -68,6 +68,7 @@ export class SystemResourcesComponent implements OnInit, OnDestroy {
       untilDestroyed(this),
       select(systemResources),
       filter(resources => !!resources),
+      tap(resources => this.activeSummary = resources.resourcesPanel?.resourceType)
     );
     this.store.pipe(
       untilDestroyed(this),

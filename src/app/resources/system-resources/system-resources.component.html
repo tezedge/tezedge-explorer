@@ -4,7 +4,7 @@
        fxLayout.gt-md="row-reverse"
        fxLayoutAlign="start stretch"
        class="resources-container"
-       *ngIf="resource?.cpu.series.length">
+       *ngIf="resource?.cpu?.series.length">
     <div class="info-container"
          fxFlex.gt-md="20vw"
          fxLayout="column">
@@ -28,7 +28,7 @@
          class="centered-container">
 
       <app-system-resources-graph [chartData]="resource.cpu.series"
-                                  [transitionDelay]="0.2"
+                                  [transitionDelay]="0.3"
                                   [labelList]="resource.cpu.labels"
                                   [resourceType]="'cpu'"
                                   [graphTitle]="'CPU'"
@@ -36,6 +36,7 @@
                                   [yAxisTickFormatting]="yAxisPercentageConversion"
                                   [xTicksValues]="resource.xTicksValues"
                                   [colorScheme]="resource.colorScheme"
+                                  [active]="activeSummary === 'cpu'"
                                   (mouseenter)="toggleActiveSummary('cpu', resource.cpu)"
                                   [formattingType]="resource.cpu.formattingType"></app-system-resources-graph>
 
@@ -43,6 +44,7 @@
                                   [transitionDelay]="0.4"
                                   [labelList]="resource.memory.labels"
                                   [resourceType]="'memory'"
+                                  [active]="activeSummary === 'memory'"
                                   [graphTitle]="'RAM'"
                                   [rotatedLabel]="'Usage'"
                                   [yAxisTickFormatting]="yAxisMegaBytesConversion"
@@ -54,6 +56,7 @@
       <app-system-resources-graph [chartData]="resource.storage.series"
                                   [transitionDelay]="0.6"
                                   [labelList]="resource.storage.labels"
+                                  [active]="activeSummary === 'storage'"
                                   [resourceType]="'storage'"
                                   [graphTitle]="'STORAGE'"
                                   [rotatedLabel]="'&nbsp;&nbsp;Size&nbsp;&nbsp;'"
@@ -63,28 +66,30 @@
                                   (mouseenter)="toggleActiveSummary('storage', resource.storage)"
                                   [colorScheme]="resource.colorScheme"></app-system-resources-graph>
 
-      <app-system-resources-graph [chartData]="resource.network.series"
-                                  [transitionDelay]="0.8"
-                                  [labelList]="resource.network.labels"
-                                  [resourceType]="'network'"
-                                  [graphTitle]="'NETWORK'"
-                                  [formattingType]="resource.network.formattingType"
-                                  [rotatedLabel]="'Times'"
-                                  [yAxisTickFormatting]="yAxisMegaBytesConversion"
-                                  [xTicksValues]="resource.xTicksValues"
-                                  (mouseenter)="toggleActiveSummary('network', resource.network)"
-                                  [colorScheme]="resource.colorScheme"></app-system-resources-graph>
-
       <app-system-resources-graph [chartData]="resource.io.series"
-                                  [transitionDelay]="1"
+                                  [transitionDelay]="0.8"
                                   [labelList]="resource.io.labels"
+                                  [active]="activeSummary === 'io'"
                                   [resourceType]="'io'"
                                   [graphTitle]="'IO'"
                                   [formattingType]="resource.io.formattingType"
-                                  [rotatedLabel]="'Times'"
+                                  [rotatedLabel]="'Traffic'"
                                   [yAxisTickFormatting]="yAxisMegaBytesConversion"
                                   [xTicksValues]="resource.xTicksValues"
                                   (mouseenter)="toggleActiveSummary('io', resource.io)"
+                                  [colorScheme]="resource.colorScheme"></app-system-resources-graph>
+
+      <app-system-resources-graph [chartData]="resource.network.series"
+                                  [transitionDelay]="1"
+                                  [labelList]="resource.network.labels"
+                                  [active]="activeSummary === 'network'"
+                                  [resourceType]="'network'"
+                                  [graphTitle]="'NETWORK'"
+                                  [formattingType]="resource.network.formattingType"
+                                  [rotatedLabel]="'Traffic'"
+                                  [yAxisTickFormatting]="yAxisMegaBytesConversion"
+                                  [xTicksValues]="resource.xTicksValues"
+                                  (mouseenter)="toggleActiveSummary('network', resource.network)"
                                   [colorScheme]="resource.colorScheme"></app-system-resources-graph>
 
     </div>

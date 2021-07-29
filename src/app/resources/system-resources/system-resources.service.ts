@@ -127,7 +127,7 @@ export class SystemResourcesService {
           label: 'MB',
           values: Object.keys(responseItem.io.validators.validators[protocolKey]).map(key => ({
             name: key.includes('read') ? 'Read per sec' : 'Written per sec',
-            total: responseItem.io.validators.validators[protocolKey][key],
+            total: responseItem.io.validators.validators[protocolKey][key] / MB_DIVISOR,
           }))
         })) as SystemResourcesSubcategoryRunnerGroup[];
 
@@ -137,15 +137,15 @@ export class SystemResourcesService {
   }
 
   private createChartData(resources: any[], isSmallDevice: boolean): SystemResources {
-    const chartData = new SystemResources();
-
-    chartData.resourcesSummary = this.createSummaryBlocks(resources);
-    chartData.colorScheme = COLOR_SCHEME;
-    chartData.memory = { series: [], formattingType: 'MB' };
-    chartData.storage = { series: [], formattingType: 'GB' };
-    chartData.cpu = { series: [], formattingType: '%' };
-    chartData.network = { series: [], formattingType: 'MB' };
-    chartData.io = { series: [], formattingType: 'MB' };
+    const chartData = {
+      cpu: { series: [], formattingType: '%' },
+      memory: { series: [], formattingType: 'MB' },
+      storage: { series: [], formattingType: 'GB' },
+      io: { series: [], formattingType: 'MB' },
+      network: { series: [], formattingType: 'MB' },
+      colorScheme: COLOR_SCHEME,
+      resourcesPanel: this.createSummaryBlocks(resources),
+    } as SystemResources;
 
     if (!resources.length) {
       return chartData;
@@ -294,29 +294,34 @@ export class SystemResourcesService {
   }
 
   private createSummaryBlocks(resources: any[]): SystemResourcesPanel {
-    const summary: SystemResourcesPanel = {
+    const panel: SystemResourcesPanel = {
       blocks: [],
       runnerGroups: [],
       timestamp: '',
       type: 'recently',
-      resourceType: 'cpu'
+      resourceType: 'cpu',
+      sortBy: 'size'
     };
 
     if (!resources.length) {
-      return summary;
+      return panel;
     }
 
     const lastResource = resources[resources.length - 1];
-    summary.timestamp = lastResource.timestamp;
+    panel.timestamp = lastResource.timestamp;
     if (lastResource.cpu.validators !== undefined) {
-      summary.blocks.push(new SystemResourcesPanelBlock('Total', lastResource.cpu.total, '%'));
-      summary.blocks.push(new SystemResourcesPanelBlock('Node', lastResource.cpu.node, '%'));
-      summary.blocks.push(new SystemResourcesPanelBlock('Validators', lastResource.cpu.validators, '%'));
+      panel.blocks = [
+        { name: 'Total', value: lastResource.cpu.total, formattingType: '%'},
+        { name: 'Node', value: lastResource.cpu.node, formattingType: '%'},
+        { name: 'Validators', value: lastResource.cpu.validators, formattingType: '%'},
+      ];
     } else {
-      summary.blocks.push(new SystemResourcesPanelBlock('Load', lastResource.cpu.node, '%'));
+      panel.blocks = [
+        { name: 'Node', value: lastResource.cpu.node, formattingType: '%'},
+      ];
     }
-    summary.runnerGroups = lastResource.cpu.runnerGroups;
+    panel.runnerGroups = lastResource.cpu.runnerGroups;
 
-    return summary;
+    return panel;
   }
 }

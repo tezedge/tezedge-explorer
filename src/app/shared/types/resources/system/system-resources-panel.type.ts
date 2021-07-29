@@ -5,8 +5,10 @@ export interface SystemResourcesPanel {
   blocks: SystemResourcesPanelBlock[];
   runnerGroups: SystemResourcesSubcategoryRunnerGroup[];
   timestamp: string;
+  resourceType: SystemResourcesResourceType;
   type: 'recently' | 'runnerGroups';
-  resourceType: ResourceType;
+  sortBy: SystemResourcesSortBy;
 }
 
-export type ResourceType = 'cpu' | 'memory' | 'storage' | 'network' | 'io';
+export type SystemResourcesResourceType = 'cpu' | 'memory' | 'storage' | 'network' | 'io';
+export type SystemResourcesSortBy =  'name' | 'size';

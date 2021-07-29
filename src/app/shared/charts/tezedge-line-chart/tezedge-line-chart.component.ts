@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component, ElementRef, Input, ViewEncapsulation } from '@angular/core';
 import { LineChartComponent, reduceTicks } from '@swimlane/ngx-charts';
 import { animate, style, transition, trigger } from '@angular/animations';
+import { ResourceType } from '../../types/resources/system/system-resources-panel.type';
 
 
 @Component({
@@ -30,6 +31,7 @@ export class TezedgeLineChartComponent extends LineChartComponent {
   @Input() circleAtTheEnd: boolean = false;
   @Input() extraYAxisValues: number = 0;
   @Input() startWithYGridLine: boolean;
+  @Input() resourceType: ResourceType;
 
   chartElementRef: ElementRef;
 

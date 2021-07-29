@@ -5,6 +5,8 @@ import { MemoryResource } from '../../shared/types/resources/memory/memory-resou
 import { MemoryResourcesActions, MemoryResourcesActionTypes } from '../memory-resources/memory-resources.actions';
 import { StorageResourcesState } from '../../shared/types/resources/storage/storage-resources-state.type';
 import { State } from '../../app.reducers';
+import { SystemResourcesPanel } from '../../shared/types/resources/system/system-resources-panel.type';
+import { SystemResourceCategory } from '../../shared/types/resources/system/system-resource-category.type';
 
 export interface ResourcesState {
   systemResources: SystemResources;
@@ -24,6 +26,33 @@ export function reducer(state: ResourcesState = initialState, action: SystemReso
       return {
         ...state,
         systemResources: { ...action.payload }
+      };
+    }
+    case SystemResourcesActionTypes.SYSTEM_RESOURCES_DETAILS_UPDATE: {
+      const resourceCategory = state.systemResources[action.payload.resourceType] as SystemResourceCategory;
+      const blocks = resourceCategory.labels.map((label, index) => ({
+        name: label,
+        value: resourceCategory.series[index].series.find(s => s.name === action.payload.timestamp).value,
+        formattingType: resourceCategory.formattingType
+      }));
+      const runnerGroups = resourceCategory.series.map(s => s.series.find(se => se.name === action.payload.timestamp).runnerGroups)
+        .filter(Boolean)
+        .reduce((acc, current) => [...acc, ...current], []);
+
+      const panel = {
+        type: action.payload.type,
+        resourceType: action.payload.resourceType,
+        timestamp: action.payload.timestamp,
+        blocks,
+        runnerGroups
+      } as SystemResourcesPanel;
+
+      return {
+        ...state,
+        systemResources: {
+          ...state.systemResources,
+          resourcesSummary: panel
+        }
       };
     }
     case StorageResourcesActionTypes.STORAGE_RESOURCES_LOAD_SUCCESS: {
@@ -55,6 +84,7 @@ export function reducer(state: ResourcesState = initialState, action: SystemReso
   }
 }
 
-export const systemResources = (state: State) =>  state.resources.systemResources;
-export const storageResources = (state: State) =>  state.resources.storageResourcesState;
-export const memoryResources = (state: State) =>  state.resources.memoryResources;
+export const systemResources = (state: State) => state.resources.systemResources;
+export const systemResourcesDetails = (state: State) => state.resources.systemResources.resourcesSummary;
+export const storageResources = (state: State) => state.resources.storageResourcesState;
+export const memoryResources = (state: State) => state.resources.memoryResources;

@@ -20,8 +20,8 @@ export class GraphRedirectionOverlayComponent implements OnInit {
     this.timestamp = Date.parse(dateFormat);
   }
 
-  isClickOutside(event): boolean {
-    return !this.elementRef.nativeElement.contains(event.target);
+  isClickOutside(event: Event, parentElement: ElementRef): boolean {
+    return !this.elementRef.nativeElement.contains(event.target) && !parentElement.nativeElement.contains(event.target);
   }
 
   navigate(route: string): void {

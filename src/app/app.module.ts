@@ -223,14 +223,11 @@ function loadIcons(matIconService: IconRegisterService): Function {
     MatTooltipModule,
     MatNativeDateModule,
     ClipboardModule,
-
     FormsModule,
     ReactiveFormsModule,
     // ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production }),
-
     NgxJsonViewerModule,
-    TezedgeSharedModule
-
+    TezedgeSharedModule,
   ],
   providers: [
     DatePipe,

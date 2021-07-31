@@ -47,9 +47,10 @@ export function reducer(state: ResourcesState = initialState, action: SystemReso
           ...action.payload,
           resourcesPanel: {
             ...action.payload.resourcesPanel,
+            sortBy: state.systemResources.resourcesPanel?.sortBy ?? action.payload.resourcesPanel.sortBy,
             runnerGroups: sort(
               action.payload.resourcesPanel.runnerGroups,
-              state.systemResources.resourcesPanel?.sortBy ?? action.payload.resourcesPanel.sortBy
+              state.systemResources.resourcesPanel?.sortBy
             )
           }
         }

@@ -28,12 +28,11 @@ import { SystemResourceCategory } from '../../shared/types/resources/system/syst
 export class SystemResourcesComponent implements OnInit, OnDestroy {
 
   systemResources$: Observable<SystemResources>;
+  activeSummary: SystemResourcesResourceType = 'cpu';
 
   readonly yAxisPercentageConversion = (value) => `${value}%`;
   readonly yAxisGigaBytesConversion = (value) => (value < 1 ? value : (value + '.00')) + ' GB';
   readonly yAxisMegaBytesConversion = (value) => `${value} MB`;
-
-  activeSummary: SystemResourcesResourceType = 'cpu';
 
   private isSmallDevice: boolean;
 

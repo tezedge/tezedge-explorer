@@ -134,9 +134,6 @@ export function reducer(state: ResourcesState = initialState, action: SystemReso
 }
 
 function sort(unsortedGroups: SystemResourcesSubcategoryRunnerGroup[], sortBy: SystemResourcesSortBy): SystemResourcesSubcategoryRunnerGroup[] {
-
-  console.log(sortBy);
-
   const runnerGroups = [...unsortedGroups.map(group => ({ ...group }))];
   if (sortBy === 'size') {
     runnerGroups.sort((r1, r2) => r2.total - r1.total);

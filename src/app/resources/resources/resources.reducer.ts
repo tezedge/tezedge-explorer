@@ -40,6 +40,7 @@ export function reducer(state: ResourcesState = initialState, action: SystemReso
         ...state
       };
     }
+
     case SystemResourcesActionTypes.SYSTEM_RESOURCES_LOAD_SUCCESS: {
       return {
         ...state,
@@ -50,12 +51,13 @@ export function reducer(state: ResourcesState = initialState, action: SystemReso
             sortBy: state.systemResources.resourcesPanel?.sortBy ?? action.payload.resourcesPanel.sortBy,
             runnerGroups: sort(
               action.payload.resourcesPanel.runnerGroups,
-              state.systemResources.resourcesPanel?.sortBy
+              state.systemResources.resourcesPanel?.sortBy ?? action.payload.resourcesPanel.sortBy
             )
           }
         }
       };
     }
+
     case SystemResourcesActionTypes.SYSTEM_RESOURCES_DETAILS_UPDATE: {
       const resourceCategory = state.systemResources[action.payload.resourceType] as SystemResourceCategory;
       const blocks = resourceCategory.labels.map((label, index) => ({
@@ -83,6 +85,7 @@ export function reducer(state: ResourcesState = initialState, action: SystemReso
         }
       };
     }
+
     case SystemResourcesActionTypes.SYSTEM_RESOURCES_SORT: {
       const runnerGroups = sort(state.systemResources.resourcesPanel.runnerGroups, action.payload.sortBy);
       return {
@@ -97,6 +100,7 @@ export function reducer(state: ResourcesState = initialState, action: SystemReso
         }
       };
     }
+
     case StorageResourcesActionTypes.STORAGE_RESOURCES_LOAD_SUCCESS: {
       return {
         ...state,
@@ -106,6 +110,7 @@ export function reducer(state: ResourcesState = initialState, action: SystemReso
         }
       };
     }
+
     case StorageResourcesActionTypes.STORAGE_RESOURCES_MAP_AVAILABLE_CONTEXTS: {
       return {
         ...state,
@@ -115,18 +120,23 @@ export function reducer(state: ResourcesState = initialState, action: SystemReso
         }
       };
     }
+
     case MemoryResourcesActionTypes.MEMORY_RESOURCES_LOAD_SUCCESS: {
       return {
         ...state,
         memoryResources: action.payload
       };
     }
+
     default:
       return state;
   }
 }
 
 function sort(unsortedGroups: SystemResourcesSubcategoryRunnerGroup[], sortBy: SystemResourcesSortBy): SystemResourcesSubcategoryRunnerGroup[] {
+
+  console.log(sortBy);
+
   const runnerGroups = [...unsortedGroups.map(group => ({ ...group }))];
   if (sortBy === 'size') {
     runnerGroups.sort((r1, r2) => r2.total - r1.total);

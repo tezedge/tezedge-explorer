@@ -1,31 +1,51 @@
-import { ChangeDetectionStrategy, Component, ComponentRef, HostListener, Inject, Input, OnDestroy, OnInit, PLATFORM_ID, ViewChild } from '@angular/core';
+import {
+  AfterViewInit,
+  ChangeDetectionStrategy,
+  Component,
+  ComponentRef,
+  ElementRef,
+  HostListener,
+  Inject,
+  Input,
+  NgZone,
+  OnDestroy,
+  PLATFORM_ID,
+  ViewChild
+} from '@angular/core';
 import { DOCUMENT, isPlatformBrowser } from '@angular/common';
 import { TooltipArea, TooltipDirective } from '@swimlane/ngx-charts';
 import { Router } from '@angular/router';
 import { Overlay, OverlayRef } from '@angular/cdk/overlay';
 import { ComponentPortal } from '@angular/cdk/portal';
 import { GraphRedirectionOverlayComponent } from '../graph-redirection-overlay/graph-redirection-overlay.component';
+import { Store } from '@ngrx/store';
+import { State } from '../../../app.reducers';
+import { SystemResourcesActionTypes, SystemResourcesDetailsUpdateAction } from '../../../resources/system-resources/system-resources.actions';
+import { SystemResourcesResourceType } from '../../types/resources/system/system-resources-panel.type';
+import { fromEvent } from 'rxjs';
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
+import { debounceTime } from 'rxjs/operators';
 
+@UntilDestroy()
 @Component({
   selector: 'g[tezedge-charts-tooltip-area]',
   templateUrl: './tezedge-charts-tooltip-area.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class TezedgeChartsTooltipAreaComponent extends TooltipArea implements OnInit, OnDestroy {
+export class TezedgeChartsTooltipAreaComponent extends TooltipArea implements AfterViewInit, OnDestroy {
 
   @Input() chartElement: SVGElement;
+  @Input() resourceType: SystemResourcesResourceType;
 
   @ViewChild(TooltipDirective) private tooltipDirective: TooltipDirective;
+  @ViewChild('tooltipTrigger') private tooltipTrigger: ElementRef<SVGRectElement>;
 
   @HostListener('document:click', ['$event'])
-  onDocumentClick(event): void {
-    if (this.redirectionOverlayRef?.instance.isClickOutside(event)) {
+  onDocumentClick(event: Event): void {
+    if (this.redirectionOverlayRef?.instance.isClickOutside(event, this.elementRef)) {
       this.detachTooltip();
     }
   }
-
-  @HostListener('window:scroll')
-  onDocumentScroll(): void { this.detachTooltip(); }
 
   private overlayRef: OverlayRef;
   private redirectionOverlayRef: ComponentRef<GraphRedirectionOverlayComponent>;
@@ -34,11 +54,37 @@ export class TezedgeChartsTooltipAreaComponent extends TooltipArea implements On
 
   constructor(@Inject(PLATFORM_ID) private platformId: any,
               @Inject(DOCUMENT) private document: Document,
+              private zone: NgZone,
               private router: Router,
-              private overlay: Overlay) { super(); }
+              private overlay: Overlay,
+              private store: Store<State>,
+              private elementRef: ElementRef) { super(); }
 
-  ngOnInit(): void {
+
+  ngAfterViewInit(): void {
+    this.tooltipDirective.tooltipCloseOnClickOutside = false;
     this.document.querySelector('.resources-container').addEventListener('scroll', this.scrollListener);
+    this.document.querySelector('.centered-container').addEventListener('scroll', this.scrollListener);
+
+    this.zone.runOutsideAngular(() => {
+      fromEvent(this.tooltipTrigger.nativeElement, 'mousemove')
+        .pipe(
+          untilDestroyed(this),
+          debounceTime(150)
+        )
+        .subscribe(() =>
+          this.zone.run(() =>
+            this.store.dispatch<SystemResourcesDetailsUpdateAction>({
+              type: SystemResourcesActionTypes.SYSTEM_RESOURCES_DETAILS_UPDATE,
+              payload: {
+                type: 'runnerGroups',
+                resourceType: this.resourceType,
+                timestamp: this.anchorValues[0].name
+              }
+            })
+          )
+        );
+    });
   }
 
   mouseMove(event): void {
@@ -58,7 +104,7 @@ export class TezedgeChartsTooltipAreaComponent extends TooltipArea implements On
       this.anchorValues = this.getValues(closestPoint);
       const toolTipComponent = this.tooltipDirective['component'];
 
-      this.anchorOpacity = 0.7;
+      this.anchorOpacity = 0.9;
       this.hover.emit({
         value: closestPoint
       });
@@ -106,7 +152,7 @@ export class TezedgeChartsTooltipAreaComponent extends TooltipArea implements On
           offsetY: rect.height + 15
         }])
     });
-    event.stopPropagation();
+
     const portal = new ComponentPortal(GraphRedirectionOverlayComponent);
     this.redirectionOverlayRef = this.overlayRef.attach(portal);
     this.redirectionOverlayRef.instance.date = this.anchorValues[0].name;
@@ -121,5 +167,6 @@ export class TezedgeChartsTooltipAreaComponent extends TooltipArea implements On
   ngOnDestroy(): void {
     this.detachTooltip();
     this.document.querySelector('.resources-container').removeEventListener('scroll', this.scrollListener);
+    this.document.querySelector('.centered-container').removeEventListener('scroll', this.scrollListener);
   }
 }

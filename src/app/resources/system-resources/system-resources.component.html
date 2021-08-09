@@ -4,7 +4,7 @@
        fxLayout.gt-md="row-reverse"
        fxLayoutAlign="start stretch"
        class="resources-container"
-       *ngIf="resource.cpu.length">
+       *ngIf="resource?.cpu?.series.length">
     <div class="info-container"
          fxFlex.gt-md="20vw"
          fxLayout="column">
@@ -12,12 +12,11 @@
            fxFlex="grow"
            fxLayout="column"
            fxLayoutAlign="space-between">
-        <div class="additional-info"
+        <div class="additional-info h-100"
              [class.fade]="resource"
              [style.transition-delay.s]="0.2">
-          <app-system-resources-summary [summaryBlocks]="resource.resourcesSummary[activeSummary]"
-                                        [time]="resource.resourcesSummary.timestamp"
-                                        [resourceType]="activeSummary"></app-system-resources-summary>
+          <app-system-resources-panel class="h-100 overflow-y-auto d-block"
+                                      [colors]="resource.colorScheme.domain"></app-system-resources-panel>
         </div>
       </div>
     </div>
@@ -28,40 +27,70 @@
          fxLayoutGap="10px"
          class="centered-container">
 
-      <app-system-resources-graph [chartData]="resource?.cpu"
-                                  [transitionDelay]="0.2"
-                                  [labelList]="resource.resourcesSummary.cpu"
+      <app-system-resources-graph [chartData]="resource.cpu.series"
+                                  [transitionDelay]="0.3"
+                                  [labelList]="resource.cpu.labels"
                                   [resourceType]="'cpu'"
                                   [graphTitle]="'CPU'"
                                   [rotatedLabel]="'&nbsp;Load&nbsp;'"
                                   [yAxisTickFormatting]="yAxisPercentageConversion"
                                   [xTicksValues]="resource.xTicksValues"
                                   [colorScheme]="resource.colorScheme"
-                                  [formattingType]="'percentage'"
-                                  (graphHover)="toggleActiveSummary($event)"></app-system-resources-graph>
+                                  [active]="activeSummary === 'cpu'"
+                                  (mouseenter)="toggleActiveSummary('cpu', resource.cpu)"
+                                  [formattingType]="resource.cpu.formattingType"></app-system-resources-graph>
 
-      <app-system-resources-graph [chartData]="resource?.memory"
+      <app-system-resources-graph [chartData]="resource.memory.series"
                                   [transitionDelay]="0.4"
-                                  [labelList]="resource.resourcesSummary.memory"
+                                  [labelList]="resource.memory.labels"
                                   [resourceType]="'memory'"
+                                  [active]="activeSummary === 'memory'"
                                   [graphTitle]="'RAM'"
                                   [rotatedLabel]="'Usage'"
                                   [yAxisTickFormatting]="yAxisMegaBytesConversion"
                                   [xTicksValues]="resource.xTicksValues"
                                   [colorScheme]="resource.colorScheme"
-                                  [formattingType]="'MB'"
-                                  (graphHover)="toggleActiveSummary($event)"></app-system-resources-graph>
+                                  (mouseenter)="toggleActiveSummary('memory', resource.memory)"
+                                  [formattingType]="resource.memory.formattingType"></app-system-resources-graph>
 
-      <app-system-resources-graph [chartData]="resource?.storage"
+      <app-system-resources-graph [chartData]="resource.storage.series"
                                   [transitionDelay]="0.6"
-                                  [labelList]="resource.resourcesSummary.storage"
+                                  [labelList]="resource.storage.labels"
+                                  [active]="activeSummary === 'storage'"
                                   [resourceType]="'storage'"
                                   [graphTitle]="'STORAGE'"
                                   [rotatedLabel]="'&nbsp;&nbsp;Size&nbsp;&nbsp;'"
                                   [yAxisTickFormatting]="yAxisGigaBytesConversion"
                                   [xTicksValues]="resource.xTicksValues"
-                                  [colorScheme]="resource.colorScheme"
-                                  (graphHover)="toggleActiveSummary($event)"></app-system-resources-graph>
+                                  [formattingType]="resource.storage.formattingType"
+                                  (mouseenter)="toggleActiveSummary('storage', resource.storage)"
+                                  [colorScheme]="resource.colorScheme"></app-system-resources-graph>
+
+      <app-system-resources-graph [chartData]="resource.io.series"
+                                  [transitionDelay]="0.8"
+                                  [labelList]="resource.io.labels"
+                                  [active]="activeSummary === 'io'"
+                                  [resourceType]="'io'"
+                                  [graphTitle]="'IO'"
+                                  [formattingType]="resource.io.formattingType"
+                                  [rotatedLabel]="'Traffic'"
+                                  [yAxisTickFormatting]="yAxisMegaBytesConversion"
+                                  [xTicksValues]="resource.xTicksValues"
+                                  (mouseenter)="toggleActiveSummary('io', resource.io)"
+                                  [colorScheme]="resource.colorScheme"></app-system-resources-graph>
+
+      <app-system-resources-graph [chartData]="resource.network.series"
+                                  [transitionDelay]="1"
+                                  [labelList]="resource.network.labels"
+                                  [active]="activeSummary === 'network'"
+                                  [resourceType]="'network'"
+                                  [graphTitle]="'NETWORK'"
+                                  [formattingType]="resource.network.formattingType"
+                                  [rotatedLabel]="'Traffic'"
+                                  [yAxisTickFormatting]="yAxisMegaBytesConversion"
+                                  [xTicksValues]="resource.xTicksValues"
+                                  (mouseenter)="toggleActiveSummary('network', resource.network)"
+                                  [colorScheme]="resource.colorScheme"></app-system-resources-graph>
 
     </div>
   </div>

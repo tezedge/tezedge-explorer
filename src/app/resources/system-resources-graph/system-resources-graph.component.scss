@@ -1,16 +1,23 @@
-$faded-white: rgba(51, 51, 52, 1);
-$text-color: rgb(164, 164, 165);
+$text-color: rgba(255, 255, 255, 0.6);
+
+:host {
+  margin-left: 10px;
+  margin-right: 10px;
+}
 
 .resource-category-block {
   position: relative;
   opacity: 0;
   padding: 2vh 35px 4vh 0;
   transition: opacity 1s;
-  border-radius: 5px;
-  background-color: $faded-white;
-  margin-left: 10px;
-  margin-right: 10px;
   overflow-x: hidden;
+  border-radius: 5px;
+
+  &:hover,
+  &.active {
+    transition-delay: 0s !important;
+    background-color: #39393b;
+  }
 
   &.small-device {
     padding: 2vh 7vw 4vh 0;

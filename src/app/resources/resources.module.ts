@@ -4,7 +4,7 @@ import { CommonModule } from '@angular/common';
 import { ResourcesRoutingModule } from './resources.routing';
 import { ResourcesComponent } from './resources/resources.component';
 import { TezedgeSharedModule } from '../shared/tezedge-shared.module';
-import { SystemResourcesSummaryComponent } from './system-resources-summary/system-resources-summary.component';
+import { SystemResourcesPanelComponent } from './system-resources-panel/system-resources-panel.component';
 import { TezedgeChartsModule } from '../shared/charts/tezedge-charts.module';
 import { SystemResourcesGraphComponent } from './system-resources-graph/system-resources-graph.component';
 import { MatTableModule } from '@angular/material/table';
@@ -22,7 +22,7 @@ import { StorageResourcesOverviewComponent } from './storage-resources-overview/
 @NgModule({
   declarations: [
     ResourcesComponent,
-    SystemResourcesSummaryComponent,
+    SystemResourcesPanelComponent,
     SystemResourcesGraphComponent,
     StorageResourcesComponent,
     StorageResourcesMiniGraphComponent,

@@ -1,0 +1,51 @@
+<ng-container *ngIf="resource$ | async as resource">
+  <div class="details-container">
+    <div class="list-group d-flex flex-column">
+      <div class="summary-row text-uppercase text-white-4 d-flex flex-between">
+        <span>{{ resource.resourceType }}</span>
+        <span>{{ resource.type === 'recently' ? 'Recently' : resource.timestamp }}</span>
+      </div>
+      <div *ngFor="let block of resource.blocks; let i=index"
+           class="summary-row d-flex flex-between align-center">
+        <ng-container *ngIf="block.value !== undefined">
+          <div [style.color]="colors[i]">{{ block.name }}</div>
+          <div class="text-white">
+            {{ block.value | number: block.formattingType !== '%' && block.formattingType !== '' ? '1.2-2' : '1.0-2' }} {{ block.formattingType }}
+          </div>
+        </ng-container>
+      </div>
+    </div>
+  </div>
+  <div *ngIf="resource.runnerGroups.length"
+       class="thread-container padding-10 padding-top-remove">
+    <div class="border font-12 border-rad-4">
+      <div class="d-flex flex-between sorting">
+        <span class="text-white-4">Sort by</span>
+        <span>
+          <span class="text-white-7 sort-option pointer"
+                [class.active]="resource.sortBy === 'name'"
+                (click)="sort('name', resource.sortBy)">Name</span>
+          <span class="text-white-4 line">|</span>
+          <span class="text-white-7 sort-option pointer"
+                [class.active]="resource.sortBy === 'size'"
+                (click)="sort('size', resource.sortBy)">Size</span>
+        </span>
+      </div>
+      <div *ngFor="let detail of resource.runnerGroups"
+           class="d-flex flex-column thread-group border-top padding-horizontal-10">
+        <div class="d-flex flex-between padding-bottom-10">
+          <span class="text-white-4">{{ detail.property }}</span>
+          <span class="text-white"
+                *ngIf="detail.total !== undefined">{{ detail.total | number: detail.label !== '%' && detail.label !== '' ? '1.2-2' : '1.0-2' }} {{ detail.label }}</span>
+        </div>
+        <div *ngFor="let thread of detail.values"
+             class="d-flex flex-between align-center thread-row">
+          <div class="text-white-7">{{ thread.name }}</div>
+          <div class="text-white">
+            {{ thread.total | number: detail.label !== '%' && detail.label !== '' ? '1.2-2' : '1.0-2' }} {{ detail.label }}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-container>

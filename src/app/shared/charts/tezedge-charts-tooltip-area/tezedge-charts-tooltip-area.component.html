@@ -6,10 +6,10 @@
             [attr.width]="dims.width"
             [attr.height]="dims.height"
             style="opacity: 0"
-            (click)="attachOverlay($event)"
-            (mouseenter)="showTooltip()"
             (mousemove)="mouseMove($event)"
-            (mouseleave)="hideTooltip()"/>
+            (mouseleave)="hideTooltip()"
+            (mouseenter)="showTooltip()"
+            (click)="attachOverlay($event)"/>
   <ng-template #defaultTooltipTemplate
                let-model="model">
     <xhtml:div class="area-tooltip-container">

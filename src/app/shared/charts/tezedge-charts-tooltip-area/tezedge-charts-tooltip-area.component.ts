@@ -25,6 +25,7 @@ import { SystemResourcesResourceType } from '../../types/resources/system/system
 import { fromEvent } from 'rxjs';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { debounceTime } from 'rxjs/operators';
+import { TezedgeChartsService } from '../tezedge-charts.service';
 
 @UntilDestroy()
 @Component({
@@ -58,31 +59,39 @@ export class TezedgeChartsTooltipAreaComponent extends TooltipArea implements Af
               private router: Router,
               private overlay: Overlay,
               private store: Store<State>,
-              private elementRef: ElementRef) { super(); }
-
+              private elementRef: ElementRef,
+              private tezedgeChartsService: TezedgeChartsService) { super(); }
 
   ngAfterViewInit(): void {
     this.tooltipDirective.tooltipCloseOnClickOutside = false;
-    this.document.querySelector('.resources-container').addEventListener('scroll', this.scrollListener);
-    this.document.querySelector('.centered-container').addEventListener('scroll', this.scrollListener);
 
     this.zone.runOutsideAngular(() => {
+      this.document.querySelector('.resources-container').addEventListener('scroll', this.scrollListener);
+      this.document.querySelector('.centered-container').addEventListener('scroll', this.scrollListener);
+
       fromEvent(this.tooltipTrigger.nativeElement, 'mousemove')
         .pipe(
           untilDestroyed(this),
-          debounceTime(150)
+          // debounceTime(150)
         )
-        .subscribe(() =>
-          this.zone.run(() =>
-            this.store.dispatch<SystemResourcesDetailsUpdateAction>({
-              type: SystemResourcesActionTypes.SYSTEM_RESOURCES_DETAILS_UPDATE,
-              payload: {
-                type: 'runnerGroups',
-                resourceType: this.resourceType,
-                timestamp: this.anchorValues[0].name
-              }
-            })
-          )
+        .subscribe(() => {
+            this.tezedgeChartsService.updateSystemResources({
+              type: 'runnerGroups',
+              resourceType: this.resourceType,
+              timestamp: this.anchorValues[0].name
+            });
+            // this.zone.run(() => {
+            //   console.log(this.resourceType);
+            //   this.store.dispatch<SystemResourcesDetailsUpdateAction>({
+            //     type: SystemResourcesActionTypes.SYSTEM_RESOURCES_DETAILS_UPDATE,
+            //     payload: {
+            //       type: 'runnerGroups',
+            //       resourceType: this.resourceType,
+            //       timestamp: this.anchorValues[0].name
+            //     }
+            //   });
+            // });
+          }
         );
     });
   }
@@ -91,7 +100,6 @@ export class TezedgeChartsTooltipAreaComponent extends TooltipArea implements Af
     if (!isPlatformBrowser(this.platformId)) {
       return;
     }
-
     const xPos = event.pageX - event.target.getBoundingClientRect().left;
 
     const closestIndex = this.findClosestPointIndex(xPos);
@@ -105,28 +113,36 @@ export class TezedgeChartsTooltipAreaComponent extends TooltipArea implements Af
       const toolTipComponent = this.tooltipDirective['component'];
 
       this.anchorOpacity = 0.9;
-      this.hover.emit({
-        value: closestPoint
-      });
+      this.hover.emit({ value: closestPoint });
 
       if (toolTipComponent && toolTipComponent.instance) {
         toolTipComponent.instance.context = this.anchorValues;
         toolTipComponent.instance.position();
         toolTipComponent.changeDetectorRef.markForCheck();
       }
-
       this.lastAnchorPos = this.anchorPos;
     }
   }
 
   showTooltip(): void {
     this.tooltipDirective.showTooltip(true);
+    setTimeout(() => {
+      this.store.dispatch<SystemResourcesDetailsUpdateAction>({
+        type: SystemResourcesActionTypes.SYSTEM_RESOURCES_DETAILS_UPDATE,
+        payload: {
+          type: 'runnerGroups',
+          resourceType: this.resourceType,
+          timestamp: this.anchorValues[0].name
+        }
+      });
+    });
   }
 
   hideTooltip(): void {
     this.tooltipDirective.hideTooltip(true);
     this.anchorOpacity = 0;
     this.lastAnchorPos = -1;
+    setTimeout(() => this.tooltipDirective.hideTooltip(true), 100);
   }
 
   attachOverlay(event: MouseEvent): void {

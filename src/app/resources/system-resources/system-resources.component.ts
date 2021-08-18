@@ -81,13 +81,10 @@ export class SystemResourcesComponent implements OnInit, OnDestroy {
     }
     this.activeSummary = value;
     this.zone.run(() =>
-      this.store.dispatch<SystemResourcesDetailsUpdateAction>({
-        type: SystemResourcesActionTypes.SYSTEM_RESOURCES_DETAILS_UPDATE,
-        payload: {
-          type: 'recently',
-          resourceType: value,
-          timestamp: resource.series[0].series[resource.series[0].series.length - 1].name
-        }
+      this.tezedgeChartsService.updateSystemResources({
+        type: 'recently',
+        resourceType: value,
+        timestamp: resource.series[0].series[resource.series[0].series.length - 1].name
       })
     );
   }

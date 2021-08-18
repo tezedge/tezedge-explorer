@@ -1,10 +1,10 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, NgZone, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, NgZone, OnDestroy, OnInit, QueryList, ViewChildren } from '@angular/core';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { Observable } from 'rxjs';
+import { fromEvent } from 'rxjs';
 import { select, Store } from '@ngrx/store';
 import { State } from '../../app.reducers';
 import { BreakpointObserver } from '@angular/cdk/layout';
-import { delay, filter, skip, tap } from 'rxjs/operators';
+import { delay, filter, skip } from 'rxjs/operators';
 import {
   SystemResourcesActionTypes,
   SystemResourcesCloseAction,
@@ -16,6 +16,8 @@ import { systemResources } from '../resources/resources.reducer';
 import { appState } from '../../app.reducer';
 import { SystemResourcesResourceType } from '../../shared/types/resources/system/system-resources-panel.type';
 import { SystemResourceCategory } from '../../shared/types/resources/system/system-resource-category.type';
+import { SystemResourcesGraphComponent } from '../system-resources-graph/system-resources-graph.component';
+import { TezedgeChartsService } from '../../shared/charts/tezedge-charts.service';
 
 
 @UntilDestroy()
@@ -27,23 +29,50 @@ import { SystemResourceCategory } from '../../shared/types/resources/system/syst
 })
 export class SystemResourcesComponent implements OnInit, OnDestroy {
 
-  systemResources$: Observable<SystemResources>;
+  systemResource: SystemResources;
   activeSummary: SystemResourcesResourceType = 'cpu';
 
   readonly yAxisPercentageConversion = (value) => `${value}%`;
   readonly yAxisGigaBytesConversion = (value) => (value < 1 ? value : (value + '.00')) + ' GB';
   readonly yAxisMegaBytesConversion = (value) => `${value} MB`;
 
+  private graphs: QueryList<ElementRef>;
+  private resourceTypes: SystemResourcesResourceType[] = ['cpu', 'memory', 'storage', 'io', 'network'];
   private isSmallDevice: boolean;
+  private listenersInitialized: boolean;
+
+  @ViewChildren(SystemResourcesGraphComponent, { read: ElementRef, emitDistinctChangesOnly: true })
+  set content(content: QueryList<ElementRef>) {
+    if (content) {
+      this.graphs = content;
+      if (this.graphs?.length && !this.listenersInitialized) {
+        this.listenersInitialized = true;
+        this.listenToGraphsHover();
+      }
+    }
+  }
 
   constructor(private zone: NgZone,
               private store: Store<State>,
               private cdRef: ChangeDetectorRef,
-              private breakpointObserver: BreakpointObserver) { }
+              private breakpointObserver: BreakpointObserver,
+              private tezedgeChartsService: TezedgeChartsService) { }
 
   ngOnInit(): void {
     this.handleSmallDevices();
     this.listenToResourcesChange();
+  }
+
+  private listenToGraphsHover(): void {
+    this.zone.runOutsideAngular(() => {
+      this.graphs.forEach((graph, i) => {
+        fromEvent(graph.nativeElement, 'mouseenter')
+          .pipe(untilDestroyed(this))
+          .subscribe(() => {
+            this.toggleActiveSummary(this.resourceTypes[i], this.systemResource[this.resourceTypes[i]]);
+          });
+      });
+    });
   }
 
   toggleActiveSummary(value: SystemResourcesResourceType, resource: SystemResourceCategory): void {
@@ -51,29 +80,45 @@ export class SystemResourcesComponent implements OnInit, OnDestroy {
       return;
     }
     this.activeSummary = value;
-
-    this.store.dispatch<SystemResourcesDetailsUpdateAction>({
-      type: SystemResourcesActionTypes.SYSTEM_RESOURCES_DETAILS_UPDATE,
-      payload: {
-        type: 'recently',
-        resourceType: value,
-        timestamp: resource.series[0].series[resource.series[0].series.length - 1].name
-      }
-    });
+    this.zone.run(() =>
+      this.store.dispatch<SystemResourcesDetailsUpdateAction>({
+        type: SystemResourcesActionTypes.SYSTEM_RESOURCES_DETAILS_UPDATE,
+        payload: {
+          type: 'recently',
+          resourceType: value,
+          timestamp: resource.series[0].series[resource.series[0].series.length - 1].name
+        }
+      })
+    );
   }
 
   private listenToResourcesChange(): void {
-    this.systemResources$ = this.store.pipe(
+    this.store.pipe(
       untilDestroyed(this),
       select(systemResources),
       filter(resources => !!resources),
-      tap(resources => this.activeSummary = resources.resourcesPanel?.resourceType)
-    );
+    ).subscribe(resources => {
+      this.systemResource = resources;
+      this.activeSummary = resources.resourcesPanel?.resourceType;
+      this.cdRef.detectChanges();
+    });
+
     this.store.pipe(
       untilDestroyed(this),
       select(appState),
       delay(400)
     ).subscribe(() => this.getResources());
+
+    this.tezedgeChartsService.storeSubject$()
+      .pipe(untilDestroyed(this))
+      .subscribe(payload => {
+        this.zone.run(() =>
+          this.store.dispatch<SystemResourcesDetailsUpdateAction>({
+            type: SystemResourcesActionTypes.SYSTEM_RESOURCES_DETAILS_UPDATE,
+            payload
+          })
+        );
+      });
   }
 
   private handleSmallDevices(): void {

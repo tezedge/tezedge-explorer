@@ -1,4 +1,7 @@
 $tooltip-background: #2A2A2E;
+$white-7: rgba(255, 255, 255, 0.7);
+$white-4: rgba(255, 255, 255, 0.4);
+$white-1: rgba(255, 255, 255, 0.1);
 
 app-tezedge-line-chart {
   color: rgba(255, 255, 255, 0.6);
@@ -66,4 +69,75 @@ app-tezedge-line-chart {
 
 g.label-container {
   transform: translate(10px, 20px);
+}
+
+#d3Diagram {
+  .clusters {
+    .cluster {
+      rect {
+        fill: transparent;
+        stroke: $white-7;
+        stroke-width: 1.5px;
+        stroke-dasharray: 7 10;
+        rx: 4px;
+        ry: 4px;
+      }
+
+      &.completed rect {
+        fill: rgba(63, 63, 67, 1);
+        stroke: $white-1;
+        stroke-dasharray: 0;
+      }
+    }
+
+    .cluster .label {
+      transform: translateY(6px);
+    }
+  }
+
+  text {
+    font-weight: 300;
+    font-size: 12px;
+  }
+
+  tspan {
+    fill: #fff;
+  }
+
+  .node {
+    rect {
+      stroke-width: 1.5px;
+    }
+
+    &.action rect {
+      rx: 20;
+      ry: 20;
+    }
+
+    &.active rect {
+      fill: rgba(32, 78, 138, 1);
+    }
+
+    &.completed rect {
+      fill: $white-1;
+    }
+
+    &.pending {
+      rect {
+        stroke: $white-4;
+        stroke-width: 1px;
+        stroke-dasharray: 7 10;
+        fill: transparent;
+      }
+
+      tspan {
+        fill: $white-4;
+      }
+    }
+  }
+
+  .edgePath path {
+    stroke: rgba(255, 255, 255, 1);
+    stroke-width: 1.5px;
+  }
 }

@@ -1,12 +1,11 @@
 import { AfterViewInit, ChangeDetectionStrategy, Component, ElementRef, HostListener, NgZone, ViewChild } from '@angular/core';
-import { StateMachineDiagramBlock } from '../../shared/types/state-machine/state-machine-diagram-block.type';
+import { StateMachineDiagramBlock } from '@shared/types/state-machine/state-machine-diagram-block.type';
 import { select, Store } from '@ngrx/store';
-import { State } from '../../app.reducers';
+import { State } from '@app/app.reducers';
 import { selectStateMachineDiagram } from '../state-machine/state-machine.reducer';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { appState } from '../../app.reducer';
+import { appState } from '@app/app.reducer';
 import { delay, filter } from 'rxjs/operators';
-
 import * as d3 from 'd3';
 import { curveBasis } from 'd3';
 import * as dagreD3 from 'dagre-d3';
@@ -22,20 +21,15 @@ export class StateMachineDiagramComponent implements AfterViewInit {
 
   @ViewChild('d3Diagram', { static: true }) private d3Diagram: ElementRef<HTMLDivElement>;
 
-  @HostListener('window:resize')
-  onResize(): void {
-    this.generateDiagram();
-  }
-
-  constructor(private store: Store<State>,
-              private zone: NgZone) { }
-
   private g: any;
   private svg: any;
   private svgGroup: any;
   private diagram: StateMachineDiagramBlock[];
 
   private isLoaded: boolean;
+
+  constructor(private store: Store<State>,
+              private zone: NgZone) { }
 
   ngAfterViewInit(): void {
     this.listenToDiagramChange();
@@ -68,6 +62,7 @@ export class StateMachineDiagramComponent implements AfterViewInit {
     ).subscribe(() => this.generateDiagram());
   }
 
+  @HostListener('window:resize')
   generateDiagram(): void {
     this.zone.runOutsideAngular(() => {
       d3.selectAll('#d3Diagram svg > *').remove();

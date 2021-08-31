@@ -1,6 +1,6 @@
 import { Action } from '@ngrx/store';
-import { SystemResources } from '../../shared/types/resources/system/system-resources.type';
-import { SystemResourcesResourceType, SystemResourcesSortBy } from '../../shared/types/resources/system/system-resources-panel.type';
+import { SystemResources } from '@shared/types/resources/system/system-resources.type';
+import { SystemResourcesResourceType, SystemResourcesSortBy } from '@shared/types/resources/system/system-resources-panel.type';
 
 export enum SystemResourcesActionTypes {
   SYSTEM_RESOURCES_LOAD = 'SYSTEM_RESOURCES_LOAD',

@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
-import { StorageResourcesStats } from '../../shared/types/resources/storage/storage-resources-stats.type';
+import { StorageResourcesStats } from '@shared/types/resources/storage/storage-resources-stats.type';
 import { map } from 'rxjs/operators';
-import { ResourceStorageQuery } from '../../shared/types/resources/storage/storage-resource-operation.type';
-import { ReplaceCharacterPipe } from '../../shared/pipes/replace-character.pipe';
+import { ResourceStorageQuery } from '@shared/types/resources/storage/storage-resource-operation.type';
+import { ReplaceCharacterPipe } from '@shared/pipes/replace-character.pipe';
 
 @Injectable({
   providedIn: 'root'

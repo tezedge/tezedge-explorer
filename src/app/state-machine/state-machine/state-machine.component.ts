@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { State } from '../../app.reducers';
+import { State } from '@app/app.reducers';
 import { StateMachineActionTypes, StateMachineClose, StateMachineDiagramLoad, StateMachineProposalsLoad } from './state-machine.actions';
 
 @Component({
@@ -10,6 +10,9 @@ import { StateMachineActionTypes, StateMachineClose, StateMachineDiagramLoad, St
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class StateMachineComponent implements OnInit, OnDestroy {
+
+  readonly tabs = ['HANDSHAKE', 'BOOTSTRAP', 'MEMPOOL'];
+  activeTab: string = 'HANDSHAKE';
 
   constructor(private store: Store<State>) { }
 

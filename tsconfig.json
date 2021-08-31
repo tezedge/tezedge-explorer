@@ -19,7 +19,25 @@
     "lib": [
       "es2018",
       "dom"
-    ]
+    ],
+    "paths": {
+      "@app/*": ["src/app/*"],
+      "@chain/*": ["src/app/chain/*"],
+      "@endpoints/*": ["src/app/endpoints/*"],
+      "@logs/*": ["src/app/logs/*"],
+      "@mempool/*": ["src/app/mempool/*"],
+      "@monitoring/*": ["src/app/monitoring/*"],
+      "@network/*": ["src/app/network/*"],
+      "@open-api/*": ["src/app/open-api/*"],
+      "@resources/*": ["src/app/resources/*"],
+      "@sandbox/*": ["src/app/sandbox/*"],
+      "@settings/*": ["src/app/layout/settings-node/*"],
+      "@state-machine/*": ["src/app/state-machine/*"],
+      "@storage/*": ["src/app/storage/*"],
+      "@wallets/*": ["src/app/wallets/*"],
+      "@shared/*": ["src/app/shared/*"],
+      "@environment/*": ["src/environments/*"],
+    }
   },
   "angularCompilerOptions": {
     "fullTemplateTypeCheck": true,

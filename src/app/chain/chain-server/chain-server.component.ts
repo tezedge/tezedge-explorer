@@ -1,18 +1,18 @@
-import { Component, OnInit, Input, OnDestroy } from '@angular/core';
-import { FormBuilder, Validators, FormGroup } from '@angular/forms';
+import { Component, Input, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Store } from '@ngrx/store';
-import { Subject } from 'rxjs';
-import { takeUntil, take, last } from 'rxjs/operators';
+import { take } from 'rxjs/operators';
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 
+@UntilDestroy()
 @Component({
 	selector: 'app-chain-server',
 	templateUrl: './chain-server.component.html',
 	styleUrls: ['./chain-server.component.scss'],
 })
-export class ChainServerComponent implements OnInit, OnDestroy  {
+export class ChainServerComponent implements OnInit  {
 	@Input() isReadonly?: boolean;
 
-  onDestroy$ = new Subject();
 	chainServerForm: FormGroup;
 	error: any;
 
@@ -71,7 +71,7 @@ export class ChainServerComponent implements OnInit, OnDestroy  {
 
 		// Subscribe to store to get form server error
 		this.store.select('chainServer')
-		.pipe(takeUntil(this.onDestroy$))
+		.pipe(untilDestroyed(this))
 		.subscribe(store => {
 			this.error = store.error;
 			if(
@@ -100,7 +100,7 @@ export class ChainServerComponent implements OnInit, OnDestroy  {
 		// Subscribe to privateMode value changes to reflect correct required fields
 		let lastPrivateModeValue;
 		this.chainServerForm.get('privateNodeMode').valueChanges
-		.pipe(takeUntil(this.onDestroy$))
+		.pipe(untilDestroyed(this))
 		.subscribe(value => {
 			if(value != lastPrivateModeValue){
 				lastPrivateModeValue = value;
@@ -121,11 +121,5 @@ export class ChainServerComponent implements OnInit, OnDestroy  {
 	formHasFieldName(fieldName: string): boolean {
     const control = this.chainServerForm.get(fieldName);
     return control != null;
-  }
-
-  ngOnDestroy() {
-    // close all observables
-    this.onDestroy$.next();
-    this.onDestroy$.complete();
   }
 }

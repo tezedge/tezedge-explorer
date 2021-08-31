@@ -24,8 +24,12 @@
                 svgIcon="greater-than"></mat-icon>
     </button>
   </div>
-  <div class="d-flex table-wrapper">
-    <div class="flex-grow font-12">
+  <div class="table-wrapper"
+       fxLayout.gt-sm="row"
+       fxLayout.lt-md="column">
+    <div class="font-12"
+         fxFlex.gt-sm="60%"
+         fxFlex.lt-md="60%">
       <div class="row text-white-7">
         <span>DATETIME</span>
         <span>PROPOSAL</span>
@@ -41,14 +45,17 @@
         </div>
       </div>
     </div>
-    <div class="payload-view font-12 border-left d-flex flex-column">
+    <div fxFlex.gt-sm="40%"
+         fxFlex.lt-md="40%"
+         class="payload-view font-12 border-left d-flex flex-column">
       <div class="detail text-white-7 padding-left-10"
-           fxFlex="32px">DETAIL
+           fxFlex.md="32px">DETAIL
       </div>
       <div class="d-flex flex-column"
            fxFlex="calc(100% - 32px)">
         <div class="padding-10 padding-top-remove"
-             fxFlex="45%">
+             fxFlex.gt-sm="45%"
+             fxHide.lt-md>
           <div class="border w-100 h-100 padding-top-10 padding-left-10 d-flex flex-column">
             <span class="text-white-4">HANDSHAKING</span>
             <div class="diagram-list margin-top-10 overflow-y-auto overflow-x-hidden">
@@ -61,7 +68,8 @@
           </div>
         </div>
         <div class="padding-10 padding-top-remove"
-             fxFlex="55%">
+             fxFlex.gt-sm="55%"
+             fxFlex.lt-md="100%">
           <div class="border w-100 h-100 padding-top-10 padding-left-10 d-flex flex-column">
             <span class="text-white">JSON</span>
             <div class="overflow-auto">

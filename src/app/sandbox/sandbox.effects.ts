@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Effect, Actions, ofType } from '@ngrx/effects';
+import { createEffect, Actions, ofType } from '@ngrx/effects';
 import { HttpClient } from '@angular/common/http';
 import { Store } from '@ngrx/store';
 import { map, switchMap, flatMap, takeUntil, withLatestFrom, catchError, tap } from 'rxjs/operators';
@@ -10,13 +10,12 @@ import { State } from '../app.reducers';
 
 const sandboxStopPending$ = new Subject();
 
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class SandboxEffects {
 
   sandbox = (state: State) => state.settingsNode.activeNode.features.find(f => f.name === 'sandbox').url;
 
-    @Effect()
-    SandboxNodeStart$ = this.actions$.pipe(
+    SandboxNodeStart$ = createEffect(() => this.actions$.pipe(
         ofType('CHAIN_SERVER_FORM_SUBMIT'),
 
         // merge state
@@ -40,11 +39,9 @@ export class SandboxEffects {
             });
             return caught;
         })
-    );
+    ));
 
-
-    @Effect()
-    SandboxNodeStop$ = this.actions$.pipe(
+    SandboxNodeStop$ = createEffect(() => this.actions$.pipe(
         ofType('SANDBOX_NODE_STOP'),
 
         // merge state
@@ -65,11 +62,9 @@ export class SandboxEffects {
             });
             return caught;
         })
-    );
+    ));
 
-
-    @Effect({dispatch: false})
-    SandboxNodeStopPending$ = this.actions$.pipe(
+    SandboxNodeStopPending$ = createEffect(() => this.actions$.pipe(
         ofType('SANDBOX_NODE_STOP_PENDING'),
 
         // merge state
@@ -87,7 +82,7 @@ export class SandboxEffects {
                         catchError((error, caught) => {
                             console.warn('[SANDBOX_NODE_STOP_PENDING] error ', error);
 
-                            sandboxStopPending$.next();
+                            sandboxStopPending$.next(null);
                             this.store.dispatch({
                                 type: 'SANDBOX_NODE_STOP_SUCCESS',
                                 payload: error,
@@ -99,12 +94,10 @@ export class SandboxEffects {
                 })
             )
         )
-    );
-
+    ), {dispatch: false});
 
     // reset application applications
-    @Effect()
-    SandboxNodeStopSuccess$ = this.actions$.pipe(
+    SandboxNodeStopSuccess$ = createEffect(() => this.actions$.pipe(
         ofType('SANDBOX_NODE_STOP_SUCCESS'),
 
         // merge state
@@ -126,12 +119,9 @@ export class SandboxEffects {
             });
             return caught;
         })
-    );
+    ));
 
-
-
-    @Effect()
-    SandboxWalletInit$ = this.actions$.pipe(
+    SandboxWalletInit$ = createEffect(() => this.actions$.pipe(
         ofType('CHAIN_WALLETS_SUBMIT'),
 
         // merge state
@@ -155,10 +145,9 @@ export class SandboxEffects {
             });
             return caught;
         })
-    );
+    ));
 
-    @Effect({ dispatch: false })
-    SandboxWalletSubmitSuccess$ = this.actions$.pipe(
+    SandboxWalletSubmitSuccess$ = createEffect(() => this.actions$.pipe(
         ofType('CHAIN_WALLETS_SUBMIT_SUCCESS'),
 
         // merge state
@@ -168,10 +157,9 @@ export class SandboxEffects {
         // tap(({ action, state }) => {
         //     localStorage.setItem('SANDBOX-WALLETS', JSON.stringify(state.chainWallets.wallets))
         // })
-    );
+    ), { dispatch: false });
 
-    @Effect()
-    SandboxActivateProtocol$ = this.actions$.pipe(
+    SandboxActivateProtocol$ = createEffect(() => this.actions$.pipe(
         ofType('CHAIN_CONFIG_FORM_SUBMIT'),
 
         // merge state
@@ -199,10 +187,9 @@ export class SandboxEffects {
             return caught;
         }),
         tap(() => this.router.navigate(['chain'])),
-    );
+    ));
 
-    @Effect()
-    SandboxBakeBLock$ = this.actions$.pipe(
+    SandboxBakeBLock$ = createEffect(() => this.actions$.pipe(
         ofType('SANDBOX_BAKE_BLOCK'),
 
         // merge state
@@ -241,8 +228,7 @@ export class SandboxEffects {
                 horizontalPosition: 'right'
             });
         }),
-    );
-
+    ));
 
     constructor(
         private http: HttpClient,

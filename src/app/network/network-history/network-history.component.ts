@@ -3,9 +3,9 @@ import { Store } from '@ngrx/store';
 import { debounceTime } from 'rxjs/operators';
 import { FormattedNetworkHistory, VotingCycle, VotingPeriodRow } from './models/formatted-network-history';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { State } from '../../app.reducers';
-import { NetworkHistoryEntity } from '../../shared/types/network/network-history-entity.type';
-import { NetworkHistory } from '../../shared/types/network/network-history.type';
+import { State } from '@app/app.reducers';
+import { NetworkHistoryEntity } from '@shared/types/network/network-history-entity.type';
+import { NetworkHistory } from '@shared/types/network/network-history.type';
 
 
 @UntilDestroy()

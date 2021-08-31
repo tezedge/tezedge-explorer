@@ -1,5 +1,5 @@
 import * as moment from 'moment-mini-ts';
-import { NetworkStats } from '../../shared/types/network/network-stats.type';
+import { NetworkStats } from '@shared/types/network/network-stats.type';
 
 const initialState: NetworkStats = {
   eta: '',

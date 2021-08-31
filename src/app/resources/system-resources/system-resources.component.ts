@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, NgZo
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { fromEvent } from 'rxjs';
 import { select, Store } from '@ngrx/store';
-import { State } from '../../app.reducers';
+import { State } from '@app/app.reducers';
 import { BreakpointObserver } from '@angular/cdk/layout';
 import { delay, filter, skip } from 'rxjs/operators';
 import {
@@ -11,13 +11,13 @@ import {
   SystemResourcesDetailsUpdateAction,
   SystemResourcesLoadAction
 } from './system-resources.actions';
-import { SystemResources } from '../../shared/types/resources/system/system-resources.type';
+import { SystemResources } from '@shared/types/resources/system/system-resources.type';
 import { systemResources } from '../resources/resources.reducer';
-import { appState } from '../../app.reducer';
-import { SystemResourcesResourceType } from '../../shared/types/resources/system/system-resources-panel.type';
-import { SystemResourceCategory } from '../../shared/types/resources/system/system-resource-category.type';
+import { appState } from '@app/app.reducer';
+import { SystemResourcesResourceType } from '@shared/types/resources/system/system-resources-panel.type';
+import { SystemResourceCategory } from '@shared/types/resources/system/system-resource-category.type';
 import { SystemResourcesGraphComponent } from '../system-resources-graph/system-resources-graph.component';
-import { TezedgeChartsService } from '../../shared/charts/tezedge-charts.service';
+import { TezedgeChartsService } from '@shared/charts/tezedge-charts.service';
 
 
 @UntilDestroy()

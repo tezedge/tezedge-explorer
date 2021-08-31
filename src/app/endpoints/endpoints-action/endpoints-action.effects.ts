@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Actions, Effect, ofType } from '@ngrx/effects';
+import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { HttpClient } from '@angular/common/http';
 import { State, Store } from '@ngrx/store';
 import { catchError, map, switchMap, takeUntil, tap, withLatestFrom } from 'rxjs/operators';
@@ -7,11 +7,11 @@ import { ObservedValueOf, of, Subject, timer } from 'rxjs';
 
 const endpointsActionDestroy$ = new Subject();
 
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class EndpointsActionEffects {
 
-    @Effect()
-    EndpointsActionLoad$ = this.actions$.pipe(
+
+    EndpointsActionLoad$ = createEffect(() => this.actions$.pipe(
         ofType('ENDPOINTS_ACTION_LOAD'),
 
         withLatestFrom(this.store, (action: any, state: ObservedValueOf<State<Store>>) => ({ action, state })),
@@ -30,11 +30,11 @@ export class EndpointsActionEffects {
             return caught;
         })
 
-    );
+    ));
 
     // load logs actions
-    @Effect()
-    EndpointsActionStartEffect$ = this.actions$.pipe(
+
+    EndpointsActionStartEffect$ = createEffect(() => this.actions$.pipe(
         ofType('ENDPOINTS_ACTION_START'),
 
         // merge state
@@ -53,19 +53,19 @@ export class EndpointsActionEffects {
                 )
             )
         ),
-    );
+    ));
 
     // stop endpoints action download
-    @Effect({ dispatch: false })
-    EndpointsActionStopEffect$ = this.actions$.pipe(
+
+    EndpointsActionStopEffect$ = createEffect(() => this.actions$.pipe(
         ofType('ENDPOINTS_ACTION_STOP'),
         // merge state
         withLatestFrom(this.store, (action: any, state: ObservedValueOf<State<Store>>) => ({ action, state })),
         // init app modules
         tap(({ action, state }) => {
-            endpointsActionDestroy$.next();
+            endpointsActionDestroy$.next(null);
         }),
-    );
+    ), { dispatch: false });
 
     constructor(
         private http: HttpClient,

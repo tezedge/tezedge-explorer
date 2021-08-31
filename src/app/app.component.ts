@@ -1,11 +1,11 @@
-import { Component, HostListener, NgZone, OnDestroy, OnInit } from '@angular/core';
+import { Component, HostListener, NgZone, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { debounceTime, filter, map, takeUntil } from 'rxjs/operators';
-import { Observable, Subject } from 'rxjs';
-import { State } from './app.reducers';
-import { NetworkStats } from './shared/types/network/network-stats.type';
-import { SettingsNode } from './shared/types/settings-node/settings-node.type';
-import { App } from './shared/types/app/app.type';
+import { debounceTime, filter, map } from 'rxjs/operators';
+import { Observable } from 'rxjs';
+import { State } from '@app/app.reducers';
+import { NetworkStats } from '@shared/types/network/network-stats.type';
+import { SettingsNode } from '@shared/types/settings-node/settings-node.type';
+import { App } from '@shared/types/app/app.type';
 
 
 @Component({
@@ -13,12 +13,11 @@ import { App } from './shared/types/app/app.type';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
-export class AppComponent implements OnInit, OnDestroy {
+export class AppComponent implements OnInit {
 
   app: App;
   isMobile = false;
 
-  onDestroy$ = new Subject();
   pendingTransactions: any[];
   networkStats$: Observable<NetworkStats>;
   settingsNodeProtocol$: Observable<string>;
@@ -78,7 +77,6 @@ export class AppComponent implements OnInit, OnDestroy {
   private getMempoolPendingTransactions(): void {
     // subscribe to mempool to get pending transactions
     this.store.select('mempoolAction')
-      .pipe(takeUntil(this.onDestroy$))
       .subscribe((mempool) => {
         this.pendingTransactions = mempool.ids;
         // this.pendingTransactions = mempool.ids.filter(id => mempool.entities[id].type == 'applied' || mempool.entities[id].type == 'unprocessed')
@@ -86,16 +84,13 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   changeTheme(theme) {
-
     // TODO: enabled once we have white theme ready
     // this.store.dispatch({
     //   type: 'APP_THEME_CHANGE',
     //   payload: theme,
     // });
-
-    // // change theme
+    //
     // (document.getElementById('app-style-theme') as any).href = 'styles.' + theme + '.css';
-
   }
 
   sandboxBakeBlock() {
@@ -111,11 +106,5 @@ export class AppComponent implements OnInit, OnDestroy {
       type: 'APP_TOGGLE_SIDENAV',
       payload: { isVisible: !this.app.sidenav.isVisible }
     });
-  }
-
-  ngOnDestroy() {
-    // close all observables
-    this.onDestroy$.next();
-    this.onDestroy$.complete();
   }
 }

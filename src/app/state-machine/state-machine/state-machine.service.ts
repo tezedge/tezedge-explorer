@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
-import { StateMachineDiagramBlock } from '../../shared/types/state-machine/state-machine-diagram-block.type';
-import { StateMachineProposal } from '../../shared/types/state-machine/state-machine-proposal.type';
+import { StateMachineDiagramBlock } from '@shared/types/state-machine/state-machine-diagram-block.type';
+import { StateMachineProposal } from '@shared/types/state-machine/state-machine-proposal.type';
 
 // @ts-ignore
 import * as serverData from './state-machine.json';
@@ -17,7 +17,7 @@ export class StateMachineService {
   constructor(private http: HttpClient) { }
 
   getStateMachineDiagram(): Observable<StateMachineDiagramBlock[]> {
-    return of(this.data);
+    return of(diagramStructure);
   }
 
   getStateMachineProposals(): Observable<StateMachineProposal[]> {

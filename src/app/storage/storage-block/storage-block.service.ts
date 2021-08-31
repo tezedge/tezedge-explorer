@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { StorageBlockDetails } from '../../shared/types/storage/storage-block/storage-block-details.type';
+import { StorageBlockDetails } from '@shared/types/storage/storage-block/storage-block-details.type';
 import { map } from 'rxjs/operators';
-import { StorageBlockDetailsOperationContext } from '../../shared/types/storage/storage-block/storage-block-details-operation-context.type';
+import { StorageBlockDetailsOperationContext } from '@shared/types/storage/storage-block/storage-block-details-operation-context.type';
 
 @Injectable({
   providedIn: 'root'

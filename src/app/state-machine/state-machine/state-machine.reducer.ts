@@ -1,5 +1,5 @@
-import { State } from '../../app.reducers';
-import { StateMachine } from '../../shared/types/state-machine/state-machine.type';
+import { State } from '@app/app.reducers';
+import { StateMachine } from '@shared/types/state-machine/state-machine.type';
 import { StateMachineActions, StateMachineActionTypes } from './state-machine.actions';
 
 const initialState: StateMachine = {

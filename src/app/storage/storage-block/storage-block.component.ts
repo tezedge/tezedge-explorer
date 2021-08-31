@@ -2,9 +2,9 @@ import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, OnDe
 import { Store } from '@ngrx/store';
 import { Router } from '@angular/router';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { StorageBlock } from '../../shared/types/storage/storage-block/storage-block.type';
-import { selectActiveNode } from '../../settings/settings-node/settings-node.reducer';
-import { State } from '../../app.reducers';
+import { StorageBlock } from '@shared/types/storage/storage-block/storage-block.type';
+import { selectActiveNode } from '@settings/settings-node.reducer';
+import { State } from '@app/app.reducers';
 
 @UntilDestroy()
 @Component({

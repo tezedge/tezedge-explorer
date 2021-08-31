@@ -1,8 +1,8 @@
 import { ChangeDetectionStrategy, Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { State } from '../../app.reducers';
+import { State } from '@app/app.reducers';
 import { selectErrors } from './error-popup.reducer';
-import { HttpError } from '../types/shared/error-popup/http-error.type';
+import { HttpError } from '@shared/types/shared/error-popup/http-error.type';
 import { NotifierService } from 'angular-notifier';
 import { ErrorActionTypes } from './error-popup.actions';
 

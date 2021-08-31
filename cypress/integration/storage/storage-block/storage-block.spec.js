@@ -11,7 +11,6 @@ context('STORAGE BLOCK', () => {
           store.subscribe(data => {
             if (!isOctez(data)) {
               cy.visit(Cypress.config().baseUrl + '/#/storage', { timeout: 10000 });
-              // cy.wait(3000);
             }
           });
         });

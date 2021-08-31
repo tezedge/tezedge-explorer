@@ -48,7 +48,7 @@ context('STORAGE RESOURCES', () => {
                   cy.wrap(isOperationArraySortedByTotalTime(resources.operationsContext)).should('eq', true);
 
                   const assertContext = (ctx) => {
-                    cy.wrap(ctx.actionsCount).should('not.be.undefined');
+                    cy.wrap(ctx.queriesCount).should('not.be.undefined');
                     cy.wrap(ctx.totalTime).should('not.be.undefined');
                     if (ctx.columns.length) {
                       ctx.columns.forEach(col => {

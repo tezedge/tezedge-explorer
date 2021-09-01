@@ -1,9 +1,9 @@
-import { SettingsNodeApi } from '../shared/types/settings-node/settings-node-api.type';
+import { SettingsNodeApi } from '@shared/types/settings-node/settings-node-api.type';
 import { HttpClient } from '@angular/common/http';
 import { Store } from '@ngrx/store';
-import { State } from '../app.reducers';
+import { State } from '@app/app.reducers';
 import { Directive, ElementRef, OnInit } from '@angular/core';
-import { selectActiveNode } from '../settings/settings-node/settings-node.reducer';
+import { selectActiveNode } from '@settings/settings-node.reducer';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 
 declare const SwaggerUIBundle: any;

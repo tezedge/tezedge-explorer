@@ -1,5 +1,13 @@
-<div #d3Diagram
-     id="d3Diagram"
-     class="w-100 h-100">
-  <svg></svg>
+<div class="h-100 p-relative">
+  <div class="p-absolute d-flex flex-row font-12 align-center text-white">
+    <div>See full handshaking</div>
+    <div class="icon-background pointer border-rad-4 d-flex flex-center align-center"
+         (click)="zoomToFit(500)">
+      <mat-icon svgIcon="arrow-expanded"
+                class="icon-white icon-12"></mat-icon>
+    </div>
+  </div>
+  <div #d3Diagram id="d3Diagram" class="h-100">
+    <svg></svg>
+  </div>
 </div>

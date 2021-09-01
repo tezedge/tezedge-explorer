@@ -1,13 +1,13 @@
 import { SystemResourcesActions, SystemResourcesActionTypes } from '../system-resources/system-resources.actions';
-import { SystemResources } from '../../shared/types/resources/system/system-resources.type';
+import { SystemResources } from '@shared/types/resources/system/system-resources.type';
 import { StorageResourcesActions, StorageResourcesActionTypes } from '../storage-resources/storage-resources.actions';
-import { MemoryResource } from '../../shared/types/resources/memory/memory-resource.type';
+import { MemoryResource } from '@shared/types/resources/memory/memory-resource.type';
 import { MemoryResourcesActions, MemoryResourcesActionTypes } from '../memory-resources/memory-resources.actions';
-import { StorageResourcesState } from '../../shared/types/resources/storage/storage-resources-state.type';
-import { State } from '../../app.reducers';
-import { SystemResourcesPanel, SystemResourcesSortBy } from '../../shared/types/resources/system/system-resources-panel.type';
-import { SystemResourceCategory } from '../../shared/types/resources/system/system-resource-category.type';
-import { SystemResourcesSubcategoryRunnerGroup } from '../../shared/types/resources/system/system-resources-subcategory-runner-group.type';
+import { StorageResourcesState } from '@shared/types/resources/storage/storage-resources-state.type';
+import { State } from '@app/app.reducers';
+import { SystemResourcesPanel, SystemResourcesSortBy } from '@shared/types/resources/system/system-resources-panel.type';
+import { SystemResourceCategory } from '@shared/types/resources/system/system-resource-category.type';
+import { SystemResourcesSubcategoryRunnerGroup } from '@shared/types/resources/system/system-resources-subcategory-runner-group.type';
 
 export interface ResourcesState {
   systemResources: SystemResources;

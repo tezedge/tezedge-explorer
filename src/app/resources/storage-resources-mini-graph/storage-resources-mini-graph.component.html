@@ -9,7 +9,7 @@
     <span class="operation-name text-nowrap">
       {{ operationName }}
       <span class="total-time">
-        {{ graphData.actionsCount | thousandTransform }} <span
+        {{ graphData.queriesCount | thousandTransform }} <span
         class="text-white-4">calls</span> · {{ graphData.totalTime | timeTransform: false: false: true }}
       </span>
     </span>

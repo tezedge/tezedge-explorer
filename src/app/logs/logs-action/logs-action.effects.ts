@@ -1,19 +1,18 @@
 import { Injectable } from '@angular/core';
-import { Actions, Effect, ofType } from '@ngrx/effects';
+import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { HttpClient } from '@angular/common/http';
 import { Store } from '@ngrx/store';
 import { catchError, map, switchMap, takeUntil, tap, withLatestFrom } from 'rxjs/operators';
 import { forkJoin, ObservedValueOf, of, Subject, timer } from 'rxjs';
-import { State } from '../../app.reducers';
-import { ErrorActionTypes } from '../../shared/error-popup/error-popup.actions';
+import { State } from '@app/app.reducers';
+import { ErrorActionTypes } from '@shared/error-popup/error-popup.actions';
 
 const logActionDestroy$ = new Subject();
 
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class LogsActionEffects {
 
-  @Effect()
-  LogsActionLoad$ = this.actions$.pipe(
+  LogsActionLoad$ = createEffect(() => this.actions$.pipe(
     ofType('LOGS_ACTION_LOAD'),
     withLatestFrom(this.store, (action: any, state: ObservedValueOf<Store<State>>) => ({ action, state })),
     switchMap(({ action, state }) => {
@@ -28,13 +27,12 @@ export class LogsActionEffects {
       });
       return caught;
     })
-  );
+  ));
 
-  @Effect()
-  LogsActionLoadByTime$ = this.actions$.pipe(
+  LogsActionLoadByTime$ = createEffect(() => this.actions$.pipe(
     ofType('LOGS_ACTION_TIME_LOAD'),
     withLatestFrom(this.store, (action: any, state: ObservedValueOf<Store<State>>) => ({ action, state })),
-    tap(() => logActionDestroy$.next()),
+    tap(() => logActionDestroy$.next(null)),
     switchMap(({ action, state }) => {
       const urlBackward = setUrl(action, state) + logsActionTimestamp(action, 'backward');
       const urlForward = setUrl(action, state) + logsActionTimestamp(action, 'forward');
@@ -60,14 +58,13 @@ export class LogsActionEffects {
       });
       return caught;
     })
-  );
+  ));
 
-  @Effect()
-  LogsActionFilter$ = this.actions$.pipe(
+  LogsActionFilter$ = createEffect(() => this.actions$.pipe(
     ofType('LOGS_ACTION_FILTER'),
     withLatestFrom(this.store, (action: any, state: ObservedValueOf<Store<State>>) => ({ action, state })),
     tap(response => {
-      logActionDestroy$.next();
+      logActionDestroy$.next(null);
       logsActionFilter(response.action, response.state);
     }),
     map((payload) => ({ type: 'LOGS_ACTION_LOAD', payload })),
@@ -79,10 +76,9 @@ export class LogsActionEffects {
       });
       return caught;
     })
-  );
+  ));
 
-  @Effect()
-  LogsActionStartEffect$ = this.actions$.pipe(
+  LogsActionStartEffect$ = createEffect(() => this.actions$.pipe(
     ofType('LOGS_ACTION_START'),
     withLatestFrom(this.store, (action: any, state: ObservedValueOf<Store<State>>) => ({ action, state })),
     switchMap(({ action, state }) =>
@@ -99,14 +95,13 @@ export class LogsActionEffects {
         )
       )
     )
-  );
+  ));
 
-  @Effect({ dispatch: false })
-  LogsActionStopEffect$ = this.actions$.pipe(
+  LogsActionStopEffect$ = createEffect(() => this.actions$.pipe(
     ofType('LOGS_ACTION_STOP'),
     withLatestFrom(this.store, (action: any, state: ObservedValueOf<Store<State>>) => ({ action, state })),
-    tap(({ action, state }) => logActionDestroy$.next())
-  );
+    tap(({ action, state }) => logActionDestroy$.next(null))
+  ), { dispatch: false });
 
   constructor(private http: HttpClient,
               private actions$: Actions,

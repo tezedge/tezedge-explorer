@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, ElementRef, Input, ViewEncapsulation } from '@angular/core';
 import { LineChartComponent, reduceTicks } from '@swimlane/ngx-charts';
 import { animate, style, transition, trigger } from '@angular/animations';
-import { SystemResourcesResourceType } from '../../types/resources/system/system-resources-panel.type';
+import { SystemResourcesResourceType } from '@shared/types/resources/system/system-resources-panel.type';
 
 
 @Component({

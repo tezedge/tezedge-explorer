@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { State } from '../app.reducers';
+import { State } from '@app/app.reducers';
 import { MonitoringActionTypes } from './monitoring.actions';
 
 @Component({

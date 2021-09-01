@@ -9,12 +9,12 @@ import {
   ViewChild,
   ViewContainerRef
 } from '@angular/core';
-import { StorageBlockDetails } from '../../shared/types/storage/storage-block/storage-block-details.type';
+import { StorageBlockDetails } from '@shared/types/storage/storage-block/storage-block-details.type';
 import { Overlay, OverlayRef } from '@angular/cdk/overlay';
-import { StorageBlockDetailsOperationContext } from '../../shared/types/storage/storage-block/storage-block-details-operation-context.type';
+import { StorageBlockDetailsOperationContext } from '@shared/types/storage/storage-block/storage-block-details-operation-context.type';
 import { TemplatePortal } from '@angular/cdk/portal';
 import { Store } from '@ngrx/store';
-import { State } from '../../app.reducers';
+import { State } from '@app/app.reducers';
 
 @Component({
   selector: 'app-storage-block-details',
@@ -78,7 +78,7 @@ export class StorageBlockDetailsComponent implements OnChanges, OnDestroy {
       total: row.data.totalTime,
       mean: row.data.meanTime,
       max: row.data.maxTime,
-      actions: row.data.actionsCount
+      actions: row.data.queriesCount
     };
     const context = this.tooltipTemplate.createEmbeddedView(contextData).context;
     const portal = new TemplatePortal(this.tooltipTemplate, this.viewContainerRef, context);

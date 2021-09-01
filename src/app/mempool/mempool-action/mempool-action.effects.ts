@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Actions, Effect, ofType } from '@ngrx/effects';
+import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { HttpClient } from '@angular/common/http';
 import { State, Store } from '@ngrx/store';
 import { catchError, map, switchMap, takeUntil, tap, withLatestFrom } from 'rxjs/operators';
@@ -7,11 +7,10 @@ import { ObservedValueOf, of, Subject, timer } from 'rxjs';
 
 const mempoolActionDestroy$ = new Subject();
 
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class MempoolActionEffects {
 
-  @Effect()
-  MempoolActionLoad$ = this.actions$.pipe(
+  MempoolActionLoad$ = createEffect(() => this.actions$.pipe(
     ofType('MEMPOOL_ACTION_LOAD'),
 
     withLatestFrom(this.store, (action: any, state: ObservedValueOf<State<Store>>) => ({ action, state })),
@@ -29,11 +28,10 @@ export class MempoolActionEffects {
       });
       return caught;
     })
-  );
+  ));
 
   // load mempool actions
-  @Effect()
-  MempoolActionStartEffect$ = this.actions$.pipe(
+  MempoolActionStartEffect$ = createEffect(() => this.actions$.pipe(
     ofType('MEMPOOL_ACTION_START'),
 
     // merge state
@@ -52,11 +50,10 @@ export class MempoolActionEffects {
         )
       )
     ),
-  );
+  ));
 
   // stop mempool action download
-  @Effect({ dispatch: false })
-  MempoolActionStopEffect$ = this.actions$.pipe(
+  MempoolActionStopEffect$ = createEffect(() => this.actions$.pipe(
     ofType('MEMPOOL_ACTION_STOP'),
     // merge state
     withLatestFrom(this.store, (action: any, state: ObservedValueOf<State<Store>>) => ({ action, state })),
@@ -64,9 +61,9 @@ export class MempoolActionEffects {
     tap(({ action, state }) => {
       // console.log('[LOGS_ACTION_STOP] stream', state.logsAction.stream);
       // close all open observables
-      mempoolActionDestroy$.next();
+      mempoolActionDestroy$.next(null);
     }),
-  );
+  ), { dispatch: false });
 
   constructor(
     private http: HttpClient,

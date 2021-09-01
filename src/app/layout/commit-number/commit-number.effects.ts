@@ -1,17 +1,17 @@
 import { Injectable } from '@angular/core';
-import { Actions, Effect, ofType } from '@ngrx/effects';
+import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { HttpClient } from '@angular/common/http';
 import { Store } from '@ngrx/store';
 import { catchError, map, switchMap, withLatestFrom } from 'rxjs/operators';
-import { State } from '../../app.reducers';
-import { ErrorActionTypes } from '../../shared/error-popup/error-popup.actions';
+import { State } from '@app/app.reducers';
+import { ErrorActionTypes } from '@shared/error-popup/error-popup.actions';
 import { ObservedValueOf } from 'rxjs';
 
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class CommitNumberEffects {
 
-  @Effect()
-  VersionNodeLoad$ = this.actions$.pipe(
+
+  VersionNodeLoad$ = createEffect(() => this.actions$.pipe(
     ofType('VERSION_NODE_LOAD'),
     withLatestFrom(this.store, (action: any, state: ObservedValueOf<Store<State>>) => ({ action, state })),
     switchMap(({ action, state }) => {
@@ -26,10 +26,10 @@ export class CommitNumberEffects {
       });
       return caught;
     })
-  );
+  ));
 
-  @Effect()
-  VersionDebuggerLoad$ = this.actions$.pipe(
+
+  VersionDebuggerLoad$ = createEffect(() => this.actions$.pipe(
     ofType('VERSION_DEBUGGER_LOAD'),
     withLatestFrom(this.store, (action: any, state: ObservedValueOf<Store<State>>) => ({ action, state })),
     switchMap(({ action, state }) => {
@@ -45,10 +45,10 @@ export class CommitNumberEffects {
       });
       return caught;
     })
-  );
+  ));
 
-  @Effect()
-  VersionNodeTagLoad$ = this.actions$.pipe(
+
+  VersionNodeTagLoad$ = createEffect(() => this.actions$.pipe(
     ofType('VERSION_NODE_LOAD'),
     withLatestFrom(this.store, (action: any, state: ObservedValueOf<Store<State>>) => ({ action, state })),
     switchMap(({ action, state }) => {
@@ -66,7 +66,7 @@ export class CommitNumberEffects {
       });
       return caught;
     })
-  );
+  ));
 
   constructor(private http: HttpClient,
               private actions$: Actions,

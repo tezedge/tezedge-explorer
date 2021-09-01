@@ -9,7 +9,7 @@ import { takeUntil } from 'rxjs/operators';
 })
 export class NgrxFormDirective implements OnInit, OnDestroy {
 
-  // use path for meta reducer to locate right place to upade 
+  // use path for meta reducer to locate right place to upade
   @Input('ngrxForm') path: string;
 
   private destroy$ = new Subject<null>();
@@ -23,7 +23,7 @@ export class NgrxFormDirective implements OnInit, OnDestroy {
 
   ngOnInit() {
 
-    // listen & dispatch action when input value changes  
+    // listen & dispatch action when input value changes
     this.formGroupDirective.valueChanges
       .pipe(takeUntil(this.destroy$))
       .subscribe(value => {
@@ -42,7 +42,7 @@ export class NgrxFormDirective implements OnInit, OnDestroy {
 
       })
 
-    // listen & dispatch action when input validation status changes  
+    // listen & dispatch action when input validation status changes
     // this.formGroupDirective.statusChanges
     //   .pipe(takeUntil(this.destroy$))
     //   .subscribe(status => {
@@ -76,7 +76,7 @@ export class NgrxFormDirective implements OnInit, OnDestroy {
   ngOnDestroy() {
 
     // close all open directives
-    this.destroy$.next();
+    this.destroy$.next(null);
     this.destroy$.complete();
 
   }

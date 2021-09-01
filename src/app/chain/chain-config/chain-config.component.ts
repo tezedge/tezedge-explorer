@@ -1,18 +1,18 @@
-import { Component, OnInit, Input, OnDestroy } from '@angular/core';
-import { FormBuilder, Validators, FormGroup } from '@angular/forms';
+import { Component, Input, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Store } from '@ngrx/store';
-import { Subject } from 'rxjs';
-import { takeUntil, take } from 'rxjs/operators';
+import { take } from 'rxjs/operators';
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 
+@UntilDestroy()
 @Component({
 	selector: 'app-chain-config',
 	templateUrl: './chain-config.component.html',
 	styleUrls: ['./chain-config.component.scss'],
 })
-export class ChainConfigComponent implements OnInit, OnDestroy {
+export class ChainConfigComponent implements OnInit {
 	@Input() isReadonly?: boolean;
-	
-  onDestroy$ = new Subject();
+
 	chainConfigForm: FormGroup;
 	error: any;
 
@@ -60,16 +60,16 @@ export class ChainConfigComponent implements OnInit, OnDestroy {
 		if(this.isReadonly){
 			this.chainConfigForm.disable();
 		}
-		
+
 		// Subscribe to store to get form server error
 		this.store.select('chainConfig')
-		.pipe(takeUntil(this.onDestroy$))
+		.pipe(untilDestroyed(this))
 		.subscribe(store => {
 			this.error = store.error;
 			if(
-				this.error?.error_type === 'validation' && 
-				this.error?.field_name && 
-				!this.error?.isShown && 
+				this.error?.error_type === 'validation' &&
+				this.error?.field_name &&
+				!this.error?.isShown &&
 				this.formHasFieldName(this.error.field_name)
 				) {
 				// set error to form control
@@ -78,7 +78,7 @@ export class ChainConfigComponent implements OnInit, OnDestroy {
 
 				// Mark error as shown on form
 				this.store.dispatch({ type: 'CHAIN_CONFIG_FORM_ERROR_SHOWN' });
-				
+
 				// subscribe to field value change (to be able to remove server error)
 				control.valueChanges.pipe(take(1)).subscribe(val => {
 					control.setErrors({ 'serverError': null })
@@ -95,11 +95,5 @@ export class ChainConfigComponent implements OnInit, OnDestroy {
 	formHasFieldName(fieldName: string): boolean {
     const control = this.chainConfigForm.get(fieldName);
     return control != null;
-  }
-
-  ngOnDestroy() {
-    // close all observables
-    this.onDestroy$.next();
-    this.onDestroy$.complete();
   }
 }

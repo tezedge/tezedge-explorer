@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import { StorageRoutingModule } from './storage.routing';
-import { TezedgeSharedModule } from '../shared/tezedge-shared.module';
+import { TezedgeSharedModule } from '@shared/tezedge-shared.module';
 import { StorageComponent } from './storage.component';
 import { StorageBlockComponent } from './storage-block/storage-block.component';
 import { StorageBlockDetailsComponent } from './storage-block-details/storage-block-details.component';

@@ -1,24 +1,23 @@
 import { Injectable } from '@angular/core';
-import { Actions, Effect, ofType } from '@ngrx/effects';
+import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { HttpClient } from '@angular/common/http';
 import { Store } from '@ngrx/store';
 import { catchError, map, switchMap, takeUntil, tap, withLatestFrom } from 'rxjs/operators';
 import { combineLatest, ObservedValueOf, of, Subject, timer } from 'rxjs';
-import { State } from '../../app.reducers';
+import { State } from '@app/app.reducers';
 import { StorageBlockService } from './storage-block.service';
-import { ErrorActionTypes } from '../../shared/error-popup/error-popup.actions';
+import { ErrorActionTypes } from '@shared/error-popup/error-popup.actions';
 import { StorageBlockActionTypes } from './storage-block.actions';
 
 
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class StorageBlockEffects {
 
   private storageBlockDestroy$ = new Subject();
 
-  @Effect()
-  StorageBlockReset$ = this.actions$.pipe(
+
+  StorageBlockReset$ = createEffect(() => this.actions$.pipe(
     ofType('STORAGE_BLOCK_RESET', 'STORAGE_BLOCK_LOAD'),
-    // dispatch action
     map((payload) => ({ type: 'STORAGE_BLOCK_RESET_SUCCESS', payload })),
     catchError((error, caught) => {
       console.error(error);
@@ -28,10 +27,10 @@ export class StorageBlockEffects {
       });
       return caught;
     })
-  );
+  ));
 
-  @Effect()
-  StorageBlockLoad$ = this.actions$.pipe(
+
+  StorageBlockLoad$ = createEffect(() => this.actions$.pipe(
     ofType('STORAGE_BLOCK_FETCH'),
 
     // merge state
@@ -50,10 +49,10 @@ export class StorageBlockEffects {
       });
       return caught;
     })
-  );
+  ));
 
-  @Effect()
-  StorageBlockStartEffect$ = this.actions$.pipe(
+
+  StorageBlockStartEffect$ = createEffect(() => this.actions$.pipe(
     ofType('STORAGE_BLOCK_START'),
 
     // merge state
@@ -72,17 +71,17 @@ export class StorageBlockEffects {
         )
       )
     )
-  );
+  ));
 
-  @Effect()
-  StorageBlockStartSuccessEffect$ = this.actions$.pipe(
+
+  StorageBlockStartSuccessEffect$ = createEffect(() => this.actions$.pipe(
     ofType('STORAGE_BLOCK_START_SUCCESS'),
     withLatestFrom(this.store, (action: any, state: ObservedValueOf<Store<State>>) => ({ action, state })),
     map(({ action, state }) => ({ type: StorageBlockActionTypes.STORAGE_BLOCK_CHECK_AVAILABLE_CONTEXTS }))
-  );
+  ));
 
-  @Effect()
-  StorageBlockGetNextBlockDetailsEffect$ = this.actions$.pipe(
+
+  StorageBlockGetNextBlockDetailsEffect$ = createEffect(() => this.actions$.pipe(
     ofType('STORAGE_BLOCK_NEIGHBOUR_BLOCK_DETAILS'),
     withLatestFrom(this.store, (action: any, state: ObservedValueOf<Store<State>>) => ({ action, state })),
     map(({ action, state }) => {
@@ -100,22 +99,22 @@ export class StorageBlockEffects {
       }
       return;
     })
-  );
+  ));
 
   // stop storage block download
-  @Effect({ dispatch: false })
-  StorageBlockStopEffect$ = this.actions$.pipe(
+
+  StorageBlockStopEffect$ = createEffect(() => this.actions$.pipe(
     ofType('STORAGE_BLOCK_STOP'),
     // merge state
     withLatestFrom(this.store, (action: any, state: ObservedValueOf<Store<State>>) => ({ action, state })),
     // init app modules
     tap(({ action, state }) => {
-      this.storageBlockDestroy$.next();
+      this.storageBlockDestroy$.next(null);
     })
-  );
+  ), { dispatch: false });
 
-  @Effect()
-  StorageBlockCheckAvailableContextsEffect$ = this.actions$.pipe(
+
+  StorageBlockCheckAvailableContextsEffect$ = createEffect(() => this.actions$.pipe(
     ofType(StorageBlockActionTypes.STORAGE_BLOCK_CHECK_AVAILABLE_CONTEXTS),
     withLatestFrom(this.store, (action: any, state: ObservedValueOf<Store<State>>) => ({ action, state })),
     switchMap(({ action, state }) =>
@@ -123,10 +122,10 @@ export class StorageBlockEffects {
         .pipe(map((contexts: string[]) => ({ type: StorageBlockActionTypes.STORAGE_BLOCK_MAP_AVAILABLE_CONTEXTS, payload: contexts })))
     ),
     catchError(error => of({ type: ErrorActionTypes.ADD_ERROR, payload: { title: 'Storage block details error', message: error.message } }))
-  );
+  ));
 
-  @Effect()
-  StorageBlockDetailsLoad$ = this.actions$.pipe(
+
+  StorageBlockDetailsLoad$ = createEffect(() => this.actions$.pipe(
     ofType('STORAGE_BLOCK_DETAILS_LOAD'),
 
     // merge state
@@ -154,7 +153,7 @@ export class StorageBlockEffects {
       });
       return caught;
     })
-  );
+  ));
 
   constructor(
     private http: HttpClient,

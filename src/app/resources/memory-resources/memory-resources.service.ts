@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
-import { MemoryResource } from '../../shared/types/resources/memory/memory-resource.type';
-import { MemoryResourceName } from '../../shared/types/resources/memory/memory-resource-name.type';
+import { MemoryResource } from '@shared/types/resources/memory/memory-resource.type';
+import { MemoryResourceName } from '@shared/types/resources/memory/memory-resource-name.type';
 import { map } from 'rxjs/operators';
 
 @Injectable({

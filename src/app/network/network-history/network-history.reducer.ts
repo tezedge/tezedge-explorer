@@ -1,4 +1,4 @@
-import { NetworkHistory } from '../../shared/types/network/network-history.type';
+import { NetworkHistory } from '@shared/types/network/network-history.type';
 
 const initialState: NetworkHistory = {
   ids: [],

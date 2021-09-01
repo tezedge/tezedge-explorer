@@ -1,11 +1,10 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { VirtualScrollDirective } from '../../shared/virtual-scroll/virtual-scroll.directive';
 import { Router } from '@angular/router';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { StorageBlock } from '../../shared/types/storage/storage-block/storage-block.type';
-import { selectActiveNode } from '../../settings/settings-node/settings-node.reducer';
-import { State } from '../../app.reducers';
+import { StorageBlock } from '@shared/types/storage/storage-block/storage-block.type';
+import { selectActiveNode } from '@settings/settings-node.reducer';
+import { State } from '@app/app.reducers';
 
 @UntilDestroy()
 @Component({
@@ -23,7 +22,6 @@ export class StorageBlockComponent implements OnInit, OnDestroy {
   };
   virtualPageSize = 1000;
 
-  @ViewChild(VirtualScrollDirective) vrFor: VirtualScrollDirective;
   @ViewChild('vsContainer') vsContainer: ElementRef<HTMLDivElement>;
 
   private isStorageActionFeatureEnabled: boolean;
@@ -182,10 +180,7 @@ export class StorageBlockComponent implements OnInit, OnDestroy {
   // }
 
   ngOnDestroy(): void {
-    // stop streaming actions
-    // this.store.dispatch({
-    //   type: 'STORAGE_BLOCK_STOP'
-    // });
     this.store.dispatch({ type: 'STORAGE_BLOCK_RESET' });
+    this.store.dispatch({ type: 'STORAGE_BLOCK_STOP' });
   }
 }

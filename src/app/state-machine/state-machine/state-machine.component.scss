@@ -1,0 +1,14 @@
+.state-machine {
+  background-color: #2A2A2E;
+
+  .tabs {
+    padding: 9px 10px 9px 15px;
+
+    > div {
+      &.active,
+      &:hover {
+        color: white !important;
+      }
+    }
+  }
+}

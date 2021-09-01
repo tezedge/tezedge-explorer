@@ -141,7 +141,7 @@
          [matTooltipDisabled]="!app.sidenav.collapsed"
          (click)="closeMenu()">
       <span class="menu-content">
-        <svg-icon icon="logs"></svg-icon>
+        <svg-icon icon="state-machine"></svg-icon>
         <span class="text-nowrap">State</span>
       </span>
       </a>
@@ -183,7 +183,7 @@
 
     <div class="app-submenu"
          *ngIf="false && haveSandbox">
-      <!-- enable when we have sandbox working back -->
+      <!-- enable when we have sandbox back working -->
       <div class="text-nowrap">SANDBOX</div>
 
       <a *ngIf="features['chains']"
@@ -227,7 +227,8 @@
       </div>
 
       <div *ngIf="settingsNode">
-        <button mat-flat-button (click)="stopSandboxNode();"
+        <button mat-flat-button
+                (click)="stopSandboxNode();"
                 *ngIf="settingsNode.entities['sandbox-carthage-tezedge']?.connected === true">
           {{ app.sidenav.collapsed ? '+' : 'STOP SANDBOX NODE' }}
         </button>
@@ -246,7 +247,8 @@
          [matTooltipDisabled]="!app.sidenav.collapsed"
          rel="noreferrer">
       <span class="menu-content">
-        <mat-icon svgIcon="swagger" class="icon-18"></mat-icon>
+        <mat-icon svgIcon="swagger"
+                  class="icon-18"></mat-icon>
         <span class="text-nowrap">Open API</span>
       </span>
       </a>
@@ -259,7 +261,8 @@
          [matTooltipDisabled]="!app.sidenav.collapsed"
          rel="noreferrer">
       <span class="menu-content">
-        <mat-icon svgIcon="fuzzing" class="icon-18"></mat-icon>
+        <mat-icon svgIcon="fuzzing"
+                  class="icon-18"></mat-icon>
         <span class="text-nowrap">Fuzzing</span>
       </span>
       </a>
@@ -282,6 +285,7 @@
       </a>
     </div>
 
-    <app-commit-number *ngIf="haveDebugger" class="app-github-version"></app-commit-number>
+    <app-commit-number *ngIf="haveDebugger"
+                       class="app-github-version"></app-commit-number>
   </ng-container>
 </div>

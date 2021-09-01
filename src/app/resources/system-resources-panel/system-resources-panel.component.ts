@@ -1,8 +1,8 @@
 import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { State } from '../../app.reducers';
+import { State } from '@app/app.reducers';
 import { systemResourcesPanel } from '../resources/resources.reducer';
-import { SystemResourcesPanel, SystemResourcesSortBy } from '../../shared/types/resources/system/system-resources-panel.type';
+import { SystemResourcesPanel, SystemResourcesSortBy } from '@shared/types/resources/system/system-resources-panel.type';
 import { Observable } from 'rxjs';
 import { SystemResourcesActionTypes, SystemResourcesSortAction } from '../system-resources/system-resources.actions';
 

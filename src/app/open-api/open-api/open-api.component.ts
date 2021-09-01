@@ -1,9 +1,9 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { State } from '../../app.reducers';
-import { selectActiveNode } from '../../settings/settings-node/settings-node.reducer';
+import { State } from '@app/app.reducers';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { SettingsNodeApi } from '../../shared/types/settings-node/settings-node-api.type';
+import { SettingsNodeApi } from '@shared/types/settings-node/settings-node-api.type';
+import { selectActiveNode } from '@settings/settings-node.reducer';
 
 @UntilDestroy()
 @Component({

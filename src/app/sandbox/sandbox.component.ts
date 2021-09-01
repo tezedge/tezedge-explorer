@@ -1,24 +1,26 @@
-import { Component, OnInit, ViewChild, OnDestroy, ElementRef } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { MatStepper } from '@angular/material/stepper';
 import { Store } from '@ngrx/store';
 import { Actions, ofType } from '@ngrx/effects';
 import { Router } from '@angular/router';
-import { Subject, Observable, fromEvent } from 'rxjs';
-import { takeUntil, tap, debounceTime, take } from 'rxjs/operators';
+import { fromEvent } from 'rxjs';
+import { debounceTime, take, tap } from 'rxjs/operators';
 
-import { ChainServerComponent } from '../chain/chain-server/chain-server.component';
-import { ChainConfigComponent } from '../chain/chain-config/chain-config.component';
-import { ChainWalletsComponent } from '../chain/chain-wallets/chain-wallets.component';
-import { ChainBakingComponent } from '../chain/chain-baking/chain-baking.component';
-import { ChainOtherComponent } from '../chain/chain-other/chain-other.component';
-import { ChainFinishComponent } from '../chain/chain-finish/chain-finish.component';
+import { ChainServerComponent } from '@chain/chain-server/chain-server.component';
+import { ChainConfigComponent } from '@chain/chain-config/chain-config.component';
+import { ChainWalletsComponent } from '@chain/chain-wallets/chain-wallets.component';
+import { ChainBakingComponent } from '@chain/chain-baking/chain-baking.component';
+import { ChainOtherComponent } from '@chain/chain-other/chain-other.component';
+import { ChainFinishComponent } from '@chain/chain-finish/chain-finish.component';
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 
+@UntilDestroy()
 @Component({
   selector: 'app-sandbox',
   templateUrl: './sandbox.component.html',
   styleUrls: ['./sandbox.component.scss']
 })
-export class SandboxComponent implements OnInit, OnDestroy{
+export class SandboxComponent implements OnInit {
   @ViewChild(ChainServerComponent) chainServer: ChainServerComponent;
   @ViewChild(ChainConfigComponent) chainConfig: ChainConfigComponent;
   @ViewChild(ChainWalletsComponent) chainWallets: ChainWalletsComponent;
@@ -27,30 +29,29 @@ export class SandboxComponent implements OnInit, OnDestroy{
   @ViewChild(ChainFinishComponent) chainFinish: ChainFinishComponent;
 
   @ViewChild('stepper') stepper: MatStepper;
-  
-  onDestroy$ = new Subject();
+
   showLoading: boolean;
   error: any;
 
   constructor(
-    private store: Store<any>, 
-    private router: Router, 
-    private actions$: Actions, 
+    private store: Store<any>,
+    private router: Router,
+    private actions$: Actions,
     private el: ElementRef) {
-      // hide sidenav and toolbar
-      this.toggleSidenavVisibility(false);
-    }
+    // hide sidenav and toolbar
+    this.toggleSidenavVisibility(false);
+  }
 
   ngOnInit(): void {
 
     // Subscribe to success actions - to proceed to next step
     this.actions$.pipe(
+      untilDestroyed(this),
       ofType(
         'CHAIN_SERVER_FORM_SUBMIT_SUCCESS',
         'CHAIN_WALLETS_SUBMIT_SUCCESS',
         'CHAIN_WALLETS_SUBMIT_SUCCESS'
-        ),
-      takeUntil(this.onDestroy$),
+      ),
       tap(() => {
         this.goToNextStep();
       })
@@ -58,17 +59,17 @@ export class SandboxComponent implements OnInit, OnDestroy{
 
     // Subscribe to the store to get the loading indicator flag
     this.store.select('sandbox')
-    .pipe(takeUntil(this.onDestroy$))
-    .subscribe((store) => {
-      this.showLoading = store.showLoading;
-      this.error = store.error;
-    });
+      .pipe(untilDestroyed(this))
+      .subscribe((store) => {
+        this.showLoading = store.showLoading;
+        this.error = store.error;
+      });
   }
 
-  submitCurrentStep(){
-    switch(this.stepper.selected.label){
+  submitCurrentStep() {
+    switch (this.stepper.selected.label) {
       case 'SERVER': {
-        if(!this.chainServer.chainServerForm.invalid){
+        if (!this.chainServer.chainServerForm.invalid) {
           this.store.dispatch({
             type: 'CHAIN_SERVER_FORM_SUBMIT',
             payload: this.chainServer.chainServerForm.value,
@@ -79,15 +80,15 @@ export class SandboxComponent implements OnInit, OnDestroy{
         }
         break;
       }
-      case 'WALLETS': { 
+      case 'WALLETS': {
         this.store.dispatch({
           type: 'CHAIN_WALLETS_SUBMIT',
           payload: this.chainWallets.wallets,
         });
-        break; 
+        break;
       }
       case 'CHAIN': {
-        if(!this.chainConfig.chainConfigForm.invalid){
+        if (!this.chainConfig.chainConfigForm.invalid) {
           this.store.dispatch({
             type: 'CHAIN_CONFIG_FORM_SUBMIT',
             payload: this.chainConfig.chainConfigForm.value,
@@ -104,22 +105,22 @@ export class SandboxComponent implements OnInit, OnDestroy{
     }
   }
 
-  goToNextStep(){
+  goToNextStep() {
     this.stepper.selected.completed = true;
     this.stepper.next();
-    window.scroll(0,0);
+    window.scroll(0, 0);
   }
 
-  closePage(){
+  closePage() {
     this.toggleSidenavVisibility(true);
     this.router.navigate(['/monitoring']);
   }
-  
-  uploadConfig(){
+
+  uploadConfig() {
     // TODO
   }
 
-  toggleSidenavVisibility(isVisible: boolean){
+  toggleSidenavVisibility(isVisible: boolean) {
     this.store.dispatch({
       type: 'SIDENAV_VISIBILITY_CHANGE',
       payload: isVisible,
@@ -132,22 +133,22 @@ export class SandboxComponent implements OnInit, OnDestroy{
 
   scrollToFirstInvalidControl() {
     const firstInvalidControl: HTMLElement = this.el.nativeElement.querySelector(
-      ".mat-form-field .ng-invalid:not(.mat-form-field-invalid)"
+      '.mat-form-field .ng-invalid:not(.mat-form-field-invalid)'
     );
 
     window.scroll({
       top: this.getTopOffset(firstInvalidControl),
       left: 0,
-      behavior: "smooth"
+      behavior: 'smooth'
     });
-    
+
     // focus on invalid control after scroll
-    fromEvent(window, "scroll")
-    .pipe(
-      debounceTime(100),
-      take(1)
-    ).subscribe(() => { 
-      return firstInvalidControl.focus()
+    fromEvent(window, 'scroll')
+      .pipe(
+        debounceTime(100),
+        take(1)
+      ).subscribe(() => {
+      return firstInvalidControl.focus();
     });
   }
 
@@ -156,13 +157,7 @@ export class SandboxComponent implements OnInit, OnDestroy{
     return controlEl.getBoundingClientRect().top + window.scrollY - labelOffset;
   }
 
-  scrolToTop(){
-    window.scroll({ top: 0, left: 0, behavior: "smooth" });
-  }
-
-  ngOnDestroy() {
-    // close all observables
-    this.onDestroy$.next();
-    this.onDestroy$.complete();
+  scrolToTop() {
+    window.scroll({ top: 0, left: 0, behavior: 'smooth' });
   }
 }

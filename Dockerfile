@@ -5,7 +5,7 @@ FROM node:latest AS BUILD_IMAGE
 WORKDIR /app
 
 # install angular cli
-RUN npm install -g @angular/cli@11.2.14
+RUN npm install -g @angular/cli@12.2.2
 
 # clone & install deps for repo
 ARG branch=develop

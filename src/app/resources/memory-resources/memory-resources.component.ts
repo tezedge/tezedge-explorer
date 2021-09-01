@@ -11,16 +11,16 @@ import {
   ViewChild
 } from '@angular/core';
 import { Inspector, Runtime } from '@observablehq/runtime';
-import { TreeMapFactoryService } from '../../shared/tree-map/tree-map-factory.service';
+import { TreeMapFactoryService } from '@shared/tree-map/tree-map-factory.service';
 import { select, Store } from '@ngrx/store';
-import { State } from '../../app.reducers';
+import { State } from '@app/app.reducers';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { MemoryResource } from '../../shared/types/resources/memory/memory-resource.type';
+import { MemoryResource } from '@shared/types/resources/memory/memory-resource.type';
 import { MemoryResourcesActionTypes } from './memory-resources.actions';
-import { delay, filter, skip } from 'rxjs/operators';
+import { delay, filter } from 'rxjs/operators';
 import { memoryResources } from '../resources/resources.reducer';
-import { appState } from '../../app.reducer';
-import { App } from '../../shared/types/app/app.type';
+import { appState } from '@app/app.reducer';
+import { App } from '@shared/types/app/app.type';
 
 @UntilDestroy()
 @Component({

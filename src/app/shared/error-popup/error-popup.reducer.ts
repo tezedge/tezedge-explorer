@@ -1,6 +1,6 @@
-import { HttpError } from '../types/shared/error-popup/http-error.type';
+import { HttpError } from '@shared/types/shared/error-popup/http-error.type';
 import { ErrorActions, ErrorActionTypes } from './error-popup.actions';
-import { State } from '../../app.reducers';
+import { State } from '@app/app.reducers';
 
 export interface ErrorState {
   errors: HttpError[];

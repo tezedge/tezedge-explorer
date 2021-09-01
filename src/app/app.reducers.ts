@@ -1,9 +1,9 @@
 import { ActionReducer, ActionReducerMap, MetaReducer, } from '@ngrx/store';
 // import { storeLogger } from 'ngrx-store-logger';
-import { environment } from '../environments/environment';
+import { environment } from '@environment/environment';
 
 import * as fromRouter from '@ngrx/router-store';
-import { RouterStateUrl } from './app.routing';
+import { RouterStateUrl } from '@app/app.routing';
 
 // add remote error loging
 //   import * as LogRocket from 'logrocket';
@@ -12,7 +12,7 @@ import { RouterStateUrl } from './app.routing';
 // meta reducer for dynamic forms
 import * as fromNgrxForm from './shared/ngrx-form.reducer';
 import * as fromApp from './app.reducer';
-import * as fromSettingsNode from './settings/settings-node/settings-node.reducer';
+import * as fromSettingsNode from './layout/settings-node/settings-node.reducer';
 import * as fromMonitoring from './monitoring/monitoring.reducer';
 import * as fromMempoolAction from './mempool/mempool-action/mempool-action.reducer';
 import * as fromNetworkAction from './network/network-action/network-action.reducer';
@@ -29,24 +29,24 @@ import * as fromStorageBlock from './storage/storage-block/storage-block.reducer
 import * as fromStorageAction from './storage/storage-action/storage-action.reducer';
 import * as fromSandbox from './sandbox/sandbox.reducer';
 import * as fromWallets from './wallets/wallets.reducer';
-import * as fromVersion from './monitoring/commit-number/commit-number.reducer';
+import * as fromVersion from './layout/commit-number/commit-number.reducer';
 import * as fromResource from './resources/resources/resources.reducer';
 import * as fromError from './shared/error-popup/error-popup.reducer';
 import * as fromStateMachine from './state-machine/state-machine/state-machine.reducer';
 
-import { ResourcesState } from './resources/resources/resources.reducer';
-import { ErrorState } from './shared/error-popup/error-popup.reducer';
-import { SettingsNode } from './shared/types/settings-node/settings-node.type';
-import { NetworkStats } from './shared/types/network/network-stats.type';
-import { NetworkPeers } from './shared/types/network/network-peers.type';
-import { NetworkHistory } from './shared/types/network/network-history.type';
-import { NetworkAction } from './shared/types/network/network-action.type';
-import { App } from './shared/types/app/app.type';
-import { Monitoring } from './shared/types/monitoring/monitoring.type';
-import { LogsAction } from './shared/types/logs/logs-action.type';
-import { StorageBlock } from './shared/types/storage/storage-block/storage-block.type';
-import { CommitNumber } from './shared/types/commit-number/commit-number.type';
-import { StateMachine } from './shared/types/state-machine/state-machine.type';
+import { ResourcesState } from '@resources/resources/resources.reducer';
+import { ErrorState } from '@shared/error-popup/error-popup.reducer';
+import { SettingsNode } from '@shared/types/settings-node/settings-node.type';
+import { NetworkStats } from '@shared/types/network/network-stats.type';
+import { NetworkPeers } from '@shared/types/network/network-peers.type';
+import { NetworkHistory } from '@shared/types/network/network-history.type';
+import { NetworkAction } from '@shared/types/network/network-action.type';
+import { App } from '@shared/types/app/app.type';
+import { Monitoring } from '@shared/types/monitoring/monitoring.type';
+import { LogsAction } from '@shared/types/logs/logs-action.type';
+import { StorageBlock } from '@shared/types/storage/storage-block/storage-block.type';
+import { CommitNumber } from '@shared/types/commit-number/commit-number.type';
+import { StateMachine } from '@shared/types/state-machine/state-machine.type';
 
 export interface State {
   app: App;

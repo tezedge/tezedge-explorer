@@ -1,4 +1,4 @@
-import { CommitNumber } from '../../shared/types/commit-number/commit-number.type';
+import { CommitNumber } from '@shared/types/commit-number/commit-number.type';
 
 const initialState: CommitNumber = {
   explorerCommit: '',

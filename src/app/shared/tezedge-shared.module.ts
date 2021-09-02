@@ -59,20 +59,23 @@ import { SvgIconComponent } from '@shared/svg-icon/svg-icon.component';
   exports: [
     FlexLayoutModule,
     MaterialModule,
+    NgxJsonViewerModule,
+    ReactiveFormsModule,
+
+    ErrorPopupComponent,
+    ProgressBarComponent,
+    SvgIconComponent,
+
     ReplaceCharacterPipe,
     TimeTransformPipe,
     ThousandTransformPipe,
     EtaTimePipe,
-    ErrorPopupComponent,
-    ProgressBarComponent,
+
     VarDirective,
     VirtualScrollDirective,
     VirtualScrollFromTopDirective,
     ClickOutsideDirective,
-    NgxJsonViewerModule,
-    ReactiveFormsModule,
     NgrxFormDirective,
-    SvgIconComponent,
   ],
   providers: [
     {

@@ -85,46 +85,52 @@ context('STORAGE BLOCK', () => {
 
   it('[STORAGE BLOCK] change the value of the virtual scroll element when scrolling', () => {
     let beforeScrollValue;
-
-    cy.window()
-      .its('store')
-      .then((store) => {
-        store.subscribe(data => {
-          if (!isOctez(data)) {
-            cy.wait(1000).then(() => {
-              cy.get('.stop-stream').click();
-
-              store.select('storageBlock').subscribe((data) => {
-                if (!data.stream) {
-                  cy.get('.virtual-scroll-container .virtualScrollRow.used')
-                    .last()
-                    .find('.storage-block-level')
-                    .then(($span) => {
-                      beforeScrollValue = $span.text();
-                    });
-
-                  cy.wait(2000).then(() => {
-                    cy.get('.virtual-scroll-container .virtualScrollRow.used')
-                      .first()
-                      .scrollIntoView({ duration: 500 });
-
-                    cy.wait(2000).then(() => {
-                      cy.get('.virtual-scroll-container .virtualScrollRow.used')
-                        .last()
-                        .find('.storage-block-level')
-                        .should(($span) => {
-                          expect($span.text()).to.not.equal(beforeScrollValue);
-                        });
-                    });
+    let currentState;
+    cy.get('.settings-node-select mat-select-trigger span').then(nodeName => {
+      if (!nodeName.text().includes('octez')) {
+        cy.get('.virtualScrollRow', { timeout: 10000 }).then(() => {
+          cy.window()
+            .its('store')
+            .then((store) => {
+              store.subscribe(data => {
+                if (!currentState) {
+                  cy.wait(1000).then(() => {
+                    cy.get('.stop-stream').click();
+                    currentState = data;
                   });
-                } else {
-                  cy.get('.stop-stream').click();
                 }
               });
             });
-          }
+
+          cy.wait(2000).then(() => {
+            cy.get('.stop-stream').click();
+
+            cy.get('.virtual-scroll-container .virtualScrollRow.used')
+              .last()
+              .find('.storage-block-level')
+              .then(($span) => {
+                beforeScrollValue = $span.text();
+              });
+
+            cy.wait(2000).then(() => {
+              cy.get('.virtual-scroll-container .virtualScrollRow.used')
+                .first()
+                .scrollIntoView({ duration: 500 });
+
+              cy.wait(2000).then(() => {
+                cy.get('.virtual-scroll-container .virtualScrollRow.used')
+                  .last()
+                  .find('.storage-block-level')
+                  .should(($span) => {
+                    expect($span.text()).to.not.equal(beforeScrollValue);
+                  });
+              });
+            });
+
+          });
         });
-      });
+      }
+    });
   });
 
   it('[STORAGE BLOCK] display block details on hover', () => {

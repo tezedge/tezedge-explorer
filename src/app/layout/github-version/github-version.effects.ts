@@ -8,8 +8,7 @@ import { ErrorActionTypes } from '@shared/error-popup/error-popup.actions';
 import { ObservedValueOf } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
-export class CommitNumberEffects {
-
+export class GithubVersionEffects {
 
   VersionNodeLoad$ = createEffect(() => this.actions$.pipe(
     ofType('VERSION_NODE_LOAD'),
@@ -28,7 +27,6 @@ export class CommitNumberEffects {
     })
   ));
 
-
   VersionDebuggerLoad$ = createEffect(() => this.actions$.pipe(
     ofType('VERSION_DEBUGGER_LOAD'),
     withLatestFrom(this.store, (action: any, state: ObservedValueOf<Store<State>>) => ({ action, state })),
@@ -46,7 +44,6 @@ export class CommitNumberEffects {
       return caught;
     })
   ));
-
 
   VersionNodeTagLoad$ = createEffect(() => this.actions$.pipe(
     ofType('VERSION_NODE_LOAD'),

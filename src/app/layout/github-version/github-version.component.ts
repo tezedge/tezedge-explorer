@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, HostListener, OnInit, TemplateRef, ViewChild, ViewContainerRef } from '@angular/core';
 import { Observable } from 'rxjs';
 import { select, Store } from '@ngrx/store';
-import { CommitNumber } from '@shared/types/commit-number/commit-number.type';
+import { GithubVersion } from '@shared/types/github-version/github-version.type';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { State } from '@app/app.reducers';
 import { Overlay, OverlayRef } from '@angular/cdk/overlay';
@@ -12,19 +12,20 @@ import { filter } from 'rxjs/operators';
 
 @UntilDestroy()
 @Component({
-  selector: 'app-commit-number',
-  templateUrl: './commit-number.component.html',
-  styleUrls: ['./commit-number.component.scss'],
+  selector: 'app-github-version',
+  templateUrl: './github-version.component.html',
+  styleUrls: ['./github-version.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class CommitNumberComponent implements OnInit {
+export class GithubVersionComponent implements OnInit {
 
-  commitNumber$: Observable<CommitNumber>;
   readonly githubRepositories = {
-    explorer: 'https://github.com/tezedge/tezedge-explorer/commit/',
     node: 'https://github.com/tezedge/tezedge/commit/',
+    explorer: 'https://github.com/tezedge/tezedge-explorer/commit/',
     debugger: 'https://github.com/tezedge/tezedge-debugger/commit/'
   };
+
+  githubVersion$: Observable<GithubVersion>;
   hideComponent = false;
 
   private currentNodeId: string;
@@ -44,7 +45,7 @@ export class CommitNumberComponent implements OnInit {
               private viewContainerRef: ViewContainerRef) { }
 
   ngOnInit(): void {
-    this.commitNumber$ = this.store.select('commitNumber')
+    this.githubVersion$ = this.store.select('githubVersion')
       .pipe(untilDestroyed(this));
 
     this.store.pipe(

@@ -1,4 +1,4 @@
-export class CommitNumber {
+export class GithubVersion {
   explorerCommit: string;
   nodeCommit: string;
   debuggerCommit: string;

@@ -13,6 +13,9 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatTableModule } from '@angular/material/table';
 import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatListModule } from '@angular/material/list';
+import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 
 @NgModule({
@@ -30,7 +33,10 @@ import { MatPaginatorModule } from '@angular/material/paginator';
     MatSelectModule,
     MatRadioModule,
     MatTableModule,
+    MatListModule,
     MatPaginatorModule,
+    MatSidenavModule,
+    MatSnackBarModule,
   ]
 })
 export class MaterialModule { }

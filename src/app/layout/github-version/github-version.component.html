@@ -1,15 +1,15 @@
-<div class="node-tag-number" *ngIf="!hideComponent && commitNumber$ | async as commitNumber"
+<div class="node-tag-number" *ngIf="!hideComponent && githubVersion$ | async as githubVersion"
      (click)="attachTooltip($event)">
   <span class="node-tag-number-and-icon">
-    {{ commitNumber.nodeTag }}
+    {{ githubVersion.nodeTag }}
     <svg-icon class="node-tag-icon" icon="caret-down" scale="0.5"></svg-icon>
   </span>
 </div>
 
 <ng-template #versionTooltip>
-  <div class="commit-numbers-container" *ngIf="commitNumber$ | async as commitNumber">
+  <div class="commit-numbers-container" *ngIf="githubVersion$ | async as githubVersion">
     <div class="commit-numbers-container-item truncate" id="nodeCommit">
-      <a href="{{ githubRepositories.node + commitNumber.nodeCommit }}" target="_blank" rel="noreferrer">
+      <a href="{{ githubRepositories.node + githubVersion.nodeCommit }}" target="_blank" rel="noreferrer">
         <span>
           <svg-icon icon="github" scale="0.8"></svg-icon>
           Node
@@ -18,7 +18,7 @@
     </div>
 
     <div class="commit-numbers-container-item truncate" id="debuggerCommit">
-      <a href="{{ githubRepositories.debugger + commitNumber.debuggerCommit }}" target="_blank" rel="noreferrer">
+      <a href="{{ githubRepositories.debugger + githubVersion.debuggerCommit }}" target="_blank" rel="noreferrer">
         <span>
           <svg-icon icon="github" scale="0.8"></svg-icon>
           Debugger
@@ -26,8 +26,8 @@
       </a>
     </div>
 
-    <div *ngIf="commitNumber.explorerCommit?.length" class="commit-numbers-container-item truncate" id="explorerCommit">
-      <a href="{{ githubRepositories.explorer + commitNumber.explorerCommit }}" target="_blank" rel="noreferrer">
+    <div *ngIf="githubVersion.explorerCommit?.length" class="commit-numbers-container-item truncate" id="explorerCommit">
+      <a href="{{ githubRepositories.explorer + githubVersion.explorerCommit }}" target="_blank" rel="noreferrer">
         <span>
           <svg-icon icon="github" scale="0.8"></svg-icon>
           Explorer

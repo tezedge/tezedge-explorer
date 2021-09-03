@@ -1,6 +1,2 @@
 module.exports = {
-  resolve: {
-    fallback: {
-    }
-  }
 };

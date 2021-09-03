@@ -14,7 +14,9 @@
     </div>
   </div>
 
-  <div fxFlex="calc(100% - 40px)" class="overflow-y-scroll">
+  <div *ngIf="swaggerLoaded"
+       fxFlex="calc(100% - 40px)"
+       class="overflow-y-scroll">
     <router-outlet></router-outlet>
   </div>
 

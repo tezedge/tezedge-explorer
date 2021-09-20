@@ -14,7 +14,7 @@ import { NetworkStats } from '@shared/types/network/network-stats.type';
 })
 export class NetworkStatsComponent implements OnInit {
 
-  public networkStats: NetworkStats;
+  networkStats: NetworkStats;
 
   constructor(private store: Store<State>,
               private cdRef: ChangeDetectorRef) {}

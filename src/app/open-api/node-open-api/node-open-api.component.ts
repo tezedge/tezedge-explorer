@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, ElementRef, ViewChild } from '@angu
 import { HttpClient } from '@angular/common/http';
 import { Store } from '@ngrx/store';
 import { State } from '@app/app.reducers';
-import { BaseOpenApiComponent } from '../base-open-api.component';
+import { BaseOpenApiComponent } from '@open-api/base-open-api.component';
 
 @Component({
   selector: 'app-node-open-api',

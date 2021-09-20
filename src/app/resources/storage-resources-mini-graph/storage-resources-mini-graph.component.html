@@ -13,8 +13,10 @@
         class="text-white-4">calls</span> · {{ graphData.totalTime | timeTransform: false: false: true }}
       </span>
     </span>
-    <div fxLayoutAlign="start center" *ngIf="isMainGraph">
-      <svg-icon [icon]="'arrow-down'"></svg-icon>
+    <div fxLayoutAlign="start center"
+         *ngIf="isMainGraph">
+      <mat-icon svgIcon="arrow-down"
+                class="icon-16"></mat-icon>
       <span class="calls-label">Total time</span>
     </div>
   </div>
@@ -39,13 +41,17 @@
       </div>
       <div *ngIf="xSteps.length"
            class="x-steps d-flex flex-row text-capitalize">
-        <span *ngFor="let step of xSteps" class="truncate">{{ step }}</span>
+        <span *ngFor="let step of xSteps"
+              class="truncate">{{ step }}</span>
       </div>
     </div>
   </div>
-  <div fxLayoutAlign="start center" class="x-info"
-       fxLayoutGap="8px" *ngIf="isMainGraph">
-    <svg-icon [icon]="'arrow-right'"></svg-icon>
+  <div fxLayoutAlign="start center"
+       class="x-info"
+       fxLayoutGap="8px"
+       *ngIf="isMainGraph">
+    <mat-icon svgIcon="arrow-right"
+              class="icon-16"></mat-icon>
     <span class="calls-label">Duration of call</span>
   </div>
 </div>

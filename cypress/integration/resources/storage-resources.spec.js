@@ -91,7 +91,7 @@ context('STORAGE RESOURCES', () => {
             if (isNotOctez(data)) {
               store.select('resources').subscribe(store => {
                 const resources = store.storageResourcesState.storageResources;
-                cy.get('.operation-list .operation').should('have.length', resources.operationsContext.length + 1);
+                cy.get('.operation-list .operation', { timeout: 10000 }).should('have.length', resources.operationsContext.length + 1);
 
                 cy.get(`.operation-list .operation:nth-child(1) app-storage-resources-mini-graph`).should('have.length', 2);
 
@@ -117,14 +117,14 @@ context('STORAGE RESOURCES', () => {
             if (isNotOctez(data)) {
               store.select('resources').subscribe(resources => {
                 if (resources.storageResourcesState && resources.storageResourcesState.availableContexts.length) {
-                  cy.get('app-storage-resources .storage-toolbar .context').should('be.visible');
+                  cy.get('app-storage-resources .storage-toolbar .context', { timeout: 5000 }).should('be.visible');
                   cy.get('app-storage-resources .storage-toolbar .toolbar-right').should('be.visible');
 
                   const contexts = resources.storageResourcesState.availableContexts;
                   if (contexts.length === 2) {
-                    cy.get('app-storage-resources .storage-toolbar .node-switcher').should('be.visible');
+                    cy.get('app-storage-resources .storage-toolbar .node-switcher', { timeout: 5000 }).should('be.visible');
                   } else if (contexts.length === 1) {
-                    cy.get('app-storage-resources .storage-toolbar .context').should(element => {
+                    cy.get('app-storage-resources .storage-toolbar .context', { timeout: 5000 }).should(element => {
                       expect(element.text()).to.contain(contexts[0]);
                     });
                     cy.get('app-storage-resources .storage-toolbar .node-switcher').should('not.exist');
@@ -146,7 +146,7 @@ context('STORAGE RESOURCES', () => {
             if (isNotOctez(data)) {
               store.select('resources').subscribe(resources => {
                 if (resources.storageResourcesState) {
-                  cy.get('app-storage-resources .storage-toolbar .context').should('be.visible');
+                  cy.get('app-storage-resources .storage-toolbar .context', { timeout: 5000 }).should('be.visible');
 
                   let currentContext = '';
                   cy.get('app-storage-resources .storage-toolbar .context').should(div => {
@@ -154,7 +154,7 @@ context('STORAGE RESOURCES', () => {
                   });
                   const contexts = resources.storageResourcesState.availableContexts;
                   if (contexts.length === 2) {
-                    cy.get('app-storage-resources .storage-toolbar .node-switcher').should('be.visible');
+                    cy.get('app-storage-resources .storage-toolbar .node-switcher', { timeout: 10000 }).should('be.visible');
 
                     const secondContext = resources.storageResourcesState.availableContexts[1];
                     if (!currentContext.includes(secondContext)) {

@@ -33,6 +33,7 @@ import * as fromVersion from './layout/github-version/github-version.reducer';
 import * as fromResource from './resources/resources/resources.reducer';
 import * as fromError from './shared/error-popup/error-popup.reducer';
 import * as fromStateMachine from './state-machine/state-machine/state-machine.reducer';
+import * as fromSmartContracts from './smart-contracts/smart-contracts/smart-contracts.reducer';
 
 import { ResourcesState } from '@resources/resources/resources.reducer';
 import { ErrorState } from '@shared/error-popup/error-popup.reducer';
@@ -47,6 +48,7 @@ import { LogsAction } from '@shared/types/logs/logs-action.type';
 import { StorageBlock } from '@shared/types/storage/storage-block/storage-block.type';
 import { GithubVersion } from '@shared/types/github-version/github-version.type';
 import { StateMachine } from '@shared/types/state-machine/state-machine.type';
+import { SmartContractsState } from '@shared/types/smart-contracts/smart-contracts-state.type';
 
 export interface State {
   app: App;
@@ -72,6 +74,7 @@ export interface State {
   githubVersion: GithubVersion;
   resources: ResourcesState;
   stateMachine: StateMachine;
+  smartContracts: SmartContractsState;
 }
 
 // state
@@ -99,6 +102,7 @@ export const reducers: ActionReducerMap<State> = {
   resources: fromResource.reducer,
   error: fromError.reducer,
   stateMachine: fromStateMachine.reducer,
+  smartContracts: fromSmartContracts.reducer,
 };
 
 // // log all actions to console for production

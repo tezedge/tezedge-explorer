@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { State } from '@app/app.reducers';
-import { selectStateMachine } from '../state-machine/state-machine.reducer';
+import { selectStateMachine } from '@state-machine/state-machine/state-machine.reducer';
 import { Observable } from 'rxjs';
 import { StateMachineProposal } from '@shared/types/state-machine/state-machine-proposal.type';
 import {
@@ -9,7 +9,7 @@ import {
   StateMachineSetActiveProposal,
   StateMachineStartPlaying,
   StateMachineStopPlaying
-} from '../state-machine/state-machine.actions';
+} from '@state-machine/state-machine/state-machine.actions';
 import { StateMachine } from '@shared/types/state-machine/state-machine.type';
 
 @Component({

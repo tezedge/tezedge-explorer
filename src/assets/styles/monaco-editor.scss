@@ -1,0 +1,28 @@
+.editor-container {
+  height: 100% !important;
+
+  .monaco-editor {
+    .editor-scrollable {
+      .scrollbar {
+        .slider {
+          background: rgba(255, 255, 255, 0.1) !important;
+
+          &:hover {
+            background: rgba(255, 255, 255, 0.4) !important;
+          }
+        }
+      }
+
+      .view-overlays {
+        > div.breakpoint-line {
+          background-color: rgba(194, 58, 79, 0.49);
+        }
+      }
+    }
+  }
+}
+
+.debugging-highlight {
+  background-color: rgba(194, 58, 79, 0.49);
+  color: white !important;
+}

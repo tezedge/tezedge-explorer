@@ -6,6 +6,7 @@ import { StateMachineProposal } from '@shared/types/state-machine/state-machine-
 
 // @ts-ignore
 import * as serverData from './state-machine.json';
+import { delay } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -17,7 +18,7 @@ export class StateMachineService {
   constructor(private http: HttpClient) { }
 
   getStateMachineDiagram(): Observable<StateMachineDiagramBlock[]> {
-    return of(this.data);
+    return of(this.data).pipe(delay(50));
   }
 
   getStateMachineProposals(): Observable<StateMachineProposal[]> {

@@ -1,0 +1,17 @@
+<div fxFlex="440px" class="font-12 h-100 padding-right-10">
+  <div class="row text-white-7">
+    <span>ID</span>
+    <span>CONTRACT</span>
+    <span>CALLS</span>
+  </div>
+  <div class="contracts-table overflow-auto">
+    <div *ngFor="let contract of contractList"
+         (click)="selectContract(contract)"
+         [class.active]="activeContract === contract"
+         class="action row pointer">
+      <span class="text-white-6">{{ contract.id }}</span>
+      <span class="text-white">{{ contract.hash }}</span>
+      <span class="text-white">{{ contract.calls }}</span>
+    </div>
+  </div>
+</div>

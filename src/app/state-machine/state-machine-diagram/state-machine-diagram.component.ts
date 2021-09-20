@@ -2,7 +2,7 @@ import { AfterViewInit, ChangeDetectionStrategy, Component, ElementRef, HostList
 import { StateMachineDiagramBlock } from '@shared/types/state-machine/state-machine-diagram-block.type';
 import { select, Store } from '@ngrx/store';
 import { State } from '@app/app.reducers';
-import { selectStateMachineDiagram } from '../state-machine/state-machine.reducer';
+import { selectStateMachineDiagram } from '@state-machine/state-machine/state-machine.reducer';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { appState } from '@app/app.reducer';
 import { delay, filter } from 'rxjs/operators';
@@ -46,6 +46,7 @@ export class StateMachineDiagramComponent implements AfterViewInit {
     this.store.select(selectStateMachineDiagram)
       .pipe(
         untilDestroyed(this),
+        filter(d => !!d.length),
         // TODO: remove this
         filter(() => !this.isLoaded)
       )

@@ -22,6 +22,7 @@
     ],
     "paths": {
       "@app/*": ["src/app/*"],
+      "@core/*": ["src/app/core/*"],
       "@chain/*": ["src/app/chain/*"],
       "@endpoints/*": ["src/app/endpoints/*"],
       "@logs/*": ["src/app/logs/*"],
@@ -32,6 +33,7 @@
       "@resources/*": ["src/app/resources/*"],
       "@sandbox/*": ["src/app/sandbox/*"],
       "@settings/*": ["src/app/layout/settings-node/*"],
+      "@smart-contracts/*": ["src/app/smart-contracts/*"],
       "@state-machine/*": ["src/app/state-machine/*"],
       "@storage/*": ["src/app/storage/*"],
       "@wallets/*": ["src/app/wallets/*"],

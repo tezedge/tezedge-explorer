@@ -26,7 +26,7 @@ context('GITHUB VERSION', () => {
         if (!nodeName.text().includes('octez')) {
           cy.get('@getNodeTagRequest').its('response.statusCode').should('eq', 200)
             .then(() => {
-              cy.get('.node-tag-number-and-icon')
+              cy.get('.node-tag-number .pointer-none')
                 .should(($element) => {
                   expect($element.text().trim()).to.equal(nodeTag);
                 });

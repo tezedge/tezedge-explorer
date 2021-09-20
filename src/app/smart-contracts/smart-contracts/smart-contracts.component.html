@@ -1,0 +1,113 @@
+<div class="h-100 overflow-hidden" fxLayout="column">
+  <div fxFlex="34px" class="actions-row border-bottom d-flex">
+    <button class="primary-button border-rad-2 d-flex align-center pointer margin-right-5">
+      <mat-icon svgIcon="magnifying-glass" class="icon-14 icon-white"></mat-icon>
+    </button>
+    <button class="primary-button border-rad-2 d-flex align-center pointer text-white font-600 font-12">
+      <mat-icon svgIcon="filter" class="icon-12 icon-white margin-right-5"></mat-icon>
+      ADD FILTER
+    </button>
+  </div>
+  <div fxFlex="1 1 auto" class="overflow-hidden">
+    <app-smart-contracts-table fxFlex="440px"></app-smart-contracts-table>
+    <div fxFlex="1 1 auto" class="d-flex flex-column">
+      <div class="d-flex flex-column">
+        <div fxFlex="32px" class="d-flex align-center font-12">
+          <span class="text-white margin-right-10">CONTRACT DETAIL</span>
+          <mat-icon svgIcon="chevron-right" class="icon-12 icon-white-4"></mat-icon>
+          <span class="text-white-4 margin-left-10">{{ activeContract.hash }}</span>
+        </div>
+        <div class="debugger-inspect font-12 d-flex flex-column border border-rad-2">
+          <div class="text-white-4 padding-10">DEBUG</div>
+          <div class="d-flex align-center text-white-4 font-12 padding-left-10">
+            <button mat-icon-button class="square-button d-flex align-center flex-center"
+                    matTooltip="Start debugger"
+                    (click)="startDebugger()">
+              <mat-icon svgIcon="play" class="icon-12 d-flex"></mat-icon>
+            </button>
+            <button mat-icon-button class="square-button d-flex align-center flex-center"
+                    matTooltip="Stop debugger" [disabled]="!debugConfig.currentStep"
+                    (click)="stopDebugger()">
+              <mat-icon [class.icon-white-4]="!debugConfig.currentStep" class="icon-12 d-flex"
+                        svgIcon="stop"></mat-icon>
+            </button>
+            <span class="margin-left-10 margin-right-5">Steps</span>
+            <button mat-icon-button class="square-button d-flex align-center flex-center"
+                    matTooltip="Step" [disabled]="!debugConfig.nextStep"
+                    (click)="nextStep()">
+              <mat-icon [class.icon-white-4]="!debugConfig.nextStep" class="icon-8 d-flex"
+                        svgIcon="greater-than"></mat-icon>
+            </button>
+            <button mat-icon-button class="square-button d-flex align-center flex-center"
+                    matTooltip="Step into" [disabled]="!debugConfig.stepIn"
+                    (click)="stepIn()">
+              <mat-icon [class.icon-white-4]="!debugConfig.stepIn" class="icon-12 d-flex"
+                        svgIcon="arrow-bottom"></mat-icon>
+            </button>
+            <button mat-icon-button class="square-button d-flex align-center flex-center"
+                    matTooltip="Step out" [disabled]="!debugConfig.stepOut"
+                    (click)="stepOut()">
+              <mat-icon [class.icon-white-4]="!debugConfig.stepOut"
+                        class="icon-12 d-flex"
+                        svgIcon="level-up"></mat-icon>
+            </button>
+            <span class="margin-left-10 margin-right-5">Breakp.</span>
+            <button mat-icon-button class="square-button d-flex align-center flex-center"
+                    matTooltip="Jump to previous breakpoint">
+              <mat-icon svgIcon="arrow-left-stop" class="icon-12 d-flex"></mat-icon>
+            </button>
+            <button mat-icon-button class="square-button d-flex align-center flex-center"
+                    matTooltip="Jump to next breakpoint">
+              <mat-icon svgIcon="arrow-right-stop" class="icon-12 d-flex"></mat-icon>
+            </button>
+            <span *ngIf="debugConfig.currentStep"
+                  class="margin-left-10 margin-right-5">Gas
+              <span class="text-white">{{ debugConfig.currentStep.gas }}</span>
+            </span>
+          </div>
+          <div class="padding-10 d-flex">
+            <div fxFlex="50" class="stack-representation border-rad-2 padding-5 margin-right-5">
+              <span class="text-white-7">Before</span>
+              <div class="margin-top-5 border-rad-2">
+                <div class="stack-row padding-left-8"
+                     *ngFor="let n of [0,1,2]">
+                  <span class="text-white-7">{{ n }}</span>
+                  <span class="truncate text-white">{{ debugConfig.previousStep?.stack[n]?.item }}</span>
+                  <span class="truncate text-white-7">{{ debugConfig.previousStep?.stack[n]?.annot }}</span>
+                </div>
+              </div>
+            </div>
+            <div fxFlex="50" class="stack-representation border-rad-2 padding-5 margin-left-5">
+              <span class="text-white-7">After</span>
+              <div class="margin-top-5 border-rad-2">
+                <div class="stack-row padding-left-8"
+                     *ngFor="let n of [0,1,2]">
+                  <span class="text-white-7">{{ n }}</span>
+                  <span class="truncate text-white">{{ debugConfig.currentStep?.stack[n]?.item }}</span>
+                  <span class="truncate text-white-7">{{ debugConfig.currentStep?.stack[n]?.annot }}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div fxFlex="1 1 auto" class="p-relative border border-rad-2 margin-top-10">
+        <div class="breakpoint-list p-absolute">
+          <div class="bullet"
+               (click)="toggleBreakpoint(i)"
+               [class.active]="breakpointList.includes(i)"
+               *ngFor="let line of contract.code.split('\n'); let i=index"></div>
+        </div>
+
+        <div class="text-white-4 padding-10 font-12">SOURCE CODE
+          <span *ngIf="debugConfig.currentStep !== undefined">- <span class="text-white">DEBUGGING</span></span>
+        </div>
+
+        <ngx-monaco-editor [options]="editorOptions"
+                           (onInit)="onEditorInit($event)"
+                           [ngModel]="contract.code"></ngx-monaco-editor>
+      </div>
+
+    </div>
+  </div>
+</div>

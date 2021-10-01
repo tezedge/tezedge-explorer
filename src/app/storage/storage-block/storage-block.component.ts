@@ -73,7 +73,8 @@ export class StorageBlockComponent implements OnInit, OnDestroy {
       this.store.dispatch({ type: 'STORAGE_BLOCK_NEIGHBOUR_BLOCK_DETAILS', payload: { neighbourIndex: -1 } });
     }
     const hoverIndex = Array.from(this.vsContainer.nativeElement.children).findIndex(entry => entry.classList.contains('hover'));
-    if (hoverIndex < 33) {
+    const offsetScrollElements = 5; // same as in vsFor
+    if (hoverIndex < offsetScrollElements + 3) {
       this.vsContainer.nativeElement.scrollBy({ top: -150, behavior: 'smooth' });
     }
   }

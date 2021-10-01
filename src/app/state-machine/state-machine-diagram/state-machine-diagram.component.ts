@@ -1,14 +1,26 @@
-import { AfterViewInit, ChangeDetectionStrategy, Component, ElementRef, HostListener, NgZone, ViewChild } from '@angular/core';
+import { AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, HostListener, NgZone, ViewChild } from '@angular/core';
 import { StateMachineDiagramBlock } from '@shared/types/state-machine/state-machine-diagram-block.type';
 import { select, Store } from '@ngrx/store';
 import { State } from '@app/app.reducers';
-import { selectStateMachineDiagram } from '@state-machine/state-machine/state-machine.reducer';
+import { selectStateMachine, selectStateMachineDiagram } from '@state-machine/state-machine/state-machine.reducer';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { appState } from '@app/app.reducer';
-import { delay, filter } from 'rxjs/operators';
+import { debounceTime, delay, filter, mergeMap, skip, throttleTime } from 'rxjs/operators';
 import * as d3 from 'd3';
 import { curveBasis } from 'd3';
 import * as dagreD3 from 'dagre-d3';
+import { StateMachineAction } from '@shared/types/state-machine/state-machine-action.type';
+import {
+  StateMachineActionsStopStream,
+  StateMachineActionTypes, StateMachineCollapseDiagram,
+  StateMachineSetActiveAction,
+  StateMachineStartPlaying,
+  StateMachineStopPlaying
+} from '@state-machine/state-machine/state-machine.actions';
+import { StateMachine } from '@shared/types/state-machine/state-machine.type';
+import { FormControl } from '@angular/forms';
+import { StateMachineActionTableAutoscrollType } from '@shared/types/state-machine/state-machine-action-table.type';
+import { of } from 'rxjs';
 
 @UntilDestroy()
 @Component({
@@ -21,18 +33,87 @@ export class StateMachineDiagramComponent implements AfterViewInit {
 
   @ViewChild('d3Diagram', { static: true }) private d3Diagram: ElementRef<HTMLDivElement>;
 
+  stateMachine: StateMachine;
+  formControl: FormControl;
+
   private g: any;
   private svg: any;
   private svgGroup: any;
   private diagram: StateMachineDiagramBlock[];
+  private collapsedDiagram: boolean;
 
-  private isLoaded: boolean;
-
-  constructor(private store: Store<State>,
+  constructor(private cdRef: ChangeDetectorRef,
+              private store: Store<State>,
               private zone: NgZone) { }
 
   ngAfterViewInit(): void {
+    this.formControl = new FormControl();
+    this.formControl.valueChanges
+      .pipe(
+        untilDestroyed(this),
+        debounceTime(200)
+      )
+      .subscribe(value => {
+        this.pausePlaying();
+        this.selectAction(this.stateMachine.actionTable.entities[value], 'any');
+      });
+
+    this.store.select(selectStateMachine)
+      .pipe(untilDestroyed(this))
+      .subscribe(state => {
+        this.stateMachine = state;
+        this.cdRef.detectChanges();
+      });
+
     this.listenToDiagramChange();
+  }
+
+  selectPrevAction(): void {
+    this.selectAction(this.stateMachine.actionTable.entities[this.stateMachine.activeAction.id - 1], 'up');
+    this.pausePlaying();
+  }
+
+  selectNextAction(): void {
+    this.selectAction(this.stateMachine.actionTable.entities[this.stateMachine.activeAction.id + 1], 'down');
+    this.pausePlaying();
+  }
+
+  private pausePlaying(): void {
+    if (this.stateMachine.isPlaying) {
+      this.store.dispatch<StateMachineStopPlaying>({ type: StateMachineActionTypes.STATE_MACHINE_PAUSE_PLAYING });
+    }
+  }
+
+  togglePlayPause(): void {
+    if (this.stateMachine.isPlaying) {
+      this.pausePlaying();
+    } else {
+      if (this.stateMachine.actionTable.stream) {
+        this.store.dispatch<StateMachineActionsStopStream>({ type: StateMachineActionTypes.STATE_MACHINE_ACTIONS_STOP_STEAM });
+      }
+      this.store.dispatch<StateMachineStartPlaying>({ type: StateMachineActionTypes.STATE_MACHINE_START_PLAYING });
+    }
+  }
+
+  selectAction(action: StateMachineAction, autoScroll: StateMachineActionTableAutoscrollType): void {
+    if (this.stateMachine.activeAction !== action) {
+      this.store.dispatch<StateMachineSetActiveAction>({
+        type: StateMachineActionTypes.STATE_MACHINE_SET_ACTIVE_ACTION,
+        payload: { action, autoScroll }
+      });
+      if (this.stateMachine.actionTable.stream) {
+        this.store.dispatch<StateMachineActionsStopStream>({
+          type: StateMachineActionTypes.STATE_MACHINE_ACTIONS_STOP_STEAM
+        });
+      }
+    }
+  }
+
+  toggleDiagramCollapsing(): void {
+    this.pausePlaying();
+    this.store.dispatch<StateMachineCollapseDiagram>({
+      type: StateMachineActionTypes.STATE_MACHINE_COLLAPSE_DIAGRAM
+    });
   }
 
   private listenToDiagramChange(): void {
@@ -42,24 +123,27 @@ export class StateMachineDiagramComponent implements AfterViewInit {
         .setDefaultEdgeLabel(() => ({}));
       this.g.graph().rankDir = 'LR';
     });
-
-    this.store.select(selectStateMachineDiagram)
+    this.store.select(selectStateMachine)
       .pipe(
         untilDestroyed(this),
-        filter(d => !!d.length),
-        // TODO: remove this
-        filter(() => !this.isLoaded)
+        filter(state => this.diagram !== state.diagramBlocks && !!state.diagramBlocks.length && this.collapsedDiagram !== state.collapsedDiagram && !state.collapsedDiagram),
+        mergeMap(state =>
+          of(state).pipe(delay(state.collapsedDiagram !== this.collapsedDiagram ? 250 : 0))
+        )
       )
-      .subscribe((diagram: StateMachineDiagramBlock[]) => {
-        this.diagram = diagram;
+      .subscribe((state: StateMachine) => {
+        console.log('generate');
+        console.log('delay:', !state.collapsedDiagram && this.collapsedDiagram ? 250 : 0);
+        this.diagram = state.diagramBlocks;
+        this.collapsedDiagram = state.collapsedDiagram;
         this.generateDiagram();
-        this.isLoaded = true;
       });
 
     this.store.pipe(
       untilDestroyed(this),
       select(appState),
-      delay(400)
+      delay(400),
+      skip(1)
     ).subscribe(() => this.generateDiagram());
   }
 

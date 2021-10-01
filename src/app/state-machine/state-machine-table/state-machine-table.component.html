@@ -1,85 +1,77 @@
-<ng-container *ngIf="stateMachine$ | async as stateMachine">
-  <div class="player-wrapper d-flex flex-row align-center border-rad-4 margin-left-10 margin-right-10">
-    <div class="play-pause border-rad-4 d-flex align-center flex-center margin-right-10 pointer"
-         (click)="togglePlayPause(stateMachine.isPlaying)">
-      <mat-icon [svgIcon]="stateMachine.isPlaying ? 'pause' : 'play'"
-                class="icon-14"></mat-icon>
+<div *ngIf="stateMachine"
+     class="table-wrapper font-12 h-100 p-relative border-right">
+  <div class="table-virtual-scroll h-100 d-flex flex-column">
+
+    <div class="table-virtual-scroll-header state-machine-header border-remove">
+      <span>ID</span>
+      <span>ACTION</span>
     </div>
-    <mat-slider class="proposals-slider flex-grow"
-                [min]="0"
-                [max]="stateMachine.proposals.length - 1"
-                [step]="1"
-                (input)="selectProposal(stateMachine.proposals[$event.value])"
-                [value]="stateMachine.activeProposalPosition"></mat-slider>
-    <button class="play-pause arrows border-rad-4 d-flex align-center flex-center margin-left-10 pointer"
-            [disabled]="stateMachine.activeProposalPosition === 0"
-            (click)="selectPrevProposal(stateMachine.proposals, stateMachine.activeProposal)">
-      <mat-icon [class.icon-white-4]="stateMachine.activeProposalPosition === 0"
-                svgIcon="less-than"></mat-icon>
-    </button>
-    <button class="play-pause arrows border-rad-4 d-flex align-center flex-center pointer"
-            [disabled]="stateMachine.activeProposalPosition === stateMachine.proposals.length - 1"
-            (click)="selectNextProposal(stateMachine.proposals, stateMachine.activeProposal)">
-      <mat-icon [class.icon-white-4]="stateMachine.activeProposalPosition === stateMachine.proposals.length - 1"
-                svgIcon="greater-than"></mat-icon>
-    </button>
-  </div>
-  <div class="table-wrapper"
-       fxLayout.gt-sm="row"
-       fxLayout.lt-md="column">
-    <div class="font-12"
-         fxFlex.gt-sm="60%"
-         fxFlex.lt-md="60%">
-      <div class="row text-white-7">
-        <span>DATETIME</span>
-        <span>PROPOSAL</span>
-      </div>
-      <div #tableContainer
-           class="state-table overflow-auto">
-        <div *ngFor="let proposal of stateMachine.proposals"
-             (click)="selectProposal(proposal)"
-             [class.active]="stateMachine.activeProposal === proposal"
-             class="action row">
-          <span class="text-white-7">{{ proposal.timestamp | date: 'HH:mm:ss.SSS, dd MMM yy'}}</span>
-          <span class="text-white">{{ proposal.title }}</span>
-        </div>
+
+    <div class="table-virtual-scroll-body">
+      <div #vsContainer class="virtual-scroll-container state-table h-100 w-100"
+           (mousewheel)="pausePlaying()">
+        <ng-template vsFor
+                     let-event
+                     let-position="position"
+                     [vsForOf]="stateMachine.actionTable"
+                     [initialSelectedIndex]="forceScrollActionIndex"
+                     (getItems)="getItems($event)"
+                     (startStopDataStream)="startStopDataStream($event)">
+          <span class="virtualScrollRow state-machine-row"
+                [style.transform]="position !== undefined ? 'translateY(' + position + 'px)' : ''"
+                [class.virtualScrollRowEven]="event?.index % 2"
+                (click)="selectAction(event)"
+                [class.hover]="stateMachine.activeAction?.originalId === event?.originalId">
+            <span class="text-white-7">{{ event?.originalId }}</span>
+            <span class="text-white">{{ event?.type }}</span>
+          </span>
+        </ng-template>
       </div>
     </div>
-    <div fxFlex.gt-sm="40%"
-         fxFlex.lt-md="40%"
-         class="payload-view font-12 border-left d-flex flex-column">
-      <div class="detail text-white-7 padding-left-10"
-           fxFlex.md="32px">DETAIL
-      </div>
-      <div class="d-flex flex-column"
-           fxFlex="calc(100% - 32px)">
-        <div class="padding-10 padding-top-remove"
-             fxFlex.gt-sm="45%"
-             fxHide.lt-md>
-          <div class="border w-100 h-100 padding-top-10 padding-left-10 d-flex flex-column">
-            <span class="text-white-4">HANDSHAKING</span>
-            <div class="diagram-list margin-top-10 overflow-y-auto overflow-x-hidden">
-              <div class="block-step text-white-4 overflow-visible"
-                   [class.error]="block.type === 'error'"
-                   *ngFor="let block of stateMachine.diagramBlocks.slice(0, stateMachine.activeProposalPosition + 1).reverse()">
-                <span class="truncate">{{ block.title }}</span>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="padding-10 padding-top-remove"
-             fxFlex.gt-sm="55%"
-             fxFlex.lt-md="100%">
-          <div class="border w-100 h-100 padding-top-10 padding-left-10 d-flex flex-column">
-            <span class="text-white">JSON</span>
-            <div class="overflow-auto">
-              <ngx-json-viewer class="margin-top-10 d-block"
-                               [json]="stateMachine.activeProposal?.payload || {}"
-                               [expanded]="true"></ngx-json-viewer>
-            </div>
-          </div>
-        </div>
-      </div>
+    <div class="d-flex table-virtual-scroll-footer align-center" fxFlex="40px">
+      <button class="square-button d-flex flex-center align-center"
+              mat-icon-button matTooltip="Scroll to bottom"
+              (click)="scrollStart()">
+        <mat-icon svgIcon="arrow-bottom" class="icon-12 d-flex"></mat-icon>
+      </button>
+      <button class="rectangle-button start-stream d-flex flex-center align-center text-white border-remove"
+              mat-icon-button matTooltip="Start Streaming"
+              [class.inactive]="!stateMachine.actionTable.stream"
+              (click)="scrollStart()">
+        <mat-icon svgIcon="play-circle" class="icon-14 margin-right-5"></mat-icon>
+        <span>LIVE</span>
+      </button>
+      <button class="rectangle-button stop-stream d-flex flex-center align-center"
+              mat-icon-button matTooltip="Stop Streaming"
+              [class.inactive]="stateMachine.actionTable.stream"
+              (click)="scrollStop()">
+        <mat-icon svgIcon="pause-circle" class="icon-14 margin-right-5"></mat-icon>
+        <span>PAUSED</span>
+      </button>
+      <button class="square-button d-flex align-center"
+              id="firstPage" matTooltip="First Page"
+              (click)="loadFirstPage()"
+              [disabled]="stateMachine.actionTable.activePage.id === pageSize">
+        <mat-icon svgIcon="arrow-left-stop" class="icon-16"></mat-icon>
+      </button>
+      <button class="square-button d-flex align-center flex-center"
+              id="previousPage" matTooltip="Previous Page"
+              (click)="loadPreviousPage()"
+              [disabled]="stateMachine.actionTable.activePage.id === pageSize">
+        <mat-icon svgIcon="less-than" class="icon-8 d-flex"></mat-icon>
+      </button>
+      <button class="square-button d-flex align-center flex-center"
+              id="nextPage" matTooltip="Next Page"
+              (click)="loadNextPage()"
+              [disabled]="!stateMachine.actionTable.pages.length || stateMachine.actionTable.activePage.id == stateMachine.actionTable.pages[stateMachine.actionTable.pages.length - 1]">
+        <mat-icon svgIcon="greater-than" class="icon-8 d-flex"></mat-icon>
+      </button>
+      <button class="square-button d-flex align-center"
+              id="lastPage" matTooltip="Last Page"
+              (click)="loadLastPage()"
+              [disabled]="!stateMachine.actionTable.pages.length || stateMachine.actionTable.activePage.id === stateMachine.actionTable.pages[stateMachine.actionTable.pages.length - 1]">
+        <mat-icon svgIcon="arrow-right-stop" class="icon-16"></mat-icon>
+      </button>
     </div>
   </div>
-</ng-container>
+</div>

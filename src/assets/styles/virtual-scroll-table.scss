@@ -22,6 +22,10 @@
   height: 36px;
   line-height: 35px;
 
+  &.state-machine-header {
+    grid-template-columns: 140px 200px;
+  }
+
   &.logs-header {
     grid-template-columns: 180px 80px 1fr;
   }
@@ -285,6 +289,10 @@
 
     &:not(:disabled) {
       cursor: pointer;
+
+      &:hover {
+        background: rgba(255, 255, 255, 0.2);
+      }
     }
   }
 
@@ -305,10 +313,10 @@
     &.inactive {
       background-color: transparent;
       opacity: .5;
-    }
 
-    &:hover {
-      background-color: rgba(255, 255, 255, 0.2);
+      &:hover {
+        background-color: rgba(255, 255, 255, 0.2);
+      }
     }
   }
 
@@ -329,6 +337,10 @@
   cursor: pointer;
   transform: translateZ(0);
   -webkit-transform: translateZ(0);
+
+  &.state-machine-row {
+    grid-template-columns: 140px 200px;
+  }
 
   &.logs-row {
     grid-template-columns: 180px 80px 1fr;

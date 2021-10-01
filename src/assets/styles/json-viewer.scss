@@ -1,0 +1,25 @@
+ngx-json-viewer .segment .segment-main .segment-key {
+  color: $color-json-field !important;
+}
+
+.ngx-json-viewer {
+  font-family: Roboto, "Helvetica Neue", sans-serif !important;
+  font-size: 14px !important;
+
+  .segment-value {
+    word-break: break-all;
+  }
+
+  .segment-type-null > .segment-main > .segment-value {
+    color: #00af9f !important;
+    background-color: unset !important;
+  }
+}
+
+.ngx-json-viewer .segment .segment-main .toggler::after {
+  font-size: 10px !important;
+}
+
+.state-json-viewer > section {
+  overflow: auto;
+}

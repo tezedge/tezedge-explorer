@@ -1,23 +1,24 @@
-<div class="state-machine d-flex flex-column h-100">
-  <div fxFlex="40px" class="border-bottom tabs d-flex align-center font-12">
-    <div *ngFor="let tab of tabs"
-         (click)="activeTab = tab"
-         class="text-white-7 margin-right-10 pointer"
-         [class.active]="activeTab === tab">
-      {{ tab }}
-    </div>
-  </div>
-  <div fxFlex.gt-sm="calc(100% - 40px)"
-       fxFlex.xs="calc(100% - 40px)"
-       class="d-flex flex-column overflow-hidden">
-    <div fxFlex.gt-sm="calc(100% - 400px)"
-         fxFlex.xs="calc(100% - 500px)"
-         class="overflow-hidden padding-10">
-      <app-state-machine-diagram></app-state-machine-diagram>
-    </div>
-    <div fxFlex.gt-sm="400px"
-         fxFlex.xs="500px">
-      <app-state-machine-table></app-state-machine-table>
+<div class="state-machine w-100 overflow-hidden">
+  <!--  <div fxFlex="40px" class="border-bottom tabs d-flex align-center font-12">-->
+  <!--    <div *ngFor="let tab of tabs"-->
+  <!--         (click)="activeTab = tab"-->
+  <!--         class="text-white-7 margin-right-10 pointer"-->
+  <!--         [class.active]="activeTab === tab">-->
+  <!--      {{ tab }}-->
+  <!--    </div>-->
+  <!--  </div>-->
+  <div class="d-flex h-100">
+    <div class="d-flex flex-column w-100 flex-between" *ngIf="state$ | async as stateMachine">
+      <div [fxFlex]="stateMachine.collapsedDiagram ? '32px' : '40%'" class="padding-left-10 padding-bottom-10 upper-container">
+        <app-state-machine-diagram class="d-flex flex-column h-100"></app-state-machine-diagram>
+      </div>
+      <div [fxFlex]="stateMachine.collapsedDiagram ? 'calc(100% - 40px)' : '60%'"
+           fxLayout.gt-sm="row" fxLayout.lt-md="column" class="border-top bottom-container">
+        <app-state-machine-table fxFlex.gt-sm="480px" fxFlex.lt-md="50%"></app-state-machine-table>
+        <div fxFlex.gt-sm="calc(100% - 480px)" fxFlex.lt-md="50%">
+          <app-state-machine-action-details></app-state-machine-action-details>
+        </div>
+      </div>
     </div>
   </div>
 </div>

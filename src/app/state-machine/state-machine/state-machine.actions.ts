@@ -1,16 +1,33 @@
 import { Action } from '@ngrx/store';
 import { StateMachineDiagramBlock } from '@shared/types/state-machine/state-machine-diagram-block.type';
-import { StateMachineProposal } from '@shared/types/state-machine/state-machine-proposal.type';
+import { StateMachineAction } from '@shared/types/state-machine/state-machine-action.type';
+import { StateMachineActionsFilter } from '@shared/types/state-machine/state-machine-actions-filter.type';
+import { StateMachineActionTableAutoscrollType } from '@shared/types/state-machine/state-machine-action-table.type';
 
 export enum StateMachineActionTypes {
+  STATE_MACHINE_STATE_LOAD = 'STATE_MACHINE_STATE_LOAD',
+  STATE_MACHINE_STATE_LOAD_SUCCESS = 'STATE_MACHINE_STATE_LOAD_SUCCESS',
   STATE_MACHINE_DIAGRAM_LOAD = 'STATE_MACHINE_DIAGRAM_LOAD',
   STATE_MACHINE_DIAGRAM_LOAD_SUCCESS = 'STATE_MACHINE_DIAGRAM_LOAD_SUCCESS',
-  STATE_MACHINE_PROPOSALS_LOAD = 'STATE_MACHINE_PROPOSALS_LOAD',
-  STATE_MACHINE_PROPOSALS_LOAD_SUCCESS = 'STATE_MACHINE_PROPOSALS_LOAD_SUCCESS',
-  STATE_MACHINE_SET_ACTIVE_PROPOSAL = 'STATE_MACHINE_SET_ACTIVE_PROPOSAL',
-  STATE_MACHINE_STOP_PLAYING = 'STATE_MACHINE_STOP_PLAYING',
+  STATE_MACHINE_ACTIONS_LOAD = 'STATE_MACHINE_ACTIONS_LOAD',
+  STATE_MACHINE_ACTIONS_LOAD_SUCCESS = 'STATE_MACHINE_ACTIONS_LOAD_SUCCESS',
+  STATE_MACHINE_SET_ACTIVE_ACTION = 'STATE_MACHINE_SET_ACTIVE_ACTION',
+  STATE_MACHINE_PAUSE_PLAYING = 'STATE_MACHINE_PAUSE_PLAYING',
   STATE_MACHINE_START_PLAYING = 'STATE_MACHINE_START_PLAYING',
   STATE_MACHINE_CLOSE = 'STATE_MACHINE_CLOSE',
+  STATE_MACHINE_ACTIONS_STOP_STEAM = 'STATE_MACHINE_ACTIONS_STOP_STEAM',
+  STATE_MACHINE_ACTIONS_FILTER_LOAD = 'STATE_MACHINE_ACTIONS_FILTER_LOAD',
+  STATE_MACHINE_COLLAPSE_DIAGRAM = 'STATE_MACHINE_COLLAPSE_DIAGRAM',
+}
+
+export class StateMachineStateLoad implements Action {
+  readonly type = StateMachineActionTypes.STATE_MACHINE_STATE_LOAD;
+}
+
+export class StateMachineStateLoadSuccess implements Action {
+  readonly type = StateMachineActionTypes.STATE_MACHINE_STATE_LOAD_SUCCESS;
+
+  constructor(public payload: any) { }
 }
 
 export class StateMachineDiagramLoad implements Action {
@@ -25,42 +42,59 @@ export class StateMachineDiagramLoadSuccess implements Action {
   constructor(public payload: StateMachineDiagramBlock[]) { }
 }
 
-export class StateMachineProposalsLoad implements Action {
-  readonly type = StateMachineActionTypes.STATE_MACHINE_PROPOSALS_LOAD;
-
-  constructor(public payload: any) { }
+export class StateMachineActionsLoad implements Action {
+  readonly type = StateMachineActionTypes.STATE_MACHINE_ACTIONS_LOAD;
 }
 
-export class StateMachineProposalsLoadSuccess implements Action {
-  readonly type = StateMachineActionTypes.STATE_MACHINE_PROPOSALS_LOAD_SUCCESS;
+export class StateMachineActionsLoadSuccess implements Action {
+  readonly type = StateMachineActionTypes.STATE_MACHINE_ACTIONS_LOAD_SUCCESS;
 
-  constructor(public payload: StateMachineProposal[]) { }
+  constructor(public payload: StateMachineAction[]) { }
 }
 
-export class StateMachineSetActiveProposal implements Action {
-  readonly type = StateMachineActionTypes.STATE_MACHINE_SET_ACTIVE_PROPOSAL;
+export class StateMachineFilterActions implements Action {
+  readonly type = StateMachineActionTypes.STATE_MACHINE_ACTIONS_FILTER_LOAD;
 
-  constructor(public payload: StateMachineProposal) { }
+  constructor(public payload: StateMachineActionsFilter) { }
+}
+
+export class StateMachineSetActiveAction implements Action {
+  readonly type = StateMachineActionTypes.STATE_MACHINE_SET_ACTIVE_ACTION;
+
+  constructor(public payload: { action: StateMachineAction, autoScroll?: StateMachineActionTableAutoscrollType }) { }
 }
 
 export class StateMachineStopPlaying implements Action {
-  readonly type = StateMachineActionTypes.STATE_MACHINE_STOP_PLAYING;
+  readonly type = StateMachineActionTypes.STATE_MACHINE_PAUSE_PLAYING;
 }
 
 export class StateMachineStartPlaying implements Action {
   readonly type = StateMachineActionTypes.STATE_MACHINE_START_PLAYING;
 }
 
+export class StateMachineActionsStopStream implements Action {
+  readonly type = StateMachineActionTypes.STATE_MACHINE_ACTIONS_STOP_STEAM;
+}
+
+export class StateMachineCollapseDiagram implements Action {
+  readonly type = StateMachineActionTypes.STATE_MACHINE_COLLAPSE_DIAGRAM;
+}
+
 export class StateMachineClose implements Action {
   readonly type = StateMachineActionTypes.STATE_MACHINE_CLOSE;
 }
 
-export type StateMachineActions = StateMachineDiagramLoad
+export type StateMachineActions = StateMachineStateLoad
+  | StateMachineStateLoadSuccess
+  | StateMachineDiagramLoad
   | StateMachineDiagramLoadSuccess
-  | StateMachineProposalsLoad
-  | StateMachineProposalsLoadSuccess
-  | StateMachineSetActiveProposal
+  | StateMachineActionsLoad
+  | StateMachineActionsLoadSuccess
+  | StateMachineFilterActions
+  | StateMachineSetActiveAction
   | StateMachineStopPlaying
   | StateMachineStartPlaying
+  | StateMachineActionsStopStream
+  | StateMachineCollapseDiagram
   | StateMachineClose
   ;

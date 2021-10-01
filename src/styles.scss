@@ -12,6 +12,8 @@
 @import 'assets/styles/notification';
 @import 'assets/styles/open-api';
 @import 'assets/styles/monaco-editor';
+@import 'assets/styles/diff-tool';
+@import 'assets/styles/json-viewer';
 
 html,
 body {
@@ -210,15 +212,6 @@ tr.mat-row {
   border-bottom: 1px solid $color-border;
   border-left: 1px solid $color-border;
   border-bottom-left-radius: 4px;
-}
-
-.ngx-json-viewer {
-  font-family: Roboto, "Helvetica Neue", sans-serif !important;
-  font-size: 14px !important;
-}
-
-.ngx-json-viewer .segment .segment-main .toggler::after {
-  font-size: 10px !important;
 }
 
 @media (max-width: 600px) {
@@ -717,15 +710,6 @@ mat-form-field input[type='number'] {
 
 .mat-drawer-content {
   overflow: initial !important;
-}
-
-/* ngx view */
-ngx-json-viewer .segment .segment-main .segment-key {
-  color: $color-json-field !important;
-}
-
-.segment-value {
-  word-break: break-all;
 }
 
 .logs-action-container {

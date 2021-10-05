@@ -245,7 +245,7 @@ export class VirtualScrollDirective implements AfterViewInit, OnDestroy, OnChang
 
   private createViewElements(): void {
     if (!this.viewContainer.length) {
-      const numberOfElements = (this.scrollPositionEnd - this.scrollPositionStart) + 1 - 1;
+      const numberOfElements = (this.scrollPositionEnd - this.scrollPositionStart) + 1;
       // Initialize viewContainer with all need views (rows)
       // console.warn(`[renderViewportItems] viewContainer init (${this.scrollPositionEnd - this.scrollPositionStart} views)`);
       for (let index = 0; index < numberOfElements; index++) {

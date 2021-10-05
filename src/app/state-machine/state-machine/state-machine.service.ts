@@ -24,6 +24,7 @@ export class StateMachineService {
       actions.forEach(action => {
         action.type = 'info';
         action.status = 'completed';
+        action.nextActions.sort((a, b) => a - b);
       });
       return actions;
     }));

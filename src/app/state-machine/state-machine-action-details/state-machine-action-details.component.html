@@ -25,9 +25,10 @@
     <!--        </div>-->
     <ng-container [ngSwitch]="activeTab">
       <div *ngSwitchCase="'CONTENT'">
-        <ngx-json-viewer *ngIf="currentAction.content"
+        <ngx-json-viewer *ngIf="currentAction.content; else noContent"
                          [json]="currentAction.content"
                          [expanded]="false"></ngx-json-viewer>
+        <ng-template #noContent>No content</ng-template>
       </div>
       <div *ngSwitchCase="'STATE'">
         <ngx-json-viewer [json]="currentAction.state"

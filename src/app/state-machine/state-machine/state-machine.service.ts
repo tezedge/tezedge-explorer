@@ -18,16 +18,12 @@ export class StateMachineService {
 
   constructor(private http: HttpClient) { }
 
-  getStateMachineState(): Observable<any> {
-    return this.http.get<any>('http://prod.tezedge.com:18732/state');
-  }
-
   getStateMachineDiagram(): Observable<StateMachineDiagramBlock[]> {
     return of(diagramStructure).pipe(delay(50));
   }
 
   getStateMachineActions(filter: StateMachineActionsFilter): Observable<StateMachineAction[]> {
-    const url = 'http://prod.tezedge.com:18732/actions' + this.buildParams(filter);
+    const url = 'http://prod.tezedge.com:18732/dev/shell/automaton/actions' + this.buildParams(filter);
     return this.http.get<StateMachineAction[]>(url);
   }
 

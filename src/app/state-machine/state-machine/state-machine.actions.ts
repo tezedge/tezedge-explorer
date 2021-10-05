@@ -5,8 +5,6 @@ import { StateMachineActionsFilter } from '@shared/types/state-machine/state-mac
 import { StateMachineActionTableAutoscrollType } from '@shared/types/state-machine/state-machine-action-table.type';
 
 export enum StateMachineActionTypes {
-  STATE_MACHINE_STATE_LOAD = 'STATE_MACHINE_STATE_LOAD',
-  STATE_MACHINE_STATE_LOAD_SUCCESS = 'STATE_MACHINE_STATE_LOAD_SUCCESS',
   STATE_MACHINE_DIAGRAM_LOAD = 'STATE_MACHINE_DIAGRAM_LOAD',
   STATE_MACHINE_DIAGRAM_LOAD_SUCCESS = 'STATE_MACHINE_DIAGRAM_LOAD_SUCCESS',
   STATE_MACHINE_ACTIONS_LOAD = 'STATE_MACHINE_ACTIONS_LOAD',
@@ -18,16 +16,7 @@ export enum StateMachineActionTypes {
   STATE_MACHINE_ACTIONS_STOP_STEAM = 'STATE_MACHINE_ACTIONS_STOP_STEAM',
   STATE_MACHINE_ACTIONS_FILTER_LOAD = 'STATE_MACHINE_ACTIONS_FILTER_LOAD',
   STATE_MACHINE_COLLAPSE_DIAGRAM = 'STATE_MACHINE_COLLAPSE_DIAGRAM',
-}
-
-export class StateMachineStateLoad implements Action {
-  readonly type = StateMachineActionTypes.STATE_MACHINE_STATE_LOAD;
-}
-
-export class StateMachineStateLoadSuccess implements Action {
-  readonly type = StateMachineActionTypes.STATE_MACHINE_STATE_LOAD_SUCCESS;
-
-  constructor(public payload: any) { }
+  STATE_MACHINE_RESIZE_DIAGRAM = 'STATE_MACHINE_RESIZE_DIAGRAM',
 }
 
 export class StateMachineDiagramLoad implements Action {
@@ -80,13 +69,17 @@ export class StateMachineCollapseDiagram implements Action {
   readonly type = StateMachineActionTypes.STATE_MACHINE_COLLAPSE_DIAGRAM;
 }
 
+export class StateMachineResizeDiagram implements Action {
+  readonly type = StateMachineActionTypes.STATE_MACHINE_RESIZE_DIAGRAM;
+
+  constructor(public payload: number) { }
+}
+
 export class StateMachineClose implements Action {
   readonly type = StateMachineActionTypes.STATE_MACHINE_CLOSE;
 }
 
-export type StateMachineActions = StateMachineStateLoad
-  | StateMachineStateLoadSuccess
-  | StateMachineDiagramLoad
+export type StateMachineActions = StateMachineDiagramLoad
   | StateMachineDiagramLoadSuccess
   | StateMachineActionsLoad
   | StateMachineActionsLoadSuccess
@@ -96,5 +89,6 @@ export type StateMachineActions = StateMachineStateLoad
   | StateMachineStartPlaying
   | StateMachineActionsStopStream
   | StateMachineCollapseDiagram
+  | StateMachineResizeDiagram
   | StateMachineClose
   ;

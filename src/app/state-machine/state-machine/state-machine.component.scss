@@ -25,11 +25,34 @@
 
   .bottom-container {
     background-color: #2A2A2E;
+    z-index: 1;
   }
 
   .bottom-container,
   .upper-container {
-    transition: ease-in 0.2s;
-    min-height: 0;
+    min-height: 10%;
+    max-height: 90%;
+  }
+
+  .bottom-container {
+    height: auto;
+
+    &.collapsed {
+      max-height: calc(100% - 32px);
+    }
+  }
+
+  .upper-container {
+    &.collapsed {
+      min-height: unset;
+    }
+
+    .resizer-element {
+      height: 5px;
+      width: 100%;
+      bottom: -3px;
+      cursor: row-resize;
+      z-index: 2;
+    }
   }
 }

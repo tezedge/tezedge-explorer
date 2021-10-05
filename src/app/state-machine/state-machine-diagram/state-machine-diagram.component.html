@@ -13,15 +13,15 @@
       <mat-icon [svgIcon]="stateMachine.isPlaying ? 'pause' : 'play'" class="icon-14"></mat-icon>
     </div>
     <button class="play-pause arrows border-rad-4 d-flex align-center flex-center margin-right-5 margin-left-5 pointer"
-            [disabled]="stateMachine.activeAction?.id === 0"
+            [disabled]="!stateMachine.activeAction || stateMachine.activeAction.id === 0"
             (click)="selectPrevAction()">
-      <mat-icon [class.icon-white-4]="stateMachine.activeAction?.id === 0"
+      <mat-icon [class.icon-white-4]="!stateMachine.activeAction || stateMachine.activeAction?.id === 0"
                 svgIcon="less-than"></mat-icon>
     </button>
     <button class="play-pause arrows border-rad-4 d-flex align-center flex-center margin-right-10 pointer"
-            [disabled]="stateMachine.activeAction?.id === stateMachine.actionTable.ids.length - 1"
+            [disabled]="!stateMachine.activeAction || stateMachine.activeAction?.id === stateMachine.actionTable.ids.length - 1"
             (click)="selectNextAction()">
-      <mat-icon [class.icon-white-4]="stateMachine.activeAction?.id === stateMachine.actionTable.ids.length - 1"
+      <mat-icon [class.icon-white-4]="!stateMachine.activeAction || stateMachine.activeAction?.id === stateMachine.actionTable.ids.length - 1"
                 svgIcon="greater-than"></mat-icon>
     </button>
     <mat-slider class="state-machine-slider flex-grow margin-left-5"

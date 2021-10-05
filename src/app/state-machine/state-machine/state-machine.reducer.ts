@@ -5,14 +5,13 @@ import { VirtualScrollActivePage } from '@shared/types/shared/virtual-scroll-act
 import { StateMachineAction } from '@shared/types/state-machine/state-machine-action.type';
 
 const initialState: StateMachine = {
-  state: null,
   diagramBlocks: [],
   actionTable: {
     ids: [],
     entities: {},
     lastCursorId: 0,
     filter: {
-      limit: 300,
+      limit: 1000,
       cursor: null
     },
     stream: false,
@@ -22,7 +21,8 @@ const initialState: StateMachine = {
   },
   activeAction: null,
   isPlaying: false,
-  collapsedDiagram: JSON.parse(localStorage.getItem('collapsedDiagram')),
+  collapsedDiagram: JSON.parse(localStorage.getItem('collapsedDiagram')) || false,
+  diagramHeight: JSON.parse(localStorage.getItem('diagramHeight')),
 };
 
 export function reducer(state: StateMachine = initialState, action: StateMachineActions): StateMachine {
@@ -32,13 +32,6 @@ export function reducer(state: StateMachine = initialState, action: StateMachine
       return {
         ...state,
         diagramBlocks: [...action.payload]
-      };
-    }
-
-    case StateMachineActionTypes.STATE_MACHINE_STATE_LOAD_SUCCESS: {
-      return {
-        ...state,
-        state: { ...action.payload }
       };
     }
 
@@ -145,6 +138,15 @@ export function reducer(state: StateMachine = initialState, action: StateMachine
       };
     }
 
+    case StateMachineActionTypes.STATE_MACHINE_RESIZE_DIAGRAM: {
+      localStorage.setItem('diagramHeight', JSON.stringify(action.payload));
+      return {
+        ...state,
+        diagramHeight: action.payload
+      };
+    }
+
+
     case StateMachineActionTypes.STATE_MACHINE_CLOSE: {
       return {
         ...initialState
@@ -227,5 +229,6 @@ function setPages(activePage, state): number[] {
 
 
 export const selectStateMachine = (state: State) => state.stateMachine;
-export const selectStateMachineState = (state: State) => state.stateMachine.state;
 export const selectStateMachineDiagram = (state: State) => state.stateMachine.diagramBlocks;
+export const selectStateMachineDiagramHeight = (state: State) => state.stateMachine.diagramHeight;
+export const selectStateMachineCollapsedDiagram = (state: State) => state.stateMachine.collapsedDiagram;

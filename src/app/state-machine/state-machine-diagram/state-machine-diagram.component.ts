@@ -1,11 +1,16 @@
-import { AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, HostListener, NgZone, ViewChild } from '@angular/core';
+import { AfterViewInit, ChangeDetectionStrategy, Component, ElementRef, HostListener, NgZone, OnInit, ViewChild } from '@angular/core';
 import { StateMachineDiagramBlock } from '@shared/types/state-machine/state-machine-diagram-block.type';
 import { select, Store } from '@ngrx/store';
 import { State } from '@app/app.reducers';
-import { selectStateMachine, selectStateMachineCollapsedDiagram, selectStateMachineDiagramHeight } from '@state-machine/state-machine/state-machine.reducer';
+import {
+  selectStateMachine,
+  selectStateMachineActiveAction,
+  selectStateMachineCollapsedDiagram,
+  selectStateMachineDiagramBlocks
+} from '@state-machine/state-machine/state-machine.reducer';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { appState } from '@app/app.reducer';
-import { debounceTime, delay, distinctUntilChanged, filter, mergeMap, skip, tap, throttleTime } from 'rxjs/operators';
+import { debounceTime, delay, distinctUntilChanged, filter, mergeMap, skip, tap } from 'rxjs/operators';
 import * as d3 from 'd3';
 import { curveBasis } from 'd3';
 import * as dagreD3 from 'dagre-d3';
@@ -21,7 +26,7 @@ import {
 import { StateMachine } from '@shared/types/state-machine/state-machine.type';
 import { FormControl } from '@angular/forms';
 import { StateMachineActionTableAutoscrollType } from '@shared/types/state-machine/state-machine-action-table.type';
-import { of } from 'rxjs';
+import { Observable, of } from 'rxjs';
 
 @UntilDestroy()
 @Component({
@@ -30,12 +35,13 @@ import { of } from 'rxjs';
   styleUrls: ['./state-machine-diagram.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class StateMachineDiagramComponent implements AfterViewInit {
+export class StateMachineDiagramComponent implements OnInit, AfterViewInit {
 
   @ViewChild('d3Diagram', { static: true }) private d3Diagram: ElementRef<HTMLDivElement>;
 
-  stateMachine: StateMachine;
+  stateMachine$: Observable<StateMachine>;
   formControl: FormControl;
+  private stateMachine: StateMachine;
 
   private g: any;
   private svg: any;
@@ -45,9 +51,12 @@ export class StateMachineDiagramComponent implements AfterViewInit {
   private collapsedDiagram: boolean;
   private diagramHeight: number = -1;
 
-  constructor(private cdRef: ChangeDetectorRef,
-              private store: Store<State>,
+  constructor(private store: Store<State>,
               private zone: NgZone) { }
+
+  ngOnInit(): void {
+    this.stateMachine$ = this.store.select(selectStateMachine);
+  }
 
   ngAfterViewInit(): void {
     this.formControl = new FormControl();
@@ -121,27 +130,43 @@ export class StateMachineDiagramComponent implements AfterViewInit {
         .setDefaultEdgeLabel(() => ({}));
       this.g.graph().rankDir = 'LR';
     });
-    this.store.select(selectStateMachine)
+    this.stateMachine$
       .pipe(
         untilDestroyed(this),
-        tap((state) => {
-          this.stateMachine = state;
-          this.cdRef.detectChanges();
-        }),
-        filter(state => {
-          const blocks = this.diagram !== state.diagramBlocks && !!state.diagramBlocks.length;
-          const heightChanged = !!this.diagram && this.diagramHeight !== state.diagramHeight && this.diagramHeight !== -1;
-          return blocks || heightChanged;
-        }),
+        tap(state => this.stateMachine = state),
+        filter(state => this.diagram && this.diagramHeight !== state.diagramHeight),
       )
       .subscribe((state: StateMachine) => {
-        this.diagram = state.diagramBlocks;
         this.collapsedDiagram = state.collapsedDiagram;
         this.diagramHeight = state.diagramHeight;
-        if (!this.collapsedDiagram) {
+        if (!this.collapsedDiagram && this.diagram.length > 0) {
           this.generateDiagram();
         }
       });
+
+    this.store.select(selectStateMachineDiagramBlocks)
+      .pipe(
+        untilDestroyed(this),
+        distinctUntilChanged()
+      )
+      .subscribe((blocks: StateMachineDiagramBlock[]) => {
+        this.diagram = blocks;
+        if (!this.collapsedDiagram && this.diagram.length > 0) {
+          this.generateDiagram();
+        }
+      });
+
+    this.zone.runOutsideAngular(() =>
+      this.store.select(selectStateMachineActiveAction)
+        .pipe(
+          untilDestroyed(this),
+          distinctUntilChanged(),
+          filter(Boolean)
+        )
+        .subscribe((action: StateMachineAction) => {
+          this.highlightActiveActionInDiagram(action);
+        })
+    );
 
     this.store.select(selectStateMachineCollapsedDiagram)
       .pipe(
@@ -170,16 +195,17 @@ export class StateMachineDiagramComponent implements AfterViewInit {
 
   @HostListener('window:resize')
   generateDiagram(): void {
+    console.log('generating');
     this.zone.runOutsideAngular(() => {
       d3.selectAll('#d3Diagram svg > *').remove();
 
       this.diagram.forEach(block => {
-        const cls = block.status
-          + (block.type === 'error' ? ' error' : '')
-          + (block.type === 'error' && block.status !== 'active' ? ' hidden-svg' : '');
+        // const cls = block.status
+        //   + (block.type === 'error' ? ' error' : '')
+        //   + (block.type === 'error' && block.status !== 'active' ? ' hidden-svg' : '');
         this.g.setNode(block.actionId, { // Create
           label: block.actionName,
-          class: cls,
+          // class: cls,
           data: block,
           id: 'g' + block.actionId,
         });
@@ -201,7 +227,6 @@ export class StateMachineDiagramComponent implements AfterViewInit {
       this.g.nodes().forEach((v) => {
         const node = this.g.node(v);
         node.rx = node.ry = 5;
-        node.height = node.data.type === 'action' ? 4 : 16;
       });
 
       const render = new dagreD3.render();
@@ -257,5 +282,16 @@ export class StateMachineDiagramComponent implements AfterViewInit {
     nodes
       .on('mouseenter', (event, id: string) => toggleVisibilityOfErrorBlocks(id, false))
       .on('mouseleave', (event, id: string) => toggleVisibilityOfErrorBlocks(id, true));
+  }
+
+  private highlightActiveActionInDiagram(action: StateMachineAction): void {
+    const gElement = d3.select('#d3Diagram svg g');
+    const activeBlock = gElement.select('g.active');
+    if (activeBlock) {
+      activeBlock.classed('active', false);
+    }
+    gElement
+      .select(`#g${action.id}`)
+      .classed('active', true);
   }
 }

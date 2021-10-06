@@ -1,8 +1,8 @@
 <div fxFlex="32px" class="state-toolbar d-flex flex-row font-12 align-center text-white padding-left-10"
-     *ngIf="stateMachine">
+     *ngIf="stateMachine$ | async as state">
   <div fxFlex="77px" class="d-flex align-center pointer"
        (click)="toggleDiagramCollapsing()">
-    <mat-icon [svgIcon]="stateMachine.collapsedDiagram ? 'add-circle' : 'circle-minus'"
+    <mat-icon [svgIcon]="state.collapsedDiagram ? 'add-circle' : 'circle-minus'"
               class="icon-12 icon-white d-flex align-center margin-right-5"></mat-icon>
     <span>State Chart</span>
   </div>
@@ -10,30 +10,30 @@
   <div fxFlex class="player-wrapper d-flex flex-row align-center border-rad-4 margin-left-10 margin-right-10">
     <div class="play-pause border-rad-4 d-flex align-center flex-center margin-right-10 pointer"
          (click)="togglePlayPause()">
-      <mat-icon [svgIcon]="stateMachine.isPlaying ? 'pause' : 'play'" class="icon-14"></mat-icon>
+      <mat-icon [svgIcon]="state.isPlaying ? 'pause' : 'play'" class="icon-14"></mat-icon>
     </div>
     <button class="play-pause arrows border-rad-4 d-flex align-center flex-center margin-right-5 margin-left-5 pointer"
-            [disabled]="!stateMachine.activeAction || stateMachine.activeAction.id === 0"
+            [disabled]="!state.activeAction || state.activeAction.id === 0"
             (click)="selectPrevAction()">
-      <mat-icon [class.icon-white-4]="!stateMachine.activeAction || stateMachine.activeAction?.id === 0"
+      <mat-icon [class.icon-white-4]="!state.activeAction || state.activeAction?.id === 0"
                 svgIcon="less-than"></mat-icon>
     </button>
     <button class="play-pause arrows border-rad-4 d-flex align-center flex-center margin-right-10 pointer"
-            [disabled]="!stateMachine.activeAction || stateMachine.activeAction?.id === stateMachine.actionTable.ids.length - 1"
+            [disabled]="!state.activeAction || state.activeAction?.id === state.actionTable.ids.length - 1"
             (click)="selectNextAction()">
-      <mat-icon [class.icon-white-4]="!stateMachine.activeAction || stateMachine.activeAction?.id === stateMachine.actionTable.ids.length - 1"
+      <mat-icon [class.icon-white-4]="!state.activeAction || state.activeAction?.id === state.actionTable.ids.length - 1"
                 svgIcon="greater-than"></mat-icon>
     </button>
     <mat-slider class="state-machine-slider flex-grow margin-left-5"
                 [min]="0"
-                [max]="stateMachine.actionTable.ids.length - 1"
+                [max]="state.actionTable.ids.length - 1"
                 [step]="1"
-                [value]="stateMachine.activeAction?.id || 0"
+                [value]="state.activeAction?.id || 0"
                 (input)="formControl.setValue($event.value)"></mat-slider>
   </div>
 
   <div fxFlex="146px" class="d-flex align-center full-diagram"
-       [class.hidden-action]="stateMachine.collapsedDiagram">
+       [class.hidden-action]="state.collapsedDiagram">
     <span>See full handshaking</span>
     <span class="icon-background pointer border-rad-4 d-flex flex-center align-center"
           (click)="zoomToFit(500)">

@@ -59,8 +59,6 @@ export function reducer(state: StateMachine = initialState, action: StateMachine
     }
 
     case StateMachineActionTypes.STATE_MACHINE_ACTIONS_LOAD_SUCCESS: {
-      // const activeBlock = state.diagramBlocks.find(b => b.status === 'active');
-      // const activeProposalPosition = activeBlock ? action.payload.findIndex(p => p.stateId === activeBlock.id) : -1;
       const entities = setEntities(action, state);
       const activePage = setActivePage(entities, action);
 
@@ -74,32 +72,17 @@ export function reducer(state: StateMachine = initialState, action: StateMachine
           lastCursorId: setLastCursorId(action),
           pages: setPages(activePage, state),
         }
-        // activeProposal: activeProposalPosition === -1 ? null : action.payload[activeProposalPosition],
-        // activeProposalPosition
       };
     }
 
     case StateMachineActionTypes.STATE_MACHINE_SET_ACTIVE_ACTION: {
-      // const diagramBlocks = state.diagramBlocks.map(block => ({ ...block }));
-      // const nextActiveBlockId = diagramBlocks.findIndex(block => block.id === action.payload.stateId);
-
-      // const previousBlockIds = state.proposals
-      //   .slice(0, state.proposals.findIndex(p => p.stateId === action.payload.stateId))
-      //   .map(p => p.stateId);
-      // diagramBlocks
-      //   .forEach(block => {
-      //     block.status = previousBlockIds.includes(block.id) ? 'completed' : 'pending';
-      //   });
-      // diagramBlocks[nextActiveBlockId].status = 'active';
-
       return {
         ...state,
         activeAction: action.payload.action,
         actionTable: {
           ...state.actionTable,
           autoScroll: action.payload.autoScroll
-        }
-        // diagramBlocks
+        },
       };
     }
 
@@ -229,6 +212,7 @@ function setPages(activePage, state): number[] {
 
 
 export const selectStateMachine = (state: State) => state.stateMachine;
-export const selectStateMachineDiagram = (state: State) => state.stateMachine.diagramBlocks;
+export const selectStateMachineDiagramBlocks = (state: State) => state.stateMachine.diagramBlocks;
 export const selectStateMachineDiagramHeight = (state: State) => state.stateMachine.diagramHeight;
 export const selectStateMachineCollapsedDiagram = (state: State) => state.stateMachine.collapsedDiagram;
+export const selectStateMachineActiveAction = (state: State) => state.stateMachine.activeAction;

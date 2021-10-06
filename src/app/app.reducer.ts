@@ -94,6 +94,7 @@ export function reducer(state: App = initialState, action): App {
     }
 
     case 'APP_MENU_STATE_CHANGE': {
+      localStorage.setItem('sidenavCollapsed', JSON.stringify(false));
       return {
         ...state,
         sidenav: {

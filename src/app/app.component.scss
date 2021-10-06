@@ -100,6 +100,10 @@
   transition: margin-left 0.18s ease-in;
   margin-left: 200px !important;
 
+  &.is-mobile {
+    margin-left: 0 !important;
+  }
+
   .sidenav-content-container {
     overflow: auto;
   }

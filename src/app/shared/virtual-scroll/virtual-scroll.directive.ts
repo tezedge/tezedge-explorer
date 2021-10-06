@@ -209,7 +209,7 @@ export class VirtualScrollDirective implements AfterViewInit, OnDestroy, OnChang
 
   private load(): void {
     this.virtualScrollItemsCount = this.vsForOf.lastCursorId > 0 ?
-      Math.min(this.vsForOf.lastCursorId, this.maxVirtualScrollElements) :
+      Math.min(this.vsForOf.lastCursorId + 1, this.maxVirtualScrollElements) :
       0;
 
     // set virtual scroll height in pixels

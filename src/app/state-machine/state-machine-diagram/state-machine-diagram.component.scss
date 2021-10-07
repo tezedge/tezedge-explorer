@@ -1,3 +1,7 @@
+:host {
+  position: relative;
+}
+
 .state-toolbar {
   .player-wrapper {
     padding-left: 4px;
@@ -57,5 +61,39 @@
         background-color: rgba(255, 255, 255, 0.2);
       }
     }
+  }
+}
+
+.zoom-group {
+  top: 34px;
+  right: 6px;
+
+  > div {
+    background-color: #404043;
+    color: rgba(255, 255, 255, 0.4);
+    width: 24px;
+    height: 24px;
+    line-height: 24px;
+    text-align: center;
+
+    &:first-child {
+      border-top-left-radius: 4px;
+      border-top-right-radius: 4px;
+    }
+
+    &:last-child {
+      border-bottom-left-radius: 4px;
+      border-bottom-right-radius: 4px;
+    }
+
+    &:hover {
+      background-color: #555558;
+      color: rgba(255, 255, 255, 0.7);
+    }
+  }
+
+  p {
+    height: 1px;
+    background-color: rgba(255, 255, 255, 0.2);
   }
 }

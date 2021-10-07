@@ -21,6 +21,14 @@
   //  border-radius: 4px;
   //}
 
+  .filters-container {
+    background-color: #2A2A2E;
+
+    .add-filters {
+      background-color: transparent;
+    }
+  }
+
   .bottom-container,
   .upper-container {
     min-height: 10%;

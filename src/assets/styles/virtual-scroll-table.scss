@@ -338,6 +338,10 @@
   transform: translateZ(0);
   -webkit-transform: translateZ(0);
 
+  &:last-of-type {
+    display: none;
+  }
+
   &.state-machine-row {
     grid-template-columns: 140px 200px;
   }

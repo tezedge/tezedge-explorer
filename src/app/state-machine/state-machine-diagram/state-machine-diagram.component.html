@@ -42,6 +42,11 @@
   </div>
 
 </div>
-<div #d3Diagram id="d3Diagram" fxFlex="calc(100% - 24px)">
+<div #d3Diagram id="d3Diagram" fxFlex="calc(100% - 32px)">
   <svg></svg>
+</div>
+<div class="zoom-group p-absolute pointer">
+  <div (click)="zoomIn()">+</div>
+  <p class="margin-remove"></p>
+  <div (click)="zoomOut()">-</div>
 </div>

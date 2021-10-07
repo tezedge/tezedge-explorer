@@ -3,9 +3,6 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { StateMachineDiagramBlock } from '@shared/types/state-machine/state-machine-diagram-block.type';
 import { StateMachineAction } from '@shared/types/state-machine/state-machine-action.type';
-
-// @ts-ignore
-import * as serverData from './state-machine.json';
 import { StateMachineActionsFilter } from '@shared/types/state-machine/state-machine-actions-filter.type';
 import { map } from 'rxjs/operators';
 
@@ -13,8 +10,6 @@ import { map } from 'rxjs/operators';
   providedIn: 'root'
 })
 export class StateMachineService {
-
-  private data = serverData.default as any;
 
   constructor(private http: HttpClient) { }
 
@@ -36,8 +31,16 @@ export class StateMachineService {
   }
 
   private buildParams(filter: StateMachineActionsFilter): string {
+    let filters = '';
+    if (filter.queryFilters.length > 0) {
+      filters = '&filters=';
+      filter.queryFilters.forEach(f => filters += `${f},`);
+      filters = filters.slice(0, -1);
+    }
+
     return `?limit=${filter.limit}`
-      + (filter.cursor ? `&cursor=${filter.cursor}` : '');
+      + (filter.cursor ? `&cursor=${filter.cursor}` : '')
+      + filters;
   }
 }
 

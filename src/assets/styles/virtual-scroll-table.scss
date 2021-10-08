@@ -23,7 +23,7 @@
   line-height: 35px;
 
   &.state-machine-header {
-    grid-template-columns: 140px 200px;
+    grid-template-columns: 160px 240px 70px;
   }
 
   &.logs-header {
@@ -246,9 +246,6 @@
       display: grid;
       grid-template-columns: minmax(22px, 1fr) minmax(22px, 1fr) minmax(22px, 1fr) minmax(22px, 1fr) minmax(22px, 1fr) minmax(22px, 1fr) minmax(22px, 1fr) minmax(22px, 1fr) minmax(22px, 1fr) minmax(22px, 1fr) minmax(22px, 1fr) minmax(22px, 1fr) minmax(22px, 1fr) minmax(22px, 1fr) minmax(22px, 1fr) minmax(22px, 1fr);
       padding-bottom: 5px;
-
-      //grid-gap: 10px;
-      //grid-template-columns: repeat(auto-fit, minmax(22px, 1fr));
     }
 
     .mat-tab-label {
@@ -343,7 +340,7 @@
   }
 
   &.state-machine-row {
-    grid-template-columns: 140px 200px;
+    grid-template-columns: 160px 240px 70px;
   }
 
   &.logs-row {

@@ -4,4 +4,6 @@ export interface StateMachineAction {
   content: any;
   state: any;
   originalId: number;
+  datetime: string;
+  timeDifference: number;
 }

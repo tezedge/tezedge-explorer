@@ -208,6 +208,7 @@ export class StateMachineDiagramComponent implements OnInit, AfterViewInit {
           // class: cls,
           data: block,
           id: block.actionName
+          // id: 'g' + block.actionId
         });
       });
 
@@ -241,7 +242,9 @@ export class StateMachineDiagramComponent implements OnInit, AfterViewInit {
         .attr('width', this.d3Diagram.nativeElement.offsetWidth)
         .attr('height', this.d3Diagram.nativeElement.offsetHeight);
 
-      this.zoom = d3.zoom().on('zoom', (e) => this.svg.select('g').attr('transform', e.transform));
+      this.zoom = d3.zoom()
+        .scaleExtent([0.075 , 2])
+        .on('zoom', (e) => this.svg.select('g').attr('transform', e.transform));
       this.svg.call(this.zoom);
 
       this.zoomToFit();
@@ -283,10 +286,15 @@ export class StateMachineDiagramComponent implements OnInit, AfterViewInit {
     const activeBlock = this.svgGroup.select('g.active');
     if (activeBlock) {
       activeBlock.classed('active', false);
+      // debugger;
     }
-    this.svgGroup
-      .select(`#${action.type}`)
+    const dd: any = d3;
+    const newActiveNode = this.svgGroup
+      .select(`#${action.type}`);
+    newActiveNode
       .classed('active', true);
+    // debugger;
+    // this.centerNode(dd.select('svg g #' + action.type).node().getBoundingClientRect());
   }
 
   private toggleErrorStatesVisibilityOnHover(): void {
@@ -305,4 +313,36 @@ export class StateMachineDiagramComponent implements OnInit, AfterViewInit {
       .on('mouseenter', (event, id: string) => toggleVisibilityOfErrorBlocks(id, false))
       .on('mouseleave', (event, id: string) => toggleVisibilityOfErrorBlocks(id, true));
   }
+
+  centerNode(source) {
+    const x0 = source.x;
+    const x1 = source.x + source.width;
+    const y0 = source.y;
+    const y1 = source.y + source.height;
+    this.svg.transition().duration(750).call(
+      this.zoom.transform,
+      d3.zoomIdentity
+        // .translate(this.d3Diagram.nativeElement.offsetWidth / 2, this.d3Diagram.nativeElement.offsetHeight / 2)
+        .scale(1)
+        .translate(source.x, source.y),
+      d3.pointer(event, this.svg.node())
+    );
+
+    console.log(source);
+    // let t = d3.zoomTransform(this.svg.node());
+    // let x = source.x;
+    // let y = source.y;
+    // x = x * t.k + this.d3Diagram.nativeElement.offsetWidth / 2;
+    // y = y * t.k + this.d3Diagram.nativeElement.offsetHeight / 2;
+    // d3.select('#d3Diagram svg')
+    //   .transition()
+    //   .duration(200)
+    //   .call(this.zoom.transform, d3.zoomIdentity.translate(source.x, source.y).scale(1.2));
+
+    // this.svg
+    //   .transition()
+    //   .duration(1000)
+    //   .attr('transform', 'translate(' + (this.d3Diagram.nativeElement.offsetWidth / 2 - source.x) + ',' + (this.d3Diagram.nativeElement.offsetHeight / 2 - source.y) + ')');
+  }
+
 }

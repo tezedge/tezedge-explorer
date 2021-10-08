@@ -3,8 +3,9 @@
   <div class="table-virtual-scroll h-100">
 
     <div class="table-virtual-scroll-header state-machine-header border-remove">
-      <span>ID</span>
+      <span>DATETIME</span>
       <span>ACTION</span>
+      <span>DURATION</span>
     </div>
 
     <div class="table-virtual-scroll-body">
@@ -22,56 +23,60 @@
                 [class.virtualScrollRowEven]="event?.index % 2"
                 (click)="selectAction(event)"
                 [class.hover]="stateMachine.activeAction?.originalId === event?.originalId">
-            <span class="text-white-7">{{ event?.originalId }}</span>
-            <span class="text-white">{{ event?.type }}</span>
+            <span class="text-white-7">{{ event?.datetime }}</span>
+            <span class="text-white truncate">{{ event?.type }}</span>
+            <span class="text-white-7" [innerHTML]="event?.timeDifference | actionDuration"></span>
           </span>
         </ng-template>
       </div>
     </div>
     <div class="d-flex table-virtual-scroll-footer align-center">
-      <button class="square-button d-flex flex-center align-center"
-              mat-icon-button matTooltip="Scroll to bottom"
-              (click)="scrollStart()">
-        <mat-icon svgIcon="arrow-bottom" class="icon-12 d-flex"></mat-icon>
-      </button>
-      <button class="rectangle-button start-stream d-flex flex-center align-center text-white border-remove"
-              mat-icon-button matTooltip="Start Streaming"
-              [class.inactive]="!stateMachine.actionTable.stream"
-              (click)="scrollStart()">
-        <mat-icon svgIcon="play-circle" class="icon-14 margin-right-5"></mat-icon>
-        <span>LIVE</span>
-      </button>
-      <button class="rectangle-button stop-stream d-flex flex-center align-center"
-              mat-icon-button matTooltip="Stop Streaming"
-              [class.inactive]="stateMachine.actionTable.stream"
-              (click)="scrollStop()">
-        <mat-icon svgIcon="pause-circle" class="icon-14 margin-right-5"></mat-icon>
-        <span>PAUSED</span>
-      </button>
-      <button class="square-button d-flex align-center"
-              id="firstPage" matTooltip="First Page"
-              (click)="loadFirstPage()"
-              [disabled]="stateMachine.actionTable.activePage?.id === pageSize">
-        <mat-icon svgIcon="arrow-left-stop" class="icon-16"></mat-icon>
-      </button>
-      <button class="square-button d-flex align-center flex-center"
-              id="previousPage" matTooltip="Previous Page"
-              (click)="loadPreviousPage()"
-              [disabled]="stateMachine.actionTable.activePage?.id === pageSize">
-        <mat-icon svgIcon="less-than" class="icon-8 d-flex"></mat-icon>
-      </button>
-      <button class="square-button d-flex align-center flex-center"
-              id="nextPage" matTooltip="Next Page"
-              (click)="loadNextPage()"
-              [disabled]="!stateMachine.actionTable.pages.length || stateMachine.actionTable.activePage?.id == stateMachine.actionTable.pages[stateMachine.actionTable.pages.length - 1]">
-        <mat-icon svgIcon="greater-than" class="icon-8 d-flex"></mat-icon>
-      </button>
-      <button class="square-button d-flex align-center"
-              id="lastPage" matTooltip="Last Page"
-              (click)="loadLastPage()"
-              [disabled]="!stateMachine.actionTable.pages.length || stateMachine.actionTable.activePage?.id === stateMachine.actionTable.pages[stateMachine.actionTable.pages.length - 1]">
-        <mat-icon svgIcon="arrow-right-stop" class="icon-16"></mat-icon>
-      </button>
+      <ng-container *ngIf="stateMachine.actionTable?.ids.length; else loading">
+        <button class="square-button d-flex flex-center align-center"
+                mat-icon-button matTooltip="Scroll to bottom"
+                (click)="scrollStart()">
+          <mat-icon svgIcon="arrow-bottom" class="icon-12 d-flex"></mat-icon>
+        </button>
+        <button class="rectangle-button start-stream d-flex flex-center align-center text-white border-remove"
+                mat-icon-button matTooltip="Start Streaming"
+                [class.inactive]="!stateMachine.actionTable.stream"
+                (click)="scrollStart()">
+          <mat-icon svgIcon="play-circle" class="icon-14 margin-right-5"></mat-icon>
+          <span>LIVE</span>
+        </button>
+        <button class="rectangle-button stop-stream d-flex flex-center align-center"
+                mat-icon-button matTooltip="Stop Streaming"
+                [class.inactive]="stateMachine.actionTable.stream"
+                (click)="scrollStop()">
+          <mat-icon svgIcon="pause-circle" class="icon-14 margin-right-5"></mat-icon>
+          <span>PAUSED</span>
+        </button>
+        <button class="square-button d-flex align-center"
+                id="firstPage" matTooltip="First Page"
+                (click)="loadFirstPage()"
+                [disabled]="stateMachine.actionTable.activePage?.id === pageSize">
+          <mat-icon svgIcon="arrow-left-stop" class="icon-16"></mat-icon>
+        </button>
+        <button class="square-button d-flex align-center flex-center"
+                id="previousPage" matTooltip="Previous Page"
+                (click)="loadPreviousPage()"
+                [disabled]="stateMachine.actionTable.activePage?.id === pageSize">
+          <mat-icon svgIcon="less-than" class="icon-8 d-flex"></mat-icon>
+        </button>
+        <button class="square-button d-flex align-center flex-center"
+                id="nextPage" matTooltip="Next Page"
+                (click)="loadNextPage()"
+                [disabled]="!stateMachine.actionTable.pages.length || stateMachine.actionTable.activePage?.id == stateMachine.actionTable.pages[stateMachine.actionTable.pages.length - 1]">
+          <mat-icon svgIcon="greater-than" class="icon-8 d-flex"></mat-icon>
+        </button>
+        <button class="square-button d-flex align-center"
+                id="lastPage" matTooltip="Last Page"
+                (click)="loadLastPage()"
+                [disabled]="!stateMachine.actionTable.pages.length || stateMachine.actionTable.activePage?.id === stateMachine.actionTable.pages[stateMachine.actionTable.pages.length - 1]">
+          <mat-icon svgIcon="arrow-right-stop" class="icon-16"></mat-icon>
+        </button>
+      </ng-container>
+      <ng-template #loading>Table data is loading...</ng-template>
     </div>
   </div>
 </div>

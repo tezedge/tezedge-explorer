@@ -23,6 +23,7 @@
 
   .filters-container {
     background-color: #2A2A2E;
+    border-top-left-radius: 4px;
 
     .add-filters {
       background-color: transparent;
@@ -65,7 +66,6 @@
       background-color: #2A2A2E;
       height: calc(100% - 8px);
       border-bottom-left-radius: 4px;
-      border-top-left-radius: 4px;
     }
 
     .resizer-element {

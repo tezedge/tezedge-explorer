@@ -144,7 +144,7 @@ export class StateMachineTableComponent implements OnInit {
       return;
     }
 
-    const nextPageId = this.stateMachine.actionTable.pages[actualPageIndex] + this.pageSize;
+    const nextPageId = this.stateMachine.actionTable.pages[actualPageIndex + 1];
 
     this.getItems({ nextCursorId: nextPageId });
   }

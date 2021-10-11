@@ -28,26 +28,15 @@ export class StateMachineEffects {
     ofType(StateMachineActionTypes.STATE_MACHINE_ACTIONS_LOAD),
     withLatestFrom(this.store, (action: any, state: ObservedValueOf<Store<State>>) => ({ action, state })),
     switchMap(({ action, state }) =>
-        // timer(0, 200000).pipe(
-        //   takeUntil(this.stateMachineDestroy$),
-        //   switchMap(() =>
-        this.stateMachineService.getStateMachineActions(state.stateMachine.actionTable.filter).pipe(
-          map((payload: StateMachineAction[]) => ({ type: StateMachineActionTypes.STATE_MACHINE_ACTIONS_LOAD_SUCCESS, payload })),
-          catchError(error => this.onError(error, 'Actions'))
+      timer(0, 400000).pipe(
+        takeUntil(this.stateMachineDestroy$),
+        switchMap(() =>
+          this.stateMachineService.getStateMachineActions(state.stateMachine.actionTable.filter).pipe(
+            map((payload: StateMachineAction[]) => ({ type: StateMachineActionTypes.STATE_MACHINE_ACTIONS_LOAD_SUCCESS, payload })),
+            catchError(error => this.onError(error, 'Actions'))
+          )
         )
-      // )
-      // )
-    )
-  ));
-
-  stateMachineActionsReload$ = createEffect(() => this.actions$.pipe(
-    ofType(StateMachineActionTypes.STATE_MACHINE_ACTIONS_LOAD_SUCCESS),
-    withLatestFrom(this.store, (action: any, state: ObservedValueOf<Store<State>>) => ({ action, state })),
-    switchMap(({ action, state }) => {
-        return state.stateMachine.actionTable.stream
-          ? of({ type: StateMachineActionTypes.STATE_MACHINE_ACTIONS_LOAD })
-          : empty();
-      }
+      )
     )
   ));
 

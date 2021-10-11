@@ -71,6 +71,8 @@ g.label-container {
   transform: translate(10px, 20px);
 }
 
+/* DAGRE DIAGRAM */
+
 #d3Diagram {
   text {
     font-weight: 300;
@@ -126,8 +128,31 @@ g.label-container {
     }
   }
 
-  .edgePath path {
-    stroke: rgba(255, 255, 255, 1);
-    stroke-width: 1.5px;
+  .edgePath {
+    path {
+      stroke-width: 1.5px;
+    }
+
+    &.connection-next {
+      > path {
+        stroke: #326cb7 !important;
+        stroke-width: 4px !important;
+      }
+
+      defs marker path {
+        fill: #326cb7 !important;
+      }
+    }
+
+    &.connection-prev {
+      > path {
+        stroke: #82937d !important;
+        stroke-width: 3px !important;
+      }
+
+      defs marker path {
+        fill: #82937d !important;
+      }
+    }
   }
 }

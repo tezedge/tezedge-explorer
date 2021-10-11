@@ -8,21 +8,29 @@ import { map } from 'rxjs/operators';
 import * as moment from 'moment-mini-ts';
 
 // @ts-ignore
-import * as serverData from './action-list.json';
+import * as actionList from './action-list.json';
+// @ts-ignore
+import * as actionGraph from './action-graph.json';
+import { formatNumber } from '@angular/common';
+
+const MILLISECOND_FACTOR = 1000;
+const MICROSECOND_FACTOR = 1000000;
+const NANOSECOND_FACTOR = 1000000000;
 
 @Injectable({
   providedIn: 'root'
 })
 export class StateMachineService {
 
-  private data = serverData.default as any;
+  private list = actionList.default as any;
+  private graph = actionGraph.default as any;
 
   constructor(private http: HttpClient) { }
 
   getStateMachineDiagram(): Observable<StateMachineDiagramBlock[]> {
     const url = 'http://prod.tezedge.com:18732/dev/shell/automaton/actions_graph';
-    return this.http.get<StateMachineDiagramBlock[]>(url).pipe(map(actions => {
-      // return of([...diagramStructure2]).pipe(map(actions => {
+    // return this.http.get<StateMachineDiagramBlock[]>(url).pipe(map(actions => {
+    return of(this.graph).pipe(map(actions => {
       actions.forEach(action => {
         action.type = 'info';
         action.status = 'completed';
@@ -34,9 +42,9 @@ export class StateMachineService {
 
   getStateMachineActions(filter: StateMachineActionsFilter): Observable<StateMachineAction[]> {
     const url = 'http://prod.tezedge.com:18732/dev/shell/automaton/actions' + this.buildParams(filter);
-    return this.http.get<StateMachineAction[]>(url)
-      // return of(this.data)
-      .pipe(map(this.addMockDateTime));
+    // return this.http.get<StateMachineAction[]>(url)
+    return of(this.list)
+      .pipe(map(this.calculateTimes));
   }
 
   private buildParams(filter: StateMachineActionsFilter): string {
@@ -52,29 +60,35 @@ export class StateMachineService {
       + filters;
   }
 
-  private addMockDateTime(actions: any[]): StateMachineAction[] {
-
-    // add mock increasing timestamp
-    // const date = new Date('2021-10-02T12:30:45.885').getTime() * 1000000 + Math.floor(Math.random() * 1000000);
-    // const increasingCoefficients = actions
-    //   .map(() => Math.floor(Math.random() * 100000000000) + 1)
-    //   .sort((a, b) => b - a);
-    // actions.forEach((action, i) => {
-    //   // action.id = i;
-    //   // action.timestamp = (date + increasingCoefficients[i]);
-    // });
-
-    // calculate difference
+  private calculateTimes(actions: any[]): StateMachineAction[] {
     actions.forEach((action, i) => {
       action.datetime = moment(Math.ceil(action.id / 1000000)).format('HH:mm:ss.SSS, DD MMM YY');
 
       if (actions[i - 1]) {
-        action.timeDifference = actions[i - 1].id - action.id;
+        action.timeDifference = StateMachineService.transform(actions[i - 1].id - action.id);
       } else {
-        action.timeDifference = 0;
+        action.timeDifference = '0';
       }
     });
     return actions;
+  }
+
+  private static transform(value: number): string {
+    if (value > 1000000000) {
+      return '<span class="text-red">' + this.format(value / NANOSECOND_FACTOR) + ' s</span>';
+    } else if (value > 500000000) {
+      return '<span class="text-red">' + this.format(value / MICROSECOND_FACTOR) + ' ms</span>';
+    } else if (value > 1000000) {
+      return '<span class="text-yellow">' + this.format(value / MICROSECOND_FACTOR) + ' ms</span>';
+    } else if (value > 1) {
+      return this.format(value / MILLISECOND_FACTOR) + ' μs';
+    } else if (value) {
+      return value.toString();
+    }
+  }
+
+  private static format(value: number): string {
+    return formatNumber(value, 'en-US', '1.0-2');
   }
 }
 

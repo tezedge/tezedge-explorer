@@ -5,5 +5,5 @@ export interface StateMachineAction {
   state: any;
   originalId: number;
   datetime: string;
-  timeDifference: number;
+  timeDifference: string;
 }

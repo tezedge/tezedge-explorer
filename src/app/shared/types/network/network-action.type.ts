@@ -10,7 +10,7 @@ export class NetworkAction {
   filter: NetworkActionFilter;
   stream: boolean;
   urlParams: string;
-  activePage: VirtualScrollActivePage;
+  activePage: VirtualScrollActivePage<NetworkActionEntity>;
   pages: number[];
   timestamp: number;
 }

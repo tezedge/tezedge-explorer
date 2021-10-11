@@ -5,7 +5,6 @@
 .state-toolbar {
   .player-wrapper {
     padding-left: 4px;
-    padding-right: 4px;
     height: 32px;
 
     .play-pause {
@@ -55,7 +54,6 @@
       width: 24px;
       height: 24px;
       transition: 0.08s;
-      margin-left: 8px;
 
       &:hover {
         background-color: rgba(255, 255, 255, 0.2);
@@ -64,8 +62,22 @@
   }
 }
 
+#d3Diagram.loading {
+  position: relative;
+
+  &::after {
+    position: absolute;
+    content: 'Loading...';
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 12px;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+}
+
 .zoom-group {
-  top: 34px;
+  top: 32px;
   right: 6px;
 
   > div {

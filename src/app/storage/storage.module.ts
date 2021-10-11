@@ -8,7 +8,6 @@ import { StorageBlockComponent } from './storage-block/storage-block.component';
 import { StorageBlockDetailsComponent } from './storage-block-details/storage-block-details.component';
 import { StorageActionComponent } from './storage-action/storage-action.component';
 import { StorageSearchComponent } from './storage-search/storage-search.component';
-import { NgxJsonViewerModule } from 'ngx-json-viewer';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { FormsModule } from '@angular/forms';
 
@@ -25,7 +24,6 @@ import { FormsModule } from '@angular/forms';
     CommonModule,
     StorageRoutingModule,
     TezedgeSharedModule,
-    NgxJsonViewerModule,
     MatFormFieldModule,
     FormsModule,
   ]

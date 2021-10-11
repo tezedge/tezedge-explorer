@@ -1,5 +1,6 @@
 export class StateMachineActionsFilter {
   limit?: number;
-  cursor?: number | string;
+  cursor?: string;
   queryFilters?: string[];
+  rev?: boolean;
 }

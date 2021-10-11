@@ -78,16 +78,6 @@ export class StateMachineTableComponent implements OnInit {
     }
   }
 
-  getItems(params: { nextCursorId: number }): void {
-    this.pausePlaying();
-    this.store.dispatch<StateMachineFilterActions>({
-      type: StateMachineActionTypes.STATE_MACHINE_ACTIONS_FILTER_LOAD,
-      payload: {
-        cursor: params.nextCursorId
-      }
-    });
-  }
-
   startStopDataStream(value: { stop: boolean, limit: number }): void {
     if (value.stop) {
       this.scrollStop();
@@ -120,21 +110,22 @@ export class StateMachineTableComponent implements OnInit {
       this.scrollStop();
     }
 
-    this.getItems({ nextCursorId: this.pageSize });
+    this.getActions(null, true);
   }
 
   loadLastPage(): void {
     const nextPageId = this.stateMachine.actionTable.pages[this.stateMachine.actionTable.pages.length - 1];
 
-    this.getItems({ nextCursorId: nextPageId });
+    this.getActions(nextPageId.toString());
   }
 
   loadPreviousPage(): void {
     if (this.stateMachine.actionTable.stream) {
       this.scrollStop();
     }
-    const nextCursorId = Math.max(this.stateMachine.actionTable.activePage.start.originalId - 1, this.pageSize);
-    this.getItems({ nextCursorId });
+    const firstActionId = this.stateMachine.actionTable.entities[0].originalId;
+    const nextCursorId = Number(firstActionId) > this.pageSize ? firstActionId : this.pageSize.toString();
+    this.getActions(nextCursorId);
   }
 
   loadNextPage(): void {
@@ -144,9 +135,19 @@ export class StateMachineTableComponent implements OnInit {
       return;
     }
 
-    const nextPageId = this.stateMachine.actionTable.pages[actualPageIndex + 1];
+    const lastActionId = this.stateMachine.actionTable.entities[this.stateMachine.actionTable.ids.length - 1].originalId;
+    const mostRecentKnownActionId = this.stateMachine.actionTable.mostRecentKnownActionId;
+    const nextPageId = Number(lastActionId) <= Number(mostRecentKnownActionId) ? lastActionId : mostRecentKnownActionId;
 
-    this.getItems({ nextCursorId: nextPageId });
+    this.getActions(nextPageId, true);
+  }
+
+  private getActions(cursor: string, rev: boolean = false): void {
+    this.pausePlaying();
+    this.store.dispatch<StateMachineFilterActions>({
+      type: StateMachineActionTypes.STATE_MACHINE_ACTIONS_FILTER_LOAD,
+      payload: { cursor, rev }
+    });
   }
 
   selectAction(action: StateMachineAction): void {

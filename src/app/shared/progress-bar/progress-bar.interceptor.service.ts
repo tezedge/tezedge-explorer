@@ -9,7 +9,7 @@ import { ProgressBarService } from './progress-bar.service';
 })
 export class ProgressBarInterceptor implements HttpInterceptor {
 
-  lastValue = 0;
+  private lastValue = 0;
 
   constructor(private progressBarService: ProgressBarService) {}
 

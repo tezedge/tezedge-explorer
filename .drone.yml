@@ -17,7 +17,7 @@ steps:
     detach: true
     privileged: true
     environment:
-      API: '[{"id":"drone","type":"tezedge","name":"drone-test-node","http":"http://develop.dev.tezedge.com:18732","p2p_port":"9732","features": [{ "name": "ws", "url": "ws://develop.dev.tezedge.com:4927" },{ "name": "debugger", "url": "http://develop.dev.tezedge.com:17732" },{ "name": "sandbox", "url": "http://develop.dev.tezedge.com:3030" },{ "name": "commit", "id": "develop" },{ "name": "monitoring" },{ "name": "resources/system", "monitoringUrl": "http://develop.dev.tezedge.com:38732/resources/tezedge" },{ "name": "resources/memory", "memoryProfilerUrl": "http://develop.dev.tezedge.com:17832" },{ "name": "resources/storage" },{ "name": "mempool" },{ "name": "storage" },{ "name": "network" },{ "name": "logs" }]}]'
+      API: '[{"id":"drone","type":"tezedge","name":"drone-test-node","http":"http://develop.dev.tezedge.com:18732","p2p_port":"9732","features": [{ "name": "ws", "url": "ws://develop.dev.tezedge.com:4927" },{ "name": "debugger", "url": "http://develop.dev.tezedge.com:17732" },{ "name": "sandbox", "url": "http://develop.dev.tezedge.com:3030" },{ "name": "commit", "id": "develop" },{ "name": "monitoring" },{ "name": "resources/system", "monitoringUrl": "http://develop.dev.tezedge.com:38732/resources/tezedge" },{ "name": "resources/memory", "memoryProfilerUrl": "http://develop.dev.tezedge.com:17832" },{ "name": "resources/storage" },{ "name": "mempool" },{ "name": "storage" },{ "name": "network" },{ "name": "logs" },{ "name": "state" }]}]'
     depends_on:
       - build
 
@@ -156,6 +156,15 @@ steps:
     depends_on:
       - build
 
+  - name: test-state-machine
+    image: cypress/included:6.2.1
+    commands:
+      - cypress run --spec "cypress/integration/state-machine/state-machine.spec.js"
+    environment:
+      CYPRESS_baseUrl: http://frontend-server:80
+    depends_on:
+      - build
+
   - name: publish
     image: plugins/docker
     settings:
@@ -169,7 +178,7 @@ steps:
         from_secret: docker_hub_username
       password:
         from_secret: docker_hub_pswd
-    depends_on: [ test-app, test-logs, test-github-version, test-network, test-open-api, test-system-resources, test-storage-resources, test-memory-resources, test-routing, test-sandbox, test-settings-node, test-progress-bar, test-error-popup, test-storage-action, test-storage-block ]
+    depends_on: [ test-app, test-logs, test-github-version, test-network, test-open-api, test-system-resources, test-storage-resources, test-memory-resources, test-routing, test-sandbox, test-settings-node, test-progress-bar, test-error-popup, test-storage-action, test-storage-block, test-state-machine ]
 
 image_pull_secrets:
   - docker_pull_secret
@@ -206,7 +215,7 @@ steps:
     detach: true
     privileged: true
     environment:
-      API: '[{"id":"drone","type":"tezedge","name":"drone-test-node","http":"http://develop.dev.tezedge.com:18732","p2p_port":"9732","features": [{ "name": "ws", "url": "ws://develop.dev.tezedge.com:4927" },{ "name": "debugger", "url": "http://develop.dev.tezedge.com:17732" },{ "name": "sandbox", "url": "http://develop.dev.tezedge.com:3030" },{ "name": "commit", "id": "develop" },{ "name": "monitoring" },{ "name": "resources/system", "monitoringUrl": "http://develop.dev.tezedge.com:38732/resources/tezedge" },{ "name": "resources/memory", "memoryProfilerUrl": "http://develop.dev.tezedge.com:17832" },{ "name": "resources/storage" },{ "name": "mempool" },{ "name": "storage" },{ "name": "network" },{ "name": "logs" }]}]'
+      API: '[{"id":"drone","type":"tezedge","name":"drone-test-node","http":"http://develop.dev.tezedge.com:18732","p2p_port":"9732","features": [{ "name": "ws", "url": "ws://develop.dev.tezedge.com:4927" },{ "name": "debugger", "url": "http://develop.dev.tezedge.com:17732" },{ "name": "sandbox", "url": "http://develop.dev.tezedge.com:3030" },{ "name": "commit", "id": "develop" },{ "name": "monitoring" },{ "name": "resources/system", "monitoringUrl": "http://develop.dev.tezedge.com:38732/resources/tezedge" },{ "name": "resources/memory", "memoryProfilerUrl": "http://develop.dev.tezedge.com:17832" },{ "name": "resources/storage" },{ "name": "mempool" },{ "name": "storage" },{ "name": "network" },{ "name": "logs" },{ "name": "state" }]}]'
     depends_on:
       - build
 
@@ -345,6 +354,15 @@ steps:
     depends_on:
       - build
 
+  - name: test-state-machine
+    image: cypress/included:6.2.1
+    commands:
+      - cypress run --spec "cypress/integration/state-machine/state-machine.spec.js"
+    environment:
+      CYPRESS_baseUrl: http://frontend-server:80
+    depends_on:
+      - build
+
   - name: publish
     image: plugins/docker
     settings:
@@ -360,7 +378,7 @@ steps:
         from_secret: docker_hub_username
       password:
         from_secret: docker_hub_pswd
-      depends_on: [ test-app, test-logs, test-github-version, test-network, test-open-api, test-system-resources, test-storage-resources, test-memory-resources, test-routing, test-sandbox, test-settings-node, test-progress-bar, test-error-popup, test-storage-action, test-storage-block ]
+      depends_on: [ test-app, test-logs, test-github-version, test-network, test-open-api, test-system-resources, test-storage-resources, test-memory-resources, test-routing, test-sandbox, test-settings-node, test-progress-bar, test-error-popup, test-storage-action, test-storage-block, test-state-machine ]
 
   - name: cp-static
     image: drone-tezedge-explorer:latest

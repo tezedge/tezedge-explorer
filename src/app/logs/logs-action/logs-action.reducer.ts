@@ -117,7 +117,7 @@ export function setVirtualScrollId(action, state, accumulator): number {
   return action.payload.logs.length - (alreadySetRecords.length + 1);
 }
 
-export function setActivePage(entities, action): VirtualScrollActivePage {
+export function setActivePage(entities, action): VirtualScrollActivePage<LogsActionEntity> {
   if (!action.payload.logs.length) {
     return null;
   }

@@ -5,7 +5,8 @@ import {
   StateMachineActionsLoad,
   StateMachineActionTypes,
   StateMachineClose,
-  StateMachineDiagramLoad, StateMachineFilterActions,
+  StateMachineDiagramLoad,
+  StateMachineFilterActions,
   StateMachineResizeDiagram
 } from './state-machine.actions';
 import { selectStateMachine } from '@state-machine/state-machine/state-machine.reducer';
@@ -14,7 +15,6 @@ import { StateMachine } from '@shared/types/state-machine/state-machine.type';
 import { distinctUntilChanged, map } from 'rxjs/operators';
 import { ResizeDirective } from '@shared/directives/resize.directive';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { StateMachineActionsFilter } from '@shared/types/state-machine/state-machine-actions-filter.type';
 
 @UntilDestroy()
 @Component({

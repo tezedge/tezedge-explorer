@@ -1,6 +1,6 @@
 import { ChangeDetectorRef, Component, NgZone, OnDestroy, OnInit, ViewChild } from '@angular/core';
 
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { Store } from '@ngrx/store';
 
 import { VirtualScrollFromTopDirective } from '@shared/virtual-scroll/virtual-scroll-from-top.directive';
@@ -45,7 +45,6 @@ export class StorageActionComponent implements OnInit, OnDestroy {
   constructor(
     public store: Store<any>,
     private route: ActivatedRoute,
-    private router: Router,
     private ngZone: NgZone,
     private changeDetector: ChangeDetectorRef
   ) {

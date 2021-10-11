@@ -11,6 +11,6 @@ export class StorageBlock {
   selected: StorageBlockSelection;
   blockDetails: StorageBlockDetails;
   availableContexts: string[];
-  activePage: VirtualScrollActivePage;
+  activePage: VirtualScrollActivePage<StorageBlockEntity>;
   pages: number[];
 }

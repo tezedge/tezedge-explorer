@@ -1,37 +1,29 @@
-<div fxFlexFill
-     fxLayout="column"
-     class="mini-graph"
+<div fxFlexFill fxLayout="column" class="mini-graph"
      [class.main-graph]="isMainGraph">
-  <div fxLayout="column"
-       fxLayoutGap="10px"
-       class="graph-overview"
+  <div fxLayout="column" fxLayoutGap="10px" class="graph-overview"
        [class.minimal]="!isMainGraph">
     <span class="operation-name text-nowrap">
       {{ operationName }}
       <span class="total-time">
-        {{ graphData.queriesCount | thousandTransform }} <span
-        class="text-white-4">calls</span> · {{ graphData.totalTime | timeTransform: false: false: true }}
+        {{ graphData.queriesCount | thousandTransform }}
+        <span
+          class="text-white-4">calls</span> · {{ graphData.totalTime | timeTransform: false: false: true }}
       </span>
     </span>
-    <div fxLayoutAlign="start center"
-         *ngIf="isMainGraph">
-      <mat-icon svgIcon="arrow-down"
-                class="icon-16"></mat-icon>
+    <div *ngIf="isMainGraph" fxLayoutAlign="start center">
+      <mat-icon svgIcon="arrow-down" class="icon-16"></mat-icon>
       <span class="calls-label">Total time</span>
     </div>
   </div>
-  <div fxLayout="row"
-       fxLayoutGap="4px">
-    <div fxLayout="column"
-         fxLayoutGap="6px"
-         class="y-steps">
+  <div fxLayout="row" fxLayoutGap="4px">
+    <div fxLayout="column" fxLayoutGap="6px" class="y-steps">
       <span *ngFor="let step of ySteps">{{ step }}</span>
     </div>
     <div class="d-flex flex-column">
       <div class="cols-wrap flex-row align-end d-flex">
         <div *ngFor="let col of graphData.columns; let i=index"
              class="gr-col d-flex flex-column-reverse"
-             (mouseenter)="openPersonDetailsOverlay(col, i, $event)"
+             (mouseenter)="openDetailsOverlay(col, i, $event)"
              (mouseleave)="detachOverlay()">
           <div *ngFor="let square of [].constructor(col.squareCount); let j=index"
                [class.yellow-square]="i + j > 6"
@@ -46,12 +38,8 @@
       </div>
     </div>
   </div>
-  <div fxLayoutAlign="start center"
-       class="x-info"
-       fxLayoutGap="8px"
-       *ngIf="isMainGraph">
-    <mat-icon svgIcon="arrow-right"
-              class="icon-16"></mat-icon>
+  <div *ngIf="isMainGraph" fxLayoutAlign="start center" class="margin-top-5" fxLayoutGap="8px">
+    <mat-icon svgIcon="arrow-right" class="icon-16"></mat-icon>
     <span class="calls-label">Duration of call</span>
   </div>
 </div>
@@ -64,9 +52,21 @@
              let-total="total">
   <div class="tooltip-template">
     <div class="text-white header">{{ header }}</div>
-    <div><span class="text-white">{{ count | thousandTransform }}</span> Calls</div>
-    <div><span class="text-white">{{ mean | timeTransform: false }}</span> Mean</div>
-    <div><span class="text-white">{{ max | timeTransform: false }}</span> Max</div>
-    <div><span class="text-white">{{ total | timeTransform: false }}</span> Total Time</div>
+    <div>
+      <span class="text-white">{{ count | thousandTransform }}</span>
+      Calls
+    </div>
+    <div>
+      <span class="text-white">{{ mean | timeTransform: false }}</span>
+      Mean
+    </div>
+    <div>
+      <span class="text-white">{{ max | timeTransform: false }}</span>
+      Max
+    </div>
+    <div>
+      <span class="text-white">{{ total | timeTransform: false }}</span>
+      Total Time
+    </div>
   </div>
 </ng-template>

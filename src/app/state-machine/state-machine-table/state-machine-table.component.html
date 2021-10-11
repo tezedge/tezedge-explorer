@@ -23,7 +23,7 @@
                 (click)="selectAction(event)"
                 [class.hover]="stateMachine.activeAction?.originalId === event?.originalId">
             <span class="text-white-7">{{ event?.datetime }}</span>
-            <span class="text-white truncate">{{ event?.type }}</span>
+            <span class="text-white truncate">{{ event?.kind }}</span>
             <span class="text-white-7" [innerHTML]="event?.duration"></span>
           </span>
         </ng-template>

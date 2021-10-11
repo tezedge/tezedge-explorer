@@ -5,10 +5,10 @@ context('STATE MACHINE', () => {
     cy.visit(Cypress.config().baseUrl + '/#/state', { timeout: 10000 });
   });
 
-  // it('[STATE MACHINE] should perform state machine diagram request successfully', () => {
-  //   cy.intercept('GET', '/dev/shell/automaton/actions_graph').as('getDiagramRequest');
-  //   cy.wait('@getDiagramRequest', { timeout: 30000 }).its('response.statusCode').should('eq', 200);
-  // });
+  it('[STATE MACHINE] should perform state machine diagram request successfully', () => {
+    cy.intercept('GET', '/dev/shell/automaton/actions_graph').as('getDiagramRequest');
+    cy.wait('@getDiagramRequest', { timeout: 30000 }).its('response.statusCode').should('eq', 200);
+  });
 
   it('[STATE MACHINE] should perform state machine actions request successfully', () => {
     cy.intercept('GET', '/dev/shell/automaton/actions?*').as('getActionsRequest');
@@ -37,7 +37,7 @@ context('STATE MACHINE', () => {
 
               cy.get('.virtual-scroll-container .virtualScrollRow:nth-last-child(3) span:nth-child(2)')
                 .should(($span) => {
-                  expect($span.text().trim()).to.equal(lastAction.type);
+                  expect($span.text().trim()).to.equal(lastAction.kind);
                 });
             } else {
               cy.get('.stop-stream').click();
@@ -46,6 +46,7 @@ context('STATE MACHINE', () => {
         });
     });
   });
+
   it('[STATE MACHINE] should show properly colors for duration column values', () => {
     cy.wait(5000).then(() => {
       cy.get('.stop-stream').click();
@@ -84,7 +85,6 @@ context('STATE MACHINE', () => {
         });
     });
   });
-
 
   it('[STATE MACHINE] should change the value of the virtual scroll element when scrolling', () => {
     let beforeScrollValue;
@@ -248,7 +248,7 @@ context('STATE MACHINE', () => {
     });
   });
 
-  it('[STATE MACHINE] should hide state chart on toggle click', () => {
+  it('[STATE MACHINE] should hide state chart on toggle click and show back on second click', () => {
     cy.wait(1000).then(() => {
       cy.get('#d3Diagram').then(svg => {
         if (svg.is(':visible')) {
@@ -265,6 +265,193 @@ context('STATE MACHINE', () => {
           });
         }
       });
+    });
+  });
+
+  it('[STATE MACHINE] should update local storage collapsedDiagram property when toggling the state chart', () => {
+    cy.wait(1000).then(() => {
+      cy.get('#d3Diagram').then(svg => {
+        if (svg.is(':visible')) {
+          expect(localStorage.getItem('collapsedDiagram')).to.eq(null);
+          cy.get('app-state-machine-diagram .state-toolbar .diagram-toggler')
+            .trigger('click')
+            .then(() => {
+              expect(localStorage.getItem('collapsedDiagram')).to.eq('true');
+            });
+          cy.get('app-state-machine-diagram .state-toolbar .diagram-toggler')
+            .trigger('click')
+            .then(() => {
+              expect(localStorage.getItem('collapsedDiagram')).to.eq('false');
+            });
+        }
+      });
+    });
+  });
+
+  it('[STATE MACHINE] should update local storage diagramHeight when dragging the resizer', () => {
+    cy.wait(1000).then(() => {
+      cy.get('#d3Diagram').then(svg => {
+        if (svg.is(':visible')) {
+          expect(localStorage.getItem('diagramHeight')).to.eq(null);
+          let diagramHeight;
+          cy.get('app-state-machine .resizer-element .mid-content')
+            .trigger('mousedown')
+            .trigger('mousemove', { clientX: 50, clientY: 450 })
+            .wait(1000)
+            .trigger('mouseup')
+            .wait(1000)
+            .then(() => {
+              diagramHeight = localStorage.getItem('diagramHeight');
+              cy.wrap(diagramHeight).should('not.be.null');
+              cy.wrap(Number(diagramHeight)).should('be.gt', 0);
+            });
+        }
+      });
+    });
+  });
+
+  it('[STATE MACHINE] should render state chart successfully', () => {
+    cy.wait(5000).then(() => {
+
+      cy.window()
+        .its('store')
+        .then((store) => {
+          store.select('stateMachine').subscribe(stateMachine => {
+            if (stateMachine.diagramBlocks.length > 0) {
+              cy.get('#d3Diagram svg').should('be.visible').then(svg => {
+                if (svg.is(':visible')) {
+                  expect(svg.height()).to.be.greaterThan(0);
+                  expect(svg.width()).to.be.greaterThan(0);
+                  cy.get('#d3Diagram svg g').should('have.attr', 'transform');
+                  cy.get('#d3Diagram svg g .edgePaths').should('be.visible');
+                  cy.get('#d3Diagram svg g .edgeLabels').should('be.visible');
+                  cy.get('#d3Diagram svg g .nodes').should('be.visible').then(nodes => {
+                    expect(nodes.children()).to.have.length(stateMachine.diagramBlocks.length);
+                  });
+                }
+              });
+            }
+          });
+        });
+    });
+  });
+
+  it('[STATE MACHINE] should zoom in state chart successfully on mouse wheel up', () => {
+    cy.wait(2000).then(() => {
+      cy.get('#d3Diagram svg').then(svg => {
+        if (svg.is(':visible')) {
+          let initialTransform;
+          cy.get('#d3Diagram svg > g').then((e) => {
+            initialTransform = e.attr('transform');
+          });
+          cy.wait(500).then(() => {
+            cy.get('#d3Diagram svg')
+              .trigger('wheel', {
+                deltaY: 500,
+                wheelDelta: 12000,
+                wheelDeltaX: 1000,
+                wheelDeltaY: 1000,
+                bubbles: true
+              })
+              .wait(1000)
+              .then(() => {
+                cy.get('#d3Diagram svg > g').then((e) => {
+                  expect(e.attr('transform')).not.equal(initialTransform);
+                });
+              });
+          });
+        }
+      });
+    });
+  });
+
+  it('[STATE MACHINE] should zoom in state chart successfully on plus button', () => {
+    cy.wait(2000).then(() => {
+      cy.get('#d3Diagram svg').then(svg => {
+        if (svg.is(':visible')) {
+          let initialTransform;
+          cy.get('#d3Diagram svg > g').then((e) => {
+            initialTransform = e.attr('transform');
+          });
+          cy.wait(500).then(() => {
+            cy.get('app-state-machine-diagram .zoom-group div:first-child')
+              .trigger('click')
+              .wait(800)
+              .then(() => {
+                cy.get('#d3Diagram svg > g').then((e) => {
+                  expect(e.attr('transform')).not.equal(initialTransform);
+                });
+              });
+          });
+        }
+      });
+    });
+  });
+
+  it('[STATE MACHINE] should zoom out state chart successfully on minus button', () => {
+    cy.wait(2000).then(() => {
+      cy.get('#d3Diagram svg').then(svg => {
+        if (svg.is(':visible')) {
+          let initialTransform;
+          cy.get('#d3Diagram svg > g').then((e) => {
+            initialTransform = e.attr('transform');
+          });
+          cy.wait(500).then(() => {
+            cy.get('app-state-machine-diagram .zoom-group div:last-child')
+              .trigger('click')
+              .wait(800)
+              .then(() => {
+                cy.get('#d3Diagram svg > g').then((e) => {
+                  expect(e.attr('transform')).not.equal(initialTransform);
+                });
+              });
+          });
+        }
+      });
+    });
+  });
+
+  it('[STATE MACHINE] should show whole state chart successfully on reset zoom button', () => {
+    cy.wait(2000).then(() => {
+      cy.get('#d3Diagram svg').then(svg => {
+        if (svg.is(':visible')) {
+          let initialTransform;
+          cy.get('#d3Diagram svg > g').then((e) => {
+            initialTransform = e.attr('transform');
+          });
+          cy.wait(500).then(() => {
+            cy.get('app-state-machine-diagram .zoom-group div:last-child')
+              .trigger('click')
+              .wait(800)
+              .then(() => {
+                cy.get('.full-diagram .icon-background').trigger('click')
+                  .wait(800)
+                  .then(() => {
+                    cy.get('#d3Diagram svg > g').then((e) => {
+                      expect(e.attr('transform')).equal(initialTransform);
+                    });
+                  });
+              });
+          });
+        }
+      });
+    });
+  });
+
+  it('[STATE MACHINE] should disable next and prev action buttons if no action is selected successfully', () => {
+    cy.wait(5000).then(() => {
+
+      cy.window()
+        .its('store')
+        .then((store) => {
+          store.select('stateMachine').subscribe(stateMachine => {
+            if (!stateMachine.activeAction && stateMachine.actionTable.ids.length) {
+              cy.get('.player-wrapper .play-pause:not(.arrows)').should('be.not.disabled');
+              cy.get('.player-wrapper .play-pause.arrows:nth-child(2)').should('be.disabled');
+              cy.get('.player-wrapper .play-pause.arrows:nth-child(3)').should('be.disabled');
+            }
+          });
+        });
     });
   });
 });

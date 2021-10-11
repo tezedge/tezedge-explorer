@@ -65,8 +65,8 @@ export class TezedgeChartsTooltipAreaComponent extends TooltipArea implements Af
     this.tooltipDirective.tooltipCloseOnClickOutside = false;
 
     this.zone.runOutsideAngular(() => {
-      this.document.querySelector('.resources-container').addEventListener('scroll', this.scrollListener);
-      this.document.querySelector('.centered-container').addEventListener('scroll', this.scrollListener);
+      this.document.querySelector('.resources-container')?.addEventListener('scroll', this.scrollListener);
+      this.document.querySelector('.centered-container')?.addEventListener('scroll', this.scrollListener);
 
       fromEvent(this.tooltipTrigger.nativeElement, 'mousemove')
         .pipe(untilDestroyed(this))
@@ -167,7 +167,7 @@ export class TezedgeChartsTooltipAreaComponent extends TooltipArea implements Af
 
   ngOnDestroy(): void {
     this.detachTooltip();
-    this.document.querySelector('.resources-container').removeEventListener('scroll', this.scrollListener);
-    this.document.querySelector('.centered-container').removeEventListener('scroll', this.scrollListener);
+    this.document.querySelector('.resources-container')?.removeEventListener('scroll', this.scrollListener);
+    this.document.querySelector('.centered-container')?.removeEventListener('scroll', this.scrollListener);
   }
 }

@@ -125,9 +125,11 @@ export class StateMachineDiagramComponent implements OnInit, AfterViewInit {
 
   toggleDiagramCollapsing(): void {
     this.pausePlaying();
-    this.store.dispatch<StateMachineCollapseDiagram>({
-      type: StateMachineActionTypes.STATE_MACHINE_COLLAPSE_DIAGRAM
-    });
+    this.zone.run(() =>
+      this.store.dispatch<StateMachineCollapseDiagram>({
+        type: StateMachineActionTypes.STATE_MACHINE_COLLAPSE_DIAGRAM
+      })
+    );
   }
 
   private listenToDiagramChange(): void {
@@ -210,10 +212,10 @@ export class StateMachineDiagramComponent implements OnInit, AfterViewInit {
         //   + (block.type === 'error' ? ' error' : '')
         //   + (block.type === 'error' && block.status !== 'active' ? ' hidden-svg' : '');
         this.g.setNode(block.actionId, { // Create
-          label: block.actionName,
+          label: block.actionKind,
           // class: cls,
           data: block,
-          id: block.actionName
+          id: block.actionKind
           // id: 'g' + block.actionId
         });
       });
@@ -223,7 +225,7 @@ export class StateMachineDiagramComponent implements OnInit, AfterViewInit {
         .forEach(block => {
           block.nextActions.forEach((next, i) => {
             const isNextBlockAnError = this.diagram.find(b => b.actionId === next).type === 'error';
-            const actionUniqueConnection = block.actionName + '-' + this.diagram.find(b => b.actionId === next).actionName;
+            const actionUniqueConnection = block.actionKind + '-' + this.diagram.find(b => b.actionId === next).actionKind;
             this.g.setEdge(block.actionId, next, { // Connect
               arrowheadStyle: isNextBlockAnError ? 'display: none' : 'fill: #7f7f82; stroke: none',
               style: (isNextBlockAnError ? 'stroke: #e05537; stroke-dasharray: 5, 5;' : 'stroke: #7f7f82;') + 'fill: none',
@@ -310,7 +312,7 @@ export class StateMachineDiagramComponent implements OnInit, AfterViewInit {
     if (prevActiveAction) {
       prevActiveAction.classed('active', false);
     }
-    const newActiveAction = this.svgGroup.select(`#${action.type}`);
+    const newActiveAction = this.svgGroup.select(`#${action.kind}`);
     newActiveAction.classed('active', true);
 
     this.svg.classed('active-block', true);
@@ -319,8 +321,8 @@ export class StateMachineDiagramComponent implements OnInit, AfterViewInit {
     const prevAction = this.stateMachine.actionTable.entities[action.id - 1];
 
     if (nextAction) {
-      const edgeLabel = d3.select(`svg g .edgeLabels g #l${action.type}-${nextAction.type} tspan`);
-      const nextConnectionArrow = d3.select(`svg g .edgePaths #a${action.type}-${nextAction.type}`);
+      const edgeLabel = d3.select(`svg g .edgeLabels g #l${action.kind}-${nextAction.kind} tspan`);
+      const nextConnectionArrow = d3.select(`svg g .edgePaths #a${action.kind}-${nextAction.kind}`);
 
       edgeLabel.html(action.duration.split('span').join('tspan'));
       nextConnectionArrow.classed('connection-next', true);
@@ -333,7 +335,7 @@ export class StateMachineDiagramComponent implements OnInit, AfterViewInit {
     }
 
     if (prevAction) {
-      const prevConnectionArrow = d3.select(`svg g .edgePaths #a${prevAction.type}-${action.type}`);
+      const prevConnectionArrow = d3.select(`svg g .edgePaths #a${prevAction.kind}-${action.kind}`);
       prevConnectionArrow.classed('connection-prev', true);
       prevConnectionArrow.select('marker').attr('markerHeight', 10);
 
@@ -341,23 +343,6 @@ export class StateMachineDiagramComponent implements OnInit, AfterViewInit {
     }
 
     this.focusCurrentAction(newActiveAction);
-  }
-
-  private toggleErrorStatesVisibilityOnHover(): void {
-    const toggleVisibilityOfErrorBlocks = (id: string, visible: boolean) => {
-      const nextBlockIds = this.diagram.find(bl => bl.actionId === Number(id)).nextActions;
-      const nextErrorBlockIds = this.diagram.filter(bl => nextBlockIds.includes(bl.actionId) && bl.type === 'error');
-      nextErrorBlockIds.forEach(bl => {
-        d3.select('#d3Diagram svg g')
-          .select(`#g${bl.actionId}`)
-          .classed('hidden-svg', visible);
-      });
-    };
-
-    const nodes = d3.select('#d3Diagram svg g').selectAll('g.node rect');
-    nodes
-      .on('mouseenter', (event, id: string) => toggleVisibilityOfErrorBlocks(id, false))
-      .on('mouseleave', (event, id: string) => toggleVisibilityOfErrorBlocks(id, true));
   }
 
   private focusCurrentAction(source: Selection<any, any, HTMLElement, any>): void {
@@ -369,5 +354,22 @@ export class StateMachineDiagramComponent implements OnInit, AfterViewInit {
 
     this.executeZoom(x, y, scale, 750);
   }
+
+  // private toggleErrorStatesVisibilityOnHover(): void {
+  //   const toggleVisibilityOfErrorBlocks = (id: string, visible: boolean) => {
+  //     const nextBlockIds = this.diagram.find(bl => bl.actionId === Number(id)).nextActions;
+  //     const nextErrorBlockIds = this.diagram.filter(bl => nextBlockIds.includes(bl.actionId) && bl.type === 'error');
+  //     nextErrorBlockIds.forEach(bl => {
+  //       d3.select('#d3Diagram svg g')
+  //         .select(`#g${bl.actionId}`)
+  //         .classed('hidden-svg', visible);
+  //     });
+  //   };
+  //
+  //   const nodes = d3.select('#d3Diagram svg g').selectAll('g.node rect');
+  //   nodes
+  //     .on('mouseenter', (event, id: string) => toggleVisibilityOfErrorBlocks(id, false))
+  //     .on('mouseleave', (event, id: string) => toggleVisibilityOfErrorBlocks(id, true));
+  // }
 
 }

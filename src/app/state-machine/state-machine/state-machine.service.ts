@@ -6,14 +6,16 @@ import { StateMachineAction } from '@shared/types/state-machine/state-machine-ac
 import { StateMachineActionsFilter } from '@shared/types/state-machine/state-machine-actions-filter.type';
 import { map } from 'rxjs/operators';
 import * as moment from 'moment-mini-ts';
+import { formatNumber } from '@angular/common';
+import { StateMachineActionKindStatistics } from '@shared/types/state-machine/state-machine-action-kind-statistics.type';
+import { StateMachineActionStatistics } from '@shared/types/state-machine/state-machine-action-statistics.type';
 
 // @ts-ignore
 import * as actionList from './action-list.json';
 // @ts-ignore
 import * as actionGraph from './action-graph.json';
-import { formatNumber } from '@angular/common';
-import { StateMachineActionTypeStatistics } from '@shared/types/state-machine/state-machine-action-type-statistics.type';
-import { StateMachineActionStatistics } from '@shared/types/state-machine/state-machine-action-statistics.type';
+// @ts-ignore
+import * as actionsStatistics from './actions-statistics.json';
 
 const MILLISECOND_FACTOR = 1000;
 const MICROSECOND_FACTOR = 1000000;
@@ -26,13 +28,14 @@ export class StateMachineService {
 
   private list = actionList.default as any;
   private graph = actionGraph.default as any;
+  private stats = actionsStatistics.default as any;
 
   constructor(private http: HttpClient) { }
 
   getStateMachineDiagram(): Observable<StateMachineDiagramBlock[]> {
     const url = 'http://prod.tezedge.com:18732/dev/shell/automaton/actions_graph';
-    return this.http.get<StateMachineDiagramBlock[]>(url, { reportProgress: true }).pipe(map(actions => {
-    // return of(this.graph).pipe(delay(400), map(actions => {
+    return this.http.get<StateMachineDiagramBlock[]>(url).pipe(map(actions => {
+    // return of(JSON.parse(JSON.stringify(this.graph))).pipe(delay(400), map(actions => {
       actions.forEach(action => {
         action.type = 'info';
         action.status = 'completed';
@@ -50,7 +53,9 @@ export class StateMachineService {
 
   getStateMachineActionStatistics(): Observable<StateMachineActionStatistics> {
     const url = 'http://prod.tezedge.com:18732/dev/shell/automaton/actions_stats';
-    return this.http.get(url).pipe(map(this.mapActionStatistics));
+    return this.http.get(url)
+    // return of(this.stats)
+      .pipe(map(this.mapActionStatistics));
   }
 
   private buildParams(filter: StateMachineActionsFilter): string {
@@ -84,9 +89,14 @@ export class StateMachineService {
         duration: statistics[key].totalDuration / 1000000000,
         calls: statistics[key].totalCalls,
         durationSquares: StateMachineService.getDurationSquareCount(statistics[key].totalDuration),
-        callsSquares: StateMachineService.getCallsSquareCount(statistics[key].totalCalls)
-      } as StateMachineActionTypeStatistics))
-      .sort((c1, c2) => c1.duration - c2.duration);
+        callsSquares: StateMachineService.getCallsSquareCount(statistics[key].totalCalls),
+      } as StateMachineActionKindStatistics))
+      .map(action => {
+        action.durationWidth = Math.max(100 / 8 * action.durationSquares, 1);
+        action.callsWidth = Math.max(100 / 8 * action.callsSquares, 1);
+        return action;
+      })
+      .sort((c1, c2) => c2.duration - c1.duration);
 
     return {
       statistics: stats,

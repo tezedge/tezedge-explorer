@@ -7,31 +7,6 @@ $border-color: rgba(255, 255, 255, 0.1);
 
 .state-machine {
 
-  //.tabs {
-  //  padding: 9px 10px 9px 15px;
-  //
-  //  > div {
-  //    &.active,
-  //    &:hover {
-  //      color: white !important;
-  //    }
-  //  }
-  //}
-  //
-  //pre {
-  //  background: rgba(255, 255, 255, 0.1);
-  //  border-radius: 4px;
-  //}
-
-  .filters-container {
-    background-color: #2A2A2E;
-    border-top-left-radius: 4px;
-
-    .add-filters {
-      background-color: transparent;
-    }
-  }
-
   .bottom-container,
   .upper-container {
     min-height: 10%;
@@ -69,59 +44,51 @@ $border-color: rgba(255, 255, 255, 0.1);
       height: calc(100% - 8px);
       border-bottom-left-radius: 4px;
 
-      .statistics {
+      .statistics-table {
+        .row {
+          display: grid;
+          grid-template-columns: 200px 50px 90px 1fr;
+          height: 36px;
+          line-height: 36px;
+          cursor: context-menu;
 
-        .y-steps {
-          color: rgba(255, 255, 255, 0.4);
-          font-size: 10px;
-        }
+          &:nth-child(odd) {
+            background-color: rgba(255, 255, 255, 0.1);
+          }
 
-        .calls-label {
-          font-size: 10px;
-          color: rgba(255, 255, 255, 0.4);
-        }
+          &:hover:not(.table-head) {
+            background-color: rgba(255, 255, 255, 0.2);
 
-        .cols-wrap {
-          height: 142px;
-          width: 100%;
-          background: repeating-linear-gradient(0deg, #2a2a2e, #2a2a2e 16px, $border-color 0.05em, $border-color 18px);
-          border-bottom: 1px solid $border-color;
-          padding-top: 1px;
-
-          .gr-col {
-            cursor: pointer;
-
-            &:not(:last-child) {
-              padding-right: 1px;
+            > span {
+              color: white !important;
             }
+          }
 
-            &:hover .square {
-              background-color: rgba(255, 255, 255, 0.6) !important;
+          &.table-head {
+            background-color: unset;
+          }
 
-              &.yellow-square {
-                background-color: #ff9600 !important;
+          > span {
+            padding-left: 12px;
+          }
+
+          .progress-background {
+            height: 4px;
+            border-radius: 4px;
+            background-color: rgba(255, 255, 255, 0.1);
+            width: 100%;
+            display: block;
+
+            .progress-background {
+              min-width: 4px;
+              background-color: rgba(255, 255, 255, 0.22);
+
+              &.yellow {
+                background-color: #FF9F0A;
               }
 
-              &.red-square {
-                background-color: #ff3d58 !important;
-              }
-            }
-
-            .square {
-              width: 100%;
-              height: 16px;
-              background-color: #777;
-
-              &:not(:last-child) {
-                margin-top: 2px;
-              }
-
-              &.yellow-square {
-                background-color: rgba(255, 159, 10, 0.8);
-              }
-
-              &.red-square {
-                background-color: rgba(235, 83, 104, 0.8);
+              &.red {
+                background-color: #FF2D55;
               }
             }
           }
@@ -177,27 +144,5 @@ $border-color: rgba(255, 255, 255, 0.1);
         }
       }
     }
-  }
-}
-
-.tooltip-template {
-  background-color: #2A2A2E;
-  padding: 8px;
-  border: 1px solid rgba(0, 0, 0, 0.2);
-  box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
-  border-radius: 4px;
-  font-size: 12px;
-  display: flex;
-  flex-direction: column;
-  color: rgba(255, 255, 255, 0.4);
-
-  > div {
-    margin-bottom: 8px;
-  }
-
-  .header {
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 4px;
-    padding: 6px 8px;
   }
 }

@@ -1,0 +1,282 @@
+{
+  "PeerConnectionOutgoingPending": {
+    "totalCalls": 1219,
+    "totalDuration": 2586378
+  },
+  "PeerMessageWriteNext": {
+    "totalCalls": 9344957,
+    "totalDuration": 3686450182275
+  },
+  "PeerChunkWriteReady": {
+    "totalCalls": 9347509,
+    "totalDuration": 251549090177
+  },
+  "PeersDnsLookupSuccess": {
+    "totalCalls": 3,
+    "totalDuration": 16302
+  },
+  "PeerChunkWriteSetContent": {
+    "totalCalls": 9347513,
+    "totalDuration": 266181011248
+  },
+  "PeerHandshakingMetadataMessageWrite": {
+    "totalCalls": 1062,
+    "totalDuration": 6063540
+  },
+  "PeerHandshakingAckMessageEncode": {
+    "totalCalls": 357,
+    "totalDuration": 4509138
+  },
+  "StorageRequestFinish": {
+    "totalCalls": 54942,
+    "totalDuration": 6298665826
+  },
+  "PeerHandshakingMetadataMessageDecode": {
+    "totalCalls": 357,
+    "totalDuration": 4337303
+  },
+  "PeerConnectionIncomingAcceptError": {
+    "totalCalls": 709,
+    "totalDuration": 4870194
+  },
+  "PeerChunkWriteEncryptContent": {
+    "totalCalls": 9346378,
+    "totalDuration": 236658460886
+  },
+  "PeerHandshakingMetadataMessageEncode": {
+    "totalCalls": 1062,
+    "totalDuration": 3894049
+  },
+  "PeerHandshakingMetadataMessageRead": {
+    "totalCalls": 1062,
+    "totalDuration": 11024338
+  },
+  "PeerConnectionOutgoingRandomInit": {
+    "totalCalls": 3107,
+    "totalDuration": 195320061811
+  },
+  "P2pPeerEvent": {
+    "totalCalls": 11500583,
+    "totalDuration": 197638042558
+  },
+  "PeerChunkReadReady": {
+    "totalCalls": 26924407,
+    "totalDuration": 682867931778
+  },
+  "PeerBinaryMessageReadInit": {
+    "totalCalls": 26922709,
+    "totalDuration": 638242578276
+  },
+  "PeerBinaryMessageReadReady": {
+    "totalCalls": 26921648,
+    "totalDuration": 1198990631613
+  },
+  "PeerHandshakingConnectionMessageDecode": {
+    "totalCalls": 1062,
+    "totalDuration": 145457564
+  },
+  "PeersAddIncomingPeer": {
+    "totalCalls": 709,
+    "totalDuration": 6231835
+  },
+  "PeerHandshakingFinish": {
+    "totalCalls": 314,
+    "totalDuration": 6937437
+  },
+  "PeerTryWrite": {
+    "totalCalls": 57337124,
+    "totalDuration": 1695794569402
+  },
+  "PeerConnectionIncomingSuccess": {
+    "totalCalls": 708,
+    "totalDuration": 6294250
+  },
+  "StorageRequestInit": {
+    "totalCalls": 54942,
+    "totalDuration": 187247466
+  },
+  "PeerHandshakingAckMessageWrite": {
+    "totalCalls": 357,
+    "totalDuration": 4051414
+  },
+  "PeerMessageWriteInit": {
+    "totalCalls": 9344971,
+    "totalDuration": 236984879607
+  },
+  "PeersDnsLookupCleanup": {
+    "totalCalls": 3,
+    "totalDuration": 4197
+  },
+  "StorageRequestSuccess": {
+    "totalCalls": 54942,
+    "totalDuration": 659309938
+  },
+  "PeerBinaryMessageWriteSetContent": {
+    "totalCalls": 9346378,
+    "totalDuration": 234512315986
+  },
+  "PeersRemove": {
+    "totalCalls": 1887,
+    "totalDuration": 12897938
+  },
+  "PeerDisconnected": {
+    "totalCalls": 1887,
+    "totalDuration": 19031040
+  },
+  "PeerHandshakingInit": {
+    "totalCalls": 1135,
+    "totalDuration": 16217135
+  },
+  "PeerConnectionClosed": {
+    "totalCalls": 1825,
+    "totalDuration": 14157324
+  },
+  "PeerChunkWritePart": {
+    "totalCalls": 9347509,
+    "totalDuration": 166431754219
+  },
+  "PeerMessageReadInit": {
+    "totalCalls": 26921290,
+    "totalDuration": 496319788931
+  },
+  "PeerHandshakingEncryptionInit": {
+    "totalCalls": 1062,
+    "totalDuration": 3965108
+  },
+  "PeerChunkWriteError": {
+    "totalCalls": 2,
+    "totalDuration": 14257
+  },
+  "PeersDnsLookupInit": {
+    "totalCalls": 3,
+    "totalDuration": 1506547
+  },
+  "P2pServerEvent": {
+    "totalCalls": 709,
+    "totalDuration": 9148933
+  },
+  "PeerBinaryMessageWriteNextChunk": {
+    "totalCalls": 9346376,
+    "totalDuration": 257768302980
+  },
+  "PeerChunkReadError": {
+    "totalCalls": 678,
+    "totalDuration": 19473171758
+  },
+  "PeerMessageReadSuccess": {
+    "totalCalls": 26920976,
+    "totalDuration": 577948729574
+  },
+  "PeerMessageWriteSuccess": {
+    "totalCalls": 9344957,
+    "totalDuration": 256088316324
+  },
+  "PeerConnectionIncomingAcceptSuccess": {
+    "totalCalls": 709,
+    "totalDuration": 1173756
+  },
+  "PeerHandshakingAckMessageRead": {
+    "totalCalls": 357,
+    "totalDuration": 4206811
+  },
+  "PeerBinaryMessageReadChunkReady": {
+    "totalCalls": 1697,
+    "totalDuration": 162931755
+  },
+  "PeerHandshakingMetadataMessageInit": {
+    "totalCalls": 1062,
+    "totalDuration": 4014314
+  },
+  "StorageBlockHeaderPutNextInit": {
+    "totalCalls": 54942,
+    "totalDuration": 529531325658
+  },
+  "PeerHandshakingConnectionMessageWrite": {
+    "totalCalls": 1135,
+    "totalDuration": 11050037
+  },
+  "PeerChunkReadPart": {
+    "totalCalls": 57214901,
+    "totalDuration": 1391647401539
+  },
+  "PeerHandshakingAckMessageInit": {
+    "totalCalls": 357,
+    "totalDuration": 4854310
+  },
+  "PeerConnectionIncomingAccept": {
+    "totalCalls": 1418,
+    "totalDuration": 42832818
+  },
+  "StorageRequestPending": {
+    "totalCalls": 54942,
+    "totalDuration": 553073342
+  },
+  "WakeupEvent": {
+    "totalCalls": 1375495,
+    "totalDuration": 1612517364379
+  },
+  "PeerDisconnect": {
+    "totalCalls": 1887,
+    "totalDuration": 93394637
+  },
+  "PeerHandshakingConnectionMessageEncode": {
+    "totalCalls": 1135,
+    "totalDuration": 13534672
+  },
+  "PeerChunkWriteCreateChunk": {
+    "totalCalls": 9347513,
+    "totalDuration": 246950868768
+  },
+  "PeerConnectionOutgoingSuccess": {
+    "totalCalls": 427,
+    "totalDuration": 4439213
+  },
+  "PeerChunkReadInit": {
+    "totalCalls": 26925539,
+    "totalDuration": 672319391855
+  },
+  "PeerBinaryMessageReadSizeReady": {
+    "totalCalls": 26921648,
+    "totalDuration": 691981926952
+  },
+  "StorageStateSnapshotCreate": {
+    "totalCalls": 54942,
+    "totalDuration": 24842808108
+  },
+  "PeerHandshakingAckMessageDecode": {
+    "totalCalls": 314,
+    "totalDuration": 4084888
+  },
+  "PeerChunkReadDecrypt": {
+    "totalCalls": 26923345,
+    "totalDuration": 606371490702
+  },
+  "PeerHandshakingConnectionMessageInit": {
+    "totalCalls": 1135,
+    "totalDuration": 15079599
+  },
+  "PeerBinaryMessageWriteReady": {
+    "totalCalls": 9346376,
+    "totalDuration": 260345523609
+  },
+  "PeerTryRead": {
+    "totalCalls": 103432419,
+    "totalDuration": 37958603122439
+  },
+  "PeerHandshakingError": {
+    "totalCalls": 1,
+    "totalDuration": 11823
+  },
+  "PeersAddMulti": {
+    "totalCalls": 307,
+    "totalDuration": 7519047
+  },
+  "PeerHandshakingConnectionMessageRead": {
+    "totalCalls": 1133,
+    "totalDuration": 10449431
+  },
+  "PeerConnectionOutgoingInit": {
+    "totalCalls": 1219,
+    "totalDuration": 85270277
+  }
+}

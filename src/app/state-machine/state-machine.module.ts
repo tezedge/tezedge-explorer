@@ -9,6 +9,7 @@ import { NgxObjectDiffModule } from 'ngx-object-diff';
 import { StateMachineActionDetailsComponent } from './state-machine-action-details/state-machine-action-details.component';
 import { MatSliderModule } from '@angular/material/slider';
 import { TezedgeNgxJsonViewerModule } from '@shared/custom-components/tezedge-ngx-json-viewer/tezedge-ngx-json-viewer.module';
+import { StateMachineFiltersComponent } from './state-machine-filters/state-machine-filters.component';
 
 
 @NgModule({
@@ -17,6 +18,7 @@ import { TezedgeNgxJsonViewerModule } from '@shared/custom-components/tezedge-ng
     StateMachineDiagramComponent,
     StateMachineTableComponent,
     StateMachineActionDetailsComponent,
+    StateMachineFiltersComponent,
   ],
   imports: [
     CommonModule,

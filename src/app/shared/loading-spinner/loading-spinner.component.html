@@ -1,0 +1,7 @@
+<ng-container *ngIf="loading$ | async">
+  <div class="text-white-7 margin-right-5">Loading...</div>
+  <div class="margin-right-10">
+    <mat-spinner [strokeWidth]="1"
+                 [diameter]="18"></mat-spinner>
+  </div>
+</ng-container>

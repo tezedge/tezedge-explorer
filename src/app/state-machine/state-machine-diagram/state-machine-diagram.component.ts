@@ -326,8 +326,6 @@ export class StateMachineDiagramComponent implements OnInit, AfterViewInit {
 
       edgeLabel.html(action.duration.split('span').join('tspan'));
       nextConnectionArrow.classed('connection-next', true);
-      // const strokeWidth = action.duration.includes('red') ? '5px' : action.duration.includes('yellow') ? '3px' : '1px';
-      // nextConnectionArrow.select('path').style('stroke-width', strokeWidth);
       nextConnectionArrow.select('marker').attr('markerHeight', 10);
 
       this.previousHighlightedElements.edgeLabel = edgeLabel;

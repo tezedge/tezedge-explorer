@@ -25,9 +25,7 @@ export class MempoolActionComponent implements OnInit, OnDestroy {
   public networkDataSource;
   public networkActionlastCursorId = 0;
 
-  constructor(
-    public store: Store<State>,
-  ) { }
+  constructor(public store: Store<State>) { }
 
   ngOnInit(): void {
 
@@ -91,8 +89,7 @@ export class MempoolActionComponent implements OnInit, OnDestroy {
     this.mempoolSelectedItem = this.mempoolClickedItem;
   }
 
-  ngOnDestroy() {
-    // stop streaming actions
+  ngOnDestroy(): void {
     this.store.dispatch({
       type: 'MEMPOOL_ACTION_STOP'
     });

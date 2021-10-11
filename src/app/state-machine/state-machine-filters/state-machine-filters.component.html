@@ -1,0 +1,45 @@
+<div class="filters-container">
+
+  <mat-accordion class="filters-accordion state-machine-accordion">
+    <mat-expansion-panel hideToggle [expanded]="accordionExpanded">
+      <mat-expansion-panel-header class="padding-remove context-menu" #panelH (click)="panelH._toggle()">
+        <div class="active-filters-row align-center">
+          <button class="add-filters margin-left-5 d-flex align-center pointer font-300" (click)="accordionExpanded = !accordionExpanded">
+            <mat-icon svgIcon="filter" class="icon-12 margin-right-5 margin-left-5"></mat-icon>
+            Add Filters
+          </button>
+
+          <div class="filters-content">
+            <button *ngFor="let filter of activeFilters.slice(0, maxVisibleFilters)"
+                    class="active" mat-flat-button
+                    (click)="filterByType(filter)">
+              <span class="d-flex align-center flex-center">
+                {{ filter }}
+                <mat-icon svgIcon="close" class="icon-12 margin-left-5"></mat-icon>
+              </span>
+            </button>
+          </div>
+          <div *ngIf="activeFilters.length > maxVisibleFilters" class="text-white-7 font-12 font-300"
+               [matTooltip]="activeFilters.slice(maxVisibleFilters).join(',\n')">+ {{ activeFilters.length - maxVisibleFilters }} more
+          </div>
+        </div>
+      </mat-expansion-panel-header>
+      <ng-template matExpansionPanelContent class="filters-content">
+        <div class="filters-row overflow-auto d-flex flex-column">
+          <div *ngFor="let category of categories" class="d-flex">
+            <span class="filters-label" fxFlex="100px">{{ category.label }}</span>
+            <div fxLayout="row wrap" fxLayoutAlign="start start">
+              <button *ngFor="let action of category.filters"
+                      [class.active]="activeFilters.includes(action) || !activeFilters.length"
+                      (click)="filterByType(action)">
+                {{ action }}
+                <mat-icon svgIcon="close" class="icon-12 margin-left-5"></mat-icon>
+              </button>
+            </div>
+          </div>
+        </div>
+      </ng-template>
+    </mat-expansion-panel>
+  </mat-accordion>
+
+</div>

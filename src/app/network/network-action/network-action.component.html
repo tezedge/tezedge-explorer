@@ -5,12 +5,10 @@
 
       <div class="active-filters-row">
         <button class="add-filters"
-                mat-flat-button
-                (click)="filtersState.open=true"
-                [disabled]="filtersState.open">
+                mat-flat-button>
           <mat-icon svgIcon="filter"
                     class="icon-14 margin-right-5 margin-left-5"></mat-icon>
-          {{ filtersState.open ? 'Active Filters' : 'ADD FILTER' }}
+          Active Filters
         </button>
 
         <div class="filters-content">
@@ -43,71 +41,58 @@
       </div>
 
       <mat-accordion class="filters-accordion">
-        <mat-expansion-panel [expanded]="filtersState.open"
-                             hideToggle="true">
-          <ng-template matExpansionPanelContent
-                       class="filters-content">
+        <mat-expansion-panel [expanded]="true" hideToggle="true">
+          <ng-template matExpansionPanelContent class="filters-content">
             <div class="filters-row">
               <span class="filters-label">Control</span>
               <button [class.active]="virtualScrollItems.filter.connection || !activeFilters.length"
                       (click)="filterByType('connection')">
                 Connection
-                <mat-icon svgIcon="close"
-                          class="icon-12 margin-left-5"></mat-icon>
+                <mat-icon svgIcon="close" class="icon-12 margin-left-5"></mat-icon>
               </button>
               <button [class.active]="virtualScrollItems.filter.meta || !activeFilters.length"
                       (click)="filterByType('meta')">
                 Meta
-                <mat-icon svgIcon="close"
-                          class="icon-12 margin-left-5"></mat-icon>
+                <mat-icon svgIcon="close" class="icon-12 margin-left-5"></mat-icon>
               </button>
               <button [class.active]="virtualScrollItems.filter.acknowledge || !activeFilters.length"
                       (click)="filterByType('acknowledge')">
                 Acknowledge
-                <mat-icon svgIcon="close"
-                          class="icon-12 margin-left-5"></mat-icon>
+                <mat-icon svgIcon="close" class="icon-12 margin-left-5"></mat-icon>
               </button>
               <button [class.active]="virtualScrollItems.filter.bootstrap || !activeFilters.length"
                       (click)="filterByType('bootstrap')">
                 Bootstrap
-                <mat-icon svgIcon="close"
-                          class="icon-12 margin-left-5"></mat-icon>
+                <mat-icon svgIcon="close" class="icon-12 margin-left-5"></mat-icon>
               </button>
               <button [class.active]="virtualScrollItems.filter.advertise || !activeFilters.length"
                       (click)="filterByType('advertise')">
                 Advertise
-                <mat-icon svgIcon="close"
-                          class="icon-12 margin-left-5"></mat-icon>
+                <mat-icon svgIcon="close" class="icon-12 margin-left-5"></mat-icon>
               </button>
               <button [class.active]="virtualScrollItems.filter.swap || !activeFilters.length"
                       (click)=" filterByType('swap')">
                 Swap
-                <mat-icon svgIcon="close"
-                          class="icon-12 margin-left-5"></mat-icon>
+                <mat-icon svgIcon="close" class="icon-12 margin-left-5"></mat-icon>
               </button>
               <button [class.active]="virtualScrollItems.filter.deactivate || !activeFilters.length"
                       (click)="filterByType('deactivate')">
                 Deactivate
-                <mat-icon svgIcon="close"
-                          class="icon-12 margin-left-5"></mat-icon>
+                <mat-icon svgIcon="close" class="icon-12 margin-left-5"></mat-icon>
               </button>
 
               <span class="filters-label source-filters-label">Source</span>
               <button [class.active]="virtualScrollItems.filter.local || !activeFilters.length"
                       (click)="filterByType('local')">
-                <mat-icon svgIcon="local"
-                          class="icon-14 margin-right-5"></mat-icon>
+                <mat-icon svgIcon="local" class="icon-14 margin-right-5"></mat-icon>
                 Local
-                <mat-icon svgIcon="close"
-                          class="icon-12 margin-left-5"></mat-icon>
+                <mat-icon svgIcon="close" class="icon-12 margin-left-5"></mat-icon>
               </button>
               <button [class.active]="virtualScrollItems.filter.remote || !activeFilters.length"
                       (click)="filterByType('remote')">
-                <mat-icon svgIcon="remote"
-                          class="icon-14 margin-right-5"></mat-icon>
+                <mat-icon svgIcon="remote" class="icon-14 margin-right-5"></mat-icon>
                 Remote
-                <mat-icon svgIcon="close"
-                          class="icon-12 margin-left-5"></mat-icon>
+                <mat-icon svgIcon="close" class="icon-12 margin-left-5"></mat-icon>
               </button>
             </div>
 
@@ -173,8 +158,7 @@
       <span>MESSAGE</span>
     </div>
 
-    <div class="table-virtual-scroll-body"
-         [class.network-filters-expanded]="filtersState.open">
+    <div class="table-virtual-scroll-body network-filters-expanded">
 
       <div class="virtual-scroll-container">
         <ng-template vsFor
@@ -191,8 +175,7 @@
                 [class.hover]="event?.datetime && selectedNetworkId === event?.originalId"
                 [class.used]="event?.datetime">
 
-            <span class="item-loading"
-                  [class.displayed]="!event?.datetime">&nbsp;</span>
+            <span class="item-loading" [class.displayed]="!event?.datetime">&nbsp;</span>
 
             <span class="truncate date-time">{{event?.datetime}}</span>
             <span class="truncate">
@@ -209,7 +192,8 @@
                         class="icon-16"></mat-icon>
             </span>
             <span class="truncate">
-              {{event?.category}}<span *ngIf="event?.kind"> | {{ event.kind }}</span>
+              {{event?.category}}
+              <span *ngIf="event?.kind"> | {{ event.kind }}</span>
             </span>
 
             <span class="truncate">{{event?.message_preview === 'null' ? '' : event?.message_preview}}</span>
@@ -290,7 +274,7 @@
               id="firstPage"
               matTooltip="First Page"
               (click)="loadFirstPage()"
-              [disabled]="!virtualScrollItems.pages.length || virtualScrollItems.ids.length < virtualPageSize">
+              [disabled]="!virtualScrollItems.pages.length || activeFilters.length || virtualScrollItems.ids.length < virtualPageSize">
         <mat-icon svgIcon="arrow-left-stop"
                   class="icon-16"></mat-icon>
       </button>

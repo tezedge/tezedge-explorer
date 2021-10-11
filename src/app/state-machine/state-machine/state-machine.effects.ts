@@ -64,7 +64,7 @@ export class StateMachineEffects {
       let currentPosition = state.stateMachine.activeAction?.id || 0;
       const initialPlayingActionId = currentPosition + 1;
 
-      return timer(0, 1000)
+      return timer(0, 1500)
         .pipe(
           takeUntil(this.playSubject$),
           map(() => {

@@ -29,8 +29,8 @@ export class StateMachineService {
 
   getStateMachineDiagram(): Observable<StateMachineDiagramBlock[]> {
     const url = 'http://prod.tezedge.com:18732/dev/shell/automaton/actions_graph';
-    // return this.http.get<StateMachineDiagramBlock[]>(url).pipe(map(actions => {
-    return of(this.graph).pipe(map(actions => {
+    return this.http.get<StateMachineDiagramBlock[]>(url).pipe(map(actions => {
+    // return of(this.graph).pipe(map(actions => {
       actions.forEach(action => {
         action.type = 'info';
         action.status = 'completed';
@@ -42,8 +42,8 @@ export class StateMachineService {
 
   getStateMachineActions(filter: StateMachineActionsFilter): Observable<StateMachineAction[]> {
     const url = 'http://prod.tezedge.com:18732/dev/shell/automaton/actions' + this.buildParams(filter);
-    // return this.http.get<StateMachineAction[]>(url)
-    return of(this.list)
+    return this.http.get<StateMachineAction[]>(url)
+    // return of(this.list)
       .pipe(map(this.calculateTimes));
   }
 

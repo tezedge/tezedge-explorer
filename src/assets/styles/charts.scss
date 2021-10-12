@@ -129,14 +129,18 @@ g.label-container {
   }
 
   .edgePath {
-    path {
+    > path {
       stroke-width: 1.5px;
     }
 
-    &.connection-next {
+    defs marker path {
+      transform: translateX(1px);
+    }
+
+    &.connection-prev {
       > path {
         stroke: #326cb7 !important;
-        stroke-width: 4px !important;
+        stroke-width: 3px !important;
       }
 
       defs marker path {
@@ -144,15 +148,21 @@ g.label-container {
       }
     }
 
-    &.connection-prev {
+    &.connection-next {
       > path {
-        stroke: #82937d !important;
+        stroke: #e5e5e5 !important;
         stroke-width: 3px !important;
       }
 
       defs marker path {
-        fill: #82937d !important;
+        fill: #e5e5e5 !important;
       }
+    }
+  }
+
+  svg.active-block {
+    .edgePath:not(.connection-next):not(.connection-prev) {
+      opacity: 0.4 !important;
     }
   }
 }

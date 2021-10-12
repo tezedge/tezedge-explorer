@@ -130,12 +130,6 @@
     color: rgba(255, 255, 255, 1);
     line-height: 20px;
     height: 20px;
-
-    &:disabled {
-      color: rgba(255, 255, 255, 1);
-      opacity: 0.3;
-      background-color: transparent;
-    }
   }
 
   .close-filters-btn {

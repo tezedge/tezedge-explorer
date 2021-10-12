@@ -22,9 +22,6 @@ export class NetworkActionComponent implements OnInit, OnDestroy {
   virtualScrollItems: NetworkAction;
   selectedNetworkId: number = -1;
   networkActionShow: boolean;
-  filtersState = {
-    open: true
-  };
   virtualPageSize = 1000;
   activeFilters = [];
 

@@ -1,4 +1,4 @@
-import { AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, HostListener, NgZone, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, ChangeDetectionStrategy, Component, ElementRef, HostListener, NgZone, OnInit, ViewChild } from '@angular/core';
 import { StateMachineDiagramBlock } from '@shared/types/state-machine/state-machine-diagram-block.type';
 import { select, Store } from '@ngrx/store';
 import { State } from '@app/app.reducers';
@@ -12,7 +12,7 @@ import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { appState } from '@app/app.reducer';
 import { debounceTime, delay, distinctUntilChanged, filter, mergeMap, skip, tap } from 'rxjs/operators';
 import * as d3 from 'd3';
-import { curveBasis, zoomTransform, ZoomTransform } from 'd3';
+import { curveBasis } from 'd3';
 import * as dagreD3 from 'dagre-d3';
 import { StateMachineAction } from '@shared/types/state-machine/state-machine-action.type';
 import {
@@ -28,7 +28,10 @@ import { FormControl } from '@angular/forms';
 import { StateMachineActionTableAutoscrollType } from '@shared/types/state-machine/state-machine-action-table.type';
 import { Observable, of } from 'rxjs';
 import { ZoomBehavior } from 'd3-zoom';
-import { Selection } from 'd3-selection';
+import { EnterElement, Selection } from 'd3-selection';
+
+const DEFAULT_MARKER_HEIGHT = 6;
+
 
 @UntilDestroy()
 @Component({
@@ -56,7 +59,6 @@ export class StateMachineDiagramComponent implements OnInit, AfterViewInit {
   private previousHighlightedElements: any = {};
 
   constructor(private store: Store<State>,
-              private cdRef: ChangeDetectorRef,
               private zone: NgZone) { }
 
   ngOnInit(): void {
@@ -233,12 +235,13 @@ export class StateMachineDiagramComponent implements OnInit, AfterViewInit {
           });
         });
 
-      this.g.nodes().forEach((v) => {
-        const node = this.g.node(v);
+      this.g.nodes().forEach(n => {
+        const node = this.g.node(n);
         node.rx = node.ry = 5;
       });
 
       const render = new dagreD3.render();
+
       this.svg = d3.select('#d3Diagram svg');
       this.svgGroup = this.svg.append('g');
 
@@ -246,26 +249,18 @@ export class StateMachineDiagramComponent implements OnInit, AfterViewInit {
 
       // this.toggleErrorStatesVisibilityOnHover();
 
+      this.svg.selectAll('g .edgePaths .edgePath marker').attr('markerUnits', 'userSpaceOnUse').attr('markerWidth', 12);
       this.svg
         .attr('width', this.d3Diagram.nativeElement.offsetWidth)
         .attr('height', this.d3Diagram.nativeElement.offsetHeight);
-
-      this.zoom = d3.zoom()
-        .on('zoom', (e) => {
-          console.log(e.transform);
-          this.svg.select('g').attr('transform', e.transform);
-        });
-      this.svg.call(this.zoom);
 
       this.zoomToFit();
     });
   }
 
   zoomToFit(duration: number = 0): void {
-    const zoom = d3.zoom().on('zoom', (event) => {
-      this.svgGroup.attr('transform', event.transform);
-    });
-    this.svg.call(zoom);
+    this.zoom = d3.zoom().on('zoom', e => this.svgGroup.attr('transform', e.transform));
+    this.svg.call(this.zoom);
 
     const graph = this.g.graph();
     const zoomCoefficient = 0.005;
@@ -275,13 +270,18 @@ export class StateMachineDiagramComponent implements OnInit, AfterViewInit {
     ) - zoomCoefficient;
     const y = (Number(this.svg.attr('height')) - graph.height * initialScale) / 2;
     const x = (Number(this.svg.attr('width')) - graph.width * initialScale) / 2;
+    this.executeZoom(x, y, initialScale, duration);
+  }
+
+
+  private executeZoom(x: number, y: number, initialScale: number, duration: number): void {
     const transform = d3.zoomIdentity
       .translate(x, y)
       .scale(initialScale);
     this.svg
       .transition()
       .duration(duration)
-      .call(zoom.transform as any, transform);
+      .call(this.zoom.transform, transform);
   }
 
   zoomIn(): void {
@@ -293,20 +293,22 @@ export class StateMachineDiagramComponent implements OnInit, AfterViewInit {
   }
 
   private highlightActiveActionInDiagram(action: StateMachineAction): void {
-    const dd: any = d3;
-
     if (this.previousHighlightedElements.edgeLabel) {
       this.previousHighlightedElements.edgeLabel.html(null);
       this.previousHighlightedElements.nextConnectionArrow.classed('connection-next', false);
       this.previousHighlightedElements.prevConnectionArrow.classed('connection-prev', false);
+      this.previousHighlightedElements.nextConnectionArrow.select('marker').attr('markerHeight', DEFAULT_MARKER_HEIGHT);
+      this.previousHighlightedElements.prevConnectionArrow.select('marker').attr('markerHeight', DEFAULT_MARKER_HEIGHT);
     }
 
-    const activeBlock = this.svgGroup.select('g.active');
-    if (activeBlock) {
-      activeBlock.classed('active', false);
+    const prevActiveAction = this.svgGroup.select('g.active');
+    if (prevActiveAction) {
+      prevActiveAction.classed('active', false);
     }
-    const newActiveNode = this.svgGroup.select(`#${action.type}`);
-    newActiveNode.classed('active', true);
+    const newActiveAction = this.svgGroup.select(`#${action.type}`);
+    newActiveAction.classed('active', true);
+
+    this.svg.classed('active-block', true);
 
     const nextAction = this.stateMachine.actionTable.entities[action.id + 1];
     const prevAction = this.stateMachine.actionTable.entities[action.id - 1];
@@ -317,20 +319,21 @@ export class StateMachineDiagramComponent implements OnInit, AfterViewInit {
 
       edgeLabel.html(action.timeDifference.split('span').join('tspan'));
       nextConnectionArrow.classed('connection-next', true);
+      nextConnectionArrow.select('marker').attr('markerHeight', 10);
 
       this.previousHighlightedElements.edgeLabel = edgeLabel;
       this.previousHighlightedElements.nextConnectionArrow = nextConnectionArrow;
-      this.cdRef.detectChanges();
     }
 
     if (prevAction) {
       const prevConnectionArrow = d3.select(`svg g .edgePaths #a${prevAction.type}-${action.type}`);
       prevConnectionArrow.classed('connection-prev', true);
+      prevConnectionArrow.select('marker').attr('markerHeight', 10);
 
       this.previousHighlightedElements.prevConnectionArrow = prevConnectionArrow;
     }
-    // debugger;
-    this.centerNode(dd.select('svg g #' + action.type));
+
+    this.focusCurrentAction(newActiveAction);
   }
 
   private toggleErrorStatesVisibilityOnHover(): void {
@@ -350,81 +353,14 @@ export class StateMachineDiagramComponent implements OnInit, AfterViewInit {
       .on('mouseleave', (event, id: string) => toggleVisibilityOfErrorBlocks(id, true));
   }
 
-  centerNode(source) {
-    //  debugger;
-    const dd = d3;
-    const width = this.d3Diagram.nativeElement.offsetWidth;
-    const height = this.d3Diagram.nativeElement.offsetHeight;
-    const bbox = source.node().getBBox();
-    const k = 1;
+  private focusCurrentAction(source: Selection<any, any, HTMLElement, any>): void {
+    const scale = 1;
+    const xTransform = source.node().transform.baseVal[0].matrix.e;
+    const yTransform = source.node().transform.baseVal[0].matrix.f;
+    const x = xTransform * -scale + this.d3Diagram.nativeElement.offsetWidth / 2;
+    const y = yTransform * -scale + this.d3Diagram.nativeElement.offsetHeight / 2;
 
-    const translate = 'translate(1000, 1000)scale(1)';
-
-
-    // this.svgGroup.transition()
-    //   .duration(750)
-    //   .attr('transform', translate);
-    // console.log(translate);
-    // this.svg.transition().call(this.zoom.transform, {
-    //   x: -bbox.x - bbox.width / 2,
-    //   y: -bbox.y - bbox.height / 2,
-    //   k
-    // } as ZoomTransform);
-
-
-    // const centroid = [bbox.x + bbox.width / 2, bbox.y + bbox.height / 2];
-    // const zoomScaleFactor = width / bbox.width;
-    // const zoomX = -centroid[0];
-    // const zoomY = -centroid[1];
-    //
-    // // set a transform on the parent group element
-    // this.svg.select('g').attr('transform',
-    //   'scale(' + 1 + ')' + 'translate(' + zoomX + ',' + zoomY + ')');
-
-
-    // .scale(k).event;
-    //
-    // const x = source.x;
-    // const y = source.y;
-    //
-    // const scale = 1; // Math.max(1, Math.min(8, 0.9 / Math.max(dx / width, dy / height))),
-    // const translate = [width / 2 - scale * x, height / 2 - scale * y];
-    //
-    // this.svg.transition().call(this.zoom.scaleBy, 0.5);
-    const tr = source.attr('transform').replace('translate(', '').replace(')', '').split(',');
-    // debugger;
-    this.svg.transition()
-      .duration(750)
-      .call(this.zoom.transform, d3.zoomIdentity.translate( ((tr[0] * -1) + (width / 2)),  ((tr[1] * -1) + height / 2)).scale(1));
-
-    // const x0 = source.x;
-    // const x1 = source.x + source.width;
-    // const y0 = source.y;
-    // const y1 = source.y + source.height;
-    // this.svg.transition().duration(750).call(
-    //   this.zoom.transform,
-    //   d3.zoomIdentity
-    //     // .translate(this.d3Diagram.nativeElement.offsetWidth / 2, this.d3Diagram.nativeElement.offsetHeight / 2)
-    //     .scale(1)
-    //     .translate(source.x, source.y),
-    //   d3.pointer(event, this.svg.node())
-    // );
-    //
-    // console.log(source);
-    // let t = d3.zoomTransform(this.svg.node());
-    // let x = source.x;
-    // let y = source.y;
-    // x = x * t.k + this.d3Diagram.nativeElement.offsetWidth / 2;
-    // y = y * t.k + this.d3Diagram.nativeElement.offsetHeight / 2;
-    // d3.select('#d3Diagram svg')
-    //   .transition()
-    //   .duration(200)
-    //   .call(this.zoom.transform, d3.zoomIdentity.translate(source.x, source.y).scale(1.2));
-
-    // this.svg
-    //   .transition()
-    //   .duration(1000)
-    //   .attr('transform', 'translate(' + (this.d3Diagram.nativeElement.offsetWidth / 2 - source.x) + ',' + (this.d3Diagram.nativeElement.offsetHeight / 2 - source.y) + ')');
+    this.executeZoom(x, y, scale, 750);
   }
 
 }

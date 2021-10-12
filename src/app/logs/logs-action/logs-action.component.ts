@@ -21,9 +21,6 @@ export class LogsActionComponent implements OnInit, OnDestroy {
   virtualScrollItems: LogsAction;
   logsActionItem: LogsActionEntity;
   logsActionShow: boolean;
-  filtersState = {
-    open: true
-  };
   virtualPageSize = 1000;
   activeFilters = [];
 

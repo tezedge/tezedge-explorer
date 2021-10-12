@@ -25,9 +25,7 @@
           </button>
         </div>
         <button class="add-filters"
-                mat-flat-button
-                (click)="filtersState.open=true"
-                [disabled]="filtersState.open">
+                mat-flat-button>
           <span class="d-flex align-center flex-center">
             <mat-icon svgIcon="filter"
                       class="icon-14 d-flex margin-right-5"></mat-icon>
@@ -50,7 +48,7 @@
       </div>
 
       <mat-accordion class="filters-accordion">
-        <mat-expansion-panel [expanded]="filtersState.open"
+        <mat-expansion-panel [expanded]="true"
                              hideToggle="true">
           <ng-template matExpansionPanelContent
                        class="filters-content">
@@ -112,8 +110,7 @@
       <span>MESSAGE</span>
     </div>
 
-    <div class="table-virtual-scroll-body"
-         [class.logs-filters-expanded]="filtersState.open">
+    <div class="table-virtual-scroll-body logs-filters-expanded">
 
       <div class="virtual-scroll-container">
         <ng-template vsFor
@@ -190,7 +187,7 @@
               id="firstPage"
               matTooltip="First Page"
               (click)="loadFirstPage()"
-              [disabled]="searchText || (!searchText && (!virtualScrollItems?.pages.length || virtualScrollItems.ids.length < virtualPageSize))">
+              [disabled]="searchText || activeFilters.length || (!searchText && (!virtualScrollItems?.pages.length || virtualScrollItems.ids.length < virtualPageSize))">
         <mat-icon svgIcon="arrow-left-stop"
                   class="icon-16"></mat-icon>
       </button>

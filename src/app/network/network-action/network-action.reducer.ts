@@ -192,7 +192,7 @@ export function setVirtualScrollId(action, state, accumulator): number {
   return action.payload.network.length - (alreadySetRecords.length + 1);
 }
 
-export function setActivePage(entities, action): VirtualScrollActivePage {
+export function setActivePage(entities, action): VirtualScrollActivePage<NetworkActionEntity> {
   if (!action.payload.network.length) {
     return null;
   }

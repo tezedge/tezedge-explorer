@@ -16,7 +16,6 @@
                      let-position="position"
                      [vsForOf]="stateMachine.actionTable"
                      [initialSelectedIndex]="forceScrollActionIndex"
-                     (getItems)="getItems($event)"
                      (startStopDataStream)="startStopDataStream($event)">
           <span class="virtualScrollRow state-machine-row"
                 [style.transform]="position !== undefined ? 'translateY(' + position + 'px)' : ''"
@@ -25,7 +24,7 @@
                 [class.hover]="stateMachine.activeAction?.originalId === event?.originalId">
             <span class="text-white-7">{{ event?.datetime }}</span>
             <span class="text-white truncate">{{ event?.type }}</span>
-            <span class="text-white-7" [innerHTML]="event?.timeDifference"></span>
+            <span class="text-white-7" [innerHTML]="event?.duration"></span>
           </span>
         </ng-template>
       </div>

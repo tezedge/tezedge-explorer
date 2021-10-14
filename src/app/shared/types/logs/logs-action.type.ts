@@ -6,7 +6,7 @@ export class LogsAction {
   ids: number[];
   entities: { [id: string]: LogsActionEntity };
   filter: LogsActionFilter;
-  activePage: VirtualScrollActivePage;
+  activePage: VirtualScrollActivePage<LogsActionEntity>;
   pages: number[];
   lastCursorId: number;
   stream: boolean;

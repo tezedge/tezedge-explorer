@@ -1,5 +1,8 @@
-ngx-json-viewer .segment .segment-main .segment-key {
-  color: $color-json-field !important;
+ngx-json-viewer,
+tezedge-ngx-json-viewer {
+  .segment .segment-main .segment-key {
+    color: $color-json-field !important;
+  }
 }
 
 .ngx-json-viewer {

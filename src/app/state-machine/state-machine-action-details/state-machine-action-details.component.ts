@@ -52,16 +52,14 @@ export class StateMachineActionDetailsComponent implements OnInit {
   private formatHTML(state: StateMachine): string {
     this.currentAction = state.activeAction;
     const prevAction = state.actionTable.entities[state.activeAction.id - 1];
-    if (this.currentAction.originalId !== 1 && !prevAction) {
+    if (!prevAction) {
       // TODO: diff should happen on the backend and we should not do these tricks here
-      this.api = 'http://prod.tezedge.com:18732/dev/shell/automaton/state?action_id=' + (this.currentAction.originalId - 1);
-      this.http.get<any>(this.api).subscribe(response => {
-        this.stateDifferences = this.getDifferences(this.currentAction.state, response);
+      this.api = 'http://prod.tezedge.com:18732/dev/shell/automaton/actions?limit=1&cursor=' + this.currentAction.originalId;
+      this.http.get<StateMachineAction[]>(this.api).subscribe(response => {
+        this.stateDifferences = this.getDifferences(this.currentAction.state, response[0].state);
         this.cdRef.detectChanges();
       });
       return this.stateDifferences;
-    } else if (this.currentAction.originalId === 1) {
-      return 'No differences';
     }
 
     return this.getDifferences(this.currentAction.state, prevAction.state);
@@ -90,12 +88,15 @@ export class StateMachineActionDetailsComponent implements OnInit {
     const delStart = '<del class="diff diff-key">';
     const insStart = '<ins class="diff diff-key">';
     const insDiffStart = '<ins class="diff">';
+    const insEnd = '</ins>';
     const spanInside = '<span>: </span>';
     findAllOccurrences(innerHTML, delStart).reverse().forEach(index => {
       const delContentStartIdx = index + delStart.length;
       const spanDelEndLimit = delContentStartIdx + innerHTML.substr(delContentStartIdx).indexOf(spanInside) + spanInside.length;
       const delContentEndIdx = delContentStartIdx + innerHTML.substr(delContentStartIdx).indexOf(delEndingTag);
-      const oldValueTag = '<div class="old-value">' + innerHTML.substring(spanDelEndLimit, delContentEndIdx) + '</div>';
+      let oldValue = innerHTML.substring(spanDelEndLimit, delContentEndIdx);
+      oldValue = StateMachineActionDetailsComponent.removeQuotesFromBigNumber(oldValue);
+      const oldValueTag = '<div class="old-value">' + oldValue + '</div>';
       innerHTML = innerHTML.substring(0, spanDelEndLimit) + oldValueTag + innerHTML.substring(delContentEndIdx);
     });
     findAllOccurrences(innerHTML, delStart).reverse().forEach(index => {
@@ -128,6 +129,21 @@ export class StateMachineActionDetailsComponent implements OnInit {
           + innerHTML.substring(insTagStart);
       }
     });
+    findAllOccurrences(innerHTML, insStart).reverse().forEach(index => {
+      const insContentStartIdx = index + insStart.length;
+      const insContentEndIdx = insContentStartIdx + innerHTML.substr(insContentStartIdx).indexOf(insEnd);
+      let insContent = innerHTML.substring(insContentStartIdx, insContentEndIdx);
+      insContent = StateMachineActionDetailsComponent.removeQuotesFromBigNumber(insContent);
+      innerHTML = innerHTML.substring(0, insContentStartIdx) + insContent + innerHTML.substring(insContentEndIdx);
+    });
     return innerHTML;
+  }
+
+  private static removeQuotesFromBigNumber(text: string): string {
+    // for big numbers wrapped in strings, remove quotes to be shown as numbers; 17 characters is min + 2 quotes = 19 min
+    if (/"(\d+)"/.test(text) && text.length >= 19) {
+      text = text.slice(1, text.length - 1);
+    }
+    return text;
   }
 }

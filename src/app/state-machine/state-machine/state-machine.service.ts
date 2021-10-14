@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, of } from 'rxjs';
+import { delay, Observable, of } from 'rxjs';
 import { StateMachineDiagramBlock } from '@shared/types/state-machine/state-machine-diagram-block.type';
 import { StateMachineAction } from '@shared/types/state-machine/state-machine-action.type';
 import { StateMachineActionsFilter } from '@shared/types/state-machine/state-machine-actions-filter.type';
@@ -29,12 +29,11 @@ export class StateMachineService {
 
   getStateMachineDiagram(): Observable<StateMachineDiagramBlock[]> {
     const url = 'http://prod.tezedge.com:18732/dev/shell/automaton/actions_graph';
-    return this.http.get<StateMachineDiagramBlock[]>(url).pipe(map(actions => {
-    // return of(this.graph).pipe(map(actions => {
+    return this.http.get<StateMachineDiagramBlock[]>(url, { reportProgress: true }).pipe(map(actions => {
+    // return of(this.graph).pipe(delay(1), map(actions => {
       actions.forEach(action => {
         action.type = 'info';
         action.status = 'completed';
-        action.nextActions.sort((a, b) => a - b);
       });
       return actions;
     }));
@@ -43,7 +42,7 @@ export class StateMachineService {
   getStateMachineActions(filter: StateMachineActionsFilter): Observable<StateMachineAction[]> {
     const url = 'http://prod.tezedge.com:18732/dev/shell/automaton/actions' + this.buildParams(filter);
     return this.http.get<StateMachineAction[]>(url)
-    // return of(this.list)
+      // return of(this.list)
       .pipe(map(this.calculateTimes));
   }
 
@@ -57,19 +56,16 @@ export class StateMachineService {
 
     return `?limit=${filter.limit}`
       + (filter.cursor ? `&cursor=${filter.cursor}` : '')
+      + (filter.rev ? `&rev=1` : '')
       + filters;
   }
 
   private calculateTimes(actions: any[]): StateMachineAction[] {
-    actions.forEach((action, i) => {
+    actions.forEach(action => {
       action.datetime = moment(Math.ceil(action.id / 1000000)).format('HH:mm:ss.SSS, DD MMM YY');
-
-      if (actions[i - 1]) {
-        action.timeDifference = StateMachineService.transform(actions[i - 1].id - action.id);
-      } else {
-        action.timeDifference = '0';
-      }
+      action.duration = StateMachineService.transform(action.duration);
     });
+
     return actions;
   }
 

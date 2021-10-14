@@ -5,12 +5,13 @@ import { StateMachineActionsFilter } from '@shared/types/state-machine/state-mac
 export interface StateMachineActionTable {
   ids: number[];
   entities: { [id: string]: StateMachineAction };
-  activePage: VirtualScrollActivePage;
+  activePage: VirtualScrollActivePage<StateMachineAction>;
   pages: number[];
-  lastCursorId: number;
+  lastCursorId: string;
   stream: boolean;
   filter: StateMachineActionsFilter;
   autoScroll: StateMachineActionTableAutoscrollType;
+  mostRecentKnownActionId: string;
 }
 
 export type StateMachineActionTableAutoscrollType =  'up' | 'down' | 'any' | undefined;

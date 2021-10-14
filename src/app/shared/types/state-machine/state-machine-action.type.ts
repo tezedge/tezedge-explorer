@@ -3,7 +3,7 @@ export interface StateMachineAction {
   type: string;
   content: any;
   state: any;
-  originalId: number;
+  originalId: string;
   datetime: string;
-  timeDifference: string;
+  duration: string;
 }

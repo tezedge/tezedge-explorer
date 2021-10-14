@@ -19,6 +19,7 @@ import { NgxJsonViewerModule } from 'ngx-json-viewer';
 import { ReactiveFormsModule } from '@angular/forms';
 import { NgrxFormDirective } from '@shared/ngrx-form.directive';
 import { ResizeDirective } from '@shared/directives/resize.directive';
+import { CustomJsonParserInterceptorService } from '@core/custom-json-parser.interceptor.service';
 
 
 @NgModule({
@@ -81,6 +82,11 @@ import { ResizeDirective } from '@shared/directives/resize.directive';
     {
       provide: HTTP_INTERCEPTORS,
       useClass: ProgressBarInterceptor,
+      multi: true
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: CustomJsonParserInterceptorService,
       multi: true
     },
   ]

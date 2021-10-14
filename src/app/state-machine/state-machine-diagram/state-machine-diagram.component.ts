@@ -28,7 +28,7 @@ import { FormControl } from '@angular/forms';
 import { StateMachineActionTableAutoscrollType } from '@shared/types/state-machine/state-machine-action-table.type';
 import { Observable, of } from 'rxjs';
 import { ZoomBehavior } from 'd3-zoom';
-import { EnterElement, Selection } from 'd3-selection';
+import { Selection } from 'd3-selection';
 
 const DEFAULT_MARKER_HEIGHT = 6;
 
@@ -46,6 +46,7 @@ export class StateMachineDiagramComponent implements OnInit, AfterViewInit {
 
   stateMachine$: Observable<StateMachine>;
   formControl: FormControl;
+  diagram: StateMachineDiagramBlock[];
   private stateMachine: StateMachine;
 
   private g: any;
@@ -53,7 +54,6 @@ export class StateMachineDiagramComponent implements OnInit, AfterViewInit {
   private svgGroup: any;
   private zoom: ZoomBehavior<Element, any>;
 
-  private diagram: StateMachineDiagramBlock[];
   private collapsedDiagram: boolean;
   private diagramHeight: number = -1;
   private previousHighlightedElements: any = {};
@@ -261,6 +261,7 @@ export class StateMachineDiagramComponent implements OnInit, AfterViewInit {
   zoomToFit(duration: number = 0): void {
     this.zoom = d3.zoom().on('zoom', e => this.svgGroup.attr('transform', e.transform));
     this.svg.call(this.zoom);
+    this.svg.classed('active-block', false);
 
     const graph = this.g.graph();
     const zoomCoefficient = 0.005;
@@ -293,12 +294,16 @@ export class StateMachineDiagramComponent implements OnInit, AfterViewInit {
   }
 
   private highlightActiveActionInDiagram(action: StateMachineAction): void {
+    if (!this.diagram?.length) {
+      return;
+    }
+
     if (this.previousHighlightedElements.edgeLabel) {
       this.previousHighlightedElements.edgeLabel.html(null);
       this.previousHighlightedElements.nextConnectionArrow.classed('connection-next', false);
       this.previousHighlightedElements.prevConnectionArrow.classed('connection-prev', false);
-      this.previousHighlightedElements.nextConnectionArrow.select('marker').attr('markerHeight', DEFAULT_MARKER_HEIGHT);
       this.previousHighlightedElements.prevConnectionArrow.select('marker').attr('markerHeight', DEFAULT_MARKER_HEIGHT);
+      this.previousHighlightedElements.nextConnectionArrow.select('marker').attr('markerHeight', DEFAULT_MARKER_HEIGHT);
     }
 
     const prevActiveAction = this.svgGroup.select('g.active');
@@ -317,8 +322,10 @@ export class StateMachineDiagramComponent implements OnInit, AfterViewInit {
       const edgeLabel = d3.select(`svg g .edgeLabels g #l${action.type}-${nextAction.type} tspan`);
       const nextConnectionArrow = d3.select(`svg g .edgePaths #a${action.type}-${nextAction.type}`);
 
-      edgeLabel.html(action.timeDifference.split('span').join('tspan'));
+      edgeLabel.html(action.duration.split('span').join('tspan'));
       nextConnectionArrow.classed('connection-next', true);
+      // const strokeWidth = action.duration.includes('red') ? '5px' : action.duration.includes('yellow') ? '3px' : '1px';
+      // nextConnectionArrow.select('path').style('stroke-width', strokeWidth);
       nextConnectionArrow.select('marker').attr('markerHeight', 10);
 
       this.previousHighlightedElements.edgeLabel = edgeLabel;

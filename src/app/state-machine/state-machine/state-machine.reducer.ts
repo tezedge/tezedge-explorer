@@ -6,9 +6,10 @@ import { StateMachineAction } from '@shared/types/state-machine/state-machine-ac
 import { StateMachineActionsFilter } from '@shared/types/state-machine/state-machine-actions-filter.type';
 
 const NO_FILTERS: StateMachineActionsFilter = {
-  limit: 100,
+  limit: 1000,
   cursor: null,
-  queryFilters: []
+  queryFilters: [],
+  rev: false
 };
 
 const initialState: StateMachine = {
@@ -16,12 +17,13 @@ const initialState: StateMachine = {
   actionTable: {
     ids: [],
     entities: {},
-    lastCursorId: 0,
+    lastCursorId: '0',
     filter: NO_FILTERS,
     stream: false,
     activePage: {},
     pages: [],
-    autoScroll: undefined
+    autoScroll: undefined,
+    mostRecentKnownActionId: undefined
   },
   activeAction: null,
   isPlaying: false,
@@ -62,16 +64,20 @@ export function reducer(state: StateMachine = initialState, action: StateMachine
     case StateMachineActionTypes.STATE_MACHINE_ACTIONS_LOAD_SUCCESS: {
       const entities = setEntities(action, state);
       const activePage = setActivePage(entities, action);
+      const ids = setIds(action);
 
       return {
         ...state,
         actionTable: {
           ...state.actionTable,
-          ids: setIds(action),
+          ids,
           entities,
           activePage,
           lastCursorId: setLastCursorId(action),
           pages: setPages(activePage, state),
+          mostRecentKnownActionId: Number(state.actionTable.mostRecentKnownActionId) >= Number(entities[ids.length - 1].originalId)
+            ? state.actionTable.mostRecentKnownActionId
+            : entities[ids.length - 1].originalId
         }
       };
     }
@@ -95,6 +101,7 @@ export function reducer(state: StateMachine = initialState, action: StateMachine
           filter: {
             ...state.actionTable.filter,
             cursor: action.payload.cursor,
+            rev: action.payload.rev,
             queryFilters: action.payload.queryFilters || []
           }
         }
@@ -171,8 +178,8 @@ function setEntities(action, state): { [id: string]: StateMachineAction } {
     }, {});
 }
 
-function setLastCursorId(action): number {
-  return action.payload.length - 1;
+function setLastCursorId(action): string {
+  return (action.payload.length - 1).toString();
 }
 
 function setVirtualScrollId(action, state, accumulator): number {
@@ -180,7 +187,7 @@ function setVirtualScrollId(action, state, accumulator): number {
   return action.payload.length - (alreadySetRecords.length + 1);
 }
 
-function setActivePage(entities, action): VirtualScrollActivePage {
+function setActivePage(entities, action): VirtualScrollActivePage<StateMachineAction> {
   if (!action.payload.length) {
     return null;
   }

@@ -140,7 +140,7 @@ export function setLastCursorId(action): number {
   return action.payload.length - 1;
 }
 
-export function setActivePage(entities, action): VirtualScrollActivePage {
+export function setActivePage(entities, action): VirtualScrollActivePage<StorageBlockEntity> {
   if (!action.payload.length) {
     return {};
   }

@@ -12,6 +12,8 @@ import * as actionList from './action-list.json';
 // @ts-ignore
 import * as actionGraph from './action-graph.json';
 import { formatNumber } from '@angular/common';
+import { StateMachineActionTypeStatistics } from '@shared/types/state-machine/state-machine-action-type-statistics.type';
+import { StateMachineActionStatistics } from '@shared/types/state-machine/state-machine-action-statistics.type';
 
 const MILLISECOND_FACTOR = 1000;
 const MICROSECOND_FACTOR = 1000000;
@@ -30,7 +32,7 @@ export class StateMachineService {
   getStateMachineDiagram(): Observable<StateMachineDiagramBlock[]> {
     const url = 'http://prod.tezedge.com:18732/dev/shell/automaton/actions_graph';
     return this.http.get<StateMachineDiagramBlock[]>(url, { reportProgress: true }).pipe(map(actions => {
-    // return of(this.graph).pipe(delay(1), map(actions => {
+    // return of(this.graph).pipe(delay(400), map(actions => {
       actions.forEach(action => {
         action.type = 'info';
         action.status = 'completed';
@@ -44,6 +46,11 @@ export class StateMachineService {
     return this.http.get<StateMachineAction[]>(url)
       // return of(this.list)
       .pipe(map(this.calculateTimes));
+  }
+
+  getStateMachineActionStatistics(): Observable<StateMachineActionStatistics> {
+    const url = 'http://prod.tezedge.com:18732/dev/shell/automaton/actions_stats';
+    return this.http.get(url).pipe(map(this.mapActionStatistics));
   }
 
   private buildParams(filter: StateMachineActionsFilter): string {
@@ -69,6 +76,45 @@ export class StateMachineService {
     return actions;
   }
 
+  private mapActionStatistics(statistics: any): StateMachineActionStatistics {
+    const stats = Object
+      .keys(statistics)
+      .map(key => ({
+        kind: key,
+        duration: statistics[key].totalDuration / 1000000000,
+        calls: statistics[key].totalCalls,
+        durationSquares: StateMachineService.getDurationSquareCount(statistics[key].totalDuration),
+        callsSquares: StateMachineService.getCallsSquareCount(statistics[key].totalCalls)
+      } as StateMachineActionTypeStatistics))
+      .sort((c1, c2) => c1.duration - c2.duration);
+
+    return {
+      statistics: stats,
+      totalDuration: stats.reduce((sum, current) => sum + current.duration, 0),
+      totalCalls: stats.reduce((sum, current) => sum + current.calls, 0),
+    } as StateMachineActionStatistics;
+  }
+
+  private static getDurationSquareCount(timeInNanoSeconds: number): number {
+    const SECOND_FACTOR = 1000000000;
+    let squareCount = 0;
+    let timeInSeconds = timeInNanoSeconds / SECOND_FACTOR;
+    while (timeInSeconds > 1) {
+      timeInSeconds /= 10;
+      squareCount++;
+    }
+    return Math.min(Math.max(squareCount, 1), 8);
+  }
+
+  private static getCallsSquareCount(calls: number): number {
+    let squareCount = 0;
+    while (calls > 1) {
+      calls /= 10;
+      squareCount++;
+    }
+    return Math.min(Math.max(squareCount, 1), 8);
+  }
+
   private static transform(value: number): string {
     if (value > 1000000000) {
       return '<span class="text-red">' + this.format(value / NANOSECOND_FACTOR) + ' s</span>';
@@ -91,147 +137,147 @@ export class StateMachineService {
 const diagramStructure: StateMachineDiagramBlock[] = [
   {
     type: 'info',
-    actionName: 'P2P socket authenticate',
+    actionKind: 'P2P socket authenticate',
     actionId: 1,
     nextActions: [21, 221, 90],
     status: 'completed',
   },
   {
     type: 'info',
-    actionName: 'Attempt to write connection message',
+    actionKind: 'Attempt to write connection message',
     actionId: 21,
     nextActions: [22, 91],
     status: 'completed',
   },
   {
     type: 'info',
-    actionName: 'Waiting for a response connection message',
+    actionKind: 'Waiting for a response connection message',
     actionId: 22,
     nextActions: [333, 92],
     status: 'completed',
   },
   {
     type: 'info',
-    actionName: 'Connection message received without having sent one attempt to read connection message',
+    actionKind: 'Connection message received without having sent one attempt to read connection message',
     actionId: 221,
     nextActions: [222, 93],
     status: 'completed',
   },
   {
     type: 'info',
-    actionName: 'Attempt to respond',
+    actionKind: 'Attempt to respond',
     actionId: 222,
     nextActions: [333, 94],
     status: 'completed',
   },
   {
     type: 'info',
-    actionName: 'Connection messages exchanged successfully',
+    actionKind: 'Connection messages exchanged successfully',
     actionId: 333,
     nextActions: [3, 95],
     status: 'completed',
   },
   {
     type: 'info',
-    actionName: 'Exchange metadata message',
+    actionKind: 'Exchange metadata message',
     actionId: 3,
     nextActions: [4, 96],
     status: 'active',
   },
   {
     type: 'info',
-    actionName: 'Exchange ack message',
+    actionKind: 'Exchange ack message',
     actionId: 4,
     nextActions: [5, 97],
     status: 'pending',
   },
   {
     type: 'info',
-    actionName: 'Exchange metadata chunks',
+    actionKind: 'Exchange metadata chunks',
     actionId: 5,
     nextActions: [6, 98],
     status: 'pending',
   },
   {
     type: 'info',
-    actionName: 'Authenticated connection',
+    actionKind: 'Authenticated connection',
     actionId: 6,
     nextActions: [7],
     status: 'pending',
   },
   {
     type: 'info',
-    actionName: 'Exchanging ack/nack chunks',
+    actionKind: 'Exchanging ack/nack chunks',
     actionId: 7,
     nextActions: [8],
     status: 'pending',
   },
   {
     type: 'info',
-    actionName: 'Connection accepted!',
+    actionKind: 'Connection accepted!',
     actionId: 8,
     nextActions: [],
     status: 'pending',
   },
   {
     type: 'error',
-    actionName: 'Unknown Error',
+    actionKind: 'Unknown Error',
     actionId: 90,
     nextActions: [],
     status: 'completed',
   },
   {
     type: 'error',
-    actionName: 'P2p Error',
+    actionKind: 'P2p Error',
     actionId: 91,
     nextActions: [],
     status: 'completed',
   },
   {
     type: 'error',
-    actionName: 'HTTP Error',
+    actionKind: 'HTTP Error',
     actionId: 92,
     nextActions: [],
     status: 'completed',
   },
   {
     type: 'error',
-    actionName: 'Service Failed',
+    actionKind: 'Service Failed',
     actionId: 93,
     nextActions: [],
     status: 'completed',
   },
   {
     type: 'error',
-    actionName: 'WS Error',
+    actionKind: 'WS Error',
     actionId: 94,
     nextActions: [],
     status: 'completed',
   },
   {
     type: 'error',
-    actionName: 'Connection Error',
+    actionKind: 'Connection Error',
     actionId: 95,
     nextActions: [],
     status: 'completed',
   },
   {
     type: 'error',
-    actionName: 'Thrown Unknown Error',
+    actionKind: 'Thrown Unknown Error',
     actionId: 96,
     nextActions: [],
     status: 'completed',
   },
   {
     type: 'error',
-    actionName: 'Blacklisted',
+    actionKind: 'Blacklisted',
     actionId: 97,
     nextActions: [],
     status: 'completed',
   },
   {
     type: 'error',
-    actionName: 'Kernel Error',
+    actionKind: 'Kernel Error',
     actionId: 98,
     nextActions: [],
     status: 'completed',
@@ -241,28 +287,28 @@ const diagramStructure: StateMachineDiagramBlock[] = [
 const diagramStructure2: StateMachineDiagramBlock[] = [
   {
     actionId: 0,
-    actionName: 'PeersDnsLookupInit',
+    actionKind: 'PeersDnsLookupInit',
     nextActions: [
       1
     ]
   },
   {
     actionId: 1,
-    actionName: 'PeersDnsLookupSuccess',
+    actionKind: 'PeersDnsLookupSuccess',
     nextActions: [
       2
     ]
   },
   {
     actionId: 2,
-    actionName: 'PeersAddMulti',
+    actionKind: 'PeersAddMulti',
     nextActions: [
       3
     ]
   },
   {
     actionId: 3,
-    actionName: 'PeerConnectionOutgoingRandomInit',
+    actionKind: 'PeerConnectionOutgoingRandomInit',
     nextActions: [
       6,
       4
@@ -270,35 +316,35 @@ const diagramStructure2: StateMachineDiagramBlock[] = [
   },
   {
     actionId: 4,
-    actionName: 'PeerConnectionOutgoingInit',
+    actionKind: 'PeerConnectionOutgoingInit',
     nextActions: [
       5
     ]
   },
   {
     actionId: 5,
-    actionName: 'PeerConnectionOutgoingPending',
+    actionKind: 'PeerConnectionOutgoingPending',
     nextActions: [
       3
     ]
   },
   {
     actionId: 6,
-    actionName: 'PeersDnsLookupCleanup',
+    actionKind: 'PeersDnsLookupCleanup',
     nextActions: [
       7
     ]
   },
   {
     actionId: 7,
-    actionName: 'P2pPeerEvent',
+    actionKind: 'P2pPeerEvent',
     nextActions: [
       8
     ]
   },
   {
     actionId: 8,
-    actionName: 'PeerTryWrite',
+    actionKind: 'PeerTryWrite',
     nextActions: [
       9,
       16,
@@ -307,42 +353,42 @@ const diagramStructure2: StateMachineDiagramBlock[] = [
   },
   {
     actionId: 9,
-    actionName: 'PeerConnectionOutgoingSuccess',
+    actionKind: 'PeerConnectionOutgoingSuccess',
     nextActions: [
       10
     ]
   },
   {
     actionId: 10,
-    actionName: 'PeerHandshakingInit',
+    actionKind: 'PeerHandshakingInit',
     nextActions: [
       11
     ]
   },
   {
     actionId: 11,
-    actionName: 'PeerHandshakingConnectionMessageInit',
+    actionKind: 'PeerHandshakingConnectionMessageInit',
     nextActions: [
       12
     ]
   },
   {
     actionId: 12,
-    actionName: 'PeerHandshakingConnectionMessageEncode',
+    actionKind: 'PeerHandshakingConnectionMessageEncode',
     nextActions: [
       13
     ]
   },
   {
     actionId: 13,
-    actionName: 'PeerHandshakingConnectionMessageWrite',
+    actionKind: 'PeerHandshakingConnectionMessageWrite',
     nextActions: [
       14
     ]
   },
   {
     actionId: 14,
-    actionName: 'PeerChunkWriteSetContent',
+    actionKind: 'PeerChunkWriteSetContent',
     nextActions: [
       29,
       15
@@ -350,21 +396,21 @@ const diagramStructure2: StateMachineDiagramBlock[] = [
   },
   {
     actionId: 15,
-    actionName: 'PeerChunkWriteCreateChunk',
+    actionKind: 'PeerChunkWriteCreateChunk',
     nextActions: [
       8
     ]
   },
   {
     actionId: 16,
-    actionName: 'PeerChunkWritePart',
+    actionKind: 'PeerChunkWritePart',
     nextActions: [
       17
     ]
   },
   {
     actionId: 17,
-    actionName: 'PeerChunkWriteReady',
+    actionKind: 'PeerChunkWriteReady',
     nextActions: [
       18,
       30
@@ -372,21 +418,21 @@ const diagramStructure2: StateMachineDiagramBlock[] = [
   },
   {
     actionId: 18,
-    actionName: 'PeerHandshakingConnectionMessageRead',
+    actionKind: 'PeerHandshakingConnectionMessageRead',
     nextActions: [
       19
     ]
   },
   {
     actionId: 19,
-    actionName: 'PeerChunkReadInit',
+    actionKind: 'PeerChunkReadInit',
     nextActions: [
       20
     ]
   },
   {
     actionId: 20,
-    actionName: 'PeerTryRead',
+    actionKind: 'PeerTryRead',
     nextActions: [
       21,
       7
@@ -394,7 +440,7 @@ const diagramStructure2: StateMachineDiagramBlock[] = [
   },
   {
     actionId: 21,
-    actionName: 'PeerChunkReadPart',
+    actionKind: 'PeerChunkReadPart',
     nextActions: [
       34,
       20,
@@ -403,7 +449,7 @@ const diagramStructure2: StateMachineDiagramBlock[] = [
   },
   {
     actionId: 22,
-    actionName: 'PeerChunkReadReady',
+    actionKind: 'PeerChunkReadReady',
     nextActions: [
       35,
       23
@@ -411,63 +457,63 @@ const diagramStructure2: StateMachineDiagramBlock[] = [
   },
   {
     actionId: 23,
-    actionName: 'PeerHandshakingConnectionMessageDecode',
+    actionKind: 'PeerHandshakingConnectionMessageDecode',
     nextActions: [
       24
     ]
   },
   {
     actionId: 24,
-    actionName: 'PeerHandshakingEncryptionInit',
+    actionKind: 'PeerHandshakingEncryptionInit',
     nextActions: [
       25
     ]
   },
   {
     actionId: 25,
-    actionName: 'PeerHandshakingMetadataMessageInit',
+    actionKind: 'PeerHandshakingMetadataMessageInit',
     nextActions: [
       26
     ]
   },
   {
     actionId: 26,
-    actionName: 'PeerHandshakingMetadataMessageEncode',
+    actionKind: 'PeerHandshakingMetadataMessageEncode',
     nextActions: [
       27
     ]
   },
   {
     actionId: 27,
-    actionName: 'PeerHandshakingMetadataMessageWrite',
+    actionKind: 'PeerHandshakingMetadataMessageWrite',
     nextActions: [
       28
     ]
   },
   {
     actionId: 28,
-    actionName: 'PeerBinaryMessageWriteSetContent',
+    actionKind: 'PeerBinaryMessageWriteSetContent',
     nextActions: [
       14
     ]
   },
   {
     actionId: 29,
-    actionName: 'PeerChunkWriteEncryptContent',
+    actionKind: 'PeerChunkWriteEncryptContent',
     nextActions: [
       15
     ]
   },
   {
     actionId: 30,
-    actionName: 'PeerBinaryMessageWriteNextChunk',
+    actionKind: 'PeerBinaryMessageWriteNextChunk',
     nextActions: [
       31
     ]
   },
   {
     actionId: 31,
-    actionName: 'PeerBinaryMessageWriteReady',
+    actionKind: 'PeerBinaryMessageWriteReady',
     nextActions: [
       41,
       32
@@ -475,35 +521,35 @@ const diagramStructure2: StateMachineDiagramBlock[] = [
   },
   {
     actionId: 32,
-    actionName: 'PeerHandshakingMetadataMessageRead',
+    actionKind: 'PeerHandshakingMetadataMessageRead',
     nextActions: [
       33
     ]
   },
   {
     actionId: 33,
-    actionName: 'PeerBinaryMessageReadInit',
+    actionKind: 'PeerBinaryMessageReadInit',
     nextActions: [
       19
     ]
   },
   {
     actionId: 34,
-    actionName: 'PeerChunkReadDecrypt',
+    actionKind: 'PeerChunkReadDecrypt',
     nextActions: [
       22
     ]
   },
   {
     actionId: 35,
-    actionName: 'PeerBinaryMessageReadSizeReady',
+    actionKind: 'PeerBinaryMessageReadSizeReady',
     nextActions: [
       36
     ]
   },
   {
     actionId: 36,
-    actionName: 'PeerBinaryMessageReadReady',
+    actionKind: 'PeerBinaryMessageReadReady',
     nextActions: [
       37,
       42
@@ -511,49 +557,49 @@ const diagramStructure2: StateMachineDiagramBlock[] = [
   },
   {
     actionId: 37,
-    actionName: 'PeerHandshakingMetadataMessageDecode',
+    actionKind: 'PeerHandshakingMetadataMessageDecode',
     nextActions: [
       38
     ]
   },
   {
     actionId: 38,
-    actionName: 'PeerHandshakingAckMessageInit',
+    actionKind: 'PeerHandshakingAckMessageInit',
     nextActions: [
       39
     ]
   },
   {
     actionId: 39,
-    actionName: 'PeerHandshakingAckMessageEncode',
+    actionKind: 'PeerHandshakingAckMessageEncode',
     nextActions: [
       40
     ]
   },
   {
     actionId: 40,
-    actionName: 'PeerHandshakingAckMessageWrite',
+    actionKind: 'PeerHandshakingAckMessageWrite',
     nextActions: [
       28
     ]
   },
   {
     actionId: 41,
-    actionName: 'PeerHandshakingAckMessageRead',
+    actionKind: 'PeerHandshakingAckMessageRead',
     nextActions: [
       33
     ]
   },
   {
     actionId: 42,
-    actionName: 'PeerHandshakingAckMessageDecode',
+    actionKind: 'PeerHandshakingAckMessageDecode',
     nextActions: [
       43
     ]
   },
   {
     actionId: 43,
-    actionName: 'PeerHandshakingFinish',
+    actionKind: 'PeerHandshakingFinish',
     nextActions: []
   }
 ];

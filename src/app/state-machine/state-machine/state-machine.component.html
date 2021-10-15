@@ -69,7 +69,83 @@
            [style.height]="stateMachine.collapsedDiagram
                            ? '32px'
                            : (stateMachine.diagramHeight ? stateMachine.diagramHeight + 'px' : '40%')">
-        <app-state-machine-diagram class="d-flex flex-column"></app-state-machine-diagram>
+        <div class="d-flex diagrams-container">
+          <app-state-machine-diagram fxFlex="60" class="d-flex flex-column"></app-state-machine-diagram>
+          <div fxFlex="40" class="border-left d-flex flex-column">
+            <div fxFlex="35px" class="text-white-7 padding-10 font-12 border-bottom">
+              <span class="text-white text-uppercase margin-right-10">Action Statistics</span>
+              {{ stateMachine.actionStatistics.totalCalls | thousandTransform }}
+              <span
+                class="text-white-4">calls</span>
+              · {{ stateMachine.actionStatistics.totalDuration | timeTransform: false: false: true }}
+              <span class="text-white-4">total duration</span>
+            </div>
+
+            <div fxFlex="calc(100% - 35px)" class="overflow-auto"
+                 *ngIf="stateMachine.actionStatistics.statistics.length">
+
+              <div class="statistics padding-10">
+                <div class="d-flex align-center">
+                  <mat-icon svgIcon="arrow-down" class="icon-16"></mat-icon>
+                  <span class="calls-label">Total duration</span>
+                </div>
+                <div fxLayout="row">
+                  <div fxFlex="24px" fxLayout="column" fxLayoutGap="6px" class="y-steps padding-top-10">
+                    <span *ngFor="let step of ySteps">{{ step }}</span>
+                  </div>
+                  <div fxFlex="calc(100% - 24px)" class="d-flex flex-column">
+                    <div class="cols-wrap flex-row align-end d-flex">
+                      <div *ngFor="let col of stateMachine.actionStatistics.statistics; let i=index"
+                           [style.width.%]="100 / stateMachine.actionStatistics.statistics.length"
+                           (mouseenter)="openDetailsOverlay(col, i, $event)"
+                           (mouseleave)="detachOverlay()"
+                           class="gr-col d-flex flex-column-reverse">
+                        <div *ngFor="let square of [].constructor(col.durationSquares); let j=index"
+                             [class.yellow-square]="j > 1 && j <= 3"
+                             [class.red-square]="j > 3"
+                             class="square"></div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div fxLayoutAlign="start center" class="margin-top-5" fxLayoutGap="8px">
+                  <mat-icon svgIcon="arrow-right" class="icon-16"></mat-icon>
+                  <span class="calls-label">Actions</span>
+                </div>
+              </div>
+
+              <div class="statistics padding-10">
+                <div class="d-flex align-center">
+                  <mat-icon svgIcon="arrow-down" class="icon-16"></mat-icon>
+                  <span class="calls-label">Number of calls</span>
+                </div>
+                <div fxLayout="row">
+                  <div fxFlex="24px" fxLayout="column" fxLayoutGap="6px" class="y-steps padding-top-10">
+                    <span *ngFor="let step of ySteps">{{ step }}</span>
+                  </div>
+                  <div fxFlex="calc(100% - 24px)" class="d-flex flex-column">
+                    <div class="cols-wrap flex-row align-end d-flex">
+                      <div *ngFor="let col of stateMachine.actionStatistics.statistics; let i=index"
+                           [style.width.%]="100 / stateMachine.actionStatistics.statistics.length"
+                           (mouseenter)="openDetailsOverlay(col, i, $event)"
+                           (mouseleave)="detachOverlay()"
+                           class="gr-col d-flex flex-column-reverse">
+                        <div *ngFor="let square of [].constructor(col.callsSquares); let j=index"
+                             [class.yellow-square]="j > 2 && j <= 5"
+                             [class.red-square]="j > 5"
+                             class="square"></div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div fxLayoutAlign="start center" class="margin-top-5" fxLayoutGap="8px">
+                  <mat-icon svgIcon="arrow-right" class="icon-16"></mat-icon>
+                  <span class="calls-label">Actions</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
         <div *ngIf="!stateMachine.collapsedDiagram"
              class="resizer-element p-relative d-flex flex-center">
           <div class="mid-content d-flex flex-column align-center"
@@ -91,3 +167,20 @@
     </div>
   </div>
 </div>
+
+<ng-template #tooltipTemplate
+             let-name="name"
+             let-calls="calls"
+             let-duration="duration">
+  <div class="tooltip-template">
+    <div class="text-white header">{{ name }}</div>
+    <div>
+      <span class="text-white">{{ calls | thousandTransform }}</span>
+      Calls
+    </div>
+    <div>
+      <span class="text-white">{{ duration | timeTransform: false: false: true }}</span>
+      Duration
+    </div>
+  </div>
+</ng-template>

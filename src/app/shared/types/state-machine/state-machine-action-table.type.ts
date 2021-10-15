@@ -7,7 +7,7 @@ export interface StateMachineActionTable {
   entities: { [id: string]: StateMachineAction };
   activePage: VirtualScrollActivePage<StateMachineAction>;
   pages: number[];
-  lastCursorId: string;
+  lastCursorId: number;
   stream: boolean;
   filter: StateMachineActionsFilter;
   autoScroll: StateMachineActionTableAutoscrollType;

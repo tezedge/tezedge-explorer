@@ -1,6 +1,6 @@
 export interface StateMachineAction {
   id: number;
-  type: string;
+  kind: string;
   content: any;
   state: any;
   originalId: string;

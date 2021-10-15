@@ -6,7 +6,7 @@ import { StateMachineAction } from '@shared/types/state-machine/state-machine-ac
 import { StateMachineActionsFilter } from '@shared/types/state-machine/state-machine-actions-filter.type';
 
 const NO_FILTERS: StateMachineActionsFilter = {
-  limit: 1000,
+  limit: 20,
   cursor: null,
   queryFilters: [],
   rev: false
@@ -14,10 +14,15 @@ const NO_FILTERS: StateMachineActionsFilter = {
 
 const initialState: StateMachine = {
   diagramBlocks: [],
+  actionStatistics: {
+    statistics: [],
+    totalCalls: 0,
+    totalDuration: 0
+  },
   actionTable: {
     ids: [],
     entities: {},
-    lastCursorId: '0',
+    lastCursorId: 0,
     filter: NO_FILTERS,
     stream: false,
     activePage: {},
@@ -38,6 +43,13 @@ export function reducer(state: StateMachine = initialState, action: StateMachine
       return {
         ...state,
         diagramBlocks: [...action.payload]
+      };
+    }
+
+    case StateMachineActionTypes.STATE_MACHINE_ACTION_STATISTICS_LOAD_SUCCESS: {
+      return {
+        ...state,
+        actionStatistics: { ...action.payload }
       };
     }
 
@@ -178,8 +190,8 @@ function setEntities(action, state): { [id: string]: StateMachineAction } {
     }, {});
 }
 
-function setLastCursorId(action): string {
-  return (action.payload.length - 1).toString();
+function setLastCursorId(action): number {
+  return action.payload.length - 1;
 }
 
 function setVirtualScrollId(action, state, accumulator): number {

@@ -60,12 +60,12 @@ export function reducer(state: ResourcesState = initialState, action: SystemReso
 
     case SystemResourcesActionTypes.SYSTEM_RESOURCES_DETAILS_UPDATE: {
       const resourceCategory = state.systemResources[action.payload.resourceType] as SystemResourceCategory;
-      const blocks = resourceCategory.labels.map((label, index) => ({
+      const blocks = resourceCategory?.labels.map((label, index) => ({
         name: label,
         value: resourceCategory.series[index].series.find(s => s.name === action.payload.timestamp).value,
         formattingType: resourceCategory.formattingType
       }));
-      const runnerGroups = resourceCategory.series.map(s => s.series.find(se => se.name === action.payload.timestamp).runnerGroups)
+      const runnerGroups = resourceCategory?.series.map(s => s.series.find(se => se.name === action.payload.timestamp).runnerGroups)
         .filter(Boolean)
         .reduce((acc, current) => [...acc, ...current], []);
 

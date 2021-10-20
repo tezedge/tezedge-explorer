@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, NgZone, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, NgZone, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { State } from '@app/app.reducers';
 import {
@@ -23,7 +23,7 @@ import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
   styleUrls: ['./state-machine.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class StateMachineComponent implements OnInit, OnDestroy {
+export class StateMachineComponent implements OnInit, AfterViewInit, OnDestroy {
 
   state$: Observable<StateMachine>;
   transition: string = '';
@@ -44,6 +44,18 @@ export class StateMachineComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.state$ = this.store.select(selectStateMachine);
 
+    this.store.dispatch<StateMachineDiagramLoad>({
+      type: StateMachineActionTypes.STATE_MACHINE_DIAGRAM_LOAD
+    });
+    this.store.dispatch<StateMachineActionStatisticsLoad>({
+      type: StateMachineActionTypes.STATE_MACHINE_ACTION_STATISTICS_LOAD
+    });
+    this.store.dispatch<StateMachineActionsLoad>({
+      type: StateMachineActionTypes.STATE_MACHINE_ACTIONS_LOAD
+    });
+  }
+
+  ngAfterViewInit(): void {
     this.zone.runOutsideAngular(() =>
       this.state$.pipe(
         untilDestroyed(this),
@@ -65,16 +77,6 @@ export class StateMachineComponent implements OnInit, OnDestroy {
         }
       })
     );
-
-    this.store.dispatch<StateMachineDiagramLoad>({
-      type: StateMachineActionTypes.STATE_MACHINE_DIAGRAM_LOAD
-    });
-    this.store.dispatch<StateMachineActionStatisticsLoad>({
-      type: StateMachineActionTypes.STATE_MACHINE_ACTION_STATISTICS_LOAD
-    });
-    this.store.dispatch<StateMachineActionsLoad>({
-      type: StateMachineActionTypes.STATE_MACHINE_ACTIONS_LOAD
-    });
   }
 
   onResizeFinished(height: number): void {

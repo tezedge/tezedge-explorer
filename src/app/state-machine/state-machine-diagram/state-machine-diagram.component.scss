@@ -3,6 +3,9 @@
 }
 
 .state-toolbar {
+  background-color: inherit;
+  z-index: 4;
+
   .player-wrapper {
     padding-left: 4px;
     height: 32px;
@@ -11,7 +14,6 @@
       width: 24px;
       height: 24px;
       background-color: rgba(255, 255, 255, 0.1);
-      transition: 0.08s;
 
       &:hover:not(:disabled) {
         background-color: rgba(255, 255, 255, 0.2);

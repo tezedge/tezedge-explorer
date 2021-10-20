@@ -1018,6 +1018,10 @@ mat-form-field input[type='number'] {
     padding: 16px 16px 8px 16px;
     height: 32px !important;
 
+    &.mat-expanded:focus, &.mat-expanded:hover {
+      background: unset;
+    }
+
     .mat-expansion-panel-header-title {
       .icon {
         margin-right: 8px;
@@ -1425,7 +1429,6 @@ input.mat-input-element {
     border-bottom: 1px solid $color-border;
   }
 }
-
 
 
 @keyframes hintloading {

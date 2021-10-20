@@ -14,7 +14,7 @@ import {
 import { StateMachine } from '@shared/types/state-machine/state-machine.type';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { delay, of } from 'rxjs';
-import { VirtualScrollDirective } from '@shared/virtual-scroll/virtual-scroll.directive';
+import { VIRTUAL_SCROLL_OFFSET_SCROLL_ELEMENTS, VirtualScrollDirective } from '@shared/virtual-scroll/virtual-scroll.directive';
 import { distinctUntilChanged, filter, mergeMap } from 'rxjs/operators';
 
 @UntilDestroy()
@@ -67,8 +67,7 @@ export class StateMachineTableComponent implements OnInit {
   private scrollToActiveAction(state: StateMachine): void {
     if (this.vsContainer && state.actionTable.autoScroll) {
       const hoverIndex = Array.from(this.vsContainer.nativeElement.children).findIndex(entry => entry.classList.contains('hover'));
-      const offsetScrollElements = 5; // same as in vsFor
-      if (hoverIndex < offsetScrollElements + 3 && state.actionTable.autoScroll === 'up') {
+      if (hoverIndex < VIRTUAL_SCROLL_OFFSET_SCROLL_ELEMENTS + 3 && state.actionTable.autoScroll === 'up') {
         this.vsContainer.nativeElement.scrollBy({ top: -150, behavior: 'smooth' });
       } else if (hoverIndex > (this.vsContainer.nativeElement.childElementCount - (this.vsContainer.nativeElement.scrollTop === 0 ? 11 : 6)) && state.actionTable.autoScroll === 'down') {
         this.vsContainer.nativeElement.scrollBy({ top: 150, behavior: 'smooth' });
@@ -114,9 +113,8 @@ export class StateMachineTableComponent implements OnInit {
   }
 
   loadLastPage(): void {
-    const nextPageId = this.stateMachine.actionTable.pages[this.stateMachine.actionTable.pages.length - 1];
-
-    this.getActions(nextPageId.toString());
+    this.getActions(null);
+    this.scrollStop();
   }
 
   loadPreviousPage(): void {
@@ -124,22 +122,12 @@ export class StateMachineTableComponent implements OnInit {
       this.scrollStop();
     }
     const firstActionId = this.stateMachine.actionTable.entities[0].originalId;
-    const nextCursorId = Number(firstActionId) > this.pageSize ? firstActionId : this.pageSize.toString();
-    this.getActions(nextCursorId);
+    this.getActions(firstActionId);
   }
 
   loadNextPage(): void {
-    const actualPageIndex = this.stateMachine.actionTable.pages.findIndex(pageId => pageId === this.stateMachine.actionTable.activePage.id);
-
-    if (actualPageIndex === this.stateMachine.actionTable.pages.length - 1) {
-      return;
-    }
-
     const lastActionId = this.stateMachine.actionTable.entities[this.stateMachine.actionTable.ids.length - 1].originalId;
-    const mostRecentKnownActionId = this.stateMachine.actionTable.mostRecentKnownActionId;
-    const nextPageId = Number(lastActionId) <= Number(mostRecentKnownActionId) ? lastActionId : mostRecentKnownActionId;
-
-    this.getActions(nextPageId, true);
+    this.getActions(lastActionId, true);
   }
 
   private getActions(cursor: string, rev: boolean = false): void {

@@ -25,8 +25,6 @@ const initialState: StateMachine = {
     lastCursorId: 0,
     filter: NO_FILTERS,
     stream: false,
-    activePage: {},
-    pages: [],
     autoScroll: undefined,
     mostRecentKnownActionId: undefined
   },
@@ -75,7 +73,6 @@ export function reducer(state: StateMachine = initialState, action: StateMachine
 
     case StateMachineActionTypes.STATE_MACHINE_ACTIONS_LOAD_SUCCESS: {
       const entities = setEntities(action, state);
-      const activePage = setActivePage(entities, action);
       const ids = setIds(action);
 
       return {
@@ -84,9 +81,7 @@ export function reducer(state: StateMachine = initialState, action: StateMachine
           ...state.actionTable,
           ids,
           entities,
-          activePage,
           lastCursorId: setLastCursorId(action),
-          pages: setPages(activePage, state),
           mostRecentKnownActionId: Number(state.actionTable.mostRecentKnownActionId) >= Number(entities[ids.length - 1].originalId)
             ? state.actionTable.mostRecentKnownActionId
             : entities[ids.length - 1].originalId
@@ -198,39 +193,6 @@ function setVirtualScrollId(action, state, accumulator): number {
   const alreadySetRecords = Object.keys(accumulator);
   return action.payload.length - (alreadySetRecords.length + 1);
 }
-
-function setActivePage(entities, action): VirtualScrollActivePage<StateMachineAction> {
-  if (!action.payload.length) {
-    return null;
-  }
-
-  return {
-    id: entities[action.payload.length - 1].originalId,
-    start: entities[0],
-    end: entities[action.payload.length - 1],
-    numberOfRecords: action.payload.length
-  };
-}
-
-function setPages(activePage, state): number[] {
-  if (!activePage) {
-    return [];
-  }
-
-  const pagesArray = [...state.actionTable.pages];
-
-  if (pagesArray.indexOf(activePage.id) !== -1) {
-    return [...state.actionTable.pages];
-  }
-
-  if (Number(pagesArray[pagesArray.length - 1]) < activePage.id) {
-    return [activePage.id].sort((a, b) => a - b);
-  } else {
-    return [...state.actionTable.pages, activePage.id].sort((a, b) => a - b);
-  }
-
-}
-
 
 export const selectStateMachine = (state: State) => state.stateMachine;
 export const selectStateMachineDiagramBlocks = (state: State) => state.stateMachine.diagramBlocks;

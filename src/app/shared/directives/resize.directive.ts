@@ -26,7 +26,7 @@ export class ResizeDirective implements OnInit, OnDestroy {
   }
 
   public calculateHeight(): void {
-    this.height = parseInt(this.el.nativeElement.parentNode.parentNode.offsetHeight, 10);
+    this.height = parseInt(this.el.nativeElement.parentNode.parentNode?.offsetHeight, 10);
   }
 
   @HostListener('document:mouseup', ['$event'])

@@ -55,7 +55,7 @@ export class StateMachineActionStatisticsLoadSuccess implements Action {
 export class StateMachineFilterActions implements Action {
   readonly type = StateMachineActionTypes.STATE_MACHINE_ACTIONS_FILTER_LOAD;
 
-  constructor(public payload: StateMachineActionsFilter) { }
+  constructor(public payload: StateMachineActionsFilter & { stream?: boolean }) { }
 }
 
 export class StateMachineSetActiveAction implements Action {

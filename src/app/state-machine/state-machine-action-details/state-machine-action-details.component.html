@@ -2,7 +2,7 @@
      *ngIf="stateMachine$ | async as stateMachine">
   <div class="d-flex flex-between">
     <div class="padding-vertical-10">
-      <ng-container *ngIf="currentAction">
+      <ng-container *ngIf="stateMachine.activeAction">
         <span *ngFor="let tab of tabs"
               class="tab text-white-6 margin-left-10 pointer" [class.active]="tab === activeTab"
               (click)="activeTab = tab">
@@ -20,13 +20,13 @@
        [ngClass]="activeTab !== 'STATS' ? 'padding-left-10 padding-top-10' : ''">
     <ng-container [ngSwitch]="activeTab">
       <div *ngSwitchCase="'CONTENT'">
-        <tezedge-ngx-json-viewer *ngIf="!currentAction.content; else noContent"
-                                 [json]="currentAction.content"
+        <tezedge-ngx-json-viewer *ngIf="stateMachine.activeAction.content; else noContent"
+                                 [json]="stateMachine.activeAction.content"
                                  [expanded]="false"></tezedge-ngx-json-viewer>
         <ng-template #noContent>No content</ng-template>
       </div>
       <div *ngSwitchCase="'STATE'">
-        <tezedge-ngx-json-viewer [json]="currentAction.state"
+        <tezedge-ngx-json-viewer [json]="stateMachine.activeAction.state"
                                  [expanded]="false"></tezedge-ngx-json-viewer>
       </div>
       <div *ngSwitchCase="'DIFFS'">

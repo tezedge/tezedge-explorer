@@ -23,10 +23,10 @@ export class StateMachineActionDetailsComponent implements OnInit {
 
   activeTab: string;
   stateMachine$: Observable<StateMachine>;
-  currentAction: StateMachineAction;
   stateDifferences: string;
 
   private api: string;
+  private currentActionId: string;
 
   constructor(private store: Store<State>,
               private objectDiff: NgxObjectDiffService,
@@ -44,7 +44,8 @@ export class StateMachineActionDetailsComponent implements OnInit {
     this.stateMachine$ = this.store.select(selectStateMachine)
       .pipe(
         tap(state => {
-          if (this.currentAction !== state.activeAction && state.activeAction !== null) {
+          if (this.currentActionId !== state.activeAction?.originalId && state.activeAction !== null) {
+            this.currentActionId = state.activeAction.originalId;
             this.activeTab = this.activeTab || 'STATE';
             this.stateDifferences = this.formatHTML(state);
           }
@@ -53,19 +54,18 @@ export class StateMachineActionDetailsComponent implements OnInit {
   }
 
   private formatHTML(state: StateMachine): string {
-    this.currentAction = state.activeAction;
     const prevAction = state.actionTable.entities[state.activeAction.id - 1];
     if (!prevAction) {
       // TODO: diff should happen on the backend and we should not do these tricks here
-      this.api = 'http://prod.tezedge.com:18732/dev/shell/automaton/actions?limit=1&cursor=' + this.currentAction.originalId;
+      this.api = 'http://prod.tezedge.com:18732/dev/shell/automaton/actions?limit=1&cursor=' + state.activeAction.originalId;
       this.http.get<StateMachineAction[]>(this.api).subscribe(response => {
-        this.stateDifferences = this.getDifferences(this.currentAction.state, response[0].state);
+        this.stateDifferences = this.getDifferences(state.activeAction.state, response[0].state);
         this.cdRef.detectChanges();
       });
       return this.stateDifferences;
     }
 
-    return this.getDifferences(this.currentAction.state, prevAction.state);
+    return this.getDifferences(state.activeAction.state, prevAction.state);
   }
 
   private getDifferences(currentActionState: any, prevActionState: any): string {

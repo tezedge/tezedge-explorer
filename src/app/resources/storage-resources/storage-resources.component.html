@@ -2,7 +2,7 @@
      *ngIf="storageStats$ | async as storageStats">
   <div class="storage-toolbar flex-end d-flex">
     <div class="border-bottom flex-grow d-flex align-center">
-      <div class="text-white-4 font-12 context">Current context: {{ storageResourcesContext }}</div>
+      <div class="text-white-4 f-12 context">Current context: {{ storageResourcesContext }}</div>
       <mat-icon *ngIf="displayContextSwitcher"
                 (click)="getStorageStatistics()"
                 svgIcon="arrow-around"

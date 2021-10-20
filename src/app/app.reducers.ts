@@ -34,6 +34,7 @@ import * as fromResource from './resources/resources/resources.reducer';
 import * as fromError from './shared/error-popup/error-popup.reducer';
 import * as fromStateMachine from './state-machine/state-machine/state-machine.reducer';
 import * as fromSmartContracts from './smart-contracts/smart-contracts/smart-contracts.reducer';
+import * as fromSpinner from './shared/loading-spinner/loading-spinner.reducer';
 
 import { ResourcesState } from '@resources/resources/resources.reducer';
 import { ErrorState } from '@shared/error-popup/error-popup.reducer';
@@ -49,6 +50,7 @@ import { StorageBlock } from '@shared/types/storage/storage-block/storage-block.
 import { GithubVersion } from '@shared/types/github-version/github-version.type';
 import { StateMachine } from '@shared/types/state-machine/state-machine.type';
 import { SmartContractsState } from '@shared/types/smart-contracts/smart-contracts-state.type';
+import { LoadingSpinnerState } from '@shared/loading-spinner/loading-spinner.reducer';
 
 export interface State {
   app: App;
@@ -75,6 +77,7 @@ export interface State {
   resources: ResourcesState;
   stateMachine: StateMachine;
   smartContracts: SmartContractsState;
+  spinner: LoadingSpinnerState;
 }
 
 // state
@@ -103,6 +106,7 @@ export const reducers: ActionReducerMap<State> = {
   error: fromError.reducer,
   stateMachine: fromStateMachine.reducer,
   smartContracts: fromSmartContracts.reducer,
+  spinner: fromSpinner.reducer,
 };
 
 // // log all actions to console for production

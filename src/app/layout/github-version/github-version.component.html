@@ -1,7 +1,7 @@
 <div class="node-tag-number"
      *ngIf="!hideComponent && githubVersion$ | async as githubVersion"
      (click)="attachTooltip($event)">
-  <span class="pointer-none font-12">
+  <span class="pointer-none f-12">
     {{ githubVersion.nodeTag }}&nbsp;
     <mat-icon svgIcon="caret-down"
               class="icon-8"></mat-icon>
@@ -9,7 +9,7 @@
 </div>
 
 <ng-template #versionTooltip>
-  <div class="commit-numbers-container font-12"
+  <div class="commit-numbers-container f-12"
        *ngIf="githubVersion$ | async as githubVersion">
     <div class="commit-numbers-container-item"
          id="nodeCommit">

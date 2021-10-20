@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { catchError, map, switchMap, takeUntil, tap, withLatestFrom } from 'rxjs/operators';
-import { ObservedValueOf, of, Subject, timer } from 'rxjs';
+import { empty, ObservedValueOf, of, Subject, timer } from 'rxjs';
 import { Store } from '@ngrx/store';
 import { SystemResourcesActionTypes } from './system-resources.actions';
 import { SystemResourcesService } from './system-resources.service';
@@ -15,9 +15,12 @@ export class SystemResourcesEffects {
   private resourcesDestroy$ = new Subject<void>();
 
   resourcesLoadEffect$ = createEffect(() => this.actions$.pipe(
-    ofType(SystemResourcesActionTypes.SYSTEM_RESOURCES_LOAD),
+    ofType(SystemResourcesActionTypes.SYSTEM_RESOURCES_LOAD, SystemResourcesActionTypes.SYSTEM_RESOURCES_CLOSE),
     withLatestFrom(this.store, (action: any, state: ObservedValueOf<Store<State>>) => ({ action, state })),
     switchMap(({ action, state }) => {
+      if (action.type === SystemResourcesActionTypes.SYSTEM_RESOURCES_CLOSE) {
+        return empty();
+      }
       const url = state.settingsNode.activeNode.features
         .find(c => c.name === 'resources/system').monitoringUrl;
       const resourcesData$ = this.resourcesService.getSystemResources(url, action.payload.isSmallDevice)

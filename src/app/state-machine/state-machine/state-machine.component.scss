@@ -43,57 +43,6 @@ $border-color: rgba(255, 255, 255, 0.1);
       background-color: #2A2A2E;
       height: calc(100% - 8px);
       border-bottom-left-radius: 4px;
-
-      .statistics-table {
-        .row {
-          display: grid;
-          grid-template-columns: 200px 50px 90px 1fr;
-          height: 36px;
-          line-height: 36px;
-          cursor: context-menu;
-
-          &:nth-child(odd) {
-            background-color: rgba(255, 255, 255, 0.1);
-          }
-
-          &:hover:not(.table-head) {
-            background-color: rgba(255, 255, 255, 0.2);
-
-            > span {
-              color: white !important;
-            }
-          }
-
-          &.table-head {
-            background-color: unset;
-          }
-
-          > span {
-            padding-left: 12px;
-          }
-
-          .progress-background {
-            height: 4px;
-            border-radius: 4px;
-            background-color: rgba(255, 255, 255, 0.1);
-            width: 100%;
-            display: block;
-
-            .progress-background {
-              min-width: 4px;
-              background-color: rgba(255, 255, 255, 0.22);
-
-              &.yellow {
-                background-color: #FF9F0A;
-              }
-
-              &.red {
-                background-color: #FF2D55;
-              }
-            }
-          }
-        }
-      }
     }
 
     .resizer-element {

@@ -128,6 +128,23 @@ export function reducer(state: ResourcesState = initialState, action: SystemReso
       };
     }
 
+    case StorageResourcesActionTypes.STORAGE_RESOURCES_CLOSE: {
+      return {
+        ...state,
+        storageResourcesState: {
+          storageResources: null,
+          availableContexts: []
+        }
+      };
+    }
+
+    case MemoryResourcesActionTypes.MEMORY_RESOURCES_CLOSE: {
+      return {
+        ...state,
+        memoryResources: null
+      };
+    }
+
     default:
       return state;
   }

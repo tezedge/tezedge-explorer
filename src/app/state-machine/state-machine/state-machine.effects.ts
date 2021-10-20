@@ -4,7 +4,7 @@ import { Store } from '@ngrx/store';
 import { State } from '@app/app.reducers';
 import { StateMachineActionTypes } from './state-machine.actions';
 import { catchError, map, switchMap, takeUntil, tap, withLatestFrom } from 'rxjs/operators';
-import { ObservedValueOf, of, Subject, timer } from 'rxjs';
+import { empty, ObservedValueOf, of, Subject, timer } from 'rxjs';
 import { StateMachineService } from './state-machine.service';
 import { StateMachineAction } from '@shared/types/state-machine/state-machine-action.type';
 import { ErrorActionTypes } from '@shared/error-popup/error-popup.actions';
@@ -18,9 +18,11 @@ export class StateMachineEffects {
   private stateMachineDestroy$ = new Subject<void>();
 
   stateMachineDiagramLoad$ = createEffect(() => this.actions$.pipe(
-    ofType(StateMachineActionTypes.STATE_MACHINE_DIAGRAM_LOAD),
+    ofType(StateMachineActionTypes.STATE_MACHINE_DIAGRAM_LOAD, StateMachineActionTypes.STATE_MACHINE_CLOSE),
     withLatestFrom(this.store, (action: any, state: ObservedValueOf<Store<State>>) => ({ action, state })),
-    switchMap(({ action, state }) => this.stateMachineService.getStateMachineDiagram().pipe(takeUntil(this.stateMachineDestroy$))),
+    switchMap(({ action, state }) =>
+      action.type === StateMachineActionTypes.STATE_MACHINE_CLOSE ? empty() : this.stateMachineService.getStateMachineDiagram()
+    ),
     map((payload: StateMachineDiagramBlock[]) => ({ type: StateMachineActionTypes.STATE_MACHINE_DIAGRAM_LOAD_SUCCESS, payload })),
   ));
 

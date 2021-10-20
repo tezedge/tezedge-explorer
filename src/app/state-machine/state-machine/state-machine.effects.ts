@@ -8,7 +8,6 @@ import { ObservedValueOf, of, Subject, timer } from 'rxjs';
 import { StateMachineService } from './state-machine.service';
 import { StateMachineAction } from '@shared/types/state-machine/state-machine-action.type';
 import { ErrorActionTypes } from '@shared/error-popup/error-popup.actions';
-import { StateMachineActionTypeStatistics } from '@shared/types/state-machine/state-machine-action-type-statistics.type';
 import { StateMachineDiagramBlock } from '@shared/types/state-machine/state-machine-diagram-block.type';
 import { StateMachineActionStatistics } from '@shared/types/state-machine/state-machine-action-statistics.type';
 
@@ -21,20 +20,20 @@ export class StateMachineEffects {
   stateMachineDiagramLoad$ = createEffect(() => this.actions$.pipe(
     ofType(StateMachineActionTypes.STATE_MACHINE_DIAGRAM_LOAD),
     withLatestFrom(this.store, (action: any, state: ObservedValueOf<Store<State>>) => ({ action, state })),
-    switchMap(({ action, state }) => this.stateMachineService.getStateMachineDiagram()),
+    switchMap(({ action, state }) => this.stateMachineService.getStateMachineDiagram().pipe(takeUntil(this.stateMachineDestroy$))),
     map((payload: StateMachineDiagramBlock[]) => ({ type: StateMachineActionTypes.STATE_MACHINE_DIAGRAM_LOAD_SUCCESS, payload })),
   ));
 
   stateMachineActionStatisticsLoad$ = createEffect(() => this.actions$.pipe(
     ofType(StateMachineActionTypes.STATE_MACHINE_ACTION_STATISTICS_LOAD),
-    withLatestFrom(this.store, (action: any, state: ObservedValueOf<Store<State>>) => ({ action, state })),
+    withLatestFrom(this.store, (action, state: ObservedValueOf<Store<State>>) => ({ action, state })),
     switchMap(({ action, state }) => this.stateMachineService.getStateMachineActionStatistics()),
     map((payload: StateMachineActionStatistics) => ({ type: StateMachineActionTypes.STATE_MACHINE_ACTION_STATISTICS_LOAD_SUCCESS, payload })),
   ));
 
   stateMachineActionsLoad$ = createEffect(() => this.actions$.pipe(
     ofType(StateMachineActionTypes.STATE_MACHINE_ACTIONS_LOAD),
-    withLatestFrom(this.store, (action: any, state: ObservedValueOf<Store<State>>) => ({ action, state })),
+    withLatestFrom(this.store, (action, state: ObservedValueOf<Store<State>>) => ({ action, state })),
     switchMap(({ action, state }) =>
       timer(0, 30000).pipe(
         takeUntil(this.stateMachineDestroy$),

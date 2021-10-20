@@ -3,7 +3,7 @@ import { APP_INITIALIZER, LOCALE_ID, NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule } from '@angular/router';
 import { DatePipe, registerLocaleData } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import localeFr from '@angular/common/locales/fr';
 import localeEnGb from '@angular/common/locales/en-GB';
 
@@ -109,7 +109,7 @@ function loadScripts(scriptLoaderService: ScriptLoaderService): Function {
     !environment.production ? StoreDevtoolsModule.instrument({ maxAge: 50 }) : [],
 
     BrowserModule,
-    NoopAnimationsModule,
+    BrowserAnimationsModule,
     HttpClientModule,
     TezedgeSharedModule,
     // ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production }),

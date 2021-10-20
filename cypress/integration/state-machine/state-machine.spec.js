@@ -144,13 +144,15 @@ context('STATE MACHINE', () => {
             if (stateMachine.actionTable.ids.length) {
               const secondLastRecord = stateMachine.actionTable.entities[stateMachine.actionTable.ids[stateMachine.actionTable.ids.length - 2]];
 
-              cy.get('.virtual-scroll-container .virtualScrollRow:nth-last-child(4)')
-                .trigger('click');
               let elementFound;
-              cy.get('.ngx-json-viewer .segment-value').should(elements => {
-                elementFound = Array.from(elements).some(elem => elem.textContent === secondLastRecord.originalId);
-              });
-              cy.wait(500).then(() => cy.wrap(elementFound).should('eq', true));
+              cy.get('.virtual-scroll-container .virtualScrollRow:nth-last-child(4)')
+                .trigger('click')
+                .then(() => {
+                  cy.get('.ngx-json-viewer .segment-value').should(elements => {
+                    elementFound = Array.from(elements).some(elem => elem.textContent.includes(secondLastRecord.originalId));
+                  });
+                  cy.wait(500).then(() => cy.wrap(elementFound).should('eq', true));
+                });
             }
           });
         });
@@ -452,6 +454,85 @@ context('STATE MACHINE', () => {
             }
           });
         });
+    });
+  });
+
+  it('[STATE MACHINE] should successfully start playing through the actions on play button click', () => {
+    cy.wait(3000).then(() => {
+      cy.get('.virtual-scroll-container .virtualScrollRow').should('have.length.at.least', 5).then(() => {
+        cy.get('.stop-stream').click();
+        cy.get('.virtual-scroll-container .virtualScrollRow.hover').should('not.exist');
+        cy.get('.player-wrapper .play-pause:not(.arrows)')
+          .trigger('click')
+          .then(() => {
+            let activeRowText;
+            cy.get('.virtual-scroll-container .virtualScrollRow.hover span:nth-child(2)').should('exist')
+              .then(span => activeRowText = span.text())
+              .wait(2000)
+              .then(() => {
+                cy.get('.player-wrapper .play-pause:not(.arrows)')
+                  .trigger('click');
+                cy.get('.virtual-scroll-container .virtualScrollRow.hover span:nth-child(2)').then(newSpan => {
+                  cy.wrap(activeRowText).should('not.eq', newSpan.text());
+                });
+              });
+          });
+      });
+    });
+  });
+
+  it('[STATE MACHINE] should successfully highlight correct svg block in the diagram on action click', () => {
+    cy.wait(3000).then(() => {
+      cy.get('.virtual-scroll-container .virtualScrollRow').should('have.length.at.least', 5).then(() => {
+        cy.get('.stop-stream').click();
+        cy.get('.virtual-scroll-container .virtualScrollRow:nth-last-child(4)')
+          .trigger('click')
+          .wait(1000)
+          .then(() => {
+            cy.get('.virtual-scroll-container .virtualScrollRow.hover span:nth-child(2)').should('exist')
+              .then((span) => {
+
+                cy.get('#d3Diagram svg > g g.nodes g.node.active').then((g) => {
+                  expect(g.attr('id')).equal(span.text());
+                  cy.get('#d3Diagram svg > g g.nodes g.node.active text tspan').then(tspan => {
+                    expect(tspan.text()).equal(span.text());
+                  });
+                });
+                cy.get('#d3Diagram svg > g g.edgePaths .connection-prev').then((g) => {
+                  cy.wrap(g.attr('id')).should('include', '-' + span.text());
+                });
+                cy.get('#d3Diagram svg > g g.edgePaths .connection-next').then((g) => {
+                  cy.wrap(g.attr('id')).should('include', span.text() + '-');
+                });
+              });
+          });
+      });
+    });
+  });
+
+  it('[STATE MACHINE] should successfully update progress bar on action click', () => {
+    cy.wait(3000).then(() => {
+      cy.get('.virtual-scroll-container .virtualScrollRow').should('have.length.at.least', 5).then(() => {
+        cy.get('.stop-stream').click();
+        let initialValue;
+        cy.get('mat-slider').should('exist').then(slider => {
+          initialValue = slider.attr('aria-valuenow');
+          expect(initialValue).equal('0');
+        });
+        cy.get('.virtual-scroll-container')
+          .scrollTo('top')
+          .wait(800)
+          .then(() => {
+            cy.get('.virtual-scroll-container .virtualScrollRow:nth-child(4)')
+              .trigger('click')
+              .then(() => {
+                cy.get('mat-slider').should('exist').then(slider => {
+                  expect(slider.attr('aria-valuenow')).not.equal(initialValue);
+                  expect(slider.attr('aria-valuenow')).equal('3');
+                });
+              });
+          });
+      });
     });
   });
 });

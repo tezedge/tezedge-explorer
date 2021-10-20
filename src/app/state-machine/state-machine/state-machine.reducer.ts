@@ -237,3 +237,4 @@ export const selectStateMachineDiagramBlocks = (state: State) => state.stateMach
 export const selectStateMachineDiagramHeight = (state: State) => state.stateMachine.diagramHeight;
 export const selectStateMachineCollapsedDiagram = (state: State) => state.stateMachine.collapsedDiagram;
 export const selectStateMachineActiveAction = (state: State) => state.stateMachine.activeAction;
+export const selectStateMachineStatistics = (state: State) => state.stateMachine.actionStatistics;

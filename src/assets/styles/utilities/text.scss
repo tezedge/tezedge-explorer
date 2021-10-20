@@ -18,6 +18,10 @@
   text-decoration: none !important;
 }
 
+.font-10 {
+  font-size: 10px;
+}
+
 .font-12 {
   font-size: 12px;
 }
@@ -48,6 +52,10 @@
 
 .pointer {
   cursor: pointer;
+}
+
+.context-menu {
+  cursor: context-menu !important;
 }
 
 .pointer-none {

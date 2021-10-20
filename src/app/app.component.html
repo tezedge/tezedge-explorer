@@ -1,5 +1,4 @@
 <app-error-popup></app-error-popup>
-<app-progress-bar></app-progress-bar>
 <div class="sidenav-area h-100">
 
   <div class="app-status-bar"
@@ -43,11 +42,9 @@
           <span class="text-white">{{ protocol | slice: 0: 10 }}</span>
         </div>
       </div>
-      <div fxLayout="row"
-           fxLayoutAlign="center center">
+      <div fxLayout="row" fxLayoutAlign="center center">
         <button *ngIf="pendingTransactions.length"
-                mat-button
-                class="pending-transactions"
+                mat-button class="pending-transactions"
                 (click)="sandboxBakeBlock()"
                 [disabled]="!app.statusbar.sandbox">
                 <span>{{pendingTransactions.length + ' pending transaction' + (pendingTransactions.length > 1 ? 's' : '')}}
@@ -55,8 +52,9 @@
           <span *ngIf="app.statusbar.sandbox" class="action">BAKE</span>
         </button>
 
-        <button class="theme-switcher font-12"
-                mat-icon-button>
+        <app-loading-spinner></app-loading-spinner>
+
+        <button class="theme-switcher font-12"mat-icon-button>
           <mat-icon *ngIf="app.theme.name === 'dark'"
                     class="font-12 icon-16"
                     svgIcon="sunny"

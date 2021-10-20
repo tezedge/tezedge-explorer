@@ -7,9 +7,7 @@ import { ThousandTransformPipe } from './pipes/thousand-transform.pipe';
 import { EtaTimePipe } from './pipes/eta-time.pipe';
 import { ErrorPopupComponent } from './error-popup/error-popup.component';
 import { NotifierModule } from 'angular-notifier';
-import { ProgressBarComponent } from './progress-bar/progress-bar.component';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
-import { ProgressBarInterceptor } from './progress-bar/progress-bar.interceptor.service';
 import { VarDirective } from './directives/var.directive';
 import { VirtualScrollDirective } from './virtual-scroll/virtual-scroll.directive';
 import { VirtualScrollFromTopDirective } from './virtual-scroll/virtual-scroll-from-top.directive';
@@ -20,22 +18,35 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { NgrxFormDirective } from '@shared/ngrx-form.directive';
 import { ResizeDirective } from '@shared/directives/resize.directive';
 import { CustomJsonParserInterceptorService } from '@core/custom-json-parser.interceptor.service';
+import { LoadingSpinnerComponent } from '@shared/loading-spinner/loading-spinner.component';
+import { LoadingSpinnerInterceptor } from '@shared/loading-spinner/loading-spinner.interceptor';
 
+const COMPONENTS = [
+  ErrorPopupComponent,
+  LoadingSpinnerComponent,
+];
+
+const PIPES = [
+  ReplaceCharacterPipe,
+  TimeTransformPipe,
+  ThousandTransformPipe,
+  EtaTimePipe,
+];
+
+const DIRECTIVES = [
+  VarDirective,
+  VirtualScrollDirective,
+  VirtualScrollFromTopDirective,
+  ClickOutsideDirective,
+  NgrxFormDirective,
+  ResizeDirective,
+];
 
 @NgModule({
   declarations: [
-    ReplaceCharacterPipe,
-    TimeTransformPipe,
-    ThousandTransformPipe,
-    EtaTimePipe,
-    ErrorPopupComponent,
-    ProgressBarComponent,
-    VarDirective,
-    VirtualScrollDirective,
-    VirtualScrollFromTopDirective,
-    ClickOutsideDirective,
-    NgrxFormDirective,
-    ResizeDirective,
+    ...COMPONENTS,
+    ...PIPES,
+    ...DIRECTIVES
   ],
   imports: [
     CommonModule,
@@ -62,31 +73,19 @@ import { CustomJsonParserInterceptorService } from '@core/custom-json-parser.int
     MaterialModule,
     NgxJsonViewerModule,
     ReactiveFormsModule,
-
-    ErrorPopupComponent,
-    ProgressBarComponent,
-
-    ReplaceCharacterPipe,
-    TimeTransformPipe,
-    ThousandTransformPipe,
-    EtaTimePipe,
-
-    VarDirective,
-    VirtualScrollDirective,
-    VirtualScrollFromTopDirective,
-    ClickOutsideDirective,
-    NgrxFormDirective,
-    ResizeDirective,
+    ...COMPONENTS,
+    ...PIPES,
+    ...DIRECTIVES
   ],
   providers: [
     {
       provide: HTTP_INTERCEPTORS,
-      useClass: ProgressBarInterceptor,
+      useClass: CustomJsonParserInterceptorService,
       multi: true
     },
     {
       provide: HTTP_INTERCEPTORS,
-      useClass: CustomJsonParserInterceptorService,
+      useClass: LoadingSpinnerInterceptor,
       multi: true
     },
   ]

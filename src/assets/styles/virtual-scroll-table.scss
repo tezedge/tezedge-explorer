@@ -154,7 +154,6 @@
 
   .active {
     opacity: 1;
-    //color: red; // TODO: remove - just for development purpose
   }
 
   .filters-accordion {
@@ -173,6 +172,22 @@
 
       .mat-expansion-panel-content {
         font-weight: 200 !important;
+      }
+    }
+
+    &.state-machine-accordion .mat-expansion-panel {
+      background-color: unset;
+
+      &.mat-expanded {
+        box-shadow: 0 10px 9px -3px rgb(29 29 29) !important;
+      }
+
+      .mat-expansion-panel-header {
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      }
+
+      .mat-expansion-panel-body {
+        padding: 0;
       }
     }
   }

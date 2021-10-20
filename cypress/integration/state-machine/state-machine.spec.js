@@ -537,7 +537,7 @@ context('STATE MACHINE', () => {
   });
 
   it('[STATE MACHINE] should successfully render filter buttons and categories', () => {
-    const categories = ['P2p', 'PeerHandshaking', 'PeerConnection', 'YieldedOperations', 'PeersGraylist', 'PeerMessage', 'PeerBinary', 'PeerChunk', 'PeerTry', 'PeersDns', 'PeersCheck', 'Storage', 'Others'];
+    const categories = ['P2p', 'PeerHandshaking', 'PeerConnection', 'YieldedOperations', 'PausedLoops', 'PeersGraylist', 'PeerMessage', 'PeerBinary', 'PeerChunk', 'PeerTry', 'PeersDns', 'PeersCheck', 'Storage', 'Others'];
     cy.intercept('GET', '/dev/shell/automaton/actions_stats').as('getStatistics')
       .then(() => {
         let stats;

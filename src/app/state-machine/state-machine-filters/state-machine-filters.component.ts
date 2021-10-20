@@ -40,6 +40,7 @@ export class StateMachineFiltersComponent implements OnInit {
     { label: 'PeersGraylist' },
     { label: 'Storage' },
     { label: 'YieldedOperations' },
+    { label: 'PausedLoops' },
     { label: 'Others' },
   ];
 

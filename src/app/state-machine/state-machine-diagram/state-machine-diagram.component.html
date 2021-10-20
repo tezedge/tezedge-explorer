@@ -35,7 +35,7 @@
   <div fxFlex="30px" class="full-diagram"
        [class.hidden-action]="state.collapsedDiagram || !diagram?.length">
     <span class="icon-background pointer border-rad-4 d-flex flex-center align-center"
-          (click)="zoomToFit(500)"
+          (click)="resetZoom(500)"
           matTooltip="Reset zoom" matTooltipPosition="left">
       <mat-icon svgIcon="arrow-expanded" class="icon-12 icon-white-4"></mat-icon>
     </span>

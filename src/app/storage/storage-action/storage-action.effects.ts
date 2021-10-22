@@ -1,46 +1,38 @@
-import {Injectable} from '@angular/core';
-import {createEffect, Actions, ofType} from '@ngrx/effects';
-import {HttpClient} from '@angular/common/http';
-import {Store} from '@ngrx/store';
-import {map, switchMap, withLatestFrom, catchError} from 'rxjs/operators';
+import { Injectable } from '@angular/core';
+import { Actions, createEffect, ofType } from '@ngrx/effects';
+import { HttpClient } from '@angular/common/http';
+import { Store } from '@ngrx/store';
+import { catchError, map, switchMap, withLatestFrom } from 'rxjs/operators';
+import { State } from '@app/app.reducers';
+import { empty, of } from 'rxjs';
+import { ErrorActionTypes } from '@shared/error-popup/error-popup.actions';
 
 @Injectable({ providedIn: 'root' })
 export class StorageActionEffects {
 
-
-  StorageBlockAction$ = createEffect(() => this.actions$.pipe(
-    ofType('STORAGE_BLOCK_ACTION_LOAD'),
-
-    // merge state
-    withLatestFrom(this.store, (action: any, state) => ({action, state})),
-
-    switchMap(({action, state}) => {
-      return this.http.get(setUrl(action, state));
-    }),
-    // dispatch action
-    map((payload) => ({type: 'STORAGE_BLOCK_ACTION_LOAD_SUCCESS', payload})),
-    catchError((error, caught) => {
-      console.error(error);
-      this.store.dispatch({
-        type: 'STORAGE_BLOCK_ACTION_LOAD_ERROR',
-        payload: error,
-      });
-      return caught;
-    })
+  storageBlockAction$ = createEffect(() => this.actions$.pipe(
+    ofType('STORAGE_BLOCK_ACTION_LOAD', 'STORAGE_BLOCK_ACTION_RESET'),
+    withLatestFrom(this.store, (action: any, state) => ({ action, state })),
+    switchMap(({ action, state }) =>
+      action.type === 'STORAGE_BLOCK_ACTION_RESET'
+        ? empty()
+        : this.http.get(setUrl(action, state))
+    ),
+    map((payload) => ({ type: 'STORAGE_BLOCK_ACTION_LOAD_SUCCESS', payload })),
+    catchError(error => of({ type: ErrorActionTypes.ADD_ERROR, payload: { title: 'Error when loading storage blocks', message: error.message } }))
   ));
 
-
-  StorageBlockActionDetails$ = createEffect(() => this.actions$.pipe(
+  storageBlockActionDetails$ = createEffect(() => this.actions$.pipe(
     ofType('STORAGE_BLOCK_ACTION_DETAILS_LOAD'),
 
     // merge state
-    withLatestFrom(this.store, (action: any, state) => ({action, state})),
+    withLatestFrom(this.store, (action: any, state) => ({ action, state })),
 
-    switchMap(({action, state}) => {
+    switchMap(({ action, state }) => {
       return this.http.get(setDetailsUrl(action, state));
     }),
     // dispatch action
-    map((payload) => ({type: 'STORAGE_BLOCK_ACTION_DETAILS_LOAD_SUCCESS', payload})),
+    map((payload) => ({ type: 'STORAGE_BLOCK_ACTION_DETAILS_LOAD_SUCCESS', payload })),
     catchError((error, caught) => {
       console.error(error);
       this.store.dispatch({
@@ -76,12 +68,9 @@ export class StorageActionEffects {
   //   })
   // );
 
-  constructor(
-    private http: HttpClient,
-    private actions$: Actions,
-    private store: Store<any>,
-  ) {
-  }
+  constructor(private http: HttpClient,
+              private actions$: Actions,
+              private store: Store<State>) { }
 
 }
 

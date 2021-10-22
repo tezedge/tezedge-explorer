@@ -5,7 +5,6 @@ import { Observable, tap } from 'rxjs';
 import { selectStateMachine } from '@state-machine/state-machine/state-machine.reducer';
 import { NgxObjectDiffService } from 'ngx-object-diff';
 import { StateMachine } from '@shared/types/state-machine/state-machine.type';
-import { filter } from 'rxjs/operators';
 import { HttpClient } from '@angular/common/http';
 import { StateMachineAction } from '@shared/types/state-machine/state-machine-action.type';
 import { selectActiveNode } from '@settings/settings-node.reducer';
@@ -22,7 +21,7 @@ export class StateMachineActionDetailsComponent implements OnInit {
 
   readonly tabs = ['CONTENT', 'STATE', 'DIFFS'];
 
-  activeTab: string = 'STATE';
+  activeTab: string;
   stateMachine$: Observable<StateMachine>;
   currentAction: StateMachineAction;
   stateDifferences: string;
@@ -44,8 +43,12 @@ export class StateMachineActionDetailsComponent implements OnInit {
 
     this.stateMachine$ = this.store.select(selectStateMachine)
       .pipe(
-        filter(state => this.currentAction !== state.activeAction && state.activeAction !== null),
-        tap(state => this.stateDifferences = this.formatHTML(state))
+        tap(state => {
+          if (this.currentAction !== state.activeAction && state.activeAction !== null) {
+            this.activeTab = this.activeTab || 'STATE';
+            this.stateDifferences = this.formatHTML(state);
+          }
+        })
       );
   }
 

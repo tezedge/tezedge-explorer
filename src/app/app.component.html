@@ -54,13 +54,13 @@
 
         <app-loading-spinner></app-loading-spinner>
 
-        <button class="theme-switcher font-12"mat-icon-button>
+        <button class="theme-switcher f-12" mat-icon-button>
           <mat-icon *ngIf="app.theme.name === 'dark'"
-                    class="font-12 icon-16"
+                    class="f-12 icon-16"
                     svgIcon="sunny"
                     (click)="changeTheme('light')"></mat-icon>
           <mat-icon *ngIf="app.theme.name === 'light'"
-                    class="font-12 icon-16"
+                    class="f-12 icon-16"
                     svgIcon="night"
                     (click)="changeTheme('dark')"></mat-icon>
         </button>

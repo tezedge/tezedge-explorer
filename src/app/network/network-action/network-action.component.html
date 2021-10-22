@@ -4,36 +4,30 @@
     <div class="filters-container">
 
       <div class="active-filters-row">
-        <button class="add-filters"
-                mat-flat-button>
-          <mat-icon svgIcon="filter"
-                    class="icon-14 margin-right-5 margin-left-5"></mat-icon>
+        <button class="add-filters margin-left-5" mat-flat-button>
+          <mat-icon svgIcon="filter" class="icon-12 margin-right-5"></mat-icon>
           Active Filters
         </button>
 
         <div class="filters-content">
           <button *ngFor="let filter of activeFilters"
-                  class="active"
-                  mat-flat-button
+                  class="active" mat-flat-button
                   (click)="filterByType(filter)">
             <span class="d-flex align-center flex-center">
               {{ filter }}
-              <mat-icon svgIcon="close"
-                        class="icon-12 margin-left-5"></mat-icon>
+              <mat-icon svgIcon="close" class="icon-12 margin-left-5"></mat-icon>
             </span>
           </button>
         </div>
 
         <div class="filters-content">
           <button *ngIf="virtualScrollItems.urlParams"
-                  class="active"
-                  mat-flat-button
+                  class="active" mat-flat-button
                   (click)="filterAddress(virtualScrollItems.urlParams)">
             <span class="d-flex align-center flex-center">
               Address:
               {{ virtualScrollItems.urlParams }}
-              <mat-icon svgIcon="close"
-                        class="icon-12 margin-left-5"></mat-icon>
+              <mat-icon svgIcon="close" class="icon-12 margin-left-5"></mat-icon>
             </span>
           </button>
         </div>
@@ -186,8 +180,9 @@
                   class="d-flex align-center">
               <mat-icon svgIcon="{{event.source_type === 'local' ? 'local' : 'remote'}}"
                         class="icon-16"></mat-icon>
-              <mat-icon svgIcon="{{event.source_type === 'local' && !event.incoming || event.source_type === 'remote' && event.incoming ? 'arrow-right' : 'arrow-left'}}"
-                        class="icon-16"></mat-icon>
+              <mat-icon
+                svgIcon="{{event.source_type === 'local' && !event.incoming || event.source_type === 'remote' && event.incoming ? 'arrow-right' : 'arrow-left'}}"
+                class="icon-16"></mat-icon>
               <mat-icon svgIcon="{{event.source_type === 'local' ? 'remote' : 'local'}}"
                         class="icon-16"></mat-icon>
             </span>

@@ -3,7 +3,7 @@
     <button class="primary-button border-rad-2 d-flex align-center pointer margin-right-5">
       <mat-icon svgIcon="magnifying-glass" class="icon-14 icon-white"></mat-icon>
     </button>
-    <button class="primary-button border-rad-2 d-flex align-center pointer text-white font-600 font-12">
+    <button class="primary-button border-rad-2 d-flex align-center pointer text-white font-600 f-12">
       <mat-icon svgIcon="filter" class="icon-12 icon-white margin-right-5"></mat-icon>
       ADD FILTER
     </button>
@@ -12,14 +12,14 @@
     <app-smart-contracts-table fxFlex="440px"></app-smart-contracts-table>
     <div fxFlex="1 1 auto" class="d-flex flex-column">
       <div class="d-flex flex-column">
-        <div fxFlex="32px" class="d-flex align-center font-12">
+        <div fxFlex="32px" class="d-flex align-center f-12">
           <span class="text-white margin-right-10">CONTRACT DETAIL</span>
           <mat-icon svgIcon="chevron-right" class="icon-12 icon-white-4"></mat-icon>
           <span class="text-white-4 margin-left-10">{{ activeContract.hash }}</span>
         </div>
-        <div class="debugger-inspect font-12 d-flex flex-column border border-rad-2">
+        <div class="debugger-inspect f-12 d-flex flex-column border border-rad-2">
           <div class="text-white-4 padding-10">DEBUG</div>
-          <div class="d-flex align-center text-white-4 font-12 padding-left-10">
+          <div class="d-flex align-center text-white-4 f-12 padding-left-10">
             <button mat-icon-button class="square-button d-flex align-center flex-center"
                     matTooltip="Start debugger"
                     (click)="startDebugger()">
@@ -99,7 +99,7 @@
                *ngFor="let line of contract.code.split('\n'); let i=index"></div>
         </div>
 
-        <div class="text-white-4 padding-10 font-12">SOURCE CODE
+        <div class="text-white-4 padding-10 f-12">SOURCE CODE
           <span *ngIf="debugConfig.currentStep !== undefined">- <span class="text-white">DEBUGGING</span></span>
         </div>
 

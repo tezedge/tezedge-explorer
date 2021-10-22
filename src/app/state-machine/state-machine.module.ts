@@ -10,6 +10,7 @@ import { StateMachineActionDetailsComponent } from './state-machine-action-detai
 import { MatSliderModule } from '@angular/material/slider';
 import { TezedgeNgxJsonViewerModule } from '@shared/custom-components/tezedge-ngx-json-viewer/tezedge-ngx-json-viewer.module';
 import { StateMachineFiltersComponent } from './state-machine-filters/state-machine-filters.component';
+import { StateMachineStatisticsComponent } from './state-machine-statistics/state-machine-statistics.component';
 
 
 @NgModule({
@@ -19,6 +20,7 @@ import { StateMachineFiltersComponent } from './state-machine-filters/state-mach
     StateMachineTableComponent,
     StateMachineActionDetailsComponent,
     StateMachineFiltersComponent,
+    StateMachineStatisticsComponent,
   ],
   imports: [
     CommonModule,

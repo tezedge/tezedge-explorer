@@ -5,7 +5,7 @@
       <mat-expansion-panel-header class="padding-remove context-menu" #panelH (click)="panelH._toggle()">
         <div class="active-filters-row align-center">
           <button class="add-filters margin-left-5 d-flex align-center pointer font-300" (click)="accordionExpanded = !accordionExpanded">
-            <mat-icon svgIcon="filter" class="icon-12 margin-right-5 margin-left-5"></mat-icon>
+            <mat-icon svgIcon="filter" class="icon-12 margin-right-5"></mat-icon>
             Add Filters
           </button>
 
@@ -19,7 +19,7 @@
               </span>
             </button>
           </div>
-          <div *ngIf="activeFilters.length > maxVisibleFilters" class="text-white-7 font-12 font-300"
+          <div *ngIf="activeFilters.length > maxVisibleFilters" class="text-white-7 f-12 font-300"
                [matTooltip]="activeFilters.slice(maxVisibleFilters).join(',\n')">+ {{ activeFilters.length - maxVisibleFilters }} more
           </div>
         </div>

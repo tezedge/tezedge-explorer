@@ -535,4 +535,93 @@ context('STATE MACHINE', () => {
       });
     });
   });
+
+  it('[STATE MACHINE] should successfully render filter buttons and categories', () => {
+    const categories = ['P2p', 'PeerHandshaking', 'PeerConnection', 'PeersGraylist', 'PeerMessage', 'PeerBinary', 'PeerChunk', 'PeerTry', 'PeersDns', 'PeersCheck', 'Storage', 'Others'];
+    cy.intercept('GET', '/dev/shell/automaton/actions_stats').as('getStatistics')
+      .then(() => {
+        let stats;
+        cy.window()
+          .its('store')
+          .then((store) => {
+            store.select('stateMachine').subscribe(stateMachine => {
+              if (stateMachine.actionStatistics.statistics) {
+                stats = stateMachine.actionStatistics.statistics.map(a => a.kind);
+              }
+            });
+          });
+        cy.wait(1000).then(() => {
+          cy.get('mat-expansion-panel-header').should('exist').then(() => {
+            cy.get('.mat-expansion-panel-content .filters-row').should('not.exist');
+            cy.get('mat-expansion-panel-header button.add-filters')
+              .trigger('click')
+              .wait(1000)
+              .then(() => {
+                cy.get('.mat-expansion-panel-content .filters-row').should('exist');
+
+                if (stats) {
+                  cy.get('.filters-row .filters-label').should('have.length.at.most', categories.length).then(labels => {
+                    const labelTexts = Array.from(labels).map(l => l.textContent);
+                    labelTexts.pop();
+                    labelTexts.forEach(label => {
+                      cy.wrap(stats.some(action => action.startsWith(label))).should('be.true');
+                    });
+                  });
+                  cy.get('.filters-row div div button').should('have.length', stats.length).then(filters => {
+                    Array.from(filters).map(f => f.textContent).forEach(text => {
+                      cy.wrap(stats.some(action => ' ' + action + ' ' === text)).should('be.true');
+                    });
+                  });
+                }
+              });
+          });
+        });
+      });
+  });
+
+  it('[STATE MACHINE] should successfully apply filters on click', () => {
+    cy.intercept('GET', '/dev/shell/automaton/actions_stats').as('getStatistics')
+      .then(() => {
+        cy.get('.filters-content button').should('not.exist');
+        cy.get('.add-filters').trigger('click').wait(1000).then(() => {
+          cy.get('.filters-row div div button')
+            .eq(-2)
+            .trigger('click')
+            .then(clicked => {
+              cy.get('.filters-content button').should('exist').then(appliedFilter => {
+                expect(appliedFilter[0].textContent).equal(clicked[0].textContent);
+              });
+              cy.get('.filters-row div div button')
+                .eq(-4)
+                .trigger('click')
+                .then(() => {
+                  cy.get('.filters-content button').should('have.length', 2);
+                });
+            });
+        });
+      });
+  });
+
+  it('[STATE MACHINE] should successfully render action statistics', () => {
+    cy.intercept('GET', '/dev/shell/automaton/actions_stats').as('getStatistics')
+      .then(() => {
+        cy.get('.statistics-table').should('be.visible');
+        let stats;
+        cy.window()
+          .its('store')
+          .then((store) => {
+            store.select('stateMachine').subscribe(stateMachine => {
+              if (stateMachine.actionStatistics.statistics) {
+                stats = stateMachine.actionStatistics.statistics;
+              }
+            });
+          });
+        cy.wait(1000).then(() => {
+          if (stats) {
+            cy.get('.statistics-table .overflow-auto > div').should('have.length', stats.length);
+          }
+        });
+      });
+  });
+
 });

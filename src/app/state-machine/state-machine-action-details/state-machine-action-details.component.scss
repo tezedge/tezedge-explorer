@@ -1,9 +1,5 @@
-.payload-view {
-  color: white;
-
-  .tabs .tab {
-    &.active, &:hover {
-      color: white !important;
-    }
+.tab {
+  &.active, &:hover {
+    color: white !important;
   }
 }

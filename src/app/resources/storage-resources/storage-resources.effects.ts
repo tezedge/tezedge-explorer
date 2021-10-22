@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { catchError, map, switchMap, withLatestFrom } from 'rxjs/operators';
-import { forkJoin, ObservedValueOf, of } from 'rxjs';
+import { empty, forkJoin, ObservedValueOf, of } from 'rxjs';
 import { Store } from '@ngrx/store';
 import { StorageResourcesActionTypes } from './storage-resources.actions';
 import { State } from '@app/app.reducers';
@@ -30,13 +30,15 @@ export class StorageResourcesEffects {
   ));
 
   resourcesLoadEffect$ = createEffect(() => this.actions$.pipe(
-    ofType(StorageResourcesActionTypes.STORAGE_RESOURCES_LOAD),
+    ofType(StorageResourcesActionTypes.STORAGE_RESOURCES_LOAD, StorageResourcesActionTypes.STORAGE_RESOURCES_CLOSE),
     withLatestFrom(this.store, (action: any, state: ObservedValueOf<Store<State>>) => ({ action, state })),
     switchMap(({ action, state }) =>
-      this.storageResourcesService.getStorageResources(state.settingsNode.activeNode.http, action.payload)
-        .pipe(
-          map((stats: StorageResourcesStats) => ({ type: StorageResourcesActionTypes.STORAGE_RESOURCES_LOAD_SUCCESS, payload: stats })),
-        ))
+      action.type === StorageResourcesActionTypes.STORAGE_RESOURCES_CLOSE
+        ? empty()
+        : this.storageResourcesService.getStorageResources(state.settingsNode.activeNode.http, action.payload)
+          .pipe(map((stats: StorageResourcesStats) =>
+            ({ type: StorageResourcesActionTypes.STORAGE_RESOURCES_LOAD_SUCCESS, payload: stats })
+          )))
   ));
 
   constructor(private storageResourcesService: StorageResourceService,

@@ -1,6 +1,6 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { select, Store } from '@ngrx/store';
-import { StorageResourcesActionTypes } from './storage-resources.actions';
+import { CloseStorageResources, LoadStorageResources, StorageResourcesActionTypes } from './storage-resources.actions';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { StorageResourcesStats } from '@shared/types/resources/storage/storage-resources-stats.type';
 import { Observable } from 'rxjs';
@@ -15,7 +15,7 @@ import { State } from '@app/app.reducers';
   styleUrls: ['./storage-resources.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class StorageResourcesComponent implements OnInit {
+export class StorageResourcesComponent implements OnInit, OnDestroy {
 
   storageStats$: Observable<StorageResourcesStats>;
   miniGraphRef: ElementRef;
@@ -51,7 +51,7 @@ export class StorageResourcesComponent implements OnInit {
 
   getStorageStatistics(): void {
     const newContext = this.storageResourcesContext === 'tezedge' ? 'irmin' : 'tezedge';
-    this.store.dispatch({
+    this.store.dispatch<LoadStorageResources>({
       type: StorageResourcesActionTypes.STORAGE_RESOURCES_LOAD,
       payload: newContext
     });
@@ -72,6 +72,12 @@ export class StorageResourcesComponent implements OnInit {
       }
       this.displayContextSwitcher = storageResourcesState.availableContexts.length > 1;
       this.cdRef.detectChanges();
+    });
+  }
+
+  ngOnDestroy(): void {
+    this.store.dispatch<CloseStorageResources>({
+      type: StorageResourcesActionTypes.STORAGE_RESOURCES_CLOSE
     });
   }
 }

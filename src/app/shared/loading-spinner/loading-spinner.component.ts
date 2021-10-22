@@ -1,25 +1,27 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
-import { LoadingSpinnerService } from '@shared/loading-spinner/loading-spinner.service';
 import { delay, Observable } from 'rxjs';
+import { Store } from '@ngrx/store';
+import { State } from '@app/app.reducers';
+import { spinnerActiveMessage } from '@shared/loading-spinner/loading-spinner.reducer';
+import { LoadingSpinner } from '@shared/types/shared/loading-spinner/loading-spinner.type';
 
 @Component({
   selector: 'app-loading-spinner',
   templateUrl: './loading-spinner.component.html',
-  styleUrls: ['./loading-spinner.component.scss'],
   host: { class: 'd-flex align-center' },
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class LoadingSpinnerComponent implements OnInit {
 
-  loading$: Observable<boolean>;
+  spinner$: Observable<LoadingSpinner>;
 
-  constructor(private loadingService: LoadingSpinnerService) { }
+  constructor(private store: Store<State>) { }
 
   ngOnInit(): void {
     this.listenToLoading();
   }
 
   private listenToLoading(): void {
-    this.loading$ = this.loadingService.loadingSub.pipe(delay(0));
+    this.spinner$ = this.store.select(spinnerActiveMessage).pipe(delay(0));
   }
 }

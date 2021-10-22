@@ -204,6 +204,9 @@ export class StateMachineDiagramComponent implements OnInit, AfterViewInit {
 
   @HostListener('window:resize')
   generateDiagram(): void {
+    if (!this.diagram?.length) {
+      return;
+    }
     this.zone.runOutsideAngular(() => {
       d3.selectAll('#d3Diagram svg > *').remove();
 

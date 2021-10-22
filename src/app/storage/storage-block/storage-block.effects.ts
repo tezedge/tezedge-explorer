@@ -15,8 +15,7 @@ export class StorageBlockEffects {
 
   private storageBlockDestroy$ = new Subject();
 
-
-  StorageBlockReset$ = createEffect(() => this.actions$.pipe(
+  storageBlockReset$ = createEffect(() => this.actions$.pipe(
     ofType('STORAGE_BLOCK_RESET', 'STORAGE_BLOCK_LOAD'),
     map((payload) => ({ type: 'STORAGE_BLOCK_RESET_SUCCESS', payload })),
     catchError((error, caught) => {
@@ -29,8 +28,7 @@ export class StorageBlockEffects {
     })
   ));
 
-
-  StorageBlockLoad$ = createEffect(() => this.actions$.pipe(
+  storageBlockLoad$ = createEffect(() => this.actions$.pipe(
     ofType('STORAGE_BLOCK_FETCH'),
 
     // merge state
@@ -51,20 +49,14 @@ export class StorageBlockEffects {
     })
   ));
 
-
-  StorageBlockStartEffect$ = createEffect(() => this.actions$.pipe(
+  storageBlockStartEffect$ = createEffect(() => this.actions$.pipe(
     ofType('STORAGE_BLOCK_START'),
-
-    // merge state
     withLatestFrom(this.store, (action: any, state: ObservedValueOf<Store<State>>) => ({ action, state })),
-
     switchMap(({ action, state }) =>
-
-      // get header data every 30 seconds
       timer(0, 30000).pipe(
         takeUntil(this.storageBlockDestroy$),
         switchMap(() =>
-          this.http.get(setUrl(action, state), { reportProgress: true }).pipe(
+          this.http.get(setUrl(action, state)).pipe(
             map(response => ({ type: 'STORAGE_BLOCK_START_SUCCESS', payload: response })),
             catchError(error => of({ type: 'STORAGE_BLOCK_START_ERROR', payload: error }))
           )
@@ -73,15 +65,13 @@ export class StorageBlockEffects {
     )
   ));
 
-
-  StorageBlockStartSuccessEffect$ = createEffect(() => this.actions$.pipe(
+  storageBlockStartSuccessEffect$ = createEffect(() => this.actions$.pipe(
     ofType('STORAGE_BLOCK_START_SUCCESS'),
     withLatestFrom(this.store, (action: any, state: ObservedValueOf<Store<State>>) => ({ action, state })),
     map(({ action, state }) => ({ type: StorageBlockActionTypes.STORAGE_BLOCK_CHECK_AVAILABLE_CONTEXTS }))
   ));
 
-
-  StorageBlockGetNextBlockDetailsEffect$ = createEffect(() => this.actions$.pipe(
+  storageBlockGetNextBlockDetailsEffect$ = createEffect(() => this.actions$.pipe(
     ofType('STORAGE_BLOCK_NEIGHBOUR_BLOCK_DETAILS'),
     withLatestFrom(this.store, (action: any, state: ObservedValueOf<Store<State>>) => ({ action, state })),
     map(({ action, state }) => {
@@ -101,20 +91,13 @@ export class StorageBlockEffects {
     })
   ));
 
-  // stop storage block download
-
-  StorageBlockStopEffect$ = createEffect(() => this.actions$.pipe(
+  storageBlockStopEffect$ = createEffect(() => this.actions$.pipe(
     ofType('STORAGE_BLOCK_STOP'),
-    // merge state
     withLatestFrom(this.store, (action: any, state: ObservedValueOf<Store<State>>) => ({ action, state })),
-    // init app modules
-    tap(({ action, state }) => {
-      this.storageBlockDestroy$.next(null);
-    })
+    tap(({ action, state }) => this.storageBlockDestroy$.next(null))
   ), { dispatch: false });
 
-
-  StorageBlockCheckAvailableContextsEffect$ = createEffect(() => this.actions$.pipe(
+  storageBlockCheckAvailableContextsEffect$ = createEffect(() => this.actions$.pipe(
     ofType(StorageBlockActionTypes.STORAGE_BLOCK_CHECK_AVAILABLE_CONTEXTS),
     withLatestFrom(this.store, (action: any, state: ObservedValueOf<Store<State>>) => ({ action, state })),
     switchMap(({ action, state }) =>
@@ -124,11 +107,8 @@ export class StorageBlockEffects {
     catchError(error => of({ type: ErrorActionTypes.ADD_ERROR, payload: { title: 'Storage block details error', message: error.message } }))
   ));
 
-
-  StorageBlockDetailsLoad$ = createEffect(() => this.actions$.pipe(
+  storageBlockDetailsLoad$ = createEffect(() => this.actions$.pipe(
     ofType('STORAGE_BLOCK_DETAILS_LOAD'),
-
-    // merge state
     withLatestFrom(this.store, (action: any, state: ObservedValueOf<Store<State>>) => ({ action, state })),
     switchMap(({ action, state }) => {
       return combineLatest(
@@ -136,8 +116,6 @@ export class StorageBlockEffects {
         this.storageBlockService.getStorageBlockContextDetails(state.settingsNode.activeNode.http, action.payload.hash, action.payload.context),
       );
     }),
-
-    // dispatch action
     map((response) => {
       const payload = {
         selected: response[0],
@@ -155,13 +133,10 @@ export class StorageBlockEffects {
     })
   ));
 
-  constructor(
-    private http: HttpClient,
-    private actions$: Actions,
-    private store: Store<State>,
-    private storageBlockService: StorageBlockService,
-  ) {
-  }
+  constructor(private http: HttpClient,
+              private actions$: Actions,
+              private store: Store<State>,
+              private storageBlockService: StorageBlockService) { }
 
 }
 

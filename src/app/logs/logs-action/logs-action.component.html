@@ -9,7 +9,7 @@
              (clickOutside)="searchFocused = false">
           <mat-icon svgIcon="magnifying-glass"
                     class="icon-14 icon-white-4 margin-left-10"></mat-icon>
-          <span class="font-300 font-12">Search</span>
+          <span class="font-300 f-12">Search</span>
           <input #search
                  type="text"
                  class="search-box"
@@ -24,13 +24,9 @@
                       class="icon-12"></mat-icon>
           </button>
         </div>
-        <button class="add-filters"
-                mat-flat-button>
-          <span class="d-flex align-center flex-center">
-            <mat-icon svgIcon="filter"
-                      class="icon-14 d-flex margin-right-5"></mat-icon>
-            Active Filters
-          </span>
+        <button class="add-filters margin-left-5" mat-flat-button>
+          <mat-icon svgIcon="filter" class="icon-12 margin-right-5"></mat-icon>
+          Active Filters
         </button>
 
         <div class="filters-content">

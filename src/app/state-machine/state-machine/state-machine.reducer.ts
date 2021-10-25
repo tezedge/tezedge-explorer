@@ -1,12 +1,11 @@
 import { State } from '@app/app.reducers';
 import { StateMachine } from '@shared/types/state-machine/state-machine.type';
 import { StateMachineActions, StateMachineActionTypes } from './state-machine.actions';
-import { VirtualScrollActivePage } from '@shared/types/shared/virtual-scroll-active-page.type';
 import { StateMachineAction } from '@shared/types/state-machine/state-machine-action.type';
 import { StateMachineActionsFilter } from '@shared/types/state-machine/state-machine-actions-filter.type';
 
 const NO_FILTERS: StateMachineActionsFilter = {
-  limit: 20,
+  limit: 30,
   cursor: null,
   queryFilters: [],
   rev: false

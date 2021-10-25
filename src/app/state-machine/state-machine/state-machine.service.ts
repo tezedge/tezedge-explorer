@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { delay, Observable, of } from 'rxjs';
+import { Observable } from 'rxjs';
 import { StateMachineDiagramBlock } from '@shared/types/state-machine/state-machine-diagram-block.type';
 import { StateMachineAction } from '@shared/types/state-machine/state-machine-action.type';
 import { StateMachineActionsFilter } from '@shared/types/state-machine/state-machine-actions-filter.type';
@@ -34,8 +34,8 @@ export class StateMachineService {
 
   getStateMachineDiagram(): Observable<StateMachineDiagramBlock[]> {
     const url = 'http://prod.tezedge.com:18732/dev/shell/automaton/actions_graph';
-    // return this.http.get<StateMachineDiagramBlock[]>(url).pipe(map(actions => {
-    return of(JSON.parse(JSON.stringify(this.graph))).pipe(delay(2500), map(actions => {
+    return this.http.get<StateMachineDiagramBlock[]>(url).pipe(map(actions => {
+      // return of(JSON.parse(JSON.stringify(this.graph))).pipe(delay(2500), map(actions => {
       actions.forEach(action => {
         action.type = 'info';
         action.status = 'completed';
@@ -119,6 +119,7 @@ export class StateMachineService {
     return formatNumber(value, 'en-US', '1.0-2');
   }
 }
+
 //
 // const diagramStructure: StateMachineDiagramBlock[] = [
 //   {

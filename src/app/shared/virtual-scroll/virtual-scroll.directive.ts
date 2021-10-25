@@ -6,6 +6,8 @@ import {
 import { fromEvent, Subject, Observable, Subscription } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
 
+export const VIRTUAL_SCROLL_OFFSET_SCROLL_ELEMENTS = 5;
+
 @Directive({
   selector: '[vsFor][vsForOf]'
 })
@@ -31,7 +33,7 @@ export class VirtualScrollDirective implements AfterViewInit, OnDestroy, OnChang
 
   private previousLastCursorId = 0;
 
-  private offsetScrollElements = 5;
+  private offsetScrollElements = VIRTUAL_SCROLL_OFFSET_SCROLL_ELEMENTS;
 
   private $scroller: HTMLDivElement = document.createElement('div');
   private $viewport: HTMLElement;

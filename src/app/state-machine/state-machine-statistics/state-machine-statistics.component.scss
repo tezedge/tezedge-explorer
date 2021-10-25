@@ -6,6 +6,10 @@
     line-height: 36px;
     cursor: context-menu;
 
+    @media (max-width: 1050px) {
+      grid-template-columns: 160px 50px 90px 1fr;
+    }
+
     &:nth-child(odd) {
       background-color: rgba(255, 255, 255, 0.1);
     }

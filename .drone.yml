@@ -129,6 +129,15 @@ steps:
     depends_on:
       - build
 
+  - name: test-loading-spinner
+    image: cypress/included:6.2.1
+    commands:
+      - cypress run --spec "cypress/integration/shared/loading-spinner.spec.js"
+    environment:
+      CYPRESS_baseUrl: http://frontend-server:80
+    depends_on:
+      - build
+
   - name: test-storage-action
     image: cypress/included:6.2.1
     commands:
@@ -317,6 +326,15 @@ steps:
     depends_on:
       - build
 
+  - name: test-loading-spinner
+    image: cypress/included:6.2.1
+    commands:
+      - cypress run --spec "cypress/integration/shared/loading-spinner.spec.js"
+    environment:
+      CYPRESS_baseUrl: http://frontend-server:80
+    depends_on:
+      - build
+
   - name: test-storage-action
     image: cypress/included:6.2.1
     commands:
@@ -359,7 +377,7 @@ steps:
         from_secret: docker_hub_username
       password:
         from_secret: docker_hub_pswd
-      depends_on: [ test-app, test-logs, test-github-version, test-network, test-open-api, test-system-resources, test-storage-resources, test-memory-resources, test-routing, test-sandbox, test-settings-node, test-error-popup, test-storage-action, test-storage-block, test-state-machine ]
+      depends_on: [ test-app, test-logs, test-github-version, test-network, test-open-api, test-system-resources, test-storage-resources, test-memory-resources, test-routing, test-sandbox, test-settings-node, test-error-popup, test-loading-spinner, test-storage-action, test-storage-block, test-state-machine ]
 
   - name: cp-static
     image: drone-tezedge-explorer:latest

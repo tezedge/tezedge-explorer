@@ -1,5 +1,9 @@
-.tab {
-  &.active, &:hover {
-    color: white !important;
+.payload-view {
+  border-top: 1px solid #333334;
+
+  .tab {
+    &.active, &:hover {
+      color: white !important;
+    }
   }
 }

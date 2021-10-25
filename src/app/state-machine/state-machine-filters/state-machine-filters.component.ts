@@ -39,6 +39,7 @@ export class StateMachineFiltersComponent implements OnInit {
     { label: 'PeersCheck' },
     { label: 'PeersGraylist' },
     { label: 'Storage' },
+    { label: 'YieldedOperations' },
     { label: 'Others' },
   ];
 

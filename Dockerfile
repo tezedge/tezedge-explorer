@@ -19,7 +19,6 @@ RUN git clone ${node_explorer_git} && \
 # change dir to angular app
 WORKDIR /app/tezedge-explorer
 
-ARG NODE_OPTIONS=--openssl-legacy-provider
 # buid app
 RUN ng build --configuration production --output-path=/dist
 

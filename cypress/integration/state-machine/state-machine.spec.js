@@ -8,13 +8,17 @@ context('STATE MACHINE', () => {
   });
 
   it('[STATE MACHINE] should perform state machine diagram request successfully', () => {
-    cy.get('@getActionsGraph', { timeout: 30000 })
-      .its('response.statusCode').should('eq', 200);
+    cy.wait('@getActionsGraph')
+      .then((result) => {
+        cy.wrap(result.response.statusCode).should('eq', 200);
+      });
   });
 
   it('[STATE MACHINE] should perform state machine actions request successfully', () => {
-    cy.intercept('GET', '/dev/shell/automaton/actions?*').as('getActionsRequest');
-    cy.wait('@getActionsRequest', { timeout: 10000 }).its('response.statusCode').should('eq', 200);
+    cy.wait('@getActionsRequest')
+      .then((result) => {
+        cy.wrap(result.response.statusCode).should('eq', 200);
+      });
   });
 
   it('[STATE MACHINE] should get correct number of actions as the limit successfully', () => {

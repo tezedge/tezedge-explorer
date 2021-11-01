@@ -17,14 +17,14 @@ import { TooltipArea, TooltipDirective } from '@swimlane/ngx-charts';
 import { Router } from '@angular/router';
 import { Overlay, OverlayRef } from '@angular/cdk/overlay';
 import { ComponentPortal } from '@angular/cdk/portal';
-import { GraphRedirectionOverlayComponent } from '../graph-redirection-overlay/graph-redirection-overlay.component';
+import { GraphRedirectionOverlayComponent } from '@shared/charts/graph-redirection-overlay/graph-redirection-overlay.component';
 import { Store } from '@ngrx/store';
 import { State } from '@app/app.reducers';
 import { SystemResourcesActionTypes, SystemResourcesDetailsUpdateAction } from '@resources/system-resources/system-resources.actions';
 import { SystemResourcesResourceType } from '@shared/types/resources/system/system-resources-panel.type';
 import { fromEvent } from 'rxjs';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { TezedgeChartsService } from '../tezedge-charts.service';
+import { TezedgeChartsService } from '@shared/charts/tezedge-charts.service';
 
 @UntilDestroy()
 @Component({
@@ -65,8 +65,8 @@ export class TezedgeChartsTooltipAreaComponent extends TooltipArea implements Af
     this.tooltipDirective.tooltipCloseOnClickOutside = false;
 
     this.zone.runOutsideAngular(() => {
-      this.document.querySelector('.resources-container').addEventListener('scroll', this.scrollListener);
-      this.document.querySelector('.centered-container').addEventListener('scroll', this.scrollListener);
+      this.document.querySelector('.resources-container')?.addEventListener('scroll', this.scrollListener);
+      this.document.querySelector('.centered-container')?.addEventListener('scroll', this.scrollListener);
 
       fromEvent(this.tooltipTrigger.nativeElement, 'mousemove')
         .pipe(untilDestroyed(this))
@@ -167,7 +167,7 @@ export class TezedgeChartsTooltipAreaComponent extends TooltipArea implements Af
 
   ngOnDestroy(): void {
     this.detachTooltip();
-    this.document.querySelector('.resources-container').removeEventListener('scroll', this.scrollListener);
-    this.document.querySelector('.centered-container').removeEventListener('scroll', this.scrollListener);
+    this.document.querySelector('.resources-container')?.removeEventListener('scroll', this.scrollListener);
+    this.document.querySelector('.centered-container')?.removeEventListener('scroll', this.scrollListener);
   }
 }

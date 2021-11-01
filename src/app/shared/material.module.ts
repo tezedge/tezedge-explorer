@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { MatTabsModule } from '@angular/material/tabs';
-import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
@@ -16,12 +15,12 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatListModule } from '@angular/material/list';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 
 @NgModule({
   exports: [
     MatTabsModule,
-    MatProgressBarModule,
     MatButtonModule,
     MatIconModule,
     MatTooltipModule,
@@ -37,6 +36,7 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
     MatPaginatorModule,
     MatSidenavModule,
     MatSnackBarModule,
+    MatProgressSpinnerModule,
   ]
 })
 export class MaterialModule { }

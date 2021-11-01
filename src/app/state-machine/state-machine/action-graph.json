@@ -1,0 +1,559 @@
+[
+  {
+    "actionId": 0,
+    "actionKind": "StorageStateSnapshotCreate",
+    "nextActions": [
+    ]
+  },
+  {
+    "actionId": 1,
+    "actionKind": "StorageRequestInit",
+    "nextActions": [
+      2
+    ]
+  },
+  {
+    "actionId": 2,
+    "actionKind": "StorageRequestPending",
+    "nextActions": [
+      3,
+      10,
+      14,
+      19,
+      25,
+      26,
+      27,
+      28,
+      30,
+      31,
+      32,
+      33,
+      39,
+      40,
+      41,
+      42,
+      44,
+      45,
+      46,
+      47,
+      55,
+      56,
+      57,
+      58,
+      59
+    ]
+  },
+  {
+    "actionId": 3,
+    "actionKind": "PeersDnsLookupInit",
+    "nextActions": [
+      4
+    ]
+  },
+  {
+    "actionId": 4,
+    "actionKind": "PeersDnsLookupSuccess",
+    "nextActions": [
+      5
+    ]
+  },
+  {
+    "actionId": 5,
+    "actionKind": "PeersAddMulti",
+    "nextActions": [
+      6
+    ]
+  },
+  {
+    "actionId": 6,
+    "actionKind": "PeersDnsLookupCleanup",
+    "nextActions": [
+      3,
+      7
+    ]
+  },
+  {
+    "actionId": 7,
+    "actionKind": "PeerConnectionOutgoingRandomInit",
+    "nextActions": [
+      8,
+      10,
+      14,
+      61
+    ]
+  },
+  {
+    "actionId": 8,
+    "actionKind": "PeerConnectionOutgoingInit",
+    "nextActions": [
+      9
+    ]
+  },
+  {
+    "actionId": 9,
+    "actionKind": "PeerConnectionOutgoingPending",
+    "nextActions": [
+      7
+    ]
+  },
+  {
+    "actionId": 10,
+    "actionKind": "WakeupEvent",
+    "nextActions": [
+      0,
+      10,
+      11,
+      14,
+      56
+    ]
+  },
+  {
+    "actionId": 11,
+    "actionKind": "StorageRequestSuccess",
+    "nextActions": [
+      12
+    ]
+  },
+  {
+    "actionId": 12,
+    "actionKind": "StorageRequestFinish",
+    "nextActions": [
+      13
+    ]
+  },
+  {
+    "actionId": 13,
+    "actionKind": "StorageBlockHeaderPutNextInit",
+    "nextActions": [
+      10,
+      14,
+      56,
+      61
+    ]
+  },
+  {
+    "actionId": 14,
+    "actionKind": "P2pPeerEvent",
+    "nextActions": [
+      0,
+      15,
+      19
+    ]
+  },
+  {
+    "actionId": 15,
+    "actionKind": "PeerConnectionClosed",
+    "nextActions": [
+      16
+    ]
+  },
+  {
+    "actionId": 16,
+    "actionKind": "PeerDisconnect",
+    "nextActions": [
+      17
+    ]
+  },
+  {
+    "actionId": 17,
+    "actionKind": "PeerDisconnected",
+    "nextActions": [
+      18
+    ]
+  },
+  {
+    "actionId": 18,
+    "actionKind": "PeersRemove",
+    "nextActions": [
+      7
+    ]
+  },
+  {
+    "actionId": 19,
+    "actionKind": "PeerTryWrite",
+    "nextActions": [
+      0,
+      10,
+      14,
+      20,
+      27,
+      31,
+      61,
+      66
+    ]
+  },
+  {
+    "actionId": 20,
+    "actionKind": "PeerConnectionOutgoingSuccess",
+    "nextActions": [
+      21
+    ]
+  },
+  {
+    "actionId": 21,
+    "actionKind": "PeerHandshakingInit",
+    "nextActions": [
+      22
+    ]
+  },
+  {
+    "actionId": 22,
+    "actionKind": "PeerHandshakingConnectionMessageInit",
+    "nextActions": [
+      23
+    ]
+  },
+  {
+    "actionId": 23,
+    "actionKind": "PeerHandshakingConnectionMessageEncode",
+    "nextActions": [
+      24
+    ]
+  },
+  {
+    "actionId": 24,
+    "actionKind": "PeerHandshakingConnectionMessageWrite",
+    "nextActions": [
+      25
+    ]
+  },
+  {
+    "actionId": 25,
+    "actionKind": "PeerChunkWriteSetContent",
+    "nextActions": [
+      0,
+      26,
+      40
+    ]
+  },
+  {
+    "actionId": 26,
+    "actionKind": "PeerChunkWriteCreateChunk",
+    "nextActions": [
+      0,
+      19
+    ]
+  },
+  {
+    "actionId": 27,
+    "actionKind": "PeerChunkWritePart",
+    "nextActions": [
+      0,
+      28
+    ]
+  },
+  {
+    "actionId": 28,
+    "actionKind": "PeerChunkWriteReady",
+    "nextActions": [
+      0,
+      29,
+      41
+    ]
+  },
+  {
+    "actionId": 29,
+    "actionKind": "PeerHandshakingConnectionMessageRead",
+    "nextActions": [
+      30
+    ]
+  },
+  {
+    "actionId": 30,
+    "actionKind": "PeerChunkReadInit",
+    "nextActions": [
+      0,
+      31
+    ]
+  },
+  {
+    "actionId": 31,
+    "actionKind": "PeerTryRead",
+    "nextActions": [
+      0,
+      10,
+      14,
+      32,
+      61,
+      66
+    ]
+  },
+  {
+    "actionId": 32,
+    "actionKind": "PeerChunkReadPart",
+    "nextActions": [
+      0,
+      31,
+      33,
+      45,
+      67
+    ]
+  },
+  {
+    "actionId": 33,
+    "actionKind": "PeerChunkReadReady",
+    "nextActions": [
+      0,
+      34,
+      46,
+      60
+    ]
+  },
+  {
+    "actionId": 34,
+    "actionKind": "PeerHandshakingConnectionMessageDecode",
+    "nextActions": [
+      35
+    ]
+  },
+  {
+    "actionId": 35,
+    "actionKind": "PeerHandshakingEncryptionInit",
+    "nextActions": [
+      36
+    ]
+  },
+  {
+    "actionId": 36,
+    "actionKind": "PeerHandshakingMetadataMessageInit",
+    "nextActions": [
+      37
+    ]
+  },
+  {
+    "actionId": 37,
+    "actionKind": "PeerHandshakingMetadataMessageEncode",
+    "nextActions": [
+      38
+    ]
+  },
+  {
+    "actionId": 38,
+    "actionKind": "PeerHandshakingMetadataMessageWrite",
+    "nextActions": [
+      39
+    ]
+  },
+  {
+    "actionId": 39,
+    "actionKind": "PeerBinaryMessageWriteSetContent",
+    "nextActions": [
+      0,
+      25
+    ]
+  },
+  {
+    "actionId": 40,
+    "actionKind": "PeerChunkWriteEncryptContent",
+    "nextActions": [
+      0,
+      26
+    ]
+  },
+  {
+    "actionId": 41,
+    "actionKind": "PeerBinaryMessageWriteNextChunk",
+    "nextActions": [
+      0,
+      42
+    ]
+  },
+  {
+    "actionId": 42,
+    "actionKind": "PeerBinaryMessageWriteReady",
+    "nextActions": [
+      0,
+      43,
+      52,
+      57
+    ]
+  },
+  {
+    "actionId": 43,
+    "actionKind": "PeerHandshakingMetadataMessageRead",
+    "nextActions": [
+      44
+    ]
+  },
+  {
+    "actionId": 44,
+    "actionKind": "PeerBinaryMessageReadInit",
+    "nextActions": [
+      0,
+      30
+    ]
+  },
+  {
+    "actionId": 45,
+    "actionKind": "PeerChunkReadDecrypt",
+    "nextActions": [
+      0,
+      33
+    ]
+  },
+  {
+    "actionId": 46,
+    "actionKind": "PeerBinaryMessageReadSizeReady",
+    "nextActions": [
+      0,
+      30,
+      47
+    ]
+  },
+  {
+    "actionId": 47,
+    "actionKind": "PeerBinaryMessageReadReady",
+    "nextActions": [
+      0,
+      48,
+      53,
+      59
+    ]
+  },
+  {
+    "actionId": 48,
+    "actionKind": "PeerHandshakingMetadataMessageDecode",
+    "nextActions": [
+      49
+    ]
+  },
+  {
+    "actionId": 49,
+    "actionKind": "PeerHandshakingAckMessageInit",
+    "nextActions": [
+      50
+    ]
+  },
+  {
+    "actionId": 50,
+    "actionKind": "PeerHandshakingAckMessageEncode",
+    "nextActions": [
+      51
+    ]
+  },
+  {
+    "actionId": 51,
+    "actionKind": "PeerHandshakingAckMessageWrite",
+    "nextActions": [
+      39
+    ]
+  },
+  {
+    "actionId": 52,
+    "actionKind": "PeerHandshakingAckMessageRead",
+    "nextActions": [
+      44
+    ]
+  },
+  {
+    "actionId": 53,
+    "actionKind": "PeerHandshakingAckMessageDecode",
+    "nextActions": [
+      54
+    ]
+  },
+  {
+    "actionId": 54,
+    "actionKind": "PeerHandshakingFinish",
+    "nextActions": [
+      55
+    ]
+  },
+  {
+    "actionId": 55,
+    "actionKind": "PeerMessageReadInit",
+    "nextActions": [
+      0,
+      44
+    ]
+  },
+  {
+    "actionId": 56,
+    "actionKind": "PeerMessageWriteInit",
+    "nextActions": [
+      0,
+      39
+    ]
+  },
+  {
+    "actionId": 57,
+    "actionKind": "PeerMessageWriteSuccess",
+    "nextActions": [
+      0,
+      58
+    ]
+  },
+  {
+    "actionId": 58,
+    "actionKind": "PeerMessageWriteNext",
+    "nextActions": [
+      0,
+      10,
+      14,
+      56,
+      61
+    ]
+  },
+  {
+    "actionId": 59,
+    "actionKind": "PeerMessageReadSuccess",
+    "nextActions": [
+    ]
+  },
+  {
+    "actionId": 60,
+    "actionKind": "PeerBinaryMessageReadChunkReady",
+    "nextActions": [
+    ]
+  },
+  {
+    "actionId": 61,
+    "actionKind": "P2pServerEvent",
+    "nextActions": [
+    ]
+  },
+  {
+    "actionId": 62,
+    "actionKind": "PeerConnectionIncomingAccept",
+    "nextActions": [
+    ]
+  },
+  {
+    "actionId": 63,
+    "actionKind": "PeerConnectionIncomingAcceptSuccess",
+    "nextActions": [
+    ]
+  },
+  {
+    "actionId": 64,
+    "actionKind": "PeersAddIncomingPeer",
+    "nextActions": [
+      62
+    ]
+  },
+  {
+    "actionId": 65,
+    "actionKind": "PeerConnectionIncomingAcceptError",
+    "nextActions": [
+      10,
+      14
+    ]
+  },
+  {
+    "actionId": 66,
+    "actionKind": "PeerConnectionIncomingSuccess",
+    "nextActions": [
+      21
+    ]
+  },
+  {
+    "actionId": 67,
+    "actionKind": "PeerChunkReadError",
+    "nextActions": [
+      0,
+      10,
+      14,
+      61
+    ]
+  }
+]

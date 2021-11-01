@@ -1,8 +1,8 @@
-import { SystemResourcesActions, SystemResourcesActionTypes } from '../system-resources/system-resources.actions';
+import { SystemResourcesActions, SystemResourcesActionTypes } from '@resources/system-resources/system-resources.actions';
 import { SystemResources } from '@shared/types/resources/system/system-resources.type';
-import { StorageResourcesActions, StorageResourcesActionTypes } from '../storage-resources/storage-resources.actions';
+import { StorageResourcesActions, StorageResourcesActionTypes } from '@resources/storage-resources/storage-resources.actions';
 import { MemoryResource } from '@shared/types/resources/memory/memory-resource.type';
-import { MemoryResourcesActions, MemoryResourcesActionTypes } from '../memory-resources/memory-resources.actions';
+import { MemoryResourcesActions, MemoryResourcesActionTypes } from '@resources/memory-resources/memory-resources.actions';
 import { StorageResourcesState } from '@shared/types/resources/storage/storage-resources-state.type';
 import { State } from '@app/app.reducers';
 import { SystemResourcesPanel, SystemResourcesSortBy } from '@shared/types/resources/system/system-resources-panel.type';
@@ -60,12 +60,12 @@ export function reducer(state: ResourcesState = initialState, action: SystemReso
 
     case SystemResourcesActionTypes.SYSTEM_RESOURCES_DETAILS_UPDATE: {
       const resourceCategory = state.systemResources[action.payload.resourceType] as SystemResourceCategory;
-      const blocks = resourceCategory.labels.map((label, index) => ({
+      const blocks = resourceCategory?.labels.map((label, index) => ({
         name: label,
         value: resourceCategory.series[index].series.find(s => s.name === action.payload.timestamp).value,
         formattingType: resourceCategory.formattingType
       }));
-      const runnerGroups = resourceCategory.series.map(s => s.series.find(se => se.name === action.payload.timestamp).runnerGroups)
+      const runnerGroups = resourceCategory?.series.map(s => s.series.find(se => se.name === action.payload.timestamp).runnerGroups)
         .filter(Boolean)
         .reduce((acc, current) => [...acc, ...current], []);
 
@@ -125,6 +125,23 @@ export function reducer(state: ResourcesState = initialState, action: SystemReso
       return {
         ...state,
         memoryResources: action.payload
+      };
+    }
+
+    case StorageResourcesActionTypes.STORAGE_RESOURCES_CLOSE: {
+      return {
+        ...state,
+        storageResourcesState: {
+          storageResources: null,
+          availableContexts: []
+        }
+      };
+    }
+
+    case MemoryResourcesActionTypes.MEMORY_RESOURCES_CLOSE: {
+      return {
+        ...state,
+        memoryResources: null
       };
     }
 

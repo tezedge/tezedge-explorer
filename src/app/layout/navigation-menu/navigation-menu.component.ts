@@ -1,4 +1,4 @@
-import { AfterViewInit, ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { State } from '@app/app.reducers';
 import { Router } from '@angular/router';
@@ -30,6 +30,7 @@ export class NavigationMenuComponent implements OnInit, AfterViewInit {
   haveDebugger: boolean;
 
   constructor(private store: Store<State>,
+              private cdRef: ChangeDetectorRef,
               private router: Router) { }
 
   ngOnInit(): void {
@@ -41,7 +42,10 @@ export class NavigationMenuComponent implements OnInit, AfterViewInit {
   private getAppState(): void {
     this.store.select(appState)
       .pipe(untilDestroyed(this))
-      .subscribe(state => this.app = state);
+      .subscribe(state => {
+        this.app = state;
+        this.cdRef.detectChanges();
+      });
   }
 
   private getNodeState(): void {

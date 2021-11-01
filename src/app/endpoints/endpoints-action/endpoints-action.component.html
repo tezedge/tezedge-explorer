@@ -28,9 +28,9 @@
         <div class="table-virtual-scroll-panel" style="display:flex;flex-direction: row;">
 
             <cdk-virtual-scroll-viewport style="align-items: flex-start;" class="endpoints-action-table-viewport"
-                (scrolledIndexChange)="onScroll($event)" 
+                (scrolledIndexChange)="onScroll($event)"
                 [itemSize]="36" [maxBufferPx]="288" [minBufferPx]="288">
-                
+
                 <div *cdkVirtualFor="let item of endpointsActionList"  class="table-virtual-scroll-item"
                     (mouseenter)="tableMouseEnter(item)"
                     [class.hover]="item?.id === endpointsActionItem?.id">
@@ -54,13 +54,13 @@
         <div class="table-virtual-scroll-footer">
             <span>
                 <button mat-icon-button matTooltip="Start" (click)="scrollStart()" *ngIf="!endpointsAction?.stream">
-                    <mat-icon>play_arrow_outline</mat-icon>
+                    <mat-icon svgIcon="play-circle"></mat-icon>
                 </button>
                 <button mat-icon-button matTooltip="Stop" (click)="scrollStop()" *ngIf="endpointsAction?.stream">
-                    <mat-icon>stop_outline</mat-icon>
+                    <mat-icon svgIcon="pause-circle"></mat-icon>
                 </button>
                 <button mat-icon-button style="transform: rotate(90deg)" matTooltip="Last page" (click)="scrollToEnd()">
-                    <mat-icon>last_page</mat-icon>
+                    <mat-icon svgIcon="last-page"></mat-icon>
                 </button>
             </span>
         </div>

@@ -1,13 +1,96 @@
+$border-color: rgba(255, 255, 255, 0.1);
+
+:host {
+  display: flex;
+  height: 100%;
+}
+
 .state-machine {
-  background-color: #2A2A2E;
 
-  .tabs {
-    padding: 9px 10px 9px 15px;
+  .bottom-container,
+  .upper-container {
+    min-height: 10%;
+    max-height: 90%;
+  }
 
-    > div {
-      &.active,
-      &:hover {
-        color: white !important;
+  .bottom-container {
+    background-color: #2A2A2E;
+    z-index: 1;
+    height: auto;
+    border-top-left-radius: 4px;
+    overflow: hidden;
+
+    &.collapsed {
+      max-height: calc(100% - 32px);
+      border-top-left-radius: 0;
+    }
+  }
+
+  .upper-container {
+    overflow: visible;
+
+    &.collapsed {
+      min-height: unset;
+
+      .diagrams-container {
+        height: 100%;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        border-bottom-left-radius: 0;
+      }
+    }
+
+    .diagrams-container {
+      background-color: #2A2A2E;
+      height: calc(100% - 8px);
+      border-bottom-left-radius: 4px;
+    }
+
+    .resizer-element {
+      height: 8px;
+      background: #1B1B1E;
+      width: 100%;
+      bottom: 0;
+      position: relative;
+      z-index: 2;
+
+      .mid-content {
+        cursor: grab;
+
+        &:hover,
+        &.dragging {
+          .line {
+            background-color: rgba(255, 255, 255, 0.7);
+          }
+
+          .up, .down {
+            opacity: 1;
+          }
+        }
+
+        .line {
+          margin-top: 2px;
+          height: 4px;
+          width: 24px;
+          border-radius: 2px;
+          background: #555558;
+          transition: 0.1s;
+        }
+
+        .up, .down {
+          transition: 0.1s;
+          opacity: 0;
+          position: absolute;
+          pointer-events: none;
+        }
+
+        .up {
+          top: -14px;
+        }
+
+        .down {
+          transform: rotate(180deg);
+          bottom: -14px;
+        }
       }
     }
   }

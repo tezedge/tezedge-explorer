@@ -1,10 +1,12 @@
 <div class="menu-wrapper"
      [class.slim]="app.sidenav.collapsed">
   <div class="app-menu-toolbar">
-    <svg-icon icon="arrow-toggle"
-              class="arrow-toggle"
-              [class.slim]="app.sidenav.collapsed"
-              (click)="toggleMenuSize()"></svg-icon>
+    <div class="arrow-toggle"
+         [class.slim]="app.sidenav.collapsed"
+         (click)="toggleMenuSize()">
+      <mat-icon svgIcon="arrow-toggle"
+                class="icon-16"></mat-icon>
+    </div>
     <div class="app-menu-toolbar-logo text-nowrap">TezEdge</div>
   </div>
 
@@ -24,7 +26,8 @@
          [matTooltipDisabled]="!app.sidenav.collapsed"
          (click)="closeMenu()">
       <span class="menu-content">
-        <svg-icon icon="history"></svg-icon>
+        <mat-icon svgIcon="history"
+                  class="icon-18"></mat-icon>
         <span class="text-nowrap">Synchronization</span>
       </span>
       </a>
@@ -40,7 +43,8 @@
          [matTooltipDisabled]="!app.sidenav.collapsed"
          (click)="closeMenu()">
       <span class="menu-content">
-        <svg-icon icon="resources"></svg-icon>
+        <mat-icon svgIcon="resources"
+                  class="icon-18"></mat-icon>
         <span class="text-nowrap">Resources</span>
       </span>
       </a>
@@ -62,7 +66,8 @@
          [matTooltipDisabled]="!app.sidenav.collapsed"
          (click)="closeMenu()">
       <span class="menu-content">
-        <svg-icon icon="mempool"></svg-icon>
+        <mat-icon svgIcon="mempool"
+                  class="icon-18"></mat-icon>
         <span class="text-nowrap">Mempool</span>
       </span>
       </a>
@@ -78,7 +83,8 @@
          [matTooltipDisabled]="!app.sidenav.collapsed"
          (click)="closeMenu()">
       <span class="menu-content">
-        <svg-icon icon="storage"></svg-icon>
+        <mat-icon svgIcon="storage"
+                  class="icon-18"></mat-icon>
         <span class="text-nowrap">Storage</span>
       </span>
       </a>
@@ -94,7 +100,8 @@
          [matTooltipDisabled]="!app.sidenav.collapsed"
          (click)="closeMenu()">
       <span class="menu-content">
-        <svg-icon icon="peer"></svg-icon>
+        <mat-icon svgIcon="peer"
+                  class="icon-18"></mat-icon>
         <span class="text-nowrap">Network</span>
       </span>
       </a>
@@ -109,7 +116,8 @@
          [matTooltipDisabled]="!app.sidenav.collapsed"
          (click)="closeMenu()">
       <span class="menu-content">
-        <svg-icon icon="endpoints"></svg-icon>
+        <mat-icon svgIcon="endpoints"
+                  class="icon-18"></mat-icon>
         <span class="text-nowrap">Endpoints</span>
       </span>
       </a>
@@ -125,7 +133,8 @@
          [matTooltipDisabled]="!app.sidenav.collapsed"
          (click)="closeMenu()">
       <span class="menu-content">
-        <svg-icon icon="logs"></svg-icon>
+        <mat-icon svgIcon="logs"
+                  class="icon-18"></mat-icon>
         <span class="text-nowrap">Logs</span>
       </span>
       </a>
@@ -141,8 +150,25 @@
          [matTooltipDisabled]="!app.sidenav.collapsed"
          (click)="closeMenu()">
       <span class="menu-content">
-        <svg-icon icon="state-machine"></svg-icon>
+        <mat-icon svgIcon="state-machine"
+                  class="icon-18"></mat-icon>
         <span class="text-nowrap">State</span>
+      </span>
+      </a>
+      <a *ngIf="features['smart-contracts']"
+         mat-list-item
+         class="menu-item"
+         routerLink="/smart-contracts"
+         routerLinkActive="active"
+         id="smart-contracts-trigger"
+         matTooltip="Smart contracts"
+         matTooltipPosition="right"
+         [matTooltipDisabled]="!app.sidenav.collapsed"
+         (click)="closeMenu()">
+      <span class="menu-content">
+        <mat-icon svgIcon="handshake"
+                  class="icon-18"></mat-icon>
+        <span class="text-nowrap">Smart contracts</span>
       </span>
       </a>
     </div>
@@ -197,7 +223,8 @@
          [matTooltipDisabled]="!app.sidenav.collapsed"
          rel="noreferrer">
       <span class="menu-content">
-        <svg-icon icon="chain-settings"></svg-icon>
+        <mat-icon svgIcon="chain-settings"
+                  class="icon-18"></mat-icon>
         <span class="text-nowrap">Chain</span>
       </span>
       </a>
@@ -213,7 +240,8 @@
          [matTooltipDisabled]="!app.sidenav.collapsed"
          rel="noreferrer">
       <span class="menu-content">
-        <svg-icon icon="chain-wallets"></svg-icon>
+        <mat-icon svgIcon="chain-wallets"
+                  class="icon-18"></mat-icon>
         <span class="text-nowrap">Wallets</span>
       </span>
       </a>
@@ -279,7 +307,8 @@
          [matTooltipDisabled]="!app.sidenav.collapsed"
          rel="noreferrer">
       <span class="menu-content">
-        <svg-icon icon="documentation"></svg-icon>
+        <mat-icon svgIcon="documentation"
+                  class="icon-18"></mat-icon>
         <span class="text-nowrap">Documentation</span>
       </span>
       </a>

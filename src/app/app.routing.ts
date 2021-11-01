@@ -51,6 +51,10 @@ export const AppRouting: Routes = [
     loadChildren: () => import('./open-api/open-api.module').then(module => module.OpenApiModule)
   },
   {
+    path: 'smart-contracts',
+    loadChildren: () => import('./smart-contracts/smart-contracts.module').then(module => module.SmartContractsModule)
+  },
+  {
     path: '',
     redirectTo: 'monitoring',
     pathMatch: 'full'

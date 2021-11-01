@@ -21,6 +21,7 @@ export const environment = {
         { name: 'storage' },
         { name: 'network' },
         { name: 'logs' },
+        { name: 'smart-contracts' },
       ]
     },
     {

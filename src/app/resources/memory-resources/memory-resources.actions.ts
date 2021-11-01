@@ -6,7 +6,7 @@ export enum MemoryResourcesActionTypes {
   MEMORY_RESOURCES_CLOSE = 'MEMORY_RESOURCES_CLOSE'
 }
 
-export class LoadMemoryResources implements Action {
+export class MemoryResourcesLoad implements Action {
   readonly type = MemoryResourcesActionTypes.MEMORY_RESOURCES_LOAD;
 
   constructor(public payload: { reversed: boolean }) { }
@@ -18,10 +18,11 @@ export class MemoryResourcesLoaded implements Action {
   constructor(public payload: any) { }
 }
 
-export class MemoryResourcesLoad implements Action {
-  readonly type = MemoryResourcesActionTypes.MEMORY_RESOURCES_LOAD;
-
-  constructor(public payload: { reversed: boolean }) { }
+export class MemoryResourcesClose implements Action {
+  readonly type = MemoryResourcesActionTypes.MEMORY_RESOURCES_CLOSE;
 }
 
-export type MemoryResourcesActions = LoadMemoryResources | MemoryResourcesLoaded | MemoryResourcesLoad;
+export type MemoryResourcesActions = MemoryResourcesLoad
+  | MemoryResourcesLoaded
+  | MemoryResourcesClose
+  ;

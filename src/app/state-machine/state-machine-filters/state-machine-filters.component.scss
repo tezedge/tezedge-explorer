@@ -1,0 +1,23 @@
+.filters-container {
+  background-color: #2A2A2E;
+  border-top-left-radius: 4px;
+  position: relative;
+  z-index: 3;
+  min-height: unset;
+
+  .active-filters-row {
+    flex-shrink: 0;
+  }
+
+  .filters-accordion {
+    .filters-row {
+      background-color: #3f3f43;
+      max-height: 70vh;
+
+      button {
+        margin-top: 2px;
+        margin-bottom: 2px;
+      }
+    }
+  }
+}

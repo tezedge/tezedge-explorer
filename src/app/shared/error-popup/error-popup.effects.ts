@@ -9,7 +9,7 @@ import { ErrorActionTypes } from './error-popup.actions';
 @Injectable({ providedIn: 'root' })
 export class ErrorPopupEffects {
 
-  ClearErrorsEffect$ = createEffect(() => this.actions$.pipe(
+  clearErrorsEffect$ = createEffect(() => this.actions$.pipe(
     ofType(ErrorActionTypes.SCHEDULE_ERROR_DELETION),
     withLatestFrom(this.store, (action: any, state: ObservedValueOf<Store<State>>) => ({ action, state })),
     switchMap(({ action, state }) =>

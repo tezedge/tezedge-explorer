@@ -9,13 +9,10 @@
                 disableOptionCentering
                 panelClass="settings-node">
 
-      <mat-select-trigger fxLayout="row"
-                          fxLayoutAlign="start center">
+      <mat-select-trigger class="d-flex align-center">
         <span class="truncate">{{ activeNode.name }}</span>
-        <mat-icon [class.is-offline]="!activeNode.connected"
-                  class="settings-node-status-icon">
-          fiber_manual_record
-        </mat-icon>
+        <span [class.is-offline]="!activeNode.connected"
+              class="settings-node-status-icon margin-left-5"></span>
       </mat-select-trigger>
 
       <ng-container *ngFor="let node of settingsNodeEntities">
@@ -24,39 +21,30 @@
                     [value]="node.id"
                     (click)="selectNode(node.id)"
                     class="settings-node-option">
-          <div fxLayout="row"
-               fxLayoutAlign="start center">
-            <div class="done-icon">
-              <mat-icon *ngIf="node.id === activeNode.id">done</mat-icon>
+          <div class="d-flex align-center">
+            <div fxFlex="30px">
+              <mat-icon *ngIf="node.id === activeNode.id"
+                        svgIcon="check"
+                        class="icon-20"></mat-icon>
             </div>
             <div fxLayout="column">
-              <div fxLayout="row"
-                   fxLayoutAlign="start center">
+              <div class="d-flex align-center">
                 {{ node.name }}
-                <mat-icon *ngIf="node.connected === 'pending'"
-                          class="node-status-option-icon offline">
-                  hourglass_empty
-                </mat-icon>
                 <mat-icon *ngIf="node.connected === true"
-                          class="node-status-option-icon">
-                  fiber_manual_record
-                </mat-icon>
-                <mat-icon *ngIf="node.connected === false"
-                          class="node-status-option-icon offline">
-                  fiber_manual_record
-                </mat-icon>
+                          class="node-status-option-icon icon-10 margin-left-5"
+                          svgIcon="hourglass"></mat-icon>
+                <span *ngIf="node.connected === 'true'"
+                      class="settings-node-status-icon margin-left-5"></span>
+                <span *ngIf="node.connected === false"
+                      class="settings-node-status-icon margin-left-5 is-offline"></span>
               </div>
 
               <div class="settings-node-option-status">
-                <span *ngIf="node.connected === 'pending'">
-                  connecting
-                </span>
+                <span *ngIf="node.connected === 'pending'">connecting</span>
                 <span *ngIf="node.connected === true">
                   {{ node.header?.protocol | slice:0:10 }} | last block {{ node.relativeDateTime }}
                 </span>
-                <span *ngIf="node.connected === false">
-                  offline
-                </span>
+                <span *ngIf="node.connected === false">offline</span>
               </div>
 
             </div>
@@ -65,16 +53,15 @@
         </mat-option>
       </ng-container>
 
-      <div class="sandbox-button-wrapper">
-        <button *ngIf="sandbox?.connected === false"
+      <div *ngIf="sandbox"
+           class="sandbox-button-wrapper f-12">
+        <button *ngIf="sandbox.connected === false"
                 mat-flat-button
-                (click)="navigateToSandboxAdd()">
-          ADD SANDBOX NODE
+                (click)="navigateToSandboxAdd()">ADD SANDBOX NODE
         </button>
-        <button *ngIf="sandbox?.connected === true"
+        <button *ngIf="sandbox.connected === true"
                 mat-flat-button
-                (click)="stopSandboxNode()">
-          STOP SANDBOX NODE
+                (click)="stopSandboxNode()">STOP SANDBOX NODE
         </button>
       </div>
 

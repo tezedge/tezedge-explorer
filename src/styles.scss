@@ -3,13 +3,17 @@
 @import 'assets/styles/utilities/design';
 @import 'assets/styles/utilities/text';
 @import 'assets/styles/virtual-scroll-table';
+@import 'assets/styles/material/material-button';
 @import 'assets/styles/material/material-tooltip';
 @import 'assets/styles/material/material-form';
 @import 'assets/styles/material/material-icon';
-@import 'assets/styles/material/material-progress-bar';
+@import 'assets/styles/material/material-spinner';
 @import 'assets/styles/material/material-slider';
 @import 'assets/styles/notification';
 @import 'assets/styles/open-api';
+@import 'assets/styles/monaco-editor';
+@import 'assets/styles/diff-tool';
+@import 'assets/styles/json-viewer';
 
 html,
 body {
@@ -23,6 +27,10 @@ body {
 
 * {
   box-sizing: border-box;
+}
+
+span {
+  font-family: inherit;
 }
 
 .mat-drawer-container.mat-sidenav-container {
@@ -204,15 +212,6 @@ tr.mat-row {
   border-bottom: 1px solid $color-border;
   border-left: 1px solid $color-border;
   border-bottom-left-radius: 4px;
-}
-
-.ngx-json-viewer {
-  font-family: Roboto, "Helvetica Neue", sans-serif !important;
-  font-size: 14px !important;
-}
-
-.ngx-json-viewer .segment .segment-main .toggler::after {
-  font-size: 10px !important;
 }
 
 @media (max-width: 600px) {
@@ -622,19 +621,6 @@ mat-form-field input[type='number'] {
   padding: 4px 4px 4px 4px;
   border: 1.1px solid $color-table-border;
   box-sizing: border-box;
-  border-radius: 4px;
-}
-
-.history-voting-period-label {
-  flex-direction: row;
-  font-family: Roboto;
-  font-style: normal;
-  font-weight: normal;
-  margin: 2px;
-  font-size: 12px;
-  line-height: 12px;
-  // color: rgba(0, 0, 0, 0.4);
-  color: fade-out($color, .6);
 }
 
 .storage-block {
@@ -724,15 +710,6 @@ mat-form-field input[type='number'] {
 
 .mat-drawer-content {
   overflow: initial !important;
-}
-
-/* ngx view */
-ngx-json-viewer .segment .segment-main .segment-key {
-  color: $color-json-field !important;
-}
-
-.segment-value {
-  word-break: break-all;
 }
 
 .logs-action-container {
@@ -1040,6 +1017,10 @@ ngx-json-viewer .segment .segment-main .segment-key {
     border-radius: 0;
     padding: 16px 16px 8px 16px;
     height: 32px !important;
+
+    &.mat-expanded:focus, &.mat-expanded:hover {
+      background: unset;
+    }
 
     .mat-expansion-panel-header-title {
       .icon {
@@ -1448,7 +1429,6 @@ input.mat-input-element {
     border-bottom: 1px solid $color-border;
   }
 }
-
 
 
 @keyframes hintloading {

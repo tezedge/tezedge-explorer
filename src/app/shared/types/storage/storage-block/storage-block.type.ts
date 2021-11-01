@@ -1,4 +1,4 @@
-import { VirtualScrollActivePage } from '../../shared/virtual-scroll-active-page.type';
+import { VirtualScrollActivePage } from '@shared/types/shared/virtual-scroll-active-page.type';
 import { StorageBlockEntity } from './storage-block-entity.type';
 import { StorageBlockSelection } from './storage-block-selection.type';
 import { StorageBlockDetails } from './storage-block-details.type';
@@ -11,6 +11,6 @@ export class StorageBlock {
   selected: StorageBlockSelection;
   blockDetails: StorageBlockDetails;
   availableContexts: string[];
-  activePage: VirtualScrollActivePage;
+  activePage: VirtualScrollActivePage<StorageBlockEntity>;
   pages: number[];
 }

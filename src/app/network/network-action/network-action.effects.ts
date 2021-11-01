@@ -12,12 +12,10 @@ const networkActionDestroy$ = new Subject();
 @Injectable({ providedIn: 'root' })
 export class NetworkActionEffects {
 
-  NetworkActionLoad$ = createEffect(() => this.actions$.pipe(
+  networkActionLoad$ = createEffect(() => this.actions$.pipe(
     ofType('NETWORK_ACTION_LOAD'),
     withLatestFrom(this.store, (action: any, state: ObservedValueOf<Store<State>>) => ({ action, state })),
-    switchMap(({ action, state }) => {
-      return this.http.get(setUrl(action, state));
-    }),
+    switchMap(({ action, state }) => this.http.get(setUrl(action, state))),
     map((network) => ({ type: 'NETWORK_ACTION_LOAD_SUCCESS', payload: { network } })),
     catchError((error, caught) => {
       console.error(error);
@@ -29,7 +27,7 @@ export class NetworkActionEffects {
     })
   ));
 
-  NetworkActionLoadByTime$ = createEffect(() => this.actions$.pipe(
+  networkActionLoadByTime$ = createEffect(() => this.actions$.pipe(
     ofType('NETWORK_ACTION_TIME_LOAD'),
     withLatestFrom(this.store, (action: any, state: ObservedValueOf<Store<State>>) => ({ action, state })),
     tap(() => networkActionDestroy$.next(null)),
@@ -60,7 +58,7 @@ export class NetworkActionEffects {
     })
   ));
 
-  NetworkActionFilter$ = createEffect(() => this.actions$.pipe(
+  networkActionFilter$ = createEffect(() => this.actions$.pipe(
     ofType('NETWORK_ACTION_FILTER'),
     withLatestFrom(this.store, (action: any, state: ObservedValueOf<Store<State>>) => ({ action, state })),
     tap(response => {
@@ -78,7 +76,7 @@ export class NetworkActionEffects {
     })
   ));
 
-  NetworkActionAddress$ = createEffect(() => this.actions$.pipe(
+  networkActionAddress$ = createEffect(() => this.actions$.pipe(
     ofType('NETWORK_ACTION_ADDRESS'),
     withLatestFrom(this.store, (action: any, state: ObservedValueOf<Store<State>>) => ({ action, state })),
     tap(response => {
@@ -96,7 +94,7 @@ export class NetworkActionEffects {
     })
   ));
 
-  NetworkActionStartEffect$ = createEffect(() => this.actions$.pipe(
+  networkActionStartEffect$ = createEffect(() => this.actions$.pipe(
     ofType('NETWORK_ACTION_START'),
     withLatestFrom(this.store, (action: any, state: ObservedValueOf<Store<State>>) => ({ action, state })),
     switchMap(({ action, state }) =>
@@ -115,12 +113,10 @@ export class NetworkActionEffects {
     )
   ));
 
-  NetworkActionDetailsLoad$ = createEffect(() => this.actions$.pipe(
+  networkActionDetailsLoad$ = createEffect(() => this.actions$.pipe(
     ofType('NETWORK_ACTION_DETAILS_LOAD'),
     withLatestFrom(this.store, (action: any, state: ObservedValueOf<Store<State>>) => ({ action, state })),
-    switchMap(({ action, state }) => {
-      return this.http.get(setDetailsUrl(action, state));
-    }),
+    switchMap(({ action, state }) => this.http.get(setDetailsUrl(action, state))),
     map((payload) => ({ type: 'NETWORK_ACTION_DETAILS_LOAD_SUCCESS', payload })),
     catchError((error, caught) => {
       console.error(error);
@@ -132,7 +128,7 @@ export class NetworkActionEffects {
     })
   ));
 
-  NetworkActionStopEffect$ = createEffect(() => this.actions$.pipe(
+  networkActionStopEffect$ = createEffect(() => this.actions$.pipe(
     ofType('NETWORK_ACTION_STOP'),
     withLatestFrom(this.store, (action: any, state: ObservedValueOf<Store<State>>) => ({ action, state })),
     tap(({ action, state }) => networkActionDestroy$.next(null))

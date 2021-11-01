@@ -1,15 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 
 @Component({
   selector: 'app-mempool',
   templateUrl: './mempool.component.html',
-  styleUrls: ['./mempool.component.scss']
+  styleUrls: ['./mempool.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class MempoolComponent implements OnInit {
-
-  constructor() { }
-
-  ngOnInit(): void {
-  }
-
-}
+export class MempoolComponent {}

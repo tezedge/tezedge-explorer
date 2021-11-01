@@ -1,29 +1,23 @@
-.network-history {
-  display: flex;
-}
-
 .history-cycle-panel {
-  display: flex;
-  flex-wrap: wrap;
   max-width: 726px;
   padding-top: 20px;
 }
 
 .history-voting-period-row {
-  display: flex;
-  flex-direction: row;
   margin: 0 8px 0 6px;
 }
 
-.history-voting-period-panel {
-  display: flex;
-  flex-direction: row;
+.history-voting-period-label {
+  margin: 2px;
+}
+
+.history-voting-period {
+  width: 170px;
 }
 
 .history-cycle {
   background-color: #00DBC6;
   margin: 2px;
-  border-radius: 2px;
   height: 16px;
   width: 16px;
 }
@@ -44,10 +38,6 @@
   border-bottom-right-radius: 2px;
   height: 10px;
   width: 16px;
-}
-
-.network-history {
-  display: flex;
 }
 
 @media (max-width: 600px) {

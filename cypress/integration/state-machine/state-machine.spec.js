@@ -2,6 +2,8 @@ context('STATE MACHINE', () => {
   beforeEach(() => {
     cy.visit(Cypress.config().baseUrl);
     cy.wait(1000);
+    cy.intercept('GET', '/dev/shell/automaton/actions?limit=*').as('getActionsRequest');
+    cy.intercept('GET', '/dev/shell/automaton/actions_graph').as('getActionsGraph');
     cy.visit(Cypress.config().baseUrl + '/#/state', { timeout: 10000 });
   });
 
@@ -15,17 +17,23 @@ context('STATE MACHINE', () => {
     cy.wait('@getActionsRequest', { timeout: 10000 }).its('response.statusCode').should('eq', 200);
   });
 
-  it('[STATE MACHINE] should get 1000 actions for limit 1000 successfully', () => {
-    cy.intercept('GET', '/dev/shell/automaton/actions?limit=1000').as('getActionsRequest');
-    cy.wait('@getActionsRequest', { timeout: 10000 }).its('response.body.length').should('eq', 1000);
+  it('[STATE MACHINE] should get correct number of actions as the limit successfully', () => {
+    cy.wait('@getActionsRequest', { timeout: 20000 })
+      .should(result => {
+        const url = result.response.url;
+        const noOfActionsRequested = url.slice(url.indexOf('limit=') + 'limit='.length);
+        cy.wrap(noOfActionsRequested).should('eq', result.response.body.length.toString());
+      });
   });
 
   it('[STATE MACHINE] should create rows for the virtual scroll table', () => {
-    cy.get('.virtual-scroll-container').find('.virtualScrollRow');
+    cy.wait('@getActionsRequest').then(() => {
+      cy.get('.virtual-scroll-container .virtualScrollRow').should('be.visible');
+    });
   });
 
   it('[STATE MACHINE] should fill the last row of the table with the last value received', () => {
-    cy.wait(5000).then(() => {
+    cy.wait('@getActionsRequest').then(() => {
       cy.get('.stop-stream').click();
 
       cy.window()
@@ -48,14 +56,14 @@ context('STATE MACHINE', () => {
   });
 
   it('[STATE MACHINE] should show properly colors for duration column values', () => {
-    cy.wait(5000).then(() => {
+    cy.wait('@getActionsRequest').then(() => {
       cy.get('.stop-stream').click();
 
       cy.window()
         .its('store')
         .then((store) => {
           store.select('stateMachine').subscribe(stateMachine => {
-            if (!stateMachine.actionTable.stream) {
+            if (!stateMachine.actionTable.stream && stateMachine.actionTable.ids.length) {
               const yellowDurationAction = stateMachine.actionTable.ids.map(id => stateMachine.actionTable.entities[id]).find(en => en.duration.includes('text-yellow'));
               const redDurationAction = stateMachine.actionTable.ids.map(id => stateMachine.actionTable.entities[id]).find(en => en.duration.includes('text-red'));
               if (yellowDurationAction) {
@@ -89,7 +97,7 @@ context('STATE MACHINE', () => {
   it('[STATE MACHINE] should change the value of the virtual scroll element when scrolling', () => {
     let beforeScrollValue;
 
-    cy.wait(5000).then(() => {
+    cy.wait('@getActionsRequest').then(() => {
       cy.get('.stop-stream').click();
 
       cy.window()
@@ -117,7 +125,7 @@ context('STATE MACHINE', () => {
   });
 
   it('[STATE MACHINE] should stop stream when selecting an action', () => {
-    cy.wait(5000).then(() => {
+    cy.wait('@getActionsRequest').then(() => {
       cy.window()
         .its('store')
         .then((store) => {
@@ -136,7 +144,7 @@ context('STATE MACHINE', () => {
   });
 
   it('[STATE MACHINE] should fill the right details part with the action of the clicked row - the second last record in our case', () => {
-    cy.wait(5000).then(() => {
+    cy.wait('@getActionsRequest').then(() => {
       cy.window()
         .its('store')
         .then((store) => {
@@ -160,30 +168,31 @@ context('STATE MACHINE', () => {
   });
 
   it('[STATE MACHINE] should select correct action details tabs', () => {
-    cy.wait(5000).then(() => {
+    cy.wait('@getActionsRequest').then(() => {
       cy.window()
         .its('store')
         .then((store) => {
           store.select('stateMachine').subscribe((sm) => {
             if (sm.actionTable.ids.length) {
               cy.get('.virtual-scroll-container .virtualScrollRow:nth-last-child(4)')
-                .trigger('click');
-              cy.wait(500).then(() => {
-                cy.get('app-state-machine-action-details .tabs .tab').should('have.length', 3);
-                cy.wait(500).then(() => cy.get('app-state-machine-action-details .tabs .tab:nth-child(1):not(.active)').should('exist'));
-                cy.wait(500).then(() => cy.get('app-state-machine-action-details .tabs .tab:nth-child(2).active').should('exist'));
-                cy.wait(500).then(() => cy.get('app-state-machine-action-details .tabs .tab:nth-child(3):not(.active)').should('exist'));
+                .trigger('click')
+                .wait(500)
+                .then(() => {
+                  cy.get('app-state-machine-action-details .payload-view div div:first-child .tab').should('have.length', 3);
+                  cy.wait(500).then(() => cy.get('app-state-machine-action-details .payload-view div div:first-child .tab:nth-child(1):not(.active)').should('exist'));
+                  cy.wait(500).then(() => cy.get('app-state-machine-action-details .payload-view div div:first-child .tab:nth-child(2).active').should('exist'));
+                  cy.wait(500).then(() => cy.get('app-state-machine-action-details .payload-view div div:first-child .tab:nth-child(3):not(.active)').should('exist'));
 
-                cy.get('app-state-machine-action-details .tabs .tab:nth-child(1)').trigger('click');
-                cy.wait(600).then(() => cy.get('app-state-machine-action-details .tabs .tab:nth-child(1).active').should('exist'));
-                cy.wait(600).then(() => cy.get('app-state-machine-action-details .tabs .tab:nth-child(2):not(.active)').should('exist'));
-                cy.wait(600).then(() => cy.get('app-state-machine-action-details .tabs .tab:nth-child(3):not(.active)').should('exist'));
+                  cy.get('app-state-machine-action-details .payload-view div div:first-child .tab:nth-child(1)').trigger('click');
+                  cy.wait(600).then(() => cy.get('app-state-machine-action-details .payload-view div div:first-child .tab:nth-child(1).active').should('exist'));
+                  cy.wait(600).then(() => cy.get('app-state-machine-action-details .payload-view div div:first-child .tab:nth-child(2):not(.active)').should('exist'));
+                  cy.wait(600).then(() => cy.get('app-state-machine-action-details .payload-view div div:first-child .tab:nth-child(3):not(.active)').should('exist'));
 
-                cy.get('app-state-machine-action-details .tabs .tab:nth-child(3)').trigger('click');
-                cy.wait(700).then(() => cy.get('app-state-machine-action-details .tabs .tab:nth-child(1):not(.active)').should('exist'));
-                cy.wait(700).then(() => cy.get('app-state-machine-action-details .tabs .tab:nth-child(2):not(.active)').should('exist'));
-                cy.wait(700).then(() => cy.get('app-state-machine-action-details .tabs .tab:nth-child(3).active').should('exist'));
-              });
+                  cy.get('app-state-machine-action-details .payload-view div div:first-child .tab:nth-child(3)').trigger('click');
+                  cy.wait(700).then(() => cy.get('app-state-machine-action-details .payload-view div div:first-child .tab:nth-child(1):not(.active)').should('exist'));
+                  cy.wait(700).then(() => cy.get('app-state-machine-action-details .payload-view div div:first-child .tab:nth-child(2):not(.active)').should('exist'));
+                  cy.wait(700).then(() => cy.get('app-state-machine-action-details .payload-view div div:first-child .tab:nth-child(3).active').should('exist'));
+                });
             }
           });
         });
@@ -191,7 +200,7 @@ context('STATE MACHINE', () => {
   });
 
   it('[STATE MACHINE] should show clicked action\'s content', () => {
-    cy.wait(5000).then(() => {
+    cy.wait('@getActionsRequest').then(() => {
       cy.window()
         .its('store')
         .then((store) => {
@@ -202,19 +211,22 @@ context('STATE MACHINE', () => {
               cy.get('.virtual-scroll-container .virtualScrollRow:nth-last-child(4)')
                 .trigger('click');
               cy.wait(500).then(() => {
-                cy.get('app-state-machine-action-details .tabs .tab:nth-child(1)')
-                  .trigger('click');
-                cy.wait(500).then(() => cy.get('app-state-machine-action-details .tabs .tab:nth-child(1).active').should('exist'));
-                cy.wait(500).then(() => cy.get('app-state-machine-action-details .tabs .tab:nth-child(2):not(.active)').should('exist'));
+                cy.get('app-state-machine-action-details .payload-view div div:first-child .tab:nth-child(1)')
+                  .trigger('click')
+                  .wait(300)
+                  .then(() => {
+                    cy.get('app-state-machine-action-details .payload-view div div:first-child .tab:nth-child(1).active').should('exist');
+                    cy.get('app-state-machine-action-details .payload-view div div:first-child .tab:nth-child(2):not(.active)').should('exist');
 
-                const key0 = Object.keys(secondLastAction.content)[0];
-                if (typeof secondLastAction.content[key0] === 'string') {
-                  let elementFound;
-                  cy.get('.ngx-json-viewer .segment-value').should(elements => {
-                    elementFound = Array.from(elements).some(elem => elem.textContent.slice(1, elem.textContent.length - 1) === secondLastAction.content[key0]);
+                    const key0 = Object.keys(secondLastAction.content)[0];
+                    if (typeof secondLastAction.content[key0] === 'string') {
+                      let elementFound;
+                      cy.get('.ngx-json-viewer .segment-value').should(elements => {
+                        elementFound = Array.from(elements).some(elem => elem.textContent.slice(1, elem.textContent.length - 1) === secondLastAction.content[key0]);
+                      });
+                      cy.wait(500).then(() => cy.wrap(elementFound).should('eq', true));
+                    }
                   });
-                  cy.wait(500).then(() => cy.wrap(elementFound).should('eq', true));
-                }
               });
             }
           });
@@ -223,7 +235,7 @@ context('STATE MACHINE', () => {
   });
 
   it('[STATE MACHINE] should show clicked action\'s diffs', () => {
-    cy.wait(5000).then(() => {
+    cy.wait('@getActionsRequest').then(() => {
       cy.window()
         .its('store')
         .then((store) => {
@@ -232,7 +244,7 @@ context('STATE MACHINE', () => {
               cy.get('.virtual-scroll-container .virtualScrollRow:nth-last-child(4)')
                 .trigger('click');
               cy.wait(500).then(() => {
-                cy.get('app-state-machine-action-details .tabs .tab:nth-child(3)')
+                cy.get('app-state-machine-action-details .payload-view div div:first-child .tab:nth-child(3)')
                   .trigger('click');
 
                 cy.get('app-state-machine-action-details ngx-object-diff').should('be.visible');
@@ -251,7 +263,7 @@ context('STATE MACHINE', () => {
   });
 
   it('[STATE MACHINE] should hide state chart on toggle click and show back on second click', () => {
-    cy.wait(1000).then(() => {
+    cy.wait('@getActionsGraph').then(() => {
       cy.get('#d3Diagram').then(svg => {
         if (svg.is(':visible')) {
           cy.get('app-state-machine-diagram .state-toolbar .diagram-toggler').trigger('click');
@@ -313,8 +325,7 @@ context('STATE MACHINE', () => {
   });
 
   it('[STATE MACHINE] should render state chart successfully', () => {
-    cy.wait(5000).then(() => {
-
+    cy.wait('@getActionsGraph').then(() => {
       cy.window()
         .its('store')
         .then((store) => {
@@ -339,7 +350,7 @@ context('STATE MACHINE', () => {
   });
 
   it('[STATE MACHINE] should zoom in state chart successfully on mouse wheel up', () => {
-    cy.wait(2000).then(() => {
+    cy.wait('@getActionsGraph').then(() => {
       cy.get('#d3Diagram svg').then(svg => {
         if (svg.is(':visible')) {
           let initialTransform;
@@ -368,7 +379,7 @@ context('STATE MACHINE', () => {
   });
 
   it('[STATE MACHINE] should zoom in state chart successfully on plus button', () => {
-    cy.wait(2000).then(() => {
+    cy.wait('@getActionsGraph').then(() => {
       cy.get('#d3Diagram svg').then(svg => {
         if (svg.is(':visible')) {
           let initialTransform;
@@ -391,7 +402,7 @@ context('STATE MACHINE', () => {
   });
 
   it('[STATE MACHINE] should zoom out state chart successfully on minus button', () => {
-    cy.wait(2000).then(() => {
+    cy.wait('@getActionsGraph').then(() => {
       cy.get('#d3Diagram svg').then(svg => {
         if (svg.is(':visible')) {
           let initialTransform;
@@ -414,7 +425,7 @@ context('STATE MACHINE', () => {
   });
 
   it('[STATE MACHINE] should show whole state chart successfully on reset zoom button', () => {
-    cy.wait(2000).then(() => {
+    cy.wait('@getActionsGraph').then(() => {
       cy.get('#d3Diagram svg').then(svg => {
         if (svg.is(':visible')) {
           let initialTransform;
@@ -441,8 +452,7 @@ context('STATE MACHINE', () => {
   });
 
   it('[STATE MACHINE] should disable next and prev action buttons if no action is selected successfully', () => {
-    cy.wait(5000).then(() => {
-
+    cy.wait('@getActionsRequest').then(() => {
       cy.window()
         .its('store')
         .then((store) => {
@@ -458,7 +468,7 @@ context('STATE MACHINE', () => {
   });
 
   it('[STATE MACHINE] should successfully start playing through the actions on play button click', () => {
-    cy.wait(3000).then(() => {
+    cy.wait('@getActionsRequest').then(() => {
       cy.get('.virtual-scroll-container .virtualScrollRow').should('have.length.at.least', 5).then(() => {
         cy.get('.stop-stream').click();
         cy.get('.virtual-scroll-container .virtualScrollRow.hover').should('not.exist');
@@ -482,7 +492,7 @@ context('STATE MACHINE', () => {
   });
 
   it('[STATE MACHINE] should successfully highlight correct svg block in the diagram on action click', () => {
-    cy.wait(3000).then(() => {
+    cy.wait('@getActionsRequest').then(() => {
       cy.get('.virtual-scroll-container .virtualScrollRow').should('have.length.at.least', 5).then(() => {
         cy.get('.stop-stream').click();
         cy.get('.virtual-scroll-container .virtualScrollRow:nth-last-child(4)')
@@ -511,7 +521,7 @@ context('STATE MACHINE', () => {
   });
 
   it('[STATE MACHINE] should successfully update progress bar on action click', () => {
-    cy.wait(3000).then(() => {
+    cy.wait('@getActionsRequest').then(() => {
       cy.get('.virtual-scroll-container .virtualScrollRow').should('have.length.at.least', 5).then(() => {
         cy.get('.stop-stream').click();
         let initialValue;
@@ -605,22 +615,27 @@ context('STATE MACHINE', () => {
   it('[STATE MACHINE] should successfully render action statistics', () => {
     cy.intercept('GET', '/dev/shell/automaton/actions_stats').as('getStatistics')
       .then(() => {
-        cy.get('.statistics-table').should('be.visible');
-        let stats;
-        cy.window()
-          .its('store')
-          .then((store) => {
-            store.select('stateMachine').subscribe(stateMachine => {
-              if (stateMachine.actionStatistics.statistics) {
-                stats = stateMachine.actionStatistics.statistics;
+        cy.get('app-state-machine-action-details .payload-view div div:last-child .tab')
+          .trigger('click')
+          .wait(300)
+          .then(() => {
+            cy.get('.statistics-table').should('be.visible');
+            let stats;
+            cy.window()
+              .its('store')
+              .then((store) => {
+                store.select('stateMachine').subscribe(stateMachine => {
+                  if (stateMachine.actionStatistics.statistics) {
+                    stats = stateMachine.actionStatistics.statistics;
+                  }
+                });
+              });
+            cy.wait(1000).then(() => {
+              if (stats) {
+                cy.get('.statistics-table .overflow-auto > div').should('have.length', stats.length);
               }
             });
           });
-        cy.wait(1000).then(() => {
-          if (stats) {
-            cy.get('.statistics-table .overflow-auto > div').should('have.length', stats.length);
-          }
-        });
       });
   });
 

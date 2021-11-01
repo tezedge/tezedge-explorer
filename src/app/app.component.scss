@@ -47,8 +47,13 @@
   }
 }
 
-.theme-switcher:hover {
-  background: #ffffff20;
+.theme-switcher {
+  border-radius: 4px !important;
+  height: 30px;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.13);
+  }
 }
 
 .mat-sidenav-container {
@@ -93,9 +98,13 @@
   min-height: calc(100vh - 38px);
   height: calc(100vh - 38px) !important;
   transition: margin-left 0.18s ease-in;
+  margin-left: 200px !important;
+
+  &.is-mobile {
+    margin-left: 0 !important;
+  }
 
   .sidenav-content-container {
     overflow: auto;
-    padding-bottom: 20px;
   }
 }

@@ -1,13 +1,11 @@
 <div class="wallets">
 
-  <!-- FILTERS -->
   <div class="filters-wrap">
     <!-- <img class="icon" src="../../../assets/icon/filter.svg" />
     <span class="text">ADD FILTER</span> -->
   </div>
 
   <div class="flex-wrapper">
-    <!-- TABLE -->
     <div class="table-flex">
       <table mat-table [dataSource]="wallets" (mouseleave)="tableMouseLeave()">
         <!-- Address Column -->
@@ -53,7 +51,6 @@
       </table>
     </div>
 
-    <!-- DETAILS SIDEBAR -->
     <div class="sidebar-flex" *ngIf="selectedWalletId && walletEntities[selectedWalletId]">
       <div class="sidebar-wrap">
         <!-- <div class="details-header">

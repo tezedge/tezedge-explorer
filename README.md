@@ -156,3 +156,25 @@ To run the tests make sure the application is running and in a separate terminal
 Additionally, if you want to see the real time progress of the tests use the following command instead:
 
 `npx cypress run --headed`
+
+
+## Using Icons Inside TezEdge Explorer
+
+TezEdge Explorer uses `mat-icon` to render the icons and its icon-set functionalities. Also, using the `svg-sprite` library, all icons used by the application are stored inside _one single sprite svg_.
+
+To add a new icon in the app you have to follow these simple steps:
+
+### 1. Add your icon
+- put your new **svg** icon inside `assets/icons`
+
+### 2. Trigger svg sprite generation
+- go to the **root** of the project, open a terminal window and run: `npm run generate-icons`
+
+### 3. Find your new generated svg sprite
+- go to `assets/sprite/css/svg/sprite.css-#hashcode#.svg` and copy the entire content of the generated svg file
+
+### 4. Use the new generated svg sprite
+- go to `assets/sprite/icon-set.svg` and replace the entire content with the one copied previously
+
+### 5. Remove unused files
+- delete directory `assets/sprite/css`. That's all!

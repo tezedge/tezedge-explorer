@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { catchError, map, switchMap, withLatestFrom } from 'rxjs/operators';
-import { ObservedValueOf, of } from 'rxjs';
+import { empty, ObservedValueOf, of } from 'rxjs';
 import { Store } from '@ngrx/store';
 import { State } from '@app/app.reducers';
 import { MemoryResourcesActionTypes } from './memory-resources.actions';
@@ -12,20 +12,22 @@ import { ErrorActionTypes } from '@shared/error-popup/error-popup.actions';
 @Injectable({ providedIn: 'root' })
 export class MemoryResourcesEffects {
 
-  ResourcesLoadEffect$ = createEffect(() => this.actions$.pipe(
-    ofType(MemoryResourcesActionTypes.MEMORY_RESOURCES_LOAD),
+  resourcesLoadEffect$ = createEffect(() => this.actions$.pipe(
+    ofType(MemoryResourcesActionTypes.MEMORY_RESOURCES_LOAD, MemoryResourcesActionTypes.MEMORY_RESOURCES_CLOSE),
     withLatestFrom(this.store, (action: any, state: ObservedValueOf<Store<State>>) => ({ action, state })),
     switchMap(({ action, state }) =>
-      this.resourcesService.getStorageResources(
-        state.settingsNode.activeNode.features.find(f => f.name === 'resources/memory').memoryProfilerUrl,
-        action.payload.reversed
-      ).pipe(
-        map((resource: MemoryResource) => ({
-          type: MemoryResourcesActionTypes.MEMORY_RESOURCES_LOAD_SUCCESS,
-          payload: resource
-        })),
-        catchError(error => of({ type: ErrorActionTypes.ADD_ERROR, payload: { title: 'Memory resources error', message: error.message } }))
-      )
+      action.type === MemoryResourcesActionTypes.MEMORY_RESOURCES_CLOSE
+        ? empty()
+        : this.resourcesService.getStorageResources(
+          state.settingsNode.activeNode.features.find(f => f.name === 'resources/memory').memoryProfilerUrl,
+          action.payload.reversed
+        ).pipe(
+          map((resource: MemoryResource) => ({
+            type: MemoryResourcesActionTypes.MEMORY_RESOURCES_LOAD_SUCCESS,
+            payload: resource
+          })),
+          catchError(error => of({ type: ErrorActionTypes.ADD_ERROR, payload: { title: 'Memory resources error', message: error.message } }))
+        )
     )
   ));
 

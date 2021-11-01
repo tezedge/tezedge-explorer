@@ -1,10 +1,11 @@
 import { ChangeDetectorRef, Component, NgZone, OnDestroy, OnInit, ViewChild } from '@angular/core';
 
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { Store } from '@ngrx/store';
 
 import { VirtualScrollFromTopDirective } from '@shared/virtual-scroll/virtual-scroll-from-top.directive';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
+import { State } from '@app/app.reducers';
 
 @UntilDestroy()
 @Component({
@@ -42,17 +43,12 @@ export class StorageActionComponent implements OnInit, OnDestroy {
 
   @ViewChild(VirtualScrollFromTopDirective) vrFor: VirtualScrollFromTopDirective;
 
-  constructor(
-    public store: Store<any>,
-    private route: ActivatedRoute,
-    private router: Router,
-    private ngZone: NgZone,
-    private changeDetector: ChangeDetectorRef
-  ) {
-  }
+  constructor(public store: Store<State>,
+              private route: ActivatedRoute,
+              private ngZone: NgZone,
+              private changeDetector: ChangeDetectorRef) { }
 
-  ngOnInit() {
-    // wait for data changes from redux
+  ngOnInit(): void {
     this.store.select('storageAction')
       .pipe(untilDestroyed(this))
       .subscribe(data => {
@@ -290,10 +286,8 @@ export class StorageActionComponent implements OnInit, OnDestroy {
   //
   // }
 
-  ngOnDestroy() {
-    this.store.dispatch({
-      type: 'STORAGE_BLOCK_ACTION_RESET'
-    });
+  ngOnDestroy(): void {
+    this.store.dispatch({ type: 'STORAGE_BLOCK_ACTION_RESET' });
 
     // unsubscribe router
     this.routerParams.unsubscribe();

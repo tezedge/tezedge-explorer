@@ -1,5 +1,5 @@
 import * as bs58check from 'bs58check';
-import {Buffer} from 'buffer';
+import { Buffer } from 'buffer';
 
 const initialState: any = {
   ids: [],

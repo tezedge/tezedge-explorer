@@ -1,12 +1,15 @@
 import { StateMachineDiagramBlock } from './state-machine-diagram-block.type';
-import { StateMachineProposal } from './state-machine-proposal.type';
-import { StateMachineProposalTable } from './state-machine-proposal-table.type';
+import { StateMachineAction } from './state-machine-action.type';
+import { StateMachineActionTable } from '@shared/types/state-machine/state-machine-action-table.type';
+import { StateMachineActionKindStatistics } from '@shared/types/state-machine/state-machine-action-kind-statistics.type';
+import { StateMachineActionStatistics } from '@shared/types/state-machine/state-machine-action-statistics.type';
 
 export interface StateMachine {
   diagramBlocks: StateMachineDiagramBlock[];
-  // proposalTable: StateMachineProposalTable;
-  proposals: StateMachineProposal[];
-  activeProposal: StateMachineProposal;
-  activeProposalPosition: number;
+  actionStatistics: StateMachineActionStatistics;
+  actionTable: StateMachineActionTable;
+  activeAction: StateMachineAction;
   isPlaying: boolean;
+  collapsedDiagram: boolean;
+  diagramHeight: number;
 }

@@ -24,27 +24,37 @@
              fxLayoutAlign="start center"
              fxLayoutGap="8px"
              class="block-hash">
-          <svg-icon icon="chevron-right"></svg-icon>
+          <mat-icon svgIcon="chevron-right"
+                    class="icon-12 icon-white-4"></mat-icon>
           <span class="hash truncate">{{ virtualScrollItems.selected.hash }}</span>
-          <svg-icon icon="chevron-down" class="pointer" (click)="getDetailsOfNextBlock()"></svg-icon>
-          <svg-icon icon="chevron-up" class="pointer" (click)="getDetailsOfPreviousBlock()"></svg-icon>
+          <mat-icon svgIcon="chevron-down"
+                    class="pointer icon-12"
+                    (click)="getDetailsOfNextBlock()"></mat-icon>
+          <mat-icon svgIcon="chevron-up"
+                    class="pointer icon-12"
+                    (click)="getDetailsOfPreviousBlock()"></mat-icon>
         </div>
       </div>
     </div>
 
     <div class="table-virtual-scroll-body">
 
-      <div class="virtual-scroll-container" [class.storage-block-filters-expanded]="filtersState.open" #vsContainer>
-        <ng-template vsFor [vsForOf]="virtualScrollItems" let-event let-position="position"
-                     (getItems)="getItems($event)" (startStopDataStream)="startStopDataStream($event)">
+      <div class="virtual-scroll-container"
+           [class.storage-block-filters-expanded]="filtersState.open"
+           #vsContainer>
+        <ng-template vsFor
+                     [vsForOf]="virtualScrollItems"
+                     let-event
+                     let-position="position"
+                     (getItems)="getItems($event)"
+                     (startStopDataStream)="startStopDataStream($event)">
           <span class="virtualScrollRow storage-block-row"
                 [style.transform]="position !== undefined ? 'translateY(' + position + 'px)' : ''"
                 [class.virtualScrollRowEven]="event?.index % 2"
                 (mouseenter)="event?.hash ? getItemDetails(event) : null"
                 [class.hover]="event?.datetime && virtualScrollItems?.selected?.hash===event?.hash"
                 [class.used]="event?.datetime"
-                (click)="goToStorageActions(event?.hash)"
-          >
+                (click)="goToStorageActions(event?.hash)">
 
             <span class="truncate">{{event?.datetime}}</span>
             <span class="truncate storage-block-level">{{event?.originalId}}</span>
@@ -53,12 +63,14 @@
               <span class="storage-block-hash">{{event?.hash}}</span>
             </span>
 
-            <span class="item-loading" [class.displayed]="!event?.datetime">&nbsp;</span>
+            <span class="item-loading"
+                  [class.displayed]="!event?.datetime">&nbsp;</span>
           </span>
         </ng-template>
       </div>
 
-      <div class="action-table-detail" id="virtualScrollTableDetails">
+      <div class="action-table-detail"
+           id="virtualScrollTableDetails">
         <app-storage-block-details *ngIf="virtualScrollItems.selected"
                                    [block]="virtualScrollItems.blockDetails"
                                    [blockHash]="virtualScrollItems.selected.hash"
@@ -77,36 +89,62 @@
       </div>
     </div>
 
-    <div class="table-virtual-scroll-footer" fxLayout="row" fxLayoutAlign="start center">
-      <button fxLayout="row" fxLayoutAlign="center center" class="square-button" mat-icon-button
-              matTooltip="Last page" (click)="scrollToEnd()">
-        <svg-icon icon="arrow-bottom"></svg-icon>
+    <div class="table-virtual-scroll-footer"
+         fxLayout="row"
+         fxLayoutAlign="start center">
+      <button fxLayout="row"
+              fxLayoutAlign="center center"
+              class="square-button"
+              mat-icon-button
+              matTooltip="Last page"
+              (click)="scrollToEnd()">
+        <mat-icon svgIcon="arrow-bottom"
+                  class="icon-12 d-flex"></mat-icon>
       </button>
-
-      <button fxLayout="row" fxLayoutAlign="center center" class="rectangle-button start-stream" mat-icon-button
-              matTooltip="Start Streaming" (click)="scrollStart(null)" [class.inactive]="!virtualScrollItems?.stream">
-        <svg-icon icon="play-circle"></svg-icon>
+      <button fxLayout="row"
+              fxLayoutAlign="center center"
+              class="rectangle-button start-stream"
+              mat-icon-button
+              matTooltip="Start Streaming"
+              (click)="scrollStart(null)"
+              [class.inactive]="!virtualScrollItems?.stream">
+        <mat-icon svgIcon="play-circle"
+                  class="icon-14 margin-right-5"></mat-icon>
         <span>LIVE</span>
       </button>
-
-      <button fxLayout="row" fxLayoutAlign="center center" class="rectangle-button stop-stream" mat-icon-button
-              matTooltip="Stop Streaming" (click)="scrollStop()" [class.inactive]="virtualScrollItems?.stream">
-        <svg-icon icon="pause-circle"></svg-icon>
+      <button fxLayout="row"
+              fxLayoutAlign="center center"
+              class="rectangle-button stop-stream"
+              mat-icon-button
+              matTooltip="Stop Streaming"
+              (click)="scrollStop()"
+              [class.inactive]="virtualScrollItems?.stream">
+        <mat-icon svgIcon="pause-circle"
+                  class="icon-14 margin-right-5"></mat-icon>
         <span>PAUSED</span>
       </button>
-
-      <button fxLayout="row" fxLayoutAlign="center center" class="square-button" id="previousPage" mat-icon-button
-              matTooltip="Previous Page" (click)="loadPreviousPage()"
+      <button fxLayout="row"
+              fxLayoutAlign="center center"
+              class="square-button"
+              id="previousPage"
+              mat-icon-button
+              matTooltip="Previous Page"
+              (click)="loadPreviousPage()"
               [disabled]="!virtualScrollItems?.pages?.length || virtualScrollItems.ids.length < virtualPageSize">
-        <svg-icon icon="less-than"></svg-icon>
+        <mat-icon svgIcon="less-than"
+                  class="icon-8 d-flex"></mat-icon>
       </button>
-
-      <button fxLayout="row" fxLayoutAlign="center center" class="square-button" id="nextPage" mat-icon-button
-              matTooltip="Next Page" (click)="loadNextPage()"
+      <button fxLayout="row"
+              fxLayoutAlign="center center"
+              class="square-button"
+              id="nextPage"
+              mat-icon-button
+              matTooltip="Next Page"
+              (click)="loadNextPage()"
               [disabled]="!virtualScrollItems?.pages?.length || virtualScrollItems.activePage.id == virtualScrollItems?.pages[virtualScrollItems?.pages?.length - 1]">
-        <svg-icon icon="greater-than"></svg-icon>
+        <mat-icon svgIcon="greater-than"
+                  class="icon-8 d-flex"></mat-icon>
       </button>
-
 
       <span class="active-page-details">
         Active Page:
@@ -114,9 +152,9 @@
         records
         <span *ngIf="virtualScrollItems?.activePage?.numberOfRecords">
           , from:
-          {{virtualScrollItems?.activePage?.start?.datetime}}
+          {{virtualScrollItems.activePage.start?.datetime}}
           to:
-          {{virtualScrollItems?.activePage?.end?.datetime}}
+          {{virtualScrollItems.activePage.end?.datetime}}
           </span>
       </span>
     </div>

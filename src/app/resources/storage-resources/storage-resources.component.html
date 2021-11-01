@@ -2,7 +2,7 @@
      *ngIf="storageStats$ | async as storageStats">
   <div class="storage-toolbar flex-end d-flex">
     <div class="border-bottom flex-grow d-flex align-center">
-      <div class="text-white-4 font-12 context">Current context: {{ storageResourcesContext }}</div>
+      <div class="text-white-4 f-12 context">Current context: {{ storageResourcesContext }}</div>
       <mat-icon *ngIf="displayContextSwitcher"
                 (click)="getStorageStatistics()"
                 svgIcon="arrow-around"
@@ -12,7 +12,7 @@
          [class.expanded]="expandedPanel"
          (click)="togglePanel()">
       <span>Overview</span>
-      <mat-icon svgIcon="arrow-expanded" class="icon-14 pointer"></mat-icon>
+      <mat-icon svgIcon="arrow-expanded" class="icon-14 pointer icon-white-4"></mat-icon>
     </div>
   </div>
   <div class="storage-container p-relative d-flex overflow-hidden"

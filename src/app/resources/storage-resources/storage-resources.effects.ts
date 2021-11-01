@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { catchError, map, switchMap, withLatestFrom } from 'rxjs/operators';
-import { forkJoin, ObservedValueOf, of } from 'rxjs';
+import { empty, forkJoin, ObservedValueOf, of } from 'rxjs';
 import { Store } from '@ngrx/store';
 import { StorageResourcesActionTypes } from './storage-resources.actions';
 import { State } from '@app/app.reducers';
@@ -12,7 +12,7 @@ import { ErrorActionTypes } from '@shared/error-popup/error-popup.actions';
 @Injectable({ providedIn: 'root' })
 export class StorageResourcesEffects {
 
-  ResourcesCheckAvailableContextsEffect$ = createEffect(() => this.actions$.pipe(
+  resourcesCheckAvailableContextsEffect$ = createEffect(() => this.actions$.pipe(
     ofType(StorageResourcesActionTypes.STORAGE_RESOURCES_CHECK_AVAILABLE_CONTEXTS),
     withLatestFrom(this.store, (action: any, state: ObservedValueOf<Store<State>>) => ({ action, state })),
     switchMap(({ action, state }) =>
@@ -29,14 +29,16 @@ export class StorageResourcesEffects {
     catchError(error => of({ type: ErrorActionTypes.ADD_ERROR, payload: { title: 'Storage resources error', message: error.message } }))
   ));
 
-  ResourcesLoadEffect$ = createEffect(() => this.actions$.pipe(
-    ofType(StorageResourcesActionTypes.STORAGE_RESOURCES_LOAD),
+  resourcesLoadEffect$ = createEffect(() => this.actions$.pipe(
+    ofType(StorageResourcesActionTypes.STORAGE_RESOURCES_LOAD, StorageResourcesActionTypes.STORAGE_RESOURCES_CLOSE),
     withLatestFrom(this.store, (action: any, state: ObservedValueOf<Store<State>>) => ({ action, state })),
     switchMap(({ action, state }) =>
-      this.storageResourcesService.getStorageResources(state.settingsNode.activeNode.http, action.payload)
-        .pipe(
-          map((stats: StorageResourcesStats) => ({ type: StorageResourcesActionTypes.STORAGE_RESOURCES_LOAD_SUCCESS, payload: stats })),
-        ))
+      action.type === StorageResourcesActionTypes.STORAGE_RESOURCES_CLOSE
+        ? empty()
+        : this.storageResourcesService.getStorageResources(state.settingsNode.activeNode.http, action.payload)
+          .pipe(map((stats: StorageResourcesStats) =>
+            ({ type: StorageResourcesActionTypes.STORAGE_RESOURCES_LOAD_SUCCESS, payload: stats })
+          )))
   ));
 
   constructor(private storageResourcesService: StorageResourceService,

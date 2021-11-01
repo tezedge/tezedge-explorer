@@ -69,7 +69,7 @@ export class StorageResourcesMiniGraphComponent implements OnDestroy {
   constructor(private overlay: Overlay,
               private viewContainerRef: ViewContainerRef) { }
 
-  openPersonDetailsOverlay(column: ResourceStorageQueryDetails, index: number, event: MouseEvent): void {
+  openDetailsOverlay(column: ResourceStorageQueryDetails, index: number, event: MouseEvent): void {
     if (this.overlayRef && this.overlayRef.hasAttached()) {
       this.overlayRef.detach();
     }

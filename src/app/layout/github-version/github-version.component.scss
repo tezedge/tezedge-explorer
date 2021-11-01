@@ -14,25 +14,13 @@ $color-commit-item-hovered: rgba(80, 80, 88, 1);
   }
 }
 
-.node-tag-number-and-icon {
-  pointer-events: none;
-  font-size: 12px;
-}
-
-svg-icon {
-  margin-left: -2px;
-}
-
 .commit-numbers-container {
-  overflow: hidden;
-  bottom: 25px;
   background-color: $color-commit-container;
   border-radius: 4px;
   color: white;
   margin-bottom: 5px;
 
   .commit-numbers-container-item {
-    font-size: 12px;
     width: 128px;
 
     &:hover {
@@ -43,7 +31,7 @@ svg-icon {
       cursor: pointer;
       color: #eaeaea;
       text-decoration: unset;
-      padding: 8px;
+      padding: 8px 10px;
       display: block;
     }
   }

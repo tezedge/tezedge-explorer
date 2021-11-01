@@ -1,0 +1,15 @@
+button {
+  border: none;
+}
+
+.mat-icon-button {
+  .mat-button-wrapper {
+    display: flex;
+    justify-content: center;
+    line-height: 100%;
+
+    .mat-icon {
+      line-height: initial !important;
+    }
+  }
+}

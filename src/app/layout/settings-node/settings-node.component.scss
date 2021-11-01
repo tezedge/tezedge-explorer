@@ -1,12 +1,11 @@
 .settings-node-status-icon {
-  font-size: 12px;
-  padding-left: 4px;
-  height: auto;
-  width: auto;
-  color: #00DBC6;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: #00DBC6;
 
   &.is-offline {
-    color: #883f53;
+    background-color: #883f53;
   }
 }
 
@@ -21,16 +20,8 @@
   }
 }
 
-.node-status-option-icon {
-  font-size: 12px;
-  margin: 10px 0 0 4px !important;
-  height: 20px;
-  width: 20px;
-  color: #00DBC6;
-
-  &.offline {
-    color: #883f53;
-  }
+::ng-deep .node-status-option-icon svg path {
+  fill: #883f53;
 }
 
 .settings-node-option {
@@ -45,20 +36,11 @@
   font-size: 10px;
 }
 
-.done-icon {
-  width: 30px;
-
-  mat-icon {
-    font-size: 22px;
-  }
-}
-
 .sandbox-button-wrapper {
   background-color: #2a2b2e;
   padding: 12px 10px 12px 40px;
 
   button {
-    font-size: 12px;
     line-height: 24px;
     color: white;
     background: #8C6141;

@@ -1,0 +1,8 @@
+
+.mat-spinner circle {
+  stroke: rgba(255, 255, 255, 0.4);
+}
+
+.mat-progress-spinner.mat-progress-spinner-indeterminate-animation[mode=indeterminate] circle {
+  animation-duration: 7000ms;
+}

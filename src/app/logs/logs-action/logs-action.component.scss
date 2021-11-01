@@ -55,11 +55,3 @@ form {
     }
   }
 }
-
-.square-button {
-  border: none;
-
-  &:not(:disabled) {
-    cursor: pointer;
-  }
-}

@@ -1,0 +1,38 @@
+<div class="payload-view f-12 d-flex flex-column h-100"
+     *ngIf="stateMachine$ | async as stateMachine">
+  <div class="d-flex flex-between">
+    <div class="padding-vertical-10">
+      <ng-container *ngIf="stateMachine.activeAction">
+        <span *ngFor="let tab of tabs"
+              class="tab text-white-6 margin-left-10 pointer" [class.active]="tab === activeTab"
+              (click)="activeTab = tab">
+          {{ tab }}
+        </span>
+      </ng-container>
+    </div>
+    <div class="padding-vertical-10">
+      <div class="tab text-white-6 margin-right-10 pointer" [class.active]="activeTab === 'STATS'"
+           (click)="activeTab = 'STATS'">STATISTICS
+      </div>
+    </div>
+  </div>
+  <div class="overflow-auto text-white" fxFlex="calc(100% - 34px)"
+       [ngClass]="activeTab !== 'STATS' ? 'padding-left-10 padding-top-10' : ''">
+    <ng-container [ngSwitch]="activeTab">
+      <div *ngSwitchCase="'CONTENT'">
+        <tezedge-ngx-json-viewer *ngIf="stateMachine.activeAction.content; else noContent"
+                                 [json]="stateMachine.activeAction.content"
+                                 [expanded]="false"></tezedge-ngx-json-viewer>
+        <ng-template #noContent>No content</ng-template>
+      </div>
+      <div *ngSwitchCase="'STATE'">
+        <tezedge-ngx-json-viewer [json]="stateMachine.activeAction.state"
+                                 [expanded]="false"></tezedge-ngx-json-viewer>
+      </div>
+      <div *ngSwitchCase="'DIFFS'">
+        <ngx-object-diff [obj]="stateDifferences"></ngx-object-diff>
+      </div>
+      <app-state-machine-statistics *ngSwitchCase="'STATS'"></app-state-machine-statistics>
+    </ng-container>
+  </div>
+</div>

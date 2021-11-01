@@ -5,7 +5,8 @@ export enum StorageResourcesActionTypes {
   STORAGE_RESOURCES_LOAD = 'STORAGE_RESOURCES_LOAD',
   STORAGE_RESOURCES_MAP_AVAILABLE_CONTEXTS = 'STORAGE_RESOURCES_MAP_AVAILABLE_CONTEXTS',
   STORAGE_RESOURCES_CHECK_AVAILABLE_CONTEXTS = 'STORAGE_RESOURCES_CHECK_AVAILABLE_CONTEXTS',
-  STORAGE_RESOURCES_LOAD_SUCCESS = 'STORAGE_RESOURCES_LOAD_SUCCESS'
+  STORAGE_RESOURCES_LOAD_SUCCESS = 'STORAGE_RESOURCES_LOAD_SUCCESS',
+  STORAGE_RESOURCES_CLOSE = 'STORAGE_RESOURCES_CLOSE',
 }
 
 export class LoadStorageResources implements Action {
@@ -26,4 +27,12 @@ export class MapAvailableContexts implements Action {
   constructor(public payload: string[]) { }
 }
 
-export type StorageResourcesActions = LoadStorageResources | StorageResourcesLoaded | MapAvailableContexts;
+export class CloseStorageResources implements Action {
+  readonly type = StorageResourcesActionTypes.STORAGE_RESOURCES_CLOSE;
+}
+
+export type StorageResourcesActions = LoadStorageResources
+  | StorageResourcesLoaded
+  | MapAvailableContexts
+  | CloseStorageResources
+  ;

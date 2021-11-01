@@ -1,6 +1,6 @@
 import { NetworkActionEntity } from './network-action-entity.type';
 import { NetworkActionFilter } from './network-action-filter.type';
-import {VirtualScrollActivePage} from '../shared/virtual-scroll-active-page.type';
+import { VirtualScrollActivePage } from '@shared/types/shared/virtual-scroll-active-page.type';
 
 export class NetworkAction {
   ids: number[];
@@ -10,7 +10,7 @@ export class NetworkAction {
   filter: NetworkActionFilter;
   stream: boolean;
   urlParams: string;
-  activePage: VirtualScrollActivePage;
+  activePage: VirtualScrollActivePage<NetworkActionEntity>;
   pages: number[];
   timestamp: number;
 }

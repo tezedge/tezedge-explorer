@@ -4,9 +4,6 @@ FROM node:latest AS BUILD_IMAGE
 # set working directory
 WORKDIR /app
 
-# add node config step
-ARG NODE_OPTIONS='--openssl-legacy-provider'
-
 # install angular cli
 RUN npm install -g @angular/cli@12.2.2
 
@@ -23,7 +20,7 @@ RUN git clone ${node_explorer_git} && \
 WORKDIR /app/tezedge-explorer
 
 # buid app
-RUN ng build --configuration production --output-path=/dist
+RUN ARG NODE_OPTIONS=--openssl-legacy-provider && ng build --configuration production --output-path=/dist
 
 # remove development dependencies
 RUN npm prune --production

@@ -4,7 +4,7 @@ context('ERROR POPUP', () => {
   });
 
   it('[ERROR POPUP] should render error popup component successfully', () => {
-    cy.get('app-error-popup').should('be.visible').then(popup => {
+    cy.get('app-error-popup').should('exist').then(popup => {
       expect(popup).not.to.be.undefined;
       expect(popup.find('notifier-container.notifier__container')).not.to.be.undefined;
       expect(popup.find('notifier-container.notifier__container')).not.to.be.undefined;

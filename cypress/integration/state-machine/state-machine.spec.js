@@ -8,8 +8,8 @@ context('STATE MACHINE', () => {
   });
 
   it('[STATE MACHINE] should perform state machine diagram request successfully', () => {
-    cy.intercept('GET', '/dev/shell/automaton/actions_graph').as('getDiagramRequest');
-    cy.wait('@getDiagramRequest', { timeout: 30000 }).its('response.statusCode').should('eq', 200);
+    cy.intercept('GET', '/dev/shell/automaton/actions_graph', { timeout: 30000 })
+      .its('response.statusCode').should('eq', 200);
   });
 
   it('[STATE MACHINE] should perform state machine actions request successfully', () => {
@@ -218,13 +218,15 @@ context('STATE MACHINE', () => {
                     cy.get('app-state-machine-action-details .payload-view div div:first-child .tab:nth-child(1).active').should('exist');
                     cy.get('app-state-machine-action-details .payload-view div div:first-child .tab:nth-child(2):not(.active)').should('exist');
 
-                    const key0 = Object.keys(secondLastAction.content)[0];
-                    if (typeof secondLastAction.content[key0] === 'string') {
-                      let elementFound;
-                      cy.get('.ngx-json-viewer .segment-value').should(elements => {
-                        elementFound = Array.from(elements).some(elem => elem.textContent.slice(1, elem.textContent.length - 1) === secondLastAction.content[key0]);
-                      });
-                      cy.wait(500).then(() => cy.wrap(elementFound).should('eq', true));
+                    if (secondLastAction.content) {
+                      const key0 = Object.keys(secondLastAction.content)[0];
+                      if (typeof secondLastAction.content[key0] === 'string') {
+                        let elementFound;
+                        cy.get('.ngx-json-viewer .segment-value').should(elements => {
+                          elementFound = Array.from(elements).some(elem => elem.textContent.slice(1, elem.textContent.length - 1) === secondLastAction.content[key0]);
+                        });
+                        cy.wait(500).then(() => cy.wrap(elementFound).should('eq', true));
+                      }
                     }
                   });
               });

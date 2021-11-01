@@ -9,7 +9,7 @@ context('STORAGE RESOURCES', () => {
     cy.wait(1000);
   });
 
-  it('[STORAGE RESOURCES] should perform get memory resources request successfully', () => {
+  it('[STORAGE RESOURCES] should perform get memory resources request', () => {
     cy.window()
       .its('store')
       .then((store) => {
@@ -22,7 +22,7 @@ context('STORAGE RESOURCES', () => {
   });
 
   it('[STORAGE RESOURCES] should parse storage stats RPC response successfully', () => {
-    cy.wait(1000).then(() => {
+    cy.wait('@getStorageResources').then(() => {
       cy.window()
         .its('store')
         .then((store) => {
@@ -82,8 +82,8 @@ context('STORAGE RESOURCES', () => {
     });
   });
 
-  it('[STORAGE RESOURCES] should render storage statistics successfully', () => {
-    cy.wait(1000).then(() => {
+  it('[STORAGE RESOURCES] should render storage statistics', () => {
+    cy.wait('@getStorageResources').then(() => {
       cy.window()
         .its('store')
         .then((store) => {
@@ -111,7 +111,7 @@ context('STORAGE RESOURCES', () => {
   });
 
   it('[STORAGE RESOURCES] should display switcher', () => {
-    cy.wait(1000).then(() => {
+    cy.wait('@getStorageResources').then(() => {
       cy.window()
         .its('store')
         .then((store) => {
@@ -140,7 +140,7 @@ context('STORAGE RESOURCES', () => {
   });
 
   it('[STORAGE RESOURCES] should change context on switcher click', () => {
-    cy.wait(1000).then(() => {
+    cy.wait('@getStorageResources').then(() => {
       cy.window()
         .its('store')
         .then((store) => {

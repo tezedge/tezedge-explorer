@@ -213,8 +213,8 @@ context('LOGS', () => {
             .its('store')
             .then((store) => {
               store.select('logsAction').subscribe((data) => {
-                const allContainSearchedString = Object.keys(data.entities).map(key => data.entities[key]).every(entry => entry.message === textToSearch);
-                cy.wrap(allContainSearchedString).should('eq',true);
+                const allContainSearchedString = Object.keys(data.entities).map(key => data.entities[key]).every(entry => entry.message.includes(textToSearch));
+                cy.wrap(allContainSearchedString).should('eq', true);
               });
             });
         });

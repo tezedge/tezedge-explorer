@@ -5,7 +5,7 @@ FROM node:latest AS BUILD_IMAGE
 WORKDIR /app
 
 # add node config step
-ARG NODE_OPTIONS='--openssl-legacy-provider'
+ENV NODE_OPTIONS='--openssl-legacy-provider'
 
 # install angular cli
 RUN npm install -g @angular/cli@12.2.2

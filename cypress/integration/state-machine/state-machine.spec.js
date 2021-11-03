@@ -8,9 +8,10 @@ const testForTezedge = (test) => {
 
 context('STATE MACHINE', () => {
   beforeEach(() => {
-    cy.intercept('GET', '/dev/shell/automaton/actions?limit=*').as('getActionsRequest', { timeout: 30000 });
-    cy.intercept('GET', '/dev/shell/automaton/actions_graph').as('getActionsGraph', { timeout: 30000 });
+    cy.intercept('GET', '/dev/shell/automaton/actions?limit=*').as('getActionsRequest');
+    cy.intercept('GET', '/dev/shell/automaton/actions_graph').as('getActionsGraph');
     cy.visit(Cypress.config().baseUrl + '/#/state', { timeout: 10000 });
+    cy.wait(1000);
   });
 
   it('[STATE MACHINE] should perform state machine diagram request successfully', () => testForTezedge(() => {
@@ -28,18 +29,12 @@ context('STATE MACHINE', () => {
   }));
 
   it('[STATE MACHINE] should get correct number of actions as the limit successfully', () => testForTezedge(() => {
-    cy.wait('@getActionsRequest')
+    cy.wait('@getActionsRequest', { timeout: 20000 })
       .should(result => {
         const url = result.response.url;
         const noOfActionsRequested = url.slice(url.indexOf('limit=') + 'limit='.length);
         cy.wrap(noOfActionsRequested).should('eq', result.response.body.length.toString());
       });
-  }));
-
-  it('[STATE MACHINE] should create rows for the virtual scroll table', () => testForTezedge(() => {
-    cy.wait('@getActionsRequest').then(() => {
-      cy.get('.virtual-scroll-container .virtualScrollRow').should('be.visible');
-    });
   }));
 
   it('[STATE MACHINE] should fill the last row of the table with the last value received', () => testForTezedge(() => {
@@ -52,8 +47,8 @@ context('STATE MACHINE', () => {
             const lastAction = stateMachine.actionTable.entities[lastId];
             if (lastAction) {
               cy.get('.virtual-scroll-container .virtualScrollRow:nth-last-child(3) span:nth-child(2)')
-                .should(span => {
-                  expect(span.text().trim()).to.equal(lastAction.kind);
+                .should(($span) => {
+                  expect($span.text().trim()).to.equal(lastAction.kind);
                 });
             }
           });
@@ -61,64 +56,67 @@ context('STATE MACHINE', () => {
     });
   }));
 
-  it('[STATE MACHINE] should show properly colors for duration column values', () => testForTezedge(() => {
+  it('[STATE MACHINE] should create rows for the virtual scroll table', () => testForTezedge(() => {
     cy.wait('@getActionsRequest').then(() => {
-      cy.window()
-        .its('store')
-        .then((store) => {
-          store.select('stateMachine').subscribe(stateMachine => {
-            if (!stateMachine.actionTable.stream && stateMachine.actionTable.ids.length) {
-              const yellowDurationAction = stateMachine.actionTable.ids.map(id => stateMachine.actionTable.entities[id]).find(en => en.duration.includes('text-yellow'));
-              const redDurationAction = stateMachine.actionTable.ids.map(id => stateMachine.actionTable.entities[id]).find(en => en.duration.includes('text-red'));
-              if (yellowDurationAction) {
-                cy.get('.virtual-scroll-container').scrollTo(0, (yellowDurationAction.id) * 36);
-                cy.wait(500).then(() => {
-                  let spans;
-                  cy.get('.virtual-scroll-container .virtualScrollRow .text-yellow')
-                    .should(elements => spans = elements);
-                  cy.wait(300).then(() => cy.wrap(yellowDurationAction.duration).should('include', spans[0].textContent));
-                });
-              }
-              cy.wait(1000).then(() => {
-                if (redDurationAction) {
-                  cy.get('.virtual-scroll-container').scrollTo(0, (redDurationAction.id) * 36);
-                  cy.wait(500).then(() => {
-                    let spans;
-                    cy.get('.virtual-scroll-container .virtualScrollRow .text-red')
-                      .should(elements => spans = elements);
-                    cy.wait(300).then(() => cy.wrap(redDurationAction.duration).should('include', spans[0].textContent));
-                  });
-                }
-              });
-            }
-          });
-        });
+      cy.get('.virtual-scroll-container .virtualScrollRow').should('be.visible');
     });
   }));
 
   it('[STATE MACHINE] should change the value of the virtual scroll element when scrolling', () => testForTezedge(() => {
     let beforeScrollValue;
 
-    cy.wait('@getActionsRequest').then(() => {
+    cy.wait('@getActionsRequest');
 
-      cy.window()
-        .its('store')
-        .then((store) => {
-          store.select('stateMachine').subscribe(() => {
-            cy.get('.virtual-scroll-container .virtualScrollRow:nth-last-child(3) span:nth-child(2)')
-              .then(($span) => {
-                beforeScrollValue = $span.text();
-              });
+    cy.window()
+      .its('store')
+      .then((store) => {
+        store.select('stateMachine').subscribe(() => {
+          cy.get('.virtual-scroll-container .virtualScrollRow:nth-last-child(3) span:nth-child(2)')
+            .then(($span) => {
+              beforeScrollValue = $span.text();
+            });
 
-            cy.get('.virtual-scroll-container').scrollTo('top');
+          cy.get('.virtual-scroll-container').scrollTo('top');
 
-            cy.get('.virtual-scroll-container .virtualScrollRow:nth-last-child(3) span:nth-child(2)')
-              .should(($span) => {
-                expect($span.text()).to.not.equal(beforeScrollValue);
-              });
-          });
+          cy.get('.virtual-scroll-container .virtualScrollRow:nth-last-child(3) span:nth-child(2)')
+            .should(($span) => {
+              expect($span.text()).to.not.equal(beforeScrollValue);
+            });
         });
-    });
+      });
+  }));
+
+  it('[STATE MACHINE] should show properly colors for duration column values', () => testForTezedge(() => {
+    cy.wait('@getActionsRequest');
+    cy.wait(200);
+    cy.window()
+      .its('store')
+      .then(store => {
+        store.select('stateMachine').subscribe(stateMachine => {
+          if (stateMachine.actionTable.ids.length) {
+            const yellowDurationAction = stateMachine.actionTable.ids.map(id => stateMachine.actionTable.entities[id]).find(en => en.duration.includes('text-yellow'));
+            const redDurationAction = stateMachine.actionTable.ids.map(id => stateMachine.actionTable.entities[id]).find(en => en.duration.includes('text-red'));
+
+            if (yellowDurationAction) {
+              const y = (yellowDurationAction.id) * 36;
+              cy.get('app-state-machine-table .virtual-scroll-container.state-table').should('be.visible');
+              cy.get('app-state-machine-table .virtual-scroll-container.state-table').scrollTo(0, y);
+              cy.get('.virtual-scroll-container .virtualScrollRow .text-yellow')
+                .then(elements => {
+                  expect(yellowDurationAction.duration).to.contain(elements[0].textContent);
+                });
+            }
+            cy.wait(1000);
+            if (redDurationAction) {
+              cy.get('.virtual-scroll-container').scrollTo(0, (redDurationAction.id) * 36);
+              let spans;
+              cy.get('.virtual-scroll-container .virtualScrollRow .text-red')
+                .should(elements => spans = elements);
+              cy.wrap(redDurationAction.duration).should('include', spans[0].textContent);
+            }
+          }
+        });
+      });
   }));
 
   it('[STATE MACHINE] should stop stream when selecting an action', () => testForTezedge(() => {
@@ -151,12 +149,13 @@ context('STATE MACHINE', () => {
 
               let elementFound;
               cy.get('.virtual-scroll-container .virtualScrollRow:nth-last-child(4)')
-                .trigger('click');
-              cy.wait(1000);
-              cy.get('.ngx-json-viewer .segment-value').should(elements => {
-                elementFound = Array.from(elements).some(elem => elem.textContent.includes(secondLastRecord.originalId));
-              });
-              cy.wait(500).then(() => cy.wrap(elementFound).should('eq', true));
+                .trigger('click')
+                .then(() => {
+                  cy.get('.ngx-json-viewer .segment-value').should(elements => {
+                    elementFound = Array.from(elements).some(elem => elem.textContent.includes(secondLastRecord.originalId));
+                  });
+                  cy.wait(500).then(() => cy.wrap(elementFound).should('eq', true));
+                });
             }
           });
         });
@@ -164,31 +163,54 @@ context('STATE MACHINE', () => {
   }));
 
   it('[STATE MACHINE] should select correct action details tabs', () => testForTezedge(() => {
+    cy.wait('@getActionsRequest');
+    cy.window()
+      .its('store')
+      .then((store) => {
+        store.select('stateMachine').subscribe((sm) => {
+          if (sm.actionTable.ids.length) {
+            cy.get('.virtual-scroll-container .virtualScrollRow:nth-last-child(4)').trigger('click');
+            cy.get('app-state-machine-action-details .payload-view div div:first-child .tab').should('have.length', 3);
+            cy.get('app-state-machine-action-details .payload-view div div:first-child .tab:nth-child(1):not(.active)').should('exist');
+            cy.get('app-state-machine-action-details .payload-view div div:first-child .tab:nth-child(2).active').should('exist');
+            cy.get('app-state-machine-action-details .payload-view div div:first-child .tab:nth-child(3):not(.active)').should('exist');
+
+            cy.get('app-state-machine-action-details .payload-view div div:first-child .tab:nth-child(1)').trigger('click');
+            cy.get('app-state-machine-action-details .payload-view div div:first-child .tab:nth-child(1).active').should('exist');
+            cy.get('app-state-machine-action-details .payload-view div div:first-child .tab:nth-child(2):not(.active)').should('exist');
+            cy.get('app-state-machine-action-details .payload-view div div:first-child .tab:nth-child(3):not(.active)').should('exist');
+
+            cy.get('app-state-machine-action-details .payload-view div div:first-child .tab:nth-child(3)').trigger('click');
+            cy.get('app-state-machine-action-details .payload-view div div:first-child .tab:nth-child(1):not(.active)').should('exist');
+            cy.get('app-state-machine-action-details .payload-view div div:first-child .tab:nth-child(2):not(.active)').should('exist');
+            cy.get('app-state-machine-action-details .payload-view div div:first-child .tab:nth-child(3).active').should('exist');
+          }
+        });
+      });
+  }));
+
+  it('[STATE MACHINE] should show clicked action\'s diffs', () => testForTezedge(() => {
     cy.wait('@getActionsRequest').then(() => {
       cy.window()
         .its('store')
         .then((store) => {
-          store.select('stateMachine').subscribe((sm) => {
-            if (sm.actionTable.ids.length) {
+          store.select('stateMachine').subscribe(stateMachine => {
+            if (stateMachine.actionTable.ids.length) {
               cy.get('.virtual-scroll-container .virtualScrollRow:nth-last-child(4)')
-                .trigger('click')
-                .wait(500)
-                .then(() => {
-                  cy.get('app-state-machine-action-details .payload-view div div:first-child .tab').should('have.length', 3);
-                  cy.wait(500).then(() => cy.get('app-state-machine-action-details .payload-view div div:first-child .tab:nth-child(1):not(.active)').should('exist'));
-                  cy.wait(500).then(() => cy.get('app-state-machine-action-details .payload-view div div:first-child .tab:nth-child(2).active').should('exist'));
-                  cy.wait(500).then(() => cy.get('app-state-machine-action-details .payload-view div div:first-child .tab:nth-child(3):not(.active)').should('exist'));
+                .trigger('click');
+              cy.wait(500).then(() => {
+                cy.get('app-state-machine-action-details .payload-view div div:first-child .tab:nth-child(3)')
+                  .trigger('click');
 
-                  cy.get('app-state-machine-action-details .payload-view div div:first-child .tab:nth-child(1)').trigger('click');
-                  cy.wait(600).then(() => cy.get('app-state-machine-action-details .payload-view div div:first-child .tab:nth-child(1).active').should('exist'));
-                  cy.wait(600).then(() => cy.get('app-state-machine-action-details .payload-view div div:first-child .tab:nth-child(2):not(.active)').should('exist'));
-                  cy.wait(600).then(() => cy.get('app-state-machine-action-details .payload-view div div:first-child .tab:nth-child(3):not(.active)').should('exist'));
-
-                  cy.get('app-state-machine-action-details .payload-view div div:first-child .tab:nth-child(3)').trigger('click');
-                  cy.wait(700).then(() => cy.get('app-state-machine-action-details .payload-view div div:first-child .tab:nth-child(1):not(.active)').should('exist'));
-                  cy.wait(700).then(() => cy.get('app-state-machine-action-details .payload-view div div:first-child .tab:nth-child(2):not(.active)').should('exist'));
-                  cy.wait(700).then(() => cy.get('app-state-machine-action-details .payload-view div div:first-child .tab:nth-child(3).active').should('exist'));
+                cy.get('app-state-machine-action-details ngx-object-diff').should('be.visible');
+                cy.get('app-state-machine-action-details ngx-object-diff del').should('have.length.above', 0);
+                cy.get('app-state-machine-action-details ngx-object-diff ins').should('have.length.above', 0);
+                let oldValueFollowedByIns;
+                cy.get('app-state-machine-action-details ngx-object-diff .old-value').should(elements => {
+                  oldValueFollowedByIns = Array.from(elements).every(elem => elem.nextElementSibling.tagName === 'INS');
                 });
+                cy.wait(500).then(() => cy.wrap(oldValueFollowedByIns).should('eq', true));
+              });
             }
           });
         });
@@ -225,34 +247,6 @@ context('STATE MACHINE', () => {
                       }
                     }
                   });
-              });
-            }
-          });
-        });
-    });
-  }));
-
-  it('[STATE MACHINE] should show clicked action\'s diffs', () => testForTezedge(() => {
-    cy.wait('@getActionsRequest').then(() => {
-      cy.window()
-        .its('store')
-        .then((store) => {
-          store.select('stateMachine').subscribe(stateMachine => {
-            if (stateMachine.actionTable.ids.length) {
-              cy.get('.virtual-scroll-container .virtualScrollRow:nth-last-child(4)')
-                .trigger('click');
-              cy.wait(500).then(() => {
-                cy.get('app-state-machine-action-details .payload-view div div:first-child .tab:nth-child(3)')
-                  .trigger('click');
-
-                cy.get('app-state-machine-action-details ngx-object-diff').should('be.visible');
-                cy.get('app-state-machine-action-details ngx-object-diff del').should('have.length.above', 0);
-                cy.get('app-state-machine-action-details ngx-object-diff ins').should('have.length.above', 0);
-                let oldValueFollowedByIns;
-                cy.get('app-state-machine-action-details ngx-object-diff .old-value').should(elements => {
-                  oldValueFollowedByIns = Array.from(elements).every(elem => elem.nextElementSibling.tagName === 'INS');
-                });
-                cy.wait(500).then(() => cy.wrap(oldValueFollowedByIns).should('eq', true));
               });
             }
           });

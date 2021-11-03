@@ -1,9 +1,7 @@
 context('MEMORY RESOURCES', () => {
   beforeEach(() => {
-    cy.visit(Cypress.config().baseUrl);
-    cy.wait(1000);
-    cy.visit(Cypress.config().baseUrl + '/#/resources/memory', { timeout: 10000 });
     cy.intercept('GET', '/v1/tree*').as('getMemoryResources');
+    cy.visit(Cypress.config().baseUrl + '/#/resources/memory', { timeout: 10000 });
     cy.wait(1000);
   });
 
@@ -70,7 +68,9 @@ context('MEMORY RESOURCES', () => {
             cy.get('table.memory-table', { timeout: 10000 }).should('be.visible');
             cy.get('table.memory-table tbody tr')
               .should((trArray) => {
-                expect(trArray).to.have.length(root.memoryResources.children.length);
+                if (root.memoryResources) {
+                  expect(trArray).to.have.length(root.memoryResources.children.length);
+                }
               });
           });
         });
@@ -87,7 +87,9 @@ context('MEMORY RESOURCES', () => {
             cy.get('.tree-map.observablehq svg', { timeout: 10000 }).should('be.visible');
             cy.get('.tree-map.observablehq svg > g > g')
               .should((trArray) => {
-                expect(trArray).to.have.length(root.memoryResources.children.length);
+                if (root.memoryResources) {
+                  expect(trArray).to.have.length(root.memoryResources.children.length);
+                }
               });
           });
         });
@@ -102,7 +104,7 @@ context('MEMORY RESOURCES', () => {
           store.select('resources').subscribe(root => {
             if (root.memoryResources.children[1].children.length) {
               cy.wait(2000);
-              cy.get('table.memory-table tbody tr:nth-child(2)', { timeout: 10000 }).click();
+              cy.get('table.memory-table tbody tr:nth-child(2)', { timeout: 10000 }).click({ force: true });
               cy.wait(2000);
               root.memoryResources.children[1].children.forEach((child, i) => {
                 cy.get(`table.memory-table tbody tr:nth-child(${i + 1}) td:nth-child(3) div span`, { timeout: 10000 })
@@ -139,7 +141,7 @@ context('MEMORY RESOURCES', () => {
             store.select('resources').subscribe(res => {
               if (res.memoryResources.children[0].children.length) {
                 cy.wait(2000);
-                cy.get('table.memory-table tbody tr:nth-child(1)', { timeout: 10000 }).click();
+                cy.get('table.memory-table tbody tr:nth-child(1)', { timeout: 10000 }).click({ force: true });
                 cy.wait(2000);
 
                 cy.get('.breadcrumbs > :nth-last-child(2)')
@@ -161,7 +163,7 @@ context('MEMORY RESOURCES', () => {
           store.select('resources').subscribe(root => {
             if (root.memoryResources.children[0].children.length) {
               cy.wait(2000);
-              cy.get('table.memory-table tbody tr:nth-child(1)', { timeout: 10000 }).click();
+              cy.get('table.memory-table tbody tr:nth-child(1)', { timeout: 10000 }).click({ force: true });
               cy.wait(2000);
 
               cy.get(`table.memory-table tbody tr:nth-child(1) td:nth-child(3) div span`)
@@ -169,7 +171,7 @@ context('MEMORY RESOURCES', () => {
                   expect(span.text()).to.equal(root.memoryResources.children[0].children[0].name.executableName);
                 });
 
-              cy.get('.breadcrumbs .breadcrumb:nth-child(1)').click();
+              cy.get('.breadcrumbs .breadcrumb:nth-child(1)').click({ force: true });
               cy.wait(1000);
               cy.get(`table.memory-table tbody tr:nth-child(1) td:nth-child(3) div span`)
                 .should(span => {
@@ -190,7 +192,7 @@ context('MEMORY RESOURCES', () => {
             if (root.memoryResources.children[0].children.length) {
               const clicked = root.memoryResources.children[0];
               cy.wait(2000);
-              cy.get('.tree-map.observablehq svg g > g:first-child', { timeout: 10000 }).click();
+              cy.get('.tree-map.observablehq svg g > g:first-child', { timeout: 10000 }).click({ force: true });
               cy.wait(1000);
 
 
@@ -220,24 +222,27 @@ context('MEMORY RESOURCES', () => {
         .its('store')
         .then((store) => {
           store.select('resources').subscribe(root => {
-            if (root.memoryResources.children.length > 1 && root.memoryResources.children[0].children.length) {
+            if (root.memoryResources && root.memoryResources.children.length > 1 && root.memoryResources.children[0].children.length) {
               const hovered = root.memoryResources.children[1];
-              cy.wait(2000);
-              cy.get('.tree-map.observablehq svg g > g:nth-child(2)', { timeout: 10000 }).trigger('mouseover');
-              cy.wait(1000);
+              const isResourceBigEnough = (hovered.value / root.memoryResources.value * 100) > 0;
+              if (isResourceBigEnough) {
+                cy.wait(1000);
+                cy.get('.tree-map.observablehq svg g > g:nth-child(2)', { timeout: 10000 })
+                  .trigger('mouseover', { force: true })
+                  .wait(1000);
 
+                cy.get('.d3-tooltip').should('be.visible');
 
-              cy.get('.d3-tooltip').should('be.visible');
+                cy.get('.d3-tooltip div:first-child')
+                  .should((div) => {
+                    expect(div.text()).to.contains('/' + hovered.name.executableName);
+                  });
 
-              cy.get('.d3-tooltip div:first-child')
-                .should((div) => {
-                  expect(div.text()).to.contains('/' + hovered.name.executableName);
-                });
-
-              cy.get('.d3-tooltip div:nth-child(2)')
-                .should((div) => {
-                  expect(div.text()).to.contains(hovered.children.length + ' children');
-                });
+                cy.get('.d3-tooltip div:nth-child(2)')
+                  .should((div) => {
+                    expect(div.text()).to.contains(hovered.children.length + ' children');
+                  });
+              }
             }
           });
         });
@@ -253,7 +258,7 @@ context('MEMORY RESOURCES', () => {
             if (root.memoryResources.children[0].children.length) {
               const clicked = root.memoryResources.children[0];
               cy.wait(2000);
-              cy.get('.tree-map.observablehq svg g > g:first-child', { timeout: 10000 }).click();
+              cy.get('.tree-map.observablehq svg g > g:first-child', { timeout: 10000 }).click({ force: true });
               cy.wait(1000);
 
               cy.get('.active-resources span')

@@ -39,6 +39,7 @@ export class AppComponent implements OnInit {
     if ((window as any).Cypress || (window as any).playwright) {
       (window as any).store = this.store;
       (window as any).zone = zone;
+      this.store.select(state => state).subscribe(state => (window as any).state = state);
     }
 
     this.isMobile = window.innerWidth < 600;

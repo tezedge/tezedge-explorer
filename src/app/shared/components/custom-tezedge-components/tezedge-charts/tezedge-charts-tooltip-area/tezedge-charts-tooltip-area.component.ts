@@ -34,7 +34,7 @@ import { TezedgeChartsService } from '@shared/components/custom-tezedge-componen
 import {
   MEMPOOL_BLOCK_APPLICATION_DETAILS_LOAD,
   MempoolBlockApplicationDetailsLoad
-} from '@mempool/mempool-block-application/mempool-block-application.actions';
+} from '@mempool/block-application/mempool-block-application/mempool-block-application.actions';
 import { selectActiveNodeNetwork } from '@settings/settings-node.reducer';
 
 @UntilDestroy()

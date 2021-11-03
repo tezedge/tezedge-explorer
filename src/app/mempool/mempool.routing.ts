@@ -1,11 +1,12 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { MempoolComponent } from '@mempool/mempool.component';
-import { MempoolOperationComponent } from '@mempool/mempool-operation/mempool-operation.component';
-import { MempoolEndorsementComponent } from '@mempool/mempool-endorsement/mempool-endorsement.component';
-import { MempoolStatisticsComponent } from '@mempool/mempool-statistics/mempool-statistics.component';
-import { MempoolBlockApplicationComponent } from '@mempool/mempool-block-application/mempool-block-application.component';
-import { MempoolBakingRightsComponent } from '@mempool/mempool-baking-rights/mempool-baking-rights.component';
+import { MempoolOperationComponent } from '@mempool/operation/mempool-operation/mempool-operation.component';
+import { MempoolEndorsementComponent } from '@mempool/endorsements/mempool-endorsement/mempool-endorsement.component';
+import { MempoolStatisticsComponent } from '@mempool/statistics/mempool-statistics/mempool-statistics.component';
+import { MempoolBlockApplicationComponent } from '@mempool/block-application/mempool-block-application/mempool-block-application.component';
+import { MempoolBakingRightsComponent } from '@mempool/baking-rights/mempool-baking-rights/mempool-baking-rights.component';
+import { MempoolPreEndorsementComponent } from '@mempool/preendorsements/mempool-pre-endorsement/mempool-pre-endorsement.component';
 
 const routes: Routes = [
   {
@@ -17,7 +18,7 @@ const routes: Routes = [
         component: MempoolBlockApplicationComponent,
       },
       {
-        path: 'baking',
+        path: 'proposal',
         component: MempoolBakingRightsComponent,
         children: [
           {
@@ -31,12 +32,22 @@ const routes: Routes = [
         component: MempoolEndorsementComponent,
       },
       {
+        path: 'preendorsements',
+        component: MempoolPreEndorsementComponent,
+      },
+      {
         path: 'pending',
         component: MempoolOperationComponent,
       },
       {
         path: 'statistics',
         component: MempoolStatisticsComponent,
+        children: [
+          {
+            path: ':operation',
+            component: MempoolBakingRightsComponent
+          }
+        ]
       },
       {
         path: '',

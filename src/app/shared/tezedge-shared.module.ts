@@ -4,7 +4,6 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 import { ReplaceCharacterPipe } from './pipes/replace-character.pipe';
 import { TimeTransformPipe } from './pipes/time-transform.pipe';
 import { ThousandTransformPipe } from './pipes/thousand-transform.pipe';
-import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { VarDirective } from './directives/var.directive';
 import { VirtualScrollDirective } from './directives/virtual-scroll.directive';
 import { VirtualScrollFromTopDirective } from './directives/virtual-scroll-from-top.directive';
@@ -14,7 +13,6 @@ import { NgxJsonViewerModule } from 'ngx-json-viewer';
 import { ReactiveFormsModule } from '@angular/forms';
 import { NgrxFormDirective } from '@shared/ngrx-form.directive';
 import { ResizeDirective } from '@shared/directives/resize.directive';
-import { CustomJsonParserInterceptorService } from '@core/custom-json-parser.interceptor.service';
 import { NanoTransformPipe } from '@shared/pipes/nano-transform.pipe';
 import { DateTimePipe } from '@shared/pipes/date-time.pipe';
 import { TezedgeChartsModule } from '@shared/components/custom-tezedge-components/tezedge-charts/tezedge-charts.module';
@@ -67,12 +65,7 @@ const DIRECTIVES = [
     ...DIRECTIVES
   ],
   providers: [
-    NanoTransformPipe,
-    {
-      provide: HTTP_INTERCEPTORS,
-      useClass: CustomJsonParserInterceptorService,
-      multi: true
-    },
+    NanoTransformPipe
   ]
 })
 export class TezedgeSharedModule {}

@@ -2,9 +2,10 @@ import { MempoolBlockStepTimes } from '@shared/types/mempool/common/mempool-bloc
 
 export interface MempoolBlockRound {
   blockHash: string;
+  blockLevel: number;
   round: number;
-  blockTimestamp: number;
-  receiveTimestamp: number;
+  blockTimestamp: string;
+  receiveTimestamp: string;
   baker: string;
   bakerPriority: number;
 

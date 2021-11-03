@@ -1,6 +1,7 @@
 context('ERROR POPUP', () => {
   beforeEach(() => {
-    cy.visit(Cypress.config().baseUrl);
+    cy.visit(Cypress.config().baseUrl)
+      .wait(2500);
   });
 
   it('[ERROR POPUP] should render error popup component', () => {
@@ -64,13 +65,19 @@ context('ERROR POPUP', () => {
     cy.window().its('zone').then((zone) => {
       let oneStrike = false;
       cy.window().its('store').then((store) => {
-        zone.run(() => store.dispatch({ type: 'REMOVE_ERRORS' }));
-        store.select('error').subscribe(errorState => {
-          if (!oneStrike) {
-            oneStrike = true;
-            expect(errorState.errors.length).to.equal(0);
-          }
-        });
+        cy.wait(100)
+          .then(() => {
+            zone.run(() => store.dispatch({ type: 'REMOVE_ERRORS' }));
+          })
+          .wait(100)
+          .then(() => {
+            store.select('error').subscribe(errorState => {
+              if (!oneStrike) {
+                oneStrike = true;
+                expect(errorState.errors.length).to.equal(0);
+              }
+            });
+          });
       });
     });
   });

@@ -5,7 +5,7 @@ context('MEMPOOL BAKING RIGHTS', () => {
       .visit(Cypress.config().baseUrl + '/#/mempool/baking', { timeout: 30000 })
       .wait('@getMempoolPeersStats', { timeout: 100000 })
       .wait('@getMempoolApplicationStats', { timeout: 100000 })
-      .wait(500);
+      .wait(1000);
   });
 
   it('[MEMPOOL BAKING RIGHTS] should have status code 200 for get mempool peers stats request', () => {

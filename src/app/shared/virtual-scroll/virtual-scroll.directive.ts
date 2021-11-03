@@ -59,7 +59,7 @@ export class VirtualScrollDirective implements AfterViewInit, OnDestroy, OnChang
     private ngZone: NgZone) {
   }
 
-  ngOnChanges(changes: SimpleChanges) {
+  ngOnChanges(changes: SimpleChanges): void {
     const sameInitialSelectedIndex = changes.initialSelectedIndex === undefined || changes.initialSelectedIndex.currentValue === changes.initialSelectedIndex.previousValue;
     if (changes.vsForOf.previousValue !== undefined && this.isEquivalent(changes.vsForOf.currentValue.entities, changes.vsForOf.previousValue.entities)
       && sameInitialSelectedIndex) {
@@ -68,16 +68,14 @@ export class VirtualScrollDirective implements AfterViewInit, OnDestroy, OnChang
     this.afterReceivingData();
   }
 
-  ngAfterViewInit() {
+  ngAfterViewInit(): void {
     this.initDimensions();
 
     this.ngZone.runOutsideAngular(() => {
       this.scrollListener = this.renderer.listen(this.$viewport, 'scroll', this.onScroll.bind(this));
 
       this.resizeObservable$ = fromEvent(window, 'resize');
-      this.resizeSubscription$ = this.resizeObservable$.pipe(debounceTime(500)).subscribe(event => {
-        this.onResize();
-      });
+      this.resizeSubscription$ = this.resizeObservable$.pipe(debounceTime(500)).subscribe(this.onResize);
     });
   }
 

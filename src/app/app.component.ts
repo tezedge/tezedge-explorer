@@ -36,7 +36,7 @@ export class AppComponent implements OnInit {
   constructor(private store: Store<State>,
               zone: NgZone) {
     // when inside Cypress testing environment, put the store on window so Cypress have access to it
-    if ((window as any).Cypress) {
+    if ((window as any).Cypress || (window as any).playwright) {
       (window as any).store = this.store;
       (window as any).zone = zone;
     }

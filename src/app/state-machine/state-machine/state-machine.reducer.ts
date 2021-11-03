@@ -25,7 +25,6 @@ const initialState: StateMachine = {
     filter: NO_FILTERS,
     stream: false,
     autoScroll: undefined,
-    mostRecentKnownActionId: undefined
   },
   activeAction: null,
   isPlaying: false,
@@ -80,10 +79,7 @@ export function reducer(state: StateMachine = initialState, action: StateMachine
           ...state.actionTable,
           ids,
           entities,
-          lastCursorId: setLastCursorId(action),
-          mostRecentKnownActionId: Number(state.actionTable.mostRecentKnownActionId) >= Number(entities[ids.length - 1].originalId)
-            ? state.actionTable.mostRecentKnownActionId
-            : entities[ids.length - 1].originalId
+          lastCursorId: setLastCursorId(action)
         }
       };
     }

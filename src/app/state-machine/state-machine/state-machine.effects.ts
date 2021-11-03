@@ -21,7 +21,7 @@ export class StateMachineEffects {
     ofType(StateMachineActionTypes.STATE_MACHINE_DIAGRAM_LOAD, StateMachineActionTypes.STATE_MACHINE_CLOSE),
     withLatestFrom(this.store, (action: any, state: ObservedValueOf<Store<State>>) => ({ action, state })),
     switchMap(({ action, state }) =>
-      action.type === StateMachineActionTypes.STATE_MACHINE_CLOSE ? empty() : this.stateMachineService.getStateMachineDiagram()
+      action.type === StateMachineActionTypes.STATE_MACHINE_CLOSE ? empty() : this.stateMachineService.getStateMachineDiagram(state.settingsNode.activeNode.http)
     ),
     map((payload: StateMachineDiagramBlock[]) => ({ type: StateMachineActionTypes.STATE_MACHINE_DIAGRAM_LOAD_SUCCESS, payload })),
   ));
@@ -29,7 +29,7 @@ export class StateMachineEffects {
   stateMachineActionStatisticsLoad$ = createEffect(() => this.actions$.pipe(
     ofType(StateMachineActionTypes.STATE_MACHINE_ACTION_STATISTICS_LOAD),
     withLatestFrom(this.store, (action, state: ObservedValueOf<Store<State>>) => ({ action, state })),
-    switchMap(({ action, state }) => this.stateMachineService.getStateMachineActionStatistics()),
+    switchMap(({ action, state }) => this.stateMachineService.getStateMachineActionStatistics(state.settingsNode.activeNode.http)),
     map((payload: StateMachineActionStatistics) => ({ type: StateMachineActionTypes.STATE_MACHINE_ACTION_STATISTICS_LOAD_SUCCESS, payload })),
   ));
 
@@ -40,7 +40,7 @@ export class StateMachineEffects {
       timer(0, 30000).pipe(
         takeUntil(this.stateMachineDestroy$),
         switchMap(() =>
-          this.stateMachineService.getStateMachineActions(state.stateMachine.actionTable.filter).pipe(
+          this.stateMachineService.getStateMachineActions(state.settingsNode.activeNode.http, state.stateMachine.actionTable.filter).pipe(
             map((payload: StateMachineAction[]) => ({ type: StateMachineActionTypes.STATE_MACHINE_ACTIONS_LOAD_SUCCESS, payload })),
             catchError(error => this.onError(error, 'Actions'))
           )
@@ -53,7 +53,7 @@ export class StateMachineEffects {
     ofType(StateMachineActionTypes.STATE_MACHINE_ACTIONS_FILTER_LOAD),
     withLatestFrom(this.store, (action: any, state: ObservedValueOf<Store<State>>) => ({ action, state })),
     switchMap(({ action, state }) =>
-      this.stateMachineService.getStateMachineActions(state.stateMachine.actionTable.filter).pipe(
+      this.stateMachineService.getStateMachineActions(state.settingsNode.activeNode.http, state.stateMachine.actionTable.filter).pipe(
         map((payload: StateMachineAction[]) => ({ type: StateMachineActionTypes.STATE_MACHINE_ACTIONS_LOAD_SUCCESS, payload })),
         catchError(error => this.onError(error, 'Actions'))
       )

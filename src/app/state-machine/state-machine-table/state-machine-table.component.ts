@@ -15,7 +15,7 @@ import { StateMachine } from '@shared/types/state-machine/state-machine.type';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { delay, of } from 'rxjs';
 import { VIRTUAL_SCROLL_OFFSET_SCROLL_ELEMENTS, VirtualScrollDirective } from '@shared/virtual-scroll/virtual-scroll.directive';
-import { distinctUntilChanged, filter, mergeMap } from 'rxjs/operators';
+import { distinctUntilChanged, filter, mergeMap, tap } from 'rxjs/operators';
 
 @UntilDestroy()
 @Component({
@@ -42,10 +42,10 @@ export class StateMachineTableComponent implements OnInit {
     this.store.select(selectStateMachine)
       .pipe(
         untilDestroyed(this),
+        tap(state => this.stateMachine = state),
         mergeMap(state => of(state).pipe(delay(state.collapsedDiagram !== this.collapsedDiagram ? 250 : 0)))
       )
       .subscribe((state: StateMachine) => {
-        this.stateMachine = state;
         this.pageSize = state.actionTable.filter.limit;
         if (state.collapsedDiagram !== this.collapsedDiagram) {
           this.collapsedDiagram = state.collapsedDiagram;

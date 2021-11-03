@@ -295,23 +295,23 @@ steps:
     depends_on:
       - build
 
-  - name: test-github-version
-    image: cypress/included:6.2.1
-    commands:
-      - cypress run --spec "cypress/integration/github-version/github-version.spec.js"
-    environment:
-      CYPRESS_baseUrl: http://frontend-server:80
-    depends_on:
-      - build
+  # - name: test-github-version
+  #   image: cypress/included:6.2.1
+  #   commands:
+  #     - cypress run --spec "cypress/integration/github-version/github-version.spec.js"
+  #   environment:
+  #     CYPRESS_baseUrl: http://frontend-server:80
+  #   depends_on:
+  #     - build
 
-  - name: test-network
-    image: cypress/included:6.2.1
-    commands:
-      - cypress run --spec "cypress/integration/network/network-action/network.spec.js"
-    environment:
-      CYPRESS_baseUrl: http://frontend-server:80
-    depends_on:
-      - build
+  # - name: test-network
+  #   image: cypress/included:6.2.1
+  #   commands:
+  #     - cypress run --spec "cypress/integration/network/network-action/network.spec.js"
+  #   environment:
+  #     CYPRESS_baseUrl: http://frontend-server:80
+  #   depends_on:
+  #     - build
 
   - name: test-open-api
     image: cypress/included:6.2.1
@@ -331,23 +331,23 @@ steps:
     depends_on:
       - build
 
-  - name: test-storage-resources
-    image: cypress/included:6.2.1
-    commands:
-      - cypress run --spec "cypress/integration/resources/storage-resources.spec.js"
-    environment:
-      CYPRESS_baseUrl: http://frontend-server:80
-    depends_on:
-      - build
+  # - name: test-storage-resources
+  #    image: cypress/included:6.2.1
+  #    commands:
+  #     - cypress run --spec "cypress/integration/resources/storage-resources.spec.js"
+  #   environment:
+  #     CYPRESS_baseUrl: http://frontend-server:80
+  #   depends_on:
+  #     - build
 
-  - name: test-memory-resources
-    image: cypress/included:6.2.1
-    commands:
-      - cypress run --spec "cypress/integration/resources/memory-resources.spec.js"
-    environment:
-      CYPRESS_baseUrl: http://frontend-server:80
-    depends_on:
-      - build
+  # - name: test-memory-resources
+  #    image: cypress/included:6.2.1
+  #   commands:
+  #     - cypress run --spec "cypress/integration/resources/memory-resources.spec.js"
+  #   environment:
+  #     CYPRESS_baseUrl: http://frontend-server:80
+  #    depends_on:
+  #      - build
 
   - name: test-routing
     image: cypress/included:6.2.1
@@ -385,14 +385,14 @@ steps:
     depends_on:
       - build
 
-  - name: test-loading-spinner
-    image: cypress/included:6.2.1
-    commands:
-      - cypress run --spec "cypress/integration/shared/loading-spinner.spec.js"
-    environment:
-      CYPRESS_baseUrl: http://frontend-server:80
-    depends_on:
-      - build
+    # - name: test-loading-spinner
+    #   image: cypress/included:6.2.1
+      #   commands:
+    #     - cypress run --spec "cypress/integration/shared/loading-spinner.spec.js"
+      #  environment:
+    #    CYPRESS_baseUrl: http://frontend-server:80
+      #  depends_on:
+  #    - build
 
   - name: test-storage-action
     image: cypress/included:6.2.1
@@ -412,14 +412,14 @@ steps:
     depends_on:
       - build
 
-  - name: test-state-machine
-    image: cypress/included:6.2.1
-    commands:
-      - cypress run --spec "cypress/integration/state-machine/state-machine.spec.js"
-    environment:
-      CYPRESS_baseUrl: http://frontend-server:80
-    depends_on:
-      - build
+ # - name: test-state-machine
+    #   image: cypress/included:6.2.1
+      #   commands:
+    #  - cypress run --spec "cypress/integration/state-machine/state-machine.spec.js"
+      # environment:
+      # CYPRESS_baseUrl: http://frontend-server:80
+      #  depends_on:
+      # - build
 
   - name: save-test-screenshots
     image: meltwater/drone-cache
@@ -447,7 +447,7 @@ steps:
       - test-app
       - test-logs
       - test-mempool-operations
-      - test-github-version
+   #   - test-github-version
    #   - test-network
       - test-open-api
       - test-system-resources
@@ -457,7 +457,7 @@ steps:
       - test-sandbox
       - test-settings-node
       - test-error-popup
-      - test-loading-spinner
+      #   - test-loading-spinner
       - test-storage-action
       - test-storage-block
   #    - test-state-machine

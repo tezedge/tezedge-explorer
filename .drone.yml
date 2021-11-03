@@ -165,6 +165,46 @@ steps:
     depends_on:
       - build
 
+  - name: save-test-screenshots
+    image: meltwater/drone-cache
+    pull: true
+    environment:
+      SFTP_USERNAME:
+        from_secret: sftp_username
+      SFTP_PASSWORD:
+        from_secret: sftp_password
+      SFTP_AUTH_METHOD: PASSWORD
+      SFTP_HOST: 65.21.119.66
+      SFTP_PORT: 22
+      SFTP_CACHE_ROOT: "/upload"
+    settings:
+      rebuild: true
+      backend: "sftp"
+      cache_key: 'cypress-screenshots-{{ .Build.Number }}'
+      mount:
+        - 'cypress/screenshots/shared' # <- builds a cache from this directory
+    when:
+      status:
+        - success
+        - failure
+    depends_on:
+      - test-app
+      - test-logs
+      - test-github-version
+      - test-network
+      - test-open-api
+      - test-system-resources
+      - test-storage-resources
+      - test-memory-resources
+      - test-routing
+      - test-sandbox
+      - test-settings-node
+      - test-error-popup
+      - test-loading-spinner
+      - test-storage-action
+      - test-storage-block
+      - test-state-machine
+
   - name: publish
     image: plugins/docker
     settings:
@@ -361,6 +401,46 @@ steps:
       CYPRESS_baseUrl: http://frontend-server:80
     depends_on:
       - build
+
+  - name: save-test-screenshots
+    image: meltwater/drone-cache
+    pull: true
+    environment:
+      SFTP_USERNAME:
+        from_secret: sftp_username
+      SFTP_PASSWORD:
+        from_secret: sftp_password
+      SFTP_AUTH_METHOD: PASSWORD
+      SFTP_HOST: 65.21.119.66
+      SFTP_PORT: 22
+      SFTP_CACHE_ROOT: "/upload"
+    settings:
+      rebuild: true
+      backend: "sftp"
+      cache_key: 'cypress-screenshots-{{ .Build.Number }}'
+      mount:
+        - 'cypress/screenshots/shared' # <- builds a cache from this directory
+    when:
+      status:
+        - success
+        - failure
+    depends_on:
+      - test-app
+      - test-logs
+      - test-github-version
+      - test-network
+      - test-open-api
+      - test-system-resources
+      - test-storage-resources
+      - test-memory-resources
+      - test-routing
+      - test-sandbox
+      - test-settings-node
+      - test-error-popup
+      - test-loading-spinner
+      - test-storage-action
+      - test-storage-block
+      - test-state-machine
 
   - name: publish
     image: plugins/docker

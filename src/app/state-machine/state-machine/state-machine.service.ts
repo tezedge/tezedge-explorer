@@ -40,7 +40,7 @@ export class StateMachineService {
         action.type = 'info';
         action.status = 'completed';
       });
-      return actions;
+      return actions.filter(action => action.nextActions.length > 0);
     }));
   }
 

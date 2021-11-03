@@ -46,7 +46,6 @@ import { SmartContractsEffects } from '@smart-contracts/smart-contracts/smart-co
 import { ThemeSwitcherService } from '@core/theme-switcher.service';
 import { MempoolEndorsementEffects } from '@mempool/mempool-endorsement/mempool-endorsement.effects';
 import { MempoolOperationEffects } from '@mempool/mempool-operation/mempool-operation.effects';
-import { MempoolBroadcastEffects } from '@mempool/mempool-broadcast/mempool-broadcast.effects';
 import { MempoolStatisticsEffects } from '@mempool/mempool-statistics/mempool-statistics.effects';
 import { MempoolBlockApplicationEffects } from '@mempool/mempool-block-application/mempool-block-application.effects';
 import { MempoolBakingRightsEffects } from '@mempool/mempool-baking-rights/mempool-baking-rights.effects';
@@ -74,7 +73,6 @@ const effects = [
   MonitoringEffects,
   MempoolEndorsementEffects,
   MempoolOperationEffects,
-  MempoolBroadcastEffects,
   MempoolStatisticsEffects,
   MempoolBlockApplicationEffects,
   MempoolBakingRightsEffects,

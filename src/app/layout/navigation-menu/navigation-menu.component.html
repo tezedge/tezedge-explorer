@@ -30,7 +30,7 @@
          (click)="closeMenu()">
         <span class="menu-content">
           <mat-icon svgIcon="history"
-                    class="icon-18"></mat-icon>
+                    class="icon-18 icon-foreground"></mat-icon>
           <span class="text-nowrap">Synchronization</span>
         </span>
       </a>
@@ -47,8 +47,23 @@
          (click)="closeMenu()">
         <span class="menu-content">
           <mat-icon svgIcon="resources"
-                    class="icon-18"></mat-icon>
+                    class="icon-18 icon-foreground"></mat-icon>
           <span class="text-nowrap">Resources</span>
+        </span>
+      </a>
+
+      <a mat-list-item
+         class="menu-item"
+         href="http://snapshots.tezedge.com"
+         target="_blank"
+         matTooltip="Snapshots"
+         matTooltipPosition="right"
+         [matTooltipDisabled]="!app.sidenav.collapsed"
+         rel="noreferrer">
+        <span class="menu-content">
+          <mat-icon svgIcon="snapshots" fxFlex="18px"
+                    class="icon-18 icon-foreground"></mat-icon>
+          <span class="text-nowrap">Snapshots</span>
         </span>
       </a>
 
@@ -70,7 +85,7 @@
          (click)="closeMenu()">
         <span class="menu-content">
           <mat-icon svgIcon="mempool"
-                    class="icon-18"></mat-icon>
+                    class="icon-18 icon-foreground"></mat-icon>
           <span class="text-nowrap">Mempool</span>
         </span>
       </a>
@@ -87,7 +102,7 @@
          (click)="closeMenu()">
         <span class="menu-content">
           <mat-icon svgIcon="storage"
-                    class="icon-18"></mat-icon>
+                    class="icon-18 icon-foreground"></mat-icon>
           <span class="text-nowrap">Storage</span>
         </span>
       </a>
@@ -104,7 +119,7 @@
          (click)="closeMenu()">
         <span class="menu-content">
           <mat-icon svgIcon="peer"
-                    class="icon-18"></mat-icon>
+                    class="icon-18 icon-foreground"></mat-icon>
           <span class="text-nowrap">Network</span>
         </span>
       </a>
@@ -120,7 +135,7 @@
          (click)="closeMenu()">
         <span class="menu-content">
           <mat-icon svgIcon="endpoints"
-                    class="icon-18"></mat-icon>
+                    class="icon-18 icon-foreground"></mat-icon>
           <span class="text-nowrap">Endpoints</span>
         </span>
       </a>
@@ -137,7 +152,7 @@
          (click)="closeMenu()">
         <span class="menu-content">
           <mat-icon svgIcon="logs"
-                    class="icon-18"></mat-icon>
+                    class="icon-18 icon-foreground"></mat-icon>
           <span class="text-nowrap">Logs</span>
         </span>
       </a>
@@ -154,7 +169,7 @@
          (click)="closeMenu()">
         <span class="menu-content">
           <mat-icon svgIcon="state-machine"
-                    class="icon-18"></mat-icon>
+                    class="icon-18 icon-foreground"></mat-icon>
           <span class="text-nowrap">State</span>
         </span>
       </a>
@@ -170,7 +185,7 @@
          (click)="closeMenu()">
         <span class="menu-content">
           <mat-icon svgIcon="handshake"
-                    class="icon-18"></mat-icon>
+                    class="icon-18 icon-foreground"></mat-icon>
           <span class="text-nowrap">Contracts</span>
         </span>
       </a>
@@ -227,7 +242,7 @@
          rel="noreferrer">
         <span class="menu-content">
           <mat-icon svgIcon="chain-settings"
-                    class="icon-18"></mat-icon>
+                    class="icon-18 icon-foreground"></mat-icon>
           <span class="text-nowrap">Chain</span>
         </span>
       </a>
@@ -244,7 +259,7 @@
          rel="noreferrer">
         <span class="menu-content">
           <mat-icon svgIcon="chain-wallets"
-                    class="icon-18"></mat-icon>
+                    class="icon-18 icon-foreground"></mat-icon>
           <span class="text-nowrap">Wallets</span>
         </span>
       </a>
@@ -281,7 +296,7 @@
          rel="noreferrer">
         <span class="menu-content">
           <mat-icon svgIcon="swagger"
-                    class="icon-18"></mat-icon>
+                    class="icon-18 icon-foreground"></mat-icon>
           <span class="text-nowrap">Open API</span>
         </span>
       </a>
@@ -295,12 +310,12 @@
          rel="noreferrer">
         <span class="menu-content">
           <mat-icon svgIcon="fuzzing"
-                    class="icon-18"></mat-icon>
+                    class="icon-18 icon-foreground"></mat-icon>
           <span class="text-nowrap">Fuzzing</span>
         </span>
       </a>
     </div>
-
+w
     <div class="app-submenu">
       <div class="text-nowrap foreground-4">LEARN</div>
       <a mat-list-item
@@ -313,7 +328,7 @@
          rel="noreferrer">
         <span class="menu-content">
           <mat-icon svgIcon="documentation"
-                    class="icon-18"></mat-icon>
+                    class="icon-18 icon-foreground"></mat-icon>
           <span class="text-nowrap">Documentation</span>
         </span>
       </a>

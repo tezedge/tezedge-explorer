@@ -217,20 +217,22 @@ export class StateMachineDiagramComponent implements OnInit, AfterViewInit {
           id: block.actionKind
         });
       });
-
       this.diagram
         .filter(block => block.nextActions.length)
         .forEach(block => {
           block.nextActions.forEach((next) => {
-            const actionUniqueConnection = block.actionKind + '-' + this.diagram.find(b => b.actionId === next).actionKind;
-            this.g.setEdge(block.actionId, next, { // Connect
-              arrowheadStyle: 'fill: #7f7f82; stroke: none',
-              style: 'stroke: #7f7f82; fill: none',
-              curve: curveBasis,
-              id: 'a' + actionUniqueConnection,
-              labelId: 'l' + actionUniqueConnection,
-              label: ' '
-            });
+            const stateMachineDiagramBlock = this.diagram.find(b => b.actionId === next);
+            if (stateMachineDiagramBlock) {
+              const actionUniqueConnection = block.actionKind + '-' + stateMachineDiagramBlock.actionKind;
+              this.g.setEdge(block.actionId, next, { // Connect
+                arrowheadStyle: 'fill: #7f7f82; stroke: none',
+                style: 'stroke: #7f7f82; fill: none',
+                curve: curveBasis,
+                id: 'a' + actionUniqueConnection,
+                labelId: 'l' + actionUniqueConnection,
+                label: ' '
+              });
+            }
           });
         });
 

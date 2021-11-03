@@ -1,10 +1,26 @@
-context('MEMPOOL BAKING RIGHTS', () => {
-  beforeEach(() => {
-    cy.visit(Cypress.config().baseUrl + '/#/mempool/baking', { timeout: 30000 })
-      .wait(3000);
-  });
+import { testForTezedge } from '../../support';
 
-  it('[MEMPOOL BAKING RIGHTS] should have status code 200 for get mempool peers stats request', () => {
+const beforeBakingRightsTest = (test) => {
+  let tested = false;
+  cy.visit(Cypress.config().baseUrl + '/#/mempool/baking', { timeout: 100000 })
+    .window()
+    .its('store')
+    .then({ timeout: 10500 }, store => {
+      return new Cypress.Promise((resolve) => {
+        setTimeout(() => resolve(), 10000);
+        store.select('mempool').subscribe(mempool => {
+          if (!tested && mempool.bakingRightsState.bakingRights.length > 0) {
+            tested = true;
+            testForTezedge(test);
+            resolve();
+          }
+        });
+      });
+    });
+};
+
+context('MEMPOOL BAKING RIGHTS', () => {
+  it('[MEMPOOL BAKING RIGHTS] should have status code 200 for get mempool peers stats request', () => beforeBakingRightsTest(() => {
     cy.window()
       .its('store')
       .then(store => {
@@ -20,9 +36,9 @@ context('MEMPOOL BAKING RIGHTS', () => {
           });
         });
       });
-  });
+  }));
 
-  it('[MEMPOOL BAKING RIGHTS] should have status code 200 for get mempool application stats request', () => {
+  it('[MEMPOOL BAKING RIGHTS] should have status code 200 for get mempool application stats request', () => beforeBakingRightsTest(() => {
     cy.window()
       .its('store')
       .then(store => {
@@ -38,9 +54,9 @@ context('MEMPOOL BAKING RIGHTS', () => {
           });
         });
       });
-  });
+  }));
 
-  it('[MEMPOOL BAKING RIGHTS] should create rows for the virtual scroll table', () => {
+  it('[MEMPOOL BAKING RIGHTS] should create rows for the virtual scroll table', () => beforeBakingRightsTest(() => {
     cy.window()
       .its('store')
       .then(store => {
@@ -51,9 +67,9 @@ context('MEMPOOL BAKING RIGHTS', () => {
           }
         });
       });
-  });
+  }));
 
-  it('[MEMPOOL BAKING RIGHTS] should show red text for big values for received column', () => {
+  it('[MEMPOOL BAKING RIGHTS] should show red text for big values for received column', () => beforeBakingRightsTest(() => {
     cy.wait(2000)
       .window()
       .its('store')
@@ -67,9 +83,9 @@ context('MEMPOOL BAKING RIGHTS', () => {
           }
         });
       });
-  });
+  }));
 
-  it('[MEMPOOL BAKING RIGHTS] should show yellow text for big values for received column', () => {
+  it('[MEMPOOL BAKING RIGHTS] should show yellow text for big values for received column', () => beforeBakingRightsTest(() => {
     cy.wait(2000)
       .window()
       .its('store')
@@ -84,9 +100,9 @@ context('MEMPOOL BAKING RIGHTS', () => {
           }
         });
       });
-  });
+  }));
 
-  it('[MEMPOOL BAKING RIGHTS] should create histogram for the same number of nodes as in the table', () => {
+  it('[MEMPOOL BAKING RIGHTS] should create histogram for the same number of nodes as in the table', () => beforeBakingRightsTest(() => {
     cy.window()
       .its('store')
       .then(store => {
@@ -99,9 +115,9 @@ context('MEMPOOL BAKING RIGHTS', () => {
           }
         });
       });
-  });
+  }));
 
-  it('[MEMPOOL BAKING RIGHTS] should use same block as in current block find in the toolbar', () => {
+  it('[MEMPOOL BAKING RIGHTS] should use same block as in current block find in the toolbar', () => beforeBakingRightsTest(() => {
     cy.window()
       .its('store')
       .then(store => {
@@ -115,5 +131,5 @@ context('MEMPOOL BAKING RIGHTS', () => {
           }
         });
       });
-  });
+  }));
 });

@@ -1,6 +1,5 @@
-const { testForTezedge, disableFeatures } = require('../../support');
+const { testForTezedge } = require('../../support');
 
-const featureNames = ['resources/system', 'resources/storage', 'resources/memory', 'state', 'logs', 'network', 'storage', 'smart-contracts'];
 
 context('LOADING SPINNER', () => {
   beforeEach(() => {
@@ -23,8 +22,8 @@ context('LOADING SPINNER', () => {
             zone.run(() => store.dispatch({
               type: 'NETWORK_ACTION_LOAD', payload: { filter: '' }
             }));
-            cy.wait(1000)
-              .get('app-loading-spinner .spinner', { timeout: 100 }).should('exist')
+            cy.wait(50)
+              .get('body app-root app-loading-spinner .spinner', { timeout: 100 }).should('exist')
               .then(div => {
                 expect(div.text()).to.equal('Loading network...');
               })
@@ -43,8 +42,8 @@ context('LOADING SPINNER', () => {
             zone.run(() => store.dispatch({
               type: 'LOGS_ACTION_LOAD', payload: { filter: '' }
             }));
-            cy.wait(1000)
-              .get('app-loading-spinner .spinner', { timeout: 100 }).should('exist')
+            cy.wait(50)
+              .get('body app-root app-loading-spinner .spinner', { timeout: 100 }).should('exist')
               .then(div => {
                 expect(div.text()).to.equal('Loading logs...');
               })
@@ -61,8 +60,8 @@ context('LOADING SPINNER', () => {
           .its('store')
           .then(store => {
             zone.run(() => store.dispatch({ type: 'STORAGE_BLOCK_START', payload: { limit: 400 } }));
-            cy.wait(500)
-              .get('app-loading-spinner .spinner', { timeout: 100 }).should('exist')
+            cy.wait(50)
+              .get('body app-root app-loading-spinner .spinner', { timeout: 100 }).should('exist')
               .then(div => {
                 expect(div.text()).to.equal('Loading storage blocks...');
               })
@@ -79,8 +78,8 @@ context('LOADING SPINNER', () => {
           .its('store')
           .then(store => {
             zone.run(() => store.dispatch({ type: 'SYSTEM_RESOURCES_LOAD' }));
-            cy.wait(1000)
-              .get('app-loading-spinner .spinner', { timeout: 100 }).should('exist')
+            cy.wait(50)
+              .get('body app-root app-loading-spinner .spinner', { timeout: 100 }).should('exist')
               .then(div => {
                 expect(div.text()).to.equal('Loading system resources...');
               })
@@ -97,8 +96,8 @@ context('LOADING SPINNER', () => {
           .its('store')
           .then(store => {
             zone.run(() => store.dispatch({ type: 'STORAGE_RESOURCES_LOAD' }));
-            cy.wait(1000)
-              .get('app-loading-spinner .spinner', { timeout: 100 }).should('exist')
+            cy.wait(50)
+              .get('body app-root app-loading-spinner .spinner', { timeout: 100 }).should('exist')
               .then(div => {
                 expect(div.text()).to.equal('Loading storage resources...');
               })
@@ -115,8 +114,8 @@ context('LOADING SPINNER', () => {
           .its('store')
           .then(store => {
             zone.run(() => store.dispatch({ type: 'MEMORY_RESOURCES_LOAD' }));
-            cy.wait(1000)
-              .get('app-loading-spinner .spinner', { timeout: 100 }).should('exist')
+            cy.wait(50)
+              .get('body app-root app-loading-spinner .spinner', { timeout: 100 }).should('exist')
               .then(div => {
                 expect(div.text()).to.equal('Loading memory resources...');
               })
@@ -133,8 +132,8 @@ context('LOADING SPINNER', () => {
           .its('store')
           .then(store => {
             zone.run(() => store.dispatch({ type: 'STATE_MACHINE_ACTION_STATISTICS_LOAD' }));
-            cy.wait(400)
-              .get('app-loading-spinner .spinner', { timeout: 100 }).should('exist')
+            cy.wait(50)
+              .get('body app-root app-loading-spinner .spinner', { timeout: 100 }).should('exist')
               .then(div => {
                 expect(div.text()).to.equal('Loading state machine action statistics...');
               })
@@ -148,7 +147,7 @@ context('LOADING SPINNER', () => {
       .visit(Cypress.config().baseUrl + '/#/resources/system')
       .wait('@getSystemResources', { timeout: 100000 })
       .wait(1000)
-      .get('app-loading-spinner .spinner', { timeout: 30000 }).should('not.exist')
+      .get('body app-root app-loading-spinner .spinner', { timeout: 30000 }).should('not.exist')
       .get('app-loading-spinner div div mat-spinner', { timeout: 30000 }).should('not.exist');
   });
 });

@@ -45,6 +45,10 @@ button {
   font-family: inherit;
 }
 
+.flip {
+  transform: rotate(180deg);
+}
+
 .mat-drawer-container.mat-sidenav-container {
   background-color: $background-base;
 

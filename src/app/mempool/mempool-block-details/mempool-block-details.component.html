@@ -13,7 +13,7 @@
         </div>
       </span>
     </div>
-    <div class="d-flex flex-row align-center">
+    <div class="d-flex flex-row align-center" *ngIf="detail.baker">
       Baker:&nbsp;<span class="truncate">{{ detail.baker }}</span>
       <div (click)="copyHashToClipboard(detail.baker)" [cdkCopyToClipboard]="detail.baker"
            class="copy-hash border-rad-4 margin-left-5 margin-right-5 pointer"
@@ -21,7 +21,7 @@
         <mat-icon class="icon-foreground-7 icon-14" svgIcon="copy"></mat-icon>
       </div>
     </div>
-    <div>Baker priority:
+    <div *ngIf="detail.bakerPriority">Baker priority:
       <span>{{ detail.bakerPriority }}</span>
     </div>
   </div>

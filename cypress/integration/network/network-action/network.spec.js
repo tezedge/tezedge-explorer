@@ -186,34 +186,4 @@ context('NETWORK', () => {
         });
       });
   });
-
-  it('[NETWORK] should search network by time', () => {
-    let placeholder;
-    cy.get('.custom-bottom-form-field input')
-      .invoke('attr', 'placeholder')
-      .then(value => {
-        placeholder = value.replace('e.g: ', '');
-      })
-      .wait(1000)
-      .then(() => {
-
-        const minutes = placeholder.slice(3, 5);
-        const twoDigit = (val) => val < 10 ? `0${val}` : val;
-
-        if (Number(minutes) > 1) {
-          const inputValue = placeholder.replace(':' + minutes + ':', ':' + twoDigit(Number(minutes) - 1) + ':');
-
-          cy.get('.custom-bottom-form-field input').type(inputValue)
-            .wait(1000)
-            .window()
-            .its('store')
-            .then((store) => {
-              store.select('networkAction').subscribe((logs) => {
-                expect(logs.stream).to.be.false;
-                expect(logs.timestamp).to.not.be.undefined;
-              });
-            });
-        }
-      });
-  });
 });

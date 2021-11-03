@@ -81,24 +81,6 @@ context('ROUTING', () => {
     });
   });
 
-  it('[ROUTING] guard should block routing to storage action page if the feature is missing', () => {
-    cy.window().its('zone').then(zone => {
-      cy.window()
-        .its('store')
-        .then(store => {
-          const featureNames = ['storage-action'];
-          disableFeatures(store, zone, featureNames);
-
-          cy.wait(1000).then(() => {
-            store.select('settingsNode').subscribe(() => {
-              cy.visit(Cypress.config().baseUrl + '/#/storage/123456', { timeout: 2000 })
-                .url().should('not.include', '/storage/123456');
-            });
-          });
-        });
-    });
-  });
-
   it('[ROUTING] guard should block routing to logs page if the feature is missing', () => {
     cy.window().its('zone').then(zone => {
       cy.window()

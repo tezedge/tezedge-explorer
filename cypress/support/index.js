@@ -31,6 +31,20 @@ export const beforeEachForTezedge = (beforeEachBlock) => {
     });
 };
 
+export const testIfFeature = (feature, test) => {
+  cy.visit(Cypress.config().baseUrl)
+    .wait(100)
+    .window()
+    .its('store')
+    .then(store => {
+      store.select('settingsNode').subscribe(settingsNode => {
+        if (settingsNode.activeNode.features.some(f => f.name === feature)) {
+          test();
+        }
+      });
+    });
+};
+
 export const disableFeatures = (store, zone, featureNames) => {
   store.select('settingsNode').subscribe(settingsNode => {
     if (settingsNode.activeNode?.features.some(f => featureNames.includes(f.name))) {

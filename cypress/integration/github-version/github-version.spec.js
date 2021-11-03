@@ -95,7 +95,7 @@ context('GITHUB VERSION', () => {
       .get('.settings-node-select mat-select-trigger span')
       .then(() => {
         if (explorerCommit) {
-          cy.get('app-github-version')
+          cy.get('app-github-version .node-tag-number')
             .trigger('click')
             .wait(1000)
             .get('#explorerCommit')

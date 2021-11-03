@@ -1,0 +1,36 @@
+@import 'variables';
+
+.debugger-inspect {
+  .square-button {
+    margin-right: 5px;
+    height: 24px;
+    width: 24px;
+    background: $foreground-1;
+    border-radius: 2px;
+    border: none;
+
+    &:hover:not([disabled]) {
+      background-color: $foreground-2;
+    }
+
+    &[disabled] {
+      opacity: 0.5;
+    }
+  }
+
+  .stack-representation {
+    background-color: $foreground-1;
+
+    .stack-row {
+      display: grid;
+      grid-template-columns: 20px 0.75fr 0.25fr;
+      background-color: $table-hovered-row-background;
+      margin-bottom: 1px;
+      height: 24px;
+
+      span {
+        line-height: 24px;
+      }
+    }
+  }
+}

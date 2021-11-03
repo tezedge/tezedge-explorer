@@ -1,0 +1,88 @@
+<div class="debugger-inspect h-100 f-12 flex-column">
+  <div class="d-flex align-center foreground-4 f-12 padding-left-10 padding-bottom-10">
+    <button mat-icon-button class="square-button d-flex align-center flex-center"
+            matTooltip="Start debugger" [disabled]="!activeContract || (!!activeContract && !!debugConfig.currentStep)"
+            (click)="startDebugger()">
+      <mat-icon [class.icon-foreground-4]="!activeContract || (!!activeContract && !!debugConfig.currentStep)"
+                class="icon-12 d-flex" svgIcon="play"></mat-icon>
+    </button>
+    <button mat-icon-button class="square-button d-flex align-center flex-center"
+            matTooltip="Stop debugger" [disabled]="!debugConfig.currentStep"
+            (click)="stopDebugger()">
+      <mat-icon [class.icon-foreground-4]="!debugConfig.currentStep"
+                class="icon-12 d-flex" svgIcon="stop"></mat-icon>
+    </button>
+    <span class="margin-left-10 margin-right-5">Steps</span>
+    <button mat-icon-button class="square-button d-flex align-center flex-center"
+            matTooltip="Step back" [disabled]="!debugConfig.previousStep"
+            (click)="step(debugConfig.previousStep)">
+      <mat-icon [class.icon-foreground-4]="!debugConfig.previousStep"
+                class="icon-8 d-flex" svgIcon="less-than"></mat-icon>
+    </button>
+    <button mat-icon-button class="square-button d-flex align-center flex-center"
+            matTooltip="Next step" [disabled]="!debugConfig.nextStep"
+            (click)="step(debugConfig.nextStep)">
+      <mat-icon [class.icon-foreground-4]="!debugConfig.nextStep"
+                class="icon-8 d-flex" svgIcon="greater-than"></mat-icon>
+    </button>
+    <button mat-icon-button class="square-button d-flex align-center flex-center"
+            matTooltip="Step over" [disabled]="!debugConfig.stepOver"
+            (click)="step(debugConfig.stepOver)">
+      <mat-icon [class.icon-foreground-4]="!debugConfig.stepOver"
+                class="icon-12 d-flex icon-foreground" svgIcon="arrow-over"></mat-icon>
+    </button>
+    <button mat-icon-button class="square-button d-flex align-center flex-center"
+            matTooltip="Step into" [disabled]="!debugConfig.stepIn"
+            (click)="step(debugConfig.stepIn)">
+      <mat-icon [class.icon-foreground-4]="!debugConfig.stepIn"
+                class="icon-12 d-flex" svgIcon="arrow-bottom"></mat-icon>
+    </button>
+    <button mat-icon-button class="square-button d-flex align-center flex-center"
+            matTooltip="Step out" [disabled]="!debugConfig.stepOut"
+            (click)="step(debugConfig.stepOut)">
+      <mat-icon [class.icon-foreground-4]="!debugConfig.stepOut"
+                class="icon-12 d-flex" svgIcon="level-up"></mat-icon>
+    </button>
+    <!--              this when we add breakpoints -->
+    <!--              <span class="margin-left-10 margin-right-5">Breakp.</span>-->
+    <!--              <button mat-icon-button class="square-button d-flex align-center flex-center"-->
+    <!--                      matTooltip="Jump to previous breakpoint">-->
+    <!--                <mat-icon svgIcon="arrow-left-stop" class="icon-12 d-flex"></mat-icon>-->
+    <!--              </button>-->
+    <!--              <button mat-icon-button class="square-button d-flex align-center flex-center"-->
+    <!--                      matTooltip="Jump to next breakpoint">-->
+    <!--                <mat-icon svgIcon="arrow-right-stop" class="icon-12 d-flex"></mat-icon>-->
+    <!--              </button>-->
+    <span *ngIf="debugConfig.currentStep"
+          class="margin-left-10 margin-right-5 d-flex align-center">
+      <mat-icon svgIcon="gas" class="icon-foreground-7 icon-12 margin-right-5"></mat-icon>
+      <span class="foreground-4"
+            [class.text-yellow]="debugConfig.currentStep.gas > 50 && debugConfig.currentStep.gas < 100"
+            [class.text-red]="debugConfig.currentStep.gas > 100">{{ debugConfig.currentStep.gas | spaceNumber }}</span>
+    </span>
+  </div>
+  <div *ngIf="debugConfig.currentStep" class="padding-horizontal-10 padding-bottom-10 flex-row">
+    <div fxFlex="50" class="stack-representation border-rad-2 padding-5 margin-right-5">
+      <span class="foreground-7">Before</span>
+      <div class="margin-top-5 border-rad-2">
+        <div class="stack-row padding-left-8" [matTooltip]="debugConfig.previousStep?.stack[n]?.item"
+             *ngFor="let n of [0,1,2]">
+          <span class="foreground-7">{{ n }}</span>
+          <span class="truncate foreground">{{ debugConfig.previousStep?.stack[n]?.item }}</span>
+          <span class="truncate foreground-7">{{ debugConfig.previousStep?.stack[n]?.annot }}</span>
+        </div>
+      </div>
+    </div>
+    <div fxFlex="50" class="stack-representation border-rad-2 padding-5 margin-left-5">
+      <span class="foreground-7">After</span>
+      <div class="margin-top-5 border-rad-2">
+        <div class="stack-row padding-left-8" [matTooltip]="debugConfig.currentStep?.stack[n]?.item"
+             *ngFor="let n of [0,1,2]">
+          <span class="foreground-7">{{ n }}</span>
+          <span class="truncate foreground">{{ debugConfig.currentStep?.stack[n]?.item }}</span>
+          <span class="truncate foreground-7">{{ debugConfig.currentStep?.stack[n]?.annot }}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

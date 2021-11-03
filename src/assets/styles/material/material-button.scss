@@ -1,3 +1,5 @@
+@import 'variables';
+
 button {
   border: none;
 
@@ -15,5 +17,18 @@ button {
     .mat-icon {
       line-height: initial !important;
     }
+  }
+}
+
+.primary-button {
+  background-color: $foreground-1;
+  height: 24px;
+
+  &:hover:not([disabled]) {
+    background-color: $foreground-2;
+  }
+
+  &[disabled] {
+    opacity: 0.5;
   }
 }

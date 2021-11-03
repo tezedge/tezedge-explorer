@@ -21,11 +21,12 @@ const initialState: SmartContractsState = {
   gasTrace: [],
   isDebugging: false,
   debugConfig: {
-    currentStep: undefined,
-    stepIn: undefined,
-    stepOut: undefined,
-    nextStep: undefined,
-    previousStep: undefined
+    currentStep: null,
+    stepIn: null,
+    stepOut: null,
+    nextStep: null,
+    stepOver: null,
+    previousStep: null
   },
   result: undefined,
   blockLevel: 0,
@@ -122,11 +123,12 @@ export function reducer(state: SmartContractsState = initialState, action: Smart
         ...state,
         isDebugging: false,
         debugConfig: {
-          previousStep: undefined,
-          currentStep: undefined,
-          nextStep: undefined,
-          stepIn: undefined,
-          stepOut: undefined
+          previousStep: null,
+          currentStep: null,
+          nextStep: null,
+          stepOver: null,
+          stepIn: null,
+          stepOut: null
         }
       };
     }
@@ -157,7 +159,7 @@ export function reducer(state: SmartContractsState = initialState, action: Smart
       const currentStepIndexInTrace = state.trace.findIndex(t => t === currentStep);
       const previousStep = currentStepIndexInTrace !== -1 ? state.trace[currentStepIndexInTrace - 1] : undefined;
 
-      const nextStep = state.trace.slice(currentStepIndexInTrace).find(
+      const stepOver = state.trace.slice(currentStepIndexInTrace).find(
         t => t.start.point > currentStep.stop.point
           || t.start.point < currentStep.start.point && t.stop.point < currentStep.start.point
       );
@@ -173,12 +175,14 @@ export function reducer(state: SmartContractsState = initialState, action: Smart
       );
       const outsideStepStartPoint = Math.max(...stepsOutsideCurrentStep.map(t => t.start.point));
       const stepOut = stepsOutsideCurrentStep.find(t => t.start.point === outsideStepStartPoint);
+      const nextStep = state.trace[currentStepIndexInTrace + 1] ?? stepIn;
 
       return {
         ...state,
         debugConfig: {
           currentStep,
           previousStep,
+          stepOver,
           nextStep,
           stepIn,
           stepOut

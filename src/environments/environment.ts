@@ -57,7 +57,7 @@ const PRECHECKER = {
     { name: 'network' },
     { name: 'logs' },
     { name: 'open-api' },
-    { name: 'state' },
+    // { name: 'state' },
     { name: 'contracts' },
   ]
 };
@@ -195,12 +195,34 @@ const STORAGE = {
     { name: 'state' }
   ]
 };
+const MEMPOOL = {
+  id: 'tezedge',
+  type: 'tezedge',
+  name: 'tezedge.mempool.tezedge.com',
+  http: 'http://mempool.tezedge.com:18732',
+  p2p_port: 9732,
+  features: [
+    { name: 'ws', url: 'ws://mempool.tezedge.com:4927' },
+    { name: 'debugger', url: 'http://mempool.tezedge.com:17732' },
+    { name: 'monitoring' },
+    { name: 'resources/system', monitoringUrl: 'http://mempool.tezedge.com:38732/resources/tezedge' },
+    { name: 'resources/memory', memoryProfilerUrl: 'http://mempool.tezedge.com:17832' },
+    { name: 'resources/storage' },
+    { name: 'mempool' },
+    { name: 'storage' },
+    { name: 'network' },
+    { name: 'logs' },
+    { name: 'state' },
+    { name: 'contracts' }
+  ]
+};
 
 export const environment = {
   production: false,
   api: [
     // DEVELOP,
     // MASTER,
+    // MEMPOOL,
     // TRACE,
     PRECHECKER,
     // DEBUG,

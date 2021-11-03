@@ -1,7 +1,7 @@
 context('LOGS', () => {
   beforeEach(() => {
     cy.intercept('GET', '/v2/log?*').as('getLogRequest')
-      .visit(Cypress.config().baseUrl + '/#/logs', { timeout: 20000 })
+      .visit(Cypress.config().baseUrl + '/#/logs', { timeout: 30000 })
       .wait('@getLogRequest', { timeout: 30000 })
       .wait(500);
   });

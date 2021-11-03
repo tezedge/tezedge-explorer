@@ -6,6 +6,10 @@ context('APP', () => {
       .wait(1000);
   });
 
+  it('[APP] should have correct title in the browser tab', () => {
+    cy.title().should('eq', 'TezEdge - Tezos Explorer');
+  });
+
   it('[APP] should have status code 200 for get node header request', () => {
     cy.window()
       .its('store')

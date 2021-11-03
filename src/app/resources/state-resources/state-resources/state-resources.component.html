@@ -1,0 +1,53 @@
+<div class="d-flex flex-column h-100 w-100"
+     *ngIf="state">
+  <div class="storage-toolbar flex-row">
+    <div class="toolbar-left border-bottom flex-grow d-flex flex-wrap">
+      <app-state-resources-filters></app-state-resources-filters>
+    </div>
+    <div class="toolbar-right pointer border-bottom d-flex flex-between align-center foreground border-left padding-10"
+         [class.expanded]="expandedPanel"
+         (click)="togglePanel()">
+      <span>Overview</span>
+      <mat-icon svgIcon="arrow-expanded" class="icon-14 icon-foreground-4"></mat-icon>
+    </div>
+  </div>
+  <div class="storage-container p-relative d-flex overflow-hidden"
+       fxFlex="calc(100% - 35px)"
+       [class.expanded]="expandedPanel">
+    <div class="operation-list overflow-y-auto"
+         fxLayout="column"
+         fxLayoutAlign="start stretch"
+         fxLayoutGap="10px">
+
+      <div *ngFor="let group of state.filteredGroups; let i=index; trackBy: trackGroups"
+           class="operation"
+           fxLayout="column"
+           fxLayoutAlign="start stretch">
+        <div fxFlex="28px" class="slice-header">
+          <span class="text-uppercase">{{ group.groupName | replaceCharacter: '_': ' '}}</span>
+          <span class="total-time">
+            {{ group.totalTime | timeTransform: false: false: true }}
+            <span class="foreground-4"> total duration</span>
+            &nbsp;·&nbsp;
+            {{ group.meanTime | timeTransform: false: false: true }}
+            <span class="foreground-4"> mean duration</span>
+            &nbsp;·&nbsp;
+            {{ group.count | thousandTransform }}
+            <span class="foreground-4"> call{{ group.count !== 1 ? 's' : '' }}</span>
+          </span>
+        </div>
+        <div fxFlex="grow">
+          <div class="graph-list flex-row">
+            <app-state-resources-mini-graph *ngFor="let action of group.actions; let i=index"
+                                            [graphName]="action.actionName"
+                                            [graphData]="action"
+                                            [isMainGraph]="i === 0"></app-state-resources-mini-graph>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="side-panel overflow-y-auto p-absolute h-100 padding-10 border-left">
+      <app-state-resources-overview [state]="state"></app-state-resources-overview>
+    </div>
+  </div>
+</div>

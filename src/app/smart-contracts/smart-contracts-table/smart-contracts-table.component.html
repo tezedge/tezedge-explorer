@@ -8,9 +8,10 @@
     <div fxFlex="calc(100% - 36px)" class="f-14 overflow-auto border-top border-right">
       <cdk-virtual-scroll-viewport class="h-100 overflow-y-auto overflow-x-hidden"
                                    itemSize="36">
-        <div *cdkVirtualFor="let contract of contracts"
+        <div *cdkVirtualFor="let contract of contracts; let i=index"
              (click)="selectContract(contract)"
              [class.active]="activeContract?.id === contract.id"
+             [class.row-even]="i % 2 === 0"
              (mouseenter)="openDetailsOverlay(contract, $event)"
              (mouseleave)="detachOverlay()"
              class="row pointer foreground">

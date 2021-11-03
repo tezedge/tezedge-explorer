@@ -22,6 +22,7 @@ export class TezedgeChartsCircleSeriesComponent extends CircleSeriesComponent {
   readonly radius = 3.5;
 
   @Input() circleAtTheEnd: boolean;
+  @Input() animations: boolean;
 
   endOfLineCircle: any;
 

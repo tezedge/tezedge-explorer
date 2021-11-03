@@ -27,18 +27,8 @@
          (select)="onClick(circle.data)"
          (activate)="activateCircle()"
          (deactivate)="deactivateCircle()"/>
-  <svg:g ngx-charts-circle
-         class="circle"
-         [cx]="endOfLineCircle.cx"
-         [cy]="endOfLineCircle.cy"
-         [r]="radius"
-         [fill]="endOfLineCircle.color"
-         [class.active]="true"
-         [pointerEvents]="'none'"
-         [data]="endOfLineCircle.value"
-         [classNames]="endOfLineCircle.classNames"/>
 </svg:g>
-<svg:g *ngIf="endOfLineCircle">
+<svg:g *ngIf="circleAtTheEnd && endOfLineCircle">
   <svg:g ngx-charts-circle
          class="circle"
          [style.cursor]="'context-menu'"

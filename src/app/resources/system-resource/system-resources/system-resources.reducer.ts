@@ -3,7 +3,7 @@ import {
   SYSTEM_RESOURCES_LOAD_SUCCESS,
   SYSTEM_RESOURCES_SORT,
   SystemResourcesActions
-} from '@resources/system-resources/system-resources.actions';
+} from '@resources/system-resource/system-resources/system-resources.actions';
 import { State } from '@app/app.index';
 import { SystemResourcesPanel, SystemResourcesSortBy } from '@shared/types/resources/system/system-resources-panel.type';
 import { SystemResourceCategory } from '@shared/types/resources/system/system-resource-category.type';

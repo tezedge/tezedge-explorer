@@ -57,6 +57,24 @@ app-tezedge-line-chart {
   }
 }
 
+.horizontal-marker,
+.vertical-marker {
+}
+
+.horizontal-marker {
+  opacity: 1;
+  fill: $foreground-7;
+}
+
+.vertical-marker {
+  stroke: $foreground;
+  stroke-width: 1;
+  stroke-dasharray: 5 5;
+  stroke-dashoffset: 0;
+  opacity: 0.7;
+  fill: none;
+}
+
 .treemap-viz text {
   text-anchor: start !important;
 }

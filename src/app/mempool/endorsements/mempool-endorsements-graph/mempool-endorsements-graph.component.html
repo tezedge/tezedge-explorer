@@ -1,8 +1,64 @@
-<div class="border border-rad-2 margin-bottom-10">
 
-<div class="padding-10 d-flex flex-row flex-between text-uppercase"
-       [class.hidden]="!operationsLength">
-    <div class="font-500">Received hash time count histogram - {{ operationsLength }} bakers</div>
+<div class="graph border border-rad-2 margin-bottom-10 flex-column">
+
+  <div class="padding-10 flex-row flex-between text-uppercase font-500 border-bottom" fxFlex="34px">
+    <div>Slots in time</div>
+    <div>{{ chartLines[0].series[chartLines[0].series.length - 1].slots }} slots</div>
   </div>
-  <app-mempool-count-graph [times]="times" [columnStep]="2"></app-mempool-count-graph>
+  <div fxFlex="calc(100% - 34px)" class="graph-container">
+    <div class="h-100">
+      <app-tezedge-line-chart *ngIf="chartLines"
+                              [animations]="true"
+                              [circleAtTheEnd]="false"
+                              [curve]="curve"
+                              [disableHoverGradient]="false"
+                              [disableRedirection]="true"
+                              [gradient]="true"
+                              [graphType]="'block-application'"
+                              [results]="chartLines"
+                              [rotateXAxisTicks]="false"
+                              [scheme]="{ domain: ['#46afe3'] }"
+                              [startWithYGridLine]="false"
+                              [yAxisTicks]="[0, 25, 50, 75, 100]"
+                              [yScaleMin]="0"
+                              [yScaleMax]="100"
+                              [xAxisTickFormatting]="xAxisTickFormatting"
+                              [yAxisTickFormatting]="yAxisTickFormatting"
+                              [xAxisTicks]="xTicksValues"
+                              [horizontalMarker]="66.67"
+                              [verticalMarkerIndex]="indexOfQuorumEndorsement"
+                              [xAxis]="true"
+                              [yAxis]="true">
+        <ng-template #seriesTooltipTemplate
+                     let-model="model">
+          <ng-container
+            *ngTemplateOutlet="customSeriesTooltipTemplate; context: { model: model }"></ng-container>
+        </ng-template>
+      </app-tezedge-line-chart>
+    </div>
+  </div>
 </div>
+
+<div class="border border-rad-2 margin-bottom-10">
+  <div class="padding-10 flex-row flex-between text-uppercase font-500">
+    <div>Received hash time count histogram</div>
+    <div>{{ bakerTimes.length }} bakers</div>
+  </div>
+  <app-mempool-count-graph [columnStep]="2"
+                           [times]="bakerTimes"
+                           [xAxisMarker]="quorumTime"></app-mempool-count-graph>
+</div>
+
+<ng-template #customSeriesTooltipTemplate let-model="model">
+  <div class="ngx-series-tooltip foreground" fxLayout="column">
+    <div class="tooltip-title f-12 border-bottom">Time:
+      <span class="foreground-7">{{ model[0].step }}</span>
+    </div>
+    <div class="tooltip-title f-12 border-bottom">Slots:
+      <span class="foreground-7">{{ model[0].slots }}</span>
+    </div>
+    <div class="tooltip-title f-12">Percentage:
+      <span class="foreground-7">{{ model[0].value | number: '1.1-1' }}%</span>
+    </div>
+  </div>
+</ng-template>

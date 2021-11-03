@@ -12,7 +12,8 @@ import { Observable } from 'rxjs';
 const AVAILABLE_TABS = [
   { title: 'System overview', link: 'system' },
   { title: 'Storage', link: 'storage' },
-  { title: 'Memory', link: 'memory' }
+  { title: 'Memory', link: 'memory' },
+  { title: 'State', link: 'state' },
 ];
 
 @UntilDestroy()

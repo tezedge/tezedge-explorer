@@ -13,46 +13,55 @@
     </div>
     <div class="foreground-7 time">{{ elapsedTime$ | async | number: '1.1' }}s</div>
   </div>
-  <app-mempool-endorsements-graph></app-mempool-endorsements-graph>
-  <div *ngIf="statistics$ | async as statistics" class="overflow-auto">
-    <div class="d-flex flex-column border-rad-2 border padding-10">
-      <div class="foreground text-uppercase margin-bottom-10 flex-row flex-between">
-        <div class="flex-row align-center">
-          <div>Quorum</div>
-          <mat-icon [svgIcon]="statistics.quorum >= 66.67 ? 'check-circle' : 'close-filled'"
-                    [ngClass]="statistics.quorum >= 66.67 ? 'icon-green' : 'icon-red'"
-                    class="icon-16 margin-left-8"></mat-icon>
+  <ng-container *ngIf="statistics$ | async as statistics">
+    <app-mempool-endorsements-graph [quorumTime]="statistics.quorumTime"></app-mempool-endorsements-graph>
+    <div class="overflow-auto">
+      <div class="d-flex flex-column border-rad-2 border padding-10">
+        <div class="foreground margin-bottom-10 flex-row flex-between">
+          <div class="flex-row align-center">
+            <div *ngIf="!statistics.quorumTime">QUORUM NOT MET</div>
+            <div *ngIf="statistics.quorumTime">
+              <span>QUORUM MET IN {{ statistics.quorumTime | nanoTransform }}</span>
+            </div>
+            <mat-icon [svgIcon]="statistics.quorumTime ? 'check-circle' : 'close-filled'"
+                      [ngClass]="statistics.quorumTime ? 'icon-green' : 'icon-red'"
+                      class="icon-16 margin-left-8"></mat-icon>
+          </div>
+          <div class="font-500">{{ statistics.quorum | number: '1.1-1' }}%</div>
         </div>
-        <div class="font-500">{{ statistics.quorum | number: '1.1-1' }}%</div>
-      </div>
-      <div class="foreground-4 margin-bottom-10 margin-top-10">
-        {{ statistics.totalSlots }} endorsements grouped by status
-      </div>
-      <div *ngFor="let type of statistics.endorsementTypes; let i=index; trackBy: trackStats"
-           class="mem-stats-row margin-top-5 margin-bottom-5">
-        <div class="text-capitalize">{{ type.name }}</div>
-        <div class="padding-right-10 d-flex align-center">
-          <div class="progress-background">
-            <div [ngClass]="type.name"
-                 [style.width.%]="type.value / statistics.totalSlots * 100"
-                 class="progress-background">
+        <div class="foreground-4 margin-bottom-10 margin-top-10">
+          {{ statistics.totalSlots }} endorsements grouped by status
+        </div>
+        <div *ngFor="let type of statistics.endorsementTypes; let i=index; trackBy: trackStats"
+             class="mem-stats-row margin-top-5 margin-bottom-5">
+          <div class="text-capitalize">{{ type.name }}</div>
+          <div class="padding-right-10 d-flex align-center">
+            <div class="progress-background">
+              <div [ngClass]="type.name"
+                   [style.width.%]="type.value / statistics.totalSlots * 100"
+                   class="progress-background">
+              </div>
             </div>
           </div>
+          <div class="text-right">{{ type.value }}</div>
         </div>
-        <div class="text-right">{{ type.value }}</div>
+      </div>
+      <div class="d-flex flex-column border-rad-2 border padding-10 margin-top-10">
+        <div class="foreground-4 margin-bottom-10">Previous block summary</div>
+        <div [ngClass]="'missed-' + statistics.previousBlockMissedEndorsements"
+             class="missed mem-stats-row margin-top-5 margin-bottom-5 d-flex flex-between">
+          <div>Missed Endorsements</div>
+          <div>{{ statistics.previousBlockMissedEndorsements }}</div>
+        </div>
+        <div class="mem-stats-row margin-top-5 margin-bottom-5 d-flex flex-between">
+          <div>Time to apply</div>
+          <div>{{ previousBlockElapsedTime | number: '1.1' }}{{ previousBlockElapsedTime ? 's' : '' }}</div>
+        </div>
+        <div class="mem-stats-row margin-top-5 margin-bottom-5 d-flex flex-between">
+          <div>Time to meet quorum</div>
+          <div *ngIf="statistics.previousBlockQuorumTime">{{ statistics.previousBlockQuorumTime | nanoTransform }}</div>
+        </div>
       </div>
     </div>
-    <div class="d-flex flex-column border-rad-2 border padding-10 margin-top-10">
-      <div class="foreground-4 margin-bottom-10">Previous block summary</div>
-      <div [ngClass]="'missed-' + statistics.previousBlockMissedEndorsements"
-           class="missed mem-stats-row margin-top-5 margin-bottom-5 d-flex flex-between">
-        <div>Missed Endorsements</div>
-        <div>{{ statistics.previousBlockMissedEndorsements }}</div>
-      </div>
-      <div class="mem-stats-row margin-top-5 margin-bottom-5 d-flex flex-between">
-        <div>Time to apply</div>
-        <div>{{ previousBlockElapsedTime | number: '1.1' }}{{ previousBlockElapsedTime ? 's' : '' }}</div>
-      </div>
-    </div>
-  </div>
+  </ng-container>
 </div>

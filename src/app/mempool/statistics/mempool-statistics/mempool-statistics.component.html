@@ -50,6 +50,7 @@
             <div (click)="selectOperation(operation)"
                  *cdkVirtualFor="let operation of operations; let i=index; trackBy: trackOperation"
                  [class.active]="operations[i]?.hash === activeOperation?.hash"
+                 [class.row-even]="i % 2 === 0"
                  class="row pointer">
               <span class="foreground-7 text-nowrap">{{ operation.dateTime | dateTime }}</span>
               <span class="truncate p-relative">

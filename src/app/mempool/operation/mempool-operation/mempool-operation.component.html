@@ -14,6 +14,7 @@
              (mouseleave)="onRowLeave()"
              *cdkVirtualFor="let operation of mempoolOperations; let i=index;"
              [class.active]="i === mempoolSelectedItem"
+             [class.row-even]="i % 2 === 0"
              class="row pointer">
           <span>{{ operation.hash }}</span>
           <span>{{ operation.status }}</span>

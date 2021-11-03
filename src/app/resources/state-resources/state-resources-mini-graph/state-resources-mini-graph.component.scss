@@ -1,0 +1,122 @@
+$border-color: rgba(255, 255, 255, 0.1);
+
+.mini-graph {
+  padding-right: 30px;
+
+  .graph-overview {
+    margin-bottom: 14px;
+
+    &.minimal {
+      margin-bottom: 40px;
+    }
+
+    .operation-name {
+      color: #fff;
+      font-size: 12px;
+      font-weight: 500;
+      letter-spacing: 0.4px;
+
+      .total-time {
+        font-weight: 300;
+        font-size: 12px;
+        margin-top: 4px;
+        color: rgba(255, 255, 255, 0.7);
+      }
+    }
+  }
+}
+
+.cols-wrap {
+  height: 142px;
+  width: 142px;
+  background: repeating-linear-gradient(0deg, #2a2a2e, #2a2a2e 16px, $border-color 0.05em, $border-color 18px);
+  border-bottom: 1px solid $border-color;
+  padding-top: 2px;
+  margin-right: 10px;
+
+  .gr-col {
+    min-width: 16px;
+    cursor: pointer;
+
+    &:not(:last-child) {
+      padding-right: 2px;
+      min-width: 18px;
+    }
+
+    &:hover .square {
+      background-color: rgba(255, 255, 255, 0.6) !important;
+
+      &.yellow-square {
+        background-color: #ff9600 !important;
+      }
+
+      &.red-square {
+        background-color: #ff3d58 !important;
+      }
+    }
+
+    .square {
+      width: 16px;
+      height: 16px;
+      background-color: #777;
+
+      &:not(:last-child) {
+        margin-top: 2px;
+      }
+
+      &.yellow-square {
+        background-color: rgba(255, 159, 10, 0.8);
+      }
+
+      &.red-square {
+        background-color: rgba(235, 83, 104, 0.8);
+      }
+    }
+  }
+}
+
+.calls-label {
+  font-size: 10px;
+  color: rgba(255, 255, 255, 0.4);
+}
+
+.x-steps,
+.y-steps {
+  color: rgba(255, 255, 255, 0.4);
+  font-size: 10px;
+}
+
+.y-steps {
+  margin-top: 6px;
+  color: rgba(255, 255, 255, 0.4);
+  font-size: 10px;
+
+  div {
+    line-height: 10px;
+    margin-bottom: 8px;
+  }
+}
+
+.x-steps {
+  white-space: nowrap;
+  padding-top: 15px;
+  height: 25px;
+  text-align: right;
+
+  span {
+    width: 32px;
+    height: 12px;
+    margin-left: -14px;
+    transform: rotate(-60deg) translate(-2px, -9px);
+    text-align: right;
+  }
+}
+
+.x-info {
+  margin-top: 5px;
+}
+
+.main-graph .x-steps,
+.main-graph .y-steps {
+  color: #fff;
+}

@@ -3,8 +3,8 @@ import { Store } from '@ngrx/store';
 import { State } from '@app/app.index';
 import { SystemResourcesPanel, SystemResourcesSortBy } from '@shared/types/resources/system/system-resources-panel.type';
 import { Observable } from 'rxjs';
-import { SYSTEM_RESOURCES_SORT, SystemResourcesSortAction } from '@resources/system-resources/system-resources.actions';
-import { systemResourcesPanel } from '@resources/system-resources/system-resources.reducer';
+import { SYSTEM_RESOURCES_SORT, SystemResourcesSortAction } from '@resources/system-resource/system-resources/system-resources.actions';
+import { systemResourcesPanel } from '@resources/system-resource/system-resources/system-resources.reducer';
 
 @Component({
   selector: 'app-system-resources-panel',

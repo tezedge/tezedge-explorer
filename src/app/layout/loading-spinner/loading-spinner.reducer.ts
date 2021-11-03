@@ -1,7 +1,7 @@
 import { LoadingSpinner } from '@shared/types/shared/loading-spinner/loading-spinner.type';
 import { State } from '@app/app.index';
 import { StateMachineActionTypes } from '@state-machine/state-machine/state-machine.actions';
-import { StorageResourcesActionTypes } from '@resources/storage-resources/storage-resources.actions';
+import { StorageResourcesActionTypes } from '@resources/storage-resource/storage-resources/storage-resources.actions';
 import { MemoryResourcesActionTypes } from '@resources/memory-resources/memory-resources.actions';
 import { ADD_ERROR, ErrorAdd } from '@app/layout/error-popup/error-popup.actions';
 import { MEMPOOL_ENDORSEMENT_LOAD, MEMPOOL_ENDORSEMENT_LOAD_SUCCESS, MEMPOOL_ENDORSEMENT_STOP } from '@mempool/endorsements/mempool-endorsement/mempool-endorsement.actions';
@@ -13,7 +13,8 @@ import {
   MEMPOOL_BLOCK_APPLICATION_STOP
 } from '@mempool/block-application/mempool-block-application/mempool-block-application.actions';
 import { SMART_CONTRACTS_LOAD, SMART_CONTRACTS_LOAD_SUCCESS, SMART_CONTRACTS_STOP } from '@smart-contracts/smart-contracts/smart-contracts.actions';
-import { SYSTEM_RESOURCES_CLOSE, SYSTEM_RESOURCES_LOAD, SYSTEM_RESOURCES_LOAD_SUCCESS } from '@resources/system-resources/system-resources.actions';
+import { SYSTEM_RESOURCES_CLOSE, SYSTEM_RESOURCES_LOAD, SYSTEM_RESOURCES_LOAD_SUCCESS } from '@resources/system-resource/system-resources/system-resources.actions';
+import { STATE_RESOURCES_CLOSE, STATE_RESOURCES_LOAD, STATE_RESOURCES_LOAD_SUCCESS } from '@resources/state-resources/state-resources/state-resources.actions';
 
 export interface LoadingSpinnerState {
   pendingValues: LoadingSpinner[];
@@ -42,6 +43,17 @@ export function reducer(state: LoadingSpinnerState = initialState, action: Error
     case SYSTEM_RESOURCES_LOAD_SUCCESS: {
       return {
         pendingValues: state.pendingValues.filter(v => v.type !== SYSTEM_RESOURCES_LOAD)
+      };
+    }
+    case STATE_RESOURCES_LOAD: {
+      return {
+        pendingValues: [stateResourcesLoad, ...state.pendingValues]
+      };
+    }
+    case STATE_RESOURCES_CLOSE:
+    case STATE_RESOURCES_LOAD_SUCCESS: {
+      return {
+        pendingValues: state.pendingValues.filter(v => v.type !== STATE_RESOURCES_LOAD)
       };
     }
     case StorageResourcesActionTypes.STORAGE_RESOURCES_LOAD: {
@@ -228,6 +240,11 @@ const storageResourcesLoad: LoadingSpinner = {
 const memoryResourcesLoad: LoadingSpinner = {
   type: MemoryResourcesActionTypes.MEMORY_RESOURCES_LOAD,
   message: 'Loading memory resources...'
+};
+
+const stateResourcesLoad: LoadingSpinner = {
+  type: STATE_RESOURCES_LOAD,
+  message: 'Loading state resources...'
 };
 
 const storageBlockActionLoad: LoadingSpinner = {

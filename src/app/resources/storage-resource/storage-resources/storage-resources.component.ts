@@ -6,7 +6,7 @@ import { StorageResourcesStats } from '@shared/types/resources/storage/storage-r
 import { Observable } from 'rxjs';
 import { filter, map } from 'rxjs/operators';
 import { State } from '@app/app.index';
-import { storageResources } from '@resources/storage-resources/storage-resources.reducer';
+import { storageResources } from '@resources/storage-resource/storage-resources/storage-resources.reducer';
 
 const PROTOCOLS: string[] = [
   'All protocols',

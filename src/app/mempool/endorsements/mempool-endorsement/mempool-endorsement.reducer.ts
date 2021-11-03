@@ -46,7 +46,8 @@ export function reducer(state: MempoolEndorsementState = initialState, action: M
         round: round.round,
         blockHash: round.blockHash,
         blockLevel: round.blockLevel,
-        blockRecTimestamp: round.receiveTimestamp
+        blockRecTimestamp: round.receiveTimestamp,
+        blockTimestamp: round.blockTimestamp
       }));
 
       return {
@@ -198,6 +199,29 @@ function calculateStatistics(currentStatistics: MempoolEndorsementStatistics, ne
 
   const totalSlots = newEndorsements.reduce((sum, curr) => sum + curr.slots.length, 0);
 
+  const quorum = Object.keys(valueObject).reduce((sum, key) => sum + valueObject[key], 0 - valueObject[MempoolEndorsementStatusTypes.MISSING]) / totalSlots * 100;
+  const previousBlockQuorumTime = isNewBlock ? currentStatistics?.quorumTime : currentStatistics?.previousBlockQuorumTime;
+
+  let quorumTime = isNewBlock ? undefined : currentStatistics?.quorumTime;
+  let indexOfEndorsementWhichCrossedThreshold = currentStatistics?.indexOfEndorsementWhichCrossedThreshold;
+  if (quorum >= 66.67 && !quorumTime) {
+    const endorsements = newEndorsements.filter(e => e.broadcastTime).sort((e1, e2) => e1.broadcastTime - e2.broadcastTime);
+
+    const getEndorsementWhichCrossedThreshold = (totalNoOfSlots: number, mempoolEndorsements: MempoolEndorsement[]): MempoolEndorsement => {
+      const twoThirdsThreshold = totalNoOfSlots * 2 / 3;
+      let noOfSlots = 0;
+      for (const end of mempoolEndorsements) {
+        const i = mempoolEndorsements.indexOf(end);
+        if (noOfSlots < twoThirdsThreshold) {
+          noOfSlots += end.slotsLength;
+        } else {
+          return mempoolEndorsements[i - 1];
+        }
+      }
+    };
+    indexOfEndorsementWhichCrossedThreshold = newEndorsements.indexOf(getEndorsementWhichCrossedThreshold(totalSlots, endorsements));
+    quorumTime = newEndorsements[indexOfEndorsementWhichCrossedThreshold]?.broadcastTime;
+  }
   return {
     endorsementTypes: [
       { name: MempoolEndorsementStatusTypes.MISSING, value: valueObject[MempoolEndorsementStatusTypes.MISSING] },
@@ -211,7 +235,10 @@ function calculateStatistics(currentStatistics: MempoolEndorsementStatistics, ne
     ],
     totalSlots,
     previousBlockMissedEndorsements: isNewBlock ? currentStatistics?.endorsementTypes[0].value : currentStatistics?.previousBlockMissedEndorsements,
-    quorum: Object.keys(valueObject).reduce((sum, key) => sum + valueObject[key], 0 - valueObject[MempoolEndorsementStatusTypes.MISSING]) / totalSlots * 100
+    quorum,
+    quorumTime,
+    previousBlockQuorumTime,
+    indexOfEndorsementWhichCrossedThreshold
   };
 }
 
@@ -225,3 +252,4 @@ export const selectMempoolEndorsementStatistics = (state: State): MempoolEndorse
 export const selectMempoolEndorsementCurrentRound = (state: State): MempoolPartialRound => state.mempool.endorsementState.currentRound;
 export const selectMempoolEndorsementSorting = (state: State): MempoolEndorsementSort => state.mempool.endorsementState.sort;
 export const selectMempoolEndorsementActiveBaker = (state: State): string => state.mempool.endorsementState.activeBaker;
+export const selectMempoolEndorsementState = (state: State): MempoolEndorsementState => state.mempool.endorsementState;

@@ -37,6 +37,8 @@ export class TezedgeLineChartComponent extends LineChartComponent {
   @Input() disableRedirection: boolean;
   @Input() graphType: string;
   @Input() markIndexes: number[] = [];
+  @Input() horizontalMarker: number;
+  @Input() verticalMarkerIndex: number;
 
   chartXReady: boolean = false;
   chartYReady: boolean = false;

@@ -5,6 +5,9 @@ export interface MempoolEndorsementStatistics {
     value: number
   }[];
   totalSlots: number;
-  previousBlockMissedEndorsements: number;
   quorum: number;
+  quorumTime: number;
+  previousBlockMissedEndorsements: number;
+  previousBlockQuorumTime: number;
+  indexOfEndorsementWhichCrossedThreshold: number;
 }

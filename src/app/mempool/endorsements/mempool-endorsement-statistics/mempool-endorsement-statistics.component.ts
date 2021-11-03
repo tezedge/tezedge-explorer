@@ -2,7 +2,6 @@ import { ChangeDetectionStrategy, Component, NgZone, OnInit } from '@angular/cor
 import { Store } from '@ngrx/store';
 import { State } from '@app/app.index';
 import { BehaviorSubject, Observable, tap } from 'rxjs';
-import { distinctUntilChanged, filter } from 'rxjs/operators';
 import { MempoolEndorsementStatistics } from '@shared/types/mempool/endorsement/mempool-endorsement-statistics.type';
 import { selectNetworkCurrentBlock } from '@network/network-stats/network-stats.reducer';
 import {
@@ -12,7 +11,10 @@ import {
 import { refreshBlock } from '@shared/constants/animations';
 import { MempoolPartialRound } from '@shared/types/mempool/common/mempool-partial-round.type';
 import { NetworkStatsLastAppliedBlock } from '@shared/types/network/network-stats-last-applied-block.type';
+import { MICROSECOND_FACTOR } from '@shared/constants/unit-measurements';
+import { formatNumber } from '@angular/common';
 import Timeout = NodeJS.Timeout;
+import { filter } from 'rxjs/operators';
 
 
 @Component({
@@ -24,13 +26,15 @@ import Timeout = NodeJS.Timeout;
 })
 export class MempoolEndorsementStatisticsComponent implements OnInit {
 
+  readonly elapsedTime$: BehaviorSubject<number> = new BehaviorSubject<number>(null);
+
   statistics$: Observable<MempoolEndorsementStatistics>;
   currentBlock$: Observable<NetworkStatsLastAppliedBlock>;
   currentRound$: Observable<MempoolPartialRound>;
   previousBlockElapsedTime: number;
-  readonly elapsedTime$: BehaviorSubject<number> = new BehaviorSubject<number>(null);
 
   private interval: Timeout;
+  private round: MempoolPartialRound;
 
   constructor(private store: Store<State>,
               private zone: NgZone) { }
@@ -43,19 +47,21 @@ export class MempoolEndorsementStatisticsComponent implements OnInit {
 
   private listenToEndorsementStatisticsChanges(): void {
     this.statistics$ = this.store.select(selectMempoolEndorsementStatistics);
-    this.currentRound$ = this.store.select(selectMempoolEndorsementCurrentRound);
-    this.currentBlock$ = this.store.select(selectNetworkCurrentBlock).pipe(
-      filter(Boolean),
-      distinctUntilChanged(),
-      tap(() => {
-        this.zone.runOutsideAngular(() => {
-          this.previousBlockElapsedTime = this.elapsedTime$.value;
-          clearInterval(this.interval);
-          this.startTimer();
-        });
-        this.elapsedTime$.next(0);
-      })
-    );
+    this.currentRound$ = this.store.select(selectMempoolEndorsementCurrentRound)
+      .pipe(tap(round => {
+        if (this.round?.blockLevel !== round?.blockLevel) {
+          this.round = round;
+          this.zone.runOutsideAngular(() => {
+            this.previousBlockElapsedTime = this.elapsedTime$.value;
+            clearInterval(this.interval);
+            this.startTimer();
+          });
+          const newValue = formatNumber((Date.now() - (Number(this.round?.blockTimestamp) / MICROSECOND_FACTOR)) / 1000, 'en-US', '1.1-1');
+          this.elapsedTime$.next(Math.max(Number(newValue), 0));
+        }
+      }));
+
+    this.currentBlock$ = this.store.select(selectNetworkCurrentBlock);
   }
 
   private startTimer(): void {

@@ -1,22 +1,41 @@
 import { beforeEachForTezedge, testForTezedge, testIfFeature } from '../../support';
 
-context('STATE MACHINE', () => {
-  beforeEach(() => {
-    beforeEachForTezedge(() => {
-      testIfFeature('state', () => {
-        cy.intercept('GET', '/dev/shell/automaton/actions?limit=*').as('getActionsRequest')
-          .intercept('GET', '/dev/shell/automaton/actions_graph').as('getActionsGraph')
-          .intercept('GET', '/dev/shell/automaton/actions_stats').as('getActionStatistics')
-          .visit(Cypress.config().baseUrl + '/#/state', { timeout: 100000 })
-          .wait('@getActionsGraph')
-          .wait('@getActionsRequest')
-          .wait('@getActionStatistics')
-          .wait(1000);
+const beforeTest = (test) => {
+  let tested = false;
+  cy.visit(Cypress.config().baseUrl + '/#/state', { timeout: 100000 })
+    .window()
+    .its('store')
+    .then({ timeout: 10500 }, store => {
+      return new Cypress.Promise((resolve) => {
+        setTimeout(() => resolve(), 10000);
+        store.select('stateMachine').subscribe(stateMachine => {
+          if (!tested && stateMachine.actionTable.ids.length > 0) {
+            tested = true;
+            testForTezedge(test);
+            resolve();
+          }
+        });
       });
     });
-  });
+};
 
-  it('[STATE MACHINE] should have status code 200 for state machine diagram request', () => testForTezedge(() => {
+context('STATE MACHINE', () => {
+  // beforeEach(() => {
+  //   beforeEachForTezedge(() => {
+  //     testIfFeature('state', () => {
+  //       cy.intercept('GET', '/dev/shell/automaton/actions?limit=*').as('getActionsRequest')
+  //         .intercept('GET', '/dev/shell/automaton/actions_graph').as('getActionsGraph')
+  //         .intercept('GET', '/dev/shell/automaton/actions_stats').as('getActionStatistics')
+  //         .visit(Cypress.config().baseUrl + '/#/state', { timeout: 100000 })
+  //         .wait('@getActionsGraph')
+  //         .wait('@getActionsRequest')
+  //         .wait('@getActionStatistics')
+  //         .wait(1000);
+  //     });
+  //   });
+  // });
+
+  it('[STATE MACHINE] should have status code 200 for state machine diagram request', () => beforeTest(() => {
     testIfFeature('state', () => {
       cy.window()
         .its('store')
@@ -33,7 +52,7 @@ context('STATE MACHINE', () => {
     });
   }));
 
-  it('[STATE MACHINE] should have status code 200 for state machine actions request', () => testForTezedge(() => {
+  it('[STATE MACHINE] should have status code 200 for state machine actions request', () => beforeTest(() => {
     testIfFeature('state', () => {
       cy.window()
         .its('store')
@@ -47,7 +66,7 @@ context('STATE MACHINE', () => {
     });
   }));
 
-  it('[STATE MACHINE] should have status code 200 for state machine action statistics request', () => testForTezedge(() => {
+  it('[STATE MACHINE] should have status code 200 for state machine action statistics request', () => beforeTest(() => {
     testIfFeature('state', () => {
       cy.window()
         .its('store')
@@ -61,7 +80,7 @@ context('STATE MACHINE', () => {
     });
   }));
 
-  it('[STATE MACHINE] should get correct number of actions as the limit successfully', () => testForTezedge(() => {
+  it('[STATE MACHINE] should get correct number of actions as the limit successfully', () => beforeTest(() => {
     testIfFeature('state', () => {
       const requestedActions = 10;
       cy.window()
@@ -76,13 +95,13 @@ context('STATE MACHINE', () => {
     });
   }));
 
-  it('[STATE MACHINE] should create rows for the virtual scroll table', () => testForTezedge(() => {
+  it('[STATE MACHINE] should create rows for the virtual scroll table', () => beforeTest(() => {
     testIfFeature('state', () => {
       cy.get('.virtual-scroll-container .virtualScrollRow').should('be.visible');
     });
   }));
 
-  it('[STATE MACHINE] should fill the last row of the table with the last value received', () => testForTezedge(() => {
+  it('[STATE MACHINE] should fill the last row of the table with the last value received', () => beforeTest(() => {
     testIfFeature('state', () => {
       cy.get('button.start-stream', { timeout: 10000 })
         .window()
@@ -106,7 +125,7 @@ context('STATE MACHINE', () => {
     });
   }));
 
-  it('[STATE MACHINE] should change the value of the virtual scroll element when scrolling', () => testForTezedge(() => {
+  it('[STATE MACHINE] should change the value of the virtual scroll element when scrolling', () => beforeTest(() => {
     testIfFeature('state', () => {
       let beforeScrollValue;
       let testExecuted = false;
@@ -138,7 +157,7 @@ context('STATE MACHINE', () => {
     });
   }));
 
-  it('[STATE MACHINE] should show properly colors for duration column values', () => testForTezedge(() => {
+  it('[STATE MACHINE] should show properly colors for duration column values', () => beforeTest(() => {
     testIfFeature('state', () => {
       cy.get('button.start-stream', { timeout: 10000 })
         .window()
@@ -178,7 +197,7 @@ context('STATE MACHINE', () => {
     });
   }));
 
-  it('[STATE MACHINE] should fill the right details part with the action of the clicked row - the second last record in our case', () => testForTezedge(() => {
+  it('[STATE MACHINE] should fill the right details part with the action of the clicked row - the second last record in our case', () => beforeTest(() => {
     testIfFeature('state', () => {
       cy.get('button.start-stream', { timeout: 10000 })
         .window()
@@ -203,7 +222,7 @@ context('STATE MACHINE', () => {
     });
   }));
 
-  it('[STATE MACHINE] should start playing through the actions on play button click', () => testForTezedge(() => {
+  it('[STATE MACHINE] should start playing through the actions on play button click', () => beforeTest(() => {
     testIfFeature('state', () => {
       let activeRowText;
       cy.get('button.start-stream', { timeout: 10000 })
@@ -222,7 +241,7 @@ context('STATE MACHINE', () => {
     });
   }));
 
-  it('[STATE MACHINE] should stop stream when selecting an action', () => testForTezedge(() => {
+  it('[STATE MACHINE] should stop stream when selecting an action', () => beforeTest(() => {
     testIfFeature('state', () => {
       cy.window()
         .its('store')
@@ -241,7 +260,7 @@ context('STATE MACHINE', () => {
     });
   }));
 
-  it('[STATE MACHINE] should select correct action details tabs', () => testForTezedge(() => {
+  it('[STATE MACHINE] should select correct action details tabs', () => beforeTest(() => {
     testIfFeature('state', () => {
       cy.get('button.start-stream', { timeout: 10000 })
         .window()
@@ -275,7 +294,7 @@ context('STATE MACHINE', () => {
     });
   }));
 
-  it('[STATE MACHINE] should show clicked action\'s diffs', () => testForTezedge(() => {
+  it('[STATE MACHINE] should show clicked action\'s diffs', () => beforeTest(() => {
     testIfFeature('state', () => {
       cy.get('button.start-stream', { timeout: 10000 })
         .window()
@@ -306,7 +325,7 @@ context('STATE MACHINE', () => {
     });
   }));
 
-  it('[STATE MACHINE] should show clicked action\'s content', () => testForTezedge(() => {
+  it('[STATE MACHINE] should show clicked action\'s content', () => beforeTest(() => {
     testIfFeature('state', () => {
       cy.get('button.start-stream', { timeout: 10000 })
         .window()
@@ -340,7 +359,7 @@ context('STATE MACHINE', () => {
     });
   }));
 
-  it('[STATE MACHINE] should hide state chart on toggle click and show back on second click', () => testForTezedge(() => {
+  it('[STATE MACHINE] should hide state chart on toggle click and show back on second click', () => beforeTest(() => {
     testIfFeature('state', () => {
       cy.get('#d3Diagram').then(svg => {
         if (svg.is(':visible')) {
@@ -359,7 +378,7 @@ context('STATE MACHINE', () => {
     });
   }));
 
-  it('[STATE MACHINE] should update local storage collapsedDiagram property when toggling the state chart', () => testForTezedge(() => {
+  it('[STATE MACHINE] should update local storage collapsedDiagram property when toggling the state chart', () => beforeTest(() => {
     testIfFeature('state', () => {
       expect(localStorage.getItem('collapsedDiagram')).to.be.null;
       cy.get('#d3Diagram')
@@ -378,7 +397,7 @@ context('STATE MACHINE', () => {
     });
   }));
 
-  it('[STATE MACHINE] should update local storage diagramHeight when dragging the resizer', () => testForTezedge(() => {
+  it('[STATE MACHINE] should update local storage diagramHeight when dragging the resizer', () => beforeTest(() => {
     testIfFeature('state', () => {
       expect(localStorage.getItem('diagramHeight')).to.be.null;
       cy.get('#d3Diagram')
@@ -396,7 +415,7 @@ context('STATE MACHINE', () => {
     });
   }));
 
-  it('[STATE MACHINE] should render state chart successfully', () => testForTezedge(() => {
+  it('[STATE MACHINE] should render state chart successfully', () => beforeTest(() => {
     testIfFeature('state', () => {
       cy.window()
         .its('store')
@@ -422,7 +441,7 @@ context('STATE MACHINE', () => {
     });
   }));
 
-  it('[STATE MACHINE] should zoom in state chart successfully on mouse wheel up', () => testForTezedge(() => {
+  it('[STATE MACHINE] should zoom in state chart successfully on mouse wheel up', () => beforeTest(() => {
     testIfFeature('state', () => {
       let initialTransform;
       cy.get('#d3Diagram svg', { timeout: 10000 })
@@ -447,7 +466,7 @@ context('STATE MACHINE', () => {
     });
   }));
 
-  it('[STATE MACHINE] should zoom in state chart successfully on plus button', () => testForTezedge(() => {
+  it('[STATE MACHINE] should zoom in state chart successfully on plus button', () => beforeTest(() => {
     testIfFeature('state', () => {
       let initialTransform;
       cy.get('#d3Diagram svg', { timeout: 10000 })
@@ -466,7 +485,7 @@ context('STATE MACHINE', () => {
     });
   }));
 
-  it('[STATE MACHINE] should zoom out state chart successfully on minus button', () => testForTezedge(() => {
+  it('[STATE MACHINE] should zoom out state chart successfully on minus button', () => beforeTest(() => {
     testIfFeature('state', () => {
       let initialTransform;
       cy.get('#d3Diagram svg', { timeout: 10000 })
@@ -485,7 +504,7 @@ context('STATE MACHINE', () => {
     });
   }));
 
-  it('[STATE MACHINE] should show whole state chart successfully on reset zoom button', () => testForTezedge(() => {
+  it('[STATE MACHINE] should show whole state chart successfully on reset zoom button', () => beforeTest(() => {
     testIfFeature('state', () => {
       let initialTransform;
       cy.get('#d3Diagram svg', { timeout: 10000 })
@@ -507,7 +526,7 @@ context('STATE MACHINE', () => {
     });
   }));
 
-  it('[STATE MACHINE] should disable next and prev action buttons if no action is selected', () => testForTezedge(() => {
+  it('[STATE MACHINE] should disable next and prev action buttons if no action is selected', () => beforeTest(() => {
     testIfFeature('state', () => {
       cy.window()
         .its('store')
@@ -523,7 +542,7 @@ context('STATE MACHINE', () => {
     });
   }));
 
-  it('[STATE MACHINE] should highlight the correct svg block in the diagram on action click', () => testForTezedge(() => {
+  it('[STATE MACHINE] should highlight the correct svg block in the diagram on action click', () => beforeTest(() => {
     testIfFeature('state', () => {
       let rowActionName;
       cy.get('button.start-stream', { timeout: 10000 })
@@ -546,7 +565,7 @@ context('STATE MACHINE', () => {
     });
   }));
 
-  it('[STATE MACHINE] should update progress bar on action click', () => testForTezedge(() => {
+  it('[STATE MACHINE] should update progress bar on action click', () => beforeTest(() => {
     testIfFeature('state', () => {
       let initialValue;
       cy.get('button.start-stream', { timeout: 10000 })
@@ -571,7 +590,7 @@ context('STATE MACHINE', () => {
     });
   }));
 
-  it('[STATE MACHINE] should render filter buttons and categories', () => testForTezedge(() => {
+  it('[STATE MACHINE] should render filter buttons and categories', () => beforeTest(() => {
     testIfFeature('state', () => {
       const categories = ['P2p', 'PeerHandshaking', 'PeerConnection', 'YieldedOperations', 'PausedLoops', 'PeersGraylist', 'PeerMessage', 'PeerBinary', 'PeerChunk', 'PeerTry', 'PeersDns', 'PeersCheck', 'Storage', 'Others'];
       let stats;
@@ -616,7 +635,7 @@ context('STATE MACHINE', () => {
 
   }));
 
-  it('[STATE MACHINE] should apply filters on click', () => testForTezedge(() => {
+  it('[STATE MACHINE] should apply filters on click', () => beforeTest(() => {
     testIfFeature('state', () => {
       let clickedFilter;
       cy.wait(500)
@@ -639,28 +658,28 @@ context('STATE MACHINE', () => {
     });
   }));
 
-  it('[STATE MACHINE] should successfully render action statistics', () => testForTezedge(() => {
-    testIfFeature('state', () => {
-      let stats;
-      cy.wait(500)
-        .get('app-state-machine-action-details .payload-view div div:last-child .tab')
-        .trigger('click')
-        .wait(300)
-        .get('.statistics-table').should('be.visible')
-        .window()
-        .its('store')
-        .then((store) => {
-          store.select('stateMachine').subscribe(stateMachine => {
-            if (stateMachine.actionStatistics.statistics) {
-              stats = stateMachine.actionStatistics.statistics;
-            }
-          });
-        })
-        .wait(1000);
-      if (stats) {
-        cy.get('.statistics-table .overflow-auto > div').should('have.length', stats.length);
-      }
-    });
-  }));
+  // it('[STATE MACHINE] should successfully render action statistics', () => beforeTest(() => {
+  //   testIfFeature('state', () => {
+  //     let stats;
+  //     cy.wait(500)
+  //       .get('app-state-machine-action-details .payload-view div div:last-child .tab')
+  //       .trigger('click')
+  //       .wait(300)
+  //       .get('.statistics-table').should('be.visible')
+  //       .window()
+  //       .its('store')
+  //       .then((store) => {
+  //         store.select('stateMachine').subscribe(stateMachine => {
+  //           if (stateMachine.actionStatistics.statistics) {
+  //             stats = stateMachine.actionStatistics.statistics;
+  //           }
+  //         });
+  //       })
+  //       .wait(1000);
+  //     if (stats) {
+  //       cy.get('.statistics-table .overflow-auto > div').should('have.length', stats.length);
+  //     }
+  //   });
+  // }));
 
 });

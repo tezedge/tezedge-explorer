@@ -12,6 +12,7 @@
                                fxFlex="calc(100% - 36px - 40px)"
                                itemSize="36">
     <div *cdkVirtualFor="let request of state.requests; let i=index;"
+         [class.row-even]="i % 2 === 0"
          class="row">
       <span class="foreground-7">{{ request.pendingSince | dateTime }}</span>
       <span>{{ request.pendingFor | nanoTransform }}</span>

@@ -26,8 +26,8 @@ import { StorageActionEffects } from '@storage/storage-action/storage-action.eff
 import { StorageSearchEffects } from '@storage/storage-search/storage-search.effects';
 import { SandboxEffects } from '@sandbox/sandbox.effects';
 import { WalletsEffects } from '@wallets/wallets.effects';
-import { SystemResourcesEffects } from '@resources/system-resources/system-resources.effects';
-import { StorageResourcesEffects } from '@resources/storage-resources/storage-resources.effects';
+import { SystemResourcesEffects } from '@resources/system-resource/system-resources/system-resources.effects';
+import { StorageResourcesEffects } from '@resources/storage-resource/storage-resources/storage-resources.effects';
 import { MemoryResourcesEffects } from '@resources/memory-resources/memory-resources.effects';
 import { ErrorPopupEffects } from '@app/layout/error-popup/error-popup.effects';
 import { StateMachineEffects } from '@state-machine/state-machine/state-machine.effects';
@@ -56,6 +56,7 @@ import { ErrorPopupComponent } from '@app/layout/error-popup/error-popup.compone
 import { LoadingSpinnerComponent } from '@app/layout/loading-spinner/loading-spinner.component';
 import { CUSTOM_JSON_PARSER_INTERCEPTOR } from '@core/custom-json-parser-interceptor.service';
 import { MempoolPreEndorsementEffects } from '@mempool/preendorsements/mempool-pre-endorsement/mempool-pre-endorsement.effects';
+import { StateResourcesEffects } from '@resources/state-resources/state-resources/state-resources.effects';
 
 registerLocaleData(localeFr, 'fr');
 registerLocaleData(localeEnGb, 'en');
@@ -98,6 +99,7 @@ const effects = [
   ErrorPopupEffects,
   StateMachineEffects,
   SmartContractsEffects,
+  StateResourcesEffects,
 ];
 
 @NgModule({

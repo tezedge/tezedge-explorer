@@ -4,4 +4,5 @@ export interface MempoolPartialRound {
   blockHash: string;
   blockLevel: number;
   blockRecTimestamp: string;
+  blockTimestamp: string;
 }

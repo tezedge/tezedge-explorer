@@ -6,12 +6,21 @@
   <div fxFlex="calc(100% - 50px)" fxFlex.lt-md="100" class="inner-graph-container d-flex flex-column">
     <div fxFlex="90" class="p-relative" #columnContainer>
       <div class="y-grid-marks p-absolute h-100 w-100 foreground-6">
-        <div *ngFor="let n of [30,25,20,15,10,5,0]"
-             class="y-tick-line">
+        <div *ngFor="let n of yAxisValues"
+             class="y-tick-line"
+             [style.height]="'calc(100% / ' + (yAxisValues.length - 1) + ')'">
           <div class="p-relative">{{ n }}</div>
         </div>
       </div>
       <div class="d-flex p-relative h-100" *ngIf="chartColumns">
+        <div *ngIf="xAxisMarker && !hideMarker"
+             class="marker p-relative"
+             [style.left.%]="xAxisMarkerPosition">
+          <div class="p-absolute flex-row align-end flex-end">
+            <div>Quorum met</div>
+            <mat-icon svgIcon="caret-down" class="icon-green fill-opacity-1 icon-14 margin-left-8"></mat-icon>
+          </div>
+        </div>
         <div *ngFor="let column of chartColumns"
              (mouseenter)="openDetailsOverlay(column, $event)"
              (mouseleave)="detachOverlay()"
@@ -19,7 +28,7 @@
              class="histo-col">
           <div class="histo-bar"
                [class.gray]="column.value === 0"
-               [style.height.px]="(maxHeight * column.value / 30) || 3"></div>
+               [style.height.px]="maxHeight * column.value / yAxisValues[0]"></div>
         </div>
       </div>
     </div>

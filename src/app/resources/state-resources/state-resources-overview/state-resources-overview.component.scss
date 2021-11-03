@@ -1,9 +1,6 @@
 
 table {
   border-collapse: collapse;
-  thead td {
-
-  }
 
   tr {
     text-align: left;
@@ -15,7 +12,11 @@ table {
     }
 
     td, th {
-      padding: 8px;
+      padding: 6px;
+
+      &:first-child {
+        padding-left: 8px;
+      }
     }
   }
 }

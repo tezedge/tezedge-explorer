@@ -1,0 +1,52 @@
+@import 'layout';
+
+form {
+  height: 24px;
+
+  .custom-bottom-form-field {
+    max-width: 100%;
+    width: 200px;
+
+    .p-absolute {
+      right: 6px;
+      height: 100%;
+    }
+  }
+}
+
+.sorting {
+  @include flexRowVertCenter();
+
+  mat-icon {
+    transition: 0.2s ease-in-out;
+    transform: rotateX(0) translateY(6px);
+    opacity: 0;
+
+    &.show {
+      opacity: 1;
+      transform: rotateX(0) translateY(0);
+    }
+
+    &.flip {
+      transform: rotateX(180deg) translateY(0);
+
+      &:not(.show) {
+        transform: rotateX(180deg) translateY(6px);
+      }
+    }
+  }
+
+
+  &:hover, &.active {
+    color: var(--foreground);
+
+    mat-icon:not(.show) {
+      opacity: 0.5;
+      transform: rotateX(0) translateY(0);
+
+      &.flip {
+        transform: rotateX(180deg) translateY(0);
+      }
+    }
+  }
+}

@@ -4,7 +4,8 @@ import { HttpClient } from '@angular/common/http';
 import { map } from 'rxjs/operators';
 import { snakeCaseToCamelCase } from '@helpers/object.helper';
 import { MempoolBakingRight } from '@shared/types/mempool/baking-rights/mempool-baking-right.type';
-import { MempoolBlockDetails } from '@shared/types/mempool/common/mempool-block-details.type';
+import { MempoolBlockRound } from '@shared/types/mempool/common/mempool-block-round.type';
+import { MempoolBakingRightsConstants } from '@shared/types/mempool/baking-rights/mempool-baking-rights-constants.type';
 
 @Injectable({
   providedIn: 'root'
@@ -22,12 +23,22 @@ export class MempoolBakingRightsService {
     );
   }
 
-  getBakingRightDetails(http: string, level: number): Observable<MempoolBlockDetails[]> {
-    const url = `${http}/dev/shell/automaton/stats/current_head/application?level=${level}`;
-    return this.http.get<MempoolBlockDetails[]>(url).pipe(
+  getBakingRightDetails(http: string, level: number, round?: number): Observable<MempoolBlockRound[]> {
+    const url = `${http}/dev/shell/automaton/stats/current_head/application?level=${level}&round=${round}`;
+    return this.http.get<MempoolBlockRound[]>(url).pipe(
       tap(this.handleError),
       map(snakeCaseToCamelCase),
       map(this.mapBakingRightsDetails)
+    );
+  }
+
+  getMempoolConstants(http: string): Observable<MempoolBakingRightsConstants> {
+    return this.http.get<MempoolBakingRightsConstants>(`${http}/chains/main/blocks/head/context/constants`).pipe(
+      tap(this.handleError),
+      map(response => ({
+        minimalBlockDelay: Number(response.minimal_block_delay),
+        delayIncrementPerRound: Number(response.delay_increment_per_round)
+      }))
     );
   }
 
@@ -48,11 +59,12 @@ export class MempoolBakingRightsService {
     }));
   }
 
-  private mapBakingRightsDetails(response: any[]): MempoolBlockDetails[] {
-    const result: MempoolBlockDetails[] = [];
+  private mapBakingRightsDetails(response: any[]): MempoolBlockRound[] {
+    const result: MempoolBlockRound[] = [];
     response.forEach((detail: any) => {
-      const detailResult: MempoolBlockDetails = {
+      const detailResult: MempoolBlockRound = {
         blockTimestamp: detail.blockTimestamp,
+        round: detail.blockRound ?? 0,
         receiveTimestamp: detail.receiveTimestamp,
         blockHash: detail.blockHash,
         baker: detail.baker,

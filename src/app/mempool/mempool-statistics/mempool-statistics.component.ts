@@ -1,6 +1,6 @@
 import { AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { State } from '@app/app.reducers';
+import { State } from '@app/app.index';
 import {
   MEMPOOL_STATISTICS_CHANGE_ACTIVE_OPERATION,
   MEMPOOL_STATISTICS_LOAD,
@@ -20,7 +20,7 @@ import {
 } from '@mempool/mempool-statistics/mempool-statistics.reducer';
 import { SortDirection, TableSort } from '@shared/types/shared/table-sort.type';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { ADD_INFO, InfoAdd } from '@shared/components/error-popup/error-popup.actions';
+import { ADD_INFO, InfoAdd } from '@app/layout/error-popup/error-popup.actions';
 import { MatCheckboxChange } from '@angular/material/checkbox';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CdkVirtualScrollViewport } from '@angular/cdk/scrolling';

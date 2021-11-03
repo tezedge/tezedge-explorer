@@ -2,7 +2,7 @@ import { SmartContract } from '@shared/types/smart-contracts/smart-contract.type
 import { SmartContractTrace } from '@shared/types/smart-contracts/smart-contract-trace.type';
 import { SmartContractsDebugConfig } from '@shared/types/smart-contracts/smart-contracts-debug-config.type';
 import { SmartContractResult } from '@shared/types/smart-contracts/smart-contract-result.type';
-import { State } from '@app/app.reducers';
+import { State } from '@app/app.index';
 
 export class SmartContractsState {
   contracts: SmartContract[];

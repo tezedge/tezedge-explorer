@@ -8,13 +8,14 @@ import {
   MEMPOOL_BLOCK_APPLICATION_STOP,
   MempoolBlockApplicationActions
 } from '@mempool/mempool-block-application/mempool-block-application.actions';
-import { State } from '@app/app.reducers';
+import { State } from '@app/app.index';
 import { getFilteredXTicks } from '@helpers/chart.helper';
 import { MempoolBlockApplicationChartLine } from '@shared/types/mempool/block-application/mempool-block-application-chart-line.type';
-import { MempoolBlockDetails } from '@shared/types/mempool/common/mempool-block-details.type';
+import { MempoolBlockRound } from '@shared/types/mempool/common/mempool-block-round.type';
 
 const initialState: MempoolBlockApplicationState = {
   chartLines: [],
+  markIndexes: [],
   xTicksValues: [],
   xTicksValuesLength: null,
   averageValues: [],
@@ -46,6 +47,7 @@ export function reducer(state: MempoolBlockApplicationState = initialState, acti
       return {
         ...state,
         chartLines: action.payload.chartLines,
+        markIndexes: action.payload.markIndexes,
         noOfBlocks: series.length,
         xTicksValues,
         averageValues
@@ -84,5 +86,5 @@ export function reducer(state: MempoolBlockApplicationState = initialState, acti
 
 export const mempoolBlockApplication = (state: State): MempoolBlockApplicationState => state.mempool.blockApplicationState;
 export const mempoolBlockApplicationActiveBlockLevel = (state: State): number => state.mempool.blockApplicationState.activeBlockLevel;
-export const mempoolBlockApplicationActiveBlockDetails = (state: State): MempoolBlockDetails[] => state.mempool.blockApplicationState.bakingDetails;
+export const mempoolBlockApplicationActiveBlockDetails = (state: State): MempoolBlockRound[] => state.mempool.blockApplicationState.bakingDetails;
 export const mempoolBlockApplicationDelta = (state: State): boolean => state.mempool.blockApplicationState.delta;

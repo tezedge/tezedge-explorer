@@ -1,4 +1,4 @@
-import { State } from '@app/app.reducers';
+import { State } from '@app/app.index';
 import { MEMPOOL_OPERATION_LOAD_SUCCESS, MEMPOOL_OPERATION_STOP, MempoolOperationActions } from '@mempool/mempool-operation/mempool-operation.actions';
 import { MempoolOperationState } from '@shared/types/mempool/operation/mempool-operation-state.type';
 

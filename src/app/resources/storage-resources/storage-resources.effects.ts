@@ -4,10 +4,10 @@ import { catchError, map, switchMap, withLatestFrom } from 'rxjs/operators';
 import { empty, forkJoin, ObservedValueOf, of } from 'rxjs';
 import { Store } from '@ngrx/store';
 import { StorageResourcesActionTypes } from './storage-resources.actions';
-import { State } from '@app/app.reducers';
+import { State } from '@app/app.index';
 import { StorageResourcesService } from './storage-resources.service';
 import { StorageResourcesStats } from '@shared/types/resources/storage/storage-resources-stats.type';
-import { ADD_ERROR } from '@shared/components/error-popup/error-popup.actions';
+import { ADD_ERROR } from '@app/layout/error-popup/error-popup.actions';
 
 @Injectable({ providedIn: 'root' })
 export class StorageResourcesEffects {

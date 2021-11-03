@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { State } from '@app/app.reducers';
+import { State } from '@app/app.index';
 import { delay, Observable } from 'rxjs';
 import { MempoolEndorsement } from '@shared/types/mempool/mempool-endorsement/mempool-endorsement.type';
 import {
@@ -19,14 +19,14 @@ import { animate, style, transition, trigger } from '@angular/animations';
 import { debounceTime, distinctUntilChanged, filter, skip } from 'rxjs/operators';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { MempoolEndorsementSort } from '@shared/types/mempool/mempool-endorsement/mempool-endorsement-sort.type';
-import { selectNetworkCurrentBlockLevel } from '@network/network-stats/network-stats.reducer';
+import { selectNetworkLastAppliedBlockLevel } from '@network/network-stats/network-stats.reducer';
 import {
   selectMempoolEndorsementActiveBaker,
   selectMempoolEndorsements,
   selectMempoolEndorsementSorting,
   selectMempoolEndorsementTableAnimate
 } from '@mempool/mempool-endorsement/mempool-endorsement.reducer';
-import { ADD_INFO, InfoAdd } from '@shared/components/error-popup/error-popup.actions';
+import { ADD_INFO, InfoAdd } from '@app/layout/error-popup/error-popup.actions';
 import { MatCheckboxChange } from '@angular/material/checkbox';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { SortDirection } from '@shared/types/shared/table-sort.type';
@@ -144,7 +144,7 @@ export class MempoolEndorsementComponent implements OnInit, OnDestroy {
 
   private listenToNewAppliedBlock(): void {
     this.store.dispatch<MempoolEndorsementsInit>({ type: MEMPOOL_ENDORSEMENTS_INIT });
-    this.store.select(selectNetworkCurrentBlockLevel).pipe(
+    this.store.select(selectNetworkLastAppliedBlockLevel).pipe(
       untilDestroyed(this),
       filter(Boolean),
       distinctUntilChanged()

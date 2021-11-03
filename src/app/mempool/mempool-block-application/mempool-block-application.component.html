@@ -1,30 +1,50 @@
 <div fxLayout.gt-md="row" fxLayout.lt-lg="column" fxFlexFill>
-  <div fxFlex.gt-md="calc(100% - 300px)" fxFlex.lt-lg="50" class="padding-10 block-application">
-    <div class="graph-outer-container border border-rad-4 overflow-hidden" [class.fade]="labelList.length">
-      <div class="border-bottom d-flex flex-row align-center padding-left-10 padding-top-10 padding-bottom-10 f-12">
-        <span class="average-values foreground margin-right-10 font-500">AVERAGE VALUES:</span>
-        <div class="f-12 context-menu"
-             fxLayout="row wrap" fxLayoutAlign="center" *ngIf="mempoolState?.noOfBlocks">
+  <div fxFlex.gt-md="calc(100% - 300px)" fxFlex.lt-lg="50" class="block-application padding-10 padding-bottom-remove">
+    <div class="graph-outer-container h-100 border border-rad-4 overflow-hidden flex-column"
+         [class.fade]="labelList.length">
+      <div fxFlex.md="33px" fxFlex.lt-md="80px"
+           [ngClass.lt-md]="'flex-between'"
+           class="border-bottom d-flex flex-row align-center padding-10 f-12">
+        <span class="average-values foreground margin-right-10 font-500 text-nowrap">AVERAGE VALUES:</span>
+        <div *ngIf="mempoolState?.noOfBlocks"
+             [ngClass.lt-md]="'flex-end'"
+             class="context-menu align-center flex-row flex-wrap">
           <span *ngFor="let avg of mempoolState.averageValues; let i=index"
                 class="graph-label-item foreground-7">
-            <span *ngIf="i !== 0" class="padding-horizontal-10">·</span>
-            <span class="foreground-4">{{ avg.name }}</span>
-            {{ avg.value === 0 ? 0 : MATH.round(MATH.pow(10, avg.value)) | nanoTransform }}
+            <span *ngIf="i !== 0" fxHide.lt-md class="padding-horizontal-10">·</span>
+            <span fxFlex.lt-md="68px" class="foreground-4">{{ avg.name }}</span>
+            <span fxFlex.lt-md="60px" [ngClass.lt-md]="'padding-left-10'">
+              {{ avg.value === 0 ? 0 : MATH.round(MATH.pow(10, avg.value)) | nanoTransform }}
+            </span>
           </span>
         </div>
       </div>
-      <div class="blocks-overview foreground f-14 text-center context-menu">{{ mempoolState?.noOfBlocks }} BLOCKS OVERVIEW</div>
-      <div class="graph-label-list f-12 context-menu text-right padding-top-8 padding-left-10"
-           fxLayout="row wrap" fxLayoutAlign="end">
-        <span *ngFor="let label of labelList; let i=index"
-              class="graph-label-item foreground-6">
-          <span [style.background]="mempoolState.colorScheme[i]" class="label-color"></span>
-          {{ label }}
-        </span>
+      <div fxFlex="50px"
+           class="foreground f-14 text-center context-menu flex-row align-center flex-center">
+        {{ mempoolState?.noOfBlocks }} BLOCKS OVERVIEW
       </div>
-      <div class="graph-inner-container">
-        <div class="graph-super-inner-container d-flex">
-          <div class="rotated-label f-12 d-flex align-center text-nowrap foreground margin-bottom-10 margin-top-10"
+      <div fxFlex="40px" fxLayout="row wrap"
+           class="graph-label-list f-12 context-menu padding-top-8 padding-left-10 flex-between flex-row align-start">
+        <div class="flex-row padding-left-10 align-center">
+          <svg width="10" height="6" viewBox="0 0 10 6">
+            <svg:polygon points="0 0, 10 0, 5 6"
+                         fill="#ff453a"/>
+          </svg>
+          <span class="foreground-6 margin-left-5">Block round > 0</span>
+        </div>
+        <div class="padding-left-10">
+          <span *ngFor="let label of labelList; let i=index"
+                class="graph-label-item foreground-6">
+            <span [style.background]="mempoolState.colorScheme[i]" class="label-color"></span>
+            {{ label }}
+          </span>
+        </div>
+      </div>
+      <div fxFlex="calc(100% - 33px - 50px - 40px)"
+           fxFlex.lt-md="calc(100% - 80px - 50px - 40px)"
+           class="graph-inner-container">
+        <div class="graph-super-inner-container d-flex h-100">
+          <div class="rotated-label f-12 flex-row align-center text-nowrap foreground margin-bottom-10 margin-top-10"
                fxFlex="33px" fxHide.lt-md>
             <span>Time</span>
           </div>
@@ -36,6 +56,7 @@
                                     [curve]="curve"
                                     [results]="mempoolState.chartLines"
                                     [rotateXAxisTicks]="false"
+                                    [markIndexes]="mempoolState.markIndexes"
                                     [scheme]="{ domain: mempoolState.colorScheme }"
                                     [startWithYGridLine]="true"
                                     [xAxisTickFormatting]="xAxisTickFormatting"
@@ -44,7 +65,7 @@
                                     [yAxisTickFormatting]="yAxisTickFormatting"
                                     [yAxis]="true"
                                     [yScaleMin]="5"
-                                    [yScaleMax]="maxValue + 0.5">
+                                    [yScaleMax]="maxValue">
               <ng-template #seriesTooltipTemplate
                            let-model="model">
                 <ng-container
@@ -65,7 +86,10 @@
 <ng-template #customSeriesTooltipTemplate let-model="model">
   <div class="ngx-series-tooltip" fxLayout="column">
     <div class="tooltip-title f-12 border-bottom">Block level:
-      <span class="foreground-7">{{ model[0].name | spaceNumber }}</span>
+      <span class="foreground-7">{{ model[0].blockLevel | spaceNumber }}</span>
+    </div>
+    <div class="tooltip-title f-12 border-bottom">Round:
+      <span class="foreground-7">{{ model[0].round }}</span>
     </div>
     <div class="tooltip-title f-12 border-bottom">First seen:
       <span class="foreground-7">{{ model[0].timestamp }}</span>

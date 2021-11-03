@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, ChangeDetectorRef, Component, HostListener, Ng
 import { Store } from '@ngrx/store';
 import { debounceTime, filter, map } from 'rxjs/operators';
 import { Observable } from 'rxjs';
-import { State } from '@app/app.reducers';
+import { State } from '@app/app.index';
 import { NetworkStats } from '@shared/types/network/network-stats.type';
 import { SettingsNode } from '@shared/types/settings-node/settings-node.type';
 import { App } from '@shared/types/app/app.type';

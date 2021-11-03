@@ -4,7 +4,8 @@ import { Store } from '@ngrx/store';
 import { map, switchMap, tap, withLatestFrom } from 'rxjs/operators';
 import { Router } from '@angular/router';
 import { empty, ObservedValueOf, of } from 'rxjs';
-import { State } from '@app/app.reducers';
+import { State } from '@app/app.index';
+import { APP_INIT, APP_INIT_DEFAULT, APP_INIT_SUCCESS, APP_REFRESH } from '@app/app.actions';
 
 
 @Injectable({ providedIn: 'root' })
@@ -16,9 +17,9 @@ export class AppEffects {
   ));
 
   appInitEffect$ = createEffect(() => this.actions$.pipe(
-    ofType('APP_INIT'),
+    ofType(APP_INIT),
     withLatestFrom(this.store, (action: any, state: ObservedValueOf<Store<State>>) => ({ action, state })),
-    switchMap(({ action, state }) => state.app.initialized ? empty() : of({ type: 'APP_INIT_SUCCESS' }))
+    switchMap(({ action, state }) => state.app.initialized ? empty() : of({ type: APP_INIT_SUCCESS }))
   ));
 
   appNodeChangeEffect$ = createEffect(() => this.actions$.pipe(
@@ -28,7 +29,7 @@ export class AppEffects {
   ));
 
   appInitDefaultEffect$ = createEffect(() => this.actions$.pipe(
-    ofType('APP_INIT_DEFAULT'),
+    ofType(APP_INIT_DEFAULT),
     withLatestFrom(this.store, (action: any, state: ObservedValueOf<Store<State>>) => ({ action, state })),
     tap(({ action, state }) => {
       this.router.navigateByUrl('/', { skipLocationChange: false }).then(() =>
@@ -39,7 +40,7 @@ export class AppEffects {
   ));
 
   appRefreshEffect$ = createEffect(() => this.actions$.pipe(
-    ofType('APP_REFRESH'),
+    ofType(APP_REFRESH),
     withLatestFrom(this.store, (action: any, state: ObservedValueOf<Store<State>>) => ({ action, state })),
     tap(({ action, state }) => {
       const activePage = this.router.url.slice(1);

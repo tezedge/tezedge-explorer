@@ -1,13 +1,13 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
-import { State } from '@app/app.reducers';
+import { State } from '@app/app.index';
 import { StateMachineActionTypes } from './state-machine.actions';
 import { catchError, map, switchMap, takeUntil, tap, withLatestFrom } from 'rxjs/operators';
 import { empty, ObservedValueOf, of, Subject, timer } from 'rxjs';
 import { StateMachineService } from './state-machine.service';
 import { StateMachineAction } from '@shared/types/state-machine/state-machine-action.type';
-import { ADD_ERROR } from '@shared/components/error-popup/error-popup.actions';
+import { ADD_ERROR } from '@app/layout/error-popup/error-popup.actions';
 import { StateMachineDiagramBlock } from '@shared/types/state-machine/state-machine-diagram-block.type';
 import { StateMachineActionStatistics } from '@shared/types/state-machine/state-machine-action-statistics.type';
 

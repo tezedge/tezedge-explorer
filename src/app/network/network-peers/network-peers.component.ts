@@ -4,7 +4,7 @@ import { MatTableDataSource } from '@angular/material/table';
 
 import { Store } from '@ngrx/store';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { State } from '@app/app.reducers';
+import { State } from '@app/app.index';
 import { NetworkPeers } from '@shared/types/network/network-peers.type';
 import { NetworkPeersEntity } from '@shared/types/network/network-peers-entity.type';
 

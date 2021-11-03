@@ -1,4 +1,4 @@
-import { State } from '@app/app.reducers';
+import { State } from '@app/app.index';
 import { MempoolStatisticsState } from '@shared/types/mempool/statistics/mempool-statistics-state.type';
 import {
   MEMPOOL_STATISTICS_CHANGE_ACTIVE_OPERATION,

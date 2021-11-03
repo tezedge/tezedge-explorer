@@ -6,7 +6,7 @@ import { map, switchMap, takeUntil, withLatestFrom, catchError, tap } from 'rxjs
 import { of, interval, Subject, empty } from 'rxjs';
 import { Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { State } from '@app/app.reducers';
+import { State } from '@app/app.index';
 
 const sandboxStopPending$ = new Subject();
 

@@ -21,13 +21,15 @@ import { TooltipArea, TooltipDirective } from '@swimlane/ngx-charts';
 import { Overlay, OverlayRef } from '@angular/cdk/overlay';
 import { ComponentPortal } from '@angular/cdk/portal';
 import { Store } from '@ngrx/store';
-import { State } from '@app/app.reducers';
+import { State } from '@app/app.index';
 import { SYSTEM_RESOURCES_DETAILS_UPDATE, SystemResourcesDetailsUpdateAction } from '@resources/system-resources/system-resources.actions';
 import { SystemResourcesResourceType } from '@shared/types/resources/system/system-resources-panel.type';
 import { fromEvent } from 'rxjs';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { ActivatedRoute } from '@angular/router';
-import { GraphRedirectionOverlayComponent } from '@shared/components/custom-tezedge-components/tezedge-charts/graph-redirection-overlay/graph-redirection-overlay.component';
+import {
+  GraphRedirectionOverlayComponent
+} from '@shared/components/custom-tezedge-components/tezedge-charts/graph-redirection-overlay/graph-redirection-overlay.component';
 import { TezedgeChartsService } from '@shared/components/custom-tezedge-components/tezedge-charts/tezedge-charts.service';
 import {
   MEMPOOL_BLOCK_APPLICATION_DETAILS_LOAD,
@@ -49,6 +51,7 @@ export class TezedgeChartsTooltipAreaComponent extends TooltipArea implements On
   @Input() routedTooltipReady: boolean;
   @Input() disableRedirection: boolean = false;
   @Input() tooltipPlacement: 'top' | 'bottom';
+  @Input() markIndexes: number[];
 
   @ViewChild(TooltipDirective) private tooltipDirective: TooltipDirective;
   @ViewChild('tooltipTrigger') private tooltipTrigger: ElementRef<SVGRectElement>;
@@ -61,6 +64,7 @@ export class TezedgeChartsTooltipAreaComponent extends TooltipArea implements On
   }
 
   routedTooltipAnchorX: any;
+  marks: { x: number, blockLevel: number, round: number }[] = [];
 
   private overlayRef: OverlayRef;
   private redirectionOverlayRef: ComponentRef<GraphRedirectionOverlayComponent>;
@@ -105,6 +109,10 @@ export class TezedgeChartsTooltipAreaComponent extends TooltipArea implements On
         }, 500);
       });
     }
+
+    if (this.markIndexes.length && changes.markIndexes?.previousValue !== changes.markIndexes?.currentValue) {
+      this.addMarksToGraph();
+    }
   }
 
   ngOnInit(): void {
@@ -133,6 +141,26 @@ export class TezedgeChartsTooltipAreaComponent extends TooltipArea implements On
           );
       });
     }
+  }
+
+  private addMarksToGraph(): void {
+    this.zone.runOutsideAngular(() => {
+      setTimeout(() => {
+        this.marks = [];
+        this.markIndexes.forEach(index => {
+          let position = this.xScale(this.xSet[index]);
+          position = Math.max(0, position);
+          position = Math.min(this.dims.width, position);
+          const value = this.getValues(this.xSet[index]);
+          this.marks.push({
+            x: position,
+            blockLevel: value[0].blockLevel,
+            round: value[0].round
+          });
+        });
+        this.cdRef.detectChanges();
+      }, 500);
+    });
   }
 
   mouseMove(event): void {
@@ -215,12 +243,13 @@ export class TezedgeChartsTooltipAreaComponent extends TooltipArea implements On
     this.redirectionOverlayRef = this.overlayRef.attach(portal);
     this.redirectionOverlayRef.instance.date = this.anchorValues[0][this.resourceType ? 'name' : 'timestamp'];
     if (this.graphType === 'block-application') {
-      this.redirectionOverlayRef.instance.blockLevel = Number(this.anchorValues[0].name);
+      this.redirectionOverlayRef.instance.blockLevel = Number(this.anchorValues[0].blockLevel);
       this.redirectionOverlayRef.instance.network = this.nodeNetwork;
       this.store.dispatch<MempoolBlockApplicationDetailsLoad>({
         type: MEMPOOL_BLOCK_APPLICATION_DETAILS_LOAD,
         payload: {
-          level: Number(this.anchorValues[0].name)
+          level: Number(this.anchorValues[0].blockLevel),
+          round: this.anchorValues[0].round
         }
       });
     }

@@ -3,7 +3,7 @@ import { Store } from '@ngrx/store';
 import { Router } from '@angular/router';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { SettingsNodeEntity } from '@shared/types/settings-node/settings-node-entity.type';
-import { State } from '@app/app.reducers';
+import { State } from '@app/app.index';
 import { SettingsNode } from '@shared/types/settings-node/settings-node.type';
 
 @UntilDestroy()

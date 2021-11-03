@@ -11,7 +11,7 @@ import {
   SMART_CONTRACTS_START_DEBUGGING,
   SMART_CONTRACTS_STOP,
   SMART_CONTRACTS_STOP_DEBUGGING,
-  SmartContractAction
+  SmartContractActions
 } from '@smart-contracts/smart-contracts/smart-contracts.actions';
 import { SmartContractTrace } from '@shared/types/smart-contracts/smart-contract-trace.type';
 import { SmartContractsState } from '@smart-contracts/smart-contracts/smart-contracts.index';
@@ -37,7 +37,7 @@ const initialState: SmartContractsState = {
   },
 };
 
-export function reducer(state: SmartContractsState = initialState, action: SmartContractAction): SmartContractsState {
+export function reducer(state: SmartContractsState = initialState, action: SmartContractActions): SmartContractsState {
 
   switch (action.type) {
 

@@ -1,5 +1,9 @@
 @import 'utilities/layout';
 
+:host {
+  @include flexColumn();
+}
+
 .table-container {
   cdk-virtual-scroll-viewport, .row {
     width: 1345px;

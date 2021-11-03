@@ -6,8 +6,8 @@ import { Store } from '@ngrx/store';
 import { SYSTEM_RESOURCES_CLOSE, SYSTEM_RESOURCES_LOAD, SYSTEM_RESOURCES_LOAD_SUCCESS } from './system-resources.actions';
 import { SystemResourcesService } from './system-resources.service';
 import { SystemResourcesState } from '@shared/types/resources/system/system-resources-state.type';
-import { State } from '@app/app.reducers';
-import { ADD_ERROR } from '@shared/components/error-popup/error-popup.actions';
+import { State } from '@app/app.index';
+import { ADD_ERROR } from '@app/layout/error-popup/error-popup.actions';
 
 @Injectable({ providedIn: 'root' })
 export class SystemResourcesEffects {

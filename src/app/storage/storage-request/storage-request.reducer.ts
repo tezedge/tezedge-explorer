@@ -1,4 +1,4 @@
-import { State } from '@app/app.reducers';
+import { State } from '@app/app.index';
 import { StorageRequestState } from '@storage/storage-request/storage-request.index';
 import {
   STORAGE_REQUESTS_LOAD_SUCCESS,

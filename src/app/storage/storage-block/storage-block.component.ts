@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { StorageBlockState } from '@shared/types/storage/storage-block/storage-block-state.type';
 import { selectActiveNode } from '@settings/settings-node.reducer';
-import { State } from '@app/app.reducers';
+import { State } from '@app/app.index';
 import { debounce } from 'typescript-debounce-decorator';
 import { STORAGE_BLOCK_LOAD_ROUTED_BLOCK } from '@storage/storage-block/storage-block.actions';
 import { selectStorageBlockState } from '@storage/storage-block/storage-block.reducer';

@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot, UrlTree } from '@angular/router';
 import { Observable } from 'rxjs';
 import { Store } from '@ngrx/store';
-import { State } from '@app/app.reducers';
+import { State } from '@app/app.index';
 import { selectActiveNode } from '@settings/settings-node.reducer';
 import { filter, map } from 'rxjs/operators';
 import { SettingsNodeApi } from '@shared/types/settings-node/settings-node-api.type';

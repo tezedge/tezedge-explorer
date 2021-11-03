@@ -3,11 +3,11 @@ import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { catchError, map, switchMap, withLatestFrom } from 'rxjs/operators';
 import { empty, ObservedValueOf, of } from 'rxjs';
 import { Store } from '@ngrx/store';
-import { State } from '@app/app.reducers';
+import { State } from '@app/app.index';
 import { MemoryResourcesActionTypes } from './memory-resources.actions';
 import { MemoryResourcesService } from './memory-resources.service';
 import { MemoryResource } from '@shared/types/resources/memory/memory-resource.type';
-import { ADD_ERROR } from '@shared/components/error-popup/error-popup.actions';
+import { ADD_ERROR } from '@app/layout/error-popup/error-popup.actions';
 
 @Injectable({ providedIn: 'root' })
 export class MemoryResourcesEffects {

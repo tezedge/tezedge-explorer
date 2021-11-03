@@ -1,4 +1,5 @@
-<div fxLayout.lt-lg="column" fxLayout.gt-md="row" fxFlexFill>
+<app-mempool-baking-right-filters fxFlex="72px"></app-mempool-baking-right-filters>
+<div fxLayout.lt-lg="column" fxLayout.gt-md="row" fxFlex="calc(100% - 72px)">
 
   <div fxFlex.gt-md="70" fxFlex.lt-lg="50" class="table-container overflow-x-auto overflow-y-hidden d-flex flex-column">
     <div fxFlex="36px" class="row head foreground-7 border-bottom">
@@ -15,7 +16,7 @@
     <div fxFlex="calc(100% - 36px)">
       <cdk-virtual-scroll-viewport class="border-bottom f-14 h-100 overflow-y-auto overflow-x-hidden"
                                    itemSize="36">
-        <div *cdkVirtualFor="let right of state.bakingRights; let i=index; trackBy: trackBakingRight"
+        <div *cdkVirtualFor="let right of state.filteredBakingRights; let i=index; trackBy: trackBakingRight"
              class="row">
           <span class="foreground-7 text-nowrap">{{ right.address }}</span>
           <span class="truncate p-relative">

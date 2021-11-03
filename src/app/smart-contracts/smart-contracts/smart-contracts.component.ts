@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { Store } from '@ngrx/store';
-import { State } from '@app/app.reducers';
+import { State } from '@app/app.index';
 import { SmartContract } from '@shared/types/smart-contracts/smart-contract.type';
 import { SMART_CONTRACTS_STOP, SmartContractsStopAction } from '@smart-contracts/smart-contracts/smart-contracts.actions';
 import { selectSmartContractsActiveContract, selectSmartContractsResult } from '@smart-contracts/smart-contracts/smart-contracts.index';

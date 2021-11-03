@@ -5,8 +5,8 @@ import { TezedgeLineChartComponent } from './tezedge-line-chart/tezedge-line-cha
 import { TezedgeChartsCircleSeriesComponent } from './tezedge-charts-circle-series/tezedge-charts-circle-series.component';
 import { TezedgeChartsTooltipAreaComponent } from './tezedge-charts-tooltip-area/tezedge-charts-tooltip-area.component';
 import { GraphRedirectionOverlayComponent } from './graph-redirection-overlay/graph-redirection-overlay.component';
-import { MatIconModule } from '@angular/material/icon';
 import { RouterModule } from '@angular/router';
+import { TezedgeAppSharedModule } from '@shared/tezedge-app-shared.module';
 
 
 @NgModule({
@@ -19,7 +19,7 @@ import { RouterModule } from '@angular/router';
   imports: [
     CommonModule,
     NgxChartsModule,
-    MatIconModule,
+    TezedgeAppSharedModule,
     RouterModule,
   ],
   exports: [

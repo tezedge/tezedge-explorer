@@ -4,10 +4,10 @@ import { HttpClient } from '@angular/common/http';
 import { Store } from '@ngrx/store';
 import { catchError, filter, map, switchMap, takeUntil, tap, withLatestFrom } from 'rxjs/operators';
 import { combineLatest, ObservedValueOf, of, Subject, timer } from 'rxjs';
-import { State } from '@app/app.reducers';
+import { State } from '@app/app.index';
 import { StorageBlockService } from './storage-block.service';
-import { ADD_ERROR } from '@shared/components/error-popup/error-popup.actions';
 import { STORAGE_BLOCK_CHECK_AVAILABLE_CONTEXTS, STORAGE_BLOCK_LOAD_ROUTED_BLOCK, STORAGE_BLOCK_MAP_AVAILABLE_CONTEXTS } from './storage-block.actions';
+import { ADD_ERROR } from '@app/layout/error-popup/error-popup.actions';
 
 
 @Injectable({ providedIn: 'root' })

@@ -1,12 +1,14 @@
-<div class="h-100" fxLayout="column" fxLayout.gt-md="row">
+<app-mempool-endorsement-filters fxFlex="72px"></app-mempool-endorsement-filters>
+<div fxLayout="column" fxLayout.gt-md="row" fxFlex="calc(100% - 72px)">
   <div class="d-flex flex-column border-bottom" fxFlex="60" fxFlex.gt-md="75">
     <div class="d-flex flex-column overflow-auto" fxFlex="calc(100% - 36px)">
       <div class="h-100 d-flex flex-column table-container">
         <div class="row head foreground-7 border-bottom">
-          <span (click)="sortTable(tableHead.sort ? (deltaEnabled && tableHead.deltaAvailable ? tableHead.sort + 'Delta' : tableHead.sort) : tableHead.name)"
-                *ngFor="let tableHead of tableHeads"
-                [class.active]="currentSort.sortBy === (tableHead.sort ? (deltaEnabled && tableHead.deltaAvailable ? tableHead.sort + 'Delta' : tableHead.sort) : tableHead.name)"
-                class="pointer text-uppercase">{{ tableHead.name }}
+          <span
+            (click)="sortTable(tableHead.sort ? (deltaEnabled && tableHead.deltaAvailable ? tableHead.sort + 'Delta' : tableHead.sort) : tableHead.name)"
+            *ngFor="let tableHead of tableHeads"
+            [class.active]="currentSort.sortBy === (tableHead.sort ? (deltaEnabled && tableHead.deltaAvailable ? tableHead.sort + 'Delta' : tableHead.sort) : tableHead.name)"
+            class="pointer text-uppercase">{{ tableHead.name }}
             <mat-icon [class.flip]="currentSort.sortDirection === 'descending'"
                       [class.show]="currentSort.sortBy === (tableHead.sort ? (deltaEnabled && tableHead.deltaAvailable ? tableHead.sort + 'Delta' : tableHead.sort) : tableHead.name)"
                       [svgIcon]="'arrow-up'"

@@ -1,22 +1,24 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { State } from '@app/app.reducers';
+import { State } from '@app/app.index';
 import {
+  MEMPOOL_BAKING_RIGHTS_LAST_BLOCK_UPDATE,
   MEMPOOL_BAKING_RIGHTS_INIT,
   MEMPOOL_BAKING_RIGHTS_SORT,
   MEMPOOL_BAKING_RIGHTS_STOP,
+  MempoolBakingRightsLastBlockUpdate,
   MempoolBakingRightsInit,
   MempoolBakingRightsSort,
   MempoolBakingRightsStop
 } from '@mempool/mempool-baking-rights/mempool-baking-rights.actions';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { MempoolBakingRightsState } from '@shared/types/mempool/baking-rights/mempool-baking-rights-state.type';
-import { mempoolBakingRightsState } from '@mempool/mempool-baking-rights/mempool-baking-rights.reducer';
+import { mempoolBakingRightsCurrentDisplayedBlock, mempoolBakingRightsState } from '@mempool/mempool-baking-rights/mempool-baking-rights.reducer';
 import { SortDirection, TableSort } from '@shared/types/shared/table-sort.type';
-import { ADD_INFO, InfoAdd } from '@shared/components/error-popup/error-popup.actions';
+import { ADD_INFO, InfoAdd } from '@app/layout/error-popup/error-popup.actions';
 import { MempoolBakingRight } from '@shared/types/mempool/baking-rights/mempool-baking-right.type';
 import { refreshBlock } from '@shared/constants/animations';
-import { selectNetworkCurrentBlockLevel } from '@network/network-stats/network-stats.reducer';
+import { selectNetworkLastAppliedBlockLevel } from '@network/network-stats/network-stats.reducer';
 import { distinctUntilChanged, filter } from 'rxjs/operators';
 
 @UntilDestroy()
@@ -60,8 +62,26 @@ export class MempoolBakingRightsComponent implements OnInit, OnDestroy {
     this.listenToBlockChange();
   }
 
+  private listenToStateChange(): void {
+    this.store.select(mempoolBakingRightsState)
+      .pipe(untilDestroyed(this))
+      .subscribe((state: MempoolBakingRightsState) => {
+        this.state = state;
+        this.currentSort = state.sort;
+        this.cdRef.detectChanges();
+      });
+  }
+
   private listenToBlockChange(): void {
-    this.store.select(selectNetworkCurrentBlockLevel).pipe(
+    this.store.select(selectNetworkLastAppliedBlockLevel).pipe(
+      untilDestroyed(this),
+      filter(Boolean),
+      distinctUntilChanged()
+    ).subscribe((currentBlock: number) => {
+      this.store.dispatch<MempoolBakingRightsLastBlockUpdate>({ type: MEMPOOL_BAKING_RIGHTS_LAST_BLOCK_UPDATE, payload: currentBlock });
+    });
+
+    this.store.select(mempoolBakingRightsCurrentDisplayedBlock).pipe(
       untilDestroyed(this),
       filter(Boolean),
       distinctUntilChanged()
@@ -85,15 +105,5 @@ export class MempoolBakingRightsComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.store.dispatch<MempoolBakingRightsStop>({ type: MEMPOOL_BAKING_RIGHTS_STOP });
-  }
-
-  private listenToStateChange(): void {
-    this.store.select(mempoolBakingRightsState)
-      .pipe(untilDestroyed(this))
-      .subscribe((state: MempoolBakingRightsState) => {
-        this.state = state;
-        this.currentSort = state.sort;
-        this.cdRef.detectChanges();
-      });
   }
 }

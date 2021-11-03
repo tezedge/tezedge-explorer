@@ -4,8 +4,8 @@ import { HttpClient } from '@angular/common/http';
 import { Store } from '@ngrx/store';
 import { catchError, map, switchMap, takeUntil, tap, withLatestFrom } from 'rxjs/operators';
 import { forkJoin, ObservedValueOf, of, Subject, timer } from 'rxjs';
-import { State } from '@app/app.reducers';
-import { ADD_ERROR } from '@shared/components/error-popup/error-popup.actions';
+import { State } from '@app/app.index';
+import { ADD_ERROR } from '@app/layout/error-popup/error-popup.actions';
 import { NetworkActionEntity } from '@shared/types/network/network-action-entity.type';
 
 const networkActionDestroy$ = new Subject();

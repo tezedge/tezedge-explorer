@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { select, Store } from '@ngrx/store';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { State } from '@app/app.reducers';
+import { State } from '@app/app.index';
 import { MemoryResourcesActionTypes, MemoryResourcesLoad } from '@resources/memory-resources/memory-resources.actions';
 import { MatCheckboxChange } from '@angular/material/checkbox';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';

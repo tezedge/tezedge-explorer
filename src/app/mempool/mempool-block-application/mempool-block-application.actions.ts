@@ -1,6 +1,6 @@
 import { Action } from '@ngrx/store';
 import { MempoolBlockApplicationChartLine } from '@shared/types/mempool/block-application/mempool-block-application-chart-line.type';
-import { MempoolBlockDetails } from '@shared/types/mempool/common/mempool-block-details.type';
+import { MempoolBlockRound } from '@shared/types/mempool/common/mempool-block-round.type';
 
 enum MempoolBlockApplicationActionTypes {
   MEMPOOL_BLOCK_APPLICATION_LOAD = 'MEMPOOL_BLOCK_APPLICATION_LOAD',
@@ -27,19 +27,19 @@ export class MempoolBlockApplicationLoad implements Action {
 export class MempoolBlockApplicationLoadSuccess implements Action {
   readonly type = MEMPOOL_BLOCK_APPLICATION_LOAD_SUCCESS;
 
-  constructor(public payload: { chartLines: MempoolBlockApplicationChartLine[] }) { }
+  constructor(public payload: { chartLines: MempoolBlockApplicationChartLine[], markIndexes: number[] }) { }
 }
 
 export class MempoolBlockApplicationDetailsLoad implements Action {
   readonly type = MEMPOOL_BLOCK_APPLICATION_DETAILS_LOAD;
 
-  constructor(public payload: { level: number }) { }
+  constructor(public payload: { level: number, round: number }) { }
 }
 
 export class MempoolBlockApplicationDetailsLoadSuccess implements Action {
   readonly type = MEMPOOL_BLOCK_APPLICATION_DETAILS_LOAD_SUCCESS;
 
-  constructor(public payload: { details: MempoolBlockDetails[] }) { }
+  constructor(public payload: { details: MempoolBlockRound[] }) { }
 }
 
 export class MempoolBlockApplicationDeltaSwitch implements Action {

@@ -3,9 +3,9 @@ import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { catchError, filter, map, mergeMap, switchMap, takeUntil, tap, withLatestFrom } from 'rxjs/operators';
 import { empty, ObservedValueOf, of, Subject, timer } from 'rxjs';
-import { State } from '@app/app.reducers';
+import { State } from '@app/app.index';
 import { MempoolEndorsement } from '@shared/types/mempool/mempool-endorsement/mempool-endorsement.type';
-import { ADD_ERROR } from '@shared/components/error-popup/error-popup.actions';
+import { ADD_ERROR } from '@app/layout/error-popup/error-popup.actions';
 import {
   MEMPOOL_ENDORSEMENT_LOAD,
   MEMPOOL_ENDORSEMENT_LOAD_SUCCESS,

@@ -3,7 +3,7 @@ import { VirtualScrollActivePage } from '@shared/types/shared/virtual-scroll-act
 import { StorageBlockState } from '@shared/types/storage/storage-block/storage-block-state.type';
 import { StorageBlockEntity } from '@shared/types/storage/storage-block/storage-block-entity.type';
 import { STORAGE_BLOCK_LOAD_ROUTED_BLOCK, STORAGE_BLOCK_MAP_AVAILABLE_CONTEXTS } from './storage-block.actions';
-import { State } from '@app/app.reducers';
+import { State } from '@app/app.index';
 import { StorageBlockDetails } from '@shared/types/storage/storage-block/storage-block-details.type';
 
 const initialState: StorageBlockState = {

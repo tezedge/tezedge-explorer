@@ -7,7 +7,7 @@ import { Router } from '@angular/router';
 import { Observable, of } from 'rxjs';
 import { getWallet, initializeWallet, transaction } from 'tezos-wallet';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { State } from '@app/app.reducers';
+import { State } from '@app/app.index';
 
 @Injectable({ providedIn: 'root' })
 export class WalletsEffects {

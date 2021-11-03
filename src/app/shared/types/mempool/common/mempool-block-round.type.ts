@@ -1,7 +1,8 @@
 import { MempoolBlockStepTimes } from '@shared/types/mempool/common/mempool-block-step-times.type';
 
-export interface MempoolBlockDetails {
+export interface MempoolBlockRound {
   blockHash: string;
+  round: number;
   blockTimestamp: number;
   receiveTimestamp: number;
   baker: string;

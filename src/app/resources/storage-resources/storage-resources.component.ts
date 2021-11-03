@@ -5,7 +5,7 @@ import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { StorageResourcesStats } from '@shared/types/resources/storage/storage-resources-stats.type';
 import { Observable } from 'rxjs';
 import { filter, map } from 'rxjs/operators';
-import { State } from '@app/app.reducers';
+import { State } from '@app/app.index';
 import { storageResources } from '@resources/storage-resources/storage-resources.reducer';
 
 const PROTOCOLS = [

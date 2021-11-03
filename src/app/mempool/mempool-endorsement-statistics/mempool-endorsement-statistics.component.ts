@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, NgZone, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { State } from '@app/app.reducers';
+import { State } from '@app/app.index';
 import { BehaviorSubject, Observable, tap } from 'rxjs';
 import { distinctUntilChanged, filter } from 'rxjs/operators';
 import { MempoolEndorsementStatistics } from '@shared/types/mempool/mempool-endorsement/mempool-endorsement-statistics.type';

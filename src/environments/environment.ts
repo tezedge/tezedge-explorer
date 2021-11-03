@@ -220,12 +220,12 @@ const MEMPOOL = {
 export const environment = {
   production: false,
   api: [
-    // DEVELOP,
+    DEVELOP,
     // MASTER,
     // MEMPOOL,
     // TRACE,
-    PRECHECKER,
-    // DEBUG,
+    // PRECHECKER,
+    // DEBUG,N
     // PROD,
     // STORAGE,
     // OCTEZ_DEVELOP,

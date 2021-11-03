@@ -6,10 +6,10 @@
 }
 
 .table-container {
-  min-width: 1225px;
+  min-width: 1245px;
 
   .row {
-    grid-template-columns: 70px 230px 110px 90px 120px 155px 80px 95px 75px 110px 90px;
+    grid-template-columns: 70px 230px 130px 90px 120px 155px 80px 95px 75px 110px 90px;
 
     &.head {
       background-color: unset;
@@ -21,7 +21,6 @@
           transition: 0.2s ease-in-out;
           transform: rotateX(0) translateY(6px);
           opacity: 0;
-          margin-top: 1px;
 
           &.show {
             opacity: 1;
@@ -61,9 +60,10 @@
     .status {
       display: block;
       text-align: center;
-      border-radius: 10px;
-      line-height: 20px;
-      height: 20px;
+      border-radius: 30px;
+      line-height: 22px;
+      height: 22px;
+      margin-top: 7px;
       color: #fff;
 
       &.broadcast {
@@ -84,6 +84,10 @@
 
       &.received {
         background-color: darken(#ff9f0a, 15);
+      }
+
+      &.branch_delayed {
+        background-color: #636363;
       }
 
       &.missing {

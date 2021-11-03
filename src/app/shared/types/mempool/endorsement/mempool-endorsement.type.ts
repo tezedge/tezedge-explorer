@@ -26,5 +26,6 @@ export enum MempoolEndorsementStatusTypes {
   PRECHECKED = 'prechecked',
   DECODED = 'decoded',
   RECEIVED = 'received',
+  BRANCH_DELAYED = 'branch_delayed',
   MISSING = 'missing'
 }

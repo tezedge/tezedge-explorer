@@ -30,15 +30,22 @@ const mempoolEndorsementsDestroy$ = new Subject<void>();
 @Injectable({ providedIn: 'root' })
 export class MempoolEndorsementEffects {
 
-  stopUpdating: boolean = true;
-
   mempoolEndorsementInit$ = createEffect(() => this.actions$.pipe(
     ofType(MEMPOOL_ENDORSEMENTS_INIT),
     switchMap(() =>
       timer(0, 1000).pipe(
         takeUntil(mempoolEndorsementsDestroy$),
-        filter(() => !this.stopUpdating),
         map(() => ({ type: MEMPOOL_ENDORSEMENT_UPDATE_STATUSES }))
+      )
+    )
+  ));
+
+  mempoolEndorsementLoadRounds$ = createEffect(() => this.actions$.pipe(
+    ofType(MEMPOOL_ENDORSEMENTS_INIT),
+    switchMap(() =>
+      timer(0, 3000).pipe(
+        takeUntil(mempoolEndorsementsDestroy$),
+        map(() => ({ type: MEMPOOL_ENDORSEMENT_LOAD_ROUND }))
       )
     )
   ));
@@ -46,14 +53,19 @@ export class MempoolEndorsementEffects {
   mempoolRoundsLoad$ = createEffect(() => this.actions$.pipe(
     ofType(MEMPOOL_ENDORSEMENT_LOAD_ROUND),
     withLatestFrom(this.store, (action: MempoolEndorsementLoadRound, state: ObservedValueOf<Store<State>>) => ({ action, state })),
+    filter(({ action, state }) => state.mempool.endorsementState.currentBlockLevel > 0),
     switchMap(({ action, state }) => {
-      this.stopUpdating = true;
-      return this.mempoolService.getBlockRounds(state.settingsNode.activeNode.http, action.payload.blockLevel);
+      const endorsementState = state.mempool.endorsementState;
+      return this.mempoolService.getBlockRounds(state.settingsNode.activeNode.http, endorsementState.currentBlockLevel).pipe(
+        map((rounds: MempoolBlockRound[]) => ({
+          type: MEMPOOL_ENDORSEMENT_LOAD_ROUND_SUCCESS,
+          payload: { rounds, loadEndorsements: endorsementState.currentRound?.blockHash !== rounds[rounds.length - 1]?.blockHash }
+        }))
+      );
     }),
-    map((rounds: MempoolBlockRound[]) => ({ type: MEMPOOL_ENDORSEMENT_LOAD_ROUND_SUCCESS, payload: { rounds } })),
     catchError(error => of({
       type: ADD_ERROR,
-      payload: { title: 'Error when loading mempool endorsements: ', message: error.message, initiator: MEMPOOL_ENDORSEMENT_LOAD }
+      payload: { title: 'Error when loading blocks rounds: ', message: error.message }
     }))
   ));
 
@@ -62,11 +74,10 @@ export class MempoolEndorsementEffects {
     withLatestFrom(this.store, (action: MempoolEndorsementLoadRoundSuccess, state: ObservedValueOf<Store<State>>) => ({ action, state })),
     switchMap(({ action, state }) => {
       const currentRound = state.mempool.endorsementState.currentRound;
-      if (currentRound) {
-        return of({ type: MEMPOOL_ENDORSEMENT_LOAD, payload: { hash: currentRound.blockHash, level: currentRound.blockLevel } });
-      } else {
+      if (!currentRound || !action.payload.loadEndorsements) {
         return EMPTY;
       }
+      return of({ type: MEMPOOL_ENDORSEMENT_LOAD, payload: { hash: currentRound.blockHash, level: currentRound.blockLevel } });
     }),
   ));
 
@@ -79,10 +90,7 @@ export class MempoolEndorsementEffects {
       }
       return this.mempoolEndorsementService.getEndorsingRights(state.settingsNode.activeNode.http, action.payload.hash, action.payload.level);
     }),
-    map((endorsements: MempoolEndorsement[]) => {
-      this.stopUpdating = false;
-      return ({ type: MEMPOOL_ENDORSEMENT_LOAD_SUCCESS, payload: { endorsements } });
-    }),
+    map((endorsements: MempoolEndorsement[]) => ({ type: MEMPOOL_ENDORSEMENT_LOAD_SUCCESS, payload: { endorsements } })),
     catchError(error => of({
       type: ADD_ERROR,
       payload: { title: 'Error when loading mempool endorsements: ', message: error.message, initiator: MEMPOOL_ENDORSEMENT_LOAD }

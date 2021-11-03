@@ -6,14 +6,16 @@ import { distinctUntilChanged, filter } from 'rxjs/operators';
 import { refreshBlock } from '@shared/constants/animations';
 import {
   selectMempoolPreEndorsementCurrentBlock,
+  selectMempoolPreEndorsementCurrentRound,
   selectMempoolPreEndorsementStatistics
 } from '@mempool/preendorsements/mempool-pre-endorsement/mempool-pre-endorsement.reducer';
 import { MempoolPreEndorsementStatistics } from '@shared/types/mempool/preendorsement/mempool-preendorsement-statistics.type';
+import { MempoolPartialRound } from '@shared/types/mempool/common/mempool-partial-round.type';
 import Timeout = NodeJS.Timeout;
 
 
 @Component({
-  selector: 'app-preendorsement-statistics',
+  selector: 'app-mempool-preendorsement-statistics',
   templateUrl: './mempool-pre-endorsement-statistics.component.html',
   styleUrls: ['./mempool-pre-endorsement-statistics.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -23,8 +25,10 @@ export class MempoolPreEndorsementStatisticsComponent implements OnInit {
 
   statistics$: Observable<MempoolPreEndorsementStatistics>;
   currentBlock$: Observable<number>;
+  currentRound$: Observable<MempoolPartialRound>;
   previousBlockElapsedTime: number;
   readonly elapsedTime$: BehaviorSubject<number> = new BehaviorSubject<number>(null);
+
   private interval: Timeout;
 
   constructor(private store: Store<State>,
@@ -38,6 +42,7 @@ export class MempoolPreEndorsementStatisticsComponent implements OnInit {
 
   private listenToEndorsementStatisticsChanges(): void {
     this.statistics$ = this.store.select(selectMempoolPreEndorsementStatistics);
+    this.currentRound$ = this.store.select(selectMempoolPreEndorsementCurrentRound);
     this.currentBlock$ = this.store.select(selectMempoolPreEndorsementCurrentBlock).pipe(
       filter(Boolean),
       distinctUntilChanged(),

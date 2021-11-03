@@ -15,16 +15,16 @@ import { State } from '@app/app.index';
 import { delay, Observable } from 'rxjs';
 import { MempoolEndorsement } from '@shared/types/mempool/endorsement/mempool-endorsement.type';
 import {
-  MEMPOOL_ENDORSEMENT_LOAD_ROUND,
   MEMPOOL_ENDORSEMENT_SET_ACTIVE_BAKER,
   MEMPOOL_ENDORSEMENT_SORT,
   MEMPOOL_ENDORSEMENT_STOP,
+  MEMPOOL_ENDORSEMENT_UPDATE_CURRENT_BLOCK,
   MEMPOOL_ENDORSEMENTS_INIT,
   MempoolEndorsementLoadRound,
   MempoolEndorsementSetActiveBaker,
   MempoolEndorsementsInit,
   MempoolEndorsementSorting,
-  MempoolEndorsementStop
+  MempoolEndorsementStop, MempoolEndorsementUpdateCurrentBlock
 } from '@mempool/endorsements/mempool-endorsement/mempool-endorsement.actions';
 import { animate, style, transition, trigger } from '@angular/animations';
 import { debounceTime, distinctUntilChanged, filter, skip } from 'rxjs/operators';
@@ -171,7 +171,7 @@ export class MempoolEndorsementComponent implements OnInit, OnDestroy {
       filter(Boolean),
       distinctUntilChanged()
     ).subscribe((blockLevel: number) =>
-      this.store.dispatch<MempoolEndorsementLoadRound>({ type: MEMPOOL_ENDORSEMENT_LOAD_ROUND, payload: { blockLevel } })
+      this.store.dispatch<MempoolEndorsementUpdateCurrentBlock>({ type: MEMPOOL_ENDORSEMENT_UPDATE_CURRENT_BLOCK, payload: { blockLevel } })
     );
   }
 

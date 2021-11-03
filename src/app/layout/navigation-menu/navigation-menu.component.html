@@ -266,8 +266,10 @@
     <div class="app-submenu">
       <div class="text-nowrap">DEVELOPMENT</div>
 
-      <a mat-list-item
+      <a *ngIf="features['open-api'] || settingsNode.activeNode?.type === 'tezedge'"
+         mat-list-item
          class="menu-item"
+         id="open-api-trigger"
          routerLink="/open-api"
          routerLinkActive="active"
          matTooltip="Open API"

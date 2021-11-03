@@ -13,7 +13,7 @@ export class MemoryResourcesService {
   constructor(private http: HttpClient) { }
 
   getStorageResources(api: string, reversed: boolean = false, threshold: number = 512): Observable<MemoryResource> {
-    return this.http.get<MemoryResource>(`${api}/v1/tree?threshold=${threshold}&reverse=${reversed}`, { reportProgress: true })
+    return this.http.get<MemoryResource>(`${api}/v1/tree?threshold=${threshold}&reverse=${reversed}`)
       .pipe(map(response => this.mapMemoryResponse(response, threshold)));
   }
 

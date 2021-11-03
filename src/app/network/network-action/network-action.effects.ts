@@ -37,7 +37,7 @@ export class NetworkActionEffects {
 
       return forkJoin([
         this.http.get<any[]>(urlBackward),
-        this.http.get<any[]>(urlForward, { reportProgress: true })
+        this.http.get<any[]>(urlForward)
       ]).pipe(
         map(([backwardSlice, forwardSlice]) => ({
           type: 'NETWORK_ACTION_LOAD_SUCCESS',
@@ -98,7 +98,7 @@ export class NetworkActionEffects {
     ofType('NETWORK_ACTION_START'),
     withLatestFrom(this.store, (action: any, state: ObservedValueOf<Store<State>>) => ({ action, state })),
     switchMap(({ action, state }) =>
-      timer(0, 2000).pipe(
+      timer(0, 5000).pipe(
         takeUntil(networkActionDestroy$),
         switchMap(() =>
           this.http.get<any[]>(setUrl(action, state)).pipe(

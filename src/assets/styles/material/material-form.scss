@@ -14,7 +14,7 @@ mat-form-field .mat-select-value {
 
 .mat-checkbox {
   &.mat-checkbox-checked.mat-accent .mat-checkbox-background {
-    background-color: #204E8A;
+    background-color: #204e8a;
   }
 
   .mat-checkbox-frame {
@@ -131,7 +131,7 @@ mat-form-field.custom-bottom-form-field {
       }
 
       .mat-calendar-body-selected {
-        background-color: #204E8A;
+        background-color: #204e8a;
       }
 
       .mat-calendar-body-in-range::before {
@@ -162,3 +162,84 @@ mat-form-field.custom-bottom-form-field {
     visibility: hidden;
   }
 }
+
+
+mat-form-field .mat-select-value {
+  color: $color-focus;
+  font-size: 13px;
+  font-weight: 300;
+}
+
+
+/* style position for mat-select dropdown panel */
+.mat-select-panel {
+  border-radius: 4px !important;
+  background-color: #1b1b1d;
+}
+
+.mat-select-panel-wrap {
+  position: relative;
+  top: 30px;
+}
+
+.mat-select-panel-wrap .mat-select-panel {
+  min-width: calc(100% + 12px) !important;
+  transform: translateX(5px) !important;
+
+  &.settings-node {
+    min-width: unset !important;
+    margin: 5px 0 0 10px !important;
+  }
+}
+
+.mat-select-panel .mat-option.mat-selected:not(.mat-option-multiple) {
+  color: white;
+  background-color: #2a2b2e;
+}
+
+.mat-select-panel .mat-option.mat-selected:not(.mat-option-multiple):hover {
+  background-color: #333334;
+}
+
+.mat-option:hover:not(.mat-option-disabled), .mat-option:focus:not(.mat-option-disabled) {
+  color: white;
+  background-color: #333334;
+}
+
+.mat-option:not(:last-child) {
+  border-bottom: 1px rgba(255, 255, 255, 0.1) solid;
+}
+
+.mat-select-panel .mat-option {
+  color: $color;
+}
+
+/* remove underline in mat-select */
+mat-form-field .mat-form-field-underline {
+  background-color: initial !important;
+}
+
+.mat-form-field.mat-focused .mat-form-field-ripple {
+  background-color: initial !important;
+}
+
+.hide-arrow .mat-select-arrow {
+  /* hide arrow in mat select*/
+  border: 0;
+}
+
+.mat-select-arrow {
+  color: #c4cfdc !important;
+}
+
+/* hide number input arrows */
+mat-form-field input::-webkit-outer-spin-button,
+mat-form-field input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+mat-form-field input[type='number'] {
+  -moz-appearance: textfield;
+}
+

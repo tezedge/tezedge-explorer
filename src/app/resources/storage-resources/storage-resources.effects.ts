@@ -23,10 +23,13 @@ export class StorageResourcesEffects {
       )
     ),
     switchMap(availableContexts => !availableContexts.length ? [] : [
-      { type: StorageResourcesActionTypes.STORAGE_RESOURCES_LOAD, payload: availableContexts[0] },
+      { type: StorageResourcesActionTypes.STORAGE_RESOURCES_LOAD, payload: { context: availableContexts[0] } },
       { type: StorageResourcesActionTypes.STORAGE_RESOURCES_MAP_AVAILABLE_CONTEXTS, payload: availableContexts }
     ]),
-    catchError(error => of({ type: ErrorActionTypes.ADD_ERROR, payload: { title: 'Storage resources error', message: error.message } }))
+    catchError(error => of({
+      type: ErrorActionTypes.ADD_ERROR,
+      payload: { title: 'Storage resources error', message: error.message, initiator: StorageResourcesActionTypes.STORAGE_RESOURCES_LOAD }
+    }))
   ));
 
   resourcesLoadEffect$ = createEffect(() => this.actions$.pipe(

@@ -52,7 +52,7 @@ export class NavigationMenuComponent implements OnInit, AfterViewInit {
     this.store.select('settingsNode')
       .pipe(untilDestroyed(this))
       .subscribe(node => {
-        this.haveDebugger = node.activeNode.features.some(f => f.name === 'debugger');
+        this.haveDebugger = node.activeNode?.features.some(f => f.name === 'debugger');
         this.settingsNode = node;
       });
   }

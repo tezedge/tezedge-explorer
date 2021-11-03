@@ -22,6 +22,7 @@ export const environment = {
         { name: 'network' },
         { name: 'logs' },
         { name: 'smart-contracts' },
+        { name: 'open-api' },
       ]
     },
     {

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
-import { flatMap, map, switchMap, tap, withLatestFrom } from 'rxjs/operators';
+import { flatMap, map, tap, withLatestFrom } from 'rxjs/operators';
 import { Router } from '@angular/router';
 import { empty, ObservedValueOf, of } from 'rxjs';
 import { State } from '@app/app.reducers';
@@ -54,14 +54,6 @@ export class AppEffects {
       }
     })
   ), { dispatch: false });
-
-  AppInitSuccessEffect$ = createEffect(() => this.actions$.pipe(
-    ofType('APP_INIT_SUCCESS'),
-    withLatestFrom(this.store, (action: any, state: ObservedValueOf<Store<State>>) => ({ action, state })),
-    switchMap(({ action, state }) => {
-      return [];
-    })
-  ));
 
   constructor(
     private actions$: Actions,

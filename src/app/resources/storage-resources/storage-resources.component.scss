@@ -1,4 +1,4 @@
-$bezier:  cubic-bezier(0.76, 0, 0.24, 1);
+$bezier: cubic-bezier(0.76, 0, 0.24, 1);
 $border-color: rgba(255, 255, 255, 0.1);
 
 :host {
@@ -9,6 +9,11 @@ $border-color: rgba(255, 255, 255, 0.1);
 }
 
 .storage-toolbar {
+  .toolbar-left {
+    width: calc(100% - 300px);
+    max-width: 100%;
+  }
+
   .toolbar-right {
     width: 100px;
     transition: all 0.18s $bezier;
@@ -22,6 +27,8 @@ $border-color: rgba(255, 255, 255, 0.1);
   .context {
     padding-left: 16px;
     width: 150px;
+    height: 35px;
+    line-height: 35px;
   }
 
   .node-switcher {
@@ -31,6 +38,25 @@ $border-color: rgba(255, 255, 255, 0.1);
 
     &:hover {
       background-color: rgba(255, 255, 255, 0.25);
+    }
+  }
+
+  .protocol-list {
+    .protocol {
+      padding-right: 6px;
+    }
+
+    .protocol-name {
+      opacity: 0.7;
+
+      &:hover, &.active {
+        opacity: 1;
+      }
+    }
+
+    .bar {
+      opacity: 1;
+      padding-left: 6px;
     }
   }
 }

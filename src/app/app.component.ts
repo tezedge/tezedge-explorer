@@ -1,4 +1,4 @@
-import { Component, HostListener, NgZone, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, HostListener, NgZone, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { debounceTime, filter, map } from 'rxjs/operators';
 import { Observable } from 'rxjs';
@@ -6,21 +6,25 @@ import { State } from '@app/app.reducers';
 import { NetworkStats } from '@shared/types/network/network-stats.type';
 import { SettingsNode } from '@shared/types/settings-node/settings-node.type';
 import { App } from '@shared/types/app/app.type';
+import { selectActiveNode } from '@settings/settings-node.reducer';
+import { SettingsNodeApi } from '@shared/types/settings-node/settings-node-api.type';
 
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss']
+  styleUrls: ['./app.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class AppComponent implements OnInit {
 
   app: App;
   isMobile = false;
 
-  pendingTransactions: any[];
+  pendingTransactions$: Observable<any[]>;
   networkStats$: Observable<NetworkStats>;
   settingsNodeProtocol$: Observable<string>;
+  activeNode$: Observable<SettingsNodeApi>;
 
   @HostListener('window:resize')
   onResize(): void {
@@ -31,9 +35,11 @@ export class AppComponent implements OnInit {
       this.store.dispatch({ type: 'APP_MENU_STATE_CHANGE', payload: { mode: 'side' } });
       this.isMobile = false;
     }
+    this.cdRef.detectChanges();
   }
 
   constructor(private store: Store<State>,
+              private cdRef: ChangeDetectorRef,
               zone: NgZone) {
     // when inside Cypress testing environment, put the store on window so Cypress have access to it
     if ((window as any).Cypress || (window as any).playwright) {
@@ -56,9 +62,10 @@ export class AppComponent implements OnInit {
   }
 
   private getSettingsNode(): void {
+    this.activeNode$ = this.store.select(selectActiveNode);
     this.settingsNodeProtocol$ = this.store.select((state: State) => state.settingsNode)
       .pipe(
-        filter(settingsNode => !!settingsNode.entities[settingsNode.activeNode.id].header),
+        filter(settingsNode => settingsNode.activeNode && !!settingsNode.entities[settingsNode.activeNode.id].header),
         map((settingsNode: SettingsNode) => settingsNode.entities[settingsNode.activeNode.id].header.protocol)
       );
   }
@@ -68,19 +75,15 @@ export class AppComponent implements OnInit {
   }
 
   private initAppData(): void {
-    this.store.select('app')
-      .subscribe(data => {
-        this.app = data;
-      });
+    this.store.select('app').subscribe(data => {
+      this.app = data;
+      this.cdRef.detectChanges();
+    });
   }
 
   private getMempoolPendingTransactions(): void {
-    // subscribe to mempool to get pending transactions
-    this.store.select('mempoolAction')
-      .subscribe((mempool) => {
-        this.pendingTransactions = mempool.ids;
-        // this.pendingTransactions = mempool.ids.filter(id => mempool.entities[id].type == 'applied' || mempool.entities[id].type == 'unprocessed')
-      });
+    this.pendingTransactions$ = this.store.select('mempoolAction').pipe(map(mempool => mempool.ids));
+    // this.pendingTransactions = mempool.ids.filter(id => mempool.entities[id].type == 'applied' || mempool.entities[id].type == 'unprocessed')
   }
 
   changeTheme(theme) {

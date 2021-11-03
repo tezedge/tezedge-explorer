@@ -39,7 +39,7 @@ export class LogsActionEffects {
 
       return forkJoin([
         this.http.get<any[]>(urlBackward),
-        this.http.get<any[]>(urlForward, { reportProgress: true })
+        this.http.get<any[]>(urlForward)
       ]).pipe(
         map(([backwardSlice, forwardSlice]) => ({
           type: 'LOGS_ACTION_LOAD_SUCCESS',

@@ -24,7 +24,7 @@ const AVAILABLE_TABS = [
 })
 export class ResourcesComponent implements OnInit {
 
-  tabs$: Observable<any>;
+  tabs$: Observable<any[]>;
   reversedCheckboxState = false;
   activeRoute: string;
 

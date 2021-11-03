@@ -28,10 +28,10 @@ export class SettingsNodeComponent implements OnInit {
   }
 
   private getSettingsNode(): void {
-    this.store.select((state: State) => state.settingsNode)
+    this.store.select('settingsNode')
       .pipe(untilDestroyed(this))
       .subscribe((node: SettingsNode) => {
-        if (node.activeNode && node.activeNode.id) {
+        if (node.activeNode?.id) {
           this.activeNode = node.entities[node.activeNode.id];
           this.settingsNodeEntities = node.ids.map(id => node.entities[id]);
           this.sandbox = node.entities['sandbox-carthage-tezedge'];

@@ -1,7 +1,7 @@
-import { testForTezedge } from '../../support';
+import { beforeEachForTezedge, testForTezedge } from '../../support';
 
 context('OPEN API', () => {
-  beforeEach(() => {
+  beforeEachForTezedge(() => {
     cy.visit(Cypress.config().baseUrl + '/#/open-api', { timeout: 30000 })
       .wait(1000);
   });

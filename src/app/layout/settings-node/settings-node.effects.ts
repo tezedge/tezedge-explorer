@@ -11,8 +11,7 @@ import { SettingsNodeEntity } from '@shared/types/settings-node/settings-node-en
 @Injectable({ providedIn: 'root' })
 export class SettingsNodeEffects {
 
-  // check node availability
-  SettingsNodeLoadEffect$ = createEffect(() => this.actions$.pipe(
+  settingsNodeLoadEffect$ = createEffect(() => this.actions$.pipe(
     ofType('SETTINGS_NODE_LOAD'),
     withLatestFrom(this.store, (action: any, state: ObservedValueOf<Store<State>>) => ({ action, state })),
     flatMap(({ action, state }: { action: any, state: State }) =>
@@ -33,7 +32,7 @@ export class SettingsNodeEffects {
     }),
   ));
 
-  SettingsNodeInitEffect$ = createEffect(() => this.actions$.pipe(
+  settingsNodeInitEffect$ = createEffect(() => this.actions$.pipe(
     ofType('SETTINGS_NODE_LOAD_SUCCESS'),
     withLatestFrom(this.store, (action: any, state: ObservedValueOf<Store<State>>) => ({ action, state })),
     flatMap(({ action, state }) => {
@@ -48,19 +47,15 @@ export class SettingsNodeEffects {
     ),
   ));
 
-  SettingsNodeChangeEffect$ = createEffect(() => this.actions$.pipe(
+  settingsNodeChangeEffect$ = createEffect(() => this.actions$.pipe(
     ofType('SETTINGS_NODE_CHANGE'),
     withLatestFrom(this.store, (action: any, state: ObservedValueOf<Store<State>>) => ({ action, state })),
     flatMap(({ action, state }) => of({ type: 'APP_REFRESH', payload: state.settingsNode.activeNode })),
   ));
 
-  SettingsNodeLoadSandboxEffect$ = createEffect(() => this.actions$.pipe(
+  settingsNodeLoadSandboxEffect$ = createEffect(() => this.actions$.pipe(
     ofType('SETTINGS_NODE_LOAD_SANDBOX'),
-
-    // merge state
     withLatestFrom(this.store, (action: any, state: ObservedValueOf<Store<State>>) => ({ action, state })),
-
-    // check if api is available
     flatMap(({ action, state }) => {
       const sandbox = state.settingsNode.entities['sandbox-carthage-tezedge'];
       return this.http.get(sandbox.http + '/chains/main/blocks/head/header').pipe(
@@ -75,7 +70,7 @@ export class SettingsNodeEffects {
     }),
   ));
 
-  SettingsNodeSandboxSuccessEffect$ = createEffect(() => this.actions$.pipe(
+  settingsNodeSandboxSuccessEffect$ = createEffect(() => this.actions$.pipe(
     ofType('SETTINGS_NODE_LOAD_SANDBOX_SUCCESS'),
 
     // merge state
@@ -86,11 +81,9 @@ export class SettingsNodeEffects {
     }),
   ));
 
-  constructor(
-    private http: HttpClient,
-    private actions$: Actions,
-    private store: Store<State>,
-    private settingsNodeService: SettingsNodeService
-  ) { }
+  constructor(private http: HttpClient,
+              private actions$: Actions,
+              private store: Store<State>,
+              private settingsNodeService: SettingsNodeService) { }
 
 }

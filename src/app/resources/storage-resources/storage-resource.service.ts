@@ -24,7 +24,6 @@ export class StorageResourceService {
   }
 
   checkStorageResourcesContext(api: string, contextName: string): Observable<StorageResourcesStats> {
-    api = 'http://storage.dev.tezedge.com:18732';
     return this.http.get<StorageResourcesStats>(`${api}/stats/context`, { params: { context_name: contextName } });
   }
 

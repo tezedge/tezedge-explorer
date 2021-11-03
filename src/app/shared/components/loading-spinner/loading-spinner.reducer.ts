@@ -1,4 +1,3 @@
-import { SystemResourcesActionTypes } from '@resources/system-resources/system-resources.actions';
 import { LoadingSpinner } from '@shared/types/shared/loading-spinner/loading-spinner.type';
 import { State } from '@app/app.reducers';
 import { StateMachineActionTypes } from '@state-machine/state-machine/state-machine.actions';
@@ -14,6 +13,7 @@ import {
   MEMPOOL_BLOCK_APPLICATION_STOP
 } from '@mempool/mempool-block-application/mempool-block-application.actions';
 import { SMART_CONTRACTS_LOAD, SMART_CONTRACTS_LOAD_SUCCESS } from '@smart-contracts/smart-contracts/smart-contracts.actions';
+import { SYSTEM_RESOURCES_CLOSE, SYSTEM_RESOURCES_LOAD, SYSTEM_RESOURCES_LOAD_SUCCESS } from '@resources/system-resources/system-resources.actions';
 
 export interface LoadingSpinnerState {
   pendingValues: LoadingSpinner[];
@@ -33,15 +33,15 @@ export function reducer(state: LoadingSpinnerState = initialState, action: any):
       }
       return { ...state };
     }
-    case SystemResourcesActionTypes.SYSTEM_RESOURCES_LOAD: {
+    case SYSTEM_RESOURCES_LOAD: {
       return {
         pendingValues: [systemResourcesLoad, ...state.pendingValues]
       };
     }
-    case SystemResourcesActionTypes.SYSTEM_RESOURCES_CLOSE:
-    case SystemResourcesActionTypes.SYSTEM_RESOURCES_LOAD_SUCCESS: {
+    case SYSTEM_RESOURCES_CLOSE:
+    case SYSTEM_RESOURCES_LOAD_SUCCESS: {
       return {
-        pendingValues: state.pendingValues.filter(v => v.type !== SystemResourcesActionTypes.SYSTEM_RESOURCES_LOAD)
+        pendingValues: state.pendingValues.filter(v => v.type !== SYSTEM_RESOURCES_LOAD)
       };
     }
     case StorageResourcesActionTypes.STORAGE_RESOURCES_LOAD: {
@@ -215,7 +215,7 @@ export const spinnerActiveMessage = (state: State) => state.spinner?.pendingValu
   : state.spinner?.pendingValues[0];
 
 const systemResourcesLoad: LoadingSpinner = {
-  type: SystemResourcesActionTypes.SYSTEM_RESOURCES_LOAD,
+  type: SYSTEM_RESOURCES_LOAD,
   message: 'Loading system resources...'
 };
 

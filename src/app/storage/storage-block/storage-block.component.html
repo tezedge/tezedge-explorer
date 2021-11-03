@@ -1,155 +1,148 @@
-<div class="table-virtual-scroll storage-block-container overflow-hidden d-flex flex-column">
-  <div fxFlex="37px" class="storage-header-wrapper"
-       fxLayoutAlign="start"
-       fxLayout="row">
-    <div fxFlex="grow" class="border-bottom">
-      <div class="table-virtual-scroll-header storage-block-header">
-        <span>DATETIME</span>
-        <span>LEVEL</span>
-        <span>CYCLE</span>
-        <span>HASH</span>
-      </div>
-    </div>
-    <div class="storage-details-actions border-bottom"
-         fxFlex="40%"
-         fxLayoutAlign="start center"
-         fxLayoutGap="8px">
-      <span>BLOCKS</span>
-      <div *ngIf="virtualScrollItems?.selected?.hash"
-           fxLayoutAlign="start center"
-           fxLayoutGap="8px"
-           class="block-hash">
-        <mat-icon svgIcon="chevron-right"
-                  class="icon-12 icon-foreground-4"></mat-icon>
-        <span class="hash truncate">{{ virtualScrollItems.selected.hash }}</span>
-        <mat-icon svgIcon="chevron-down"
-                  class="pointer icon-12"
-                  (click)="getDetailsOfNextBlock()"></mat-icon>
-        <mat-icon svgIcon="chevron-up"
-                  class="pointer icon-12"
-                  (click)="getDetailsOfPreviousBlock()"></mat-icon>
-      </div>
-    </div>
-  </div>
-
-  <div fxFlex="calc(100% - 40px - 37px)" class="table-virtual-scroll-body">
-
-    <div class="virtual-scroll-container"
-         [class.storage-block-filters-expanded]="filtersState.open"
-         #vsContainer>
-      <ng-template vsFor
-                   [vsForOf]="virtualScrollItems"
-                   let-event
-                   let-position="position"
-                   (getItems)="getItems($event)"
-                   (startStopDataStream)="startStopDataStream($event)">
-        <span class="virtualScrollRow storage-block-row"
-              [style.transform]="position !== undefined ? 'translateY(' + position + 'px)' : ''"
-              [class.virtualScrollRowEven]="event?.index % 2"
-              (mouseenter)="event?.hash ? getItemDetails(event) : null"
-              [class.hover]="event?.datetime && virtualScrollItems?.selected?.hash===event?.hash"
-              [class.used]="event?.datetime">
-
-          <span class="truncate">{{event?.datetime}}</span>
-          <span class="truncate storage-block-level">{{event?.originalId}}</span>
-          <span class="truncate cycle-position">{{event?.cyclePosition}}</span>
-          <span class="truncate">
-            <span class="storage-block-hash">{{event?.hash}}</span>
-          </span>
-
-          <span class="item-loading"
-                [class.displayed]="!event?.datetime">&nbsp;
-          </span>
-        </span>
-      </ng-template>
-    </div>
-
-    <div class="action-table-detail"
-         id="virtualScrollTableDetails">
-      <app-storage-block-details *ngIf="virtualScrollItems.selected"
-                                 [blockHash]="virtualScrollItems.selected.hash"
-                                 [availableContexts]="virtualScrollItems.availableContexts"></app-storage-block-details>
-
-      <div class="border-top"
-           *ngIf="virtualScrollItems?.selected?.hash">
-        <div class="border margin-10 f-12 padding-vertical-10 padding-left-8 padding-right-8">
-          <div class="json-header foreground-4">JSON</div>
-          <ngx-json-viewer [json]="virtualScrollItems.selected"
-                           [expanded]="false">
-          </ngx-json-viewer>
+<div class="h-100 p-relative">
+  <div class="table-virtual-scroll overflow-hidden d-flex flex-column">
+    <div fxFlex="37px" fxLayoutAlign="start" fxLayout="row">
+      <div fxFlex="grow" class="border-bottom">
+        <div class="table-virtual-scroll-header storage-block-header">
+          <span>DATETIME</span>
+          <span>LEVEL</span>
+          <span>CYCLE</span>
+          <span>HASH</span>
         </div>
       </div>
-      <!-- TODO: add the Hex and Error tabs if needed  -->
+      <div class="storage-details-actions border-bottom"
+           fxFlex="40%" fxLayoutAlign="start center" fxLayoutGap="8px">
+        <span>BLOCKS</span>
+        <div *ngIf="virtualScrollItems?.selected?.hash"
+             fxLayoutAlign="start center" fxLayoutGap="8px" class="block-hash">
+          <mat-icon svgIcon="chevron-right" class="icon-12 icon-foreground-4"></mat-icon>
+          <span class="hash truncate">{{ virtualScrollItems.selected.hash }}</span>
+          <mat-icon svgIcon="chevron-down" class="pointer icon-12"
+                    (click)="getDetailsOfNextBlock()"></mat-icon>
+          <mat-icon svgIcon="chevron-up" class="pointer icon-12"
+                    (click)="getDetailsOfPreviousBlock()"></mat-icon>
+        </div>
+      </div>
     </div>
-  </div>
 
-  <div fxFlex="40px" class="table-virtual-scroll-footer"
-       fxLayout="row"
-       fxLayoutAlign="start center">
-    <button fxLayout="row"
-            fxLayoutAlign="center center"
-            class="square-button"
-            mat-icon-button
-            matTooltip="Last page"
-            (click)="scrollToEnd()">
-      <mat-icon svgIcon="arrow-bottom"
-                class="icon-12 d-flex"></mat-icon>
-    </button>
-    <button fxLayout="row"
-            fxLayoutAlign="center center"
-            class="rectangle-button start-stream"
-            mat-icon-button
-            matTooltip="Start Streaming"
-            (click)="scrollStart(null)"
-            [class.inactive]="!virtualScrollItems?.stream">
-      <mat-icon svgIcon="play-circle"
-                class="icon-14 margin-right-5"></mat-icon>
-      <span>LIVE</span>
-    </button>
-    <button fxLayout="row"
-            fxLayoutAlign="center center"
-            class="rectangle-button stop-stream"
-            mat-icon-button
-            matTooltip="Stop Streaming"
-            (click)="scrollStop()"
-            [class.inactive]="virtualScrollItems?.stream">
-      <mat-icon svgIcon="pause-circle"
-                class="icon-14 margin-right-5"></mat-icon>
-      <span>PAUSED</span>
-    </button>
-    <button fxLayout="row"
-            fxLayoutAlign="center center"
-            class="square-button"
-            id="previousPage"
-            mat-icon-button
-            matTooltip="Previous Page"
-            (click)="loadPreviousPage()"
-            [disabled]="!virtualScrollItems?.pages?.length || virtualScrollItems.ids.length < virtualPageSize">
-      <mat-icon svgIcon="less-than"
-                class="icon-8 d-flex"></mat-icon>
-    </button>
-    <button fxLayout="row"
-            fxLayoutAlign="center center"
-            class="square-button"
-            id="nextPage"
-            mat-icon-button
-            matTooltip="Next Page"
-            (click)="loadNextPage()"
-            [disabled]="!virtualScrollItems?.pages?.length || virtualScrollItems.activePage.id == virtualScrollItems?.pages[virtualScrollItems?.pages?.length - 1]">
-      <mat-icon svgIcon="greater-than"
-                class="icon-8 d-flex"></mat-icon>
-    </button>
+    <div fxFlex="calc(100% - 40px - 37px)" class="table-virtual-scroll-body">
 
-    <span class="active-page-details">
-      Active Page:
-      {{virtualScrollItems?.activePage?.numberOfRecords || 0}}
-      records
-      <span *ngIf="virtualScrollItems?.activePage?.numberOfRecords">
-        , from:
-        {{virtualScrollItems.activePage.start?.datetime}}
-        to:
-        {{virtualScrollItems.activePage.end?.datetime}}
+      <div class="virtual-scroll-container"
+           [class.storage-block-filters-expanded]="filtersState.open"
+           #vsContainer>
+        <ng-template vsFor
+                     [vsForOf]="virtualScrollItems"
+                     let-event
+                     let-position="position"
+                     (getItems)="getItems($event)"
+                     (startStopDataStream)="startStopDataStream($event)">
+          <span class="virtualScrollRow storage-block-row"
+                [style.transform]="position !== undefined ? 'translateY(' + position + 'px)' : ''"
+                [class.virtualScrollRowEven]="event?.index % 2"
+                (mouseenter)="event?.hash ? getItemDetails(event) : null"
+                [class.hover]="event?.datetime && virtualScrollItems?.selected?.hash===event?.hash"
+                [class.used]="event?.datetime">
+
+            <span class="truncate">{{event?.datetime}}</span>
+            <span class="truncate storage-block-level">{{event?.originalId}}</span>
+            <span class="truncate cycle-position">{{event?.cyclePosition}}</span>
+            <span class="truncate">
+              <span class="storage-block-hash">{{event?.hash}}</span>
+            </span>
+
+            <span class="item-loading"
+                  [class.displayed]="!event?.datetime">&nbsp;
+            </span>
+          </span>
+        </ng-template>
+      </div>
+
+      <div class="action-table-detail"
+           id="virtualScrollTableDetails">
+        <app-storage-block-details *ngIf="virtualScrollItems.selected"
+                                   [blockHash]="virtualScrollItems.selected.hash"
+                                   [availableContexts]="virtualScrollItems.availableContexts"></app-storage-block-details>
+
+        <div class="border-top"
+             *ngIf="virtualScrollItems?.selected?.hash">
+          <div class="border margin-10 f-12 padding-vertical-10 padding-left-8 padding-right-8">
+            <div class="json-header foreground-4">JSON</div>
+            <ngx-json-viewer [json]="virtualScrollItems.selected"
+                             [expanded]="false">
+            </ngx-json-viewer>
+          </div>
+        </div>
+        <!-- TODO: add the Hex and Error tabs if needed  -->
+      </div>
+    </div>
+
+    <div fxFlex="40px" class="table-virtual-scroll-footer"
+         fxLayout="row"
+         fxLayoutAlign="start center">
+      <button fxLayout="row"
+              fxLayoutAlign="center center"
+              class="square-button"
+              mat-icon-button
+              matTooltip="Last page"
+              (click)="scrollToEnd()">
+        <mat-icon svgIcon="arrow-bottom"
+                  class="icon-12 d-flex"></mat-icon>
+      </button>
+      <button fxLayout="row"
+              fxLayoutAlign="center center"
+              class="rectangle-button start-stream"
+              mat-icon-button
+              matTooltip="Start Streaming"
+              (click)="scrollStart(null)"
+              [class.inactive]="!virtualScrollItems?.stream">
+        <mat-icon svgIcon="play-circle"
+                  class="icon-14 margin-right-5"></mat-icon>
+        <span>LIVE</span>
+      </button>
+      <button fxLayout="row"
+              fxLayoutAlign="center center"
+              class="rectangle-button stop-stream"
+              mat-icon-button
+              matTooltip="Stop Streaming"
+              (click)="scrollStop()"
+              [class.inactive]="virtualScrollItems?.stream">
+        <mat-icon svgIcon="pause-circle"
+                  class="icon-14 margin-right-5"></mat-icon>
+        <span>PAUSED</span>
+      </button>
+      <button fxLayout="row"
+              fxLayoutAlign="center center"
+              class="square-button"
+              id="previousPage"
+              mat-icon-button
+              matTooltip="Previous Page"
+              (click)="loadPreviousPage()"
+              [disabled]="!virtualScrollItems?.pages?.length || virtualScrollItems.ids.length < virtualPageSize">
+        <mat-icon svgIcon="less-than"
+                  class="icon-8 d-flex"></mat-icon>
+      </button>
+      <button fxLayout="row"
+              fxLayoutAlign="center center"
+              class="square-button"
+              id="nextPage"
+              mat-icon-button
+              matTooltip="Next Page"
+              (click)="loadNextPage()"
+              [disabled]="!virtualScrollItems?.pages?.length || virtualScrollItems.activePage.id == virtualScrollItems?.pages[virtualScrollItems?.pages?.length - 1]">
+        <mat-icon svgIcon="greater-than"
+                  class="icon-8 d-flex"></mat-icon>
+      </button>
+
+      <span class="active-page-details">
+        Active Page:
+        {{virtualScrollItems?.activePage?.numberOfRecords || 0}}
+        records
+        <span *ngIf="virtualScrollItems?.activePage?.numberOfRecords">
+          , from:
+          {{virtualScrollItems.activePage.start?.datetime}}
+          to:
+          {{virtualScrollItems.activePage.end?.datetime}}
+        </span>
       </span>
-    </span>
+    </div>
   </div>
 </div>

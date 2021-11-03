@@ -3,9 +3,10 @@ import { HttpEvent, HttpHandler, HttpInterceptor, HttpRequest, HttpResponse } fr
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
-const TRACKING_URLS = [
+const TRACKING_URLS: string[] = [
   '/dev/shell/automaton/actions',
   '/dev/shell/automaton/mempool/operation_stats',
+  '/dev/shell/automaton/storage/requests',
 ];
 
 @Injectable({ providedIn: 'root' })

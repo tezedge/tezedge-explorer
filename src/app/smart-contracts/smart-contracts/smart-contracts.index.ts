@@ -12,7 +12,6 @@ export class SmartContractsState {
   isDebugging: boolean;
   debugConfig: SmartContractsDebugConfig;
   result: SmartContractResult;
-  blockLevel: number;
   blockHashContext: {
     hashes: string[];
     activeIndex: number;

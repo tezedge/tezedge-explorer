@@ -1,14 +1,16 @@
-import { testForTezedge } from '../../../support';
+const beforeNetworkTest = (test) => {
+  cy.visit(Cypress.config().baseUrl + '/#/network', { timeout: 100000 })
+    .get('body')
+    .then(body => {
+      const selector = 'app-network-action .table-virtual-scroll .table-virtual-scroll-body .virtual-scroll-container .virtualScrollRow.used';
+      if (body[0].querySelector(selector, { timeout: 100000 })) {
+        test();
+      }
+    });
+};
 
 context('NETWORK', () => {
-  beforeEach(() => {
-    cy.intercept('GET', '/v2/p2p?*').as('getNetworkRequest')
-      .visit(Cypress.config().baseUrl + '/#/network', { timeout: 30000 })
-      .wait('@getNetworkRequest', { timeout: 100000 })
-      .wait(300);
-  });
-
-  it('[NETWORK] should have status code 200 for get network request', () => {
+  it('[NETWORK] should have status code 200 for get network request', () => beforeNetworkTest(() => {
     cy.window()
       .its('store')
       .then(store => {
@@ -18,15 +20,15 @@ context('NETWORK', () => {
             .should('eq', 200);
         });
       });
-  });
+  }));
 
-  it('[NETWORK] should create rows for the virtual scroll table', () => {
+  it('[NETWORK] should create rows for the virtual scroll table', () => beforeNetworkTest(() => {
     cy.get('.virtual-scroll-container')
       .find('.virtualScrollRow')
       .should('be.visible');
-  });
+  }));
 
-  it('[NETWORK] should change the value of the virtual scroll element when scrolling', () => {
+  it('[NETWORK] should change the value of the virtual scroll element when scrolling', () => beforeNetworkTest(() => {
     cy.get('.stop-stream').click()
       .wait(500)
       .window()
@@ -53,9 +55,9 @@ context('NETWORK', () => {
             });
         });
       });
-  });
+  }));
 
-  it('[NETWORK] should fill the last row of the table with the last value received', () => {
+  it('[NETWORK] should fill the last row of the table with the last value received', () => beforeNetworkTest(() => {
     cy.get('.stop-stream').click()
       .wait(500)
       .window()
@@ -71,9 +73,9 @@ context('NETWORK', () => {
             });
         });
       });
-  });
+  }));
 
-  it('[NETWORK] should filter results by operation', () => {
+  it('[NETWORK] should filter results by operation', () => beforeNetworkTest(() => {
     cy.get('.stop-stream').click()
       .get('app-network-action .mat-expansion-panel-body .table-filters:last-child button')
       .then(buttons => {
@@ -92,9 +94,9 @@ context('NETWORK', () => {
           expect(areAllOperations).to.be.true;
         });
       });
-  });
+  }));
 
-  it('[NETWORK] should filter results by connection', () => {
+  it('[NETWORK] should filter results by connection', () => beforeNetworkTest(() => {
     cy.get('.stop-stream').click()
       .get('app-network-action .mat-expansion-panel-body .table-filters:first-child button')
       .then(buttons => {
@@ -113,9 +115,9 @@ context('NETWORK', () => {
           expect(areAllOperations).to.be.true;
         });
       });
-  });
+  }));
 
-  it('[NETWORK] should filter results by source type', () => {
+  it('[NETWORK] should filter results by source type', () => beforeNetworkTest(() => {
     cy.get('.stop-stream').click()
       .get('app-network-action .mat-expansion-panel-body .table-filters:first-child button')
       .then(buttons => {
@@ -134,9 +136,9 @@ context('NETWORK', () => {
           expect(areAllOperations).to.be.true;
         });
       });
-  });
+  }));
 
-  it('[NETWORK] should fill the right details part with the message of the clicked row - the second last record in our case', () => testForTezedge(() => {
+  it('[NETWORK] should fill the right details part with the message of the clicked row - the second last record in our case', () => beforeNetworkTest(() => {
     cy.get('.stop-stream').click()
       .window()
       .its('store')
@@ -151,7 +153,7 @@ context('NETWORK', () => {
       });
   }));
 
-  it('[NETWORK] should jump to the first page', () => {
+  it('[NETWORK] should jump to the first page', () => beforeNetworkTest(() => {
     cy.get('.stop-stream').click()
       .wait(300)
       .get('#firstPage').click()
@@ -165,9 +167,9 @@ context('NETWORK', () => {
             .get('#previousPage').should('be.disabled');
         });
       });
-  });
+  }));
 
-  it('[NETWORK] should jump to the last page', () => {
+  it('[NETWORK] should jump to the last page', () => beforeNetworkTest(() => {
     cy.get('.stop-stream').click()
       .wait(300)
       .get('#previousPage').click()
@@ -185,5 +187,5 @@ context('NETWORK', () => {
           expect(network.activePage.id).to.equal(network.pages[network.pages.length - 1]);
         });
       });
-  });
+  }));
 });

@@ -37,6 +37,7 @@ export class MempoolEndorsementService {
   getEndorsements(api: string, blockHash: string, level: number): Observable<MempoolEndorsement[]> {
     const url = `${api}/dev/shell/automaton/endorsing_rights?block=${blockHash}&level=${level}`;
     return this.http.get<{ [p: string]: number[] }>(url).pipe(
+      map(MempoolEndorsementService.handleError),
       map((value: { [p: string]: number[] }) => {
         const endorsements: MempoolEndorsement[] = Object.keys(value).map(key => ({
           bakerName: this.bakersDetails[key]?.name || key,
@@ -48,5 +49,12 @@ export class MempoolEndorsementService {
         return endorsements;
       })
     );
+  }
+
+  private static handleError(response: any): object {
+    if (Array.isArray(response[Object.keys(response)[0]])) {
+      return response;
+    }
+    return {};
   }
 }

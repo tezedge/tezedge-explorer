@@ -1,4 +1,9 @@
-import { SystemResourcesActions, SystemResourcesActionTypes } from '@resources/system-resources/system-resources.actions';
+import {
+  SYSTEM_RESOURCES_DETAILS_UPDATE,
+  SYSTEM_RESOURCES_LOAD_SUCCESS,
+  SYSTEM_RESOURCES_SORT,
+  SystemResourcesActions
+} from '@resources/system-resources/system-resources.actions';
 import { State } from '@app/app.reducers';
 import { SystemResourcesPanel, SystemResourcesSortBy } from '@shared/types/resources/system/system-resources-panel.type';
 import { SystemResourceCategory } from '@shared/types/resources/system/system-resource-category.type';
@@ -19,14 +24,14 @@ const initialState: SystemResourcesState = {
 export function reducer(state: SystemResourcesState = initialState, action: SystemResourcesActions): SystemResourcesState {
   switch (action.type) {
 
-    case SystemResourcesActionTypes.SYSTEM_RESOURCES_LOAD_SUCCESS: {
+    case SYSTEM_RESOURCES_LOAD_SUCCESS: {
       return {
         ...action.payload,
         resourcesPanel: state.resourcesPanel?.type === 'runnerGroups' ? state.resourcesPanel : action.payload.resourcesPanel
       };
     }
 
-    case SystemResourcesActionTypes.SYSTEM_RESOURCES_DETAILS_UPDATE: {
+    case SYSTEM_RESOURCES_DETAILS_UPDATE: {
       const resourceCategory = state[action.payload.resourceType] as SystemResourceCategory;
       const blocks = resourceCategory?.labels.map((label, index) => ({
         name: label,
@@ -51,7 +56,7 @@ export function reducer(state: SystemResourcesState = initialState, action: Syst
       };
     }
 
-    case SystemResourcesActionTypes.SYSTEM_RESOURCES_SORT: {
+    case SYSTEM_RESOURCES_SORT: {
       const runnerGroups = sort(state.resourcesPanel.runnerGroups, action.payload.sortBy);
       return {
         ...state,

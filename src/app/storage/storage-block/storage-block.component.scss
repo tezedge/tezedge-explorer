@@ -1,20 +1,13 @@
 @import 'variables';
 
-.storage-block-container {
-  border-top-left-radius: 4px;
-}
+.storage-details-actions {
+  font-size: 12px;
 
-.storage-header-wrapper {
+  .block-hash {
+    color: $foreground-4;
 
-  .storage-details-actions {
-    font-size: 12px;
-
-    .block-hash {
-      color: $foreground-4;
-
-      .hash {
-        max-width: 200px;
-      }
+    .hash {
+      max-width: 200px;
     }
   }
 }

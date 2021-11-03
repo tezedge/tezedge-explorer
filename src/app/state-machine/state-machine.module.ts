@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { StateMachineRoutingModule } from './state-machine-routing.module';
+import { StateMachineRoutingModule } from './state-machine.routing';
 import { StateMachineComponent } from './state-machine/state-machine.component';
 import { TezedgeSharedModule } from '@shared/tezedge-shared.module';
 import { StateMachineDiagramComponent } from './state-machine-diagram/state-machine-diagram.component';

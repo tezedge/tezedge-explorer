@@ -3,7 +3,7 @@ import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { catchError, map, switchMap, takeUntil, tap, withLatestFrom } from 'rxjs/operators';
 import { empty, ObservedValueOf, of, Subject, timer } from 'rxjs';
 import { Store } from '@ngrx/store';
-import { SystemResourcesActionTypes } from './system-resources.actions';
+import { SYSTEM_RESOURCES_CLOSE, SYSTEM_RESOURCES_LOAD, SYSTEM_RESOURCES_LOAD_SUCCESS } from './system-resources.actions';
 import { SystemResourcesService } from './system-resources.service';
 import { SystemResourcesState } from '@shared/types/resources/system/system-resources-state.type';
 import { State } from '@app/app.reducers';
@@ -15,10 +15,10 @@ export class SystemResourcesEffects {
   private resourcesDestroy$ = new Subject<void>();
 
   resourcesLoadEffect$ = createEffect(() => this.actions$.pipe(
-    ofType(SystemResourcesActionTypes.SYSTEM_RESOURCES_LOAD, SystemResourcesActionTypes.SYSTEM_RESOURCES_CLOSE),
+    ofType(SYSTEM_RESOURCES_LOAD, SYSTEM_RESOURCES_CLOSE),
     withLatestFrom(this.store, (action: any, state: ObservedValueOf<Store<State>>) => ({ action, state })),
     switchMap(({ action, state }) => {
-      if (action.type === SystemResourcesActionTypes.SYSTEM_RESOURCES_CLOSE) {
+      if (action.type === SYSTEM_RESOURCES_CLOSE) {
         return empty();
       }
       const url = state.settingsNode.activeNode.features
@@ -26,12 +26,12 @@ export class SystemResourcesEffects {
       const resourcesData$ = this.resourcesService.getSystemResources(url, action.payload.isSmallDevice)
         .pipe(
           map((resources: SystemResourcesState) => ({
-            type: SystemResourcesActionTypes.SYSTEM_RESOURCES_LOAD_SUCCESS,
+            type: SYSTEM_RESOURCES_LOAD_SUCCESS,
             payload: resources
           })),
           catchError(error => of({
             type: ADD_ERROR,
-            payload: { title: 'System resources error', message: error.message, initiator: SystemResourcesActionTypes.SYSTEM_RESOURCES_LOAD }
+            payload: { title: 'System resources error', message: error.message, initiator: SYSTEM_RESOURCES_LOAD }
           }))
         );
 
@@ -50,7 +50,7 @@ export class SystemResourcesEffects {
   ));
 
   resourcesCloseEffect$ = createEffect(() => this.actions$.pipe(
-    ofType(SystemResourcesActionTypes.SYSTEM_RESOURCES_CLOSE),
+    ofType(SYSTEM_RESOURCES_CLOSE),
     tap(() => {
       this.resourcesDestroy$.next(null);
       this.resourcesDestroy$.complete();

@@ -15,7 +15,7 @@ import {
   SMART_CONTRACTS_DEBUG_STEP,
   SMART_CONTRACTS_START_DEBUGGING,
   SMART_CONTRACTS_STOP_DEBUGGING,
-  SmartContractsDebugStepAction
+  SmartContractsDebugStepAction, SmartContractsStartDebuggingAction, SmartContractsStopDebuggingAction
 } from '@smart-contracts/smart-contracts/smart-contracts.actions';
 
 @UntilDestroy()
@@ -80,14 +80,11 @@ export class SmartContractsDebugComponent implements OnInit {
   }
 
   startDebugger(): void {
-    this.store.dispatch({ type: SMART_CONTRACTS_START_DEBUGGING });
-    // TODO: start debugging should have logic in reducer to get first element and have an effect to dispatch "next-step" as first step
-    const firstDebuggingElement = this.trace[0];
-    this.manageNextActions(firstDebuggingElement);
+    this.store.dispatch<SmartContractsStartDebuggingAction>({ type: SMART_CONTRACTS_START_DEBUGGING });
   }
 
   stopDebugger(): void {
-    this.store.dispatch({ type: SMART_CONTRACTS_STOP_DEBUGGING });
+    this.store.dispatch<SmartContractsStopDebuggingAction>({ type: SMART_CONTRACTS_STOP_DEBUGGING });
   }
 
   step(step: SmartContractTrace): void {

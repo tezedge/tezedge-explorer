@@ -1,12 +1,21 @@
-context('MEMPOOL BLOCK APPLICATION', () => {
-  beforeEach(() => {
-    cy.intercept('GET', '/dev/shell/automaton/block_stats/graph?limit*').as('getMempoolGraph')
-      .visit(Cypress.config().baseUrl + '/#/mempool/block-application', { timeout: 30000 })
-      .wait('@getMempoolGraph', { timeout: 100000 })
-      .wait(500);
-  });
+const runInTezedge = (test) => {
+  if (localStorage.getItem('activeNode') === 'tezedge') {
+    test();
+  }
+};
 
-  it('[MEMPOOL BLOCK APPLICATION] should have status code 200 for get mempool block application graph request', () => {
+const beforeMempoolBlockApplicationTest = (test) => {
+  cy.visit(Cypress.config().baseUrl + '/#/mempool/block-application', { timeout: 100000 })
+    .get('body')
+    .then(body => {
+      if (body.find('app-mempool-block-application .graph-outer-container .graph-label-item', { timeout: 10000 }).length > 0) {
+        runInTezedge(test);
+      }
+    });
+};
+
+context('MEMPOOL BLOCK APPLICATION', () => {
+  it('[MEMPOOL BLOCK APPLICATION] should have status code 200 for get mempool block application graph request', () => beforeMempoolBlockApplicationTest(() => {
     cy.window()
       .its('store')
       .then(store => {
@@ -16,9 +25,9 @@ context('MEMPOOL BLOCK APPLICATION', () => {
             .should('eq', 200);
         });
       });
-  });
+  }));
 
-  it('[MEMPOOL BLOCK APPLICATION] should get correct number of actions as the limit successfully', () => {
+  it('[MEMPOOL BLOCK APPLICATION] should get correct number of actions as the limit successfully', () => beforeMempoolBlockApplicationTest(() => {
     const requestedActions = 10;
     cy.window()
       .its('store')
@@ -29,9 +38,9 @@ context('MEMPOOL BLOCK APPLICATION', () => {
             .should('eq', requestedActions);
         });
       });
-  });
+  }));
 
-  it('[MEMPOOL BLOCK APPLICATION] should calculate correct average values', () => {
+  it('[MEMPOOL BLOCK APPLICATION] should calculate correct average values', () => beforeMempoolBlockApplicationTest(() => {
     cy.window()
       .its('store')
       .then(store => {
@@ -46,9 +55,9 @@ context('MEMPOOL BLOCK APPLICATION', () => {
           });
         });
       });
-  });
+  }));
 
-  it('[MEMPOOL BLOCK APPLICATION] should show correct number of blocks in the graph overview title', () => {
+  it('[MEMPOOL BLOCK APPLICATION] should show correct number of blocks in the graph overview title', () => beforeMempoolBlockApplicationTest(() => {
     cy.window()
       .its('store')
       .then(store => {
@@ -59,9 +68,9 @@ context('MEMPOOL BLOCK APPLICATION', () => {
             });
         });
       });
-  });
+  }));
 
-  it('[MEMPOOL BLOCK APPLICATION] should display redirection overlay on chart when clicking on it and navigate to tzstats on click', () => {
+  it('[MEMPOOL BLOCK APPLICATION] should display redirection overlay on chart when clicking on it and navigate to tzstats on click', () => beforeMempoolBlockApplicationTest(() => {
     let routed;
     cy.window()
       .then((win) => {
@@ -88,9 +97,9 @@ context('MEMPOOL BLOCK APPLICATION', () => {
           }
         });
       });
-  });
+  }));
 
-  it('[MEMPOOL BLOCK APPLICATION] should display redirection overlay on chart when clicking on it and navigate to resources on click', () => {
+  it('[MEMPOOL BLOCK APPLICATION] should display redirection overlay on chart when clicking on it and navigate to resources on click', () => beforeMempoolBlockApplicationTest(() => {
     let routed;
     cy.window()
       .its('store')
@@ -109,9 +118,9 @@ context('MEMPOOL BLOCK APPLICATION', () => {
           }
         });
       });
-  });
+  }));
 
-  it('[MEMPOOL BLOCK APPLICATION] should display redirection overlay on chart when clicking on it and navigate to storage on click', () => {
+  it('[MEMPOOL BLOCK APPLICATION] should display redirection overlay on chart when clicking on it and navigate to storage on click', () => beforeMempoolBlockApplicationTest(() => {
     let routed;
     cy.window()
       .its('store')
@@ -130,9 +139,9 @@ context('MEMPOOL BLOCK APPLICATION', () => {
           }
         });
       });
-  });
+  }));
 
-  it('[MEMPOOL BLOCK APPLICATION] should display redirection overlay on chart when clicking on it and navigate to network on click', () => {
+  it('[MEMPOOL BLOCK APPLICATION] should display redirection overlay on chart when clicking on it and navigate to network on click', () => beforeMempoolBlockApplicationTest(() => {
     let routed;
     cy.window()
       .its('store')
@@ -151,9 +160,9 @@ context('MEMPOOL BLOCK APPLICATION', () => {
           }
         });
       });
-  });
+  }));
 
-  it('[MEMPOOL BLOCK APPLICATION] should display redirection overlay on chart when clicking on it and navigate to logs on click', () => {
+  it('[MEMPOOL BLOCK APPLICATION] should display redirection overlay on chart when clicking on it and navigate to logs on click', () => beforeMempoolBlockApplicationTest(() => {
     let routed;
     cy.window()
       .its('store')
@@ -172,9 +181,9 @@ context('MEMPOOL BLOCK APPLICATION', () => {
           }
         });
       });
-  });
+  }));
 
-  it('[MEMPOOL BLOCK APPLICATION] should have correct x axis ticks', () => {
+  it('[MEMPOOL BLOCK APPLICATION] should have correct x axis ticks', () => beforeMempoolBlockApplicationTest(() => {
     cy.window()
       .its('store')
       .then(store => {
@@ -199,6 +208,6 @@ context('MEMPOOL BLOCK APPLICATION', () => {
           }
         });
       });
-  });
+  }));
 
 });

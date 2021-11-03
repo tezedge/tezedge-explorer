@@ -3,7 +3,7 @@ import { Store } from '@ngrx/store';
 import { State } from '@app/app.reducers';
 import { SystemResourcesPanel, SystemResourcesSortBy } from '@shared/types/resources/system/system-resources-panel.type';
 import { Observable } from 'rxjs';
-import { SystemResourcesActionTypes, SystemResourcesSortAction } from '@resources/system-resources/system-resources.actions';
+import { SYSTEM_RESOURCES_SORT, SystemResourcesSortAction } from '@resources/system-resources/system-resources.actions';
 import { systemResourcesPanel } from '@resources/system-resources/system-resources.reducer';
 
 @Component({
@@ -29,7 +29,7 @@ export class SystemResourcesPanelComponent implements OnInit {
       return;
     }
     this.store.dispatch<SystemResourcesSortAction>({
-      type: SystemResourcesActionTypes.SYSTEM_RESOURCES_SORT,
+      type: SYSTEM_RESOURCES_SORT,
       payload: { sortBy }
     });
   }

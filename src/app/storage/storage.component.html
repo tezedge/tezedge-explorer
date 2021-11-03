@@ -1,1 +1,15 @@
-<router-outlet></router-outlet>
+<div class="storage background-surface overflow-hidden f-12 foreground h-100 d-flex flex-column">
+  <div class="tabs border-bottom d-flex align-center"
+       fxFlex="40px"
+       fxLayoutGap="16px">
+    <div *ngFor="let tab of tabs"
+         [routerLink]="'/storage/' + tab"
+         class="tab f-12 pointer text-uppercase"
+         routerLinkActive="selected">
+      {{ tab }}
+    </div>
+  </div>
+  <div fxFlex="calc(100% - 40px)">
+    <router-outlet></router-outlet>
+  </div>
+</div>

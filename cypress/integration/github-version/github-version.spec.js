@@ -5,7 +5,6 @@ context('GITHUB VERSION', () => {
     beforeEachForTezedge(() => {
       cy.intercept('GET', '/dev/version/').as('getNodeTagRequest')
         .intercept('GET', '/monitor/commit_hash/').as('getNodeLastCommitRequest')
-        .intercept('GET', '/v2/version/').as('getDebuggerLastCommitRequest')
         .visit(Cypress.config().baseUrl);
     });
   });
@@ -47,35 +46,6 @@ context('GITHUB VERSION', () => {
             .find('a')
             .should('have.attr', 'href', 'https://github.com/tezedge/tezedge/commit/' + githubVersion.nodeCommit);
         });
-      });
-  }));
-
-  it('[GITHUB VERSION] perform Debugger last commit request successfully', () => testForTezedge(() => {
-    cy.wait('@getDebuggerLastCommitRequest')
-      .its('response.statusCode')
-      .should('eq', 200);
-  }));
-
-  it('[GITHUB VERSION] display Debugger anchor with an url to the last commit, when click on the Node Tag', () => testForTezedge(() => {
-    let nodeDebuggerCommit;
-    cy.wait(1000)
-      .window()
-      .its('store')
-      .then(store => {
-        store.subscribe(data => {
-          nodeDebuggerCommit = data.githubVersion.debuggerCommit;
-        });
-      })
-      .wait(2000)
-      .get('app-github-version .node-tag-number')
-      .click()
-      .wait(1500)
-      .then(() => {
-        if (nodeDebuggerCommit) {
-          cy.get('#debuggerCommit')
-            .find('a')
-            .should('have.attr', 'href', 'https://github.com/tezedge/tezedge-debugger/commit/' + nodeDebuggerCommit);
-        }
       });
   }));
 

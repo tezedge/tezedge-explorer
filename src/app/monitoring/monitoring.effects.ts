@@ -7,7 +7,7 @@ import { webSocket, WebSocketSubject } from 'rxjs/webSocket';
 import { HttpClient } from '@angular/common/http';
 import { State } from '@app/app.reducers';
 import { SettingsNodeEntityHeader } from '@shared/types/settings-node/settings-node-entity-header.type';
-import { ErrorActionTypes } from '@shared/error-popup/error-popup.actions';
+import { ADD_ERROR } from '@shared/error-popup/error-popup.actions';
 import { Router } from '@angular/router';
 import { MonitoringActionTypes } from './monitoring.actions';
 import { SettingsNodeService } from '@settings/settings-node.service';
@@ -171,7 +171,7 @@ export class MonitoringEffects {
     catchError((error, caught) => {
       console.error(error);
       this.store.dispatch({
-        type: ErrorActionTypes.ADD_ERROR,
+        type: ADD_ERROR,
         payload: { title: 'Websocket error', message: 'Connection failed' }
       });
       return caught;

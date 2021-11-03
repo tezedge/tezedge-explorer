@@ -20,12 +20,11 @@ context('LOADING SPINNER', () => {
         cy.window()
           .its('store')
           .then(store => {
-            disableFeatures(store, zone, featureNames.filter(f => f !== 'network'));
+            zone.run(() => store.dispatch({
+              type: 'NETWORK_ACTION_LOAD', payload: { filter: '' }
+            }));
             cy.wait(1000)
-              .intercept('GET', '/v2/p2p?*', (req) => Cypress.Promise.delay(2000).then(req.reply))
-              .visit(Cypress.config().baseUrl + '/#/network')
-              .wait(1000)
-              .get('app-loading-spinner .spinner', { timeout: 0 }).should('exist')
+              .get('app-loading-spinner .spinner', { timeout: 100 }).should('exist')
               .then(div => {
                 expect(div.text()).to.equal('Loading network...');
               })
@@ -41,12 +40,11 @@ context('LOADING SPINNER', () => {
         cy.window()
           .its('store')
           .then(store => {
-            disableFeatures(store, zone, featureNames.filter(f => f !== 'logs'));
+            zone.run(() => store.dispatch({
+              type: 'LOGS_ACTION_LOAD', payload: { filter: '' }
+            }));
             cy.wait(1000)
-              .intercept('GET', '/v2/log?*', (req) => Cypress.Promise.delay(1500).then(req.reply))
-              .visit(Cypress.config().baseUrl + '/#/logs')
-              .wait(1000)
-              .get('app-loading-spinner .spinner', { timeout: 0 }).should('exist')
+              .get('app-loading-spinner .spinner', { timeout: 100 }).should('exist')
               .then(div => {
                 expect(div.text()).to.equal('Loading logs...');
               })
@@ -62,12 +60,9 @@ context('LOADING SPINNER', () => {
         cy.window()
           .its('store')
           .then(store => {
-            disableFeatures(store, zone, featureNames.filter(f => f !== 'storage'));
-            cy.wait(1000)
-              .intercept('GET', '/dev/chains/main/blocks/*', (req) => Cypress.Promise.delay(2000).then(req.reply))
-              .visit(Cypress.config().baseUrl + '/#/storage')
-              .wait(1000)
-              .get('app-loading-spinner .spinner', { timeout: 0 }).should('exist')
+            zone.run(() => store.dispatch({ type: 'STORAGE_BLOCK_START', payload: { limit: 400 } }));
+            cy.wait(500)
+              .get('app-loading-spinner .spinner', { timeout: 100 }).should('exist')
               .then(div => {
                 expect(div.text()).to.equal('Loading storage blocks...');
               })
@@ -76,21 +71,54 @@ context('LOADING SPINNER', () => {
       });
   }));
 
-  it('[LOADING SPINNER] should show that it\'s loading the resources', () => {
+  it('[LOADING SPINNER] should show that it\'s loading system resources', () => {
     cy.window()
       .its('zone')
       .then(zone => {
         cy.window()
           .its('store')
           .then(store => {
-            disableFeatures(store, zone, featureNames.filter(f => f !== 'resources/system'));
+            zone.run(() => store.dispatch({ type: 'SYSTEM_RESOURCES_LOAD' }));
             cy.wait(1000)
-              .intercept('GET', '/resources/*', (req) => Cypress.Promise.delay(4000).then(req.reply))
-              .visit(Cypress.config().baseUrl + '/#/resources/system')
-              .wait(1000)
-              .get('app-loading-spinner .spinner', { timeout: 0 }).should('exist')
+              .get('app-loading-spinner .spinner', { timeout: 100 }).should('exist')
               .then(div => {
                 expect(div.text()).to.equal('Loading system resources...');
+              })
+              .get('app-loading-spinner div div mat-spinner').should('be.visible');
+          });
+      });
+  });
+
+  it('[LOADING SPINNER] should show that it\'s loading storage resources', () => testForTezedge(() => {
+    cy.window()
+      .its('zone')
+      .then(zone => {
+        cy.window()
+          .its('store')
+          .then(store => {
+            zone.run(() => store.dispatch({ type: 'STORAGE_RESOURCES_LOAD' }));
+            cy.wait(1000)
+              .get('app-loading-spinner .spinner', { timeout: 100 }).should('exist')
+              .then(div => {
+                expect(div.text()).to.equal('Loading storage resources...');
+              })
+              .get('app-loading-spinner div div mat-spinner').should('be.visible');
+          });
+      });
+  }));
+
+  it('[LOADING SPINNER] should show that it\'s loading memory resources', () => {
+    cy.window()
+      .its('zone')
+      .then(zone => {
+        cy.window()
+          .its('store')
+          .then(store => {
+            zone.run(() => store.dispatch({ type: 'MEMORY_RESOURCES_LOAD' }));
+            cy.wait(1000)
+              .get('app-loading-spinner .spinner', { timeout: 100 }).should('exist')
+              .then(div => {
+                expect(div.text()).to.equal('Loading memory resources...');
               })
               .get('app-loading-spinner div div mat-spinner').should('be.visible');
           });
@@ -104,14 +132,11 @@ context('LOADING SPINNER', () => {
         cy.window()
           .its('store')
           .then(store => {
-            disableFeatures(store, zone, featureNames.filter(f => f !== 'state'));
-            cy.wait(1000)
-              .intercept('GET', '/dev/shell/automaton/*', (req) => Cypress.Promise.delay(4000).then(req.reply))
-              .visit(Cypress.config().baseUrl + '/#/state')
-              .wait(1000)
-              .get('app-loading-spinner .spinner', { timeout: 0 }).should('exist')
+            zone.run(() => store.dispatch({ type: 'STATE_MACHINE_ACTION_STATISTICS_LOAD' }));
+            cy.wait(400)
+              .get('app-loading-spinner .spinner', { timeout: 100 }).should('exist')
               .then(div => {
-                expect(div.text().includes('Loading state machine')).to.be.true;
+                expect(div.text()).to.equal('Loading state machine action statistics...');
               })
               .get('app-loading-spinner div div mat-spinner').should('be.visible');
           });

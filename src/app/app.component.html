@@ -1,9 +1,9 @@
 <app-error-popup></app-error-popup>
 <div class="sidenav-area h-100">
 
-  <div class="app-status-bar"
+  <div class="app-status-bar foreground-6"
        *ngIf="app?.toolbar?.isVisible"
-       [class.app-status-bar-sanbox]="app.statusbar.sandbox">
+       [class.app-status-bar-sandbox]="app.statusbar.sandbox">
 
     <div fxLayout="row" fxLayoutAlign="start center">
       <button *ngIf="isMobile" class="app-menu-toggle" mat-icon-button>
@@ -24,47 +24,44 @@
         <div class="toolbar-divider"></div>
         <div>
           BOOTSTRAP
-          <span class="text-white">
+          <span class="foreground">
             {{ (networkStats?.downloadedBlocks / (networkStats?.currentBlockCount * 0.01)) || 0.0 | number:'1.1-1'}}%
           </span>
         </div>
         <div>
           APPLIED OPERATIONS
-          <span class="text-white">
+          <span class="foreground">
             {{ (networkStats?.lastAppliedBlock?.level / (networkStats?.currentBlockCount * 0.01)) || 0.0 | number:'1.1-1'}}
             %
           </span>
         </div>
         <div>CURRENT BLOCK
-          <span class="text-white">{{ networkStats.lastAppliedBlock.level }}</span>
+          <span class="foreground">{{ networkStats.lastAppliedBlock.level }}</span>
         </div>
         <div *ngIf="settingsNodeProtocol$ | async as protocol">PROTOCOL
-          <span class="text-white">{{ protocol | slice: 0: 10 }}</span>
+          <span class="foreground">{{ protocol | slice: 0: 10 }}</span>
         </div>
       </div>
       <div fxLayout="row" fxLayoutAlign="center center">
-        <ng-container *ngIf="pendingTransactions$ | async as pendingTransactions">
-          <button *ngIf="pendingTransactions.length"
-                  mat-button class="pending-transactions"
-                  (click)="sandboxBakeBlock()"
-                  [disabled]="!app.statusbar.sandbox">
-                <span>
-                  {{ pendingTransactions.length + ' pending transaction' + (pendingTransactions.length > 1 ? 's' : '') }}
-                </span>
-            <span *ngIf="app.statusbar.sandbox" class="action">BAKE</span>
-          </button>
-        </ng-container>
+        <button *ngIf="pendingTransactions?.length"
+                mat-button class="pending-transactions"
+                (click)="sandboxBakeBlock()"
+                [disabled]="!app.statusbar.sandbox">
+          <span>
+            {{ pendingTransactions.length + ' pending transaction' + (pendingTransactions.length > 1 ? 's' : '') }}
+          </span>
+          <span *ngIf="app.statusbar.sandbox" class="action">BAKE</span>
+        </button>
         <app-loading-spinner></app-loading-spinner>
 
-        <button class="theme-switcher f-12" mat-icon-button>
-          <mat-icon *ngIf="app.theme.name === 'dark'"
+        <button class="theme-switcher f-12" mat-icon-button
+                (click)="changeTheme(app.theme.active === 'dark' ? 'light' : 'dark')">
+          <mat-icon *ngIf="app.theme.active === 'dark'"
                     class="f-12 icon-16"
-                    svgIcon="sunny"
-                    (click)="changeTheme('light')"></mat-icon>
-          <mat-icon *ngIf="app.theme.name === 'light'"
+                    svgIcon="sunny"></mat-icon>
+          <mat-icon *ngIf="app.theme.active === 'light'"
                     class="f-12 icon-16"
-                    svgIcon="night"
-                    (click)="changeTheme('dark')"></mat-icon>
+                    svgIcon="night"></mat-icon>
         </button>
       </div>
     </div>
@@ -74,8 +71,6 @@
                          [class.slim-sidenav]="app.sidenav.collapsed">
     <mat-sidenav class="tezedge-sidenav"
                  [mode]="app.sidenav.mode"
-                 [style.background-color]="app.sidenav.backgroundColor"
-                 [style.color]="app.sidenav.color"
                  [opened]="app.sidenav.isVisible"
                  [fixedInViewport]="true"
                  [fixedTopGap]="34"
@@ -86,7 +81,7 @@
     </mat-sidenav>
 
     <mat-sidenav-content class="sidenav-content" [class.is-mobile]="isMobile">
-      <div class="sidenav-content-container" fxFlexFill>
+      <div class="sidenav-content-container foreground-7" fxFlexFill>
         <router-outlet *ngIf="activeNode$ | async"></router-outlet>
       </div>
     </mat-sidenav-content>

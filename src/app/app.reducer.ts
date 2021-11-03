@@ -1,5 +1,6 @@
 import { App } from '@shared/types/app/app.type';
 import { State } from '@app/app.reducers';
+import { THEMES } from '@core/theme-switcher.service';
 
 const initialState: App = {
   initialized: false,
@@ -22,9 +23,6 @@ const initialState: App = {
     // backgroundColor: 'white',
     // color: '#1A1E2A',
   },
-  logo: {
-    isVisible: true,
-  },
   menu: {
     sandbox: {
       chain: false,
@@ -32,7 +30,8 @@ const initialState: App = {
     }
   },
   theme: {
-    name: 'dark',
+    active: 'dark',
+    values: THEMES
   },
   statusbar: {
     sandbox: false,
@@ -88,7 +87,7 @@ export function reducer(state: App = initialState, action): App {
         ...state,
         theme: {
           ...state.theme,
-          name: action.payload,
+          active: action.payload,
         }
       };
     }

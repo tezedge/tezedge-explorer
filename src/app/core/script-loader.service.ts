@@ -8,7 +8,7 @@ export class ScriptLoaderService {
 
   swaggerLoad: Promise<void>;
 
-  private renderer: Renderer2;
+  private readonly renderer: Renderer2;
 
   constructor(@Inject(DOCUMENT) private document: Document,
               rendererFactory: RendererFactory2) {

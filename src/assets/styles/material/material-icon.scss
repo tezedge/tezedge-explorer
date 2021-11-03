@@ -47,20 +47,16 @@
     line-height: 22px;
   }
 
-  &.icon-white svg * {
-    fill: #fff;
+  &.icon-foreground svg * {
+    fill: var(--foreground);
   }
 
-  &.icon-white-7 svg * {
-    fill: rgba(255, 255, 255, 0.7);
+  &.icon-foreground-4 svg * {
+    fill: var(--foreground-4);
   }
 
-  &.icon-white-4 svg * {
-    fill: rgba(255, 255, 255, 0.4);
-  }
-
-  &.icon-white-1 svg * {
-    fill: rgba(255, 255, 255, 0.1);
+  &.icon-foreground-7 svg * {
+    fill: var(--foreground-7);
   }
 
   &.fill-opacity-1 svg * {

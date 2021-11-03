@@ -1,18 +1,18 @@
 <div class="d-flex flex-column h-100" *ngIf="state$ | async as stateMachine">
-  <div fxFlex="35px" class="text-white-7 f-12 border-bottom border-top padding-left-10 padding-top-10">
-    <span class="text-white text-uppercase margin-right-10">Action Statistics</span>
+  <div fxFlex="35px" class="foreground-7 f-12 border-bottom border-top padding-left-10 padding-top-10">
+    <span class="foreground text-uppercase margin-right-10">Action Statistics</span>
     {{ stateMachine.actionStatistics.totalCalls | thousandTransform }}
     <span
-      class="text-white-4">calls</span>
+      class="foreground-4">calls</span>
     · {{ stateMachine.actionStatistics.totalDuration | timeTransform: false: false: true }}
-    <span class="text-white-4">total duration</span>
+    <span class="foreground-4">total duration</span>
   </div>
 
   <div fxFlex="calc(100% - 35px)"
        *ngIf="stateMachine.actionStatistics.statistics.length">
 
     <div class="statistics-table d-flex flex-column h-100">
-      <div class="row table-head text-white-7 border-bottom f-12" fxFlex="36px">
+      <div class="row table-head foreground-7 border-bottom f-12" fxFlex="36px">
         <span>TYPE</span>
         <span>CALLS</span>
         <span>DURATION</span>
@@ -21,9 +21,9 @@
       <div class="overflow-auto f-14" fxFlex="calc(100% - 36px)">
         <div *ngFor="let action of stateMachine.actionStatistics.statistics"
              class="row" [matTooltip]="action.kind" matTooltipShowDelay="600">
-          <span class="text-white truncate">{{ action.kind }}</span>
-          <span class="text-white-7">{{ action.calls | thousandTransform }}</span>
-          <span class="text-white-7">{{ action.duration | timeTransform: false: false: true }}</span>
+          <span class="foreground truncate">{{ action.kind }}</span>
+          <span class="foreground-7">{{ action.calls | thousandTransform }}</span>
+          <span class="foreground-7">{{ action.duration | timeTransform: false: false: true }}</span>
           <span class="padding-right-10 d-flex align-center">
             <span class="progress-background">
               <span class="progress-background"

@@ -1,7 +1,24 @@
 .network-stats-panel {
   display: flex;
   justify-content: space-between;
-  padding: 20px 0px 0px 0px;
+  padding: 20px 0 0 0;
+}
+
+.network-stats-card {
+  background-color: var(--background-surface);
+  border: 1px solid var(--background-surface-fade-1);
+  box-sizing: border-box;
+  border-radius: 4px;
+  width: 340px;
+  margin: 10px;
+}
+
+.network-stats-card-title {
+  font-size: 14px;
+  line-height: 24px;
+  mix-blend-mode: normal;
+  padding: 7px 0 7px 15px;
+  border-bottom: 1px solid var(--background-surface-fade-1);
 }
 
 .network-stats-left {
@@ -30,7 +47,6 @@
 
 .network-stats-card-number {
   font-size: 40px;
-  font-family: Roboto;
   font-style: normal;
   font-weight: 300;
 }
@@ -41,11 +57,10 @@
   /* align-items: flex-end; */
   justify-content: center;
   flex-direction: column;
-  width: 120px;
+  width: 126px;
 }
 
 .network-stats-card-right-content {
-  font-family: Roboto;
   font-style: normal;
   font-weight: 300;
   font-size: 12px;

@@ -5,34 +5,33 @@
   justify-content: space-between;
   flex-direction: row;
   z-index: 999;
-  color: rgba(255, 255, 255, 0.6);
   height: 28px;
   font-size: 12px !important;
   width: calc(100% - 8px);
   border-radius: 4px;
   margin: 4px;
-
-  .pending-transactions {
-    color: #1C202B;
-    background-color: fade-out(#1C202B, 0.9);
-    line-height: normal;
-    font-size: 12px;
-    font-weight: 300;
-    padding: 4px 8px;
-    cursor: pointer;
-    margin: 0 2px;
-
-    &:disabled {
-      cursor: default;
-      color: #1C202B;
-      background-color: fade-out(#1C202B, 0.9);
-    }
-
-    .action {
-      font-weight: 500;
-      margin-left: 8px;
-    }
-  }
+  //
+  //.pending-transactions {
+  //  color: #1C202B;
+  //  background-color: fade-out(#1C202B, 0.9);
+  //  line-height: normal;
+  //  font-size: 12px;
+  //  font-weight: 300;
+  //  padding: 4px 8px;
+  //  cursor: pointer;
+  //  margin: 0 2px;
+  //
+  //  &:disabled {
+  //    cursor: default;
+  //    color: #1C202B;
+  //    background-color: fade-out(#1C202B, 0.9);
+  //  }
+  //
+  //  .action {
+  //    font-weight: 500;
+  //    margin-left: 8px;
+  //  }
+  //}
 
   .mat-form-field-infix {
     display: flex;
@@ -52,7 +51,7 @@
   height: 30px;
 
   &:hover {
-    background: rgba(255, 255, 255, 0.13);
+    background: var(--foreground-1);
   }
 }
 
@@ -77,6 +76,8 @@
 }
 
 .tezedge-sidenav {
+  background-color: var(--background-base);
+  color: var(--foreground-7);
   visibility: visible !important;
   z-index: 5 !important;
   left: 0;

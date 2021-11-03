@@ -7,7 +7,7 @@
       <span class="total-time">
         {{ graphData.queriesCount | thousandTransform }}
         <span
-          class="text-white-4">call{{ graphData.queriesCount !== 1 ? 's' : '' }}</span> · {{ graphData.totalTime | timeTransform: false: false: true }}
+          class="foreground-4">call{{ graphData.queriesCount !== 1 ? 's' : '' }}</span> · {{ graphData.totalTime | timeTransform: false: false: true }}
       </span>
     </span>
     <div *ngIf="isMainGraph" fxLayoutAlign="start center">
@@ -51,21 +51,21 @@
              let-max="max"
              let-total="total">
   <div class="tooltip-template">
-    <div class="text-white header">{{ header }}</div>
+    <div class="foreground header">{{ header }}</div>
     <div>
-      <span class="text-white">{{ count | thousandTransform }}</span>
+      <span class="foreground">{{ count | thousandTransform }}</span>
       Call{{ count !== 1 ? 's' : '' }}
     </div>
     <div>
-      <span class="text-white">{{ mean | timeTransform: false }}</span>
+      <span class="foreground">{{ mean | timeTransform: false }}</span>
       Mean
     </div>
     <div>
-      <span class="text-white">{{ max | timeTransform: false }}</span>
+      <span class="foreground">{{ max | timeTransform: false }}</span>
       Max
     </div>
     <div>
-      <span class="text-white">{{ total | timeTransform: false }}</span>
+      <span class="foreground">{{ total | timeTransform: false }}</span>
       Total Time
     </div>
   </div>

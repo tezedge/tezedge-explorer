@@ -95,10 +95,10 @@ export class TreeMapFactoryService {
                   .html(`
                     <div style="padding: 8px 8px 2px 8px">
                       ${name(dataSet)}<br/>
-                      <div style="margin-top: 5px">${dataSet.value} mb<span class="text-white-4"> size</span></div>
+                      <div style="margin-top: 5px">${dataSet.value} mb<span class="foreground-4"> size</span></div>
                     </div>
                     <div style="border-top: 1px solid rgb(27, 27, 29); padding: 6px 8px 8px 8px; margin-top: 4px;">
-                      ${dataSet.children ? dataSet.children.length : 0}<span class="text-white-4"> children</span>
+                      ${dataSet.children ? dataSet.children.length : 0}<span class="foreground-4"> children</span>
                     </div>
                   `)
                   .style('visibility', 'visible');

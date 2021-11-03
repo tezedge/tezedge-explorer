@@ -17,32 +17,13 @@ import { NetworkHistory } from '@shared/types/network/network-history.type';
 })
 export class NetworkHistoryComponent implements OnInit {
 
+  formattedNetworkHistory: Array<FormattedNetworkHistory>;
   private networkHistoryEntities: Array<NetworkHistoryEntity>;
-  public formattedNetworkHistory: Array<FormattedNetworkHistory>;
 
-  public networkHistoryConfig = {
-    row_length: 32,
-    row_height: 20,
-    // color: {
-    //   finishedBlocks: "#00dbc6",
-    //   appliedBlocks: "#000000",
-    //   empty: "#f2f2f2",
-    //   border: "#f2f2f2",
-    // }
-    color: {
-      finishedBlocks: '#000000',
-      appliedBlocks: '#00dbc6',
-      empty: '#f2f2f2',
-      border: 'lightgrey',
-    }
-  };
+  constructor(private cdRef: ChangeDetectorRef,
+              private store: Store<State>) { }
 
-  constructor(
-    private cd: ChangeDetectorRef,
-    public store: Store<State>
-  ) { }
-
-  ngOnInit() {
+  ngOnInit(): void {
     this.store.select('networkHistory')
       .pipe(
         debounceTime(200),
@@ -86,7 +67,7 @@ export class NetworkHistoryComponent implements OnInit {
       rowPositions[votingPeriodRowPosition].cycles[votingPeriodPosition] = this.networkHistoryEntities[cycle];
 
     }
-    this.cd.markForCheck();
+    this.cdRef.markForCheck();
   }
 
   readonly trackByRowPosition = (index: number, row: FormattedNetworkHistory) => row.id;

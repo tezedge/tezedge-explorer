@@ -22,9 +22,9 @@
                 [class.virtualScrollRowEven]="event?.index % 2"
                 (click)="selectAction(event)"
                 [class.hover]="stateMachine.activeAction?.originalId === event?.originalId">
-            <span class="text-white-7">{{ event?.datetime }}</span>
-            <span class="text-white truncate">{{ event?.kind }}</span>
-            <span class="text-white-7" [innerHTML]="event?.duration"></span>
+            <span class="foreground-7">{{ event?.datetime }}</span>
+            <span class="foreground truncate">{{ event?.kind }}</span>
+            <span class="foreground-7" [innerHTML]="event?.duration"></span>
           </span>
         </ng-template>
       </div>
@@ -36,7 +36,7 @@
                 (click)="scrollStart()">
           <mat-icon svgIcon="arrow-bottom" class="icon-12 d-flex"></mat-icon>
         </button>
-        <button class="rectangle-button start-stream d-flex flex-center align-center text-white border-remove"
+        <button class="rectangle-button start-stream d-flex flex-center align-center foreground border-remove"
                 mat-icon-button matTooltip="Start Streaming"
                 [class.inactive]="!stateMachine.actionTable.stream"
                 (click)="scrollStart()">

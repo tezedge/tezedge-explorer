@@ -3,13 +3,16 @@ import { HttpEvent, HttpHandler, HttpInterceptor, HttpRequest, HttpResponse } fr
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
-const TRACKING_URL = '/dev/shell/automaton/actions';
+const TRACKING_URLS = [
+  '/dev/shell/automaton/actions',
+  '/dev/shell/automaton/mempool/operation_stats',
+];
 
 @Injectable({ providedIn: 'root' })
 export class CustomJsonParserInterceptorService implements HttpInterceptor {
 
   intercept(httpRequest: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    return httpRequest.responseType === 'json' && httpRequest.url.includes(TRACKING_URL)
+    return httpRequest.responseType === 'json' && TRACKING_URLS.some(url => httpRequest.url.includes(url))
       ? this.handleJsonResponses(httpRequest, next)
       : next.handle(httpRequest);
   }

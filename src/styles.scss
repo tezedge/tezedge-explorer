@@ -1,27 +1,27 @@
-@import 'assets/styles/charts';
 @import 'assets/styles/utilities/layout';
 @import 'assets/styles/utilities/design';
+@import 'assets/styles/utilities/table';
 @import 'assets/styles/utilities/text';
-@import 'assets/styles/virtual-scroll-table';
 @import 'assets/styles/material/material-button';
 @import 'assets/styles/material/material-tooltip';
 @import 'assets/styles/material/material-form';
 @import 'assets/styles/material/material-icon';
 @import 'assets/styles/material/material-spinner';
 @import 'assets/styles/material/material-slider';
-@import 'assets/styles/notification';
-@import 'assets/styles/open-api';
-@import 'assets/styles/monaco-editor';
-@import 'assets/styles/diff-tool';
-@import 'assets/styles/json-viewer';
+@import 'assets/styles/custom-components/charts';
+@import 'assets/styles/custom-components/virtual-scroll-table';
+@import 'assets/styles/custom-components/notification';
+@import 'assets/styles/custom-components/open-api';
+@import 'assets/styles/custom-components/monaco-editor';
+@import 'assets/styles/custom-components/diff-tool';
+@import 'assets/styles/custom-components/json-viewer';
 
 html,
 body {
   height: 100%;
-  font-family: Roboto, "Helvetica Neue", sans-serif;
+  font-family: 'Inter', sans-serif;
   margin: 0 !important;
-  background-color: $color-background;
-  font-weight: 300 !important;
+  font-weight: 300;
   overflow-y: hidden;
 }
 
@@ -29,12 +29,13 @@ body {
   box-sizing: border-box;
 }
 
-span {
+span,
+button {
   font-family: inherit;
 }
 
 .mat-drawer-container.mat-sidenav-container {
-  background-color: $color-background;
+  background-color: var(--background-base);
 
   .mat-drawer-side {
     border-right: none;
@@ -51,7 +52,7 @@ span {
   border-bottom: 1px solid $color-toolbar-border;
 }
 
-.app-status-bar-sanbox {
+.app-status-bar-sandbox {
   background: #8c6141;
   color: white;
 }
@@ -146,7 +147,7 @@ tr.mat-row {
 }
 
 .network .network .mat-h1 {
-  font: 300 24px/32px Roboto, "Helvetica Neue", sans-serif;
+  font: 300 24px/32px 'Inter', sans-serif;
 }
 
 .settings {
@@ -159,7 +160,7 @@ tr.mat-row {
 }
 
 .settings .settings .mat-h1 {
-  font: 300 24px/32px Roboto, "Helvetica Neue", sans-serif;
+  font: 300 24px/32px 'Inter', sans-serif;
 }
 
 .network-endpoint {
@@ -293,11 +294,6 @@ tr.mat-row {
   .settings-endpoint-input {
     width: 90vw;
   }
-}
-
-
-.network {
-  background-color: $color-background;
 }
 
 @media screen and (max-width: 40em) {
@@ -527,23 +523,6 @@ input.mat-input-element {
   border-radius: 4px;
 }
 
-.network-action {
-  background-color: $color-table-background;
-  margin-top: 30px;
-  width: 1000px;
-  border: 1px solid $color-table-border;
-  border-radius: 4px;
-}
-
-.history-voting-period {
-  background-color: $color-table-background;
-  flex-direction: row;
-  margin: 2px -4px 2px 6px;
-  padding: 4px 4px 4px 4px;
-  border: 1.1px solid $color-table-border;
-  box-sizing: border-box;
-}
-
 .storage-block {
   background-color: $color-table-background;
   margin-top: 30px;
@@ -586,43 +565,19 @@ input.mat-input-element {
   margin-top: 30px;
 }
 
-/* network stats */
-.network-stats-card {
-  color: $color;
-  background-color: $color-table-background;
-  border: 1px solid $color-table-border;
-  box-sizing: border-box;
-  border-radius: 4px;
-  width: 340px;
-  margin: 10px;
-}
-
-.network-stats-card-title {
-  font-family: Roboto;
-  font-size: 14px;
-  line-height: 24px;
-  /* identical to box height, or 171% */
-  // color: rgba(0, 0, 0, 0.6);
-  color: fade-out($color, .4);
-  mix-blend-mode: normal;
-  padding: 7px 0px 7px 15px;
-  border-bottom: 1px solid $color-table-border;
-}
-
 /* changed toolbar styles  */
 ::-webkit-scrollbar-track {
-  background-color: rgba(0, 0, 0, 0.2); //  $color-table-background;
+  background-color: var(--background-surface-strong);
 }
 
 ::-webkit-scrollbar {
   width: 12px;
   height: 12px;
-  background-color: $color-table-border; //#F5F5F5;
 }
 
 ::-webkit-scrollbar-thumb {
   height: 80px;
-  background-color: $color-border;
+  background-color: var(--background-surface-fade-1);
 }
 
 ::-webkit-scrollbar-corner {
@@ -1002,8 +957,7 @@ input.mat-input-element {
 
 // Wallets table style
 .chain-wallets,
-.wallets,
-.mempool {
+.wallets {
   .mat-table {
     border-radius: 4px;
 
@@ -1074,8 +1028,7 @@ input.mat-input-element {
   }
 }
 
-.wallets,
-.mempool {
+.wallets {
   color: $color-focus;
   font-size: 12px;
 
@@ -1083,9 +1036,6 @@ input.mat-input-element {
     border-bottom: 1px solid $color-border;
   }
 
-  // .table-flex{
-
-  // }
   .sidebar-flex {
     border-left: 1px solid $color-border;
 
@@ -1333,22 +1283,6 @@ input.mat-input-element {
 .wallets {
   background-color: $color-table-background;
   border-top-left-radius: 4px;
-}
-
-.mempool {
-  background-color: $color-table-background;
-  border-top-left-radius: 4px;
-
-  position: absolute;
-  width: 100%;
-  height: 100%;
-
-  color: $color-focus;
-  font-size: 12px;
-
-  .filters-wrap {
-    border-bottom: 1px solid $color-border;
-  }
 }
 
 

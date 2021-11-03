@@ -52,7 +52,7 @@
     align-items: center;
 
     &:hover {
-      background-color: #323234;
+      background-color: var(--background-surface-fade-1);
     }
 
     &:not(.slim) {
@@ -74,10 +74,8 @@
 
   .app-menu-toolbar-logo {
     padding-left: 3px;
-    color: #f0f3f7;
     font-size: 14px;
     margin-left: 60px;
-    letter-spacing: 0.4px;
   }
 }
 
@@ -89,7 +87,6 @@
 }
 
 .app-submenu {
-  color: #c4cfdc7a;
   font-size: 12px;
   padding: 12px 0 20px 0;
 
@@ -104,17 +101,17 @@
     transition: margin-left 150ms;
 
     button {
-      background: rgba(255, 255, 255, 0.1) !important;
+      background: var(--foreground-1) !important;
       transition-duration: 150ms;
       transition-property: margin-left, border-radius, line-height;
-      color: white;
+      color: var(--foreground);
       min-width: 52px;
       font-size: 12px;
       font-weight: 300;
       line-height: 24px;
 
       &:hover {
-        background: rgba(255, 255, 255, 0.2) !important;
+        background: var(--foreground-2) !important;
       }
     }
   }
@@ -123,7 +120,7 @@
 .app-github-version {
   position: absolute;
   bottom: 10px;
-  color: rgba(196, 207, 220, 0.48);
+  color: var(--foreground-4);
   margin-left: 12px;
   transition: margin-left 0.15s;
 }
@@ -135,20 +132,20 @@
   border-bottom-right-radius: 4px;
   background-color: transparent;
   transition: padding-left 0.2s, width 0.2s;
-  color: rgba(255, 255, 255, 0.6);
+  color: var(--foreground-6);
 
   &:hover {
-    background-color: #323234;
-    color: white !important;
+    background-color: var(--background-surface-fade-1);
+    color: var(--foreground) !important;
     border-top-right-radius: 4px;
     border-bottom-right-radius: 4px;
   }
 
   &.active {
-    background-color: #204E8A;
+    background-color: var(--active-surface);
 
     .menu-content .text-nowrap {
-      color: #fff;
+      color: white;
     }
   }
 
@@ -161,8 +158,4 @@
       font-size: 14px;
     }
   }
-}
-
-.theme-switcher:hover {
-  background: #ffffff20;
 }

@@ -1,96 +1,4 @@
 
-.network-action-container {
-    display: flex;
-    align-items: center;
-    flex-direction: column;
-}
-
-.network-action th.mat-header-cell.cdk-column-datetime.mat-column-datetime {
-    text-overflow: ellipsis;
-    overflow: hidden;
-    white-space: nowrap;
-}
-.network-action .mat-cell.cdk-column-datetime.mat-column-datetime {
-    padding: 20px;
-    width: 140px;
-}
-
-.network-action th.mat-header-cell.cdk-column-address.mat-column-address {
-    text-overflow: ellipsis;
-    overflow: hidden;
-    white-space: nowrap;
-}
-.network-action .mat-cell.cdk-column-address.mat-column-address {
-    width: 100px;
-}
-
-.network-action th.mat-header-cell.cdk-column-type.mat-column-type {
-    text-overflow: ellipsis;
-    overflow: hidden;
-    white-space: nowrap;
-}
-.network-action .mat-cell.cdk-column-type.mat-column-type {
-    width: 180px;
-}
-
-.network-action th.mat-header-cell.cdk-column-message.mat-column-message {
-    text-overflow: ellipsis;
-    overflow: hidden;
-    white-space: nowrap;
-}
-.network-action .mat-cell.cdk-column-message.mat-column-message {
-    padding-right: 10px;
-    width: 140px;
-}
-
-.detail-colapsed {
-    display: none;
-}
-
-@media (max-width: 600px) {
-    .network-action {
-        max-width: 90vw !important;
-    }
-    th.mat-header-cell.cdk-column-datetime.mat-column-datetime {
-        display: none;
-    }
-    .mat-cell.cdk-column-datetime.mat-column-datetime {
-        display: none;
-    }
-    th.mat-header-cell.cdk-column-message.mat-column-message {
-        display: none;
-    }
-    .mat-cell.cdk-column-message.mat-column-message {
-        display: none;
-    }
-    th.mat-header-cell.cdk-column-address.mat-column-address {
-        width: 5vw !important;
-        padding-left: 24px;
-    }
-    .mat-cell.cdk-column-address.mat-column-address {
-        text-overflow: ellipsis;
-        overflow: hidden;
-        white-space: nowrap;
-        min-width: 30vw !important;
-        max-width: 3vw !important;
-        padding-left: 24px;
-    }
-    th.mat-header-cell.cdk-column-type.mat-column-type {
-        width: 35vw !important;
-    }
-    .mat-cell.cdk-column-type.mat-column-type {
-        text-overflow: ellipsis;
-        overflow: hidden;
-        white-space: nowrap;
-        min-width: 5vw !important;
-        max-width: 5vw !important;
-    }
-}
-
-.mat-cell.cdk-column-datetime.mat-column-datetime {
-    padding: 7px 0px 7px 20px !important;
-}
-
 form {
   height: 24px;
   margin-right: 5px;
@@ -99,7 +7,7 @@ form {
     margin: 0 4px;
     width: 174px;
 
-    .p-absolute {
+    .p-absolute.icon-10 {
       right: 6px;
       height: 100%;
     }

@@ -1,0 +1,62 @@
+<div class="h-100 margin-left-10 flex-column"
+     *ngIf="activeOperation$ | async as activeOperation">
+  <div class="hash margin-left-10 d-flex align-center">
+    <div class="truncate">{{ activeOperation.hash }}</div>
+    <div matTooltip="Copy hash" fxFlex="26px"
+         class="copy-hash border-rad-4 margin-left-5 margin-right-5 pointer"
+         [cdkCopyToClipboard]="activeOperation.hash"
+         (click)="copyHashToClipboard(activeOperation.hash)">
+      <mat-icon svgIcon="copy" class="icon-foreground-7 icon-14"></mat-icon>
+    </div>
+  </div>
+  <div fxFlex="calc(100% - 36px)" class="overflow-x-auto overflow-y-hidden">
+    <div class="h-100 flex-column border-left table-container">
+      <div class="node-row head foreground-7">
+        <div>NODE ID</div>
+        <div (click)="sortTable('received')"
+             class="pointer">FIRST RECEIVED
+          <mat-icon [class.flip]="currentSort.sortDirection === 'descending'"
+                    [class.show]="currentSort.sortBy === 'received'"
+                    [svgIcon]="'arrow-up'"
+                    class="icon-14 icon-foreground"></mat-icon>
+        </div>
+        <div (click)="sortTable('content_received')"
+             class="pointer">FIRST CONTENT RECEIVED
+          <mat-icon [class.flip]="currentSort.sortDirection === 'descending'"
+                    [class.show]="currentSort.sortBy === 'content_received'"
+                    [svgIcon]="'arrow-up'"
+                    class="icon-14 icon-foreground"></mat-icon>
+        </div>
+        <div (click)="sortTable('sent')"
+             class="pointer">FIRST SENT
+          <mat-icon [class.flip]="currentSort.sortDirection === 'descending'"
+                    [class.show]="currentSort.sortBy === 'sent'"
+                    [svgIcon]="'arrow-up'"
+                    class="icon-14 icon-foreground"></mat-icon>
+        </div>
+        <div>RECEIVED</div>
+        <div>CONTENT RECEIVED</div>
+        <div>SENT</div>
+      </div>
+      <div fxFlex="calc(100% - 36px)" class="overflow-y-auto flex-column overflow-x-hidden">
+        <div *ngFor="let node of activeOperation.nodes"
+             class="node-row">
+          <div class="truncate p-relative">{{ node.id }}
+            <span matTooltip="Copy hash"
+                  class="copy-hash p-absolute border-rad-4"
+                  [cdkCopyToClipboard]="node.id"
+                  (click)="copyHashToClipboard(node.id)">
+              <mat-icon svgIcon="copy" class="icon-foreground-7 icon-14"></mat-icon>
+            </span>
+          </div>
+          <div [innerHTML]="(node.received[0] ? node.received[0].latency : undefined) | nanoTransform"></div>
+          <div [innerHTML]="node.content_received[0] | nanoTransform"></div>
+          <div [innerHTML]="(node.sent[0] ? node.sent[0].latency : undefined) | nanoTransform"></div>
+          <div>{{ node.received.length }}</div>
+          <div>{{ node.content_received.length }}</div>
+          <div>{{ node.sent.length }}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

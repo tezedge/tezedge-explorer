@@ -1,16 +1,10 @@
-<svg xmlns="http://www.w3.org/2000/svg"
-     width="24"
-     height="24"
-     viewBox="0 0 24 24"
-     fill="none"
-     stroke="gray"
-     stroke-width="2"
-     stroke-linecap="round"
-     stroke-linejoin="round"
-     class="feather feather-arrow-down">
-  <line x1="12"
-        y1="5"
-        x2="12"
-        y2="19"></line>
-  <polyline points="19 12 12 19 5 12"></polyline>
+<svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <g clip-path="url(#clip0_4613_68481)">
+    <path d="M13.3572 7.86172L12.8932 7.39766C12.783 7.2875 12.6049 7.2875 12.4947 7.39766L8.85957 11.0328V3.03125C8.85957 2.87656 8.73301 2.75 8.57832 2.75H7.92207C7.76738 2.75 7.64082 2.87656 7.64082 3.03125V11.0328L4.00566 7.39766C3.89551 7.2875 3.71738 7.2875 3.60723 7.39766L3.14316 7.86172C3.03301 7.97188 3.03301 8.15 3.14316 8.26016L8.05098 13.168C8.16113 13.2781 8.33926 13.2781 8.44941 13.168L13.3572 8.26016C13.4674 8.15 13.4674 7.97188 13.3572 7.86172Z" fill="white"/>
+  </g>
+  <defs>
+    <clipPath id="clip0_4613_68481">
+      <rect width="10.5" height="12" fill="white" transform="translate(3 2)"/>
+    </clipPath>
+  </defs>
 </svg>

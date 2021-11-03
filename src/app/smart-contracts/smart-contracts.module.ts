@@ -6,8 +6,6 @@ import { TezedgeSharedModule } from '@shared/tezedge-shared.module';
 import { SmartContractsComponent } from './smart-contracts/smart-contracts.component';
 import { FormsModule } from '@angular/forms';
 import { MonacoEditorModule, NgxMonacoEditorConfig } from 'ngx-monaco-editor';
-
-import * as monaco from 'monaco-editor';
 import { SmartContractsTableComponent } from './smart-contracts-table/smart-contracts-table.component';
 
 export const myMonacoLoad = () => {
@@ -128,16 +126,17 @@ const monacoConfig: NgxMonacoEditorConfig = {
 export class SmartContractsModule {}
 
 
-export function primitives() {
-  return [{
-    label: 'FAILWITH',
-    documentation: 'Explicitly abort the current program.   \'a\n\nFAILWITH / a : _  =>  [FAILED]\n_ / [FAILED]  =>  [FAILED]',
-    detail: '',
-    kind: 'languages.completionItemKind.Function',
-    semantics: ['FAILWITH / a : _  =>  [FAILED]',
-      '_ / [FAILED]  =>  [FAILED]'],
-    insertText: 'FAILWITH'
-  },
+export function primitives(): any[] {
+  return [
+    {
+      label: 'FAILWITH',
+      documentation: 'Explicitly abort the current program.   \'a\n\nFAILWITH / a : _  =>  [FAILED]\n_ / [FAILED]  =>  [FAILED]',
+      detail: '',
+      kind: 'languages.completionItemKind.Function',
+      semantics: ['FAILWITH / a : _  =>  [FAILED]',
+        '_ / [FAILED]  =>  [FAILED]'],
+      insertText: 'FAILWITH'
+    },
     {
       label: '{}',
       documentation: 'Empty sequence.\n\n{} / SA  =>  SA',
@@ -1248,6 +1247,6 @@ export function primitives() {
       semantics: ['MAP_CA(\rest=[AD]+)R code / S   =>        { DUP ; DIP { CAR ; MAP_C(\rest)R code } ; CDR ; SWAP ; PAIR } / S',
         'MAP_CD(\rest=[AD]+)R code / S   =>        { DUP ; DIP { CDR ; MAP_C(\rest)R code } ; CAR ; PAIR } / S'],
       insertText: 'MAP_C[AD]+R'
-    }];
-
+    }
+  ];
 }

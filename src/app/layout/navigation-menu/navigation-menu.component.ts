@@ -4,11 +4,10 @@ import { State } from '@app/app.reducers';
 import { Router } from '@angular/router';
 import { SettingsNode } from '@shared/types/settings-node/settings-node.type';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { Observable } from 'rxjs';
+import { filter, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { App } from '@shared/types/app/app.type';
 import { appState } from '@app/app.reducer';
-import { selectFeatures } from '@settings/settings-node.reducer';
 
 
 @UntilDestroy()
@@ -35,8 +34,11 @@ export class NavigationMenuComponent implements OnInit, AfterViewInit {
 
   ngOnInit(): void {
     this.getAppState();
-    this.getNodeState();
     this.getFeatures();
+  }
+
+  ngAfterViewInit(): void {
+    this.closeMenu();
   }
 
   private getAppState(): void {
@@ -48,31 +50,20 @@ export class NavigationMenuComponent implements OnInit, AfterViewInit {
       });
   }
 
-  private getNodeState(): void {
-    this.store.select('settingsNode')
-      .pipe(untilDestroyed(this))
-      .subscribe(node => {
-        this.haveDebugger = node.activeNode?.features.some(f => f.name === 'debugger');
-        this.settingsNode = node;
-      });
-  }
-
   private getFeatures(): void {
-    this.appFeatures$ = this.store.select(selectFeatures).pipe(
-      untilDestroyed(this),
-      map((featuresArray: any[]) => {
+    this.appFeatures$ = this.store.select('settingsNode').pipe(
+      filter(node => !!node.activeNode),
+      map((node: SettingsNode) => {
         const features = {};
-        featuresArray.forEach(feature => features[feature.name] = feature);
+        node.activeNode.features.forEach(feature => features[feature.name] = feature);
+        this.settingsNode = node;
+        this.haveDebugger = node.activeNode?.features.some(f => f.name === 'debugger');
         this.haveResources = features['resources/system'] || features['resources/storage'] || features['resources/memory'];
         this.haveExplorer = features['network'] || features['storage'] || features['mempool'] || features['logs'] || features['endpoints'];
         this.haveSandbox = features['chains'] || features['wallets'] || features['sandbox'];
         return features;
       }),
     );
-  }
-
-  ngAfterViewInit(): void {
-    this.closeMenu();
   }
 
   closeMenu(): void {

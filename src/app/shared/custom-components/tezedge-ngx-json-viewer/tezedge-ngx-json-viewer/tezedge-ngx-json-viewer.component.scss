@@ -11,8 +11,6 @@ $type-colors: (
 );
 
 .ngx-json-viewer {
-  font-family: monospace;
-  font-size: 1em;
   width: 100%;
   height: 100%;
   overflow: hidden;
@@ -65,7 +63,7 @@ $type-colors: (
     }
   }
 
-  // special cases need highlightted
+  // special cases need highlighted
   .segment-type-null > .segment-main > .segment-value {
     background-color: red;
   }

@@ -12,6 +12,12 @@
 }
 
 .history-voting-period {
+  flex-direction: row;
+  margin: 2px -4px 2px 6px;
+  padding: 4px 4px 4px 4px;
+  background-color: var(--background-surface);
+  border: 1px solid var(--background-surface-fade-1);
+  box-sizing: border-box;
   width: 170px;
 }
 

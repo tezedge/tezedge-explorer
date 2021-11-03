@@ -11,13 +11,13 @@ import {
   SystemResourcesDetailsUpdateAction,
   SystemResourcesLoadAction
 } from './system-resources.actions';
-import { SystemResources } from '@shared/types/resources/system/system-resources.type';
-import { systemResources } from '@resources/resources/resources.reducer';
+import { SystemResourcesState } from '@shared/types/resources/system/system-resources-state.type';
 import { appState } from '@app/app.reducer';
 import { SystemResourcesResourceType } from '@shared/types/resources/system/system-resources-panel.type';
 import { SystemResourceCategory } from '@shared/types/resources/system/system-resource-category.type';
 import { SystemResourcesGraphComponent } from '@resources/system-resources-graph/system-resources-graph.component';
 import { TezedgeChartsService } from '@shared/charts/tezedge-charts.service';
+import { systemResources } from '@resources/system-resources/system-resources.reducer';
 
 
 @UntilDestroy()
@@ -29,7 +29,7 @@ import { TezedgeChartsService } from '@shared/charts/tezedge-charts.service';
 })
 export class SystemResourcesComponent implements OnInit, OnDestroy {
 
-  systemResource: SystemResources;
+  systemResource: SystemResourcesState;
   activeSummary: SystemResourcesResourceType = 'cpu';
 
   readonly yAxisPercentageConversion = (value) => `${value}%`;

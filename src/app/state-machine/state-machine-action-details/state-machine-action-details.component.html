@@ -4,19 +4,19 @@
     <div class="padding-vertical-10 action-tabs">
       <ng-container *ngIf="stateMachine.activeAction">
         <span *ngFor="let tab of tabs"
-              class="tab text-white-6 margin-left-10 pointer" [class.active]="tab === activeTab"
+              class="tab foreground-6 margin-left-10 pointer" [class.active]="tab === activeTab"
               (click)="activeTab = tab">
           {{ tab }}
         </span>
       </ng-container>
     </div>
     <div class="padding-vertical-10">
-      <div class="tab text-white-6 margin-right-10 pointer" [class.active]="activeTab === 'STATS'"
+      <div class="tab foreground-6 margin-right-10 pointer" [class.active]="activeTab === 'STATS'"
            (click)="activeTab = 'STATS'">STATISTICS
       </div>
     </div>
   </div>
-  <div class="overflow-auto text-white" fxFlex="calc(100% - 34px)"
+  <div class="overflow-auto foreground" fxFlex="calc(100% - 34px)"
        [ngClass]="activeTab !== 'STATS' ? 'padding-left-10 padding-top-10' : ''">
     <ng-container [ngSwitch]="activeTab">
       <div *ngSwitchCase="'CONTENT'">

@@ -6,4 +6,16 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
   styleUrls: ['./mempool.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class MempoolComponent {}
+export class MempoolComponent {
+
+  readonly tabs = [
+    {
+      name: 'endorsement rights',
+      link: 'endorsements'
+    }, {
+      name: 'operations',
+      link: 'operations'
+    },
+  ];
+
+}

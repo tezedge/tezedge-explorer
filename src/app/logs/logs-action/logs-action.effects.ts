@@ -5,7 +5,7 @@ import { Store } from '@ngrx/store';
 import { State } from '@app/app.reducers';
 import { catchError, map, switchMap, takeUntil, tap, withLatestFrom } from 'rxjs/operators';
 import { forkJoin, ObservedValueOf, of, Subject, timer } from 'rxjs';
-import { ErrorActionTypes } from '@shared/error-popup/error-popup.actions';
+import { ADD_ERROR } from '@shared/error-popup/error-popup.actions';
 
 const logActionDestroy$ = new Subject();
 
@@ -22,7 +22,7 @@ export class LogsActionEffects {
     catchError((error, caught) => {
       console.error(error);
       this.store.dispatch({
-        type: ErrorActionTypes.ADD_ERROR,
+        type: ADD_ERROR,
         payload: { title: 'Error when loading Logs:', message: error.message }
       });
       return caught;
@@ -53,7 +53,7 @@ export class LogsActionEffects {
     catchError((error, caught) => {
       console.error(error);
       this.store.dispatch({
-        type: ErrorActionTypes.ADD_ERROR,
+        type: ADD_ERROR,
         payload: { title: 'Error when loading Logs by time:', message: error.message }
       });
       return caught;
@@ -71,7 +71,7 @@ export class LogsActionEffects {
     catchError((error, caught) => {
       console.error(error);
       this.store.dispatch({
-        type: ErrorActionTypes.ADD_ERROR,
+        type: ADD_ERROR,
         payload: { title: 'Error when loading Logs with filters:', message: error.message }
       });
       return caught;
@@ -88,7 +88,7 @@ export class LogsActionEffects {
           this.http.get<any[]>(setUrl(action, state)).pipe(
             map(logs => ({ type: 'LOGS_ACTION_START_SUCCESS', payload: { logs } })),
             catchError(error => of({
-              type: ErrorActionTypes.ADD_ERROR,
+              type: ADD_ERROR,
               payload: { title: 'Error when loading Logs:', message: error.message }
             }))
           )

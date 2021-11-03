@@ -1,5 +1,6 @@
 import * as moment from 'moment-mini-ts';
 import { NetworkStats } from '@shared/types/network/network-stats.type';
+import { State } from '@app/app.reducers';
 
 const initialState: NetworkStats = {
   eta: '',
@@ -82,3 +83,5 @@ function numberOrSpace(value: number, mu: string, canBeZero?: boolean): string {
     ? (value > 9 ? value + mu : `0${value}${mu}`)
     : '';
 }
+
+export const selectNetworkDownloadedBlocks = (state: State) => state.networkStats.downloadedBlocks;

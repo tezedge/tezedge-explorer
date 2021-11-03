@@ -5,7 +5,7 @@ import { Store } from '@ngrx/store';
 import { catchError, map, switchMap, takeUntil, tap, withLatestFrom } from 'rxjs/operators';
 import { forkJoin, ObservedValueOf, of, Subject, timer } from 'rxjs';
 import { State } from '@app/app.reducers';
-import { ErrorActionTypes } from '@shared/error-popup/error-popup.actions';
+import { ADD_ERROR } from '@shared/error-popup/error-popup.actions';
 
 const networkActionDestroy$ = new Subject();
 
@@ -20,7 +20,7 @@ export class NetworkActionEffects {
     catchError((error, caught) => {
       console.error(error);
       this.store.dispatch({
-        type: ErrorActionTypes.ADD_ERROR,
+        type: ADD_ERROR,
         payload: { title: 'Error when loading Network:', message: error.message }
       });
       return caught;
@@ -51,7 +51,7 @@ export class NetworkActionEffects {
     catchError((error, caught) => {
       console.error(error);
       this.store.dispatch({
-        type: ErrorActionTypes.ADD_ERROR,
+        type: ADD_ERROR,
         payload: { title: 'Error when loading Network by time:', message: error.message }
       });
       return caught;
@@ -69,7 +69,7 @@ export class NetworkActionEffects {
     catchError((error, caught) => {
       console.error(error);
       this.store.dispatch({
-        type: ErrorActionTypes.ADD_ERROR,
+        type: ADD_ERROR,
         payload: { title: 'Error when loading Network with filters:', message: error.message }
       });
       return caught;
@@ -87,7 +87,7 @@ export class NetworkActionEffects {
     catchError((error, caught) => {
       console.error(error);
       this.store.dispatch({
-        type: ErrorActionTypes.ADD_ERROR,
+        type: ADD_ERROR,
         payload: { title: 'Error when loading Network by address:', message: error.message }
       });
       return caught;
@@ -104,7 +104,7 @@ export class NetworkActionEffects {
           this.http.get<any[]>(setUrl(action, state)).pipe(
             map(network => ({ type: 'NETWORK_ACTION_START_SUCCESS', payload: { network } })),
             catchError(error => of({
-              type: ErrorActionTypes.ADD_ERROR,
+              type: ADD_ERROR,
               payload: { title: 'Error when loading Network:', message: error.message }
             }))
           )

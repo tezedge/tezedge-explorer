@@ -14,7 +14,7 @@ import * as fromNgrxForm from './shared/ngrx-form.reducer';
 import * as fromApp from './app.reducer';
 import * as fromSettingsNode from './layout/settings-node/settings-node.reducer';
 import * as fromMonitoring from './monitoring/monitoring.reducer';
-import * as fromMempoolAction from './mempool/mempool-action/mempool-action.reducer';
+import * as fromMempool from './mempool/mempool.reducer';
 import * as fromNetworkAction from './network/network-action/network-action.reducer';
 import * as fromNetworkPeers from './network/network-peers/network-peers.reducer';
 import * as fromNetworkStats from './network/network-stats/network-stats.reducer';
@@ -36,6 +36,7 @@ import * as fromStateMachine from './state-machine/state-machine/state-machine.r
 import * as fromSmartContracts from './smart-contracts/smart-contracts/smart-contracts.reducer';
 import * as fromSpinner from './shared/loading-spinner/loading-spinner.reducer';
 
+import { MempoolState } from '@mempool/mempool.reducer';
 import { ResourcesState } from '@resources/resources/resources.reducer';
 import { ErrorState } from '@shared/error-popup/error-popup.reducer';
 import { SettingsNode } from '@shared/types/settings-node/settings-node.type';
@@ -55,7 +56,7 @@ import { LoadingSpinnerState } from '@shared/loading-spinner/loading-spinner.red
 export interface State {
   app: App;
   monitoring: Monitoring;
-  mempoolAction: any;
+  mempool: MempoolState;
   networkAction: NetworkAction;
   networkPeers: NetworkPeers;
   networkStats: NetworkStats;
@@ -84,7 +85,7 @@ export interface State {
 export const reducers: ActionReducerMap<State> = {
   app: fromApp.reducer,
   monitoring: fromMonitoring.reducer,
-  mempoolAction: fromMempoolAction.reducer,
+  mempool: fromMempool.reducer,
   networkAction: fromNetworkAction.reducer,
   networkPeers: fromNetworkPeers.reducer,
   networkStats: fromNetworkStats.reducer,

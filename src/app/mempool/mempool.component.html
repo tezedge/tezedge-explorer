@@ -1,6 +1,20 @@
-<div class="mempool">
-
-    <app-mempool-action>
-    </app-mempool-action>
-
+<div class="mempool overflow-hidden f-12 text-white h-100">
+  <div fxFlexFill
+       fxLayout="column"
+       fxLayoutAlign="start stretch">
+    <div class="tabs border-bottom"
+         fxFlex="40px"
+         fxLayoutAlign="start center"
+         fxLayoutGap="16px">
+      <div *ngFor="let tab of tabs"
+           [routerLink]="'/mempool/' + tab.link"
+           class="tab f-12 pointer text-uppercase"
+           routerLinkActive="selected">
+        {{ tab.name }}
+      </div>
+    </div>
+    <div fxFlex="calc(100% - 40px)">
+      <router-outlet></router-outlet>
+    </div>
+  </div>
 </div>

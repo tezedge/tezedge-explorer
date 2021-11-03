@@ -1002,8 +1002,7 @@ input.mat-input-element {
 
 // Wallets table style
 .chain-wallets,
-.wallets,
-.mempool {
+.wallets {
   .mat-table {
     border-radius: 4px;
 
@@ -1074,8 +1073,7 @@ input.mat-input-element {
   }
 }
 
-.wallets,
-.mempool {
+.wallets {
   color: $color-focus;
   font-size: 12px;
 
@@ -1083,9 +1081,6 @@ input.mat-input-element {
     border-bottom: 1px solid $color-border;
   }
 
-  // .table-flex{
-
-  // }
   .sidebar-flex {
     border-left: 1px solid $color-border;
 
@@ -1333,22 +1328,6 @@ input.mat-input-element {
 .wallets {
   background-color: $color-table-background;
   border-top-left-radius: 4px;
-}
-
-.mempool {
-  background-color: $color-table-background;
-  border-top-left-radius: 4px;
-
-  position: absolute;
-  width: 100%;
-  height: 100%;
-
-  color: $color-focus;
-  font-size: 12px;
-
-  .filters-wrap {
-    border-bottom: 1px solid $color-border;
-  }
 }
 
 

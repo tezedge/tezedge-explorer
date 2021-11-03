@@ -4,7 +4,8 @@ import { State } from '@app/app.reducers';
 import { StateMachineActionTypes } from '@state-machine/state-machine/state-machine.actions';
 import { StorageResourcesActionTypes } from '@resources/storage-resources/storage-resources.actions';
 import { MemoryResourcesActionTypes } from '@resources/memory-resources/memory-resources.actions';
-import { ErrorActionTypes } from '@shared/error-popup/error-popup.actions';
+import { ADD_ERROR } from '@shared/error-popup/error-popup.actions';
+import { MEMPOOL_ENDORSEMENT_LOAD, MEMPOOL_ENDORSEMENT_LOAD_SUCCESS, MEMPOOL_OPERATION_LOAD, MEMPOOL_OPERATION_LOAD_SUCCESS } from '@mempool/mempool.action';
 
 export interface LoadingSpinnerState {
   pendingValues: LoadingSpinner[];
@@ -16,13 +17,13 @@ const initialState: LoadingSpinnerState = {
 
 export function reducer(state: LoadingSpinnerState = initialState, action: any): LoadingSpinnerState {
   switch (action.type) {
-    case ErrorActionTypes.ADD_ERROR: {
+    case ADD_ERROR: {
       if (action.payload.initiator) {
         return {
           pendingValues: state.pendingValues.filter(v => v.type !== action.payload.initiator)
         };
       }
-      break;
+      return { ...state };
     }
     case SystemResourcesActionTypes.SYSTEM_RESOURCES_LOAD: {
       return {
@@ -142,6 +143,26 @@ export function reducer(state: LoadingSpinnerState = initialState, action: any):
           .filter(v => v.type !== StateMachineActionTypes.STATE_MACHINE_ACTION_STATISTICS_LOAD)
       };
     }
+    case MEMPOOL_ENDORSEMENT_LOAD: {
+      return {
+        pendingValues: [mempoolEndorsementLoad, ...state.pendingValues]
+      };
+    }
+    case MEMPOOL_ENDORSEMENT_LOAD_SUCCESS: {
+      return {
+        pendingValues: state.pendingValues.filter(v => v.type !== MEMPOOL_ENDORSEMENT_LOAD)
+      };
+    }
+    case MEMPOOL_OPERATION_LOAD: {
+      return {
+        pendingValues: [mempoolOperationLoad, ...state.pendingValues]
+      };
+    }
+    case MEMPOOL_OPERATION_LOAD_SUCCESS: {
+      return {
+        pendingValues: state.pendingValues.filter(v => v.type !== MEMPOOL_OPERATION_LOAD)
+      };
+    }
     default:
       return state;
   }
@@ -188,15 +209,28 @@ const logsActionLoad: LoadingSpinner = {
 
 const stateMachineStatisticsLoad: LoadingSpinner = {
   type: StateMachineActionTypes.STATE_MACHINE_ACTION_STATISTICS_LOAD,
-  message: 'Loading state machine action statistics...'
+  message: 'Loading state machine action statistics...',
+  zIndex: 3
 };
 
 const stateMachineActionsLoad: LoadingSpinner = {
   type: StateMachineActionTypes.STATE_MACHINE_ACTIONS_LOAD,
-  message: 'Loading state machine actions...'
+  message: 'Loading state machine actions...',
+  zIndex: 2
 };
 
 const stateMachineDiagramLoad: LoadingSpinner = {
   type: StateMachineActionTypes.STATE_MACHINE_DIAGRAM_LOAD,
-  message: 'Loading state machine diagram...'
+  message: 'Loading state machine diagram...',
+  zIndex: 1
+};
+
+const mempoolEndorsementLoad: LoadingSpinner = {
+  type: MEMPOOL_ENDORSEMENT_LOAD,
+  message: 'Loading mempool endorsements...'
+};
+
+const mempoolOperationLoad: LoadingSpinner = {
+  type: MEMPOOL_OPERATION_LOAD,
+  message: 'Loading mempool operations...'
 };

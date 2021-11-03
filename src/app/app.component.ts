@@ -20,8 +20,7 @@ export class AppComponent implements OnInit {
 
   app: App;
   isMobile = false;
-
-  pendingTransactions$: Observable<any[]>;
+  pendingTransactions: [];
   networkStats$: Observable<NetworkStats>;
   settingsNodeProtocol$: Observable<string>;
   activeNode$: Observable<SettingsNodeApi>;
@@ -52,7 +51,6 @@ export class AppComponent implements OnInit {
 
   ngOnInit(): void {
     this.initAppData();
-    this.getMempoolPendingTransactions();
     this.getNetworkStatsData();
     this.getSettingsNode();
 
@@ -79,11 +77,6 @@ export class AppComponent implements OnInit {
       this.app = data;
       this.cdRef.detectChanges();
     });
-  }
-
-  private getMempoolPendingTransactions(): void {
-    this.pendingTransactions$ = this.store.select('mempoolAction').pipe(map(mempool => mempool.ids));
-    // this.pendingTransactions = mempool.ids.filter(id => mempool.entities[id].type == 'applied' || mempool.entities[id].type == 'unprocessed')
   }
 
   changeTheme(theme) {

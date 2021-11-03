@@ -8,6 +8,9 @@ tezedge-ngx-json-viewer {
 .ngx-json-viewer {
   font-family: Roboto, "Helvetica Neue", sans-serif !important;
   font-size: 14px !important;
+  overflow: unset !important;
+  overflow-y: auto!important;
+  overflow-x: hidden!important;
 
   .segment-value {
     word-break: break-all;

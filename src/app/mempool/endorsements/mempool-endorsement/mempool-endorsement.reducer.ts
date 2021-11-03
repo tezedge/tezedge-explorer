@@ -136,7 +136,7 @@ function bringItemToBeginning(endorsements: MempoolEndorsement[], baker: string)
 
 function sortEndorsements(endorsements: MempoolEndorsement[], sort: MempoolEndorsementSort): MempoolEndorsement[] {
   const sortProperty = sort.sortBy;
-  const includeMissingEndorsements = ['slotsLength', 'bakerName', 'status', 'branch'].includes(sortProperty);
+  const includeMissingEndorsements = ['slotsLength', 'bakerName', 'status'].includes(sortProperty);
   const updatedEndorsements = includeMissingEndorsements ? endorsements : endorsements.filter(e => e.status);
   const missedEndorsements = includeMissingEndorsements ? [] : endorsements.filter(e => !e.status);
 
@@ -196,6 +196,8 @@ function calculateStatistics(currentStatistics: MempoolEndorsementStatistics, ne
     valueObject[key] += e.slotsLength;
   });
 
+  const totalSlots = newEndorsements.reduce((sum, curr) => sum + curr.slots.length, 0);
+
   return {
     endorsementTypes: [
       { name: MempoolEndorsementStatusTypes.MISSING, value: valueObject[MempoolEndorsementStatusTypes.MISSING] },
@@ -207,8 +209,9 @@ function calculateStatistics(currentStatistics: MempoolEndorsementStatistics, ne
       { name: 'Branch delayed', value: valueObject[MempoolEndorsementStatusTypes.BRANCH_DELAYED] },
       { name: MempoolEndorsementStatusTypes.OUTDATED, value: valueObject[MempoolEndorsementStatusTypes.OUTDATED] },
     ],
-    totalSlots: newEndorsements.reduce((sum, curr) => sum + curr.slots.length, 0),
-    previousBlockMissedEndorsements: isNewBlock ? currentStatistics?.endorsementTypes[0].value : currentStatistics?.previousBlockMissedEndorsements
+    totalSlots,
+    previousBlockMissedEndorsements: isNewBlock ? currentStatistics?.endorsementTypes[0].value : currentStatistics?.previousBlockMissedEndorsements,
+    quorum: Object.keys(valueObject).reduce((sum, key) => sum + valueObject[key], 0 - valueObject[MempoolEndorsementStatusTypes.MISSING]) / totalSlots * 100
   };
 }
 

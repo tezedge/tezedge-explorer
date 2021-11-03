@@ -51,6 +51,8 @@ export class SettingsNodeService {
         return 'mainnet';
       case 'NetXZSsxBpMQeAT':
         return 'hangzhou';
+      case 'NetXnHfVqm9iesp':
+        return 'ithaca';
     }
   }
 }

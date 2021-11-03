@@ -1,21 +1,26 @@
 <div class="d-flex flex-column h-100 w-100"
      *ngIf="storageStats$ | async as storageStats">
-  <div class="storage-toolbar d-flex">
+  <div class="storage-toolbar flex-row">
     <div class="toolbar-left border-bottom flex-grow d-flex flex-wrap">
-      <div class="d-flex align-center">
+      <div class="switcher d-flex align-center">
         <div class="foreground-4 f-12 context">Current context: {{ storageResourcesContext }}</div>
         <mat-icon *ngIf="displayContextSwitcher"
                   (click)="getStorageStatistics()"
                   svgIcon="arrow-around"
                   class="icon-20 icon-foreground-4 pointer node-switcher margin-left-10"></mat-icon>
       </div>
-      <div class="protocol-list margin-left-10 padding-left-10 d-flex align-center flex-wrap">
-        <div *ngFor="let protocol of protocols; let i=index"
-             class="protocol">
-          <span class="protocol-name pointer foreground" [class.active]="activeProtocol === protocol"
-                (click)="selectProtocol(protocol)">{{ protocol }}</span>
-          <span class="bar foreground-7 context-menu" *ngIf="i < protocols.length - 1">|</span>
-        </div>
+      <div class="protocol-list d-flex">
+        <mat-tab-group disableRipple>
+          <mat-tab *ngFor="let protocol of protocols; let i=index">
+            <ng-template mat-tab-label>
+              <div class="protocol flex-row align-center">
+                <span class="protocol-name pointer foreground" [class.active]="activeProtocol === protocol"
+                      (click)="selectProtocol(protocol)">{{ protocol }}</span>
+                <span class="bar foreground-7 context-menu" *ngIf="i < protocols.length - 1">|</span>
+              </div>
+            </ng-template>
+          </mat-tab>
+        </mat-tab-group>
       </div>
     </div>
     <div class="toolbar-right pointer border-bottom d-flex flex-between align-center foreground border-left padding-10"
@@ -66,15 +71,15 @@
           <span class="text-uppercase">{{ operation.root | replaceCharacter: '_': ' '}}</span>
           <span class="total-time">
             {{ operation.queriesCount | thousandTransform }}
-            <span class="grayish"> call{{ operation.queriesCount !== 1 ? 's' : '' }}</span>
+            <span class="foreground-4"> call{{ operation.queriesCount !== 1 ? 's' : '' }}</span>
             &nbsp;·&nbsp;
             {{ operation.totalTime | timeTransform: false: false: true }}
-            <span class="grayish"> total duration</span>
-            <span class="grayish">(</span>
+            <span class="foreground-4"> total duration</span>
+            <span class="foreground-4">(</span>
             {{ operation.totalTimeRead | timeTransform: false: false: true }}
-            <span class="grayish"> read,</span>
+            <span class="foreground-4"> read,</span>
             {{ operation.totalTimeWrite | timeTransform: false: false: true }}
-            <span class="grayish"> write)</span>
+            <span class="foreground-4"> write)</span>
           </span>
         </div>
         <div fxFlex="grow">
@@ -100,7 +105,7 @@
         </div>
       </div>
     </div>
-    <div class="side-panel overflow-y-auto p-absolute h-100 padding-horizontal-10 padding-bottom-10 border-left">
+    <div class="side-panel overflow-y-auto p-absolute h-100 padding-10 border-left">
       <app-storage-resources-overview [data]="storageStats.totalContext"
                                       [sliceNames]="storageStats.contextSliceNames"></app-storage-resources-overview>
     </div>

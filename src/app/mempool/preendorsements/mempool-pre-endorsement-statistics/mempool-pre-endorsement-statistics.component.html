@@ -16,7 +16,18 @@
   <app-mempool-preendorsements-graph></app-mempool-preendorsements-graph>
   <div *ngIf="statistics$ | async as statistics" class="overflow-auto">
     <div class="d-flex flex-column border-rad-2 border padding-10">
-      <div class="foreground-4 margin-bottom-10">256 endorsements grouped by status</div>
+      <div class="foreground text-uppercase margin-bottom-10 flex-row flex-between">
+        <div class="flex-row align-center">
+          <div>Quorum</div>
+          <mat-icon [svgIcon]="statistics.quorum >= 66.67 ? 'check-circle' : 'close-filled'"
+                    [ngClass]="statistics.quorum >= 66.67 ? 'icon-green' : 'icon-red'"
+                    class="icon-16 margin-left-8"></mat-icon>
+        </div>
+        <div class="font-500">{{ statistics.quorum | number: '1.1-1' }}%</div>
+      </div>
+      <div class="foreground-4 margin-bottom-10 margin-top-10">
+        {{ statistics.totalSlots }} endorsements grouped by status
+      </div>
       <div *ngFor="let type of statistics.endorsementTypes; let i=index; trackBy: trackStats"
            class="mem-stats-row margin-top-5 margin-bottom-5">
         <div class="text-capitalize">{{ type.name }}</div>
@@ -35,7 +46,7 @@
       <div class="foreground-4 margin-bottom-10">Previous block summary</div>
       <div [ngClass]="'missed-' + statistics.previousBlockMissedEndorsements"
            class="missed mem-stats-row margin-top-5 margin-bottom-5 d-flex flex-between">
-        <div>Missed Endorsements</div>
+        <div>Missed Preendorsements</div>
         <div>{{ statistics.previousBlockMissedEndorsements }}</div>
       </div>
       <div class="mem-stats-row margin-top-5 margin-bottom-5 d-flex flex-between">

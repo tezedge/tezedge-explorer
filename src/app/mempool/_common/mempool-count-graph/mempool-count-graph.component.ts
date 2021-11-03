@@ -1,7 +1,8 @@
 import {
+  AfterViewInit,
   ChangeDetectionStrategy,
-  ChangeDetectorRef,
   Component,
+  ElementRef,
   Input,
   OnChanges,
   OnDestroy,
@@ -19,10 +20,11 @@ import { Overlay, OverlayRef } from '@angular/cdk/overlay';
 import { getFilteredXTicks } from '@helpers/chart.helper';
 import { TemplatePortal } from '@angular/cdk/portal';
 
-class ChartItem {
+class ChartColumn {
   name: string;
   value: number;
   range: string;
+  step: number;
 }
 
 @UntilDestroy()
@@ -32,30 +34,35 @@ class ChartItem {
   styleUrls: ['./mempool-count-graph.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class MempoolCountGraphComponent implements OnInit, OnChanges, OnDestroy {
+export class MempoolCountGraphComponent implements OnInit, AfterViewInit, OnChanges, OnDestroy {
 
   @Input() times: number[];
   @Input() columnStep: number;
 
-  chartColumns: ChartItem[];
+  chartColumns: ChartColumn[];
   xTicksValues: string[];
+  maxHeight: number = 0;
 
   @ViewChild('tooltipTemplate') private tooltipTemplate: TemplateRef<{ count: number, range: string }>;
+  @ViewChild('columnContainer') private columnContainer: ElementRef<HTMLDivElement>;
 
   private xTicksValuesLength: number;
   private steps: number[];
   private overlayRef: OverlayRef;
 
-  constructor(private cdRef: ChangeDetectorRef,
-              private breakpointObserver: BreakpointObserver,
-              private overlay: Overlay,
-              private viewContainerRef: ViewContainerRef) { }
-
-  readonly trackHistogramItems = (index: number, item) => item.value;
+  constructor(private breakpointObserver: BreakpointObserver,
+              private viewContainerRef: ViewContainerRef,
+              private overlay: Overlay) { }
 
   ngOnInit(): void {
     this.steps = this.getSteps();
+    this.chartColumns = this.initChartColumns();
+    this.xTicksValues = this.getFilteredXTicks();
     this.listenToResizeEvent();
+  }
+
+  ngAfterViewInit(): void {
+    this.maxHeight = this.columnContainer.nativeElement.offsetHeight;
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -65,11 +72,10 @@ export class MempoolCountGraphComponent implements OnInit, OnChanges, OnDestroy 
   }
 
   private update(): void {
-    this.chartColumns = this.generateChartLine(this.times);
-    this.xTicksValues = getFilteredXTicks(this.chartColumns, Math.min(this.chartColumns.length, this.xTicksValuesLength), 'name');
+    this.generateChartColumns(this.times);
   }
 
-  private generateChartLine(times: number[]): ChartItem[] {
+  private initChartColumns(): ChartColumn[] {
     const seriesObj: { [p: number]: { value: number, range: string } } = this.steps.reduce((acc, curr: number, i: number) => ({
       ...acc,
       [curr]: {
@@ -79,16 +85,21 @@ export class MempoolCountGraphComponent implements OnInit, OnChanges, OnDestroy 
           : `${curr / NANOSECOND_FACTOR}s - ${(curr + (ONE_HUNDRED_MS * this.columnStep)) / NANOSECOND_FACTOR}s`
       }
     }), {});
-    times.forEach(time => {
-      const stepKey = MempoolCountGraphComponent.findClosestSmallerStep(this.steps, time);
-      seriesObj[stepKey].value++;
-    });
 
     return Object.keys(seriesObj).map((key: string) => ({
       name: Number(key) / NANOSECOND_FACTOR + 's',
       value: seriesObj[key].value,
       range: seriesObj[key].range,
+      step: Number(key)
     }));
+  }
+
+  private generateChartColumns(times: number[]): void {
+    this.chartColumns.forEach(col => col.value = 0);
+    times.forEach(time => {
+      const column = MempoolCountGraphComponent.findClosestSmallerStep(this.chartColumns, time);
+      column.value++;
+    });
   }
 
   private listenToResizeEvent(): void {
@@ -101,7 +112,12 @@ export class MempoolCountGraphComponent implements OnInit, OnChanges, OnDestroy 
         } else {
           this.xTicksValuesLength = 6;
         }
+        this.xTicksValues = this.getFilteredXTicks();
       });
+  }
+
+  private getFilteredXTicks(): string[] {
+    return getFilteredXTicks(this.chartColumns, Math.min(this.chartColumns.length, this.xTicksValuesLength), 'name');
   }
 
   private getSteps(): number[] {
@@ -114,11 +130,11 @@ export class MempoolCountGraphComponent implements OnInit, OnChanges, OnDestroy 
     return res;
   }
 
-  private static findClosestSmallerStep(steps: number[], value: number): number {
-    let closest = 0;
-    for (const step of steps) {
-      if (step <= value) {
-        closest = step;
+  private static findClosestSmallerStep(steps: ChartColumn[], value: number): ChartColumn {
+    let closest = null;
+    for (const item of steps) {
+      if (item.step <= value) {
+        closest = item;
       } else {
         return closest;
       }
@@ -126,7 +142,7 @@ export class MempoolCountGraphComponent implements OnInit, OnChanges, OnDestroy 
     return closest;
   }
 
-  openDetailsOverlay(item: ChartItem, event: MouseEvent): void {
+  openDetailsOverlay(column: ChartColumn, event: MouseEvent): void {
     this.detachOverlay();
 
     this.overlayRef = this.overlay.create({
@@ -147,8 +163,8 @@ export class MempoolCountGraphComponent implements OnInit, OnChanges, OnDestroy 
     event.stopPropagation();
     const context = this.tooltipTemplate
       .createEmbeddedView({
-        count: item.value,
-        range: item.range
+        count: column.value,
+        range: column.range
       })
       .context;
     const portal = new TemplatePortal(this.tooltipTemplate, this.viewContainerRef, context);

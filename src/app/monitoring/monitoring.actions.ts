@@ -5,12 +5,15 @@ export enum MonitoringActionTypes {
   MONITORING_CLOSE = 'MONITORING_CLOSE',
 }
 
-export class LoadMonitoring implements Action {
+export class MonitoringLoadAction implements Action {
   readonly type = MonitoringActionTypes.MONITORING_LOAD;
 }
 
-export class CloseMonitoring implements Action {
+export class MonitoringCloseAction implements Action {
   readonly type = MonitoringActionTypes.MONITORING_CLOSE;
 }
 
-export type MonitoringActions = LoadMonitoring | CloseMonitoring;
+export type MonitoringActions =
+  | MonitoringLoadAction
+  | MonitoringCloseAction
+  ;

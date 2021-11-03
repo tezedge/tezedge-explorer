@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, throwError } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { StorageResourcesStats } from '@shared/types/resources/storage/storage-resources-stats.type';
-import { map } from 'rxjs/operators';
+import { catchError, map } from 'rxjs/operators';
 import { ResourceStorageQuery } from '@shared/types/resources/storage/storage-resource-operation.type';
 import { ReplaceCharacterPipe } from '@shared/pipes/replace-character.pipe';
 
@@ -20,7 +20,10 @@ export class StorageResourcesService {
       params['protocol'] = protocol;
     }
     return this.http.get<StorageResourcesStats>(`${api}/stats/context`, { params })
-      .pipe(map(response => this.mapStorageResourcesResponse(response)));
+      .pipe(
+        map(response => this.mapStorageResourcesResponse(response)),
+        catchError(err => throwError(err))
+      );
   }
 
   checkStorageResourcesContext(api: string, contextName: string): Observable<StorageResourcesStats> {

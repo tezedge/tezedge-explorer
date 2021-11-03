@@ -7,6 +7,7 @@ import { catchError, map, mergeMap, withLatestFrom } from 'rxjs/operators';
 import { SettingsNodeService } from './settings-node.service';
 import { State } from '@app/app.index';
 import { SettingsNodeEntity } from '@shared/types/settings-node/settings-node-entity.type';
+import { APP_INIT, APP_REFRESH } from '@app/app.actions';
 
 @Injectable({ providedIn: 'root' })
 export class SettingsNodeEffects {
@@ -41,7 +42,7 @@ export class SettingsNodeEffects {
         && action.payload && action.payload.activeNode.id === state.settingsNode.activeNode.id
         && !action.payload.checkOnly
       )
-        ? of({ type: 'APP_INIT', payload: state.settingsNode.activeNode })
+        ? of({ type: APP_INIT, payload: state.settingsNode.activeNode })
         : EMPTY;
     }),
   ));
@@ -49,7 +50,7 @@ export class SettingsNodeEffects {
   settingsNodeChangeEffect$ = createEffect(() => this.actions$.pipe(
     ofType('SETTINGS_NODE_CHANGE'),
     withLatestFrom(this.store, (action: any, state: ObservedValueOf<Store<State>>) => ({ action, state })),
-    mergeMap(({ action, state }) => of({ type: 'APP_REFRESH', payload: state.settingsNode.activeNode })),
+    mergeMap(({ action, state }) => of({ type: APP_REFRESH, payload: state.settingsNode.activeNode })),
   ));
 
   settingsNodeLoadSandboxEffect$ = createEffect(() => this.actions$.pipe(
@@ -71,7 +72,7 @@ export class SettingsNodeEffects {
     ofType('SETTINGS_NODE_LOAD_SANDBOX_SUCCESS'),
     withLatestFrom(this.store, (action: any, state: ObservedValueOf<Store<State>>) => ({ action, state })),
     mergeMap(({ action, state }) => {
-      return of({ type: 'APP_INIT', payload: state.settingsNode.entities['sandbox-carthage-tezedge'] });
+      return of({ type: APP_INIT, payload: state.settingsNode.entities['sandbox-carthage-tezedge'] });
     }),
   ));
 

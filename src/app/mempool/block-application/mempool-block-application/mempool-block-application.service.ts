@@ -24,7 +24,6 @@ export class MempoolBlockApplicationService {
           { name: 'Apply block', series: [] },
           { name: 'Store result', series: [] },
         ];
-        console.log(blocks);
         blocks.forEach(block => {
           const name = block.block_level.toString() + 'r' + block.block_round;
           chartLines[0].series.push({

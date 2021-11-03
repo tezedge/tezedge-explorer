@@ -2,10 +2,10 @@ import { MempoolEndorsement } from '@shared/types/mempool/endorsement/mempool-en
 import { MempoolEndorsementSort } from '@shared/types/mempool/endorsement/mempool-endorsement-sort.type';
 import { FeatureAction } from '@shared/types/shared/store/feature-action.type';
 import { MempoolBlockRound } from '@shared/types/mempool/common/mempool-block-round.type';
+import { NetworkStatsLastAppliedBlock } from '@shared/types/network/network-stats-last-applied-block.type';
 
 enum MempoolEndorsementActionTypes {
   MEMPOOL_ENDORSEMENTS_INIT = 'MEMPOOL_ENDORSEMENTS_INIT',
-  MEMPOOL_ENDORSEMENT_UPDATE_CURRENT_BLOCK = 'MEMPOOL_ENDORSEMENT_UPDATE_CURRENT_BLOCK',
   MEMPOOL_ENDORSEMENT_LOAD_ROUND = 'MEMPOOL_ENDORSEMENT_LOAD_ROUND',
   MEMPOOL_ENDORSEMENT_LOAD_ROUND_SUCCESS = 'MEMPOOL_ENDORSEMENT_LOAD_ROUND_SUCCESS',
   MEMPOOL_ENDORSEMENT_LOAD = 'MEMPOOL_ENDORSEMENT_LOAD',
@@ -18,7 +18,6 @@ enum MempoolEndorsementActionTypes {
 }
 
 export const MEMPOOL_ENDORSEMENTS_INIT = MempoolEndorsementActionTypes.MEMPOOL_ENDORSEMENTS_INIT;
-export const MEMPOOL_ENDORSEMENT_UPDATE_CURRENT_BLOCK = MempoolEndorsementActionTypes.MEMPOOL_ENDORSEMENT_UPDATE_CURRENT_BLOCK;
 export const MEMPOOL_ENDORSEMENT_LOAD_ROUND = MempoolEndorsementActionTypes.MEMPOOL_ENDORSEMENT_LOAD_ROUND;
 export const MEMPOOL_ENDORSEMENT_LOAD_ROUND_SUCCESS = MempoolEndorsementActionTypes.MEMPOOL_ENDORSEMENT_LOAD_ROUND_SUCCESS;
 export const MEMPOOL_ENDORSEMENT_LOAD = MempoolEndorsementActionTypes.MEMPOOL_ENDORSEMENT_LOAD;
@@ -35,12 +34,6 @@ export class MempoolEndorsementsInit implements MempoolEndorsementsAction {
   readonly type = MEMPOOL_ENDORSEMENTS_INIT;
 }
 
-export class MempoolEndorsementUpdateCurrentBlock implements MempoolEndorsementsAction {
-  readonly type = MEMPOOL_ENDORSEMENT_UPDATE_CURRENT_BLOCK;
-
-  constructor(public payload: { blockLevel: number }) { }
-}
-
 export class MempoolEndorsementLoadRound implements MempoolEndorsementsAction {
   readonly type = MEMPOOL_ENDORSEMENT_LOAD_ROUND;
 
@@ -50,13 +43,13 @@ export class MempoolEndorsementLoadRound implements MempoolEndorsementsAction {
 export class MempoolEndorsementLoadRoundSuccess implements MempoolEndorsementsAction {
   readonly type = MEMPOOL_ENDORSEMENT_LOAD_ROUND_SUCCESS;
 
-  constructor(public payload: { rounds: MempoolBlockRound[], loadEndorsements: boolean }) { }
+  constructor(public payload: { rounds: MempoolBlockRound[] }) { }
 }
 
 export class MempoolEndorsementLoad implements MempoolEndorsementsAction {
   readonly type = MEMPOOL_ENDORSEMENT_LOAD;
 
-  constructor(public payload: { hash: string, level: number }) { }
+  constructor(public payload: { block: NetworkStatsLastAppliedBlock }) { }
 }
 
 export class MempoolEndorsementLoadSuccess implements MempoolEndorsementsAction {
@@ -93,7 +86,6 @@ export class MempoolEndorsementStop implements MempoolEndorsementsAction {
 
 export type MempoolEndorsementActions =
   | MempoolEndorsementsInit
-  | MempoolEndorsementUpdateCurrentBlock
   | MempoolEndorsementLoadRound
   | MempoolEndorsementLoadRoundSuccess
   | MempoolEndorsementLoad

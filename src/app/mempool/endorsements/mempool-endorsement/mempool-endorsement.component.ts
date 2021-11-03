@@ -15,22 +15,22 @@ import { State } from '@app/app.index';
 import { delay, Observable } from 'rxjs';
 import { MempoolEndorsement } from '@shared/types/mempool/endorsement/mempool-endorsement.type';
 import {
+  MEMPOOL_ENDORSEMENT_LOAD,
   MEMPOOL_ENDORSEMENT_SET_ACTIVE_BAKER,
   MEMPOOL_ENDORSEMENT_SORT,
   MEMPOOL_ENDORSEMENT_STOP,
-  MEMPOOL_ENDORSEMENT_UPDATE_CURRENT_BLOCK,
   MEMPOOL_ENDORSEMENTS_INIT,
-  MempoolEndorsementLoadRound,
+  MempoolEndorsementLoad,
   MempoolEndorsementSetActiveBaker,
   MempoolEndorsementsInit,
   MempoolEndorsementSorting,
-  MempoolEndorsementStop, MempoolEndorsementUpdateCurrentBlock
+  MempoolEndorsementStop
 } from '@mempool/endorsements/mempool-endorsement/mempool-endorsement.actions';
 import { animate, style, transition, trigger } from '@angular/animations';
 import { debounceTime, distinctUntilChanged, filter, skip } from 'rxjs/operators';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { MempoolEndorsementSort } from '@shared/types/mempool/endorsement/mempool-endorsement-sort.type';
-import { selectNetworkLastAppliedBlockLevel } from '@network/network-stats/network-stats.reducer';
+import { selectNetworkCurrentBlock } from '@network/network-stats/network-stats.reducer';
 import {
   selectMempoolEndorsementActiveBaker,
   selectMempoolEndorsements,
@@ -44,6 +44,7 @@ import { SortDirection } from '@shared/types/shared/table-sort.type';
 import { Overlay, OverlayRef } from '@angular/cdk/overlay';
 import { TemplatePortal } from '@angular/cdk/portal';
 import { Router } from '@angular/router';
+import { NetworkStatsLastAppliedBlock } from '@shared/types/network/network-stats-last-applied-block.type';
 
 
 const translateFromRight = trigger('translateFromRight', [
@@ -81,6 +82,9 @@ export class MempoolEndorsementComponent implements OnInit, OnDestroy {
     { name: 'precheck', sort: 'precheckTime', deltaAvailable: true },
     { name: 'apply', sort: 'applyTime', deltaAvailable: true },
     { name: 'broadcast', sort: 'broadcastTime', deltaAvailable: true },
+    { name: 'level' },
+    { name: 'round' },
+    { name: 'branch' },
   ];
   endorsements$: Observable<MempoolEndorsement[]>;
   currentSort: MempoolEndorsementSort;
@@ -166,12 +170,12 @@ export class MempoolEndorsementComponent implements OnInit, OnDestroy {
 
   private listenToNewAppliedBlock(): void {
     this.store.dispatch<MempoolEndorsementsInit>({ type: MEMPOOL_ENDORSEMENTS_INIT });
-    this.store.select(selectNetworkLastAppliedBlockLevel).pipe(
+    this.store.select(selectNetworkCurrentBlock).pipe(
       untilDestroyed(this),
       filter(Boolean),
       distinctUntilChanged()
-    ).subscribe((blockLevel: number) =>
-      this.store.dispatch<MempoolEndorsementUpdateCurrentBlock>({ type: MEMPOOL_ENDORSEMENT_UPDATE_CURRENT_BLOCK, payload: { blockLevel } })
+    ).subscribe((block: NetworkStatsLastAppliedBlock) =>
+      this.store.dispatch<MempoolEndorsementLoad>({ type: MEMPOOL_ENDORSEMENT_LOAD, payload: { block } })
     );
   }
 
@@ -197,7 +201,7 @@ export class MempoolEndorsementComponent implements OnInit, OnDestroy {
   attachOverlay(endorsement: MempoolEndorsement, event: MouseEvent): void {
     this.detachTooltip();
 
-    if (!endorsement.operationHashes) {
+    if (endorsement.operationHashes.length === 0) {
       return;
     }
 

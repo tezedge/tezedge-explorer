@@ -16,7 +16,7 @@ import { delay, Observable } from 'rxjs';
 import { animate, style, transition, trigger } from '@angular/animations';
 import { debounceTime, distinctUntilChanged, filter, skip } from 'rxjs/operators';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { selectNetworkLastAppliedBlockLevel } from '@network/network-stats/network-stats.reducer';
+import { selectNetworkCurrentBlock } from '@network/network-stats/network-stats.reducer';
 import { ADD_INFO, InfoAdd } from '@app/layout/error-popup/error-popup.actions';
 import { MatCheckboxChange } from '@angular/material/checkbox';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
@@ -25,15 +25,15 @@ import { MempoolPreEndorsementSort } from '@shared/types/mempool/preendorsement/
 import { MempoolPreEndorsement } from '@shared/types/mempool/preendorsement/mempool-preendorsement.type';
 import {
   MEMPOOL_PREENDORSEMENT_INIT,
-  MEMPOOL_PREENDORSEMENT_LOAD_ROUND,
+  MEMPOOL_PREENDORSEMENT_LOAD,
   MEMPOOL_PREENDORSEMENT_SET_ACTIVE_BAKER,
   MEMPOOL_PREENDORSEMENT_SORT,
-  MEMPOOL_PREENDORSEMENT_STOP, MEMPOOL_PREENDORSEMENT_UPDATE_CURRENT_BLOCK,
-  MempoolPreEndorsementLoadRound,
+  MEMPOOL_PREENDORSEMENT_STOP,
+  MempoolPreEndorsementLoad,
   MempoolPreEndorsementSetActiveBaker,
   MempoolPreEndorsementsInit,
   MempoolPreEndorsementSorting,
-  MempoolPreEndorsementStop, MempoolPreEndorsementUpdateCurrentBlock
+  MempoolPreEndorsementStop,
 } from '@mempool/preendorsements/mempool-pre-endorsement/mempool-pre-endorsement.actions';
 import {
   selectMempoolPreEndorsementActiveBaker,
@@ -44,10 +44,7 @@ import {
 import { Overlay, OverlayRef } from '@angular/cdk/overlay';
 import { Router } from '@angular/router';
 import { TemplatePortal } from '@angular/cdk/portal';
-import {
-  MEMPOOL_ENDORSEMENT_UPDATE_CURRENT_BLOCK,
-  MempoolEndorsementUpdateCurrentBlock
-} from '@mempool/endorsements/mempool-endorsement/mempool-endorsement.actions';
+import { NetworkStatsLastAppliedBlock } from '@shared/types/network/network-stats-last-applied-block.type';
 
 
 const translateFromRight = trigger('translateFromRight', [
@@ -85,6 +82,9 @@ export class MempoolPreEndorsementComponent implements OnInit, OnDestroy {
     { name: 'precheck', sort: 'precheckTime', deltaAvailable: true },
     { name: 'apply', sort: 'applyTime', deltaAvailable: true },
     { name: 'broadcast', sort: 'broadcastTime', deltaAvailable: true },
+    { name: 'level' },
+    { name: 'round' },
+    { name: 'branch' },
   ];
   endorsements$: Observable<MempoolPreEndorsement[]>;
   currentSort: MempoolPreEndorsementSort;
@@ -170,12 +170,12 @@ export class MempoolPreEndorsementComponent implements OnInit, OnDestroy {
 
   private listenToNewAppliedBlock(): void {
     this.store.dispatch<MempoolPreEndorsementsInit>({ type: MEMPOOL_PREENDORSEMENT_INIT });
-    this.store.select(selectNetworkLastAppliedBlockLevel).pipe(
+    this.store.select(selectNetworkCurrentBlock).pipe(
       untilDestroyed(this),
       filter(Boolean),
       distinctUntilChanged()
-    ).subscribe((blockLevel: number) =>
-      this.store.dispatch<MempoolPreEndorsementUpdateCurrentBlock>({ type: MEMPOOL_PREENDORSEMENT_UPDATE_CURRENT_BLOCK, payload: { blockLevel } })
+    ).subscribe((block: NetworkStatsLastAppliedBlock) =>
+      this.store.dispatch<MempoolPreEndorsementLoad>({ type: MEMPOOL_PREENDORSEMENT_LOAD, payload: { block } })
     );
   }
 
@@ -201,7 +201,7 @@ export class MempoolPreEndorsementComponent implements OnInit, OnDestroy {
   attachOverlay(endorsement: MempoolPreEndorsement, event: MouseEvent): void {
     this.detachTooltip();
 
-    if (!endorsement.operationHashes) {
+    if (endorsement.operationHashes.length === 0) {
       return;
     }
 

@@ -61,6 +61,10 @@
       &.Branch.delayed {
         background-color: #808080;
       }
+
+      &.outdated {
+        background-color: #d09a1b;
+      }
     }
   }
 

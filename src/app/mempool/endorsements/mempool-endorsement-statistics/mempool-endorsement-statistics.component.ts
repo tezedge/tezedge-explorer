@@ -4,13 +4,15 @@ import { State } from '@app/app.index';
 import { BehaviorSubject, Observable, tap } from 'rxjs';
 import { distinctUntilChanged, filter } from 'rxjs/operators';
 import { MempoolEndorsementStatistics } from '@shared/types/mempool/endorsement/mempool-endorsement-statistics.type';
+import { selectNetworkCurrentBlock } from '@network/network-stats/network-stats.reducer';
 import {
-  selectMempoolEndorsementCurrentBlock, selectMempoolEndorsementCurrentRound,
+  selectMempoolEndorsementCurrentRound,
   selectMempoolEndorsementStatistics
 } from '@mempool/endorsements/mempool-endorsement/mempool-endorsement.reducer';
 import { refreshBlock } from '@shared/constants/animations';
-import Timeout = NodeJS.Timeout;
 import { MempoolPartialRound } from '@shared/types/mempool/common/mempool-partial-round.type';
+import { NetworkStatsLastAppliedBlock } from '@shared/types/network/network-stats-last-applied-block.type';
+import Timeout = NodeJS.Timeout;
 
 
 @Component({
@@ -23,7 +25,7 @@ import { MempoolPartialRound } from '@shared/types/mempool/common/mempool-partia
 export class MempoolEndorsementStatisticsComponent implements OnInit {
 
   statistics$: Observable<MempoolEndorsementStatistics>;
-  currentBlock$: Observable<number>;
+  currentBlock$: Observable<NetworkStatsLastAppliedBlock>;
   currentRound$: Observable<MempoolPartialRound>;
   previousBlockElapsedTime: number;
   readonly elapsedTime$: BehaviorSubject<number> = new BehaviorSubject<number>(null);
@@ -42,7 +44,7 @@ export class MempoolEndorsementStatisticsComponent implements OnInit {
   private listenToEndorsementStatisticsChanges(): void {
     this.statistics$ = this.store.select(selectMempoolEndorsementStatistics);
     this.currentRound$ = this.store.select(selectMempoolEndorsementCurrentRound);
-    this.currentBlock$ = this.store.select(selectMempoolEndorsementCurrentBlock).pipe(
+    this.currentBlock$ = this.store.select(selectNetworkCurrentBlock).pipe(
       filter(Boolean),
       distinctUntilChanged(),
       tap(() => {

@@ -2,8 +2,8 @@
   <div *ngIf="currentBlock$ | async as currentBlock"
        class="d-flex flex-row flex-between margin-bottom-10 padding-top-5">
     <div class="flex-row align-center">
-      <div [@refreshBlock]="currentBlock" class="block">
-        ENDORSING BLOCK {{ currentBlock | spaceNumber }}
+      <div [@refreshBlock]="currentBlock.level" class="block">
+        ENDORSING BLOCK {{ currentBlock.level | spaceNumber }}
       </div>
       <ng-container *ngIf="currentRound$ | async as currentRound">
         <div class="dash">-</div>
@@ -13,6 +13,7 @@
     </div>
     <div class="foreground-7 time">{{ elapsedTime$ | async | number: '1.1' }}s</div>
   </div>
+  <app-mempool-endorsements-graph></app-mempool-endorsements-graph>
   <div *ngIf="statistics$ | async as statistics" class="overflow-auto">
     <div class="d-flex flex-column border-rad-2 border padding-10">
       <div class="foreground-4 margin-bottom-10">256 endorsements grouped by status</div>

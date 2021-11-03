@@ -7,7 +7,6 @@ import {
   MEMPOOL_PREENDORSEMENT_SET_ACTIVE_BAKER,
   MEMPOOL_PREENDORSEMENT_SORT,
   MEMPOOL_PREENDORSEMENT_STOP,
-  MEMPOOL_PREENDORSEMENT_UPDATE_CURRENT_BLOCK,
   MEMPOOL_PREENDORSEMENT_UPDATE_STATUSES_SUCCESS,
   MempoolPreEndorsementActions
 } from '@mempool/preendorsements/mempool-pre-endorsement/mempool-pre-endorsement.actions';
@@ -22,7 +21,6 @@ const initialState: MempoolPreEndorsementState = {
   statistics: null,
   animateTable: false,
   isLoadingNewBlock: true,
-  currentBlockLevel: 0,
   currentRound: null,
   rounds: [],
   activeBaker: localStorage.getItem('activeBakerPreendorsement'),
@@ -36,18 +34,10 @@ export function reducer(state: MempoolPreEndorsementState = initialState, action
 
   switch (action.type) {
 
-    case MEMPOOL_PREENDORSEMENT_UPDATE_CURRENT_BLOCK: {
-      return {
-        ...state,
-        currentBlockLevel: action.payload.blockLevel
-      };
-    }
-
     case MEMPOOL_PREENDORSEMENT_LOAD: {
       return {
         ...state,
         isLoadingNewBlock: true,
-        currentBlockLevel: action.payload.level,
       };
     }
 
@@ -79,24 +69,24 @@ export function reducer(state: MempoolPreEndorsementState = initialState, action
     }
 
     case MEMPOOL_PREENDORSEMENT_UPDATE_STATUSES_SUCCESS: {
-      const newEndorsements = state.endorsements.map(endorsement => {
-        const slotToUpdate = endorsement.slots.find(slot => action.payload[slot]);
+      const newEndorsements = state.endorsements.map(end => {
+        const slotToUpdate = end.slots.find(slot => action.payload[slot]);
         const operationHashes = Object.keys(action.payload)
-          .filter((slot: string) => endorsement.slots?.includes(Number(slot)))
+          .filter((slot: string) => end.slots?.includes(Number(slot)))
           .map(slot => action.payload[slot].operationHash);
-        return { ...endorsement, ...action.payload[slotToUpdate], ...{ operationHashes, operationHash: undefined } };
+        return { ...end, ...action.payload[slotToUpdate], ...{ operationHashes, operationHash: undefined } };
       });
-      newEndorsements.forEach(endorsement => {
-        const receiveContentsTimeDelta = endorsement.receiveContentsTime - endorsement.receiveHashTime;
-        const decodeTimeDelta = endorsement.decodeTime - endorsement.receiveContentsTime;
-        const precheckTimeDelta = endorsement.precheckTime - endorsement.decodeTime;
-        const applyTimeDelta = endorsement.applyTime - endorsement.decodeTime;
-        const broadcastTimeDelta = endorsement.broadcastTime - (endorsement.precheckTime ?? endorsement.applyTime);
-        endorsement.receiveContentsTimeDelta = valOrUndefined(receiveContentsTimeDelta);
-        endorsement.decodeTimeDelta = valOrUndefined(decodeTimeDelta);
-        endorsement.precheckTimeDelta = valOrUndefined(precheckTimeDelta);
-        endorsement.applyTimeDelta = valOrUndefined(applyTimeDelta);
-        endorsement.broadcastTimeDelta = valOrUndefined(broadcastTimeDelta);
+      newEndorsements.forEach(end => {
+        const receiveContentsTimeDelta = end.receiveContentsTime - end.receiveHashTime;
+        const decodeTimeDelta = end.decodeTime - end.receiveContentsTime;
+        const precheckTimeDelta = end.precheckTime - end.decodeTime;
+        const applyTimeDelta = end.applyTime - end.decodeTime;
+        const broadcastTimeDelta = (typeof end.broadcastTime === 'string') ? end.broadcastTime : (end.broadcastTime - (end.precheckTime ?? end.applyTime));
+        end.receiveContentsTimeDelta = valOrUndefined(receiveContentsTimeDelta);
+        end.decodeTimeDelta = valOrUndefined(decodeTimeDelta);
+        end.precheckTimeDelta = valOrUndefined(precheckTimeDelta);
+        end.applyTimeDelta = valOrUndefined(applyTimeDelta);
+        end.broadcastTimeDelta = valOrUndefined(broadcastTimeDelta);
       });
       const endorsements = sortEndorsements(newEndorsements, state.sort);
       const statistics = calculateStatistics(state.statistics, endorsements);
@@ -146,12 +136,12 @@ function bringItemToBeginning(endorsements: MempoolPreEndorsement[], baker: stri
 
 function sortEndorsements(endorsements: MempoolPreEndorsement[], sort: MempoolPreEndorsementSort): MempoolPreEndorsement[] {
   const sortProperty = sort.sortBy;
-  const includeMissingEndorsements = ['slotsLength', 'bakerName', 'status'].includes(sortProperty);
+  const includeMissingEndorsements = ['slotsLength', 'bakerName', 'status', 'branch'].includes(sortProperty);
   const updatedEndorsements = includeMissingEndorsements ? endorsements : endorsements.filter(e => e.status);
   const missedEndorsements = includeMissingEndorsements ? [] : endorsements.filter(e => !e.status);
 
   const sortFunction = (e1: MempoolPreEndorsement, e2: MempoolPreEndorsement): number => {
-    if (sortProperty === 'bakerName') {
+    if (['bakerName', 'branch'].includes(sortProperty)) {
       return sort.sortDirection === SortDirection.DSC
         ? e2[sortProperty].localeCompare(e1[sortProperty])
         : e1[sortProperty].localeCompare(e2[sortProperty]);
@@ -171,21 +161,24 @@ function getSortOrder(status: string, direction: SortDirection.ASC | SortDirecti
   const priority = direction === SortDirection.DSC ? 1 : -1;
   switch (status) {
     case MempoolPreEndorsementStatusTypes.BROADCAST: {
-      return 6 * priority;
+      return 7 * priority;
     }
     case MempoolPreEndorsementStatusTypes.APPLIED: {
-      return 5 * priority;
+      return 6 * priority;
     }
     case MempoolPreEndorsementStatusTypes.PRECHECKED: {
-      return 4 * priority;
+      return 5 * priority;
     }
     case MempoolPreEndorsementStatusTypes.DECODED: {
-      return 3 * priority;
+      return 4 * priority;
     }
     case MempoolPreEndorsementStatusTypes.RECEIVED: {
-      return 2 * priority;
+      return 3 * priority;
     }
     case MempoolPreEndorsementStatusTypes.BRANCH_DELAYED: {
+      return 2 * priority;
+    }
+    case MempoolPreEndorsementStatusTypes.OUTDATED: {
       return 1 * priority;
     }
     case undefined: {
@@ -206,12 +199,13 @@ function calculateStatistics(currentStatistics: MempoolPreEndorsementStatistics,
   return {
     endorsementTypes: [
       { name: MempoolPreEndorsementStatusTypes.MISSING, value: valueObject[MempoolPreEndorsementStatusTypes.MISSING] },
-      { name: MempoolPreEndorsementStatusTypes.BROADCAST, value: valueObject[MempoolPreEndorsementStatusTypes.BROADCAST] },
-      { name: MempoolPreEndorsementStatusTypes.APPLIED, value: valueObject[MempoolPreEndorsementStatusTypes.APPLIED] },
-      { name: MempoolPreEndorsementStatusTypes.PRECHECKED, value: valueObject[MempoolPreEndorsementStatusTypes.PRECHECKED] },
-      { name: MempoolPreEndorsementStatusTypes.DECODED, value: valueObject[MempoolPreEndorsementStatusTypes.DECODED] },
       { name: MempoolPreEndorsementStatusTypes.RECEIVED, value: valueObject[MempoolPreEndorsementStatusTypes.RECEIVED] },
+      { name: MempoolPreEndorsementStatusTypes.DECODED, value: valueObject[MempoolPreEndorsementStatusTypes.DECODED] },
+      { name: MempoolPreEndorsementStatusTypes.PRECHECKED, value: valueObject[MempoolPreEndorsementStatusTypes.PRECHECKED] },
+      { name: MempoolPreEndorsementStatusTypes.APPLIED, value: valueObject[MempoolPreEndorsementStatusTypes.APPLIED] },
+      { name: MempoolPreEndorsementStatusTypes.BROADCAST, value: valueObject[MempoolPreEndorsementStatusTypes.BROADCAST] },
       { name: 'Branch delayed', value: valueObject[MempoolPreEndorsementStatusTypes.BRANCH_DELAYED] },
+      { name: MempoolPreEndorsementStatusTypes.OUTDATED, value: valueObject[MempoolPreEndorsementStatusTypes.OUTDATED] },
     ],
     totalSlots: newEndorsements.reduce((sum, curr) => sum + curr.slots.length, 0),
     previousBlockMissedEndorsements: isNewBlock ? currentStatistics?.endorsementTypes[0].value : currentStatistics?.previousBlockMissedEndorsements
@@ -225,7 +219,6 @@ function valOrUndefined<T = any>(value: T): T | undefined {
 export const selectMempoolPreEndorsements = (state: State): MempoolPreEndorsement[] => state.mempool.preendorsementState.endorsements;
 export const selectMempoolPreEndorsementTableAnimate = (state: State): boolean => state.mempool.preendorsementState.animateTable;
 export const selectMempoolPreEndorsementStatistics = (state: State): MempoolPreEndorsementStatistics => state.mempool.preendorsementState.statistics;
-export const selectMempoolPreEndorsementCurrentBlock = (state: State): number => state.mempool.preendorsementState.currentBlockLevel;
 export const selectMempoolPreEndorsementCurrentRound = (state: State): MempoolPartialRound => state.mempool.preendorsementState.currentRound;
 export const selectMempoolPreEndorsementSorting = (state: State): MempoolPreEndorsementSort => state.mempool.preendorsementState.sort;
 export const selectMempoolPreEndorsementActiveBaker = (state: State): string => state.mempool.preendorsementState.activeBaker;

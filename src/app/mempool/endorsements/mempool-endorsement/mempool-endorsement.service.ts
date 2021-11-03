@@ -40,6 +40,9 @@ export class MempoolEndorsementService {
             [response[key].slot]: {
               status: response[key].state,
               operationHash: key,
+              branch: response[key].branch,
+              level: response[key].contents[0].level,
+              round: response[key].contents[0].round,
               receiveHashTime: response[key].received_hash_time,
               receiveContentsTime: response[key].received_contents_time,
               decodeTime: response[key].decoded_time,

@@ -1,6 +1,7 @@
 import * as moment from 'moment-mini-ts';
 import { NetworkStats } from '@shared/types/network/network-stats.type';
 import { State } from '@app/app.index';
+import { NetworkStatsLastAppliedBlock } from '@shared/types/network/network-stats-last-applied-block.type';
 
 const initialState: NetworkStats = {
   eta: '',
@@ -19,6 +20,9 @@ const initialState: NetworkStats = {
 export function reducer(state: NetworkStats = initialState, action): NetworkStats {
   switch (action.type) {
     case 'WS_NETWORK_STATS_LOAD': {
+      const newBlockValues: boolean = action.payload.lastAppliedBlock
+        && (action.payload.lastAppliedBlock.level !== state.lastAppliedBlock.level || action.payload.lastAppliedBlock.hash !== state.lastAppliedBlock.hash);
+      const lastAppliedBlock = newBlockValues ? action.payload.lastAppliedBlock : state.lastAppliedBlock;
       return {
         ...state,
         eta: getETA(action.payload.eta),
@@ -27,7 +31,7 @@ export function reducer(state: NetworkStats = initialState, action): NetworkStat
         downloadRate: Math.floor(action.payload.downloadRate),
         currentApplicationSpeed: action.payload.currentApplicationSpeed,
         averageApplicationSpeed: action.payload.averageApplicationSpeed,
-        lastAppliedBlock: action.payload.lastAppliedBlock ?? state.lastAppliedBlock,
+        lastAppliedBlock,
         etaApplications: action.payload.currentApplicationSpeed !== 0
           ? getETA((state.currentBlockCount - state.lastAppliedBlock.level) / action.payload.currentApplicationSpeed * 60)
           : 'Infinity'
@@ -86,3 +90,4 @@ function numberOrSpace(value: number, mu: string, canBeZero?: boolean): string {
 
 export const selectNetworkLastAppliedBlockLevel = (state: State): number => state.networkStats.lastAppliedBlock.level;
 export const selectNetworkCurrentBlockHash = (state: State): string | undefined => state.networkStats.lastAppliedBlock.hash;
+export const selectNetworkCurrentBlock = (state: State): NetworkStatsLastAppliedBlock => state.networkStats.lastAppliedBlock;

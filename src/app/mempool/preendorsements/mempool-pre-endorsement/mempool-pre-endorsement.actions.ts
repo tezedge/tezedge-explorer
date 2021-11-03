@@ -2,10 +2,10 @@ import { FeatureAction } from '@shared/types/shared/store/feature-action.type';
 import { MempoolBlockRound } from '@shared/types/mempool/common/mempool-block-round.type';
 import { MempoolPreEndorsementSort } from '@shared/types/mempool/preendorsement/mempool-preendorsement-sort.type';
 import { MempoolPreEndorsement } from '@shared/types/mempool/preendorsement/mempool-preendorsement.type';
+import { NetworkStatsLastAppliedBlock } from '@shared/types/network/network-stats-last-applied-block.type';
 
 enum MempoolPreEndorsementActionTypes {
   MEMPOOL_PREENDORSEMENT_INIT = 'MEMPOOL_PREENDORSEMENT_INIT',
-  MEMPOOL_PREENDORSEMENT_UPDATE_CURRENT_BLOCK = 'MEMPOOL_PREENDORSEMENT_UPDATE_CURRENT_BLOCK',
   MEMPOOL_PREENDORSEMENT_LOAD_ROUND = 'MEMPOOL_PREENDORSEMENT_LOAD_ROUND',
   MEMPOOL_PREENDORSEMENT_LOAD_ROUND_SUCCESS = 'MEMPOOL_PREENDORSEMENT_LOAD_ROUND_SUCCESS',
   MEMPOOL_PREENDORSEMENT_LOAD = 'MEMPOOL_PREENDORSEMENT_LOAD',
@@ -18,7 +18,6 @@ enum MempoolPreEndorsementActionTypes {
 }
 
 export const MEMPOOL_PREENDORSEMENT_INIT = MempoolPreEndorsementActionTypes.MEMPOOL_PREENDORSEMENT_INIT;
-export const MEMPOOL_PREENDORSEMENT_UPDATE_CURRENT_BLOCK = MempoolPreEndorsementActionTypes.MEMPOOL_PREENDORSEMENT_UPDATE_CURRENT_BLOCK;
 export const MEMPOOL_PREENDORSEMENT_LOAD_ROUND = MempoolPreEndorsementActionTypes.MEMPOOL_PREENDORSEMENT_LOAD_ROUND;
 export const MEMPOOL_PREENDORSEMENT_LOAD_ROUND_SUCCESS = MempoolPreEndorsementActionTypes.MEMPOOL_PREENDORSEMENT_LOAD_ROUND_SUCCESS;
 export const MEMPOOL_PREENDORSEMENT_LOAD = MempoolPreEndorsementActionTypes.MEMPOOL_PREENDORSEMENT_LOAD;
@@ -35,12 +34,6 @@ export class MempoolPreEndorsementsInit implements MempoolPreEndorsementsAction 
   readonly type = MEMPOOL_PREENDORSEMENT_INIT;
 }
 
-export class MempoolPreEndorsementUpdateCurrentBlock implements MempoolPreEndorsementsAction {
-  readonly type = MEMPOOL_PREENDORSEMENT_UPDATE_CURRENT_BLOCK;
-
-  constructor(public payload: { blockLevel: number }) { }
-}
-
 export class MempoolPreEndorsementLoadRound implements MempoolPreEndorsementsAction {
   readonly type = MEMPOOL_PREENDORSEMENT_LOAD_ROUND;
 
@@ -50,13 +43,13 @@ export class MempoolPreEndorsementLoadRound implements MempoolPreEndorsementsAct
 export class MempoolPreEndorsementLoadRoundSuccess implements MempoolPreEndorsementsAction {
   readonly type = MEMPOOL_PREENDORSEMENT_LOAD_ROUND_SUCCESS;
 
-  constructor(public payload: { rounds: MempoolBlockRound[], loadEndorsements: boolean }) { }
+  constructor(public payload: { rounds: MempoolBlockRound[] }) { }
 }
 
 export class MempoolPreEndorsementLoad implements MempoolPreEndorsementsAction {
   readonly type = MEMPOOL_PREENDORSEMENT_LOAD;
 
-  constructor(public payload: { hash: string, level: number }) { }
+  constructor(public payload: { block: NetworkStatsLastAppliedBlock }) { }
 }
 
 export class MempoolPreEndorsementLoadSuccess implements MempoolPreEndorsementsAction {
@@ -93,7 +86,6 @@ export class MempoolPreEndorsementStop implements MempoolPreEndorsementsAction {
 
 export type MempoolPreEndorsementActions =
   | MempoolPreEndorsementsInit
-  | MempoolPreEndorsementUpdateCurrentBlock
   | MempoolPreEndorsementLoadRound
   | MempoolPreEndorsementLoadRoundSuccess
   | MempoolPreEndorsementLoad

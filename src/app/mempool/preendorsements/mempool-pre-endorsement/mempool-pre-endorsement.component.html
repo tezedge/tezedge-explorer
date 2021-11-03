@@ -12,14 +12,6 @@
                       [svgIcon]="'arrow-up'"
                       class="icon-14 icon-foreground"></mat-icon>
           </span>
-          <span>
-            <mat-checkbox (change)="onDeltaClick($event)"
-                          (click)="$event.stopPropagation()"
-                          [checked]="deltaEnabled"
-                          class="f-12 foreground-7 d-flex"
-                          disableRipple>DELTA
-            </mat-checkbox>
-          </span>
         </div>
         <div #scrollableContainer class="f-14 overflow-y-auto overflow-x-hidden" fxFlex="calc(100% - 36px)">
           <div *ngFor="let endorsement of endorsements$ | async; let i=index; trackBy: trackEndorsements"
@@ -61,8 +53,21 @@
                 [innerHTML]="(deltaEnabled ? endorsement.applyTimeDelta : endorsement.applyTime) | nanoTransform: 50000000: 20000000"></span>
               <span
                 [innerHTML]="(deltaEnabled ? endorsement.broadcastTimeDelta : endorsement.broadcastTime) | nanoTransform: 50000000: 20000000"></span>
+              <span>{{ endorsement.level }}</span>
+              <span>{{ endorsement.round }}</span>
+              <span class="truncate p-relative">{{ endorsement.branch }}
+                <span (click)="copyHashToClipboard(endorsement.branch)"
+                      [cdkCopyToClipboard]="endorsement.branch"
+                      class="copy-hash p-absolute border-rad-4 pointer"
+                      matTooltip="Copy hash">
+                  <mat-icon class="icon-foreground-7 icon-14" svgIcon="copy"></mat-icon>
+                </span>
+              </span>
             </ng-container>
             <ng-template #missingTemplate>
+              <span>-</span>
+              <span>-</span>
+              <span>-</span>
               <span>-</span>
               <span>-</span>
               <span>-</span>
@@ -75,7 +80,7 @@
         </div>
       </div>
     </div>
-    <div class="table-footer d-flex align-center border-top" fxFlex="36px">
+    <div class="table-footer d-flex align-center flex-between border-top" fxFlex="36px">
       <form [formGroup]="formGroup">
         <mat-form-field appearance="fill"
                         class="custom-bottom-form-field p-relative margin-left-5">
@@ -85,12 +90,19 @@
                     svgIcon="close-blank"></mat-icon>
         </mat-form-field>
       </form>
+      <mat-checkbox (change)="onDeltaClick($event)"
+                    (click)="$event.stopPropagation()"
+                    [checked]="deltaEnabled"
+                    class="f-12 foreground-7 d-flex margin-right-10"
+                    disableRipple>DELTA
+      </mat-checkbox>
     </div>
   </div>
   <div class="d-flex flex-column" fxFlex="36" fxFlex.gt-md="25">
     <div class="details border-bottom d-flex align-center foreground-7" fxFlex="36px">STATISTICS</div>
-    <app-mempool-preendorsement-statistics fxFlex="calc(100% - 36px)"
-                                           class="border-left"></app-mempool-preendorsement-statistics>
+    <div fxFlex="calc(100% - 36px)" class="d-flex flex-column border-left">
+      <app-mempool-preendorsement-statistics></app-mempool-preendorsement-statistics>
+    </div>
   </div>
 </div>
 

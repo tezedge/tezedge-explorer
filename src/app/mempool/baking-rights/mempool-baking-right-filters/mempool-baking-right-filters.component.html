@@ -7,7 +7,7 @@
       <mat-icon [style.width.px]="state.activeRoundIndex === i ? 12 : 0"
                 svgIcon="check-circle"
                 class="icon-12 margin-right-5"></mat-icon>
-      <span class="round-num">Round {{ i }}</span>
+      <span class="round-num">Round {{ round.round }}</span>
     </div>
 <!--    <div class="margin-left-10 flex-row align-center h-100">-->
 <!--      <span class="foreground-7">Next round in&nbsp;</span><span #remaining></span>s-->
@@ -21,11 +21,13 @@
     </button>
     <button class="primary-button border-rad-2 d-flex align-center pointer margin-right-5"
             matTooltip="Next block"
+            [disabled]="state.lastAppliedBlock.toString() === formGroup.get('block').value"
             (click)="loadNextBlock()">
       <mat-icon svgIcon="greater-than" class="icon-10 icon-foreground"></mat-icon>
     </button>
     <button class="primary-button border-rad-2 d-flex align-center pointer margin-right-8"
             matTooltip="Latest applied block"
+            [disabled]="state.lastAppliedBlock.toString() === formGroup.get('block').value"
             (click)="loadLatestAppliedBlock()">
       <mat-icon svgIcon="history" class="icon-12 icon-foreground"></mat-icon>
     </button>

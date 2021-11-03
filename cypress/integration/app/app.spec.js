@@ -1,3 +1,5 @@
+import { disableFeatures } from '../../support';
+
 context('APP', () => {
   beforeEach(() => {
     cy.intercept('GET', '/chains/main/blocks/head/header').as('getNodeHeader')
@@ -57,6 +59,158 @@ context('APP', () => {
         const documentationElement = Array.from(elements).find(elem => elem.textContent.includes('Documentation'));
         expect(documentationElement).to.have.attr('href', 'https://docs.tezedge.com');
         expect(documentationElement).to.have.attr('target', '_blank');
+      });
+  });
+
+  it('[APP] should not render synchronization in the navigation menu if the node doesn\'t contain it', () => {
+    cy.window()
+      .its('zone')
+      .then(zone => {
+        cy.window()
+          .its('store')
+          .then(store => {
+            const featureNames = ['monitoring'];
+            disableFeatures(store, zone, featureNames);
+
+            cy.wait(1000).then(() => {
+              store.select('settingsNode').subscribe(() => {
+                cy.get('#monitoring-trigger').should('not.exist');
+              });
+            });
+          });
+      });
+  });
+
+  it('[APP] should not render resources in the navigation menu if the node doesn\'t contain it', () => {
+    cy.window()
+      .its('zone')
+      .then(zone => {
+        cy.window()
+          .its('store')
+          .then(store => {
+            const featureNames = ['resources/system', 'resources/storage', 'resources/memory'];
+            disableFeatures(store, zone, featureNames);
+
+            cy.wait(1000).then(() => {
+              store.select('settingsNode').subscribe(() => {
+                cy.get('#resources-trigger').should('not.exist');
+              });
+            });
+          });
+      });
+  });
+
+  it('[APP] should not render mempool in the navigation menu if the node doesn\'t contain it', () => {
+    cy.window()
+      .its('zone')
+      .then(zone => {
+        cy.window()
+          .its('store')
+          .then(store => {
+            const featureNames = ['mempool'];
+            disableFeatures(store, zone, featureNames);
+
+            cy.wait(1000).then(() => {
+              store.select('settingsNode').subscribe(() => {
+                cy.get('#mempool-trigger').should('not.exist');
+              });
+            });
+          });
+      });
+  });
+
+  it('[APP] should not render storage in the navigation menu if the node doesn\'t contain it', () => {
+    cy.window()
+      .its('zone')
+      .then(zone => {
+        cy.window()
+          .its('store')
+          .then(store => {
+            const featureNames = ['storage'];
+            disableFeatures(store, zone, featureNames);
+
+            cy.wait(1000).then(() => {
+              store.select('settingsNode').subscribe(() => {
+                cy.get('#storage-trigger').should('not.exist');
+              });
+            });
+          });
+      });
+  });
+
+  it('[APP] should not render network in the navigation menu if the node doesn\'t contain it', () => {
+    cy.window()
+      .its('zone')
+      .then(zone => {
+        cy.window()
+          .its('store')
+          .then(store => {
+            const featureNames = ['network'];
+            disableFeatures(store, zone, featureNames);
+
+            cy.wait(1000).then(() => {
+              store.select('settingsNode').subscribe(() => {
+                cy.get('#network-trigger').should('not.exist');
+              });
+            });
+          });
+      });
+  });
+
+  it('[APP] should not render logs in the navigation menu if the node doesn\'t contain it', () => {
+    cy.window()
+      .its('zone')
+      .then(zone => {
+        cy.window()
+          .its('store')
+          .then(store => {
+            const featureNames = ['logs'];
+            disableFeatures(store, zone, featureNames);
+
+            cy.wait(1000).then(() => {
+              store.select('settingsNode').subscribe(() => {
+                cy.get('#logs-trigger').should('not.exist');
+              });
+            });
+          });
+      });
+  });
+
+  it('[APP] should not render state in the navigation menu if the node doesn\'t contain it', () => {
+    cy.window()
+      .its('zone')
+      .then(zone => {
+        cy.window()
+          .its('store')
+          .then(store => {
+            const featureNames = ['state'];
+            disableFeatures(store, zone, featureNames);
+
+            cy.wait(1000).then(() => {
+              store.select('settingsNode').subscribe(() => {
+                cy.get('#state-trigger').should('not.exist');
+              });
+            });
+          });
+      });
+  });
+
+  it('[APP] should not render smart contracts in the navigation menu if the node doesn\'t contain it', () => {
+    cy.window()
+      .its('zone')
+      .then(zone => {
+        cy.window()
+          .its('store')
+          .then(store => {
+            const featureNames = ['smart-contracts'];
+            disableFeatures(store, zone, featureNames);
+
+            cy.wait(1000).then(() => {
+              store.select('settingsNode').subscribe(() => {
+                cy.get('#smart-contracts-trigger').should('not.exist');
+              });
+            });
+          });
       });
   });
 });

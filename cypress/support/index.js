@@ -30,3 +30,24 @@ export const beforeEachForTezedge = (beforeEachBlock) => {
       }
     });
 };
+
+export const disableFeatures = (store, zone, featureNames) => {
+  store.select('settingsNode').subscribe(settingsNode => {
+    if (settingsNode.activeNode?.features.some(f => featureNames.includes(f.name))) {
+      const activeNode = { ...settingsNode.activeNode };
+      activeNode.features = activeNode.features.filter(f => !featureNames.includes(f.name));
+      activeNode.connected = false;
+      const payload = {
+        activeNode,
+        header: settingsNode.entities[settingsNode.ids[0]].header,
+        features: activeNode.features
+      };
+      zone.run(() => store.dispatch({
+        type: 'SETTINGS_NODE_CHANGE', payload: { activeNode: activeNode }
+      }));
+      zone.run(() => store.dispatch({
+        type: 'SETTINGS_NODE_LOAD_SUCCESS', payload: payload
+      }));
+    }
+  });
+};

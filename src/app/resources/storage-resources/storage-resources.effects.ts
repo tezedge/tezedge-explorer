@@ -5,9 +5,9 @@ import { empty, forkJoin, ObservedValueOf, of } from 'rxjs';
 import { Store } from '@ngrx/store';
 import { StorageResourcesActionTypes } from './storage-resources.actions';
 import { State } from '@app/app.reducers';
-import { StorageResourceService } from './storage-resource.service';
+import { StorageResourcesService } from './storage-resources.service';
 import { StorageResourcesStats } from '@shared/types/resources/storage/storage-resources-stats.type';
-import { ErrorActionTypes } from '@shared/error-popup/error-popup.actions';
+import { ADD_ERROR } from '@shared/error-popup/error-popup.actions';
 
 @Injectable({ providedIn: 'root' })
 export class StorageResourcesEffects {
@@ -27,7 +27,7 @@ export class StorageResourcesEffects {
       { type: StorageResourcesActionTypes.STORAGE_RESOURCES_MAP_AVAILABLE_CONTEXTS, payload: availableContexts }
     ]),
     catchError(error => of({
-      type: ErrorActionTypes.ADD_ERROR,
+      type: ADD_ERROR,
       payload: { title: 'Storage resources error', message: error.message, initiator: StorageResourcesActionTypes.STORAGE_RESOURCES_LOAD }
     }))
   ));
@@ -44,7 +44,7 @@ export class StorageResourcesEffects {
           )))
   ));
 
-  constructor(private storageResourcesService: StorageResourceService,
+  constructor(private storageResourcesService: StorageResourcesService,
               private actions$: Actions,
               private store: Store<State>) { }
 }

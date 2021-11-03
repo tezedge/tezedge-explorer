@@ -5,8 +5,8 @@ import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { StorageResourcesStats } from '@shared/types/resources/storage/storage-resources-stats.type';
 import { Observable } from 'rxjs';
 import { filter, map } from 'rxjs/operators';
-import { storageResources } from '@resources/resources/resources.reducer';
 import { State } from '@app/app.reducers';
+import { storageResources } from '@resources/storage-resources/storage-resources.reducer';
 
 const PROTOCOLS = [
   'All protocols',
@@ -21,7 +21,8 @@ const PROTOCOLS = [
   'Delphi',
   'Edo',
   'Florence',
-  'Granada'
+  'Granada',
+  'Hangzhou',
 ];
 
 @UntilDestroy()

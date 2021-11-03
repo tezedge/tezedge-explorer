@@ -3,7 +3,7 @@
   <mat-accordion class="filters-accordion state-machine-accordion">
     <mat-expansion-panel hideToggle [expanded]="accordionExpanded">
       <mat-expansion-panel-header class="padding-remove context-menu" #panelH (click)="panelH._toggle()">
-        <div class="active-filters-row align-center">
+        <div class="table-applied-filters align-center">
           <button class="add-filters margin-left-5 d-flex align-center pointer font-300" (click)="accordionExpanded = !accordionExpanded">
             <mat-icon svgIcon="filter" class="icon-12 margin-right-5"></mat-icon>
             Add Filters
@@ -19,13 +19,13 @@
               </span>
             </button>
           </div>
-          <div *ngIf="activeFilters.length > maxVisibleFilters" class="text-white-7 f-12 font-300"
+          <div *ngIf="activeFilters.length > maxVisibleFilters" class="foreground-7 f-12 font-300"
                [matTooltip]="activeFilters.slice(maxVisibleFilters).join(',\n')">+ {{ activeFilters.length - maxVisibleFilters }} more
           </div>
         </div>
       </mat-expansion-panel-header>
       <ng-template matExpansionPanelContent class="filters-content">
-        <div class="filters-row overflow-auto d-flex flex-column">
+        <div class="table-filters overflow-auto d-flex flex-column">
           <div *ngFor="let category of categories" class="d-flex">
             <span class="filters-label" fxFlex="100px">{{ category.label }}</span>
             <div fxLayout="row wrap" fxLayoutAlign="start start">

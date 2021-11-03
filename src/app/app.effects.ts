@@ -55,10 +55,8 @@ export class AppEffects {
     })
   ), { dispatch: false });
 
-  constructor(
-    private actions$: Actions,
-    private store: Store<State>,
-    private router: Router,
-  ) { }
+  constructor(private actions$: Actions,
+              private store: Store<State>,
+              private router: Router) { }
 
 }

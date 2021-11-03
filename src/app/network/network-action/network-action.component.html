@@ -1,9 +1,9 @@
-<div class="network-action-container">
+<div>
 
   <div class="table-virtual-scroll">
     <div class="filters-container">
 
-      <div class="active-filters-row">
+      <div class="table-applied-filters">
         <button class="add-filters margin-left-5" mat-flat-button>
           <mat-icon svgIcon="filter" class="icon-12 margin-right-5"></mat-icon>
           Active Filters
@@ -37,7 +37,7 @@
       <mat-accordion class="filters-accordion">
         <mat-expansion-panel [expanded]="true" hideToggle="true">
           <ng-template matExpansionPanelContent class="filters-content">
-            <div class="filters-row">
+            <div class="table-filters d-flex">
               <span class="filters-label">Control</span>
               <button [class.active]="virtualScrollItems.filter.connection || !activeFilters.length"
                       (click)="filterByType('connection')">
@@ -90,7 +90,7 @@
               </button>
             </div>
 
-            <div class="filters-row">
+            <div class="table-filters d-flex">
 
               <span class="filters-label">Messages</span>
               <button [class.active]="virtualScrollItems.filter.currentHead || !activeFilters.length"
@@ -247,7 +247,7 @@
         <mat-icon svgIcon="arrow-bottom"
                   class="icon-12 d-flex"></mat-icon>
       </button>
-      <button class="rectangle-button start-stream d-flex flex-center align-center text-white border-remove"
+      <button class="rectangle-button start-stream d-flex flex-center align-center foreground border-remove"
               mat-icon-button
               matTooltip="Start Streaming"
               (click)="scrollStart()"
@@ -305,14 +305,14 @@
           <input matInput
                  type="text"
                  formControlName="time"
-                 matTooltip="Filtering logs based on time frame"
+                 matTooltip="Filtering network based on time frame"
                  [placeholder]="currentDatePlaceholder"
                  maxlength="24"
                  autocomplete="off">
           <mat-icon *ngIf="formGroup.get('time').value"
                     (click)="formGroup.get('time').setValue('')"
                     svgIcon="close-blank"
-                    class="p-absolute icon-10 icon-white-7 fill-opacity-1"></mat-icon>
+                    class="p-absolute pointer icon-10 icon-foreground-7 fill-opacity-1"></mat-icon>
         </mat-form-field>
       </form>
 

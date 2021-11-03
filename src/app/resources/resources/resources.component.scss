@@ -1,5 +1,3 @@
-$faded-white: rgba(255, 255, 255, 0.1);
-$text-color: rgb(164, 164, 165);
 
 .resources-wizard {
   background-color: #2A2A2E;
@@ -15,10 +13,6 @@ $text-color: rgb(164, 164, 165);
       &.selected {
         color: #fff;
       }
-    }
-
-    .reversed-checkbox {
-      font-size: 12px;
     }
   }
 }

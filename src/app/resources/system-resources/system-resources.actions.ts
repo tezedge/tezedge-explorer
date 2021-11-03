@@ -1,5 +1,5 @@
 import { Action } from '@ngrx/store';
-import { SystemResources } from '@shared/types/resources/system/system-resources.type';
+import { SystemResourcesState } from '@shared/types/resources/system/system-resources-state.type';
 import { SystemResourcesResourceType, SystemResourcesSortBy } from '@shared/types/resources/system/system-resources-panel.type';
 
 export enum SystemResourcesActionTypes {
@@ -25,7 +25,7 @@ export class SystemResourcesDetailsUpdateAction implements Action {
 export class SystemResourcesLoadedAction implements Action {
   readonly type = SystemResourcesActionTypes.SYSTEM_RESOURCES_LOAD_SUCCESS;
 
-  constructor(public payload: SystemResources) { }
+  constructor(public payload: SystemResourcesState) { }
 }
 
 export class SystemResourcesSortAction implements Action {

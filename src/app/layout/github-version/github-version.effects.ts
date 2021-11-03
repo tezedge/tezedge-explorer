@@ -4,13 +4,13 @@ import { HttpClient } from '@angular/common/http';
 import { Store } from '@ngrx/store';
 import { catchError, map, switchMap, withLatestFrom } from 'rxjs/operators';
 import { State } from '@app/app.reducers';
-import { ErrorActionTypes } from '@shared/error-popup/error-popup.actions';
+import { ADD_ERROR } from '@shared/error-popup/error-popup.actions';
 import { ObservedValueOf } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class GithubVersionEffects {
 
-  VersionNodeLoad$ = createEffect(() => this.actions$.pipe(
+  versionNodeLoad$ = createEffect(() => this.actions$.pipe(
     ofType('VERSION_NODE_LOAD'),
     withLatestFrom(this.store, (action: any, state: ObservedValueOf<Store<State>>) => ({ action, state })),
     switchMap(({ action, state }) => {
@@ -20,14 +20,14 @@ export class GithubVersionEffects {
     catchError((error, caught) => {
       console.error(error);
       this.store.dispatch({
-        type: ErrorActionTypes.ADD_ERROR,
+        type: ADD_ERROR,
         payload: { title: 'Node version HTTP error:', message: error.message }
       });
       return caught;
     })
   ));
 
-  VersionDebuggerLoad$ = createEffect(() => this.actions$.pipe(
+  versionDebuggerLoad$ = createEffect(() => this.actions$.pipe(
     ofType('VERSION_DEBUGGER_LOAD'),
     withLatestFrom(this.store, (action: any, state: ObservedValueOf<Store<State>>) => ({ action, state })),
     switchMap(({ action, state }) => {
@@ -38,14 +38,14 @@ export class GithubVersionEffects {
     catchError((error, caught) => {
       console.error(error);
       this.store.dispatch({
-        type: ErrorActionTypes.ADD_ERROR,
+        type: ADD_ERROR,
         payload: { title: 'Debugger version HTTP error:', message: error.message }
       });
       return caught;
     })
   ));
 
-  VersionNodeTagLoad$ = createEffect(() => this.actions$.pipe(
+  versionNodeTagLoad$ = createEffect(() => this.actions$.pipe(
     ofType('VERSION_NODE_LOAD'),
     withLatestFrom(this.store, (action: any, state: ObservedValueOf<Store<State>>) => ({ action, state })),
     switchMap(({ action, state }) => {
@@ -58,7 +58,7 @@ export class GithubVersionEffects {
     catchError((error, caught) => {
       console.error(error);
       this.store.dispatch({
-        type: ErrorActionTypes.ADD_ERROR,
+        type: ADD_ERROR,
         payload: { title: 'Node tag version HTTP error:', message: error.message }
       });
       return caught;

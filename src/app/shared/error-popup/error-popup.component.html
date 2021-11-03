@@ -1,8 +1,11 @@
 <notifier-container></notifier-container>
 
 <ng-template #popupTemplate let-data="notification">
-  <div class="custom-notification">
-    <div class="title">{{ data.title }}</div>
-    <div class="message">{{ data.message }}</div>
+  <div class="custom-notification padding-top-5 padding-bottom-5 w-100 f-12">
+    <div class="title padding-horizontal-10 padding-bottom-5 font-400"
+         [class.padding-bottom-remove]="!data.message"
+         [class.border-remove]="!data.message">{{ data.title }}</div>
+    <div class="message padding-horizontal-10 padding-top-5 w-100"
+         *ngIf="data.message">{{ data.message }}</div>
   </div>
 </ng-template>

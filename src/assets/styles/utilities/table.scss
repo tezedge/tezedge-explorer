@@ -1,0 +1,42 @@
+.row {
+  &:nth-child(even) {
+    background-color: var(--foreground-1);
+  }
+
+  &.active {
+    background-color: var(--active-surface);
+
+    > span {
+      .copy-hash {
+        box-shadow: -10px 0px 8px 0px var(--active-surface);
+      }
+
+      &.foreground-7 {
+        color: var(--foreground) !important;
+      }
+    }
+  }
+
+  &:hover:not(.active):not(.head) {
+    background-color: var(--foreground-2);
+  }
+
+  &:hover > span .copy-hash {
+    opacity: 1;
+  }
+
+  .copy-hash {
+    @include flexRowCenter();
+    opacity: 0;
+    right: 0;
+    background-color: var(--background-surface);
+    height: 26px;
+    width: 26px;
+    top: 5px;
+    box-shadow: -10px 0px 8px 0px var(--table-hovered-row-background);
+
+    &:hover {
+      background-color: var(--background-surface-fade-2);
+    }
+  }
+}

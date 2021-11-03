@@ -530,14 +530,14 @@ context('STATE MACHINE', () => {
       })
       .wait(1000)
       .get('mat-expansion-panel-header').should('exist')
-      .get('.mat-expansion-panel-content .filters-row').should('not.exist')
+      .get('.mat-expansion-panel-content .table-filters').should('not.exist')
       .get('mat-expansion-panel-header button.add-filters')
       .trigger('click', { force: true })
       .wait(1000)
-      .get('.mat-expansion-panel-content .filters-row').should('exist');
+      .get('.mat-expansion-panel-content .table-filters').should('exist');
 
     if (stats) {
-      cy.get('.filters-row .filters-label').should('have.length.at.most', categories.length)
+      cy.get('.table-filters .filters-label').should('have.length.at.most', categories.length)
         .then(labels => {
           const labelTexts = Array.from(labels).map(l => l.textContent);
           labelTexts.pop();
@@ -545,7 +545,7 @@ context('STATE MACHINE', () => {
             expect(stats.some(action => action.startsWith(label))).to.be.true;
           });
         })
-        .get('.filters-row div div button').should('have.length', stats.length)
+        .get('.table-filters div div button').should('have.length', stats.length)
         .then(filters => {
           Array.from(filters).map(f => f.textContent).forEach(text => {
             expect(stats.some(action => ' ' + action + ' ' === text)).to.be.true;
@@ -561,7 +561,7 @@ context('STATE MACHINE', () => {
       .get('.add-filters')
       .trigger('click')
       .wait(1000)
-      .get('.filters-row div div button')
+      .get('.table-filters div div button')
       .eq(-1)
       .trigger('click')
       .then(clicked => clickedFilter = clicked)
@@ -569,7 +569,7 @@ context('STATE MACHINE', () => {
       .then(appliedFilter => {
         expect(appliedFilter[0].textContent).equal(clickedFilter[0].textContent);
       })
-      .get('.filters-row div div button')
+      .get('.table-filters div div button')
       .eq(-2)
       .trigger('click')
       .get('.filters-content button').should('have.length', 2);

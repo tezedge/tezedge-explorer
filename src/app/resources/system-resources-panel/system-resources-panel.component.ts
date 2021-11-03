@@ -1,10 +1,10 @@
 import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { State } from '@app/app.reducers';
-import { systemResourcesPanel } from '@resources/resources/resources.reducer';
 import { SystemResourcesPanel, SystemResourcesSortBy } from '@shared/types/resources/system/system-resources-panel.type';
 import { Observable } from 'rxjs';
 import { SystemResourcesActionTypes, SystemResourcesSortAction } from '@resources/system-resources/system-resources.actions';
+import { systemResourcesPanel } from '@resources/system-resources/system-resources.reducer';
 
 @Component({
   selector: 'app-system-resources-panel',

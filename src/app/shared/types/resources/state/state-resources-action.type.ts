@@ -3,7 +3,6 @@ import { StateResourcesActionDetails } from '@shared/types/resources/state/state
 export interface StateResourcesAction {
   actionName: string;
   totalTime: number;
-  meanTime: number;
   count: number;
   columns: StateResourcesActionDetails[];
 }

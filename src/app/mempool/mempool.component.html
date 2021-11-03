@@ -4,8 +4,8 @@
        fxLayoutGap="16px">
     <div *ngFor="let tab of tabs"
          [routerLink]="'/mempool/' + tab.link"
-         routerLinkActive="selected"
-         class="tab f-12 pointer text-uppercase">
+         class="tab f-12 pointer text-uppercase"
+         routerLinkActive="selected">
       {{ tab.name }}
     </div>
   </div>

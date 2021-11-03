@@ -1,0 +1,83 @@
+@import 'variables';
+@import 'layout';
+@import 'text';
+
+.details-container {
+  div {
+    color: $foreground-7;
+
+    span {
+      color: $foreground;
+    }
+  }
+
+  .general-details {
+    padding-bottom: 3px;
+
+    div {
+      height: 26px;
+      line-height: 26px;
+    }
+
+    .copy-hash {
+      @include flexRowCenter();
+      background-color: $background-surface;
+      height: 26px;
+
+      &:hover {
+        background-color: $background-surface-fade-2;
+      }
+    }
+  }
+
+  .row-within {
+    > div:not(.p-absolute) {
+      display: grid;
+      grid-template-columns: minmax(100px, 270px) 70px;
+      padding-left: 10px;
+      height: 26px;
+      line-height: 26px;
+
+      > div {
+        @include truncate();
+      }
+
+      &:nth-child(even) {
+        background-color: $foreground-1;
+      }
+
+      span {
+        text-align: right;
+        padding-right: 10px;
+      }
+    }
+
+    .color-line {
+      $row-height: 26px;
+      top: $row-height * 2;
+      left: 0;
+      width: 4px;
+      background-color: $background-base;
+
+      div {
+        width: 100%;
+      }
+
+      div:nth-child(1) {
+        height: $row-height * 4;
+      }
+
+      div:nth-child(2) {
+        height: $row-height * 2;
+      }
+
+      div:nth-child(3) {
+        height: $row-height * 16;
+      }
+
+      div:nth-child(4) {
+        height: $row-height * 2;
+      }
+    }
+  }
+}

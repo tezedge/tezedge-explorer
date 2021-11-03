@@ -1,0 +1,63 @@
+<div class="details-container">
+  <div class="general-details padding-top-5 padding-left-10 border-bottom">
+    <div>Block time:
+      <span>{{ detail.blockTimestamp | dateTime }}</span>
+    </div>
+    <div>Received at:
+      <span>{{ detail.receiveTimestamp | dateTime }}</span>
+    </div>
+    <div class="d-flex flex-row align-center">
+      Baker:&nbsp;<span class="truncate">{{ detail.baker }}</span>
+      <div (click)="copyHashToClipboard(detail.baker)" [cdkCopyToClipboard]="detail.baker"
+           class="copy-hash border-rad-4 margin-left-5 margin-right-5 pointer"
+           fxFlex="26px" matTooltip="Copy hash">
+        <mat-icon class="icon-foreground-7 icon-14" svgIcon="copy"></mat-icon>
+      </div>
+    </div>
+    <div>Baker priority:
+      <span>{{ detail.bakerPriority }}</span>
+    </div>
+  </div>
+
+  <ng-container *ngTemplateOutlet="detailsTemplate; context: { detail: delta ? detail.delta : detail.value }"></ng-container>
+</div>
+
+<ng-template #detailsTemplate let-detail="detail">
+  <div class="row-within p-relative">
+    <div *ngIf="isBlockApplication"
+         class="p-absolute color-line">
+      <div [style.background-color]="colors[0]"></div>
+      <div [style.background-color]="colors[1]"></div>
+      <div [style.background-color]="colors[2]"></div>
+      <div [style.background-color]="colors[3]"></div>
+    </div>
+    <div><div>Precheck start: </div><span [innerHTML]="detail.precheckStart | nanoTransform: FIFTY_MS : TWENTY_MS"></span></div>
+    <div><div>Precheck end: </div><span [innerHTML]="detail.precheckEnd | nanoTransform: FIFTY_MS : TWENTY_MS"></span></div>
+    <div><div>Download block header start: </div><span [innerHTML]="detail.downloadBlockHeaderStart | nanoTransform: FIFTY_MS : TWENTY_MS"></span></div>
+    <div><div>Download block header  end: </div><span [innerHTML]="detail.downloadBlockHeaderEnd | nanoTransform: FIFTY_MS : TWENTY_MS"></span></div>
+    <div><div>Download block operations start: </div><span [innerHTML]="detail.downloadBlockOperationsStart | nanoTransform: FIFTY_MS : TWENTY_MS"></span></div>
+    <div><div>Download block operations  end: </div><span [innerHTML]="detail.downloadBlockOperationsEnd | nanoTransform: FIFTY_MS : TWENTY_MS"></span></div>
+    <div><div>Load data start: </div><span [innerHTML]="detail.loadDataStart | nanoTransform: FIFTY_MS : TWENTY_MS"></span></div>
+    <div><div>Load data end: </div><span [innerHTML]="detail.loadDataEnd | nanoTransform: FIFTY_MS : TWENTY_MS"></span></div>
+    <div><div>Protocol apply block start: </div><span [innerHTML]="detail.applyBlockStart | nanoTransform: FIFTY_MS : TWENTY_MS"></span></div>
+    <div><div>Apply start: </div><span [innerHTML]="detail.protocolTimes.applyStart | nanoTransform: FIFTY_MS : TWENTY_MS"></span></div>
+    <div><div>Operations decoding start: </div><span [innerHTML]="detail.protocolTimes.operationsDecodingStart | nanoTransform: FIFTY_MS : TWENTY_MS"></span></div>
+    <div><div>Operations decoding end: </div><span [innerHTML]="detail.protocolTimes.operationsDecodingEnd | nanoTransform: FIFTY_MS : TWENTY_MS"></span></div>
+    <div><div>Operations metadata encoding start: </div><span [innerHTML]="detail.protocolTimes.operationsMetadataEncodingStart | nanoTransform: FIFTY_MS : TWENTY_MS"></span></div>
+    <div><div>Operations metadata encoding end: </div><span [innerHTML]="detail.protocolTimes.operationsMetadataEncodingEnd | nanoTransform: FIFTY_MS : TWENTY_MS"></span></div>
+    <div><div>Begin application start: </div><span [innerHTML]="detail.protocolTimes.beginApplicationStart | nanoTransform: FIFTY_MS : TWENTY_MS"></span></div>
+    <div><div>Begin application end: </div><span [innerHTML]="detail.protocolTimes.beginApplicationEnd | nanoTransform: FIFTY_MS : TWENTY_MS"></span></div>
+    <div><div>Finalize block start: </div><span [innerHTML]="detail.protocolTimes.finalizeBlockStart | nanoTransform: FIFTY_MS : TWENTY_MS"></span></div>
+    <div><div>Finalize block end: </div><span [innerHTML]="detail.protocolTimes.finalizeBlockEnd | nanoTransform: FIFTY_MS : TWENTY_MS"></span></div>
+    <div><div>Collect new rolls owner snapshots start: </div><span [innerHTML]="detail.protocolTimes.collectNewRollsOwnerSnapshotsStart | nanoTransform: FIFTY_MS : TWENTY_MS"></span></div>
+    <div><div>Collect new rolls owner snapshots end: </div><span [innerHTML]="detail.protocolTimes.collectNewRollsOwnerSnapshotsEnd | nanoTransform: FIFTY_MS : TWENTY_MS"></span></div>
+    <div><div>Commit start: </div><span [innerHTML]="detail.protocolTimes.commitStart | nanoTransform: FIFTY_MS : TWENTY_MS"></span></div>
+    <div><div>Commit end: </div><span [innerHTML]="detail.protocolTimes.commitEnd | nanoTransform: FIFTY_MS : TWENTY_MS"></span></div>
+    <div><div>Apply end: </div><span [innerHTML]="detail.protocolTimes.applyEnd | nanoTransform: FIFTY_MS : TWENTY_MS"></span></div>
+    <div><div>Protocol apply block end: </div><span [innerHTML]="detail.applyBlockEnd | nanoTransform: FIFTY_MS : TWENTY_MS"></span></div>
+    <div><div>Store data start: </div><span [innerHTML]="detail.storeResultStart | nanoTransform: FIFTY_MS : TWENTY_MS"></span></div>
+    <div><div>Store data end: </div><span [innerHTML]="detail.storeResultEnd | nanoTransform: FIFTY_MS : TWENTY_MS"></span></div>
+    <div><div>Send start: </div><span [innerHTML]="detail.sendStart | nanoTransform: FIFTY_MS : TWENTY_MS"></span></div>
+    <div><div>Send end: </div><span [innerHTML]="detail.sendEnd | nanoTransform: FIFTY_MS : TWENTY_MS"></span></div>
+  </div>
+</ng-template>

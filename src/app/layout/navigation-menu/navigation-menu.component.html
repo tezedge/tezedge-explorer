@@ -1,16 +1,19 @@
-<div class="menu-wrapper"
+<div class="menu-wrapper h-100"
+     fxLayout="column" fxLayoutAlign="flex-between"
      [class.slim]="app.sidenav.collapsed">
-  <div class="app-menu-toolbar">
-    <div class="arrow-toggle"
+
+  <div fxFlex="44px" class="menu-collapse-trigger p-relative d-flex align-center">
+    <div fxHide.lt-sm fxLayoutAlign="center center" class="arrow-collapse"
          [class.slim]="app.sidenav.collapsed"
          (click)="toggleMenuSize()">
       <mat-icon svgIcon="arrow-toggle"
                 class="icon-16"></mat-icon>
     </div>
-    <div class="app-menu-toolbar-logo text-nowrap foreground">TezEdge</div>
+    <div class="tezedge-name text-nowrap foreground f-14">TezEdge</div>
   </div>
 
-  <ng-container *ngIf="appFeatures$ | async as features">
+  <div fxFlex="1 1 auto" class="overflow-y-auto overflow-x-hidden" *ngIf="features">
+
     <div class="app-submenu"
          *ngIf="features['monitoring'] || haveResources">
       <div class="text-nowrap foreground-4">MONITORING</div>
@@ -25,11 +28,11 @@
          matTooltipPosition="right"
          [matTooltipDisabled]="!app.sidenav.collapsed"
          (click)="closeMenu()">
-      <span class="menu-content">
-        <mat-icon svgIcon="history"
-                  class="icon-18"></mat-icon>
-        <span class="text-nowrap">Synchronization</span>
-      </span>
+        <span class="menu-content">
+          <mat-icon svgIcon="history"
+                    class="icon-18"></mat-icon>
+          <span class="text-nowrap">Synchronization</span>
+        </span>
       </a>
 
       <a *ngIf="haveResources"
@@ -42,17 +45,17 @@
          matTooltipPosition="right"
          [matTooltipDisabled]="!app.sidenav.collapsed"
          (click)="closeMenu()">
-      <span class="menu-content">
-        <mat-icon svgIcon="resources"
-                  class="icon-18"></mat-icon>
-        <span class="text-nowrap">Resources</span>
-      </span>
+        <span class="menu-content">
+          <mat-icon svgIcon="resources"
+                    class="icon-18"></mat-icon>
+          <span class="text-nowrap">Resources</span>
+        </span>
       </a>
 
     </div>
 
-    <div *ngIf="haveExplorer"
-         class="app-submenu">
+    <div class="app-submenu"
+         *ngIf="haveExplorer">
       <div class="text-nowrap foreground-4">EXPLORER</div>
 
       <a *ngIf="features['mempool']"
@@ -65,11 +68,11 @@
          matTooltipPosition="right"
          [matTooltipDisabled]="!app.sidenav.collapsed"
          (click)="closeMenu()">
-      <span class="menu-content">
-        <mat-icon svgIcon="mempool"
-                  class="icon-18"></mat-icon>
-        <span class="text-nowrap">Mempool</span>
-      </span>
+        <span class="menu-content">
+          <mat-icon svgIcon="mempool"
+                    class="icon-18"></mat-icon>
+          <span class="text-nowrap">Mempool</span>
+        </span>
       </a>
 
       <a *ngIf="features['storage']"
@@ -82,11 +85,11 @@
          matTooltipPosition="right"
          [matTooltipDisabled]="!app.sidenav.collapsed"
          (click)="closeMenu()">
-      <span class="menu-content">
-        <mat-icon svgIcon="storage"
-                  class="icon-18"></mat-icon>
-        <span class="text-nowrap">Storage</span>
-      </span>
+        <span class="menu-content">
+          <mat-icon svgIcon="storage"
+                    class="icon-18"></mat-icon>
+          <span class="text-nowrap">Storage</span>
+        </span>
       </a>
 
       <a *ngIf="features['network']"
@@ -99,11 +102,11 @@
          matTooltipPosition="right"
          [matTooltipDisabled]="!app.sidenav.collapsed"
          (click)="closeMenu()">
-      <span class="menu-content">
-        <mat-icon svgIcon="peer"
-                  class="icon-18"></mat-icon>
-        <span class="text-nowrap">Network</span>
-      </span>
+        <span class="menu-content">
+          <mat-icon svgIcon="peer"
+                    class="icon-18"></mat-icon>
+          <span class="text-nowrap">Network</span>
+        </span>
       </a>
       <a *ngIf="features['endpoints']"
          mat-list-item
@@ -115,11 +118,11 @@
          matTooltipPosition="right"
          [matTooltipDisabled]="!app.sidenav.collapsed"
          (click)="closeMenu()">
-      <span class="menu-content">
-        <mat-icon svgIcon="endpoints"
-                  class="icon-18"></mat-icon>
-        <span class="text-nowrap">Endpoints</span>
-      </span>
+        <span class="menu-content">
+          <mat-icon svgIcon="endpoints"
+                    class="icon-18"></mat-icon>
+          <span class="text-nowrap">Endpoints</span>
+        </span>
       </a>
 
       <a *ngIf="features['logs']"
@@ -132,11 +135,11 @@
          matTooltipPosition="right"
          [matTooltipDisabled]="!app.sidenav.collapsed"
          (click)="closeMenu()">
-      <span class="menu-content">
-        <mat-icon svgIcon="logs"
-                  class="icon-18"></mat-icon>
-        <span class="text-nowrap">Logs</span>
-      </span>
+        <span class="menu-content">
+          <mat-icon svgIcon="logs"
+                    class="icon-18"></mat-icon>
+          <span class="text-nowrap">Logs</span>
+        </span>
       </a>
 
       <a *ngIf="features['state']"
@@ -149,27 +152,25 @@
          matTooltipPosition="right"
          [matTooltipDisabled]="!app.sidenav.collapsed"
          (click)="closeMenu()">
-      <span class="menu-content">
-        <mat-icon svgIcon="state-machine"
-                  class="icon-18"></mat-icon>
-        <span class="text-nowrap">State</span>
-      </span>
+        <span class="menu-content">
+          <mat-icon svgIcon="state-machine"
+                    class="icon-18"></mat-icon>
+          <span class="text-nowrap">State</span>
+        </span>
       </a>
       <a *ngIf="features['smart-contracts']"
          mat-list-item
          class="menu-item"
-         routerLink="/smart-contracts"
-         routerLinkActive="active"
          id="smart-contracts-trigger"
          matTooltip="Smart contracts"
          matTooltipPosition="right"
          [matTooltipDisabled]="!app.sidenav.collapsed"
-         (click)="closeMenu()">
-      <span class="menu-content">
-        <mat-icon svgIcon="handshake"
-                  class="icon-18"></mat-icon>
-        <span class="text-nowrap">Smart contracts</span>
-      </span>
+         (click)="closeMenu(); routeToSmartContracts()">
+        <span class="menu-content">
+          <mat-icon svgIcon="handshake"
+                    class="icon-18"></mat-icon>
+          <span class="text-nowrap">Smart contracts</span>
+        </span>
       </a>
     </div>
 
@@ -222,11 +223,11 @@
          matTooltipPosition="right"
          [matTooltipDisabled]="!app.sidenav.collapsed"
          rel="noreferrer">
-      <span class="menu-content">
-        <mat-icon svgIcon="chain-settings"
-                  class="icon-18"></mat-icon>
-        <span class="text-nowrap">Chain</span>
-      </span>
+        <span class="menu-content">
+          <mat-icon svgIcon="chain-settings"
+                    class="icon-18"></mat-icon>
+          <span class="text-nowrap">Chain</span>
+        </span>
       </a>
 
       <a *ngIf="features['wallets']"
@@ -239,14 +240,14 @@
          matTooltipPosition="right"
          [matTooltipDisabled]="!app.sidenav.collapsed"
          rel="noreferrer">
-      <span class="menu-content">
-        <mat-icon svgIcon="chain-wallets"
-                  class="icon-18"></mat-icon>
-        <span class="text-nowrap">Wallets</span>
-      </span>
+        <span class="menu-content">
+          <mat-icon svgIcon="chain-wallets"
+                    class="icon-18"></mat-icon>
+          <span class="text-nowrap">Wallets</span>
+        </span>
       </a>
 
-      <div class="sandbox-button">
+      <div class="sandbox-button w-100 margin-left-remove margin-top-10">
         <button mat-flat-button
                 (click)="addSandboxNode()"
                 id="menu-add-sandbox-node">
@@ -276,11 +277,11 @@
          matTooltipPosition="right"
          [matTooltipDisabled]="!app.sidenav.collapsed"
          rel="noreferrer">
-      <span class="menu-content">
-        <mat-icon svgIcon="swagger"
-                  class="icon-18"></mat-icon>
-        <span class="text-nowrap">Open API</span>
-      </span>
+        <span class="menu-content">
+          <mat-icon svgIcon="swagger"
+                    class="icon-18"></mat-icon>
+          <span class="text-nowrap">Open API</span>
+        </span>
       </a>
       <a mat-list-item
          class="menu-item"
@@ -290,11 +291,11 @@
          matTooltipPosition="right"
          [matTooltipDisabled]="!app.sidenav.collapsed"
          rel="noreferrer">
-      <span class="menu-content">
-        <mat-icon svgIcon="fuzzing"
-                  class="icon-18"></mat-icon>
-        <span class="text-nowrap">Fuzzing</span>
-      </span>
+        <span class="menu-content">
+          <mat-icon svgIcon="fuzzing"
+                    class="icon-18"></mat-icon>
+          <span class="text-nowrap">Fuzzing</span>
+        </span>
       </a>
     </div>
 
@@ -308,15 +309,16 @@
          matTooltipPosition="right"
          [matTooltipDisabled]="!app.sidenav.collapsed"
          rel="noreferrer">
-      <span class="menu-content">
-        <mat-icon svgIcon="documentation"
-                  class="icon-18"></mat-icon>
-        <span class="text-nowrap">Documentation</span>
-      </span>
+        <span class="menu-content">
+          <mat-icon svgIcon="documentation"
+                    class="icon-18"></mat-icon>
+          <span class="text-nowrap">Documentation</span>
+        </span>
       </a>
     </div>
+  </div>
 
-    <app-github-version *ngIf="haveDebugger"
-                        class="app-github-version"></app-github-version>
-  </ng-container>
+  <app-github-version *ngIf="haveDebugger"
+                      fxFlex="40px"
+                      class="app-github-version"></app-github-version>
 </div>

@@ -50,6 +50,10 @@
   text-align: right;
 }
 
+.text-center {
+  text-align: center;
+}
+
 .pointer {
   cursor: pointer;
 }
@@ -62,6 +66,10 @@
   pointer-events: none;
 }
 
+@mixin truncate() {
+  @extend .truncate;
+}
+
 .truncate {
   white-space: nowrap;
   overflow: hidden;
@@ -69,35 +77,35 @@
 }
 
 .foreground {
-  color: var(--foreground) !important;
+  color: $foreground !important;
 }
 
 .foreground-1 {
-  color: var(--foreground-1) !important;
+  color: $foreground-1 !important;
 }
 
 .foreground-2 {
-  color: var(--foreground-2) !important;
+  color: $foreground-2 !important;
 }
 
 .foreground-4 {
-  color: var(--foreground-4) !important;
+  color: $foreground-4 !important;
 }
 
 .foreground-5 {
-  color: var(--foreground-5) !important;
+  color: $foreground-5 !important;
 }
 
 .foreground-6 {
-  color: var(--foreground-6) !important;
+  color: $foreground-6 !important;
 }
 
 .foreground-7 {
-  color: var(--foreground-7) !important;
+  color: $foreground-7 !important;
 }
 
 .foreground-9 {
-  color: var(--foreground-9) !important;
+  color: $foreground-9 !important;
 }
 
 .text-red {

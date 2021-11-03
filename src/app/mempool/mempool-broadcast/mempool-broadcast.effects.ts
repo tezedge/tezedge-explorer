@@ -4,8 +4,8 @@ import { Store } from '@ngrx/store';
 import { map, switchMap, withLatestFrom } from 'rxjs/operators';
 import { ObservedValueOf } from 'rxjs';
 import { State } from '@app/app.reducers';
-import { MempoolOperationLoad } from '@mempool/mempool-operation/mempool-operation.action';
-import { MEMPOOL_BROADCAST_LOAD, MEMPOOL_BROADCAST_LOAD_SUCCESS } from '@mempool/mempool-broadcast/mempool-broadcast.action';
+import { MempoolOperationLoad } from '@mempool/mempool-operation/mempool-operation.actions';
+import { MEMPOOL_BROADCAST_LOAD, MEMPOOL_BROADCAST_LOAD_SUCCESS } from '@mempool/mempool-broadcast/mempool-broadcast.actions';
 import { MempoolBroadcastService } from '@mempool/mempool-broadcast/mempool-broadcast.service';
 
 @Injectable({ providedIn: 'root' })

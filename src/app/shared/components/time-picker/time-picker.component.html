@@ -1,0 +1,26 @@
+<form [formGroup]="formGroup" class="background-surface-fade-2">
+  <mat-calendar [selected]="selectedRangeValue"
+                (selectedChange)="selectedChange($event)"></mat-calendar>
+  <div class="d-flex flex-row padding-bottom-5">
+    <mat-form-field fxFlex="25" class="tezedge-form-field margin-left-5" appearance="outline">
+      <input formControlName="hour"
+             placeholder="hh"
+             matInput type="number" [min]="0" [max]="23" autocomplete="off">
+    </mat-form-field>
+    <mat-form-field fxFlex="25" class="tezedge-form-field margin-left-5" appearance="outline">
+      <input formControlName="minute"
+             placeholder="mm"
+             matInput type="number" [min]="0" [max]="59" autocomplete="off">
+    </mat-form-field>
+    <mat-form-field fxFlex="25" class="tezedge-form-field margin-left-5" appearance="outline">
+      <input formControlName="ss"
+             placeholder="sec"
+             matInput type="number" [min]="0" [max]="59" autocomplete="off">
+    </mat-form-field>
+    <mat-form-field fxFlex="25" class="tezedge-form-field margin-left-5 margin-right-5" appearance="outline">
+      <input formControlName="milliSecond"
+             placeholder="ms"
+             matInput type="number" [min]="0" [max]="999" autocomplete="off">
+    </mat-form-field>
+  </div>
+</form>

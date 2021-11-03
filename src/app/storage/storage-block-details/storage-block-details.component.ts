@@ -1,9 +1,11 @@
 import {
   ChangeDetectionStrategy,
+  ChangeDetectorRef,
   Component,
   Input,
   OnChanges,
   OnDestroy,
+  OnInit,
   SimpleChanges,
   TemplateRef,
   ViewChild,
@@ -15,33 +17,52 @@ import { StorageBlockDetailsOperationContext } from '@shared/types/storage/stora
 import { TemplatePortal } from '@angular/cdk/portal';
 import { Store } from '@ngrx/store';
 import { State } from '@app/app.reducers';
+import { selectStorageBlockDetails } from '@storage/storage-block/storage-block.reducer';
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 
+@UntilDestroy()
 @Component({
   selector: 'app-storage-block-details',
   templateUrl: './storage-block-details.component.html',
   styleUrls: ['./storage-block-details.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class StorageBlockDetailsComponent implements OnChanges, OnDestroy {
+export class StorageBlockDetailsComponent implements OnInit, OnChanges, OnDestroy {
 
-  @Input() block: StorageBlockDetails;
   @Input() blockHash: string;
   @Input() availableContexts: string[];
 
   @ViewChild('tooltipTemplate') private tooltipTemplate: TemplateRef<any>;
 
+  block: StorageBlockDetails;
   activeContextNode: string;
 
   private overlayRef: OverlayRef;
 
   constructor(private store: Store<State>,
               private overlay: Overlay,
+              private cdRef: ChangeDetectorRef,
               private viewContainerRef: ViewContainerRef) { }
+
+  ngOnInit(): void {
+    this.listenToBlockDetailsChange();
+  }
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.blockHash && changes.blockHash.previousValue !== changes.blockHash.currentValue) {
       this.activeContextNode = this.availableContexts[0];
     }
+  }
+
+  private listenToBlockDetailsChange(): void {
+    this.store.select(selectStorageBlockDetails)
+      .pipe(
+        untilDestroyed(this)
+      )
+      .subscribe((block: StorageBlockDetails) => {
+        this.block = block;
+        this.cdRef.detectChanges();
+      });
   }
 
   switchContext(): void {

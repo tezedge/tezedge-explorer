@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, NgZone, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ComponentRef, NgZone, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 
 import { Store } from '@ngrx/store';
@@ -9,6 +9,9 @@ import { NetworkActionEntity } from '@shared/types/network/network-action-entity
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { TezedgeTimeValidator } from '@shared/validators/tezedge-time.validator';
+import { Overlay, OverlayRef } from '@angular/cdk/overlay';
+import { ComponentPortal } from '@angular/cdk/portal';
+import { TimePickerComponent } from '@shared/components/time-picker/time-picker.component';
 
 @UntilDestroy()
 @Component({
@@ -21,7 +24,6 @@ export class NetworkActionComponent implements OnInit, OnDestroy {
 
   virtualScrollItems: NetworkAction;
   selectedNetworkId: number = -1;
-  networkActionShow: boolean;
   virtualPageSize = 1000;
   activeFilters = [];
 
@@ -29,8 +31,12 @@ export class NetworkActionComponent implements OnInit, OnDestroy {
   currentDatePlaceholder: string;
   initialSelectedIndex: number;
 
-  constructor(public store: Store<State>,
+  private overlayRef: OverlayRef;
+  private timePickerComponentRef: ComponentRef<TimePickerComponent>;
+
+  constructor(private store: Store<State>,
               private route: ActivatedRoute,
+              private overlay: Overlay,
               private ngZone: NgZone,
               private router: Router,
               private changeDetector: ChangeDetectorRef,
@@ -42,6 +48,7 @@ export class NetworkActionComponent implements OnInit, OnDestroy {
     this.listenToFormChange();
     this.listenToRouteChange();
     this.listenToNetworkChange();
+    // this.openTimePicker();
   }
 
   private getNetwork(): void {
@@ -58,10 +65,9 @@ export class NetworkActionComponent implements OnInit, OnDestroy {
       .pipe(untilDestroyed(this))
       .subscribe((data: NetworkAction) => {
         this.virtualScrollItems = data;
-        this.networkActionShow = this.virtualScrollItems.ids.length > 0;
         this.activeFilters = this.setActiveFilters();
-
-        this.preselectRow();
+        // console.log(data.selected);
+        // this.preselectRow();
 
         this.changeDetector.detectChanges();
       });
@@ -69,18 +75,18 @@ export class NetworkActionComponent implements OnInit, OnDestroy {
 
   private preselectRow(): void {
     if (
-      this.virtualScrollItems.timestamp && this.virtualScrollItems.ids.length && !this.virtualScrollItems.stream
+      this.virtualScrollItems.timestamp && this.virtualScrollItems.ids.length && !this.virtualScrollItems.stream && !this.virtualScrollItems.selected
     ) {
       const network: NetworkActionEntity[] = Object.keys(this.virtualScrollItems.entities).map(key => this.virtualScrollItems.entities[key]);
       const timestampToFind = Number(this.routeTimestamp);
-      const closestNetworkToTimestamp = network.reduce((prev: NetworkActionEntity, curr: NetworkActionEntity) =>
+      const closestNetworkRowToTimestamp = network.reduce((prev: NetworkActionEntity, curr: NetworkActionEntity) =>
         Math.abs(curr.timestamp / 1000000 - timestampToFind) < Math.abs(prev.timestamp / 1000000 - timestampToFind)
           ? curr
           : prev);
-      if (closestNetworkToTimestamp.originalId !== this.selectedNetworkId) {
-        this.selectedNetworkId = closestNetworkToTimestamp.originalId;
-        this.getItemDetails(closestNetworkToTimestamp);
-        this.initialSelectedIndex = network.findIndex(item => item.id === closestNetworkToTimestamp.id);
+      if (closestNetworkRowToTimestamp.originalId !== this.selectedNetworkId) {
+        this.selectedNetworkId = closestNetworkRowToTimestamp.originalId;
+        this.getItemDetails(closestNetworkRowToTimestamp);
+        this.initialSelectedIndex = network.findIndex(item => item.id === closestNetworkRowToTimestamp.id);
       }
     } else {
       this.initialSelectedIndex = undefined;
@@ -183,7 +189,6 @@ export class NetworkActionComponent implements OnInit, OnDestroy {
     if (networkItem.originalId === undefined) {
       return;
     }
-
     this.store.dispatch({
       type: 'NETWORK_ACTION_DETAILS_LOAD',
       payload: {
@@ -309,6 +314,38 @@ export class NetworkActionComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
+    this.detachTooltip();
     this.store.dispatch({ type: 'NETWORK_ACTION_STOP' });
+  }
+
+  openTimePicker(event?: MouseEvent): void {
+    return;
+    this.detachTooltip();
+
+    this.overlayRef = this.overlay.create({
+      hasBackdrop: false,
+      // scrollStrategy: this.overlay.scrollStrategies.noop(),
+      positionStrategy: this.overlay.position()
+        .flexibleConnectedTo(event?.target as HTMLElement)
+        .withPositions([{
+          originX: 'start',
+          originY: 'top',
+          overlayX: 'start',
+          overlayY: 'top',
+          offsetX: 0,
+          offsetY: -50
+        }])
+    });
+    event?.stopPropagation();
+
+    const portal = new ComponentPortal(TimePickerComponent);
+    this.timePickerComponentRef = this.overlayRef.attach<TimePickerComponent>(portal);
+    // this.timePickerComponentRef.instance.date = null;
+  }
+
+  detachTooltip(): void {
+    if (this.overlayRef && this.overlayRef.hasAttached()) {
+      this.overlayRef.detach();
+    }
   }
 }

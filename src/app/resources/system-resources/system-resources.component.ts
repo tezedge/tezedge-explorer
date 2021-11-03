@@ -16,8 +16,9 @@ import { appState } from '@app/app.reducer';
 import { SystemResourcesResourceType } from '@shared/types/resources/system/system-resources-panel.type';
 import { SystemResourceCategory } from '@shared/types/resources/system/system-resource-category.type';
 import { SystemResourcesGraphComponent } from '@resources/system-resources-graph/system-resources-graph.component';
-import { TezedgeChartsService } from '@shared/charts/tezedge-charts.service';
+import { TezedgeChartsService } from '@shared/components/custom-tezedge-components/tezedge-charts/tezedge-charts.service';
 import { systemResources } from '@resources/system-resources/system-resources.reducer';
+import { MIN_WIDTH_1100 } from '@shared/constants/breakpoint-observer';
 
 
 @UntilDestroy()
@@ -33,11 +34,11 @@ export class SystemResourcesComponent implements OnInit, OnDestroy {
   activeSummary: SystemResourcesResourceType = 'cpu';
 
   readonly yAxisPercentageConversion = (value) => `${value}%`;
-  readonly yAxisGigaBytesConversion = (value) => (value < 1 ? value : (value + '.00')) + ' GB';
+  readonly yAxisGigaBytesConversion = (value) => `${value} GB`;
   readonly yAxisMegaBytesConversion = (value) => `${value} MB`;
 
   private graphs: QueryList<ElementRef>;
-  private resourceTypes: SystemResourcesResourceType[] = ['cpu', 'memory', 'storage', 'io', 'network'];
+  private resourceTypes: SystemResourcesResourceType[] = ['cpu', 'memory', 'io', 'network', 'storage'];
   private isSmallDevice: boolean;
   private listenersInitialized: boolean;
 
@@ -67,7 +68,10 @@ export class SystemResourcesComponent implements OnInit, OnDestroy {
     this.zone.runOutsideAngular(() => {
       this.graphs.forEach((graph, i) => {
         fromEvent(graph.nativeElement, 'mouseenter')
-          .pipe(untilDestroyed(this))
+          .pipe(
+            untilDestroyed(this),
+            filter(() => this.activeSummary !== this.resourceTypes[i])
+          )
           .subscribe(() => {
             this.toggleActiveSummary(this.resourceTypes[i], this.systemResource[this.resourceTypes[i]]);
           });
@@ -75,10 +79,7 @@ export class SystemResourcesComponent implements OnInit, OnDestroy {
     });
   }
 
-  toggleActiveSummary(value: SystemResourcesResourceType, resource: SystemResourceCategory): void {
-    if (this.activeSummary === value) {
-      return;
-    }
+  private toggleActiveSummary(value: SystemResourcesResourceType, resource: SystemResourceCategory): void {
     this.activeSummary = value;
     this.zone.run(() =>
       this.tezedgeChartsService.updateSystemResources({
@@ -93,7 +94,7 @@ export class SystemResourcesComponent implements OnInit, OnDestroy {
     this.store.pipe(
       untilDestroyed(this),
       select(systemResources),
-      filter(resources => !!resources),
+      filter(resources => !!resources.xTicksValues),
     ).subscribe(resources => {
       this.systemResource = resources;
       this.activeSummary = resources.resourcesPanel?.resourceType;
@@ -120,7 +121,7 @@ export class SystemResourcesComponent implements OnInit, OnDestroy {
 
   private handleSmallDevices(): void {
     this.isSmallDevice = window.innerWidth < 1100;
-    this.breakpointObserver.observe('(min-width: 1100px)')
+    this.breakpointObserver.observe(MIN_WIDTH_1100)
       .pipe(untilDestroyed(this), skip(1))
       .subscribe(() => {
         this.isSmallDevice = window.innerWidth < 1100;

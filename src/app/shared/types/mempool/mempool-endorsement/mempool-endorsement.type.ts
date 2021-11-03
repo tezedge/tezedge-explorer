@@ -3,6 +3,7 @@ export interface MempoolEndorsement {
   slotsLength?: number;
   status?: MempoolEndorsementStatusTypes;
   bakerName?: string;
+  bakerHash?: string;
   logo?: string;
   receiveHashTime?: number;
   receiveContentsTime?: number;

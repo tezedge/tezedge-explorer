@@ -2,13 +2,16 @@ import * as moment from 'moment-mini-ts';
 import { VirtualScrollActivePage } from '@shared/types/shared/virtual-scroll-active-page.type';
 import { StorageBlock } from '@shared/types/storage/storage-block/storage-block.type';
 import { StorageBlockEntity } from '@shared/types/storage/storage-block/storage-block-entity.type';
-import { StorageBlockActionTypes } from './storage-block.actions';
+import { STORAGE_BLOCK_LOAD_ROUTED_BLOCK, STORAGE_BLOCK_MAP_AVAILABLE_CONTEXTS } from './storage-block.actions';
+import { State } from '@app/app.reducers';
+import { StorageBlockDetails } from '@shared/types/storage/storage-block/storage-block-details.type';
 
 const initialState: StorageBlock = {
   ids: [],
   entities: {},
   lastCursorId: 0,
   stream: false,
+  routedBlock: false,
   selected: {
     hash: '',
     chain_id: '',
@@ -34,6 +37,13 @@ export function reducer(state: StorageBlock = initialState, action): StorageBloc
     //   };
     // }
 
+    case 'STORAGE_BLOCK_START': {
+      return {
+        ...state,
+        stream: true
+      };
+    }
+
     case 'STORAGE_BLOCK_START_SUCCESS':
     case 'STORAGE_BLOCK_FETCH_SUCCESS': {
       const entities = setEntities(action, state);
@@ -57,13 +67,6 @@ export function reducer(state: StorageBlock = initialState, action): StorageBloc
       };
     }
 
-    case 'STORAGE_BLOCK_START': {
-      return {
-        ...state,
-        stream: true
-      };
-    }
-
     case 'STORAGE_BLOCK_DETAILS_LOAD_SUCCESS': {
       return {
         ...state,
@@ -72,14 +75,21 @@ export function reducer(state: StorageBlock = initialState, action): StorageBloc
       };
     }
 
-    case StorageBlockActionTypes.STORAGE_BLOCK_MAP_AVAILABLE_CONTEXTS: {
+    case STORAGE_BLOCK_MAP_AVAILABLE_CONTEXTS: {
       return {
         ...state,
         availableContexts: action.payload
       };
     }
 
-    case 'STORAGE_BLOCK_RESET_SUCCESS': {
+    case STORAGE_BLOCK_LOAD_ROUTED_BLOCK: {
+      return {
+        ...state,
+        routedBlock: true
+      };
+    }
+
+    case 'STORAGE_BLOCK_RESET': {
       return {
         ...initialState
       };
@@ -171,3 +181,5 @@ export function setPages(activePage, state): number[] {
   }
 
 }
+
+export const selectStorageBlockDetails = (state: State): StorageBlockDetails => state.storageBlock.blockDetails;

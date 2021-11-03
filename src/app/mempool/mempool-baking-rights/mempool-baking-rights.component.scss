@@ -1,0 +1,62 @@
+@import 'utilities/layout';
+
+.table-container {
+  cdk-virtual-scroll-viewport, .row {
+    width: 645px;
+    min-width: 100%;
+  }
+
+  .row {
+    grid-template-columns: 175px 110px 130px 130px 100px;
+
+    &.head {
+      background-color: unset;
+
+      > span {
+        @include flexRowVertCenter();
+
+        mat-icon {
+          transition: 0.2s ease-in-out;
+          transform: rotateX(0) translateY(6px);
+          opacity: 0;
+
+          &.show {
+            opacity: 1;
+            transform: rotateX(0) translateY(0);
+          }
+
+          &.flip {
+            transform: rotateX(180deg) translateY(0);
+
+            &:not(.show) {
+              transform: rotateX(180deg) translateY(6px);
+            }
+          }
+        }
+
+        &:hover, &.active {
+          color: var(--foreground);
+
+          mat-icon:not(.show) {
+            opacity: 0.5;
+            transform: rotateX(0) translateY(0);
+
+            &.flip {
+              transform: rotateX(180deg) translateY(0);
+            }
+          }
+        }
+      }
+    }
+
+    &:hover:not(.head) span {
+      color: var(--foreground) !important;
+    }
+
+    > span {
+      line-height: 36px;
+      padding-left: 16px;
+    }
+
+  }
+}

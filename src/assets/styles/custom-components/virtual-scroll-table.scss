@@ -7,7 +7,7 @@
   width: calc(100%);
   height: calc(100%);
   color: $color-table;
-  background-color: $color-table-background;
+  background-color: $background-surface;
   border-top-left-radius: 4px;
 }
 
@@ -15,8 +15,8 @@
   font-size: 12px;
   font-weight: 300;
   color: $color-table-header !important;
-  border-bottom: 1px solid $color-table-border;
-  border-top: 1px solid $color-table-border;
+  border-bottom: 1px solid $background-surface-fade-1;
+  border-top: 1px solid $background-surface-fade-1;
 
   display: grid;
   padding: 0 14px;
@@ -96,9 +96,9 @@
     height: 16px;
     line-height: 16px;
     font-size: 12px;
-    background-color: rgba(255, 255, 255, 0.1);
+    background-color: $foreground-1;
     padding: 0 6px 0;
-    color: rgba(255, 255, 255, 1);
+    color: $foreground;
     margin-right: 4px;
     text-transform: capitalize;
     border-radius: 4px;
@@ -109,7 +109,7 @@
   .add-filters {
     font-weight: 400;
     border-radius: 4px;
-    color: rgba(255, 255, 255, 1);
+    color: $foreground;
     line-height: 20px;
     height: 20px;
   }
@@ -124,7 +124,7 @@
   .filters-label {
     line-height: 16px;
     font-size: 12px;
-    color: rgba(255, 255, 255, 0.4);
+    color: $foreground-4;
     margin-right: 4px;
     width: 60px;
 
@@ -143,7 +143,7 @@
     margin: 0;
 
     .mat-expansion-panel {
-      background-color: rgba(63, 63, 67, 1);
+      background-color: $background-surface-fade-2;
       box-shadow: unset !important;
       border-radius: 0 !important;
 
@@ -165,7 +165,7 @@
       }
 
       .mat-expansion-panel-header {
-        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        border-bottom: 1px solid $foreground-1;
       }
 
       .mat-expansion-panel-body {
@@ -217,7 +217,7 @@
   .action-table-detail {
     width: 40%;
     padding: 10px 10px 0 0;
-    border-left: 1px solid $color-table-border;
+    border-left: 1px solid $background-surface-fade-1;
 
     .mat-tab-header {
       height: 36px !important;
@@ -250,7 +250,7 @@
 
 .table-virtual-scroll-footer {
   box-sizing: border-box;
-  border-top: 1px solid #333334;
+  border-top: 1px solid $background-surface-fade-1;
   width: 100%;
   line-height: 40px;
   padding-left: 16px;
@@ -271,7 +271,7 @@
 
   .square-button {
     width: 24px;
-    background: rgba(255, 255, 255, 0.1);
+    background: $foreground-1;
     border-radius: 2px;
     border: none;
 
@@ -279,7 +279,7 @@
       cursor: pointer;
 
       &:hover {
-        background: rgba(255, 255, 255, 0.2);
+        background: $foreground-2;
       }
     }
   }
@@ -303,7 +303,7 @@
       opacity: .5;
 
       &:hover {
-        background-color: rgba(255, 255, 255, 0.2);
+        background-color: $foreground-2;
       }
     }
   }
@@ -367,11 +367,10 @@
   }
 
   &.virtualScrollRowEven {
-    //background-color: #323334;
-    background-color: rgba(255, 255, 255, 0.1);
+    background-color: $foreground-1;
 
     .item-loading {
-      background-color: #2a2a2e !important;
+      background-color: $background-surface !important;
     }
   }
 
@@ -384,11 +383,11 @@
   }
 
   &:hover:not(.hover) {
-    background-color: rgba(255, 255, 255, 0.2);
+    background-color: $foreground-2;
   }
 
   &.hover {
-    background: $color-highlight-blue;
+    background: $active-surface;
   }
 }
 

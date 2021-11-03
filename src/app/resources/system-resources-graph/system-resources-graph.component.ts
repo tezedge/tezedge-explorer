@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
-import { curveCardinal } from 'd3-shape';
+import { curveLinear } from 'd3-shape';
 import { SystemResourcesSubcategory } from '@shared/types/resources/system/system-resources-subcategory.type';
 import { SystemResourcesFormattingType } from '@shared/types/resources/system/system-resource-category.type';
 import { SystemResourcesResourceType } from '@shared/types/resources/system/system-resources-panel.type';
@@ -22,7 +22,7 @@ export class SystemResourcesGraphComponent {
   @Input() yAxisTickFormatting: (value: any) => string;
   @Input() xTicksValues: string[];
   @Input() colorScheme: { domain: string[] };
-  @Input() curve: any = curveCardinal;
+  @Input() curve: any = curveLinear;
   @Input() formattingType: SystemResourcesFormattingType = '';
 
 }

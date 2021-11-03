@@ -1,15 +1,14 @@
 import { Pipe, PipeTransform } from '@angular/core';
 import { formatNumber } from '@angular/common';
-
-const MILLISECOND_FACTOR = 1000;
-const MICROSECOND_FACTOR = 1000000;
-const NANOSECOND_FACTOR = 1000000000;
+import { MILLISECOND_FACTOR, MICROSECOND_FACTOR, NANOSECOND_FACTOR } from '@shared/constants/unit-measurements';
+import memo from 'memo-decorator';
 
 @Pipe({
   name: 'timeTransform'
 })
 export class TimeTransformPipe implements PipeTransform {
 
+  @memo()
   transform(value: number, redText: boolean = true, onlyMs: boolean = false, skipSpace: boolean = false): string {
     if (!value) {
       return '0' + (skipSpace ? '' : ' ') + 'ms';
@@ -23,7 +22,7 @@ export class TimeTransformPipe implements PipeTransform {
     }
 
     if (value >= 0.001 && redText) {
-      return `<span class="text-red">${ newValue }</span>`;
+      return `<span class="text-red">${newValue}</span>`;
     }
 
     return newValue;

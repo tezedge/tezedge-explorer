@@ -1,3 +1,5 @@
+@import 'variables';
+
 ngx-object-diff {
 
   pre {
@@ -22,8 +24,8 @@ ngx-object-diff {
       del.diff:not(.diff-key) {
         text-decoration: line-through;
         border-radius: 2px;
-        background: rgba(63, 63, 67, 1) !important;
-        color: rgba(255, 255, 255, 0.4) !important;
+        background: $background-surface-fade-2 !important;
+        color: $foreground-4 !important;
         padding: 0 3px;
       }
     }
@@ -39,8 +41,8 @@ ngx-object-diff {
         display: inline-block;
         text-decoration: line-through;
         border-radius: 2px;
-        background: rgba(63, 63, 67, 1) !important;
-        color: rgba(255, 255, 255, 0.4) !important;
+        background: $background-surface-fade-2 !important;
+        color: $foreground-4 !important;
         padding: 0 3px;
       }
     }
@@ -48,7 +50,7 @@ ngx-object-diff {
     ins {
       left: 25px;
       color: white !important;
-      background: rgba(10, 132, 255, 1) !important;
+      background: #0A84FF !important;
       border-radius: 2px;
       margin-top: 0 !important;
       padding: 0 3px;
@@ -58,7 +60,7 @@ ngx-object-diff {
       margin-right: 35px;
 
       &::after {
-        background-color: #2A2A2E;
+        background-color: $background-surface;
         position: absolute;
         content: '=>';
         left: -19px;

@@ -7,7 +7,8 @@ import { MatExpansionPanel } from '@angular/material/expansion';
 import { StateMachineActionStatistics } from '@shared/types/state-machine/state-machine-action-statistics.type';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { filter } from 'rxjs/operators';
-import { BreakpointObserver } from '@angular/cdk/layout';
+import { BreakpointObserver, BreakpointState } from '@angular/cdk/layout';
+import { MIN_WIDTH_1200, MIN_WIDTH_1500, MIN_WIDTH_700 } from '@shared/constants/breakpoint-observer';
 
 interface FilterCategory {
   label: string;
@@ -73,14 +74,14 @@ export class StateMachineFiltersComponent implements OnInit {
 
   private listenToWindowResize(): void {
     this.breakpointObserver
-      .observe(['(min-width: 1500px)', '(min-width: 1200px)', '(min-width: 700px)'])
+      .observe([MIN_WIDTH_1500, MIN_WIDTH_1200, MIN_WIDTH_700])
       .pipe(untilDestroyed(this))
-      .subscribe((value) => {
-        if (value.breakpoints['(min-width: 1500px)']) {
+      .subscribe((value: BreakpointState) => {
+        if (value.breakpoints[MIN_WIDTH_1500]) {
           this.maxVisibleFilters = 5;
-        } else if (value.breakpoints['(min-width: 1200px)']) {
+        } else if (value.breakpoints[MIN_WIDTH_1200]) {
           this.maxVisibleFilters = 4;
-        } else if (value.breakpoints['(min-width: 700px)']) {
+        } else if (value.breakpoints[MIN_WIDTH_700]) {
           this.maxVisibleFilters = 2;
         } else {
           this.maxVisibleFilters = 1;

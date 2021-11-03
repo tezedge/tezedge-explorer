@@ -14,31 +14,23 @@
       width: 52px;
     }
 
-    .app-github-version {
-      margin-left: 0;
+    .sandbox-button button {
+      font-size: 20px;
+      line-height: 36px;
+      border-top-left-radius: 0;
+      border-bottom-left-radius: 0;
     }
 
-    .sandbox-button {
-      width: 100%;
-      margin-left: 0;
-
-      button {
-        font-size: 20px;
-        line-height: 36px;
-        border-top-left-radius: 0;
-        border-bottom-left-radius: 0;
-      }
+    .app-github-version {
+      margin-left: 5px;
     }
   }
 }
 
-.app-menu-toolbar {
-  display: flex;
-  align-items: center;
+.menu-collapse-trigger {
   padding: 12px 0 16px 0;
-  position: relative;
 
-  .arrow-toggle {
+  .arrow-collapse {
     position: absolute;
     left: 0;
     transform: rotateY(180deg);
@@ -47,9 +39,6 @@
     padding: 3px;
     height: 36px;
     width: 52px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
 
     &:hover {
       background-color: var(--background-surface-fade-1);
@@ -66,24 +55,16 @@
       border-top-right-radius: 4px;
       border-bottom-right-radius: 4px;
     }
+  }
+
+  .tezedge-name {
+    padding-left: 3px;
+    margin-left: 60px;
 
     @media (max-width: 600px) {
-      display: none;
+      margin-left: 17px;
     }
   }
-
-  .app-menu-toolbar-logo {
-    padding-left: 3px;
-    font-size: 14px;
-    margin-left: 60px;
-  }
-}
-
-.app-menu-toggle {
-  position: absolute;
-  top: 5px;
-  left: 10px;
-  opacity: 0.5;
 }
 
 .app-submenu {
@@ -96,8 +77,6 @@
   }
 
   .sandbox-button {
-    width: 100%;
-    margin-top: 10px;
     transition: margin-left 150ms;
 
     button {
@@ -118,8 +97,6 @@
 }
 
 .app-github-version {
-  position: absolute;
-  bottom: 10px;
   color: var(--foreground-4);
   margin-left: 12px;
   transition: margin-left 0.15s;

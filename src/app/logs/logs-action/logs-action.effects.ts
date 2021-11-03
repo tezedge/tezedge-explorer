@@ -5,7 +5,16 @@ import { Store } from '@ngrx/store';
 import { State } from '@app/app.reducers';
 import { catchError, map, switchMap, takeUntil, tap, withLatestFrom } from 'rxjs/operators';
 import { forkJoin, ObservedValueOf, of, Subject, timer } from 'rxjs';
-import { ADD_ERROR } from '@shared/error-popup/error-popup.actions';
+import { ADD_ERROR } from '@shared/components/error-popup/error-popup.actions';
+import {
+  LOGS_ACTION_FILTER,
+  LOGS_ACTION_LOAD,
+  LOGS_ACTION_LOAD_SUCCESS,
+  LOGS_ACTION_START,
+  LOGS_ACTION_START_SUCCESS,
+  LOGS_ACTION_STOP,
+  LOGS_ACTION_TIME_LOAD
+} from '@logs/logs-action/logs-action.actions';
 
 const logActionDestroy$ = new Subject();
 
@@ -13,12 +22,12 @@ const logActionDestroy$ = new Subject();
 export class LogsActionEffects {
 
   logsActionLoad$ = createEffect(() => this.actions$.pipe(
-    ofType('LOGS_ACTION_LOAD'),
+    ofType(LOGS_ACTION_LOAD),
     withLatestFrom(this.store, (action: any, state: ObservedValueOf<Store<State>>) => ({ action, state })),
     switchMap(({ action, state }) => {
       return this.http.get<any[]>(setUrl(action, state));
     }),
-    map((logs) => ({ type: 'LOGS_ACTION_LOAD_SUCCESS', payload: { logs } })),
+    map((logs) => ({ type: LOGS_ACTION_LOAD_SUCCESS, payload: { logs } })),
     catchError((error, caught) => {
       console.error(error);
       this.store.dispatch({
@@ -30,7 +39,7 @@ export class LogsActionEffects {
   ));
 
   logsActionLoadByTime$ = createEffect(() => this.actions$.pipe(
-    ofType('LOGS_ACTION_TIME_LOAD'),
+    ofType(LOGS_ACTION_TIME_LOAD),
     withLatestFrom(this.store, (action: any, state: ObservedValueOf<Store<State>>) => ({ action, state })),
     tap(() => logActionDestroy$.next(null)),
     switchMap(({ action, state }) => {
@@ -42,7 +51,7 @@ export class LogsActionEffects {
         this.http.get<any[]>(urlForward)
       ]).pipe(
         map(([backwardSlice, forwardSlice]) => ({
-          type: 'LOGS_ACTION_LOAD_SUCCESS',
+          type: LOGS_ACTION_LOAD_SUCCESS,
           payload: {
             timestamp: action.payload.timestamp,
             logs: [...forwardSlice.reverse(), ...backwardSlice]
@@ -61,13 +70,13 @@ export class LogsActionEffects {
   ));
 
   logsActionFilter$ = createEffect(() => this.actions$.pipe(
-    ofType('LOGS_ACTION_FILTER'),
+    ofType(LOGS_ACTION_FILTER),
     withLatestFrom(this.store, (action: any, state: ObservedValueOf<Store<State>>) => ({ action, state })),
     tap(response => {
       logActionDestroy$.next(null);
       logsActionFilter(response.action, response.state);
     }),
-    map((payload) => ({ type: 'LOGS_ACTION_LOAD', payload })),
+    map((payload) => ({ type: LOGS_ACTION_LOAD, payload })),
     catchError((error, caught) => {
       console.error(error);
       this.store.dispatch({
@@ -79,14 +88,14 @@ export class LogsActionEffects {
   ));
 
   logsActionStartEffect$ = createEffect(() => this.actions$.pipe(
-    ofType('LOGS_ACTION_START'),
+    ofType(LOGS_ACTION_START),
     withLatestFrom(this.store, (action: any, state: ObservedValueOf<Store<State>>) => ({ action, state })),
     switchMap(({ action, state }) =>
       timer(0, 2000).pipe(
         takeUntil(logActionDestroy$),
         switchMap(() =>
           this.http.get<any[]>(setUrl(action, state)).pipe(
-            map(logs => ({ type: 'LOGS_ACTION_START_SUCCESS', payload: { logs } })),
+            map(logs => ({ type: LOGS_ACTION_START_SUCCESS, payload: { logs } })),
             catchError(error => of({
               type: ADD_ERROR,
               payload: { title: 'Error when loading Logs:', message: error.message }
@@ -98,7 +107,7 @@ export class LogsActionEffects {
   ));
 
   logsActionStopEffect$ = createEffect(() => this.actions$.pipe(
-    ofType('LOGS_ACTION_STOP'),
+    ofType(LOGS_ACTION_STOP),
     withLatestFrom(this.store, (action: any, state: ObservedValueOf<Store<State>>) => ({ action, state })),
     tap(({ action, state }) => logActionDestroy$.next(null))
   ), { dispatch: false });

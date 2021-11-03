@@ -1,0 +1,85 @@
+<div fxLayout.gt-md="row" fxLayout.lt-lg="column" fxFlexFill>
+  <div fxFlex.gt-md="calc(100% - 300px)" fxFlex.lt-lg="50" class="padding-10 block-application">
+    <div class="graph-outer-container border border-rad-4 overflow-hidden" [class.fade]="labelList.length">
+      <div class="border-bottom d-flex flex-row align-center padding-left-10 padding-top-10 padding-bottom-10 f-12">
+        <span class="average-values foreground margin-right-10 font-500">AVERAGE VALUES:</span>
+        <div class="f-12 context-menu"
+             fxLayout="row wrap" fxLayoutAlign="center" *ngIf="mempoolState?.noOfBlocks">
+          <span *ngFor="let avg of mempoolState.averageValues; let i=index"
+                class="graph-label-item foreground-7">
+            <span *ngIf="i !== 0" class="padding-horizontal-10">·</span>
+            <span class="foreground-4">{{ avg.name }}</span>
+            {{ avg.value === 0 ? 0 : MATH.round(MATH.pow(10, avg.value)) | nanoTransform }}
+          </span>
+        </div>
+      </div>
+      <div class="blocks-overview foreground f-14 text-center context-menu">{{ mempoolState?.noOfBlocks }} BLOCKS OVERVIEW</div>
+      <div class="graph-label-list f-12 context-menu text-right padding-top-8 padding-left-10"
+           fxLayout="row wrap" fxLayoutAlign="end">
+        <span *ngFor="let label of labelList; let i=index"
+              class="graph-label-item foreground-6">
+          <span [style.background]="mempoolState.colorScheme[i]" class="label-color"></span>
+          {{ label }}
+        </span>
+      </div>
+      <div class="graph-inner-container">
+        <div class="graph-super-inner-container d-flex">
+          <div class="rotated-label f-12 d-flex align-center text-nowrap foreground margin-bottom-10 margin-top-10"
+               fxFlex="33px" fxHide.lt-md>
+            <span>Time</span>
+          </div>
+          <div fxFlex="calc(100% - 33px)" fxFlex.lt-md="100">
+            <app-tezedge-line-chart *ngIf="mempoolState?.noOfBlocks"
+                                    [animations]="false"
+                                    [circleAtTheEnd]="true"
+                                    [graphType]="'block-application'"
+                                    [curve]="curve"
+                                    [results]="mempoolState.chartLines"
+                                    [rotateXAxisTicks]="false"
+                                    [scheme]="{ domain: mempoolState.colorScheme }"
+                                    [startWithYGridLine]="true"
+                                    [tooltipPlacement]="'bottom'"
+                                    [xAxisTickFormatting]="xAxisTickFormatting"
+                                    [xAxisTicks]="mempoolState.xTicksValues"
+                                    [xAxis]="true"
+                                    [yAxisTickFormatting]="yAxisTickFormatting"
+                                    [yAxis]="true"
+                                    [yScaleMin]="5"
+                                    [yScaleMax]="maxValue + 0.5">
+              <ng-template #seriesTooltipTemplate
+                           let-model="model">
+                <ng-container
+                  *ngTemplateOutlet="customSeriesTooltipTemplate; context: { model: model }"></ng-container>
+              </ng-template>
+            </app-tezedge-line-chart>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div fxFlex.gt-md="300px" fxFlex.lt-lg="50" class="border-left padding-10">
+    <app-mempool-block-application-details></app-mempool-block-application-details>
+  </div>
+</div>
+
+
+<ng-template #customSeriesTooltipTemplate let-model="model">
+  <div class="ngx-series-tooltip" fxLayout="column">
+    <div class="tooltip-title f-12 border-bottom">Block level:
+      <span class="foreground-7">{{ model[0].name | spaceNumber }}</span>
+    </div>
+    <div class="tooltip-title f-12 border-bottom">First seen:
+      <span class="foreground-7">{{ model[0].timestamp }}</span>
+    </div>
+    <div class="data-wrapper" fxLayout="column" fxLayoutGap="8px">
+      <div *ngFor="let entry of model"
+           fxLayout="row" fxLayoutAlign="start center">
+        <div [style.background]="entry.color" class="color-square"></div>
+        <div>{{ entry.series }}:&nbsp;</div>
+        <div class="series-value foreground-7">
+          {{ entry.value === 0 ? 0 : MATH.round(MATH.pow(10, entry.value)) | nanoTransform }}
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-template>

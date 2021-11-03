@@ -4,9 +4,9 @@ import { MempoolStatisticsOperation } from '@shared/types/mempool/statistics/mem
 import { Store } from '@ngrx/store';
 import { State } from '@app/app.reducers';
 import { selectMempoolStatisticsActiveOperation, selectMempoolStatisticsDetailsSorting } from '@mempool/mempool-statistics/mempool-statistics.reducer';
-import { ADD_INFO, InfoAdd } from '@shared/error-popup/error-popup.actions';
-import { TableSort } from '@shared/types/shared/table-sort.type';
-import { MEMPOOL_STATISTICS_DETAILS_SORT, MempoolStatisticsDetailsSort } from '@mempool/mempool-statistics/mempool-statistics.action';
+import { ADD_INFO, InfoAdd } from '@shared/components/error-popup/error-popup.actions';
+import { SortDirection, TableSort } from '@shared/types/shared/table-sort.type';
+import { MEMPOOL_STATISTICS_DETAILS_SORT, MempoolStatisticsDetailsSort } from '@mempool/mempool-statistics/mempool-statistics.actions';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 
 @UntilDestroy()
@@ -29,6 +29,20 @@ export class MempoolStatisticsDetailsComponent implements OnInit {
     this.listenToSortChange();
   }
 
+  copyHashToClipboard(hash: string): void {
+    this.store.dispatch<InfoAdd>({ type: ADD_INFO, payload: 'Copied to clipboard: ' + hash });
+  }
+
+  sortTable(sortBy: string): void {
+    const sortDirection = sortBy !== this.currentSort.sortBy
+      ? this.currentSort.sortDirection
+      : this.currentSort.sortDirection === SortDirection.ASC ? SortDirection.DSC : SortDirection.ASC;
+    this.store.dispatch<MempoolStatisticsDetailsSort>({
+      type: MEMPOOL_STATISTICS_DETAILS_SORT,
+      payload: { sortBy, sortDirection }
+    });
+  }
+
   private listenToStatisticsChanges(): void {
     this.activeOperation$ = this.store.select(selectMempoolStatisticsActiveOperation);
   }
@@ -37,20 +51,6 @@ export class MempoolStatisticsDetailsComponent implements OnInit {
     this.store.select(selectMempoolStatisticsDetailsSorting)
       .pipe(untilDestroyed(this))
       .subscribe(sort => this.currentSort = sort);
-  }
-
-  copyHashToClipboard(hash: string): void {
-    this.store.dispatch<InfoAdd>({ type: ADD_INFO, payload: 'Copied to clipboard: ' + hash });
-  }
-
-  sortTable(sortBy: string): void {
-    const sortDirection = sortBy !== this.currentSort.sortBy
-      ? this.currentSort.sortDirection
-      : this.currentSort.sortDirection === 'ascending' ? 'descending' : 'ascending';
-    this.store.dispatch<MempoolStatisticsDetailsSort>({
-      type: MEMPOOL_STATISTICS_DETAILS_SORT,
-      payload: { sortBy, sortDirection }
-    });
   }
 
 }

@@ -28,13 +28,13 @@
                                 [active]="activeSummary === 'memory'"
                                 [graphTitle]="'RAM'"
                                 [rotatedLabel]="'Usage'"
-                                [yAxisTickFormatting]="yAxisMegaBytesConversion"
+                                [yAxisTickFormatting]="yAxisGigaBytesConversion"
                                 [xTicksValues]="systemResource.xTicksValues"
                                 [colorScheme]="systemResource.colorScheme"
                                 [formattingType]="systemResource.memory.formattingType"></app-system-resources-graph>
 
     <app-system-resources-graph [chartData]="systemResource.io.series"
-                                [transitionDelay]="0.8"
+                                [transitionDelay]="0.6"
                                 [labelList]="systemResource.io.labels"
                                 [active]="activeSummary === 'io'"
                                 [resourceType]="'io'"
@@ -46,7 +46,7 @@
                                 [colorScheme]="systemResource.colorScheme"></app-system-resources-graph>
 
     <app-system-resources-graph [chartData]="systemResource.network.series"
-                                [transitionDelay]="1"
+                                [transitionDelay]="0.8"
                                 [labelList]="systemResource.network.labels"
                                 [active]="activeSummary === 'network'"
                                 [resourceType]="'network'"
@@ -58,7 +58,7 @@
                                 [colorScheme]="systemResource.colorScheme"></app-system-resources-graph>
 
     <app-system-resources-graph [chartData]="systemResource.storage.series"
-                                [transitionDelay]="0.6"
+                                [transitionDelay]="1"
                                 [labelList]="systemResource.storage.labels"
                                 [active]="activeSummary === 'storage'"
                                 [resourceType]="'storage'"

@@ -13,6 +13,7 @@ import { SmartContractsCodeComponent } from './smart-contracts-code/smart-contra
 import { SmartContractsFiltersComponent } from './smart-contracts-filters/smart-contracts-filters.component';
 import { NgxObjectDiffModule } from 'ngx-object-diff';
 import { SmartContractsDebugComponent } from './smart-contracts-debug/smart-contracts-debug.component';
+import { SmartContractsTableTooltipComponent } from './smart-contracts-table-tooltip/smart-contracts-table-tooltip.component';
 
 export const myMonacoLoad = () => {
   (window as any).monaco.languages.register({ id: 'michelson' });
@@ -129,7 +130,8 @@ const monacoConfig: NgxMonacoEditorConfig = {
     SmartContractsResultComponent,
     SmartContractsCodeComponent,
     SmartContractsFiltersComponent,
-    SmartContractsDebugComponent
+    SmartContractsDebugComponent,
+    SmartContractsTableTooltipComponent
   ],
   imports: [
     CommonModule,

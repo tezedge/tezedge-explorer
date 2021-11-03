@@ -227,11 +227,11 @@ export const environment = {
     // MEMPOOL,
     // TRACE,
     // PRECHECKER,
-    // DEBUG,N
+    // DEBUG,
     // PROD,
     // STORAGE,
     // OCTEZ_DEVELOP,
-    OCTEZ_MASTER,
+    // OCTEZ_MASTER,
     // OCTEZ_STORAGE
   ]
 };

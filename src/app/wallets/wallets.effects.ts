@@ -2,7 +2,7 @@ import { Injectable, NgZone } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { HttpClient } from '@angular/common/http';
 import { Store } from '@ngrx/store';
-import { catchError, delay, flatMap, map, switchMap, tap, withLatestFrom } from 'rxjs/operators';
+import { catchError, delay, map, mergeMap, switchMap, tap, withLatestFrom } from 'rxjs/operators';
 import { Router } from '@angular/router';
 import { Observable, of } from 'rxjs';
 import { getWallet, initializeWallet, transaction } from 'tezos-wallet';
@@ -47,7 +47,7 @@ export class WalletsEffects {
         // get state from store
         withLatestFrom(this.store, (action, state: any) => state),
         // get all accounts address
-        flatMap((state: any) => state.wallets.ids
+        mergeMap((state: any) => state.wallets.ids
             // TODO: temp comment to see changes fast
             // .filter(id =>
             //     // get balance only if last download is older than 3 mins
@@ -71,7 +71,7 @@ export class WalletsEffects {
         // wait for animation to finish
         delay(500),
 
-        flatMap((state: any) => of([]).pipe(
+        mergeMap((state: any) => of([]).pipe(
             // initialize
             initializeWallet(stateWallet => ({
                 publicKeyHash: state.detail.publicKeyHash,
@@ -104,7 +104,7 @@ export class WalletsEffects {
         // add state to effect
         withLatestFrom(this.store, (action: any, state) => ({ action, state })),
 
-        flatMap(({ action, state }) => of([]).pipe(
+        mergeMap(({ action, state }) => of([]).pipe(
 
             // wait until sodium is ready
             initializeWallet(stateWallet => ({

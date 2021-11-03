@@ -4,7 +4,7 @@ const { testForTezedge } = require('../../support');
 context('STORAGE RESOURCES', () => {
   beforeEach(() => {
     cy.intercept('GET', '/stats/context*').as('getStorageResources')
-      .visit(Cypress.config().baseUrl + '/#/resources/storage', { timeout: 10000 })
+      .visit(Cypress.config().baseUrl + '/#/resources/storage', { timeout: 100000 })
       .wait(1000);
   });
 

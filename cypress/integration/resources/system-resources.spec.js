@@ -1,11 +1,13 @@
 import { beforeEachForTezedge, testForTezedge } from '../../support';
 
 context('SYSTEM RESOURCES', () => {
-  beforeEachForTezedge(() => {
-    cy.intercept('GET', '/resources/*').as('getResources')
-      .visit(Cypress.config().baseUrl + '/#/resources/system', { timeout: 100000 })
-      .wait('@getResources')
-      .wait(1000);
+  beforeEach(() => {
+    beforeEachForTezedge(() => {
+      cy.intercept('GET', '/resources/*').as('getResources')
+        .visit(Cypress.config().baseUrl + '/#/resources/system', { timeout: 100000 })
+        .wait('@getResources')
+        .wait(1000);
+    });
   });
 
   it('[SYSTEM RESOURCES] should have status code 200 for system resources request', () => testForTezedge(() => {

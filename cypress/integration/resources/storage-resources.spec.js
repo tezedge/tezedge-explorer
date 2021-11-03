@@ -1,11 +1,13 @@
 import { beforeEachForTezedge, testForTezedge } from '../../support';
 
 context('STORAGE RESOURCES', () => {
-  beforeEachForTezedge(() => {
-    cy.intercept('GET', '/stats/context*').as('getStorageResources')
-      .visit(Cypress.config().baseUrl + '/#/resources/storage', { timeout: 100000 })
-      .wait('@getStorageResources')
-      .wait(1000);
+  beforeEach(() => {
+    beforeEachForTezedge(() => {
+      cy.intercept('GET', '/stats/context*').as('getStorageResources')
+        .visit(Cypress.config().baseUrl + '/#/resources/storage', { timeout: 100000 })
+        .wait('@getStorageResources')
+        .wait(1000);
+    });
   });
 
   it('[STORAGE RESOURCES] should parse storage stats RPC response', () => testForTezedge(() => {

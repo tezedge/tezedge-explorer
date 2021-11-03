@@ -15,7 +15,7 @@ export function reducer(state: SettingsNode = initialState, action): SettingsNod
   switch (action.type) {
     case 'SETTINGS_NODE_LOAD': {
       return {
-        activeNode: state.activeNode && state.activeNode.connected ? state.activeNode : null,
+        activeNode: state.activeNode && state.activeNode.connected ? state.activeNode : environment[0],
         ids: environment.api.map(node => node.id),
         entities: environment.api.reduce((accumulator, node) => ({
           ...accumulator,
@@ -30,7 +30,7 @@ export function reducer(state: SettingsNode = initialState, action): SettingsNod
     case 'SETTINGS_NODE_LOAD_SUCCESS': {
       return {
         ...state,
-        activeNode: state.activeNode?.connected !== true
+        activeNode: state.activeNode?.connected !== true || action.payload.activeNode.type === 'tezedge'
           ? { ...action.payload.activeNode, connected: true, features: action.payload.features }
           : state.activeNode,
         entities: {

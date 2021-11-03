@@ -1,16 +1,18 @@
 import { beforeEachForTezedge, testForTezedge } from '../../support';
 
 context('OPEN API', () => {
-  beforeEachForTezedge(() => {
-    cy.visit(Cypress.config().baseUrl + '/#/open-api', { timeout: 30000 })
-      .wait(1000);
+  beforeEach(() => {
+    beforeEachForTezedge(() => {
+      cy.visit(Cypress.config().baseUrl + '/#/open-api', { timeout: 30000 })
+        .wait(1000);
+    });
   });
 
   it('[OPEN API] should navigate successfully to open-api page', () => testForTezedge(() => {
     cy.url().should('include', '/#/open-api');
   }));
 
-  it('[OPEN API] should display tabs according to the enabled features',() => testForTezedge(() => {
+  it('[OPEN API] should display tabs according to the enabled features', () => testForTezedge(() => {
     cy.window().its('store').then(store => {
       store.select('settingsNode').subscribe(node => {
         let tabCount = 1;

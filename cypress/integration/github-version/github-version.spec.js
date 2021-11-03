@@ -1,11 +1,13 @@
 import { beforeEachForTezedge, testForTezedge } from '../../support';
 
 context('GITHUB VERSION', () => {
-  beforeEachForTezedge(() => {
-    cy.intercept('GET', '/dev/version/').as('getNodeTagRequest')
-      .intercept('GET', '/monitor/commit_hash/').as('getNodeLastCommitRequest')
-      .intercept('GET', '/v2/version/').as('getDebuggerLastCommitRequest')
-      .visit(Cypress.config().baseUrl);
+  beforeEach(() => {
+    beforeEachForTezedge(() => {
+      cy.intercept('GET', '/dev/version/').as('getNodeTagRequest')
+        .intercept('GET', '/monitor/commit_hash/').as('getNodeLastCommitRequest')
+        .intercept('GET', '/v2/version/').as('getDebuggerLastCommitRequest')
+        .visit(Cypress.config().baseUrl);
+    });
   });
 
   it('[GITHUB VERSION] display the Node release tag in the UI', () => testForTezedge(() => {

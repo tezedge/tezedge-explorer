@@ -15,7 +15,7 @@ export function reducer(state: SettingsNode = initialState, action): SettingsNod
   switch (action.type) {
     case 'SETTINGS_NODE_LOAD': {
       return {
-        activeNode: state.activeNode && state.activeNode.connected ? state.activeNode : environment[0],
+        activeNode: state.activeNode && state.activeNode.connected ? state.activeNode : null,
         ids: environment.api.map(node => node.id),
         entities: environment.api.reduce((accumulator, node) => ({
           ...accumulator,
@@ -28,11 +28,13 @@ export function reducer(state: SettingsNode = initialState, action): SettingsNod
     }
 
     case 'SETTINGS_NODE_LOAD_SUCCESS': {
+      const activeNode = (state.activeNode?.connected !== true || action.payload.activeNode.type === 'tezedge') && !action.payload.checkOnly
+        ? { ...action.payload.activeNode, connected: true, features: action.payload.features }
+        : state.activeNode;
+      localStorage.setItem('activeNode', activeNode.type);
       return {
         ...state,
-        activeNode: state.activeNode?.connected !== true || action.payload.activeNode.type === 'tezedge'
-          ? { ...action.payload.activeNode, connected: true, features: action.payload.features }
-          : state.activeNode,
+        activeNode,
         entities: {
           ...state.entities,
           [action.payload.activeNode.id]: {
@@ -65,9 +67,11 @@ export function reducer(state: SettingsNode = initialState, action): SettingsNod
     }
 
     case 'SETTINGS_NODE_CHANGE': {
+      const activeNode = state.entities[action.payload.activeNode.id];
+      localStorage.setItem('activeNode', activeNode.type);
       return {
         ...state,
-        activeNode: state.entities[action.payload.activeNode.id]
+        activeNode
       };
     }
 
@@ -86,9 +90,11 @@ export function reducer(state: SettingsNode = initialState, action): SettingsNod
     }
 
     case 'SETTINGS_NODE_LOAD_SANDBOX_SUCCESS': {
+      const activeNode = { ...action.payload.activeNode, connected: true };
+      localStorage.setItem('activeNode', activeNode.type);
       return {
         ...state,
-        activeNode: { ...action.payload.activeNode, connected: true },
+        activeNode,
         entities: {
           ...state.entities,
           [action.payload.activeNode.id]: {

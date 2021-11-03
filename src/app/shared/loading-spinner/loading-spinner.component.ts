@@ -10,7 +10,6 @@ import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 @Component({
   selector: 'app-loading-spinner',
   templateUrl: './loading-spinner.component.html',
-  host: { class: 'd-flex align-center' },
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class LoadingSpinnerComponent implements OnInit {
@@ -26,7 +25,7 @@ export class LoadingSpinnerComponent implements OnInit {
 
   private listenToLoading(): void {
     this.store.select(spinnerActiveMessage).pipe(
-      delay(0),
+      // delay(0),
       untilDestroyed(this)
     ).subscribe(spinner => {
       this.spinner = spinner;

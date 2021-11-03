@@ -147,9 +147,9 @@ export function reducer(state: LoadingSpinnerState = initialState, action: any):
   }
 }
 
-export const spinnerActiveMessage = (state: State) => state.spinner.pendingValues.length > 1
+export const spinnerActiveMessage = (state: State) => state.spinner?.pendingValues.length > 1
   ? [...state.spinner.pendingValues].sort((v1, v2) => v1.zIndex - v2.zIndex)[state.spinner.pendingValues.length - 1]
-  : state.spinner.pendingValues[0];
+  : state.spinner?.pendingValues[0];
 
 const systemResourcesLoad: LoadingSpinner = {
   type: SystemResourcesActionTypes.SYSTEM_RESOURCES_LOAD,

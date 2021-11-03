@@ -160,8 +160,8 @@ context('NETWORK', () => {
       .its('store')
       .then(store => {
         store.select('networkAction').subscribe(network => {
-          cy.wrap(network.entities[network.ids[0]].originalId).should('eq', 0)
-            .get('#firstPage').should('be.disabled')
+          expect(network.entities[network.ids[0]].originalId).to.equal(0);
+          cy.get('#firstPage').should('be.disabled')
             .get('#previousPage').should('be.disabled');
         });
       });

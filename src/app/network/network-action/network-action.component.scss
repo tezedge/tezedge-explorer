@@ -1,15 +1,12 @@
+@import 'variables';
 
-form {
+.user-date {
   height: 24px;
-  margin-right: 5px;
+  line-height: 25px;
+  width: 175px;
+  background-color: $foreground-1;
 
-  .custom-bottom-form-field {
-    margin: 0 4px;
-    width: 174px;
-
-    .p-absolute.icon-10 {
-      right: 6px;
-      height: 100%;
-    }
+  &:hover {
+    background-color: $foreground-2;
   }
 }

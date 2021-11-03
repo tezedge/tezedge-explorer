@@ -172,3 +172,4 @@ export function reducer(state: App = initialState, action): App {
 }
 
 export const appState = (state: State) => state.app;
+export const navigationMenuCollapsing = (state: State) => state.app.sidenav.collapsed;

@@ -90,8 +90,6 @@ export class AppComponent implements OnInit {
       type: 'APP_THEME_CHANGE',
       payload: theme,
     });
-
-    // (document.getElementById('app-style-theme') as any).href = 'styles.' + theme + '.css';
   }
 
   sandboxBakeBlock(): void {

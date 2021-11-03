@@ -19,7 +19,7 @@ export class SettingsNodeService {
     //   .pipe(map(response => SettingsNodeService.mapGetNodeFeatures(response)));
   }
 
-  getSettingsHeader(apiHttp: string): Observable<SettingsNodeEntityHeader> {
+  getSettingsHeader(apiHttp: string): Observable<SettingsNodeEntityHeader | any> {
     return this.http.get<SettingsNodeEntityHeader>(apiHttp + '/chains/main/blocks/head/header')
       .pipe(map(response => SettingsNodeService.mapGetSettingsHeaderResponse(response)));
   }
@@ -28,6 +28,7 @@ export class SettingsNodeService {
     return {
       hash: response.hash,
       chainId: response.chain_id,
+      network: this.getNodeNetwork(response.chain_id),
       level: response.level,
       proto: response.proto,
       predecessor: response.predecessor,
@@ -42,5 +43,14 @@ export class SettingsNodeService {
       seedNonceHash: response.seedNonceHash,
       proofOfWorkNonce: response.proofOfWorkNonce
     } as SettingsNodeEntityHeader;
+  }
+
+  private static getNodeNetwork(chainId: string): string {
+    switch (chainId) {
+      case 'NetXdQprcVkpaWU':
+        return 'mainnet';
+      case 'NetXZSsxBpMQeAT':
+        return 'hangzhou';
+    }
   }
 }

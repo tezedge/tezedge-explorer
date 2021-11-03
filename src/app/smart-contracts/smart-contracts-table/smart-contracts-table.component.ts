@@ -1,330 +1,192 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { Store } from '@ngrx/store';
+import { State } from '@app/app.reducers';
+import { SMART_CONTRACTS_SET_ACTIVE_CONTRACT } from '@smart-contracts/smart-contracts/smart-contracts.actions';
+import { ADD_INFO, InfoAdd } from '@shared/components/error-popup/error-popup.actions';
+import { Router } from '@angular/router';
+import { SmartContract } from '@shared/types/smart-contracts/smart-contract.type';
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
+import { selectSmartContracts, selectSmartContractsActiveContract } from '@smart-contracts/smart-contracts/smart-contracts.index';
+import { getMergedRoute } from '@shared/router/router-state.selectors';
+import { MergedRoute } from '@shared/router/merged-route';
+import { NgxObjectDiffService } from 'ngx-object-diff';
 
+@UntilDestroy()
 @Component({
   selector: 'app-smart-contracts-table',
   templateUrl: './smart-contracts-table.component.html',
-  styleUrls: ['./smart-contracts-table.component.scss']
+  styleUrls: ['./smart-contracts-table.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SmartContractsTableComponent implements OnInit {
 
-  contractList = CONTRACT_LIST;
-  activeContract = CONTRACT_LIST[5];
+  activeContract: SmartContract;
+  contracts: SmartContract[] = [];
+  storageDiff: string;
+  bigMapsDiff: string;
+  diffToShow: string;
 
-  constructor() { }
+  private routedBlockHash: number;
+  private routedContractHash: string;
+
+  constructor(private store: Store<State>,
+              private objectDiff: NgxObjectDiffService,
+              private cdRef: ChangeDetectorRef,
+              private router: Router) { }
 
   ngOnInit(): void {
+    this.objectDiff.setOpenChar('');
+    this.objectDiff.setCloseChar('');
+    this.listenToSmartContractsChange();
+    this.listenToRouteChange();
   }
 
-  selectContract(newContract: any): void {
-    this.activeContract = newContract;
+  private listenToSmartContractsChange(): void {
+    this.store.select(selectSmartContractsActiveContract)
+      .pipe(
+        untilDestroyed(this)
+      )
+      .subscribe(contract => {
+        this.activeContract = contract;
+        if (this.activeContract) {
+          this.storageDiff = this.getDifferences(this.activeContract.traceStorage, this.activeContract.blockStorage);
+          this.bigMapsDiff = this.getDifferences(this.activeContract.traceBigMaps, this.activeContract.blockBigMaps);
+          this.diffToShow = this.storageDiff;
+        }
+        this.cdRef.detectChanges();
+      });
+
+    this.store.select(selectSmartContracts)
+      .pipe(
+        untilDestroyed(this),
+      )
+      .subscribe((contracts: SmartContract[]) => {
+        this.contracts = contracts;
+        if (!this.activeContract && this.routedBlockHash) {
+          this.selectContractFromRoute();
+        }
+        this.cdRef.detectChanges();
+      });
   }
 
+  private listenToRouteChange(): void {
+    this.store.select(getMergedRoute)
+      .pipe(
+        untilDestroyed(this),
+      )
+      .subscribe((route: MergedRoute) => {
+        this.routedBlockHash = route.params.blockHash;
+        if (this.routedContractHash !== route.params.contractHash) {
+          this.routedContractHash = route.params.contractHash;
+          this.selectContractFromRoute();
+        }
+      });
+  }
+
+  private selectContractFromRoute(): void {
+    if (this.contracts.length === 0) {
+      return;
+    }
+    const index = this.contracts.findIndex(op => op.id.toString() === this.routedContractHash);
+    if (index !== -1) {
+      this.store.dispatch({ type: SMART_CONTRACTS_SET_ACTIVE_CONTRACT, payload: this.contracts[index] });
+    }
+  }
+
+  selectContract(newContract: SmartContract): void {
+    this.routedContractHash = newContract.hash;
+    this.router.navigate(['contracts', this.routedBlockHash, newContract.id]);
+    this.store.dispatch({ type: SMART_CONTRACTS_SET_ACTIVE_CONTRACT, payload: newContract });
+  }
+
+  copyHashToClipboard(hash: string, event: MouseEvent) {
+    event.stopPropagation();
+    this.store.dispatch<InfoAdd>({ type: ADD_INFO, payload: 'Copied to clipboard: ' + hash });
+  }
+
+  changeDiff(newDiff: string): void {
+    this.diffToShow = newDiff;
+  }
+
+  private getDifferences(currentActionState: any, prevActionState: any): string {
+    const diff = this.objectDiff.diff(prevActionState || {}, currentActionState || {});
+    let innerHTML = this.objectDiff.toJsonDiffView(diff);
+    const findAllOccurrences = (str, substr) => {
+      str = str.toLowerCase();
+      const result = [];
+      let idx = str.indexOf(substr);
+      while (idx !== -1) {
+        result.push(idx);
+        idx = str.indexOf(substr, idx + 1);
+      }
+      return result;
+    };
+    const delEndingTag = '</del>';
+    const insEndingTag = '</ins>';
+    innerHTML = innerHTML
+      .split('</del><span>,</span>').join(delEndingTag)
+      .split('</ins><span>,</span>').join(insEndingTag)
+      .split('<span>,</span>').join('')
+      .split('<span></span>\n').join('');
+    const delStart = '<del class="diff diff-key">';
+    const insStart = '<ins class="diff diff-key">';
+    const insDiffStart = '<ins class="diff">';
+    const insEnd = '</ins>';
+    const spanInside = '<span>: </span>';
+    findAllOccurrences(innerHTML, delStart).reverse().forEach(index => {
+      const delContentStartIdx = index + delStart.length;
+      const spanDelEndLimit = delContentStartIdx + innerHTML.substr(delContentStartIdx).indexOf(spanInside) + spanInside.length;
+      const delContentEndIdx = delContentStartIdx + innerHTML.substr(delContentStartIdx).indexOf(delEndingTag);
+      let oldValue = innerHTML.substring(spanDelEndLimit, delContentEndIdx);
+      oldValue = SmartContractsTableComponent.removeQuotesFromBigNumber(oldValue);
+      const oldValueTag = '<div class="old-value">' + oldValue + '</div>';
+      innerHTML = innerHTML.substring(0, spanDelEndLimit) + oldValueTag + innerHTML.substring(delContentEndIdx);
+    });
+    findAllOccurrences(innerHTML, delStart).reverse().forEach(index => {
+      const delContentStartIdx = index + delStart.length;
+      const delContentEndIdx = delContentStartIdx + innerHTML.substr(delContentStartIdx).indexOf(delEndingTag);
+      const nextInsTagStart = delContentEndIdx + innerHTML.substr(delContentEndIdx).indexOf(delEndingTag) + delEndingTag.length + 1;
+      const nextInsTagEnd = delContentEndIdx + innerHTML.substr(delContentEndIdx).indexOf(insEndingTag) + insEndingTag.length;
+      const nextInsTag = innerHTML.substring(nextInsTagStart, nextInsTagEnd);
+      innerHTML = innerHTML.substring(0, delContentEndIdx) + nextInsTag + innerHTML.substring(delContentEndIdx);
+      innerHTML = innerHTML.substring(0, nextInsTagStart + nextInsTag.length - 1) + innerHTML.substring(nextInsTagEnd + nextInsTag.length);
+    });
+    findAllOccurrences(innerHTML, insStart).reverse().forEach(index => {
+      const insContentStartIdx = index + insStart.length;
+      const spanInsEndLimit = innerHTML.substr(insContentStartIdx).indexOf(spanInside) + spanInside.length;
+      innerHTML = innerHTML.substring(0, insContentStartIdx) + innerHTML.substring(insContentStartIdx + spanInsEndLimit);
+    });
+    // search which has del right near div.diff-level and wrap all dels inside a div
+    // this covers case when multiple entries has been replaced by a single new one
+    const diffLevel = '<div class="diff-level"><del';
+    findAllOccurrences(innerHTML, diffLevel).reverse().forEach(index => {
+      const divContentStart = index + diffLevel.length - 4;
+      const indexOfInsDiffStart = innerHTML.substr(divContentStart).indexOf(insDiffStart);
+      const indexOfIns = innerHTML.substr(divContentStart).indexOf('<ins');
+      if (indexOfInsDiffStart !== -1 && indexOfInsDiffStart === indexOfIns) {
+        const insTagStart = divContentStart + indexOfInsDiffStart;
+        innerHTML = innerHTML.substring(0, divContentStart)
+          + '<div class="group-del">'
+          + innerHTML.substring(divContentStart, insTagStart)
+          + '</div>'
+          + innerHTML.substring(insTagStart);
+      }
+    });
+    findAllOccurrences(innerHTML, insStart).reverse().forEach(index => {
+      const insContentStartIdx = index + insStart.length;
+      const insContentEndIdx = insContentStartIdx + innerHTML.substr(insContentStartIdx).indexOf(insEnd);
+      let insContent = innerHTML.substring(insContentStartIdx, insContentEndIdx);
+      insContent = SmartContractsTableComponent.removeQuotesFromBigNumber(insContent);
+      innerHTML = innerHTML.substring(0, insContentStartIdx) + insContent + innerHTML.substring(insContentEndIdx);
+    });
+    return innerHTML;
+  }
+
+  private static removeQuotesFromBigNumber(text: string): string {
+    // for big numbers wrapped in strings, remove quotes to be shown as numbers; 17 characters is min + 2 quotes = 19 min
+    if (/"(\d+)"/.test(text) && text.length >= 19) {
+      text = text.slice(1, text.length - 1);
+    }
+    return text;
+  }
 }
-
-const CONTRACT_LIST = [
-  {
-    id: 0,
-    hash: 'tz1faswCTDciRzE4oJ9jn2Vm2dvjeyA9fUzU',
-    calls: 138
-  },
-  {
-    id: 1,
-    hash: 'LLojLSWEFWJfeuluGWR8ulgwrfejEfew9FJEle',
-    calls: 120
-  },
-  {
-    id: 2,
-    hash: 'KT1QuofAgnsWffHzLA7D78rxytJruGHDe7XG',
-    calls: 143
-  },
-  {
-    id: 3,
-    hash: 'Qm1KqTpEZ7Yob7QbPE4Hy4Wo8fHG8LhKxZSx',
-    calls: 66
-  },
-  {
-    id: 4,
-    hash: 'tz1b7tUupMgCNw2cCLpKTkSD1NZzB5TkP2sv',
-    calls: 184
-  },
-  {
-    id: 5,
-    hash: 'tz1gjaF81ZRRvdzjobyfVNsAeSC6PScjfQwN',
-    calls: 404
-  },
-  {
-    id: 6,
-    hash: 'Qm1KqTpEZ7Yob7QbPE4Hy4Wo8fHG8LhKxZSx',
-    calls: 407
-  },
-  {
-    id: 7,
-    hash: 'tz1faswCTDciRzE4oJ9jn2Vm2dvjeyA9fUzU',
-    calls: 270
-  },
-  {
-    id: 8,
-    hash: 'tz1b7tUupMgCNw2cCLpKTkSD1NZzB5TkP2sv',
-    calls: 195
-  },
-  {
-    id: 9,
-    hash: 'Qm1KqTpEZ7Yob7QbPE4Hy4Wo8fHG8LhKxZSx',
-    calls: 356
-  },
-  {
-    id: 10,
-    hash: 'tz1gjaF81ZRRvdzjobyfVNsAeSC6PScjfQwN',
-    calls: 377
-  },
-  {
-    id: 11,
-    hash: 'LLojLSWEFWJfeuluGWR8ulgwrfejEfew9FJEle',
-    calls: 55
-  },
-  {
-    id: 12,
-    hash: 'tz1b7tUupMgCNw2cCLpKTkSD1NZzB5TkP2sv',
-    calls: 489
-  },
-  {
-    id: 13,
-    hash: 'LLojLSWEFWJfeuluGWR8ulgwrfejEfew9FJEle',
-    calls: 270
-  },
-  {
-    id: 14,
-    hash: 'tz1faswCTDciRzE4oJ9jn2Vm2dvjeyA9fUzU',
-    calls: 411
-  },
-  {
-    id: 15,
-    hash: 'tz1gjaF81ZRRvdzjobyfVNsAeSC6PScjfQwN',
-    calls: 281
-  },
-  {
-    id: 16,
-    hash: 'tz1b7tUupMgCNw2cCLpKTkSD1NZzB5TkP2sv',
-    calls: 241
-  },
-  {
-    id: 17,
-    hash: 'LLojLSWEFWJfeuluGWR8ulgwrfejEfew9FJEle',
-    calls: 312
-  },
-  {
-    id: 18,
-    hash: 'Qm1KqTpEZ7Yob7QbPE4Hy4Wo8fHG8LhKxZSx',
-    calls: 30
-  },
-  {
-    id: 19,
-    hash: 'LLojLSWEFWJfeuluGWR8ulgwrfejEfew9FJEle',
-    calls: 129
-  },
-  {
-    id: 20,
-    hash: 'tz1gjaF81ZRRvdzjobyfVNsAeSC6PScjfQwN',
-    calls: 46
-  },
-  {
-    id: 21,
-    hash: 'tz1faswCTDciRzE4oJ9jn2Vm2dvjeyA9fUzU',
-    calls: 450
-  },
-  {
-    id: 22,
-    hash: 'KT1QuofAgnsWffHzLA7D78rxytJruGHDe7XG',
-    calls: 309
-  },
-  {
-    id: 23,
-    hash: 'LLojLSWEFWJfeuluGWR8ulgwrfejEfew9FJEle',
-    calls: 14
-  },
-  {
-    id: 24,
-    hash: 'tz1b7tUupMgCNw2cCLpKTkSD1NZzB5TkP2sv',
-    calls: 400
-  },
-  {
-    id: 25,
-    hash: 'tz1gjaF81ZRRvdzjobyfVNsAeSC6PScjfQwN',
-    calls: 381
-  },
-  {
-    id: 26,
-    hash: 'KT1QuofAgnsWffHzLA7D78rxytJruGHDe7XG',
-    calls: 79
-  },
-  {
-    id: 27,
-    hash: 'Qm1KqTpEZ7Yob7QbPE4Hy4Wo8fHG8LhKxZSx',
-    calls: 25
-  },
-  {
-    id: 28,
-    hash: 'tz1faswCTDciRzE4oJ9jn2Vm2dvjeyA9fUzU',
-    calls: 178
-  },
-  {
-    id: 29,
-    hash: 'LLojLSWEFWJfeuluGWR8ulgwrfejEfew9FJEle',
-    calls: 155
-  },
-  {
-    id: 30,
-    hash: 'tz1gjaF81ZRRvdzjobyfVNsAeSC6PScjfQwN',
-    calls: 270
-  },
-  {
-    id: 31,
-    hash: 'LLojLSWEFWJfeuluGWR8ulgwrfejEfew9FJEle',
-    calls: 301
-  },
-  {
-    id: 32,
-    hash: 'tz1b7tUupMgCNw2cCLpKTkSD1NZzB5TkP2sv',
-    calls: 90
-  },
-  {
-    id: 33,
-    hash: 'Qm1KqTpEZ7Yob7QbPE4Hy4Wo8fHG8LhKxZSx',
-    calls: 384
-  },
-  {
-    id: 34,
-    hash: 'KT1QuofAgnsWffHzLA7D78rxytJruGHDe7XG',
-    calls: 395
-  },
-  {
-    id: 35,
-    hash: 'tz1faswCTDciRzE4oJ9jn2Vm2dvjeyA9fUzU',
-    calls: 262
-  },
-  {
-    id: 36,
-    hash: 'tz1b7tUupMgCNw2cCLpKTkSD1NZzB5TkP2sv',
-    calls: 415
-  },
-  {
-    id: 37,
-    hash: 'LLojLSWEFWJfeuluGWR8ulgwrfejEfew9FJEle',
-    calls: 351
-  },
-  {
-    id: 38,
-    hash: 'KT1QuofAgnsWffHzLA7D78rxytJruGHDe7XG',
-    calls: 168
-  },
-  {
-    id: 39,
-    hash: 'Qm1KqTpEZ7Yob7QbPE4Hy4Wo8fHG8LhKxZSx',
-    calls: 241
-  },
-  {
-    id: 40,
-    hash: 'tz1gjaF81ZRRvdzjobyfVNsAeSC6PScjfQwN',
-    calls: 117
-  },
-  {
-    id: 41,
-    hash: 'LLojslkdijv8efeuluGWasjd0990jaeJEle',
-    calls: 484
-  },
-  {
-    id: 42,
-    hash: 'tz1faswCTDciRzE4oJ9jn2Vm2dvjeyA9fUzU',
-    calls: 45
-  },
-  {
-    id: 43,
-    hash: 'JKef0se9fskfsfekuh8723jf32FJEle',
-    calls: 431
-  },
-  {
-    id: 44,
-    hash: 'tz1b7tUupMgCNw2cCLpKTkSD1NZzB5TkP2sv',
-    calls: 46
-  },
-  {
-    id: 45,
-    hash: 'tz1gjaF81ZRRvdzjobyfVNsAeSC6PScjfQwN',
-    calls: 141
-  },
-  {
-    id: 46,
-    hash: 'KT1QuofAgnsWffHzLA7D78rxytJruGHDe7XG',
-    calls: 238
-  },
-  {
-    id: 47,
-    hash: 'KJJ99EFWJfeuluGWR8ulgwrfejEfew9FJEle',
-    calls: 450
-  },
-  {
-    id: 48,
-    hash: 'tz1b7tUupMgCNw2cCLpKTkSD1NZzB5TkP2sv',
-    calls: 122
-  },
-  {
-    id: 49,
-    hash: 'tz1faswCTDciRzE4oJ9jn2Vm2dvjeyA9fUzU',
-    calls: 471
-  },
-  {
-    id: 50,
-    hash: 'tz1gjaF81ZRRvdzjobyfVNsAeSC6PScjfQwN',
-    calls: 393
-  },
-  {
-    id: 51,
-    hash: 'Qm1KqTpEZ7Yob7QbPE4Hy4Wo8fHG8LhKxZSx',
-    calls: 361
-  },
-  {
-    id: 52,
-    hash: 'tz1b7tUupMgCNw2cCLpKTkSD1NZzB5TkP2sv',
-    calls: 118
-  },
-  {
-    id: 53,
-    hash: 'LLojLSWEFWJfeuluGWR8ulgwrfejEfew9FJEle',
-    calls: 385
-  },
-  {
-    id: 54,
-    hash: 'Qm1KqTpEZ7Yob7QbPE4Hy4Wo8fHG8LhKxZSx',
-    calls: 306
-  },
-  {
-    id: 55,
-    hash: 'tz1gjaF81ZRRvdzjobyfVNsAeSC6PScjfQwN',
-    calls: 278
-  },
-  {
-    id: 56,
-    hash: 'tz1faswCTDciRzE4oJ9jn2Vm2dvjeyA9fUzU',
-    calls: 362
-  },
-  {
-    id: 57,
-    hash: 'Qm1KqTpEZ7Yob7QbPE4Hy4Wo8fHG8LhKxZSx',
-    calls: 239
-  },
-  {
-    id: 58,
-    hash: 'KT1QuofAgnsWffHzLA7D78rxytJruGHDe7XG',
-    calls: 278
-  },
-  {
-    id: 59,
-    hash: 'BLkkkSJLKESWFuEFS0gsrli843rger3FJEle',
-    calls: 82
-  },
-  {
-    id: 60,
-    hash: 'tz1gjaF81ZRRvdzjobyfVNsAeSC6PScjfQwN',
-    calls: 455
-  }
-];

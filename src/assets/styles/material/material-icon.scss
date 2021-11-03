@@ -1,3 +1,5 @@
+@import 'variables';
+
 .mat-icon {
   &.icon-8 {
     width: 8px;
@@ -48,15 +50,15 @@
   }
 
   &.icon-foreground svg * {
-    fill: var(--foreground);
+    fill: $foreground;
   }
 
   &.icon-foreground-4 svg * {
-    fill: var(--foreground-4);
+    fill: $foreground-4;
   }
 
   &.icon-foreground-7 svg * {
-    fill: var(--foreground-7);
+    fill: $foreground-7;
   }
 
   &.fill-opacity-1 svg * {

@@ -1,5 +1,7 @@
+@import 'variables';
+
 .border {
-  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  border: 1px solid $foreground-1 !important;
 }
 
 .border-rad-4 {
@@ -11,21 +13,37 @@
 }
 
 .border-top {
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  border-top: 1px solid $foreground-1;
 }
 
 .border-bottom {
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  border-bottom: 1px solid $foreground-1;
 }
 
 .border-right {
-  border-right: 1px solid rgba(255, 255, 255, 0.1);
+  border-right: 1px solid $foreground-1;
 }
 
 .border-left {
-  border-left: 1px solid rgba(255, 255, 255, 0.1);
+  border-left: 1px solid $foreground-1;
 }
 
 .border-remove {
   border: none !important;
+}
+
+.background-base {
+  background-color: $background-base;
+}
+
+.background-surface-fade-1 {
+  background-color: $background-surface-fade-1;
+}
+
+.background-surface-fade-2 {
+  background-color: $background-surface-fade-2;
+}
+
+.no-resize {
+  resize: none !important;
 }

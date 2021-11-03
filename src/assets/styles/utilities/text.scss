@@ -18,6 +18,10 @@
   text-decoration: none !important;
 }
 
+.text-decoration-underline-hover:hover {
+  text-decoration: underline;
+}
+
 .f-10 {
   font-size: 10px;
 }
@@ -50,6 +54,10 @@
   text-align: right;
 }
 
+.text-center {
+  text-align: center;
+}
+
 .pointer {
   cursor: pointer;
 }
@@ -62,6 +70,10 @@
   pointer-events: none;
 }
 
+@mixin truncate() {
+  @extend .truncate;
+}
+
 .truncate {
   white-space: nowrap;
   overflow: hidden;
@@ -69,35 +81,67 @@
 }
 
 .foreground {
-  color: var(--foreground) !important;
+  color: $foreground !important;
 }
 
 .foreground-1 {
-  color: var(--foreground-1) !important;
+  color: $foreground-1 !important;
 }
 
 .foreground-2 {
-  color: var(--foreground-2) !important;
+  color: $foreground-2 !important;
 }
 
 .foreground-4 {
-  color: var(--foreground-4) !important;
+  color: $foreground-4 !important;
 }
 
 .foreground-5 {
-  color: var(--foreground-5) !important;
+  color: $foreground-5 !important;
 }
 
 .foreground-6 {
-  color: var(--foreground-6) !important;
+  color: $foreground-6 !important;
 }
 
 .foreground-7 {
-  color: var(--foreground-7) !important;
+  color: $foreground-7 !important;
 }
 
 .foreground-9 {
-  color: var(--foreground-9) !important;
+  color: $foreground-9 !important;
+}
+
+.foreground-hover:hover {
+  color: $foreground !important;
+}
+
+.foreground-hover-1:hover {
+  color: $foreground-1 !important;
+}
+
+.foreground-hover-2:hover {
+  color: $foreground-2 !important;
+}
+
+.foreground-hover-4:hover {
+  color: $foreground-4 !important;
+}
+
+.foreground-hover-5:hover {
+  color: $foreground-5 !important;
+}
+
+.foreground-hover-6:hover {
+  color: $foreground-6 !important;
+}
+
+.foreground-hover-7:hover {
+  color: $foreground-7 !important;
+}
+
+.foreground-hover-9:hover {
+  color: $foreground-9 !important;
 }
 
 .text-red {
@@ -113,4 +157,9 @@
 .text-yellow {
   color: #ff9f0a !important;
   fill: #ff9f0a !important;
+}
+
+.text-green {
+  color: #32d74b !important;
+  fill: #32d74b !important;
 }

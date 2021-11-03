@@ -4,7 +4,7 @@ import * as moment from 'moment-mini-ts';
 export class TezedgeTimeValidator {
 
   static isTime(control: FormControl): { [key: string]: any } {
-    if (!control.value ) {
+    if (!control.value) {
       return null;
     }
     const pattern = /(2[0-3]|[01][0-9]):([0-5][0-9]):([0-5][0-9])(.[0-9]?[0-9]?[0-9], |.[0-9]?[0-9]?[0-9],|, |,)([0-3]?[0-9])( ([A-Za-z]{1,3}) |(([./-])[0-1]?[0-9]([./-])))([0-9][0-9])( |)/g;
@@ -32,7 +32,7 @@ export class TezedgeTimeValidator {
     return date;
   }
 
-  private static getValidDate(dateStr): string {
+  private static getValidDate(dateStr: string): string {
     return ['DD/MM/YY', 'DD-MM-YY', 'DD.MM.YY', 'DD MMM YY']
       .filter(format => moment(dateStr, format).toString() !== 'Invalid date')
       .map(foundFormat => moment(dateStr, foundFormat).toString())[0];

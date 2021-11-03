@@ -2,18 +2,12 @@ import { ChangeDetectionStrategy, Component, NgZone, OnInit } from '@angular/cor
 import { Store } from '@ngrx/store';
 import { State } from '@app/app.reducers';
 import { BehaviorSubject, Observable, tap } from 'rxjs';
-import { animate, style, transition, trigger } from '@angular/animations';
 import { distinctUntilChanged, filter } from 'rxjs/operators';
 import { MempoolEndorsementStatistics } from '@shared/types/mempool/mempool-endorsement/mempool-endorsement-statistics.type';
-import Timeout = NodeJS.Timeout;
 import { selectMempoolEndorsementCurrentBlock, selectMempoolEndorsementStatistics } from '@mempool/mempool-endorsement/mempool-endorsement.reducer';
+import { refreshBlock } from '@shared/constants/animations';
+import Timeout = NodeJS.Timeout;
 
-const refreshBlock = trigger('refreshBlock', [
-  transition('* => *', [
-    style({ backgroundColor: 'lightgray' }),
-    animate(250, style({ backgroundColor: 'transparent' })),
-  ])
-]);
 
 @Component({
   selector: 'app-mempool-endorsement-statistics',
@@ -27,14 +21,13 @@ export class MempoolEndorsementStatisticsComponent implements OnInit {
   statistics$: Observable<MempoolEndorsementStatistics>;
   currentBlock$: Observable<number>;
   previousBlockElapsedTime: number;
-
-  private interval: Timeout;
-
   readonly elapsedTime$: BehaviorSubject<number> = new BehaviorSubject<number>(null);
-  readonly trackStats = entry => entry.value;
+  private interval: Timeout;
 
   constructor(private store: Store<State>,
               private zone: NgZone) { }
+
+  readonly trackStats = entry => entry.value;
 
   ngOnInit(): void {
     this.listenToEndorsementStatisticsChanges();

@@ -1,0 +1,14 @@
+@import 'variables';
+
+.run-contract {
+  padding: 5px 7px;
+  background-color: $foreground-2;
+
+  &:hover:not([disabled]) {
+    background-color: $background-surface-fade-2;
+  }
+}
+
+textarea {
+  font-family: Consolas, "Courier New", monospace;
+}

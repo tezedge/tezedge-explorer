@@ -1,0 +1,28 @@
+@import 'variables';
+
+.primary-button {
+  background-color: $foreground-1;
+  height: 24px;
+
+  &:hover:not([disabled]) {
+    background-color: $foreground-2;
+  }
+
+  &[disabled] {
+    opacity: 0.5;
+  }
+}
+
+form {
+  height: 24px;
+
+  .custom-bottom-form-field {
+    margin: 0 4px;
+    width: 420px;
+
+    .p-absolute {
+      right: 6px;
+      height: 100%;
+    }
+  }
+}

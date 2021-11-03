@@ -1,3 +1,5 @@
+@import 'variables';
+
 .state-machine-slider.mat-slider-horizontal {
   height: 32px;
 
@@ -6,7 +8,7 @@
 
     .mat-slider-track-fill,
     .mat-slider-track-background {
-      background-color: rgba(255, 255, 255, 0.2);
+      background-color: $foreground-2;
     }
 
     .mat-slider-thumb {

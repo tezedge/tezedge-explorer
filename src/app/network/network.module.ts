@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { NetworkRoutingModule } from './network-routing.module';
+import { NetworkRoutingModule } from './network.routing';
 import { NetworkComponent } from '@network/network.component';
 import { NetworkPeersComponent } from '@network/network-peers/network-peers.component';
 import { NetworkStatsComponent } from '@network/network-stats/network-stats.component';

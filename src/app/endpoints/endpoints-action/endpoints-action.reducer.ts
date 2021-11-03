@@ -1,4 +1,4 @@
-import * as moment from 'moment-mini-ts';
+import { toReadableDate } from '@helpers/date.helper';
 
 const initialState: any = {
     ids: [],
@@ -32,7 +32,7 @@ export function reducer(state = initialState, action) {
                                 ...endpointAction,
                                 message,
                                 preview: message.payload.length > 20 ? message.payload.substring(0, 20) + '...' : '',
-                                datetime: moment(Math.ceil(endpointAction.timestamp / 1000000)).format('HH:mm:ss.SSS, DD MMM YY'),
+                                datetime: toReadableDate(endpointAction.timestamp),
                             },
                         };
 

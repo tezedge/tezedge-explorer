@@ -7,9 +7,9 @@ import {
   MEMPOOL_STATISTICS_SORT,
   MEMPOOL_STATISTICS_STOP,
   MempoolStatisticsActions
-} from '@mempool/mempool-statistics/mempool-statistics.action';
+} from '@mempool/mempool-statistics/mempool-statistics.actions';
 import { MempoolStatisticsOperation } from '@shared/types/mempool/statistics/mempool-statistics-operation.type';
-import { TableSort } from '@shared/types/shared/table-sort.type';
+import { SortDirection, TableSort } from '@shared/types/shared/table-sort.type';
 import { MempoolStatisticsOperationNode } from '@shared/types/mempool/statistics/mempool-statistics-operation-node.type';
 
 const initialState: MempoolStatisticsState = {
@@ -17,11 +17,11 @@ const initialState: MempoolStatisticsState = {
   activeOperation: null,
   sort: {
     sortBy: 'delta',
-    sortDirection: 'descending'
+    sortDirection: SortDirection.DSC
   },
   detailsSort: {
     sortBy: 'received',
-    sortDirection: 'ascending'
+    sortDirection: SortDirection.ASC
   }
 };
 
@@ -38,12 +38,18 @@ export function reducer(state: MempoolStatisticsState = initialState, action: Me
     }
 
     case MEMPOOL_STATISTICS_CHANGE_ACTIVE_OPERATION: {
-      const nodes = sortNodes([...action.payload.nodes], state.detailsSort);
+      let operation;
+      if (typeof action.payload === 'string') {
+        operation = state.operations.find(op => op.hash === action.payload);
+      } else {
+        operation = action.payload;
+      }
+      const nodes = sortNodes([...operation.nodes], state.detailsSort);
 
       return {
         ...state,
         activeOperation: {
-          ...action.payload,
+          ...operation,
           nodes
         }
       };
@@ -88,14 +94,14 @@ function sortOperations(operations: MempoolStatisticsOperation[], sort: TableSor
   const numberSort = (o1: MempoolStatisticsOperation, o2: MempoolStatisticsOperation): number => {
     const o2Sort = o2[sortProperty] ?? Number.MAX_VALUE;
     const o1Sort = o1[sortProperty] ?? Number.MAX_VALUE;
-    return sort.sortDirection === 'descending'
+    return sort.sortDirection === SortDirection.DSC
       ? o2Sort - o1Sort
       : o1Sort - o2Sort;
   };
 
   if (isStringSorting) {
     operations.sort((o1, o2) =>
-      sort.sortDirection === 'descending'
+      sort.sortDirection === SortDirection.DSC
         ? o2[sortProperty] > o1[sortProperty] ? 1 : -1
         : o1[sortProperty] > o2[sortProperty] ? 1 : -1
     );
@@ -117,7 +123,7 @@ function sortNodes(nodes: MempoolStatisticsOperationNode[], sort: TableSort): Me
       o2Sort = o2[sortProperty][0]?.latency ?? Number.MAX_VALUE;
       o1Sort = o1[sortProperty][0]?.latency ?? Number.MAX_VALUE;
     }
-    return sort.sortDirection === 'descending'
+    return sort.sortDirection === SortDirection.DSC
       ? o2Sort - o1Sort
       : o1Sort - o2Sort;
   };

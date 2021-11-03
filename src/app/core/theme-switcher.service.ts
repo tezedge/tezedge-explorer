@@ -26,20 +26,20 @@ const DARK_THEME: Theme = {
 const LIGHT_THEME: Theme = {
   name: 'light',
   cssVariables: {
-    '--background-base': '#f5f9fc',
-    '--background-surface': '#fefefe',
-    '--background-surface-fade-1': '#e1e1e1',
+    '--background-base': '#fefefe',
+    '--background-surface': '#f5f5f5',
+    '--background-surface-fade-1': '#ffffff',
     '--background-surface-fade-2': '#cacaca',
-    '--background-surface-strong': '#fff',
-    '--foreground': '#000',
-    '--foreground-1': 'rgba(0,0,0,0.1)',
-    '--foreground-2': 'rgba(0,0,0,0.2)',
-    '--foreground-4': 'rgba(0,0,0,0.4)',
-    '--foreground-5': 'rgba(0,0,0,0.5)',
-    '--foreground-6': 'rgba(0,0,0,0.6)',
-    '--foreground-7': 'rgba(0,0,0,0.7)',
-    '--foreground-9': 'rgba(0,0,0,0.9)',
-    '--active-surface': '#204E8A',
+    '--background-surface-strong': '#dadada',
+    '--foreground': 'rgb(27,27,29)',
+    '--foreground-1': 'rgba(27,27,29,0.1)',
+    '--foreground-2': 'rgba(27,27,29,0.2)',
+    '--foreground-4': 'rgba(27,27,29,0.4)',
+    '--foreground-5': 'rgba(27,27,29,0.5)',
+    '--foreground-6': 'rgba(27,27,29,0.6)',
+    '--foreground-7': 'rgba(27,27,29,0.7)',
+    '--foreground-9': 'rgba(27,27,29,0.9)',
+    '--active-surface': '#204e8a',
   }
 };
 

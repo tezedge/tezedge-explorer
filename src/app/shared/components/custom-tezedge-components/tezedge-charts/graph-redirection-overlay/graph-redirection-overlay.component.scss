@@ -1,0 +1,22 @@
+.redirection-overlay {
+  font-size: 12px;
+  color: var(--foreground-7);
+  background: var(--background-surface);
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
+  border-radius: 4px;
+
+  .line {
+    height: 1px;
+    background: var(--foreground-1);
+  }
+
+  > div:not(.line) {
+    padding: 7px 10px;
+  }
+
+  .pointer:hover {
+    background-color: var(--foreground-1);
+  }
+
+}

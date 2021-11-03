@@ -1,6 +1,6 @@
-import { TableSort } from '@shared/types/shared/table-sort.type';
+import { SortDirection, TableSort } from '@shared/types/shared/table-sort.type';
 
 export interface MempoolEndorsementSort extends TableSort {
   sortBy: string;
-  sortDirection: 'ascending' | 'descending';
+  sortDirection: SortDirection.ASC | SortDirection.DSC;
 }

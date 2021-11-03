@@ -1,12 +1,17 @@
 import { Action } from '@ngrx/store';
 
-export enum StorageBlockActionTypes {
+enum StorageBlockActionTypes {
+  STORAGE_BLOCK_LOAD_ROUTED_BLOCK = 'STORAGE_BLOCK_LOAD_ROUTED_BLOCK',
   STORAGE_BLOCK_MAP_AVAILABLE_CONTEXTS = 'STORAGE_BLOCK_MAP_AVAILABLE_CONTEXTS',
   STORAGE_BLOCK_CHECK_AVAILABLE_CONTEXTS = 'STORAGE_BLOCK_CHECK_AVAILABLE_CONTEXTS',
 }
 
+export const STORAGE_BLOCK_LOAD_ROUTED_BLOCK = StorageBlockActionTypes.STORAGE_BLOCK_LOAD_ROUTED_BLOCK;
+export const STORAGE_BLOCK_MAP_AVAILABLE_CONTEXTS = StorageBlockActionTypes.STORAGE_BLOCK_MAP_AVAILABLE_CONTEXTS;
+export const STORAGE_BLOCK_CHECK_AVAILABLE_CONTEXTS = StorageBlockActionTypes.STORAGE_BLOCK_CHECK_AVAILABLE_CONTEXTS;
+
 export class MapAvailableContexts implements Action {
-  readonly type = StorageBlockActionTypes.STORAGE_BLOCK_MAP_AVAILABLE_CONTEXTS;
+  readonly type = STORAGE_BLOCK_MAP_AVAILABLE_CONTEXTS;
 
   constructor(public payload: string[]) { }
 }

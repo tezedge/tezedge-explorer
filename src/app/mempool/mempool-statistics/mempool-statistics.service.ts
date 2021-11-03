@@ -14,7 +14,6 @@ export class MempoolStatisticsService {
   getOperationNodeStats(api: string): Observable<MempoolStatisticsOperation[]> {
     const url = `${api}/dev/shell/automaton/mempool/operation_stats`;
     return this.http.get<MempoolStatisticsOperation[]>(url).pipe(
-      // return this.http.get<MempoolStatisticsOperation[]>('assets/json/mempool-statistics.json').pipe(
       map(this.mapOperationNodeStatsResponse)
     );
   }

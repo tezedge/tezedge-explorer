@@ -17,6 +17,11 @@
               "path": "./custom-webpack.config.js"
             },
             "optimization": false,
+            "sourceMap": true,
+            "namedChunks": true,
+            "extractLicenses": true,
+            "vendorChunk": true,
+            "buildOptimizer": false,
             "outputPath": "dist/tezedge-explorer",
             "index": "src/index.html",
             "main": "src/main.ts",
@@ -32,7 +37,8 @@
             "stylePreprocessorOptions": {
               "includePaths": [
                 "src/assets",
-                "src/assets/styles"
+                "src/assets/styles",
+                "src/assets/styles/utilities"
               ]
             },
             "aot": true,
@@ -61,14 +67,7 @@
                 "bundleName": "swagger-ui"
               },
               {
-                "input": "src/styles.light.scss",
-                "bundleName": "styles.light",
-                "inject": false
-              },
-              {
-                "input": "src/styles.dark.scss",
-                "bundleName": "styles.dark",
-                "inject": false
+                "input": "src/styles.scss"
               }
             ],
             "scripts": [
@@ -191,14 +190,7 @@
             ],
             "styles": [
               {
-                "input": "src/styles.light.scss",
-                "bundleName": "styles.light",
-                "inject": false
-              },
-              {
-                "input": "src/styles.dark.scss",
-                "bundleName": "styles.dark",
-                "inject": false
+                "input": "src/styles.scss"
               }
             ],
             "scripts": []

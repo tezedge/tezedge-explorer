@@ -4,8 +4,6 @@
   min-width: 1225px;
 
   .row {
-    height: 36px;
-    display: grid;
     grid-template-columns: 70px 230px 110px 90px 120px 155px 80px 95px 75px 110px 90px;
 
     &.head {
@@ -60,6 +58,7 @@
       border-radius: 10px;
       line-height: 20px;
       height: 20px;
+      color: #fff;
 
       &.broadcast {
         background-color: darken(#32d74b, 20);
@@ -93,4 +92,21 @@
 
 .details {
   padding-left: 21px;
+}
+
+.table-footer {
+  background-color: var(--background-surface-fade-2);
+
+  form {
+    height: 24px;
+
+    .custom-bottom-form-field {
+      width: 300px;
+
+      .p-absolute {
+        right: 6px;
+        height: 100%;
+      }
+    }
+  }
 }

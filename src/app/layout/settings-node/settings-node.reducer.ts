@@ -53,7 +53,8 @@ export function reducer(state: SettingsNode = initialState, action): SettingsNod
         ...state,
         activeNode: {
           ...state.activeNode,
-          connected: action.payload.activeNode.id === state.activeNode.id ? false : state.activeNode.connected
+          connected: (action.payload.activeNode && state.activeNode && action.payload.activeNode.id === state.activeNode.id)
+            ? false : state.activeNode.connected
         },
         entities: {
           ...state.entities,
@@ -129,3 +130,8 @@ export function reducer(state: SettingsNode = initialState, action): SettingsNod
 
 export const selectActiveNode = (state: State): SettingsNodeApi => state.settingsNode.activeNode;
 export const selectFeatures = (state: State) => state.settingsNode.activeNode.features;
+export const selectActiveNodeNetwork = (state: State): string => selectActiveNodeHeader(state).network;
+export const selectActiveNodeHeader = (state: State): SettingsNodeEntityHeader => Object.keys(state.settingsNode.entities)
+  .map(key => state.settingsNode.entities[key])
+  .find(node => node.id === state.settingsNode.activeNode.id)
+  .header;

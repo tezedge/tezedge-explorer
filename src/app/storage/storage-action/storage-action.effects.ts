@@ -5,7 +5,7 @@ import { Store } from '@ngrx/store';
 import { catchError, map, switchMap, withLatestFrom } from 'rxjs/operators';
 import { State } from '@app/app.reducers';
 import { empty, of } from 'rxjs';
-import { ADD_ERROR } from '@shared/error-popup/error-popup.actions';
+import { ADD_ERROR } from '@shared/components/error-popup/error-popup.actions';
 
 @Injectable({ providedIn: 'root' })
 export class StorageActionEffects {

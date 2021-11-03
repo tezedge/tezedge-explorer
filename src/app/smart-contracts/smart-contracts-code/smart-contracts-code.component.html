@@ -1,0 +1,32 @@
+<div fxFlexFill class="p-relative border border-rad-2 flex-column">
+  <div class="breakpoint-list p-absolute">
+    <div class="bullet"
+         (click)="toggleBreakpoint(i)"
+         [class.active]="breakpointList.includes(i)"
+         *ngFor="let line of activeContract?.code?.split('\n'); let i=index"></div>
+  </div>
+
+  <div fxFlex="34px" class="foreground-4 padding-10 f-12">{{ debugConfig.currentStep !== undefined ? 'GAS' : 'SOURCE CODE' }}
+    <span *ngIf="debugConfig.currentStep !== undefined">
+      <span class="debugging foreground">DEBUGGING</span>
+    </span>
+  </div>
+
+  <div fxFlex="calc(100% - 34px)" class="flex-row overflow-hidden">
+
+    <div class="gas-list text-right flex-column p-relative"
+         [style.top]="scrolledCode"
+         [class.is-debugging]="debugConfig.currentStep !== undefined">
+      <pre class="value" *ngFor="let gasStep of gasTrace"
+           [class.text-red]="gasStep > 100"
+           [class.text-yellow]="gasStep > 50 && gasStep < 100">{{ gasStep }}</pre>
+    </div>
+
+    <div class="code-wrapper overflow-hidden"
+         [class.is-debugging]="debugConfig.currentStep !== undefined">
+      <ngx-monaco-editor [options]="editorOptions"
+                         (onInit)="onEditorInit($event)"
+                         [ngModel]="activeContract?.code"></ngx-monaco-editor>
+    </div>
+  </div>
+</div>

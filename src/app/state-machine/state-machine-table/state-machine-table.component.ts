@@ -14,7 +14,7 @@ import {
 import { StateMachine } from '@shared/types/state-machine/state-machine.type';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { delay, of } from 'rxjs';
-import { VIRTUAL_SCROLL_OFFSET_SCROLL_ELEMENTS, VirtualScrollDirective } from '@shared/virtual-scroll/virtual-scroll.directive';
+import { VIRTUAL_SCROLL_OFFSET_SCROLL_ELEMENTS, VirtualScrollDirective } from '@shared/directives/virtual-scroll.directive';
 import { distinctUntilChanged, filter, mergeMap, tap } from 'rxjs/operators';
 
 @UntilDestroy()

@@ -7,7 +7,7 @@ import { webSocket, WebSocketSubject } from 'rxjs/webSocket';
 import { HttpClient } from '@angular/common/http';
 import { State } from '@app/app.reducers';
 import { SettingsNodeEntityHeader } from '@shared/types/settings-node/settings-node-entity-header.type';
-import { ADD_ERROR } from '@shared/error-popup/error-popup.actions';
+import { ADD_ERROR } from '@shared/components/error-popup/error-popup.actions';
 import { Router } from '@angular/router';
 import { MonitoringActionTypes } from './monitoring.actions';
 import { SettingsNodeService } from '@settings/settings-node.service';

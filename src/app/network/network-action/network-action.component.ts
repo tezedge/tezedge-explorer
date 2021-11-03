@@ -1,14 +1,16 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, NgZone, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ComponentRef, NgZone, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 
 import { Store } from '@ngrx/store';
-import { debounceTime, filter } from 'rxjs/operators';
+import { filter } from 'rxjs/operators';
 import { State } from '@app/app.reducers';
 import { NetworkAction } from '@shared/types/network/network-action.type';
 import { NetworkActionEntity } from '@shared/types/network/network-action-entity.type';
-import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { TezedgeTimeValidator } from '@shared/validators/tezedge-time.validator';
+import { Overlay, OverlayRef } from '@angular/cdk/overlay';
+import { ComponentPortal } from '@angular/cdk/portal';
+import { TimePickerComponent } from '@shared/components/time-picker/time-picker.component';
+import { Subscription } from 'rxjs';
 
 @UntilDestroy()
 @Component({
@@ -21,25 +23,27 @@ export class NetworkActionComponent implements OnInit, OnDestroy {
 
   virtualScrollItems: NetworkAction;
   selectedNetworkId: number = -1;
-  networkActionShow: boolean;
   virtualPageSize = 1000;
   activeFilters = [];
 
-  formGroup: FormGroup;
-  currentDatePlaceholder: string;
   initialSelectedIndex: number;
+  dateUserFormat: string;
 
-  constructor(public store: Store<State>,
+  private overlayRef: OverlayRef;
+  private timePickerComponentRef: ComponentRef<TimePickerComponent>;
+  private timePickerSubmitSubscription: Subscription;
+  private timePickerCancelSubscription: Subscription;
+
+  constructor(private store: Store<State>,
               private route: ActivatedRoute,
+              private overlay: Overlay,
               private ngZone: NgZone,
               private router: Router,
-              private changeDetector: ChangeDetectorRef,
-              private formBuilder: FormBuilder) { }
+              private changeDetector: ChangeDetectorRef) { }
 
   ngOnInit(): void {
     this.getNetwork();
-    this.initForm();
-    this.listenToFormChange();
+    this.initDateUserTimeFormat();
     this.listenToRouteChange();
     this.listenToNetworkChange();
   }
@@ -47,7 +51,7 @@ export class NetworkActionComponent implements OnInit, OnDestroy {
   private getNetwork(): void {
     this.store.dispatch({ type: 'NETWORK_ACTION_RESET' });
     if (this.routeTimestamp) {
-      this.triggerNetworkTimeLoad();
+      this.triggerNetworkTimeLoad(this.routeTimestamp);
     } else {
       this.scrollStart();
     }
@@ -58,10 +62,9 @@ export class NetworkActionComponent implements OnInit, OnDestroy {
       .pipe(untilDestroyed(this))
       .subscribe((data: NetworkAction) => {
         this.virtualScrollItems = data;
-        this.networkActionShow = this.virtualScrollItems.ids.length > 0;
         this.activeFilters = this.setActiveFilters();
-
-        this.preselectRow();
+        // console.log(data.selected);
+        // this.preselectRow();
 
         this.changeDetector.detectChanges();
       });
@@ -69,18 +72,18 @@ export class NetworkActionComponent implements OnInit, OnDestroy {
 
   private preselectRow(): void {
     if (
-      this.virtualScrollItems.timestamp && this.virtualScrollItems.ids.length && !this.virtualScrollItems.stream
+      this.virtualScrollItems.timestamp && this.virtualScrollItems.ids.length && !this.virtualScrollItems.stream && !this.virtualScrollItems.selected
     ) {
       const network: NetworkActionEntity[] = Object.keys(this.virtualScrollItems.entities).map(key => this.virtualScrollItems.entities[key]);
       const timestampToFind = Number(this.routeTimestamp);
-      const closestNetworkToTimestamp = network.reduce((prev: NetworkActionEntity, curr: NetworkActionEntity) =>
+      const closestNetworkRowToTimestamp = network.reduce((prev: NetworkActionEntity, curr: NetworkActionEntity) =>
         Math.abs(curr.timestamp / 1000000 - timestampToFind) < Math.abs(prev.timestamp / 1000000 - timestampToFind)
           ? curr
           : prev);
-      if (closestNetworkToTimestamp.originalId !== this.selectedNetworkId) {
-        this.selectedNetworkId = closestNetworkToTimestamp.originalId;
-        this.getItemDetails(closestNetworkToTimestamp);
-        this.initialSelectedIndex = network.findIndex(item => item.id === closestNetworkToTimestamp.id);
+      if (closestNetworkRowToTimestamp.originalId !== this.selectedNetworkId) {
+        this.selectedNetworkId = closestNetworkRowToTimestamp.originalId;
+        this.getItemDetails(closestNetworkRowToTimestamp);
+        this.initialSelectedIndex = network.findIndex(item => item.id === closestNetworkRowToTimestamp.id);
       }
     } else {
       this.initialSelectedIndex = undefined;
@@ -97,61 +100,38 @@ export class NetworkActionComponent implements OnInit, OnDestroy {
         const urlTimestamp = this.routeTimestamp;
         if (urlTimestamp) {
           const formDateFormat = this.getFormDateFormat(Number(urlTimestamp));
-          if (this.formGroup.get('time').value !== formDateFormat) {
-            this.formGroup.get('time').patchValue(formDateFormat);
+          if (this.dateUserFormat !== formDateFormat) {
+            this.dateUserFormat = formDateFormat;
           }
-          this.triggerNetworkTimeLoad();
-        } else if (this.formGroup.get('time').value !== '') {
-          this.formGroup.get('time').patchValue('');
+          this.triggerNetworkTimeLoad(urlTimestamp);
+        } else if (this.dateUserFormat) {
+          this.dateUserFormat = undefined;
         }
 
         this.changeDetector.detectChanges();
       });
   }
 
-  private listenToFormChange(): void {
-    this.formGroup.valueChanges.pipe(
-      untilDestroyed(this),
-      filter(() => this.formGroup.valid),
-      debounceTime(200)
-    ).subscribe(value => {
-      if (value.time) {
-        this.scrollStop();
-      }
-      const date = TezedgeTimeValidator.getDateFormat(value.time.toString());
-      const timestamp = value.time.toString() ? date.getTime() : null;
-      this.selectedNetworkId = -1;
-      this.router.navigate([], {
-        queryParams: { timestamp },
-        queryParamsHandling: 'merge',
-      });
-    });
-  }
-
-  private triggerNetworkTimeLoad(filterType?: string): void {
+  private triggerNetworkTimeLoad(timestamp: number, filterType?: string): void {
     this.store.dispatch({
       type: 'NETWORK_ACTION_TIME_LOAD',
       payload: {
         filterType,
         limit: 500,
-        timestamp: this.routeTimestamp
+        timestamp
       }
     });
   }
 
-  private initForm(): void {
-    this.currentDatePlaceholder = 'e.g: ' + this.getFormDateFormat();
-    const urlTimestamp = this.routeTimestamp;
-    this.formGroup = this.formBuilder.group({
-      time: new FormControl(
-        urlTimestamp ? this.getFormDateFormat(Number(urlTimestamp)) : '',
-        TezedgeTimeValidator.isTime
-      ),
-    });
+  private initDateUserTimeFormat(): void {
+    this.dateUserFormat = this.getFormDateFormat(this.routeTimestamp);
   }
 
-  private getFormDateFormat(timestamp?: number): string {
-    const now = timestamp ? new Date(timestamp) : new Date();
+  private getFormDateFormat(timestamp?: number): string | undefined{
+    if (!timestamp) {
+      return undefined;
+    }
+    const now = new Date(timestamp);
 
     const twoDigit = (val) => val < 10 ? `0${val}` : val;
     const threeDigit = (val) => Number(val) < 100 ? `0${val}` : val;
@@ -183,7 +163,6 @@ export class NetworkActionComponent implements OnInit, OnDestroy {
     if (networkItem.originalId === undefined) {
       return;
     }
-
     this.store.dispatch({
       type: 'NETWORK_ACTION_DETAILS_LOAD',
       payload: {
@@ -253,7 +232,7 @@ export class NetworkActionComponent implements OnInit, OnDestroy {
     }
 
     if (this.routeTimestamp) {
-      this.formGroup.get('time').patchValue('');
+      this.dateUserFormat = undefined;
     }
 
     this.selectedNetworkId = -1;
@@ -277,8 +256,9 @@ export class NetworkActionComponent implements OnInit, OnDestroy {
   }
 
   filterByType(filterType: string): void {
-    if (this.routeTimestamp) {
-      this.triggerNetworkTimeLoad(filterType);
+    const routeTimestamp = this.routeTimestamp;
+    if (routeTimestamp) {
+      this.triggerNetworkTimeLoad(routeTimestamp, filterType);
     } else {
       this.store.dispatch({
         type: 'NETWORK_ACTION_FILTER',
@@ -303,12 +283,67 @@ export class NetworkActionComponent implements OnInit, OnDestroy {
   }
 
   setActiveFilters(): string[] {
-    return Object.keys(this.virtualScrollItems.filter).reduce((accumulator, term: string) =>
+    return Object.keys(this.virtualScrollItems.filter).reduce((accumulator: string[], term: string) =>
       this.virtualScrollItems.filter[term] ? [...accumulator, term] : accumulator, []
     );
   }
 
+  openTimePicker(event?: MouseEvent): void {
+    this.detachTooltip();
+
+    this.overlayRef = this.overlay.create({
+      hasBackdrop: false,
+      positionStrategy: this.overlay.position()
+        .flexibleConnectedTo(event?.target as HTMLElement)
+        .withPositions([{
+          originX: 'start',
+          originY: 'top',
+          overlayX: 'start',
+          overlayY: 'top',
+          offsetX: -10,
+          offsetY: -50
+        }])
+    });
+    event?.stopPropagation();
+
+    const portal = new ComponentPortal(TimePickerComponent);
+    this.timePickerComponentRef = this.overlayRef.attach<TimePickerComponent>(portal);
+    this.timePickerComponentRef.instance.timestamp = this.routeTimestamp;
+    this.timePickerSubmitSubscription = this.timePickerComponentRef.instance.onSubmit
+      .subscribe((timestamp: number) => {
+        this.detachTooltip();
+        this.scrollStop();
+        this.selectedNetworkId = -1;
+        this.router.navigate([], {
+          queryParams: { timestamp },
+          queryParamsHandling: 'merge',
+        });
+        this.triggerNetworkTimeLoad(timestamp);
+      });
+    this.timePickerCancelSubscription = this.timePickerComponentRef.instance.onCancel
+      .subscribe(() => this.detachTooltip());
+  }
+
+  detachTooltip(): void {
+    if (this.overlayRef?.hasAttached()) {
+      this.timePickerSubmitSubscription?.unsubscribe();
+      this.timePickerCancelSubscription?.unsubscribe();
+      this.overlayRef.detach();
+    }
+  }
+
+  removeDateFilter(event: MouseEvent): void {
+    event.stopPropagation();
+    this.dateUserFormat = undefined;
+    this.router.navigate([], {
+      queryParams: { timestamp: undefined },
+      queryParamsHandling: 'merge',
+    });
+    this.scrollStart();
+  }
+
   ngOnDestroy(): void {
+    this.detachTooltip();
     this.store.dispatch({ type: 'NETWORK_ACTION_STOP' });
   }
 }

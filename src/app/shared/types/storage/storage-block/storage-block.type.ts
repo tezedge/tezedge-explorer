@@ -8,6 +8,7 @@ export class StorageBlock {
   entities: { [id: string]: StorageBlockEntity };
   lastCursorId: number;
   stream: boolean;
+  routedBlock: boolean;
   selected: StorageBlockSelection;
   blockDetails: StorageBlockDetails;
   availableContexts: string[];

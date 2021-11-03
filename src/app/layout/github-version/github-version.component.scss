@@ -1,38 +1,30 @@
-// TODO: find a general solution to add this to variables when refactoring the scss
-$color-node-tag-active: rgba(255, 255, 255, 0.1);
-$color-commit-container: rgba(63, 63, 67, 1);
-$color-commit-item-hovered: rgba(80, 80, 88, 1);
+@import 'variables';
 
 .node-tag-number {
-  cursor: pointer;
-  border-radius: 4px;
-  padding: 3px 8px;
-  margin-bottom: -4px;
+  padding: 2px 0 2px 4px;
+  margin: 0 0 5px 1px;
+  width: 60px;
 
   &:hover {
-    background-color: $color-node-tag-active;
+    background-color: $foreground-1;
   }
 }
 
 .commit-numbers-container {
-  background-color: $color-commit-container;
-  border-radius: 4px;
-  color: white;
-  margin-bottom: 5px;
+  background-color: $background-surface-fade-2;
+  color: $foreground;
 
   .commit-numbers-container-item {
     width: 128px;
 
     &:hover {
-      background-color: $color-commit-item-hovered;
+      background-color: $foreground-1;
     }
 
     a {
-      cursor: pointer;
-      color: #eaeaea;
+      color: $foreground-7;
       text-decoration: unset;
       padding: 8px 10px;
-      display: block;
     }
   }
 }

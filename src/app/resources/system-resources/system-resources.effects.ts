@@ -7,7 +7,7 @@ import { SystemResourcesActionTypes } from './system-resources.actions';
 import { SystemResourcesService } from './system-resources.service';
 import { SystemResourcesState } from '@shared/types/resources/system/system-resources-state.type';
 import { State } from '@app/app.reducers';
-import { ADD_ERROR } from '@shared/error-popup/error-popup.actions';
+import { ADD_ERROR } from '@shared/components/error-popup/error-popup.actions';
 
 @Injectable({ providedIn: 'root' })
 export class SystemResourcesEffects {
@@ -51,8 +51,7 @@ export class SystemResourcesEffects {
 
   resourcesCloseEffect$ = createEffect(() => this.actions$.pipe(
     ofType(SystemResourcesActionTypes.SYSTEM_RESOURCES_CLOSE),
-    withLatestFrom(this.store, (action: any, state: ObservedValueOf<Store<State>>) => ({ action, state })),
-    tap(({ action, state }) => {
+    tap(() => {
       this.resourcesDestroy$.next(null);
       this.resourcesDestroy$.complete();
     })

@@ -7,7 +7,7 @@ import { catchError, map, switchMap, takeUntil, tap, withLatestFrom } from 'rxjs
 import { empty, ObservedValueOf, of, Subject, timer } from 'rxjs';
 import { StateMachineService } from './state-machine.service';
 import { StateMachineAction } from '@shared/types/state-machine/state-machine-action.type';
-import { ADD_ERROR } from '@shared/error-popup/error-popup.actions';
+import { ADD_ERROR } from '@shared/components/error-popup/error-popup.actions';
 import { StateMachineDiagramBlock } from '@shared/types/state-machine/state-machine-diagram-block.type';
 import { StateMachineActionStatistics } from '@shared/types/state-machine/state-machine-action-statistics.type';
 

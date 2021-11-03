@@ -17,6 +17,10 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatCheckboxModule } from '@angular/material/checkbox';
+import { ClipboardModule } from '@angular/cdk/clipboard';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatCardModule } from '@angular/material/card';
+import { MatNativeDateModule } from '@angular/material/core';
 
 
 @NgModule({
@@ -39,6 +43,10 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
     MatSnackBarModule,
     MatProgressSpinnerModule,
     MatCheckboxModule,
+    ClipboardModule,
+    MatDatepickerModule,
+    MatCardModule,
+    MatNativeDateModule,
   ]
 })
 export class MaterialModule { }

@@ -5,7 +5,19 @@ import { SmartContractsComponent } from '@smart-contracts/smart-contracts/smart-
 const routes: Routes = [
   {
     path: '',
-    component: SmartContractsComponent
+    component: SmartContractsComponent,
+    children: [
+      {
+        path: ':blockHash',
+        component: SmartContractsComponent,
+        children: [
+          {
+            path: ':contractHash',
+            component: SmartContractsComponent,
+          }
+        ]
+      }
+    ]
   }
 ];
 
@@ -13,4 +25,4 @@ const routes: Routes = [
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule]
 })
-export class SmartContractsRoutingModule { }
+export class SmartContractsRoutingModule {}

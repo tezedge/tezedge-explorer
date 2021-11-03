@@ -1,20 +1,16 @@
 context('storage-action', () => {
   beforeEach(() => {
-    cy.intercept('GET', '/dev/chains/main/blocks/*').as('getStorageBlockRequest');
-    cy.intercept('GET', '/dev/chains/main/actions/blocks/*/*').as('getStorageActionRequest');
-    cy.visit(Cypress.config().baseUrl);
-    cy.wait(5000);
-    cy.visit(Cypress.config().baseUrl + '/#/storage', { timeout: 10000 });
-    cy.wait('@getStorageBlockRequest')
-      .then(() => {
-        cy.wait(2000);
-        cy.get('.virtual-scroll-container .virtualScrollRow.used')
-          .last()
-          .find('.storage-block-hash')
-          .then(($span) => {
-            $span.click();
-          });
-      });
+    cy.intercept('GET', '/dev/chains/main/blocks/*').as('getStorageBlockRequest')
+      .intercept('GET', '/dev/chains/main/actions/blocks/*/*').as('getStorageActionRequest')
+      .visit(Cypress.config().baseUrl)
+      .wait(5000)
+      .visit(Cypress.config().baseUrl + '/#/storage', { timeout: 30000 })
+      .wait('@getStorageBlockRequest')
+      .wait(2000)
+      .get('.virtual-scroll-container .virtualScrollRow.used')
+      .last()
+      .find('.storage-block-hash')
+      .trigger('click');
   });
 
   // it('[storage-action] perform storage-action request successfully', () => {

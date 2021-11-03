@@ -34,6 +34,7 @@ context('SMART CONTRACTS', () => {
   }));
 
   it('[SMART CONTRACTS] should select smart contract on click', () => testForTezedge(() => {
+    let clicked;
     cy.get('app-smart-contracts app-smart-contracts-table cdk-virtual-scroll-viewport .row', { timeout: 400000 })
       .should('be.visible')
       .window()
@@ -43,9 +44,10 @@ context('SMART CONTRACTS', () => {
           if (smartContracts.contracts.length > 0) {
             cy.get('app-smart-contracts app-smart-contracts-table cdk-virtual-scroll-viewport .row', { timeout: 10000 })
               .eq(1)
-              .click();
+              .click()
+              .then(() => clicked = true);
           }
-          if (smartContracts.activeContract) {
+          if (clicked && smartContracts.activeContract) {
             expect(smartContracts.activeContract).to.eq(smartContracts.contracts[1]);
           }
         });

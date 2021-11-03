@@ -220,28 +220,11 @@ const MEMPOOL = {
 export const environment = {
   production: false,
   api: [
-    {
-      'id': 'prechecker.mempool.tezedge.com',
-      'type': 'tezedge',
-      'name': 'drone-test-node',
-      'http': 'http://prechecker.mempool.tezedge.com:18732',
-      'p2p_port': '9732',
-      'features': [{ 'name': 'ws', 'url': 'ws://prechecker.mempool.tezedge.com:4927' }, {
-        'name': 'debugger',
-        'url': 'http://prechecker.mempool.tezedge.com:17732'
-      }, { 'name': 'sandbox', 'url': 'http://prechecker.mempool.tezedge.com:3030' }, {
-        'name': 'commit',
-        'id': 'develop'
-      }, { 'name': 'monitoring' }, {
-        'name': 'resources/system',
-        'monitoringUrl': 'http://prechecker.mempool.tezedge.com:4444/resources/tezedge'
-      }, { 'name': 'resources/storage' }, { 'name': 'mempool' }, { 'name': 'storage' }, { 'name': 'network' }, { 'name': 'logs' }, { 'name': 'open-api' }, { 'name': 'contracts' }]
-    },
     // DEVELOP,
     // MASTER,
     // MEMPOOL,
     // TRACE,
-    // PRECHECKER,
+    PRECHECKER,
     // DEBUG,
     // PROD,
     // STORAGE,

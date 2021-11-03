@@ -1,4 +1,6 @@
-const { testForTezedge } = require('../../support');
+const { testForTezedge, disableFeatures } = require('../../support');
+
+const featureNames = ['resources/system', 'resources/storage', 'resources/memory', 'state', 'logs', 'network', 'storage', 'smart-contracts'];
 
 context('LOADING SPINNER', () => {
   beforeEach(() => {
@@ -12,58 +14,108 @@ context('LOADING SPINNER', () => {
   });
 
   it('[LOADING SPINNER] should show that it\'s loading the network', () => {
-    cy.intercept('GET', '/v2/p2p?*', (req) => Cypress.Promise.delay(2000).then(req.reply))
-      .visit(Cypress.config().baseUrl + '/#/network')
-      .wait(1000)
-      .get('app-loading-spinner .spinner', { timeout: 0 }).should('exist')
-      .then(div => {
-        expect(div.text()).to.equal('Loading network...');
-      })
-      .get('app-loading-spinner div div mat-spinner').should('be.visible');
+    cy.window()
+      .its('zone')
+      .then(zone => {
+        cy.window()
+          .its('store')
+          .then(store => {
+            disableFeatures(store, zone, featureNames.filter(f => f !== 'network'));
+            cy.wait(1000)
+              .intercept('GET', '/v2/p2p?*', (req) => Cypress.Promise.delay(2000).then(req.reply))
+              .visit(Cypress.config().baseUrl + '/#/network')
+              .wait(1000)
+              .get('app-loading-spinner .spinner', { timeout: 0 }).should('exist')
+              .then(div => {
+                expect(div.text()).to.equal('Loading network...');
+              })
+              .get('app-loading-spinner div div mat-spinner').should('be.visible');
+          });
+      });
   });
 
   it('[LOADING SPINNER] should show that it\'s loading the logs', () => {
-    cy.intercept('GET', '/v2/log?*', (req) => Cypress.Promise.delay(1500).then(req.reply))
-      .visit(Cypress.config().baseUrl + '/#/logs')
-      .wait(1000)
-      .get('app-loading-spinner .spinner', { timeout: 0 }).should('exist')
-      .then(div => {
-        expect(div.text()).to.equal('Loading logs...');
-      })
-      .get('app-loading-spinner div div mat-spinner').should('be.visible');
+    cy.window()
+      .its('zone')
+      .then(zone => {
+        cy.window()
+          .its('store')
+          .then(store => {
+            disableFeatures(store, zone, featureNames.filter(f => f !== 'logs'));
+            cy.wait(1000)
+              .intercept('GET', '/v2/log?*', (req) => Cypress.Promise.delay(1500).then(req.reply))
+              .visit(Cypress.config().baseUrl + '/#/logs')
+              .wait(1000)
+              .get('app-loading-spinner .spinner', { timeout: 0 }).should('exist')
+              .then(div => {
+                expect(div.text()).to.equal('Loading logs...');
+              })
+              .get('app-loading-spinner div div mat-spinner').should('be.visible');
+          });
+      });
   });
 
   it('[LOADING SPINNER] should show that it\'s loading the storage blocks', () => testForTezedge(() => {
-    cy.intercept('GET', '/dev/chains/main/blocks/*', (req) => Cypress.Promise.delay(2000).then(req.reply))
-      .visit(Cypress.config().baseUrl + '/#/storage')
-      .wait(1000)
-      .get('app-loading-spinner .spinner', { timeout: 0 }).should('exist')
-      .then(div => {
-        expect(div.text()).to.equal('Loading storage blocks...');
-      })
-      .get('app-loading-spinner div div mat-spinner').should('be.visible');
+    cy.window()
+      .its('zone')
+      .then(zone => {
+        cy.window()
+          .its('store')
+          .then(store => {
+            disableFeatures(store, zone, featureNames.filter(f => f !== 'storage'));
+            cy.wait(1000)
+              .intercept('GET', '/dev/chains/main/blocks/*', (req) => Cypress.Promise.delay(2000).then(req.reply))
+              .visit(Cypress.config().baseUrl + '/#/storage')
+              .wait(1000)
+              .get('app-loading-spinner .spinner', { timeout: 0 }).should('exist')
+              .then(div => {
+                expect(div.text()).to.equal('Loading storage blocks...');
+              })
+              .get('app-loading-spinner div div mat-spinner').should('be.visible');
+          });
+      });
   }));
 
   it('[LOADING SPINNER] should show that it\'s loading the resources', () => {
-    cy.intercept('GET', '/resources/*', (req) => Cypress.Promise.delay(4000).then(req.reply))
-      .visit(Cypress.config().baseUrl + '/#/resources/system')
-      .wait(1000)
-      .get('app-loading-spinner .spinner', { timeout: 0 }).should('exist')
-      .then(div => {
-        expect(div.text()).to.equal('Loading system resources...');
-      })
-      .get('app-loading-spinner div div mat-spinner').should('be.visible');
+    cy.window()
+      .its('zone')
+      .then(zone => {
+        cy.window()
+          .its('store')
+          .then(store => {
+            disableFeatures(store, zone, featureNames.filter(f => f !== 'resources/system'));
+            cy.wait(1000)
+              .intercept('GET', '/resources/*', (req) => Cypress.Promise.delay(4000).then(req.reply))
+              .visit(Cypress.config().baseUrl + '/#/resources/system')
+              .wait(1000)
+              .get('app-loading-spinner .spinner', { timeout: 0 }).should('exist')
+              .then(div => {
+                expect(div.text()).to.equal('Loading system resources...');
+              })
+              .get('app-loading-spinner div div mat-spinner').should('be.visible');
+          });
+      });
   });
 
   it('[LOADING SPINNER] should show that it\'s loading state machine', () => testForTezedge(() => {
-    cy.intercept('GET', '/dev/shell/automaton/*', (req) => Cypress.Promise.delay(4000).then(req.reply))
-      .visit(Cypress.config().baseUrl + '/#/state')
-      .wait(1000)
-      .get('app-loading-spinner .spinner', { timeout: 0 }).should('exist')
-      .then(div => {
-        expect(div.text().includes('Loading state machine')).to.be.true;
-      })
-      .get('app-loading-spinner div div mat-spinner').should('be.visible');
+    cy.window()
+      .its('zone')
+      .then(zone => {
+        cy.window()
+          .its('store')
+          .then(store => {
+            disableFeatures(store, zone, featureNames.filter(f => f !== 'state'));
+            cy.wait(1000)
+              .intercept('GET', '/dev/shell/automaton/*', (req) => Cypress.Promise.delay(4000).then(req.reply))
+              .visit(Cypress.config().baseUrl + '/#/state')
+              .wait(1000)
+              .get('app-loading-spinner .spinner', { timeout: 0 }).should('exist')
+              .then(div => {
+                expect(div.text().includes('Loading state machine')).to.be.true;
+              })
+              .get('app-loading-spinner div div mat-spinner').should('be.visible');
+          });
+      });
   }));
 
   it('[LOADING SPINNER] should hide when resources are loaded', () => {

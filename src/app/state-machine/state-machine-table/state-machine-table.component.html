@@ -22,7 +22,7 @@
                 [class.virtualScrollRowEven]="event?.index % 2"
                 (click)="selectAction(event)"
                 [class.hover]="stateMachine.activeAction?.originalId === event?.originalId">
-            <span class="text-white-7">{{ event?.originalId }}</span>
+            <span class="text-white-7">{{ event?.datetime }}</span>
             <span class="text-white truncate">{{ event?.kind }}</span>
             <span class="text-white-7" [innerHTML]="event?.duration"></span>
           </span>

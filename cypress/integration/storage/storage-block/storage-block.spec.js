@@ -24,7 +24,7 @@ context('STORAGE BLOCK', () => {
         .then((store) => {
           store.subscribe(data => {
             if (!isOctez(data)) {
-              cy.wait('@getStorageBlockRequest').its('response.statusCode').should('eq', 200);
+              cy.wait('@getStorageBlockRequest', { timeout: 60000 }).its('response.statusCode').should('eq', 200);
             }
           });
         });
@@ -39,7 +39,7 @@ context('STORAGE BLOCK', () => {
           store.subscribe(data => {
             if (!isOctez(data)) {
               cy.visit(Cypress.config().baseUrl + '/#/storage', { timeout: 10000 });
-              cy.wait('@getStorageBlockRequest', { timeout: 10000 }).then(() => {
+              cy.wait('@getStorageBlockRequest', { timeout: 60000 }).then(() => {
                 cy.wait(5000).then(() => {
                   cy.get('.virtual-scroll-container', { timeout: 10000 })
                     .find('.virtualScrollRow');
@@ -59,7 +59,7 @@ context('STORAGE BLOCK', () => {
           if (!isOctez(data)) {
             cy.visit(Cypress.config().baseUrl + '/#/storage', { timeout: 10000 });
             cy.wait(2000).then(() => {
-              cy.wait('@getStorageBlockRequest').then(() => {
+              cy.wait('@getStorageBlockRequest', { timeout: 60000 }).then(() => {
                 cy.get('.stop-stream').click();
                 cy.wait(2000).then(() => {
                   store.select('storageBlock').subscribe((data) => {
@@ -88,7 +88,7 @@ context('STORAGE BLOCK', () => {
     let currentState;
     cy.get('.settings-node-select mat-select-trigger span').then(nodeName => {
       if (!nodeName.text().includes('octez')) {
-        cy.get('.virtualScrollRow', { timeout: 10000 }).then(() => {
+        cy.get('.virtualScrollRow', { timeout: 60000 }).then(() => {
           cy.window()
             .its('store')
             .then((store) => {
@@ -140,7 +140,7 @@ context('STORAGE BLOCK', () => {
         store.subscribe(data => {
           if (!isOctez(data)) {
             cy.visit(Cypress.config().baseUrl + '/#/storage', { timeout: 10000 });
-            cy.wait('@getStorageBlockRequest')
+            cy.wait('@getStorageBlockRequest', { timeout: 60000 })
               .then(() => {
                 cy.get('.stop-stream').click();
                 cy.wait(2000).then(() => {

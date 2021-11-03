@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { delay, Observable, of } from 'rxjs';
+import { Observable } from 'rxjs';
 import { StateMachineDiagramBlock } from '@shared/types/state-machine/state-machine-diagram-block.type';
 import { StateMachineAction } from '@shared/types/state-machine/state-machine-action.type';
 import { StateMachineActionsFilter } from '@shared/types/state-machine/state-machine-actions-filter.type';
@@ -32,8 +32,8 @@ export class StateMachineService {
 
   constructor(private http: HttpClient) { }
 
-  getStateMachineDiagram(): Observable<StateMachineDiagramBlock[]> {
-    const url = 'http://prod.tezedge.com:18732/dev/shell/automaton/actions_graph';
+  getStateMachineDiagram(http: string): Observable<StateMachineDiagramBlock[]> {
+    const url = http + '/dev/shell/automaton/actions_graph';
     return this.http.get<StateMachineDiagramBlock[]>(url).pipe(map(actions => {
       // return of(JSON.parse(JSON.stringify(this.graph))).pipe(delay(500), map(actions => {
       actions.forEach(action => {
@@ -44,15 +44,15 @@ export class StateMachineService {
     }));
   }
 
-  getStateMachineActions(filter: StateMachineActionsFilter): Observable<StateMachineAction[]> {
-    const url = 'http://prod.tezedge.com:18732/dev/shell/automaton/actions' + this.buildParams(filter);
+  getStateMachineActions(http: string, filter: StateMachineActionsFilter): Observable<StateMachineAction[]> {
+    const url = http + '/dev/shell/automaton/actions' + this.buildParams(filter);
     return this.http.get<StateMachineAction[]>(url)
       // return of(this.list)
       .pipe(map(this.calculateTimes));
   }
 
-  getStateMachineActionStatistics(): Observable<StateMachineActionStatistics> {
-    const url = 'http://prod.tezedge.com:18732/dev/shell/automaton/actions_stats';
+  getStateMachineActionStatistics(http: string): Observable<StateMachineActionStatistics> {
+    const url = http + '/dev/shell/automaton/actions_stats';
     return this.http.get(url)
       // return of(this.stats)
       .pipe(map(this.mapActionStatistics));

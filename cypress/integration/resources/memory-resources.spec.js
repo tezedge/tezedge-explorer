@@ -12,7 +12,7 @@ context('MEMORY RESOURCES', () => {
   });
 
   it('[MEMORY RESOURCES] should parse tree RPC response successfully', () => {
-    cy.wait(1000).then(() => {
+    cy.wait('@getMemoryResources').then(() => {
       cy.window()
         .its('store')
         .then((store) => {
@@ -62,7 +62,7 @@ context('MEMORY RESOURCES', () => {
   });
 
   it('[MEMORY RESOURCES] should render memory resources table successfully', () => {
-    cy.wait(1000).then(() => {
+    cy.wait('@getMemoryResources').then(() => {
       cy.window()
         .its('store')
         .then((store) => {
@@ -78,7 +78,7 @@ context('MEMORY RESOURCES', () => {
   });
 
   it('[MEMORY RESOURCES] should render treemap successfully', () => {
-    cy.wait(1000).then(() => {
+    cy.wait('@getMemoryResources').then(() => {
       cy.window()
         .its('store')
         .then((store) => {
@@ -95,7 +95,7 @@ context('MEMORY RESOURCES', () => {
   });
 
   it('[MEMORY RESOURCES] should zoom in on table\'s second row click successfully', () => {
-    cy.wait(1000).then(() => {
+    cy.wait('@getMemoryResources').then(() => {
       cy.window()
         .its('store')
         .then((store) => {
@@ -131,7 +131,7 @@ context('MEMORY RESOURCES', () => {
   });
 
   it('[MEMORY RESOURCES] should update breadcrumbs successfully when zoom in on table\'s first row click', () => {
-    cy.wait(1000).then(() => {
+    cy.wait('@getMemoryResources').then(() => {
       cy.window()
         .its('store')
         .then((store) => {
@@ -154,7 +154,7 @@ context('MEMORY RESOURCES', () => {
   });
 
   it('[MEMORY RESOURCES] should update table successfully when click on breadcrumb', () => {
-    cy.wait(1000).then(() => {
+    cy.wait('@getMemoryResources').then(() => {
       cy.window()
         .its('store')
         .then((store) => {
@@ -182,7 +182,7 @@ context('MEMORY RESOURCES', () => {
   });
 
   it('[MEMORY RESOURCES] should zoom in on treemap block click', () => {
-    cy.wait(1000).then(() => {
+    cy.wait('@getMemoryResources').then(() => {
       cy.window()
         .its('store')
         .then((store) => {
@@ -215,7 +215,7 @@ context('MEMORY RESOURCES', () => {
   });
 
   it('[MEMORY RESOURCES] should show tooltip on hover the treemap\'s second block', () => {
-    cy.wait(1000).then(() => {
+    cy.wait('@getMemoryResources').then(() => {
       cy.window()
         .its('store')
         .then((store) => {
@@ -245,7 +245,7 @@ context('MEMORY RESOURCES', () => {
   });
 
   it('[MEMORY RESOURCES] should zoom out one step on back button click successfully', () => {
-    cy.wait(1000).then(() => {
+    cy.wait('@getMemoryResources').then(() => {
       cy.window()
         .its('store')
         .then((store) => {

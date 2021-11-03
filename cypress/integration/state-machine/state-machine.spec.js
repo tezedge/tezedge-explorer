@@ -1,68 +1,68 @@
+const testForTezedge = (test) => {
+  cy.get('app-settings-node .settings-node-select mat-select').then(select => {
+    if (select.attr('id') === 'tezedge') {
+      test();
+    }
+  });
+};
+
 context('STATE MACHINE', () => {
   beforeEach(() => {
-    cy.visit(Cypress.config().baseUrl);
-    cy.wait(1000);
-    cy.intercept('GET', '/dev/shell/automaton/actions?limit=*').as('getActionsRequest');
-    cy.intercept('GET', '/dev/shell/automaton/actions_graph').as('getActionsGraph');
+    cy.intercept('GET', '/dev/shell/automaton/actions?limit=*').as('getActionsRequest', { timeout: 30000 });
+    cy.intercept('GET', '/dev/shell/automaton/actions_graph').as('getActionsGraph', { timeout: 30000 });
     cy.visit(Cypress.config().baseUrl + '/#/state', { timeout: 10000 });
   });
 
-  it('[STATE MACHINE] should perform state machine diagram request successfully', () => {
+  it('[STATE MACHINE] should perform state machine diagram request successfully', () => testForTezedge(() => {
     cy.wait('@getActionsGraph')
       .then((result) => {
         cy.wrap(result.response.statusCode).should('eq', 200);
       });
-  });
+  }));
 
-  it('[STATE MACHINE] should perform state machine actions request successfully', () => {
+  it('[STATE MACHINE] should perform state machine actions request successfully', () => testForTezedge(() => {
     cy.wait('@getActionsRequest')
       .then((result) => {
         cy.wrap(result.response.statusCode).should('eq', 200);
       });
-  });
+  }));
 
-  it('[STATE MACHINE] should get correct number of actions as the limit successfully', () => {
-    cy.wait('@getActionsRequest', { timeout: 20000 })
+  it('[STATE MACHINE] should get correct number of actions as the limit successfully', () => testForTezedge(() => {
+    cy.wait('@getActionsRequest')
       .should(result => {
         const url = result.response.url;
         const noOfActionsRequested = url.slice(url.indexOf('limit=') + 'limit='.length);
         cy.wrap(noOfActionsRequested).should('eq', result.response.body.length.toString());
       });
-  });
+  }));
 
-  it('[STATE MACHINE] should create rows for the virtual scroll table', () => {
+  it('[STATE MACHINE] should create rows for the virtual scroll table', () => testForTezedge(() => {
     cy.wait('@getActionsRequest').then(() => {
       cy.get('.virtual-scroll-container .virtualScrollRow').should('be.visible');
     });
-  });
+  }));
 
-  it('[STATE MACHINE] should fill the last row of the table with the last value received', () => {
+  it('[STATE MACHINE] should fill the last row of the table with the last value received', () => testForTezedge(() => {
     cy.wait('@getActionsRequest').then(() => {
-      cy.get('.stop-stream').click();
-
       cy.window()
         .its('store')
         .then((store) => {
           store.select('stateMachine').subscribe(stateMachine => {
-            if (!stateMachine.actionTable.stream) {
-              const lastAction = stateMachine.actionTable.entities[stateMachine.actionTable.ids[stateMachine.actionTable.ids.length - 1]];
-
+            const lastId = stateMachine.actionTable.ids.length - 1;
+            const lastAction = stateMachine.actionTable.entities[lastId];
+            if (lastAction) {
               cy.get('.virtual-scroll-container .virtualScrollRow:nth-last-child(3) span:nth-child(2)')
-                .should(($span) => {
-                  expect($span.text().trim()).to.equal(lastAction.kind);
+                .should(span => {
+                  expect(span.text().trim()).to.equal(lastAction.kind);
                 });
-            } else {
-              cy.get('.stop-stream').click();
             }
           });
         });
     });
-  });
+  }));
 
-  it('[STATE MACHINE] should show properly colors for duration column values', () => {
+  it('[STATE MACHINE] should show properly colors for duration column values', () => testForTezedge(() => {
     cy.wait('@getActionsRequest').then(() => {
-      cy.get('.stop-stream').click();
-
       cy.window()
         .its('store')
         .then((store) => {
@@ -90,45 +90,38 @@ context('STATE MACHINE', () => {
                   });
                 }
               });
-            } else {
-              cy.get('.stop-stream').click();
             }
           });
         });
     });
-  });
+  }));
 
-  it('[STATE MACHINE] should change the value of the virtual scroll element when scrolling', () => {
+  it('[STATE MACHINE] should change the value of the virtual scroll element when scrolling', () => testForTezedge(() => {
     let beforeScrollValue;
 
     cy.wait('@getActionsRequest').then(() => {
-      cy.get('.stop-stream').click();
 
       cy.window()
         .its('store')
         .then((store) => {
-          store.select('stateMachine').subscribe(stateMachine => {
-            if (!stateMachine.actionTable.stream) {
-              cy.get('.virtual-scroll-container .virtualScrollRow:nth-last-child(3) span:nth-child(2)')
-                .then(($span) => {
-                  beforeScrollValue = $span.text();
-                });
+          store.select('stateMachine').subscribe(() => {
+            cy.get('.virtual-scroll-container .virtualScrollRow:nth-last-child(3) span:nth-child(2)')
+              .then(($span) => {
+                beforeScrollValue = $span.text();
+              });
 
-              cy.get('.virtual-scroll-container').scrollTo('top');
+            cy.get('.virtual-scroll-container').scrollTo('top');
 
-              cy.get('.virtual-scroll-container .virtualScrollRow:nth-last-child(3) span:nth-child(2)')
-                .should(($span) => {
-                  expect($span.text()).to.not.equal(beforeScrollValue);
-                });
-            } else {
-              cy.get('.stop-stream').click();
-            }
+            cy.get('.virtual-scroll-container .virtualScrollRow:nth-last-child(3) span:nth-child(2)')
+              .should(($span) => {
+                expect($span.text()).to.not.equal(beforeScrollValue);
+              });
           });
         });
     });
-  });
+  }));
 
-  it('[STATE MACHINE] should stop stream when selecting an action', () => {
+  it('[STATE MACHINE] should stop stream when selecting an action', () => testForTezedge(() => {
     cy.wait('@getActionsRequest').then(() => {
       cy.window()
         .its('store')
@@ -145,9 +138,9 @@ context('STATE MACHINE', () => {
           });
         });
     });
-  });
+  }));
 
-  it('[STATE MACHINE] should fill the right details part with the action of the clicked row - the second last record in our case', () => {
+  it('[STATE MACHINE] should fill the right details part with the action of the clicked row - the second last record in our case', () => testForTezedge(() => {
     cy.wait('@getActionsRequest').then(() => {
       cy.window()
         .its('store')
@@ -158,20 +151,19 @@ context('STATE MACHINE', () => {
 
               let elementFound;
               cy.get('.virtual-scroll-container .virtualScrollRow:nth-last-child(4)')
-                .trigger('click')
-                .then(() => {
-                  cy.get('.ngx-json-viewer .segment-value').should(elements => {
-                    elementFound = Array.from(elements).some(elem => elem.textContent.includes(secondLastRecord.originalId));
-                  });
-                  cy.wait(500).then(() => cy.wrap(elementFound).should('eq', true));
-                });
+                .trigger('click');
+              cy.wait(1000);
+              cy.get('.ngx-json-viewer .segment-value').should(elements => {
+                elementFound = Array.from(elements).some(elem => elem.textContent.includes(secondLastRecord.originalId));
+              });
+              cy.wait(500).then(() => cy.wrap(elementFound).should('eq', true));
             }
           });
         });
     });
-  });
+  }));
 
-  it('[STATE MACHINE] should select correct action details tabs', () => {
+  it('[STATE MACHINE] should select correct action details tabs', () => testForTezedge(() => {
     cy.wait('@getActionsRequest').then(() => {
       cy.window()
         .its('store')
@@ -201,9 +193,9 @@ context('STATE MACHINE', () => {
           });
         });
     });
-  });
+  }));
 
-  it('[STATE MACHINE] should show clicked action\'s content', () => {
+  it('[STATE MACHINE] should show clicked action\'s content', () => testForTezedge(() => {
     cy.wait('@getActionsRequest').then(() => {
       cy.window()
         .its('store')
@@ -238,9 +230,9 @@ context('STATE MACHINE', () => {
           });
         });
     });
-  });
+  }));
 
-  it('[STATE MACHINE] should show clicked action\'s diffs', () => {
+  it('[STATE MACHINE] should show clicked action\'s diffs', () => testForTezedge(() => {
     cy.wait('@getActionsRequest').then(() => {
       cy.window()
         .its('store')
@@ -266,9 +258,9 @@ context('STATE MACHINE', () => {
           });
         });
     });
-  });
+  }));
 
-  it('[STATE MACHINE] should hide state chart on toggle click and show back on second click', () => {
+  it('[STATE MACHINE] should hide state chart on toggle click and show back on second click', () => testForTezedge(() => {
     cy.wait('@getActionsGraph').then(() => {
       cy.get('#d3Diagram').then(svg => {
         if (svg.is(':visible')) {
@@ -286,9 +278,9 @@ context('STATE MACHINE', () => {
         }
       });
     });
-  });
+  }));
 
-  it('[STATE MACHINE] should update local storage collapsedDiagram property when toggling the state chart', () => {
+  it('[STATE MACHINE] should update local storage collapsedDiagram property when toggling the state chart', () => testForTezedge(() => {
     cy.wait(1000).then(() => {
       cy.get('#d3Diagram').then(svg => {
         if (svg.is(':visible')) {
@@ -306,9 +298,9 @@ context('STATE MACHINE', () => {
         }
       });
     });
-  });
+  }));
 
-  it('[STATE MACHINE] should update local storage diagramHeight when dragging the resizer', () => {
+  it('[STATE MACHINE] should update local storage diagramHeight when dragging the resizer', () => testForTezedge(() => {
     cy.wait(1000).then(() => {
       cy.get('#d3Diagram').then(svg => {
         if (svg.is(':visible')) {
@@ -328,9 +320,9 @@ context('STATE MACHINE', () => {
         }
       });
     });
-  });
+  }));
 
-  it('[STATE MACHINE] should render state chart successfully', () => {
+  it('[STATE MACHINE] should render state chart successfully', () => testForTezedge(() => {
     cy.wait('@getActionsGraph').then(() => {
       cy.window()
         .its('store')
@@ -353,9 +345,9 @@ context('STATE MACHINE', () => {
           });
         });
     });
-  });
+  }));
 
-  it('[STATE MACHINE] should zoom in state chart successfully on mouse wheel up', () => {
+  it('[STATE MACHINE] should zoom in state chart successfully on mouse wheel up', () => testForTezedge(() => {
     cy.wait('@getActionsGraph').then(() => {
       cy.get('#d3Diagram svg').then(svg => {
         if (svg.is(':visible')) {
@@ -382,9 +374,9 @@ context('STATE MACHINE', () => {
         }
       });
     });
-  });
+  }));
 
-  it('[STATE MACHINE] should zoom in state chart successfully on plus button', () => {
+  it('[STATE MACHINE] should zoom in state chart successfully on plus button', () => testForTezedge(() => {
     cy.wait('@getActionsGraph').then(() => {
       cy.get('#d3Diagram svg').then(svg => {
         if (svg.is(':visible')) {
@@ -405,9 +397,9 @@ context('STATE MACHINE', () => {
         }
       });
     });
-  });
+  }));
 
-  it('[STATE MACHINE] should zoom out state chart successfully on minus button', () => {
+  it('[STATE MACHINE] should zoom out state chart successfully on minus button', () => testForTezedge(() => {
     cy.wait('@getActionsGraph').then(() => {
       cy.get('#d3Diagram svg').then(svg => {
         if (svg.is(':visible')) {
@@ -428,9 +420,9 @@ context('STATE MACHINE', () => {
         }
       });
     });
-  });
+  }));
 
-  it('[STATE MACHINE] should show whole state chart successfully on reset zoom button', () => {
+  it('[STATE MACHINE] should show whole state chart successfully on reset zoom button', () => testForTezedge(() => {
     cy.wait('@getActionsGraph').then(() => {
       cy.get('#d3Diagram svg').then(svg => {
         if (svg.is(':visible')) {
@@ -455,9 +447,9 @@ context('STATE MACHINE', () => {
         }
       });
     });
-  });
+  }));
 
-  it('[STATE MACHINE] should disable next and prev action buttons if no action is selected successfully', () => {
+  it('[STATE MACHINE] should disable next and prev action buttons if no action is selected successfully', () => testForTezedge(() => {
     cy.wait('@getActionsRequest').then(() => {
       cy.window()
         .its('store')
@@ -471,12 +463,11 @@ context('STATE MACHINE', () => {
           });
         });
     });
-  });
+  }));
 
-  it('[STATE MACHINE] should successfully start playing through the actions on play button click', () => {
+  it('[STATE MACHINE] should successfully start playing through the actions on play button click', () => testForTezedge(() => {
     cy.wait('@getActionsRequest').then(() => {
       cy.get('.virtual-scroll-container .virtualScrollRow').should('have.length.at.least', 5).then(() => {
-        cy.get('.stop-stream').click();
         cy.get('.virtual-scroll-container .virtualScrollRow.hover').should('not.exist');
         cy.get('.player-wrapper .play-pause:not(.arrows)')
           .trigger('click')
@@ -495,12 +486,11 @@ context('STATE MACHINE', () => {
           });
       });
     });
-  });
+  }));
 
-  it('[STATE MACHINE] should successfully highlight correct svg block in the diagram on action click', () => {
+  it('[STATE MACHINE] should successfully highlight correct svg block in the diagram on action click', () => testForTezedge(() => {
     cy.wait('@getActionsRequest').then(() => {
       cy.get('.virtual-scroll-container .virtualScrollRow').should('have.length.at.least', 5).then(() => {
-        cy.get('.stop-stream').click();
         cy.get('.virtual-scroll-container .virtualScrollRow:nth-last-child(4)')
           .trigger('click')
           .wait(1000)
@@ -524,12 +514,11 @@ context('STATE MACHINE', () => {
           });
       });
     });
-  });
+  }));
 
-  it('[STATE MACHINE] should successfully update progress bar on action click', () => {
+  it('[STATE MACHINE] should successfully update progress bar on action click', () => testForTezedge(() => {
     cy.wait('@getActionsRequest').then(() => {
       cy.get('.virtual-scroll-container .virtualScrollRow').should('have.length.at.least', 5).then(() => {
-        cy.get('.stop-stream').click();
         let initialValue;
         cy.get('mat-slider').should('exist').then(slider => {
           initialValue = slider.attr('aria-valuenow');
@@ -550,9 +539,9 @@ context('STATE MACHINE', () => {
           });
       });
     });
-  });
+  }));
 
-  it('[STATE MACHINE] should successfully render filter buttons and categories', () => {
+  it('[STATE MACHINE] should successfully render filter buttons and categories', () => testForTezedge(() => {
     const categories = ['P2p', 'PeerHandshaking', 'PeerConnection', 'YieldedOperations', 'PausedLoops', 'PeersGraylist', 'PeerMessage', 'PeerBinary', 'PeerChunk', 'PeerTry', 'PeersDns', 'PeersCheck', 'Storage', 'Others'];
     cy.intercept('GET', '/dev/shell/automaton/actions_stats').as('getStatistics')
       .then(() => {
@@ -593,9 +582,9 @@ context('STATE MACHINE', () => {
           });
         });
       });
-  });
+  }));
 
-  it('[STATE MACHINE] should successfully apply filters on click', () => {
+  it('[STATE MACHINE] should successfully apply filters on click', () => testForTezedge(() => {
     cy.intercept('GET', '/dev/shell/automaton/actions_stats').as('getStatistics')
       .then(() => {
         cy.get('.filters-content button').should('not.exist');
@@ -616,9 +605,9 @@ context('STATE MACHINE', () => {
             });
         });
       });
-  });
+  }));
 
-  it('[STATE MACHINE] should successfully render action statistics', () => {
+  it('[STATE MACHINE] should successfully render action statistics', () => testForTezedge(() => {
     cy.intercept('GET', '/dev/shell/automaton/actions_stats').as('getStatistics')
       .then(() => {
         cy.get('app-state-machine-action-details .payload-view div div:last-child .tab')
@@ -643,6 +632,6 @@ context('STATE MACHINE', () => {
             });
           });
       });
-  });
+  }));
 
 });

@@ -12,12 +12,12 @@ import {
   SystemResourcesLoadAction
 } from './system-resources.actions';
 import { SystemResources } from '@shared/types/resources/system/system-resources.type';
-import { systemResources } from '@resources/resources/resources.reducer';
 import { appState } from '@app/app.reducer';
 import { SystemResourcesResourceType } from '@shared/types/resources/system/system-resources-panel.type';
 import { SystemResourceCategory } from '@shared/types/resources/system/system-resource-category.type';
 import { SystemResourcesGraphComponent } from '@resources/system-resources-graph/system-resources-graph.component';
 import { TezedgeChartsService } from '@shared/charts/tezedge-charts.service';
+import { systemResources } from '@resources/system-resources/system-resources.reducer';
 
 
 @UntilDestroy()

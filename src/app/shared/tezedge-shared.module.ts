@@ -19,6 +19,7 @@ import { NgrxFormDirective } from '@shared/ngrx-form.directive';
 import { ResizeDirective } from '@shared/directives/resize.directive';
 import { CustomJsonParserInterceptorService } from '@core/custom-json-parser.interceptor.service';
 import { LoadingSpinnerComponent } from '@shared/loading-spinner/loading-spinner.component';
+import { NanoTransformPipe } from '@shared/pipes/nano-transform.pipe';
 
 const COMPONENTS = [
   ErrorPopupComponent,
@@ -30,6 +31,7 @@ const PIPES = [
   TimeTransformPipe,
   ThousandTransformPipe,
   EtaTimePipe,
+  NanoTransformPipe,
 ];
 
 const DIRECTIVES = [
@@ -60,7 +62,8 @@ const DIRECTIVES = [
         }
       },
       behaviour: {
-        onMouseover: 'pauseAutoHide'
+        onMouseover: 'pauseAutoHide',
+        autoHide: false
       }
     }),
     MaterialModule,

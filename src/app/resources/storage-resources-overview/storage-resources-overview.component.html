@@ -2,31 +2,31 @@
   <table>
     <thead>
     <tr class="border-bottom">
-      <th class="text-white-4 font-400">OPERATION</th>
-      <th class="text-white-4 font-400">CALLS</th>
-      <th class="text-white-4 font-400">DURATION</th>
+      <th class="foreground-4 font-400">OPERATION</th>
+      <th class="foreground-4 font-400">CALLS</th>
+      <th class="foreground-4 font-400">DURATION</th>
     </tr>
     </thead>
     <tbody>
     <tr class="border-bottom" *ngFor="let row of data.columns; let i=index">
-      <td class="text-capitalize text-white-7 truncate">{{ sliceNames[i] }}</td>
-      <td class="text-white-7">{{ row.count | thousandTransform }}</td>
-      <td class="text-white-7">{{ row.totalTime | timeTransform: false }}</td>
+      <td class="text-capitalize foreground-7 truncate">{{ sliceNames[i] }}</td>
+      <td class="foreground-7">{{ row.count | thousandTransform }}</td>
+      <td class="foreground-7">{{ row.totalTime | timeTransform: false }}</td>
     </tr>
     <tr class="border-bottom">
-      <td class="text-white-4">Total time read</td>
+      <td class="foreground-4">Total time read</td>
       <td></td>
-      <td class="text-white-4">{{ data.totalTimeRead | timeTransform: false }}</td>
+      <td class="foreground-4">{{ data.totalTimeRead | timeTransform: false }}</td>
     </tr>
     <tr class="border-bottom">
-      <td class="text-white-4">Total time write</td>
+      <td class="foreground-4">Total time write</td>
       <td></td>
-      <td class="text-white-4">{{ data.totalTimeWrite | timeTransform: false }}</td>
+      <td class="foreground-4">{{ data.totalTimeWrite | timeTransform: false }}</td>
     </tr>
     <tr>
-      <td class="text-white-4">Total time</td>
+      <td class="foreground-4">Total time</td>
       <td></td>
-      <td class="text-white-4">{{ data.totalTime | timeTransform: false }}</td>
+      <td class="foreground-4">{{ data.totalTime | timeTransform: false }}</td>
     </tr>
     </tbody>
   </table>

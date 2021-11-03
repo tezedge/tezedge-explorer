@@ -1,10 +1,9 @@
 import { ChangeDetectionStrategy, Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { State } from '@app/app.reducers';
-import { selectErrors } from './error-popup.reducer';
+import { selectNewError } from './error-popup.reducer';
 import { HttpError } from '@shared/types/shared/error-popup/http-error.type';
 import { NotifierService } from 'angular-notifier';
-import { ErrorActionTypes } from './error-popup.actions';
 
 @Component({
   selector: 'app-error-popup',
@@ -21,20 +20,19 @@ export class ErrorPopupComponent implements OnInit {
               private notifierService: NotifierService) { }
 
   ngOnInit(): void {
-    this.store.dispatch({ type: ErrorActionTypes.SCHEDULE_ERROR_DELETION });
     this.listenToErrorEvents();
   }
 
   private listenToErrorEvents(): void {
-    this.store.select(selectErrors).subscribe((errors: HttpError[]) => {
-      errors.filter(() => !document.hidden).forEach(error => {
+    this.store.select(selectNewError).subscribe((error: HttpError) => {
+      if (!document.hidden && error) {
         this.notifierService.show({
           type: 'error',
           title: error.title,
           message: error.message,
           template: this.template
         } as any);
-      });
+      }
     });
   }
 }

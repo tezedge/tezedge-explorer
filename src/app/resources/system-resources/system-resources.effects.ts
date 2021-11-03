@@ -7,7 +7,7 @@ import { SystemResourcesActionTypes } from './system-resources.actions';
 import { SystemResourcesService } from './system-resources.service';
 import { SystemResources } from '@shared/types/resources/system/system-resources.type';
 import { State } from '@app/app.reducers';
-import { ErrorActionTypes } from '@shared/error-popup/error-popup.actions';
+import { ADD_ERROR } from '@shared/error-popup/error-popup.actions';
 
 @Injectable({ providedIn: 'root' })
 export class SystemResourcesEffects {
@@ -30,7 +30,7 @@ export class SystemResourcesEffects {
             payload: resources
           })),
           catchError(error => of({
-            type: ErrorActionTypes.ADD_ERROR,
+            type: ADD_ERROR,
             payload: { title: 'System resources error', message: error.message, initiator: SystemResourcesActionTypes.SYSTEM_RESOURCES_LOAD }
           }))
         );

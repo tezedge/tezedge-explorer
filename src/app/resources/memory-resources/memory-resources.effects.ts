@@ -7,7 +7,7 @@ import { State } from '@app/app.reducers';
 import { MemoryResourcesActionTypes } from './memory-resources.actions';
 import { MemoryResourcesService } from './memory-resources.service';
 import { MemoryResource } from '@shared/types/resources/memory/memory-resource.type';
-import { ErrorActionTypes } from '@shared/error-popup/error-popup.actions';
+import { ADD_ERROR } from '@shared/error-popup/error-popup.actions';
 
 @Injectable({ providedIn: 'root' })
 export class MemoryResourcesEffects {
@@ -27,7 +27,7 @@ export class MemoryResourcesEffects {
             payload: resource
           })),
           catchError(error => of({
-            type: ErrorActionTypes.ADD_ERROR,
+            type: ADD_ERROR,
             payload: { title: 'Memory resources error', message: error.message, initiator: MemoryResourcesActionTypes.MEMORY_RESOURCES_LOAD }
           }))
         )

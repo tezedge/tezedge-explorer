@@ -5,12 +5,12 @@
   z-index: 3;
   min-height: unset;
 
-  .active-filters-row {
+  .table-applied-filters {
     flex-shrink: 0;
   }
 
   .filters-accordion {
-    .filters-row {
+    .table-filters {
       background-color: #3f3f43;
       max-height: 70vh;
 

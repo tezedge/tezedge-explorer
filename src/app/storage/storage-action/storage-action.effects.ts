@@ -5,7 +5,7 @@ import { Store } from '@ngrx/store';
 import { catchError, map, switchMap, withLatestFrom } from 'rxjs/operators';
 import { State } from '@app/app.reducers';
 import { empty, of } from 'rxjs';
-import { ErrorActionTypes } from '@shared/error-popup/error-popup.actions';
+import { ADD_ERROR } from '@shared/error-popup/error-popup.actions';
 
 @Injectable({ providedIn: 'root' })
 export class StorageActionEffects {
@@ -19,19 +19,15 @@ export class StorageActionEffects {
         : this.http.get(setUrl(action, state))
     ),
     map((payload) => ({ type: 'STORAGE_BLOCK_ACTION_LOAD_SUCCESS', payload })),
-    catchError(error => of({ type: ErrorActionTypes.ADD_ERROR, payload: { title: 'Error when loading storage blocks', message: error.message } }))
+    catchError(error => of({ type: ADD_ERROR, payload: { title: 'Error when loading storage blocks', message: error.message } }))
   ));
 
   storageBlockActionDetails$ = createEffect(() => this.actions$.pipe(
     ofType('STORAGE_BLOCK_ACTION_DETAILS_LOAD'),
-
-    // merge state
     withLatestFrom(this.store, (action: any, state) => ({ action, state })),
-
     switchMap(({ action, state }) => {
       return this.http.get(setDetailsUrl(action, state));
     }),
-    // dispatch action
     map((payload) => ({ type: 'STORAGE_BLOCK_ACTION_DETAILS_LOAD_SUCCESS', payload })),
     catchError((error, caught) => {
       console.error(error);

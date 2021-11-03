@@ -7,7 +7,7 @@ import { catchError, map, switchMap, takeUntil, tap, withLatestFrom } from 'rxjs
 import { empty, ObservedValueOf, of, Subject, timer } from 'rxjs';
 import { StateMachineService } from './state-machine.service';
 import { StateMachineAction } from '@shared/types/state-machine/state-machine-action.type';
-import { ErrorActionTypes } from '@shared/error-popup/error-popup.actions';
+import { ADD_ERROR } from '@shared/error-popup/error-popup.actions';
 import { StateMachineDiagramBlock } from '@shared/types/state-machine/state-machine-diagram-block.type';
 import { StateMachineActionStatistics } from '@shared/types/state-machine/state-machine-action-statistics.type';
 
@@ -108,7 +108,7 @@ export class StateMachineEffects {
               private stateMachineService: StateMachineService) { }
 
   private onError = (error, type: string) => of({
-    type: ErrorActionTypes.ADD_ERROR,
+    type: ADD_ERROR,
     payload: { title: `Error when loading ${type}:`, message: error.message }
   });
 }

@@ -4,18 +4,20 @@
      [style.transition-delay.s]="transitionDelay"
      [ngClass.lt-md]="'small-device'"
      class="resource-category-block border">
-  <div class="rotated-label" fxFlex="33px" fxHide.lt-md><span>{{ rotatedLabel }}</span></div>
+  <div class="rotated-label" fxFlex="33px" fxHide.lt-md>
+    <span>{{ rotatedLabel }}</span>
+  </div>
   <div fxLayout="column" fxFlex="calc(100% - 33px)">
     <div class="graph-title">{{ graphTitle }}</div>
     <div class="graph-label-list"
          fxLayout="row wrap"
          fxLayoutAlign="end">
-     <span *ngFor="let label of labelList; let i=index"
-           class="graph-label-item">
-       <span class="label-color"
-             [style.background]="colorScheme.domain[i]"></span>
-       {{ label }}
-     </span>
+      <span *ngFor="let label of labelList; let i=index"
+            class="graph-label-item">
+        <span class="label-color"
+              [style.background]="colorScheme.domain[i]"></span>
+        {{ label }}
+      </span>
     </div>
     <div fxFlex="grow"
          class="chart-container">
@@ -78,11 +80,14 @@
           fxLayoutGap="5px">
       <span class="tooltip-label">{{ model.series }} • {{ model.name }}</span>
       <span *ngIf="type === 'percentage'"
-            class="tooltip-val">{{ model.value }}%</span>
+            class="tooltip-val">{{ model.value }}%
+      </span>
       <span *ngIf="type === 'GB'"
-            class="tooltip-val">{{ model.value | number: '1.2-2' }} GB</span>
+            class="tooltip-val">{{ model.value | number: '1.2-2' }} GB
+      </span>
       <span *ngIf="type === 'MB'"
-            class="tooltip-val">{{ model.value | number: '1.2-2' }} MB</span>
+            class="tooltip-val">{{ model.value | number: '1.2-2' }} MB
+      </span>
       <span *ngIf="type === ''"
             class="tooltip-val">{{ model.value }}</span>
     </span>

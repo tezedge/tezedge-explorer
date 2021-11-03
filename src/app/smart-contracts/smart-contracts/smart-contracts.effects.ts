@@ -9,17 +9,17 @@ import { SmartContractsService } from '@smart-contracts/smart-contracts/smart-co
 @Injectable({ providedIn: 'root' })
 export class SmartContractsEffects {
 
-  smartContractsLoad$ = createEffect(() => this.actions$.pipe(
-    ofType('SM_C_LOAD'),
-    withLatestFrom(this.store, (action: any, state: ObservedValueOf<Store<State>>) => ({ action, state })),
-    switchMap(({ action, state }) => {
-      return null;
-    }),
-    map((logs) => ({ type: 'SM_C_LOAD_SUCCESS', payload: { logs } })),
-  ));
-
-  constructor(private smartContractsService: SmartContractsService,
-              private actions$: Actions,
-              private store: Store<State>) { }
+  // smartContractsLoad$ = createEffect(() => this.actions$.pipe(
+  //   ofType('SMART_CONTRACTS_LOAD'),
+  //   withLatestFrom(this.store, (action: any, state: ObservedValueOf<Store<State>>) => ({ action, state })),
+  //   switchMap(({ action, state }) => {
+  //     return null;
+  //   }),
+  //   map((payload) => ({ type: 'SMART_CONTRACTS_LOAD_SUCCESS', payload: { payload } })),
+  // ));
+  //
+  // constructor(private smartContractsService: SmartContractsService,
+  //             private actions$: Actions,
+  //             private store: Store<State>) { }
 
 }

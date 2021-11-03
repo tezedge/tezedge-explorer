@@ -4,7 +4,7 @@
        *ngFor="let votingPeriodRow of formattedNetworkHistory; trackBy: trackByRowPosition">
     <div class="history-voting-period border-rad-4"
          *ngFor="let votingPeriod of votingPeriodRow.votingPeriodRows; trackBy: trackByRowPeriod">
-      <div class="history-voting-period-label text-white-2 f-12">Proposal</div>
+      <div class="history-voting-period-label foreground-2 f-12">Proposal</div>
       <div class="d-flex">
         <ng-container *ngFor="let cycle of votingPeriod.cycles; trackBy: trackByCycle">
           <span *ngIf="cycle.operations >= 4094"

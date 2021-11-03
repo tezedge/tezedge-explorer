@@ -1,0 +1,79 @@
+<div class="h-100" fxLayout="column" fxLayout.gt-md="row">
+  <div class="h-100 d-flex flex-column overflow-auto border-bottom" fxFlex.gt-md="75">
+    <div class="h-100 d-flex flex-column table-container">
+      <div class="mempool-row head foreground-7 border-bottom">
+        <span>SLOTS</span>
+        <span>BAKER</span>
+        <span>&nbsp;&nbsp;&nbsp;STATUS</span>
+        <span (click)="sortTable('maxTime')"
+              class="pointer">MAX LATENCY
+          <mat-icon [class.flip]="currentSort.sortDirection === 'descending'"
+                    [class.show]="currentSort.sortBy === 'maxTime'"
+                    [svgIcon]="'arrow-up'"
+                    class="icon-14 icon-foreground"></mat-icon></span>
+        <span (click)="sortTable('receiveTime')"
+              class="pointer">RECEIVE
+          <mat-icon [class.flip]="currentSort.sortDirection === 'descending'"
+                    [class.show]="currentSort.sortBy === 'receiveTime'"
+                    [svgIcon]="'arrow-up'"
+                    class="icon-14 icon-foreground"></mat-icon></span>
+        <span (click)="sortTable('decodeTime')"
+              class="pointer">DECODE
+          <mat-icon [class.flip]="currentSort.sortDirection === 'descending'"
+                    [class.show]="currentSort.sortBy === 'decodeTime'"
+                    [svgIcon]="'arrow-up'"
+                    class="icon-14 icon-foreground"></mat-icon></span>
+        <span (click)="sortTable('precheckTime')"
+              class="pointer">PRECHECK
+          <mat-icon [class.flip]="currentSort.sortDirection === 'descending'"
+                    [class.show]="currentSort.sortBy === 'precheckTime'"
+                    [svgIcon]="'arrow-up'"
+                    class="icon-14 icon-foreground"></mat-icon></span>
+        <span (click)="sortTable('applyTime')"
+              class="pointer">APPLY
+          <mat-icon [class.flip]="currentSort.sortDirection === 'descending'"
+                    [class.show]="currentSort.sortBy === 'applyTime'"
+                    [svgIcon]="'arrow-up'"
+                    class="icon-14 icon-foreground"></mat-icon></span>
+        <span (click)="sortTable('broadcastTime')"
+              class="pointer">BROADCAST
+          <mat-icon [class.flip]="currentSort.sortDirection === 'descending'"
+                    [class.show]="currentSort.sortBy === 'broadcastTime'"
+                    [svgIcon]="'arrow-up'"
+                    class="icon-14 icon-foreground"></mat-icon></span>
+      </div>
+      <cdk-virtual-scroll-viewport class="f-14 overflow-y-auto overflow-x-hidden" fxFlex="calc(100% - 36px)"
+                                   itemSize="36">
+        <div (click)="activeEndorsement = endorsement"
+             *cdkVirtualFor="let endorsement of endorsements$ | async; let i=index; trackBy: trackEndorsements"
+             [@translateFromLeft]="i % 2 === 0 ? animateRows : false"
+             [@translateFromRight]="i % 2 !== 0 ? animateRows : false"
+             [class.active]="activeEndorsement === endorsement"
+             class="mempool-row pointer">
+          <span [matTooltip]="'Slot numbers: ' + endorsement.slots?.join(', ')"
+                matTooltipClass="endorsement"
+                matTooltipPosition="below">{{ endorsement.slots?.length }}</span>
+          <span class="d-flex align-center">
+            <img *ngIf="endorsement.logo" [src]="'https://tezos-nodes.com/storage/images/' + endorsement.logo" alt=""
+                 class="margin-right-10"
+                 height="20px" width="20px">
+            {{ endorsement.bakerName || endorsement.baker || 'null' }}
+          </span>
+          <span [ngClass]="endorsement.status || 'missing'"
+                class="status padding-horizontal-10">{{ endorsement.status || 'missing' }}</span>
+          <span>{{ endorsement.maxTime | nanoTransform }}</span>
+          <span>{{ endorsement.broadcastTime | nanoTransform }}</span>
+          <span>{{ endorsement.applyTime | nanoTransform }}</span>
+          <span>{{ endorsement.precheckTime | nanoTransform }}</span>
+          <span>{{ endorsement.decodeTime | nanoTransform }}</span>
+          <span>{{ endorsement.receiveTime | nanoTransform }}</span>
+        </div>
+      </cdk-virtual-scroll-viewport>
+    </div>
+  </div>
+  <div class="d-flex flex-column" fxFlex.gt-md="25">
+    <div class="details border-bottom d-flex align-center foreground-7" fxFlex="36px">STATISTICS</div>
+    <app-mempool-endorsement-statistics class="border-left"
+                                        fxFlex="calc(100% - 36px)"></app-mempool-endorsement-statistics>
+  </div>
+</div>

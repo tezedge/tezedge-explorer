@@ -1,21 +1,40 @@
-<div class="border border-rad-2">
+<div class="border border-rad-2 flex-column">
+  <div *ngIf="state.activeBlock" class="active-block flex-column padding-horizontal-10 padding-top-5 padding-bottom-5 border-bottom">
+    <div class="foreground"><span class="foreground-7">Round: </span>{{ state.activeBlock.blockRound }}</div>
+    <div class="foreground"><span class="foreground-7">Level: </span>{{ state.activeBlock.blockLevel | spaceNumber }}</div>
+    <div class="foreground"><span class="foreground-7">CPU idle: </span>{{ state.activeBlock.cpuIdle | nanoTransform }}</div>
+    <div class="foreground"><span class="foreground-7">CPU busy: </span>{{ state.activeBlock.cpuBusy | nanoTransform }}</div>
+    <div class="foreground"><span class="foreground-7">Time: </span>{{ state.activeBlock.time | dateTime }}</div>
+    <div class="foreground flex-row align-center"><span class="foreground-7">Hash: </span>
+      <span class="truncate">&nbsp;{{ state.activeBlock.blockHash }}</span>
+      <div (click)="copyHashToClipboard(state.activeBlock.blockHash)" [cdkCopyToClipboard]="state.activeBlock.blockHash"
+           class="copy-hash border-rad-4 margin-left-5 margin-right-5 pointer"
+           fxFlex="26px" matTooltip="Copy hash">
+        <mat-icon class="icon-foreground-7 icon-14" svgIcon="copy"></mat-icon>
+      </div>
+    </div>
+    <div class="foreground truncate"><span class="foreground-7">Fitness: </span>{{ state.activeBlock.blockFitness | json }}</div>
+  </div>
   <table>
     <thead>
       <tr class="border-bottom">
         <th class="foreground-4 font-400">CATEGORY</th>
         <th class="foreground-4 font-400">CALLS</th>
-        <th class="foreground-4 font-400">DURATION</th>
+        <th class="foreground-4 font-400">MEAN</th>
+        <th class="foreground-4 font-400">TOTAL</th>
       </tr>
     </thead>
     <tbody>
       <tr class="border-bottom" *ngFor="let group of state.filteredGroups; let i=index">
         <td class="text-capitalize foreground-7 truncate">{{ group.groupName }}</td>
         <td class="foreground-7">{{ group.count | thousandTransform }}</td>
+        <td class="foreground-7">{{ group.meanTime | timeTransform: false }}</td>
         <td class="foreground-7">{{ group.totalTime | timeTransform: false }}</td>
       </tr>
       <tr>
-        <td class="foreground-4">Total time</td>
+        <td class="foreground-4">Total</td>
         <td class="foreground-4">{{ filteredCount | thousandTransform }}</td>
+        <td class="foreground-4">{{ filteredMeanTime | timeTransform: false }}</td>
         <td class="foreground-4">{{ filteredTotalTime | timeTransform: false: false: true }}</td>
       </tr>
     </tbody>

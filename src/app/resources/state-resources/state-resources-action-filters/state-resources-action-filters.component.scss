@@ -21,6 +21,8 @@ form {
     transition: 0.2s ease-in-out;
     transform: rotateX(0) translateY(6px);
     opacity: 0;
+    margin-left: 2px;
+    margin-bottom: -1px;
 
     &.show {
       opacity: 1;

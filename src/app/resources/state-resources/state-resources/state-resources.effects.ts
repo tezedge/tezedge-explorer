@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { catchError, map, repeat, switchMap, withLatestFrom } from 'rxjs/operators';
+import { catchError, filter, map, repeat, switchMap, tap, withLatestFrom } from 'rxjs/operators';
 import { empty, Observable, ObservedValueOf, of, throwError } from 'rxjs';
 import { Store } from '@ngrx/store';
 import { State } from '@app/app.index';
@@ -8,13 +8,18 @@ import { ADD_ERROR, ErrorAdd } from '@app/layout/error-popup/error-popup.actions
 import {
   STATE_RESOURCES_CLOSE,
   STATE_RESOURCES_LOAD,
+  STATE_RESOURCES_LOAD_BLOCKS,
+  STATE_RESOURCES_LOAD_BLOCKS_SUCCESS,
   STATE_RESOURCES_LOAD_SUCCESS,
+  StateResourcesLoadBlocks,
+  StateResourcesLoadBlocksSuccess,
   StateResourcesClose,
   StateResourcesLoad
 } from '@resources/state-resources/state-resources/state-resources.actions';
 import { StateResourcesService } from '@resources/state-resources/state-resources/state-resources.service';
-import { StateResourcesState } from '@resources/state-resources/state-resources/state-resources.index';
 import { StateResourcesActionGroup } from '@shared/types/resources/state/state-resources-action-group.type';
+import { StateResourcesBlockData } from '@shared/types/resources/state/state-resources-block-data.type';
+import { Router } from '@angular/router';
 
 
 @Injectable({ providedIn: 'root' })
@@ -26,23 +31,43 @@ export class StateResourcesEffects {
     switchMap(({ action, state }) => {
       return action.type === STATE_RESOURCES_CLOSE
         ? empty()
-        : this.stateResourcesService.getStateResources(state.settingsNode.activeNode.http)
+        : this.stateResourcesService.getNodeLifetimeStateResources(state.settingsNode.activeNode.http)
           .pipe(
             map((stats: StateResourcesActionGroup[]) => ({ type: STATE_RESOURCES_LOAD_SUCCESS, payload: stats })),
             catchError(err => throwError(err))
           );
     }),
-    catchError(err => this.catchError(err)),
+    catchError(err => this.catchError(err, STATE_RESOURCES_LOAD)),
+    repeat()
+  ));
+
+  stateResourcesBlocksLoad$ = createEffect(() => this.actions$.pipe(
+    ofType(STATE_RESOURCES_LOAD_BLOCKS, STATE_RESOURCES_CLOSE),
+    withLatestFrom(this.store, (action: StateResourcesLoadBlocks | StateResourcesClose, state: ObservedValueOf<Store<State>>) => ({ action, state })),
+    switchMap(({ action, state }) => {
+      return action.type === STATE_RESOURCES_CLOSE
+        ? empty()
+        : this.stateResourcesService.getBlockStateResources(state.settingsNode.activeNode.http, action.payload.level)
+          .pipe(
+            map((blocks: StateResourcesBlockData[]) => ({
+              type: STATE_RESOURCES_LOAD_BLOCKS_SUCCESS,
+              payload: { blocks }
+            })),
+            catchError(err => throwError(err))
+          );
+    }),
+    catchError(err => this.catchError(err, STATE_RESOURCES_LOAD_BLOCKS)),
     repeat()
   ));
 
   constructor(private stateResourcesService: StateResourcesService,
               private actions$: Actions,
+              private router: Router,
               private store: Store<State>) { }
 
-  catchError = (error): Observable<ErrorAdd> => of({
+  catchError = (error, initiator: string): Observable<ErrorAdd> => of({
     type: ADD_ERROR,
-    payload: { title: 'State resources error', message: error.message, initiator: STATE_RESOURCES_LOAD }
+    payload: { title: 'State resources error', message: error.message, initiator }
   });
 
 }

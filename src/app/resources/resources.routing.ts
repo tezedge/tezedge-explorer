@@ -30,7 +30,23 @@ const routes: Routes = [
       {
         path: 'state',
         canActivate: [ResourcesGuard],
-        component: StateResourcesComponent
+        component: StateResourcesComponent,
+        children: [
+          {
+            path: ':level',
+            component: StateResourcesComponent,
+            children: [
+              {
+                path: ':round',
+                component: StateResourcesComponent,
+              },
+              {
+                path: '',
+                redirectTo: '0'
+              }
+            ]
+          },
+        ]
       },
       {
         path: '',

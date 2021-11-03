@@ -1,0 +1,100 @@
+@import 'variables';
+@import 'layout';
+
+:host {
+  @include flexRowVertCenter();
+  flex-wrap: wrap;
+  width: 100%;
+}
+
+.primary-button {
+  background-color: $foreground-1;
+  line-height: 24px;
+  height: 24px;
+
+  &:hover:not([disabled]) {
+    background-color: $foreground-2;
+  }
+
+  &[disabled] {
+    opacity: 0.5;
+  }
+}
+
+.wrapper {
+  > * {
+    margin-top: 5px;
+  }
+
+  form {
+    min-width: 100px;
+    max-width: 130px;
+    width: 100%;
+
+    .custom-bottom-form-field {
+      width: 100%;
+      height: 24px;
+
+      ::ng-deep .mat-form-field-infix {
+        width: auto;
+        padding-right: 22px !important;
+      }
+
+      .p-absolute {
+        right: 6px;
+        height: 100%;
+      }
+    }
+
+    input {
+      border: none;
+      border-radius: 2px;
+      color: $foreground;
+      padding-left: 6px;
+      line-height: 24px;
+      height: 24px;
+      margin-bottom: 0;
+    }
+  }
+}
+
+.rounds {
+  height: 24px;
+}
+
+.round {
+  background-color: $foreground-1;
+  color: $foreground-7;
+  padding-left: 7px;
+  padding-right: 5px;
+  height: 24px;
+
+  .round-num {
+    padding-right: 12px;
+    padding-left: 5px;
+    transition: padding-right 0.2s, padding-left 0.2s;
+  }
+
+  mat-icon {
+    transition: 0.2s all;
+    width: 0 !important;
+  }
+
+  &.active {
+    color: $foreground;
+    background: $table-hovered-row-background;
+
+    .round-num {
+      padding-right: 5px;
+      padding-left: 0;
+    }
+
+    mat-icon {
+      width: 12px !important;
+    }
+  }
+
+  &:hover:not(.active) {
+    background: $foreground-2;
+  }
+}

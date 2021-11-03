@@ -3,6 +3,7 @@
 .notifier__notification--material {
   padding: 0;
   max-width: 400px;
+  top: 52.5px !important;
 
   @media (max-width: 600px) {
     max-width: 70vw;

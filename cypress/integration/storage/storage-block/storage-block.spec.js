@@ -1,11 +1,5 @@
+const { testForTezedge } = require('../../support');
 const isOctez = (data) => data.settingsNode.activeNode.type === 'octez';
-const testForTezedge = (test) => {
-  cy.get('app-settings-node .settings-node-select mat-select').then(select => {
-    if (select.attr('id') === 'tezedge') {
-      test();
-    }
-  });
-};
 
 context('STORAGE BLOCK', () => {
   beforeEach(() => {

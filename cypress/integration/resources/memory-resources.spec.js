@@ -1,25 +1,25 @@
 context('MEMORY RESOURCES', () => {
   beforeEach(() => {
-    cy.intercept('GET', '/v1/tree*').as('getMemoryResources');
-    cy.visit(Cypress.config().baseUrl + '/#/resources/memory', { timeout: 10000 });
-    cy.wait('@getMemoryResources');
-    cy.wait(1000);
+    cy.intercept('GET', '/v1/tree*').as('getMemoryResources')
+      .visit(Cypress.config().baseUrl + '/#/resources/memory', { timeout: 10000 })
+      .wait('@getMemoryResources')
+      .wait(1000);
   });
 
-  it('[MEMORY RESOURCES] should parse tree RPC response successfully', () => {
+  it('[MEMORY RESOURCES] should parse tree RPC response', () => {
     cy.window()
       .its('store')
       .then((store) => {
         store.select('resources').subscribe(store => {
           const resources = store.memoryResources;
-          cy.wrap(resources).should('not.be.undefined');
-          cy.wrap(resources.name.executableName).should('eq', 'root');
-          cy.wrap(resources.value).should('not.be.undefined');
+          expect(resources).to.not.be.undefined;
+          expect(resources.name.executableName).to.equal('root');
+          expect(resources.value).to.not.be.undefined;
 
           const recursiveAssertion = (children) => {
             children.forEach(child => {
-              cy.wrap(child.name.executableName).should('not.be.undefined');
-              cy.wrap(child.value).should('not.be.undefined');
+              expect(child.name.executableName).to.not.be.undefined;
+              expect(child.value).to.not.be.undefined;
               let expectedColor;
               if (child.value > 99.99) {
                 expectedColor = '#793541';
@@ -30,7 +30,7 @@ context('MEMORY RESOURCES', () => {
               } else {
                 expectedColor = '#2a2a2e';
               }
-              cy.wrap(child.color).should('eq', expectedColor);
+              expect(child.color).to.equal(expectedColor);
 
               if (child.children && child.children.length > 1) {
                 const isArraySortedBySize = (child) => {
@@ -42,7 +42,7 @@ context('MEMORY RESOURCES', () => {
                   return true;
                 };
 
-                cy.wrap(isArraySortedBySize(child)).should('eq', true);
+                expect(isArraySortedBySize(child)).to.be.true;
 
                 recursiveAssertion(child.children);
               }
@@ -54,14 +54,14 @@ context('MEMORY RESOURCES', () => {
       });
   });
 
-  it('[MEMORY RESOURCES] should render memory resources table successfully', () => {
+  it('[MEMORY RESOURCES] should render memory resources table', () => {
     cy.window()
       .its('store')
       .then((store) => {
         store.select('resources').subscribe(root => {
-          cy.get('table.memory-table', { timeout: 10000 }).should('be.visible');
-          cy.get('table.memory-table tbody tr')
-            .should((trArray) => {
+          cy.get('table.memory-table', { timeout: 10000 }).should('be.visible')
+            .get('table.memory-table tbody tr')
+            .then(trArray => {
               if (root.memoryResources) {
                 expect(trArray).to.have.length(root.memoryResources.children.length);
               }
@@ -70,15 +70,15 @@ context('MEMORY RESOURCES', () => {
       });
   });
 
-  it('[MEMORY RESOURCES] should render treemap successfully', () => {
+  it('[MEMORY RESOURCES] should render the treemap graph', () => {
     cy.window()
       .its('store')
       .then((store) => {
         store.select('resources').subscribe(root => {
-          cy.wait(1000);
-          cy.get('.tree-map.observablehq svg', { timeout: 10000 }).should('be.visible');
-          cy.get('.tree-map.observablehq svg > g > g')
-            .should((trArray) => {
+          cy.wait(1000)
+            .get('.tree-map.observablehq svg', { timeout: 10000 }).should('be.visible')
+            .get('.tree-map.observablehq svg > g > g')
+            .then(trArray => {
               if (root.memoryResources) {
                 expect(trArray).to.have.length(root.memoryResources.children.length);
               }
@@ -87,23 +87,24 @@ context('MEMORY RESOURCES', () => {
       });
   });
 
-  it('[MEMORY RESOURCES] should zoom in on table\'s second row click successfully', () => {
+  it('[MEMORY RESOURCES] should zoom in on table\'s second row click', () => {
     cy.window()
       .its('store')
       .then((store) => {
         store.select('resources').subscribe(root => {
           if (root.memoryResources.children[1].children.length) {
-            cy.wait(2000);
-            cy.get('table.memory-table tbody tr:nth-child(2)', { timeout: 10000 }).click({ force: true });
-            cy.wait(2000);
+            cy.wait(2000)
+              .get('table.memory-table tbody tr:nth-child(2)', { timeout: 10000 })
+              .click({ force: true })
+              .wait(2000);
             root.memoryResources.children[1].children.forEach((child, i) => {
               cy.get(`table.memory-table tbody tr:nth-child(${i + 1}) td:nth-child(3) div span`, { timeout: 10000 })
-                .should(span => {
+                .then(span => {
                   expect(span.text()).to.equal(child.name.executableName);
-                });
+                })
 
-              cy.get('.tree-map.observablehq svg g text tspan')
-                .should(tSpans => {
+                .get('.tree-map.observablehq svg g text tspan')
+                .then(tSpans => {
                   const tSpanArray = [];
                   tSpans.each(i => {
                     tSpanArray.push(tSpans[i]);
@@ -113,7 +114,7 @@ context('MEMORY RESOURCES', () => {
             });
 
             cy.get('.active-resources span')
-              .should(span => {
+              .then(span => {
                 expect(span.text()).to.contains(root.memoryResources.children[1].name.executableName);
               });
           }
@@ -121,44 +122,47 @@ context('MEMORY RESOURCES', () => {
       });
   });
 
-  it('[MEMORY RESOURCES] should update breadcrumbs successfully when zoom in on table\'s first row click', () => {
-    cy.window()
+  it('[MEMORY RESOURCES] should update breadcrumbs when zoom in on table\'s first row click', () => {
+    cy.wait(1000)
+      .window()
       .its('store')
       .then((store) => {
-        cy.wait(1000)
-          store.select('resources').subscribe(res => {
-            if (res.memoryResources.children[0].children.length) {
-              cy.wait(1000);
-              cy.get('table.memory-table tbody tr:nth-child(1)', { timeout: 10000 }).click({ force: true });
-              cy.wait(2000);
+        store.select('resources').subscribe(res => {
+          if (res.memoryResources?.children[0]?.children.length) {
+            cy.wait(1000)
+              .get('table.memory-table tbody tr:nth-child(1)', { timeout: 10000 })
+              .click({ force: true })
+              .wait(2000)
 
-              cy.get('.breadcrumbs > :nth-last-child(2)')
-                .should(div => {
-                  expect(div.text()).to.equal(res.memoryResources.children[0].name.executableName);
-                });
-            }
+              .get('.breadcrumbs > :nth-last-child(2)')
+              .then(div => {
+                expect(div.text()).to.equal(res.memoryResources.children[0].name.executableName);
+              });
+          }
         });
       });
   });
 
-  it('[MEMORY RESOURCES] should update table successfully when click on breadcrumb', () => {
+  it('[MEMORY RESOURCES] should update table when click on breadcrumb', () => {
     cy.window()
       .its('store')
       .then((store) => {
         store.select('resources').subscribe(root => {
           if (root.memoryResources.children[0].children.length) {
-            cy.wait(1000);
-            cy.get('table.memory-table tbody tr:nth-child(1)', { timeout: 10000 }).click({ force: true });
-            cy.wait(2000);
+            cy.wait(1000)
+              .get('table.memory-table tbody tr:nth-child(1)', { timeout: 10000 })
+              .click({ force: true })
+              .wait(2000)
 
-            cy.get(`table.memory-table tbody tr:nth-child(1) td:nth-child(3) div span`)
+              .get(`table.memory-table tbody tr:nth-child(1) td:nth-child(3) div span`)
               .then(span => {
                 expect(span.text()).to.equal(root.memoryResources.children[0].children[0].name.executableName);
-              });
+              })
 
-            cy.get('.breadcrumbs .breadcrumb:nth-child(1)').click({ force: true });
-            cy.wait(1000);
-            cy.get(`table.memory-table tbody tr:nth-child(1) td:nth-child(3) div span`)
+              .get('.breadcrumbs .breadcrumb:nth-child(1)')
+              .click({ force: true })
+              .wait(1000)
+              .get(`table.memory-table tbody tr:nth-child(1) td:nth-child(3) div span`)
               .then(span => {
                 expect(span.text()).to.equal(root.memoryResources.children[0].name.executableName);
               });
@@ -174,23 +178,23 @@ context('MEMORY RESOURCES', () => {
         store.select('resources').subscribe(root => {
           if (root.memoryResources.children[0].children.length) {
             const clicked = root.memoryResources.children[0];
-            cy.wait(2000);
-            cy.get('.tree-map.observablehq svg g > g:first-child', { timeout: 10000 }).click({ force: true });
-            cy.wait(1000);
+            cy.wait(2000)
+              .get('.tree-map.observablehq svg g > g:first-child', { timeout: 10000 })
+              .click({ force: true })
+              .wait(1000)
 
-
-            cy.get('.active-resources span')
-              .should(span => {
+              .get('.active-resources span')
+              .then(span => {
                 expect(span.text()).to.contains(clicked.name.executableName);
-              });
+              })
 
-            cy.get('.tree-map.observablehq svg > g > g text tspan')
-              .should((tspan) => {
+              .get('.tree-map.observablehq svg > g > g text tspan')
+              .then(tspan => {
                 expect(tspan.text()).to.contains(clicked.children[0].name.executableName);
-              });
+              })
 
-            cy.get(`table.memory-table tbody tr:nth-child(1) td:nth-child(3) div span`)
-              .should(span => {
+              .get(`table.memory-table tbody tr:nth-child(1) td:nth-child(3) div span`)
+              .then(span => {
                 expect(span.text()).to.equal(clicked.children[0].name.executableName);
               });
           }
@@ -207,20 +211,20 @@ context('MEMORY RESOURCES', () => {
             const hovered = root.memoryResources.children[1];
             const isResourceBigEnough = (hovered.value / root.memoryResources.value * 100) > 0;
             if (isResourceBigEnough) {
-              cy.wait(1000);
-              cy.get('.tree-map.observablehq svg g > g:nth-child(2)', { timeout: 10000 })
-                .trigger('mouseover', { force: true })
-                .wait(1000);
+              cy.wait(1000)
+                .get('.tree-map.observablehq svg g > g:nth-child(2)', { timeout: 10000 })
+                .trigger('mouseover')
+                .wait(1000)
 
-              cy.get('.d3-tooltip').should('be.visible');
+                .get('.d3-tooltip').should('be.visible')
 
-              cy.get('.d3-tooltip div:first-child')
-                .should((div) => {
+                .get('.d3-tooltip div:first-child')
+                .then((div) => {
                   expect(div.text()).to.contains('/' + hovered.name.executableName);
-                });
+                })
 
-              cy.get('.d3-tooltip div:nth-child(2)')
-                .should((div) => {
+                .get('.d3-tooltip div:nth-child(2)')
+                .then((div) => {
                   expect(div.text()).to.contains(hovered.children.length + ' children');
                 });
             }
@@ -229,30 +233,30 @@ context('MEMORY RESOURCES', () => {
       });
   });
 
-  it('[MEMORY RESOURCES] should zoom out one step on back button click successfully', () => {
+  it('[MEMORY RESOURCES] should zoom out one step on back button click', () => {
     cy.window()
       .its('store')
       .then((store) => {
         store.select('resources').subscribe(root => {
           if (root.memoryResources.children[0].children.length) {
             const clicked = root.memoryResources.children[0];
-            cy.wait(2000);
-            cy.get('.tree-map.observablehq svg g > g:first-child', { timeout: 10000 }).click({ force: true });
-            cy.wait(1000);
-
-            cy.get('.active-resources span')
-              .should(span => {
+            cy.wait(2000)
+              .get('.tree-map.observablehq svg g > g:first-child', { timeout: 10000 })
+              .click({ force: true })
+              .wait(1000)
+              .get('.active-resources span')
+              .then(span => {
                 expect(span.text()).to.contains(clicked.name.executableName);
-              });
-            cy.get('.active-resources div.pointer').click();
-            cy.wait(1000);
-            cy.get('.tree-map.observablehq svg > g > g text tspan')
-              .should((tspan) => {
+              })
+              .get('.active-resources div.pointer').click()
+              .wait(1000)
+              .get('.tree-map.observablehq svg > g > g text tspan')
+              .then((tspan) => {
                 expect(tspan.text()).to.contains(clicked.name.executableName);
-              });
+              })
 
-            cy.get(`table.memory-table tbody tr:nth-child(1) td:nth-child(3) div span`)
-              .should(span => {
+              .get(`table.memory-table tbody tr:nth-child(1) td:nth-child(3) div span`)
+              .then(span => {
                 expect(span.text()).to.equal(clicked.name.executableName);
               });
           }

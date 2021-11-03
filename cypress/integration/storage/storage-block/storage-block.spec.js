@@ -1,4 +1,4 @@
-const { testForTezedge } = require('../../support');
+const { testForTezedge } = require('../../../support');
 const isOctez = (data) => data.settingsNode.activeNode.type === 'octez';
 
 context('STORAGE BLOCK', () => {

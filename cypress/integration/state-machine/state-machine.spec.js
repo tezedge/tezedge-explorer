@@ -1,25 +1,21 @@
 const { testForTezedge } = require('../../support');
-const isOctez = (data) => data.settingsNode.activeNode.type === 'octez';
 
 context('STATE MACHINE', () => {
   beforeEach(() => {
     cy.visit(Cypress.config().baseUrl)
       .wait(500)
-      .window()
-      .its('store')
-      .then((store) => {
-        store.subscribe(data => {
-          if (!isOctez(data)) {
-            cy.intercept('GET', '/dev/shell/automaton/actions?limit=*').as('getActionsRequest')
-              .intercept('GET', '/dev/shell/automaton/actions_graph').as('getActionsGraph')
-              .intercept('GET', '/dev/shell/automaton/actions_stats').as('getActionStatistics')
-              .visit(Cypress.config().baseUrl + '/#/state', { timeout: 100000 })
-              .wait('@getActionsGraph')
-              .wait('@getActionsRequest')
-              .wait('@getActionStatistics')
-              .wait(1000);
-          }
-        });
+      .get('app-settings-node .settings-node-select mat-select')
+      .then(select => {
+        if (select.attr('id') === 'tezedge') {
+          cy.intercept('GET', '/dev/shell/automaton/actions?limit=*').as('getActionsRequest')
+            .intercept('GET', '/dev/shell/automaton/actions_graph').as('getActionsGraph')
+            .intercept('GET', '/dev/shell/automaton/actions_stats').as('getActionStatistics')
+            .visit(Cypress.config().baseUrl + '/#/state', { timeout: 100000 })
+            .wait('@getActionsGraph')
+            .wait('@getActionsRequest')
+            .wait('@getActionStatistics')
+            .wait(1000);
+        }
       });
   });
 

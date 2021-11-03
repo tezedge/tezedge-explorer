@@ -1,3 +1,22 @@
+@import 'src/assets/styles/utilities/variables';
+@import 'src/assets/styles/utilities/layout';
+
+.active-block {
+  div {
+    height: 22px;
+    line-height: 22px;
+  }
+
+  .copy-hash {
+    @include flexRowCenter();
+    background-color: $background-surface;
+    height: 26px;
+
+    &:hover {
+      background-color: $background-surface-fade-2;
+    }
+  }
+}
 
 table {
   border-collapse: collapse;
@@ -7,12 +26,12 @@ table {
     height: 32px;
 
     td:first-child {
-      width: 50%;
+      width: 40%;
       max-width: 1px;
     }
 
     td, th {
-      padding: 6px;
+      padding: 5px;
 
       &:first-child {
         padding-left: 8px;

@@ -1,6 +1,7 @@
 @import 'src/assets/styles/utilities/variables';
 
 $bezier: cubic-bezier(0.76, 0, 0.24, 1);
+$overview: 360px;
 
 :host {
   height: 100%;
@@ -11,9 +12,13 @@ $bezier: cubic-bezier(0.76, 0, 0.24, 1);
 
 .storage-toolbar {
   .toolbar-left {
-    width: calc(100% - 300px);
     max-width: 100%;
     flex-direction: row;
+    width: calc(100% - 100px);
+
+    &.expanded {
+      width: calc(100% - 360px);
+    }
   }
 
   .toolbar-right {
@@ -22,7 +27,7 @@ $bezier: cubic-bezier(0.76, 0, 0.24, 1);
     height: line-height(36px);
 
     &.expanded {
-      width: 300px;
+      width: $overview;
     }
 
     &:hover {
@@ -42,7 +47,7 @@ $bezier: cubic-bezier(0.76, 0, 0.24, 1);
 .storage-container {
   &.expanded {
     .operation-list {
-      width: calc(100% - 300px);
+      width: calc(100% - 360px);
     }
 
     .side-panel {
@@ -109,8 +114,9 @@ $bezier: cubic-bezier(0.76, 0, 0.24, 1);
   }
 
   .side-panel {
-    right: -300px;
-    width: 300px;
+    right: -$overview;
+    width: $overview;
     transition: right 0.18s $bezier;
+    background-color: $background-surface;
   }
 }

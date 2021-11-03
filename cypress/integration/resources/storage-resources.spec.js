@@ -4,16 +4,12 @@ context('STORAGE RESOURCES', () => {
   beforeEach(() => {
     cy.intercept('GET', '/stats/context*').as('getStorageResources')
       .visit(Cypress.config().baseUrl + '/#/resources/storage', { timeout: 100000 })
+      .wait('@getStorageResources')
       .wait(1000);
   });
 
-  it('[STORAGE RESOURCES] should perform get memory resources request', () => testForTezedge(() => {
-    cy.wait('@getStorageResources').its('response.statusCode').should('eq', 200);
-  }));
-
-  it('[STORAGE RESOURCES] should parse storage stats RPC response successfully', () => testForTezedge(() => {
-    cy.wait('@getStorageResources')
-      .window()
+  it('[STORAGE RESOURCES] should parse storage stats RPC response', () => testForTezedge(() => {
+    cy.window()
       .its('store')
       .then((store) => {
         store.select('resources').subscribe(store => {
@@ -68,22 +64,21 @@ context('STORAGE RESOURCES', () => {
   }));
 
   it('[STORAGE RESOURCES] should render storage statistics', () => testForTezedge(() => {
-    cy.wait('@getStorageResources')
-      .window()
+    cy.window()
       .its('store')
       .then((store) => {
         store.select('resources').subscribe(store => {
           const resources = store.storageResourcesState.storageResources;
           if (resources) {
-            cy.get('.operation-list .operation', { timeout: 10000 }).should('have.length', resources.operationsContext.length + 1);
-
-            cy.get(`.operation-list .operation:nth-child(1) app-storage-resources-mini-graph`).should('have.length', 2);
+            cy.get('.operation-list .operation', { timeout: 10000 }).should('have.length', resources.operationsContext.length + 1)
+              .get(`.operation-list .operation:nth-child(1) app-storage-resources-mini-graph`).should('have.length', 2);
 
             resources.operationsContext.forEach((operation, i) => {
-              cy.get(`.operation-list .operation:nth-child(${i + 2}) app-storage-resources-mini-graph`).should('have.length', 7);
-              cy.get(`.operation-list .operation:nth-child(${i + 2}) .slice-header span.text-uppercase`).should((span) => {
-                expect(span.text()).to.equal(resources.contextSliceNames[i + 2]);
-              });
+              cy.get(`.operation-list .operation:nth-child(${i + 2}) app-storage-resources-mini-graph`).should('have.length', 7)
+                .get(`.operation-list .operation:nth-child(${i + 2}) .slice-header span.text-uppercase`)
+                .then((span) => {
+                  expect(span.text()).to.equal(resources.contextSliceNames[i + 2]);
+                });
             });
           }
         });
@@ -91,8 +86,7 @@ context('STORAGE RESOURCES', () => {
   }));
 
   it('[STORAGE RESOURCES] should display switcher', () => testForTezedge(() => {
-    cy.wait('@getStorageResources')
-      .window()
+    cy.window()
       .its('store')
       .then((store) => {
         store.select('resources').subscribe(resources => {
@@ -116,8 +110,7 @@ context('STORAGE RESOURCES', () => {
   }));
 
   it('[STORAGE RESOURCES] should change context on switcher click', () => testForTezedge(() => {
-    cy.wait('@getStorageResources')
-      .window()
+    cy.window()
       .its('store')
       .then((store) => {
         store.select('resources').subscribe(resources => {

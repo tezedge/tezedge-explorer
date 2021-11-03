@@ -107,7 +107,7 @@ context('STATE MACHINE', () => {
             cy.get('.virtual-scroll-container .virtualScrollRow')
               .eq(-2)
               .then(row => {
-                beforeScrollValue = row.children()[1].textContent;
+                beforeScrollValue = row.children()[1].textContent + row.children()[2].textContent;
               })
 
               .get('.virtual-scroll-container')
@@ -117,7 +117,7 @@ context('STATE MACHINE', () => {
               .get('.virtual-scroll-container .virtualScrollRow')
               .eq(-2)
               .then(row => {
-                expect(row.children()[1].textContent).to.not.equal(beforeScrollValue);
+                expect(row.children()[1].textContent + row.children()[2].textContent).to.not.equal(beforeScrollValue);
               });
           }
         });
@@ -194,11 +194,11 @@ context('STATE MACHINE', () => {
       .trigger('click')
       .wait(1000)
       .get('.virtual-scroll-container .virtualScrollRow.hover').should('exist')
-      .then(row => activeRowText = row.children()[1].textContent)
+      .then(row => activeRowText = row.children()[1].textContent + row.children()[2].textContent)
       .wait(2000)
       .get('.virtual-scroll-container .virtualScrollRow.hover')
       .then(newRow => {
-        expect(activeRowText).to.not.equal(newRow.children()[1].textContent);
+        expect(activeRowText).to.not.equal(newRow.children()[1].textContent + newRow.children()[2].textContent);
       });
   }));
 
@@ -489,21 +489,13 @@ context('STATE MACHINE', () => {
       .then(row => rowActionName = row.children()[1].textContent.trim())
       .wait(2000)
       .get('#d3Diagram svg > g g.nodes g.node.active', { timeout: 20000 })
-      .then(g => {
-        expect(g.attr('id')).equal(rowActionName);
-      })
-      .get('#d3Diagram svg > g g.nodes g.node.active text tspan')
-      .then(tspan => {
-        expect(tspan.text().trim()).equal(rowActionName);
-      })
-      .get('#d3Diagram svg > g g.edgePaths .connection-prev')
-      .then(g => {
-        expect(g.attr('id')).to.include('-' + rowActionName);
-      })
-      .get('#d3Diagram svg > g g.edgePaths .connection-next')
-      .then(g => {
-        expect(g.attr('id')).to.include(rowActionName + '-');
-      });
+      .then(g => expect(g.attr('id')).equal(rowActionName))
+      .get('#d3Diagram svg > g g.nodes g.node.active text tspan', { timeout: 20000 })
+      .then(tspan => expect(tspan.text().trim()).equal(rowActionName))
+      .get('#d3Diagram svg > g g.edgePaths .connection-prev', { timeout: 20000 })
+      .then(g => expect(g.attr('id')).to.include('-' + rowActionName))
+      .get('#d3Diagram svg > g g.edgePaths .connection-next', { timeout: 20000 })
+      .then(g => expect(g.attr('id')).to.include(rowActionName + '-'));
   }));
 
   it('[STATE MACHINE] should update progress bar on action click', () => testForTezedge(() => {

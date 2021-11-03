@@ -1,5 +1,5 @@
 <ng-container *ngIf="spinner$ | async as spinner">
-  <div class="text-white-4 margin-right-5">{{ spinner.message }}</div>
+  <div fxHide.lt-lg class="text-white-4 margin-right-5">{{ spinner.message }}</div>
   <div class="margin-right-10">
     <mat-spinner [strokeWidth]="1"
                  [diameter]="18"></mat-spinner>

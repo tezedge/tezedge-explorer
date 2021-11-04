@@ -216,7 +216,6 @@ export class StateMachineDiagramComponent implements OnInit, AfterViewInit {
         //   + (block.type === 'error' && block.status !== 'active' ? ' hidden-svg' : '');
         this.g.setNode(block.actionId, { // Create
           label: block.actionKind,
-          class: block.nextActions.length === 0 ? 'detached' : '',
           data: block,
           id: block.actionKind
           // id: 'g' + block.actionId
@@ -258,32 +257,8 @@ export class StateMachineDiagramComponent implements OnInit, AfterViewInit {
       this.svg
         .attr('width', this.d3Diagram.nativeElement.offsetWidth)
         .attr('height', this.d3Diagram.nativeElement.offsetHeight);
-      this.rearrangeDetachedBlocks();
 
       this.resetZoom();
-    });
-  }
-
-  private rearrangeDetachedBlocks(): void {
-    const blocksWithoutNextActions = this.diagram.filter(block => !block.nextActions.length);
-    const firstNodeY = (d3.select('#' + blocksWithoutNextActions[0].actionKind).node() as any).transform.baseVal[0].matrix.f;
-
-    const tooltip = d3.select('#d3Diagram')
-      .append('div')
-      .attr('class', 'state-chart-tooltip')
-      .text('This action was not triggered.');
-
-    blocksWithoutNextActions.forEach((block, i) => {
-      const currentNode: Selection<any, any, HTMLElement, any> = d3.select('#' + block.actionKind);
-      currentNode.attr('transform', () => {
-        const xTransform = currentNode.node().transform.baseVal[0].matrix.e - 600;
-        const yTransform = firstNodeY + (i * 45);
-        return `translate(${xTransform},${yTransform})`;
-      });
-      currentNode
-        .on('mouseover', () => tooltip.style('visibility', 'visible'))
-        .on('mousemove', (event) => tooltip.style('top', (event.pageY - 50) + 'px').style('left', (event.pageX - 50) + 'px'))
-        .on('mouseout', () => tooltip.style('visibility', 'hidden'));
     });
   }
 

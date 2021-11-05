@@ -1,7 +1,7 @@
 context('MEMORY RESOURCES', () => {
   beforeEach(() => {
     cy.intercept('GET', '/v1/tree*').as('getMemoryResources')
-      .visit(Cypress.config().baseUrl + '/#/resources/memory', { timeout: 10000 })
+      .visit(Cypress.config().baseUrl + '/#/resources/memory', { timeout: 100000 })
       .wait('@getMemoryResources')
       .wait(1000);
   });

@@ -33,24 +33,12 @@
                                 [colorScheme]="systemResource.colorScheme"
                                 [formattingType]="systemResource.memory.formattingType"></app-system-resources-graph>
 
-    <app-system-resources-graph [chartData]="systemResource.storage.series"
-                                [transitionDelay]="0.6"
-                                [labelList]="systemResource.storage.labels"
-                                [active]="activeSummary === 'storage'"
-                                [resourceType]="'storage'"
-                                [graphTitle]="'STORAGE'"
-                                [rotatedLabel]="'&nbsp;&nbsp;Size&nbsp;&nbsp;'"
-                                [yAxisTickFormatting]="yAxisGigaBytesConversion"
-                                [xTicksValues]="systemResource.xTicksValues"
-                                [formattingType]="systemResource.storage.formattingType"
-                                [colorScheme]="systemResource.colorScheme"></app-system-resources-graph>
-
     <app-system-resources-graph [chartData]="systemResource.io.series"
                                 [transitionDelay]="0.8"
                                 [labelList]="systemResource.io.labels"
                                 [active]="activeSummary === 'io'"
                                 [resourceType]="'io'"
-                                [graphTitle]="'IO'"
+                                [graphTitle]="'STORAGE IO'"
                                 [formattingType]="systemResource.io.formattingType"
                                 [rotatedLabel]="'Traffic'"
                                 [yAxisTickFormatting]="yAxisMegaBytesConversion"
@@ -62,11 +50,23 @@
                                 [labelList]="systemResource.network.labels"
                                 [active]="activeSummary === 'network'"
                                 [resourceType]="'network'"
-                                [graphTitle]="'NETWORK'"
+                                [graphTitle]="'NETWORK IO'"
                                 [formattingType]="systemResource.network.formattingType"
                                 [rotatedLabel]="'Traffic'"
                                 [yAxisTickFormatting]="yAxisMegaBytesConversion"
                                 [xTicksValues]="systemResource.xTicksValues"
+                                [colorScheme]="systemResource.colorScheme"></app-system-resources-graph>
+
+    <app-system-resources-graph [chartData]="systemResource.storage.series"
+                                [transitionDelay]="0.6"
+                                [labelList]="systemResource.storage.labels"
+                                [active]="activeSummary === 'storage'"
+                                [resourceType]="'storage'"
+                                [graphTitle]="'STORAGE SIZE'"
+                                [rotatedLabel]="'&nbsp;&nbsp;Size&nbsp;&nbsp;'"
+                                [yAxisTickFormatting]="yAxisGigaBytesConversion"
+                                [xTicksValues]="systemResource.xTicksValues"
+                                [formattingType]="systemResource.storage.formattingType"
                                 [colorScheme]="systemResource.colorScheme"></app-system-resources-graph>
   </div>
 

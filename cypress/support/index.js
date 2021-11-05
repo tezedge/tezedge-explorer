@@ -18,3 +18,11 @@ import './commands'
 
 // Alternatively you can use CommonJS syntax:
 // require('./commands')
+
+export const testForTezedge = (test) => {
+  cy.get('app-settings-node .settings-node-select mat-select').then(select => {
+    if (select.attr('id') === 'tezedge') {
+      test();
+    }
+  });
+};

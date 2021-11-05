@@ -20,7 +20,7 @@ export class StorageBlockComponent implements OnInit, OnDestroy {
   filtersState = {
     open: false
   };
-  virtualPageSize = 1000;
+  virtualPageSize = 100;
 
   @ViewChild('vsContainer') vsContainer: ElementRef<HTMLDivElement>;
 

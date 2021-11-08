@@ -4,6 +4,7 @@
   <mat-form-field class="settings-node-select">
 
     <mat-select class="hide-arrow"
+                [id]="activeNode.type"
                 [value]="activeNode.id"
                 (click)="onOpeningNodeSelect()"
                 disableOptionCentering

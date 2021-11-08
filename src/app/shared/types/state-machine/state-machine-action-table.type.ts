@@ -8,7 +8,6 @@ export interface StateMachineActionTable {
   stream: boolean;
   filter: StateMachineActionsFilter;
   autoScroll: StateMachineActionTableAutoscrollType;
-  mostRecentKnownActionId: string;
 }
 
 export type StateMachineActionTableAutoscrollType =  'up' | 'down' | 'any' | undefined;

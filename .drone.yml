@@ -42,7 +42,7 @@ steps:
   - name: test-github-version
     image: cypress/included:6.2.1
     commands:
-      - cypress run --spec "cypress/integration/github-version/github-version.spec.js"
+      - cypress run --spec "cypress/integration/github-version/github-version.spec.ts"
     environment:
       CYPRESS_baseUrl: http://frontend-server:80
     depends_on:
@@ -239,7 +239,7 @@ steps:
   - name: test-github-version
     image: cypress/included:6.2.1
     commands:
-      - cypress run --spec "cypress/integration/github-version/github-version.spec.js"
+      - cypress run --spec "cypress/integration/github-version/github-version.spec.ts"
     environment:
       CYPRESS_baseUrl: http://frontend-server:80
     depends_on:

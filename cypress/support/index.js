@@ -25,4 +25,4 @@ export const testForTezedge = (test) => {
       test();
     }
   });
-};
+}

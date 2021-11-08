@@ -21,47 +21,59 @@ context('STATE MACHINE', () => {
 
   it('[STATE MACHINE] should have status code 200 for state machine diagram request', () => testForTezedge(() => {
     cy.window()
-      .its('state')
-      .then(state => {
-        cy.request(state.settingsNode.activeNode.http + '/dev/shell/automaton/actions_graph')
-          .its('status')
-          .should('eq', 200);
+      .its('store')
+      .then(store => {
+        store.select('settingsNode').subscribe(settingsNode => {
+          cy.request(settingsNode.activeNode.http + '/dev/shell/automaton/actions_graph')
+            .its('status')
+            .should('eq', 200);
+        });
       });
   }));
 
   it('[STATE MACHINE] should have status code 200 for state machine actions request', () => testForTezedge(() => {
     cy.window()
-      .its('state')
-      .then(state => {
-        cy.request(state.settingsNode.activeNode.http + '/dev/shell/automaton/actions?limit=5')
-          .its('status')
-          .should('eq', 200);
+      .its('store')
+      .then(store => {
+        store.select('settingsNode').subscribe(settingsNode => {
+          cy.request(settingsNode.activeNode.http + '/dev/shell/automaton/actions?limit=5')
+            .its('status')
+            .should('eq', 200);
+        });
       });
   }));
 
   it('[STATE MACHINE] should have status code 200 for state machine action statistics request', () => testForTezedge(() => {
     cy.window()
-      .its('state')
-      .then(state => {
-        cy.request(state.settingsNode.activeNode.http + '/dev/shell/automaton/actions_stats')
-          .its('status')
-          .should('eq', 200);
+      .its('store')
+      .then(store => {
+        store.select('settingsNode').subscribe(settingsNode => {
+          cy.request(settingsNode.activeNode.http + '/dev/shell/automaton/actions_stats')
+            .its('status')
+            .should('eq', 200);
+        });
       });
   }));
 
   it('[STATE MACHINE] should get correct number of actions as the limit successfully', () => testForTezedge(() => {
     const requestedActions = 10;
     cy.window()
-      .its('state')
-      .then(state => {
-        cy.request(state.settingsNode.activeNode.http + '/dev/shell/automaton/actions?limit=' + requestedActions)
-          .its('body.length')
-          .should('eq', requestedActions);
+      .its('store')
+      .then(store => {
+        store.select('settingsNode').subscribe(settingsNode => {
+          cy.request(settingsNode.activeNode.http + '/dev/shell/automaton/actions?limit=' + requestedActions)
+            .its('body.length')
+            .should('eq', requestedActions);
+        });
       });
   }));
 
+  it('[STATE MACHINE] should create rows for the virtual scroll table', () => testForTezedge(() => {
+    cy.get('.virtual-scroll-container .virtualScrollRow').should('be.visible');
+  }));
+
   it('[STATE MACHINE] should fill the last row of the table with the last value received', () => testForTezedge(() => {
-    cy.wait(2000)
+    cy.get('button.start-stream', { timeout: 10000 })
       .window()
       .its('store')
       .then((store) => {
@@ -82,14 +94,10 @@ context('STATE MACHINE', () => {
       });
   }));
 
-  it('[STATE MACHINE] should create rows for the virtual scroll table', () => testForTezedge(() => {
-    cy.get('.virtual-scroll-container .virtualScrollRow').should('be.visible');
-  }));
-
   it('[STATE MACHINE] should change the value of the virtual scroll element when scrolling', () => testForTezedge(() => {
     let beforeScrollValue;
     let testExecuted = false;
-    cy.wait(1000)
+    cy.get('button.start-stream', { timeout: 10000 })
       .window()
       .its('store')
       .then((store) => {
@@ -117,7 +125,7 @@ context('STATE MACHINE', () => {
   }));
 
   it('[STATE MACHINE] should show properly colors for duration column values', () => testForTezedge(() => {
-    cy.wait(1000)
+    cy.get('button.start-stream', { timeout: 10000 })
       .window()
       .its('store')
       .then(store => {
@@ -133,7 +141,7 @@ context('STATE MACHINE', () => {
                 .get('app-state-machine-table .virtual-scroll-container.state-table')
                 .scrollTo(0, y)
 
-                .get('.virtual-scroll-container .virtualScrollRow .text-yellow')
+                .get('.virtual-scroll-container .virtualScrollRow .text-yellow', { timeout: 10000 })
                 .then(elements => {
                   expect(yellowDurationAction.duration).to.contain(elements[0].textContent);
                 });
@@ -153,25 +161,8 @@ context('STATE MACHINE', () => {
       });
   }));
 
-  it('[STATE MACHINE] should stop stream when selecting an action', () => testForTezedge(() => {
-    cy.window()
-      .its('store')
-      .then((store) => {
-        store.select('stateMachine').subscribe(stateMachine => {
-          if (stateMachine.actionTable.ids.length) {
-            cy.get('.virtual-scroll-container .virtualScrollRow')
-              .eq(-3)
-              .trigger('click')
-              .wait(500)
-              .get('.table-virtual-scroll-footer button.start-stream.inactive').should('exist')
-              .get('.table-virtual-scroll-footer button.stop-stream:not(.inactive)').should('exist');
-          }
-        });
-      });
-  }));
-
   it('[STATE MACHINE] should fill the right details part with the action of the clicked row - the second last record in our case', () => testForTezedge(() => {
-    cy.wait(1000)
+    cy.get('button.start-stream', { timeout: 10000 })
       .window()
       .its('store')
       .then((store) => {
@@ -193,8 +184,42 @@ context('STATE MACHINE', () => {
       });
   }));
 
+  it('[STATE MACHINE] should start playing through the actions on play button click', () => testForTezedge(() => {
+    let activeRowText;
+    cy.get('button.start-stream', { timeout: 10000 })
+      .get('.virtual-scroll-container .virtualScrollRow').should('have.length.at.least', 5)
+      .get('.virtual-scroll-container .virtualScrollRow.hover').should('not.exist')
+      .get('.player-wrapper .play-pause:not(.arrows)')
+      .trigger('click')
+      .wait(1000)
+      .get('.virtual-scroll-container .virtualScrollRow.hover').should('exist')
+      .then(row => activeRowText = row.children()[1].textContent)
+      .wait(2000)
+      .get('.virtual-scroll-container .virtualScrollRow.hover')
+      .then(newRow => {
+        expect(activeRowText).to.not.equal(newRow.children()[1].textContent);
+      });
+  }));
+
+  it('[STATE MACHINE] should stop stream when selecting an action', () => testForTezedge(() => {
+    cy.window()
+      .its('store')
+      .then((store) => {
+        store.select('stateMachine').subscribe(stateMachine => {
+          if (stateMachine.actionTable.ids.length) {
+            cy.get('.virtual-scroll-container .virtualScrollRow')
+              .eq(-3)
+              .trigger('click')
+              .wait(500)
+              .get('.table-virtual-scroll-footer button.start-stream.inactive').should('exist')
+              .get('.table-virtual-scroll-footer button.stop-stream:not(.inactive)').should('exist');
+          }
+        });
+      });
+  }));
+
   it('[STATE MACHINE] should select correct action details tabs', () => testForTezedge(() => {
-    cy.wait(1000)
+    cy.get('button.start-stream', { timeout: 10000 })
       .window()
       .its('store')
       .then((store) => {
@@ -226,7 +251,7 @@ context('STATE MACHINE', () => {
   }));
 
   it('[STATE MACHINE] should show clicked action\'s diffs', () => testForTezedge(() => {
-    cy.wait(2000)
+    cy.get('button.start-stream', { timeout: 10000 })
       .window()
       .its('store')
       .then((store) => {
@@ -255,7 +280,7 @@ context('STATE MACHINE', () => {
   }));
 
   it('[STATE MACHINE] should show clicked action\'s content', () => testForTezedge(() => {
-    cy.wait(2000)
+    cy.get('button.start-stream', { timeout: 10000 })
       .window()
       .its('store')
       .then((store) => {
@@ -362,8 +387,7 @@ context('STATE MACHINE', () => {
 
   it('[STATE MACHINE] should zoom in state chart successfully on mouse wheel up', () => testForTezedge(() => {
     let initialTransform;
-    cy.wait(500)
-      .get('#d3Diagram svg')
+    cy.get('#d3Diagram svg', { timeout: 10000 })
       .get('#d3Diagram svg > g')
       .then(e => {
         initialTransform = e.attr('transform');
@@ -386,8 +410,7 @@ context('STATE MACHINE', () => {
 
   it('[STATE MACHINE] should zoom in state chart successfully on plus button', () => testForTezedge(() => {
     let initialTransform;
-    cy.wait(500)
-      .get('#d3Diagram svg')
+    cy.get('#d3Diagram svg', { timeout: 10000 })
       .get('#d3Diagram svg > g')
       .then(e => {
         initialTransform = e.attr('transform');
@@ -404,8 +427,7 @@ context('STATE MACHINE', () => {
 
   it('[STATE MACHINE] should zoom out state chart successfully on minus button', () => testForTezedge(() => {
     let initialTransform;
-    cy.wait(500)
-      .get('#d3Diagram svg')
+    cy.get('#d3Diagram svg', { timeout: 10000 })
       .get('#d3Diagram svg > g')
       .then(e => {
         initialTransform = e.attr('transform');
@@ -422,8 +444,7 @@ context('STATE MACHINE', () => {
 
   it('[STATE MACHINE] should show whole state chart successfully on reset zoom button', () => testForTezedge(() => {
     let initialTransform;
-    cy.wait(500)
-      .get('#d3Diagram svg')
+    cy.get('#d3Diagram svg', { timeout: 10000 })
       .get('#d3Diagram svg > g')
       .then(e => {
         initialTransform = e.attr('transform');
@@ -441,7 +462,7 @@ context('STATE MACHINE', () => {
       });
   }));
 
-  it('[STATE MACHINE] should disable next and prev action buttons if no action is selected successfully', () => testForTezedge(() => {
+  it('[STATE MACHINE] should disable next and prev action buttons if no action is selected', () => testForTezedge(() => {
     cy.window()
       .its('store')
       .then((store) => {
@@ -455,26 +476,9 @@ context('STATE MACHINE', () => {
       });
   }));
 
-  it('[STATE MACHINE] should start playing through the actions on play button click', () => testForTezedge(() => {
-    let activeRowText;
-    cy.wait(2000)
-      .get('.virtual-scroll-container .virtualScrollRow').should('have.length.at.least', 5)
-      .get('.virtual-scroll-container .virtualScrollRow.hover').should('not.exist')
-      .get('.player-wrapper .play-pause:not(.arrows)')
-      .trigger('click')
-      .wait(1000)
-      .get('.virtual-scroll-container .virtualScrollRow.hover').should('exist')
-      .then(row => activeRowText = row.children()[1].textContent)
-      .wait(2000)
-      .get('.virtual-scroll-container .virtualScrollRow.hover')
-      .then(newRow => {
-        expect(activeRowText).to.not.equal(newRow.children()[1].textContent);
-      });
-  }));
-
   it('[STATE MACHINE] should highlight the correct svg block in the diagram on action click', () => testForTezedge(() => {
     let rowActionName;
-    cy.wait(2000)
+    cy.get('button.start-stream', { timeout: 10000 })
       .get('.virtual-scroll-container .virtualScrollRow').should('have.length.at.least', 5)
       .get('.virtual-scroll-container .virtualScrollRow')
       .eq(-3)
@@ -503,7 +507,8 @@ context('STATE MACHINE', () => {
 
   it('[STATE MACHINE] should update progress bar on action click', () => testForTezedge(() => {
     let initialValue;
-    cy.get('.virtual-scroll-container .virtualScrollRow').should('have.length.at.least', 5)
+    cy.get('button.start-stream', { timeout: 10000 })
+      .get('.virtual-scroll-container .virtualScrollRow').should('have.length.at.least', 5)
       .get('mat-slider').should('exist')
       .then(slider => {
         initialValue = slider.attr('aria-valuenow');

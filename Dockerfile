@@ -13,7 +13,7 @@ ARG node_explorer_git="https://github.com/tezedge/tezedge-explorer"
 RUN git clone ${node_explorer_git} && \
     cd tezedge-explorer && \
     git checkout ${branch} && \
-    npm install && \
+    npm install --dev typescript && npm install && \
     node path.js
 
 # change dir to angular app

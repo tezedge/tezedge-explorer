@@ -24,22 +24,22 @@ export const environment = {
         { name: 'smart-contracts' },
       ]
     },
-    {
-      id: 'octez',
-      name: 'octez.develop.dev.tezedge.com',
-      http: 'http://develop.dev.tezedge.com:18733',
-      p2p_port: '9733',
-      type: 'octez',
-      features: [
-        { name: 'debugger', url: 'http://develop.dev.tezedge.com:17732' },
-        { name: 'sandbox', url: 'http://localhost:3030' },
-        { name: 'monitoring' },
-        { name: 'resources/system', monitoringUrl: 'http://develop.dev.tezedge.com:38732/resources/ocaml' },
-        { name: 'resources/memory', memoryProfilerUrl: 'http://develop.dev.tezedge.com:17832' },
-        { name: 'mempool' },
-        { name: 'network' },
-        { name: 'logs' },
-      ]
-    },
+    // {
+    //   id: 'octez',
+    //   name: 'octez.develop.dev.tezedge.com',
+    //   http: 'http://develop.dev.tezedge.com:18733',
+    //   p2p_port: '9733',
+    //   type: 'octez',
+    //   features: [
+    //     { name: 'debugger', url: 'http://develop.dev.tezedge.com:17732' },
+    //     { name: 'sandbox', url: 'http://localhost:3030' },
+    //     { name: 'monitoring' },
+    //     { name: 'resources/system', monitoringUrl: 'http://develop.dev.tezedge.com:38732/resources/ocaml' },
+    //     { name: 'resources/memory', memoryProfilerUrl: 'http://develop.dev.tezedge.com:17832' },
+    //     { name: 'mempool' },
+    //     { name: 'network' },
+    //     { name: 'logs' },
+    //   ]
+    // },
   ]
 };

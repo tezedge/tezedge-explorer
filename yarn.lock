@@ -10607,7 +10607,7 @@
   dependencies:
     "has-flag" "^4.0.0"
 
-"svg-sprite@^1.5.2":
+"svg-sprite@~1.5.3":
   "integrity" "sha512-aErYCKBDOwfAZNAhij36Sg6C9pKKELvYkE43e0EbnllC6tLpvzEypf1di+nz2qu+JzWUa+L+ZK5mCkbCJ8btHw=="
   "resolved" "https://registry.npmjs.org/svg-sprite/-/svg-sprite-1.5.3.tgz"
   "version" "1.5.3"

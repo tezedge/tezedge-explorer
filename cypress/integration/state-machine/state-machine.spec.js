@@ -124,7 +124,7 @@ context('STATE MACHINE', () => {
       });
   }));
 
-  it.only('[STATE MACHINE] should show properly colors for duration column values', () => testForTezedge(() => {
+  it('[STATE MACHINE] should show properly colors for duration column values', () => testForTezedge(() => {
     cy.get('button.start-stream', { timeout: 10000 })
       .window()
       .its('store')

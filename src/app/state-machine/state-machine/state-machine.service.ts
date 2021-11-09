@@ -10,13 +10,6 @@ import { formatNumber } from '@angular/common';
 import { StateMachineActionKindStatistics } from '@shared/types/state-machine/state-machine-action-kind-statistics.type';
 import { StateMachineActionStatistics } from '@shared/types/state-machine/state-machine-action-statistics.type';
 
-// @ts-ignore
-import * as actionList from './action-list.json';
-// @ts-ignore
-import * as actionGraph from './action-graph.json';
-// @ts-ignore
-import * as actionsStatistics from './actions-statistics.json';
-
 const MILLISECOND_FACTOR = 1000;
 const MICROSECOND_FACTOR = 1000000;
 const NANOSECOND_FACTOR = 1000000000;
@@ -26,16 +19,11 @@ const NANOSECOND_FACTOR = 1000000000;
 })
 export class StateMachineService {
 
-  private list = actionList.default as any;
-  private graph = actionGraph.default as any;
-  private stats = actionsStatistics.default as any;
-
   constructor(private http: HttpClient) { }
 
   getStateMachineDiagram(http: string): Observable<StateMachineDiagramBlock[]> {
     const url = http + '/dev/shell/automaton/actions_graph';
     return this.http.get<StateMachineDiagramBlock[]>(url).pipe(map(actions => {
-      // return of(JSON.parse(JSON.stringify(this.graph))).pipe(delay(500), map(actions => {
       actions.forEach(action => {
         action.type = 'info';
         action.status = 'completed';
@@ -46,16 +34,12 @@ export class StateMachineService {
 
   getStateMachineActions(http: string, filter: StateMachineActionsFilter): Observable<StateMachineAction[]> {
     const url = http + '/dev/shell/automaton/actions' + this.buildParams(filter);
-    return this.http.get<StateMachineAction[]>(url)
-      // return of(this.list)
-      .pipe(map(this.calculateTimes));
+    return this.http.get<StateMachineAction[]>(url).pipe(map(this.calculateTimes));
   }
 
   getStateMachineActionStatistics(http: string): Observable<StateMachineActionStatistics> {
     const url = http + '/dev/shell/automaton/actions_stats';
-    return this.http.get(url)
-      // return of(this.stats)
-      .pipe(map(this.mapActionStatistics));
+    return this.http.get(url).pipe(map(this.mapActionStatistics));
   }
 
   private buildParams(filter: StateMachineActionsFilter): string {

@@ -124,23 +124,24 @@ context('STATE MACHINE', () => {
       });
   }));
 
-  it('[STATE MACHINE] should show properly colors for duration column values', () => testForTezedge(() => {
+  it.only('[STATE MACHINE] should show properly colors for duration column values', () => testForTezedge(() => {
     cy.get('button.start-stream', { timeout: 10000 })
       .window()
       .its('store')
       .then(store => {
         store.select('stateMachine').subscribe(stateMachine => {
           if (stateMachine.actionTable.ids.length) {
-            const yellowDurationAction = stateMachine.actionTable.ids.map(id => stateMachine.actionTable.entities[id]).find(en => en.duration.includes('text-yellow'));
-            const redDurationAction = stateMachine.actionTable.ids.map(id => stateMachine.actionTable.entities[id]).find(en => en.duration.includes('text-red'));
+            const yellowElementsArray = stateMachine.actionTable.ids.map(id => stateMachine.actionTable.entities[id]).filter(en => en.duration.includes('text-yellow'));
+            const yellowDurationAction = yellowElementsArray[0];
+            const redElementsArray = stateMachine.actionTable.ids.map(id => stateMachine.actionTable.entities[id]).filter(en => en.duration.includes('text-red'));
+            const redDurationAction = redElementsArray[0];
 
             if (yellowDurationAction) {
               const y = (yellowDurationAction.id) * 36;
               cy.get('app-state-machine-table .virtual-scroll-container.state-table').should('be.visible')
-
                 .get('app-state-machine-table .virtual-scroll-container.state-table')
                 .scrollTo(0, y)
-
+                .wait(500)
                 .get('.virtual-scroll-container .virtualScrollRow .text-yellow', { timeout: 10000 })
                 .then(elements => {
                   expect(yellowDurationAction.duration).to.contain(elements[0].textContent);
@@ -150,7 +151,7 @@ context('STATE MACHINE', () => {
             if (redDurationAction) {
               cy.get('.virtual-scroll-container')
                 .scrollTo(0, (redDurationAction.id) * 36)
-
+                .wait(500)
                 .get('.virtual-scroll-container .virtualScrollRow .text-red')
                 .then((elements) => {
                   expect(redDurationAction.duration).to.include(elements[0].textContent);

@@ -3,7 +3,7 @@ context('LOGS', () => {
     cy.intercept('GET', '/v2/log?*').as('getLogRequest')
       .visit(Cypress.config().baseUrl + '/#/logs', { timeout: 20000 })
       .wait('@getLogRequest', { timeout: 30000 })
-      .wait(300);
+      .wait(500);
   });
 
   it('[LOGS] should have status code 200 for get logs request', () => {
@@ -20,7 +20,8 @@ context('LOGS', () => {
 
   it('[LOGS] create rows for the virtual scroll table', () => {
     cy.get('.virtual-scroll-container')
-      .find('.virtualScrollRow');
+      .find('.virtualScrollRow')
+      .should('be.visible');
   });
 
   it('[LOGS] should fill the last row of the table with the last value received', () => {

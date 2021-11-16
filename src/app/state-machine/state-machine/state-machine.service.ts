@@ -23,13 +23,8 @@ export class StateMachineService {
 
   getStateMachineDiagram(http: string): Observable<StateMachineDiagramBlock[]> {
     const url = http + '/dev/shell/automaton/actions_graph';
-    return this.http.get<StateMachineDiagramBlock[]>(url).pipe(map(actions => {
-      actions.forEach(action => {
-        action.type = 'info';
-        action.status = 'completed';
-      });
-      return actions.filter(action => action.nextActions.length > 0);
-    }));
+    return this.http.get<StateMachineDiagramBlock[]>(url)
+      .pipe(map(actions => actions.filter(action => action.nextActions.length > 0)));
   }
 
   getStateMachineActions(http: string, filter: StateMachineActionsFilter): Observable<StateMachineAction[]> {
@@ -61,7 +56,6 @@ export class StateMachineService {
       action.datetime = moment(Math.ceil(action.id / 1000000)).format('HH:mm:ss.SSS, DD MMM YY');
       action.duration = StateMachineService.transform(action.duration);
     });
-
     return actions;
   }
 

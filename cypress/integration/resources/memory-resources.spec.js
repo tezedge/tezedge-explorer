@@ -6,6 +6,18 @@ context('MEMORY RESOURCES', () => {
       .wait(1000);
   });
 
+  it('[MEMORY RESOURCES] should have status code 200 for memory resources request', () =>{
+    cy.window()
+      .its('store')
+      .then(store => {
+        store.select('settingsNode').subscribe(settingsNode => {
+          cy.request(settingsNode.activeNode.features.find(f => f.name === 'resources/memory').memoryProfilerUrl + '/v1/tree?threshold=100')
+            .its('status')
+            .should('eq', 200);
+        });
+      });
+  });
+
   it('[MEMORY RESOURCES] should parse tree RPC response', () => {
     cy.window()
       .its('store')
@@ -96,24 +108,25 @@ context('MEMORY RESOURCES', () => {
             cy.wait(2000)
               .get('table.memory-table tbody tr:nth-child(2)', { timeout: 10000 })
               .click({ force: true })
-              .wait(2000);
-            root.memoryResources.children[1].children.forEach((child, i) => {
-              cy.get(`table.memory-table tbody tr:nth-child(${i + 1}) td:nth-child(3) div span`, { timeout: 10000 })
-                .then(span => {
-                  expect(span.text()).to.equal(child.name.executableName);
-                })
+              .wait(2000)
+              .then(() => {
+                root.memoryResources.children[1].children.forEach((child, i) => {
+                  cy.get(`table.memory-table tbody tr:nth-child(${i + 1}) td:nth-child(3) div span`, { timeout: 10000 })
+                    .then(span => {
+                      expect(span.text()).to.equal(child.name.executableName);
+                    })
 
-                .get('.tree-map.observablehq svg g text tspan')
-                .then(tSpans => {
-                  const tSpanArray = [];
-                  tSpans.each(i => {
-                    tSpanArray.push(tSpans[i]);
-                  });
-                  expect(tSpanArray.some(tSpan => tSpan.innerHTML === child.name.executableName)).to.be.true;
+                    .get('.tree-map.observablehq svg g text tspan')
+                    .then(tSpans => {
+                      const tSpanArray = [];
+                      tSpans.each(i => {
+                        tSpanArray.push(tSpans[i]);
+                      });
+                      expect(tSpanArray.some(tSpan => tSpan.innerHTML === child.name.executableName)).to.be.true;
+                    });
                 });
-            });
-
-            cy.get('.active-resources span')
+              })
+              .get('.active-resources span')
               .then(span => {
                 expect(span.text()).to.contains(root.memoryResources.children[1].name.executableName);
               });

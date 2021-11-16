@@ -211,26 +211,21 @@ export class StateMachineDiagramComponent implements OnInit, AfterViewInit {
       d3.selectAll('#d3Diagram svg > *').remove();
 
       this.diagram.forEach(block => {
-        // const cls = block.status
-        //   + (block.type === 'error' ? ' error' : '')
-        //   + (block.type === 'error' && block.status !== 'active' ? ' hidden-svg' : '');
         this.g.setNode(block.actionId, { // Create
           label: block.actionKind,
           data: block,
           id: block.actionKind
-          // id: 'g' + block.actionId
         });
       });
 
       this.diagram
         .filter(block => block.nextActions.length)
         .forEach(block => {
-          block.nextActions.forEach((next, i) => {
-            const isNextBlockAnError = this.diagram.find(b => b.actionId === next).type === 'error';
+          block.nextActions.forEach((next) => {
             const actionUniqueConnection = block.actionKind + '-' + this.diagram.find(b => b.actionId === next).actionKind;
             this.g.setEdge(block.actionId, next, { // Connect
-              arrowheadStyle: isNextBlockAnError ? 'display: none' : 'fill: #7f7f82; stroke: none',
-              style: (isNextBlockAnError ? 'stroke: #e05537; stroke-dasharray: 5, 5;' : 'stroke: #7f7f82;') + 'fill: none',
+              arrowheadStyle: 'fill: #7f7f82; stroke: none',
+              style: 'stroke: #7f7f82; fill: none',
               curve: curveBasis,
               id: 'a' + actionUniqueConnection,
               labelId: 'l' + actionUniqueConnection,
@@ -250,8 +245,6 @@ export class StateMachineDiagramComponent implements OnInit, AfterViewInit {
       this.svgGroup = this.svg.append('g');
 
       render(d3.select('#d3Diagram svg g'), this.g); // Run the renderer. This is what draws the final graph.
-
-      // this.toggleErrorStatesVisibilityOnHover();
 
       this.svg.selectAll('g .edgePaths .edgePath marker').attr('markerUnits', 'userSpaceOnUse').attr('markerWidth', 12);
       this.svg
@@ -302,13 +295,11 @@ export class StateMachineDiagramComponent implements OnInit, AfterViewInit {
       return;
     }
 
-    if (this.previousHighlightedElements.edgeLabel) {
-      this.previousHighlightedElements.edgeLabel.html(null);
-      this.previousHighlightedElements.nextConnectionArrow.classed('connection-next', false);
-      this.previousHighlightedElements.prevConnectionArrow.classed('connection-prev', false);
-      this.previousHighlightedElements.prevConnectionArrow.select('marker').attr('markerHeight', DEFAULT_MARKER_HEIGHT);
-      this.previousHighlightedElements.nextConnectionArrow.select('marker').attr('markerHeight', DEFAULT_MARKER_HEIGHT);
-    }
+    this.previousHighlightedElements.edgeLabel?.html(null);
+    this.previousHighlightedElements.nextConnectionArrow?.classed('connection-next', false);
+    this.previousHighlightedElements.prevConnectionArrow?.classed('connection-prev', false);
+    this.previousHighlightedElements.prevConnectionArrow?.select('marker').attr('markerHeight', DEFAULT_MARKER_HEIGHT);
+    this.previousHighlightedElements.nextConnectionArrow?.select('marker').attr('markerHeight', DEFAULT_MARKER_HEIGHT);
 
     const prevActiveAction = this.svgGroup.select('g.active');
     if (prevActiveAction) {
@@ -354,22 +345,4 @@ export class StateMachineDiagramComponent implements OnInit, AfterViewInit {
 
     this.executeZoom(x, y, scale, 750);
   }
-
-  // private toggleErrorStatesVisibilityOnHover(): void {
-  //   const toggleVisibilityOfErrorBlocks = (id: string, visible: boolean) => {
-  //     const nextBlockIds = this.diagram.find(bl => bl.actionId === Number(id)).nextActions;
-  //     const nextErrorBlockIds = this.diagram.filter(bl => nextBlockIds.includes(bl.actionId) && bl.type === 'error');
-  //     nextErrorBlockIds.forEach(bl => {
-  //       d3.select('#d3Diagram svg g')
-  //         .select(`#g${bl.actionId}`)
-  //         .classed('hidden-svg', visible);
-  //     });
-  //   };
-  //
-  //   const nodes = d3.select('#d3Diagram svg g').selectAll('g.node rect');
-  //   nodes
-  //     .on('mouseenter', (event, id: string) => toggleVisibilityOfErrorBlocks(id, false))
-  //     .on('mouseleave', (event, id: string) => toggleVisibilityOfErrorBlocks(id, true));
-  // }
-
 }

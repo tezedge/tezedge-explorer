@@ -1,28 +1,26 @@
 context('ROUTING', () => {
   beforeEach(() => {
-    cy.visit(Cypress.config().baseUrl);
-    cy.wait(1000);
+    cy.visit(Cypress.config().baseUrl)
+      .wait(1000);
   });
 
   it('[ROUTING] guard should block routing to system resources if system resources feature is missing', () => {
-    cy.wait(1000).then(() => {
-      cy.window().its('zone').then((zone) => {
-        cy.window()
-          .its('store')
-          .then((store) => {
-            const featureName = 'resources/system';
-            disableFeatureAndExpectToBeDisabled(store, zone, featureName);
+    cy.window().its('zone').then((zone) => {
+      cy.window()
+        .its('store')
+        .then((store) => {
+          const featureName = 'resources/system';
+          disableFeatureAndExpectToBeDisabled(store, zone, featureName);
 
-            cy.wait(1000).then(() => {
-              store.select('settingsNode').subscribe(settingsNode => {
-                if (!settingsNode.activeNode.features.some(f => f.name === featureName)) {
-                  cy.visit(Cypress.config().baseUrl + '/#/resources/system', { timeout: 2000 });
-                  cy.url().should('not.include', '/resources/system');
-                }
-              });
+          cy.wait(1000).then(() => {
+            store.select('settingsNode').subscribe(settingsNode => {
+              if (!settingsNode.activeNode.features.some(f => f.name === featureName)) {
+                cy.visit(Cypress.config().baseUrl + '/#/resources/system', { timeout: 2000 })
+                  .url().should('not.include', '/resources/system');
+              }
             });
           });
-      });
+        });
     });
   });
 
@@ -38,8 +36,8 @@ context('ROUTING', () => {
             cy.wait(1000).then(() => {
               store.select('settingsNode').subscribe(settingsNode => {
                 if (!settingsNode.activeNode.features.some(f => f.name === featureName)) {
-                  cy.visit(Cypress.config().baseUrl + '/#/resources/storage', { timeout: 2000 });
-                  cy.url().should('not.include', '/resources/storage');
+                  cy.visit(Cypress.config().baseUrl + '/#/resources/storage', { timeout: 2000 })
+                    .url().should('not.include', '/resources/storage');
                 }
               });
             });
@@ -60,8 +58,8 @@ context('ROUTING', () => {
             cy.wait(1000).then(() => {
               store.select('settingsNode').subscribe(settingsNode => {
                 if (!settingsNode.activeNode.features.some(f => f.name === featureName)) {
-                  cy.visit(Cypress.config().baseUrl + '/#/resources/memory', { timeout: 2000 });
-                  cy.url().should('not.include', '/resources/memory');
+                  cy.visit(Cypress.config().baseUrl + '/#/resources/memory', { timeout: 2000 })
+                    .url().should('not.include', '/resources/memory');
                 }
               });
             });
@@ -82,8 +80,8 @@ context('ROUTING', () => {
             cy.wait(1000).then(() => {
               store.select('settingsNode').subscribe(settingsNode => {
                 if (!settingsNode.activeNode.features.some(f => f.name === featureName)) {
-                  cy.visit(Cypress.config().baseUrl + '/#/storage', { timeout: 2000 });
-                  cy.url().should('not.include', '/storage');
+                  cy.visit(Cypress.config().baseUrl + '/#/storage', { timeout: 2000 })
+                    .url().should('not.include', '/storage');
                 }
               });
             });
@@ -104,8 +102,8 @@ context('ROUTING', () => {
             cy.wait(1000).then(() => {
               store.select('settingsNode').subscribe(settingsNode => {
                 if (!settingsNode.activeNode.features.some(f => f.name === featureName)) {
-                  cy.visit(Cypress.config().baseUrl + '/#/storage/123456', { timeout: 2000 });
-                  cy.url().should('not.include', '/storage/123456');
+                  cy.visit(Cypress.config().baseUrl + '/#/storage/123456', { timeout: 2000 })
+                    .url().should('not.include', '/storage/123456');
                 }
               });
             });
@@ -126,8 +124,8 @@ context('ROUTING', () => {
             cy.wait(1000).then(() => {
               store.select('settingsNode').subscribe(settingsNode => {
                 if (!settingsNode.activeNode.features.some(f => f.name === featureName)) {
-                  cy.visit(Cypress.config().baseUrl + '/#/logs', { timeout: 2000 });
-                  cy.url().should('not.include', '/logs');
+                  cy.visit(Cypress.config().baseUrl + '/#/logs', { timeout: 2000 })
+                    .url().should('not.include', '/logs');
                 }
               });
             });

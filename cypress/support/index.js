@@ -14,7 +14,7 @@
 // ***********************************************************
 
 // Import commands.js using ES2015 syntax:
-import './commands'
+import './commands';
 
 // Alternatively you can use CommonJS syntax:
 // require('./commands')
@@ -25,4 +25,12 @@ export const testForTezedge = (test) => {
       test();
     }
   });
-}
+};
+
+
+export const beforeEachForTezedge = (beforeEachBlock) => {
+  beforeEach(() => {
+    cy.visit(Cypress.config().baseUrl);
+    testForTezedge(() => beforeEachBlock());
+  });
+};

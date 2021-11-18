@@ -1,9 +1,7 @@
-import { testForTezedge } from '../../support';
+import { beforeEachForTezedge, testForTezedge } from '../../support';
 
-const isOctez = (data) => data.settingsNode.activeNode.type === 'octez';
-
-describe('SYSTEM RESOURCES', () => {
-  beforeEach(() => {
+context('SYSTEM RESOURCES', () => {
+  beforeEachForTezedge(() => {
     cy.intercept('GET', '/resources/*').as('getResources')
       .visit(Cypress.config().baseUrl + '/#/resources/system', { timeout: 30000 })
       .wait('@getResources')

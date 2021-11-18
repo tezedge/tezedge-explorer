@@ -1,7 +1,7 @@
-import { testForTezedge } from '../../support';
+import { beforeEachForTezedge, testForTezedge } from '../../support';
 
 context('STORAGE RESOURCES', () => {
-  beforeEach(() => {
+  beforeEachForTezedge(() => {
     cy.intercept('GET', '/stats/context*').as('getStorageResources')
       .visit(Cypress.config().baseUrl + '/#/resources/storage', { timeout: 100000 })
       .wait('@getStorageResources')

@@ -1,7 +1,7 @@
-import { testForTezedge } from '../../support';
+import { beforeEachForTezedge, testForTezedge } from '../../support';
 
 context('GITHUB VERSION', () => {
-  beforeEach(() => {
+  beforeEachForTezedge(() => {
     cy.intercept('GET', '/dev/version/').as('getNodeTagRequest')
       .intercept('GET', '/monitor/commit_hash/').as('getNodeLastCommitRequest')
       .intercept('GET', '/v2/version/').as('getDebuggerLastCommitRequest')

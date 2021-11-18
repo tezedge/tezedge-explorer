@@ -3,7 +3,7 @@ import { testForTezedge } from '../../../support';
 context('NETWORK', () => {
   beforeEach(() => {
     cy.intercept('GET', '/v2/p2p?node_name=*').as('getNetworkRequest')
-      .visit(Cypress.config().baseUrl + '/#/network', { timeout: 10000 })
+      .visit(Cypress.config().baseUrl + '/#/network', { timeout: 30000 })
       .wait('@getNetworkRequest', { timeout: 30000 })
       .wait(300);
   });

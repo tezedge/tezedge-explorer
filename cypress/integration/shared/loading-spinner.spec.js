@@ -22,7 +22,7 @@ context('LOADING SPINNER', () => {
   });
 
   it('[LOADING SPINNER] should hide when resources are loaded', () => {
-    cy.intercept('GET', '/resources/*', { timeout: 100000 }).as('getSystemResources')
+    cy.intercept('GET', '/resources/*').as('getSystemResources')
       .visit(Cypress.config().baseUrl + '/#/resources/system');
     cy.wait('@getSystemResources', { timeout: 100000 })
       .wait(1000)

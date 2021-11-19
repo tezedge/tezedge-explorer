@@ -25,6 +25,7 @@ export class MonitoringEffects {
   monitoringLoadEffect$ = createEffect(() => this.actions$.pipe(
     ofType(MonitoringActionTypes.MONITORING_LOAD, 'APP_REFRESH', 'APP_INIT_SUCCESS'),
     withLatestFrom(this.store, (action: any, state: ObservedValueOf<Store<State>>) => ({ action, state })),
+    filter(({ action, state }) => !!state.settingsNode.activeNode),
     switchMap(({ action, state }) => {
 
       const isMonitoringPage = this.router.url.replace('/', '').split('/')[0] === 'monitoring';
@@ -177,12 +178,10 @@ export class MonitoringEffects {
     }),
   ));
 
-  constructor(
-    private http: HttpClient,
-    private actions$: Actions,
-    private store: Store<State>,
-    private router: Router,
-    private settingsNodeService: SettingsNodeService,
-  ) { }
+  constructor(private http: HttpClient,
+              private actions$: Actions,
+              private store: Store<State>,
+              private router: Router,
+              private settingsNodeService: SettingsNodeService) { }
 
 }

@@ -98,7 +98,7 @@ export class NetworkActionEffects {
     ofType('NETWORK_ACTION_START'),
     withLatestFrom(this.store, (action: any, state: ObservedValueOf<Store<State>>) => ({ action, state })),
     switchMap(({ action, state }) =>
-      timer(0, 2000).pipe(
+      timer(0, 5000).pipe(
         takeUntil(networkActionDestroy$),
         switchMap(() =>
           this.http.get<any[]>(setUrl(action, state)).pipe(

@@ -65,7 +65,7 @@ export class AppComponent implements OnInit {
     this.activeNode$ = this.store.select(selectActiveNode);
     this.settingsNodeProtocol$ = this.store.select((state: State) => state.settingsNode)
       .pipe(
-        filter(settingsNode => !!settingsNode.entities[settingsNode.activeNode?.id].header),
+        filter(settingsNode => settingsNode.activeNode && !!settingsNode.entities[settingsNode.activeNode.id].header),
         map((settingsNode: SettingsNode) => settingsNode.entities[settingsNode.activeNode.id].header.protocol)
       );
   }

@@ -29,7 +29,6 @@ export const testForTezedge = (test) => {
     });
 };
 
-
 export const beforeEachForTezedge = (beforeEachBlock) => {
   beforeEach(() => {
     cy.visit(Cypress.config().baseUrl);

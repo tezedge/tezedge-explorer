@@ -22,7 +22,7 @@ context('LOADING SPINNER', () => {
   });
 
   it('[LOADING SPINNER] should hide when resources are loaded', () => {
-    cy.intercept('GET', '/resources/*').as('getSystemResources')
+    cy.intercept('GET', '/resources/*', { timeout: 100000 }).as('getSystemResources')
       .visit(Cypress.config().baseUrl + '/#/resources/system')
       .wait(200)
       .get('app-loading-spinner div.text-white-4').should('be.visible')

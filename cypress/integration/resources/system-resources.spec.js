@@ -3,7 +3,7 @@ import { beforeEachForTezedge, testForTezedge } from '../../support';
 context('SYSTEM RESOURCES', () => {
   beforeEachForTezedge(() => {
     cy.intercept('GET', '/resources/*').as('getResources')
-      .visit(Cypress.config().baseUrl + '/#/resources/system', { timeout: 30000 })
+      .visit(Cypress.config().baseUrl + '/#/resources/system', { timeout: 100000 })
       .wait('@getResources')
       .wait(1000);
   });

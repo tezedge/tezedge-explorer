@@ -20,11 +20,13 @@ import './commands';
 // require('./commands')
 
 export const testForTezedge = (test) => {
-  cy.get('app-settings-node .settings-node-select mat-select').then(select => {
-    if (select.attr('id') === 'tezedge') {
-      test();
-    }
-  });
+  cy.wait(400)
+    .get('app-settings-node .settings-node-select mat-select')
+    .then(select => {
+      if (select.attr('id') === 'tezedge') {
+        test();
+      }
+    });
 };
 
 

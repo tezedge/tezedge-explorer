@@ -37,7 +37,7 @@ context('GITHUB VERSION', () => {
       .window()
       .its('store')
       .then(store => {
-        store.select('githubVersion').subscribe((githubVersion) => {
+        store.select('githubVersion').subscribe(githubVersion => {
           cy.get('app-github-version')
             .trigger('click')
             .wait(1000)

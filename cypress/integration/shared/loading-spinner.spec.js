@@ -23,14 +23,8 @@ context('LOADING SPINNER', () => {
 
   it('[LOADING SPINNER] should hide when resources are loaded', () => {
     cy.intercept('GET', '/resources/*', { timeout: 100000 }).as('getSystemResources')
-      .visit(Cypress.config().baseUrl + '/#/resources/system')
-      .wait(200)
-      .get('app-loading-spinner div.text-white-4').should('be.visible')
-      .then(div => {
-        expect(div.text()).to.equal('Loading system resources...');
-      })
-      .get('app-loading-spinner div mat-spinner').should('be.visible')
-      .wait('@getSystemResources', { timeout: 100000 })
+      .visit(Cypress.config().baseUrl + '/#/resources/system');
+    cy.wait('@getSystemResources', { timeout: 100000 })
       .wait(1000)
       .get('app-loading-spinner div.text-white-4', { timeout: 30000 }).should('not.exist')
       .get('app-loading-spinner div mat-spinner', { timeout: 30000 }).should('not.exist');

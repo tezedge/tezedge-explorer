@@ -29,7 +29,10 @@ export class SystemResourcesEffects {
             type: SystemResourcesActionTypes.SYSTEM_RESOURCES_LOAD_SUCCESS,
             payload: resources
           })),
-          catchError(error => of({ type: ErrorActionTypes.ADD_ERROR, payload: { title: 'System resources error', message: error.message } }))
+          catchError(error => of({
+            type: ErrorActionTypes.ADD_ERROR,
+            payload: { title: 'System resources error', message: error.message, initiator: SystemResourcesActionTypes.SYSTEM_RESOURCES_LOAD }
+          }))
         );
 
       if (action.payload && action.payload.initialLoad) {

@@ -9,6 +9,7 @@ export enum ErrorActionTypes {
 
 export class ErrorAdd implements Action {
   readonly type = ErrorActionTypes.ADD_ERROR;
+  initiator?: string;
 
   constructor(public payload: HttpError) { }
 }

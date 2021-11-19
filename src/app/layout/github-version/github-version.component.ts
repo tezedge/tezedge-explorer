@@ -51,7 +51,7 @@ export class GithubVersionComponent implements OnInit {
     this.store.pipe(
       untilDestroyed(this),
       select(selectActiveNode),
-      filter(node => node.id !== this.currentNodeId)
+      filter(node => node?.id !== this.currentNodeId)
     ).subscribe((activeNode: SettingsNodeApi) => {
       this.currentNodeId = activeNode.id;
 

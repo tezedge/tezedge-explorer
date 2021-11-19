@@ -31,6 +31,7 @@ context('APP', () => {
           if (nodeSettings.activeNode.type !== 'octez') {
             possibleMenus.push('storage');
             possibleMenus.push('state');
+            possibleMenus.push('open-api');
           }
           possibleMenus.forEach(menu => {
             if (nodeSettings.activeNode.features.some(f => f.name.includes(menu))) {
@@ -58,14 +59,4 @@ context('APP', () => {
         expect(documentationElement).to.have.attr('target', '_blank');
       });
   });
-
-  it('[APP] should have open api option rendered successfully', () => {
-    cy.get('app-navigation-menu .app-submenu a')
-      .then(elements => {
-        const openApiElement = Array.from(elements).find(elem => elem.textContent.includes('Open API'));
-        expect(openApiElement).to.have.attr('routerLink', '/open-api');
-        expect(openApiElement).to.have.attr('routerLinkActive', 'active');
-      });
-  });
-
 });

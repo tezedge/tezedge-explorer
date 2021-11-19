@@ -13,12 +13,9 @@ const initialState: SettingsNode = {
 
 export function reducer(state: SettingsNode = initialState, action): SettingsNode {
   switch (action.type) {
-
-    // load node settings from environment
     case 'SETTINGS_NODE_LOAD': {
-      // console.log("[SETTINGS_NODE_LOAD][reducer]", environment, action, environment.api);
-      const settingsNode = {
-        activeNode: state.activeNode && state.activeNode.connected ? state.activeNode : environment.api[0],
+      return {
+        activeNode: state.activeNode && state.activeNode.connected ? state.activeNode : null,
         ids: environment.api.map(node => node.id),
         entities: environment.api.reduce((accumulator, node) => ({
           ...accumulator,
@@ -28,16 +25,12 @@ export function reducer(state: SettingsNode = initialState, action): SettingsNod
           }
         }), {}),
       };
-      return settingsNode as SettingsNode;
     }
 
-    // save connected node
     case 'SETTINGS_NODE_LOAD_SUCCESS': {
-      // console.log("[SETTINGS_NODE_LOAD_SUCCESS][reducer]", action);
       return {
         ...state,
-        // if this is first available api use it
-        activeNode: state.activeNode.connected !== true
+        activeNode: state.activeNode?.connected !== true
           ? { ...action.payload.activeNode, connected: true, features: action.payload.features }
           : state.activeNode,
         entities: {
@@ -53,9 +46,7 @@ export function reducer(state: SettingsNode = initialState, action): SettingsNod
       };
     }
 
-    // save offline node
     case 'SETTINGS_NODE_LOAD_ERROR': {
-      // console.log("[SETTINGS_NODE_LOAD_ERROR][reducer]", action);
       return {
         ...state,
         activeNode: {
@@ -97,7 +88,6 @@ export function reducer(state: SettingsNode = initialState, action): SettingsNod
     case 'SETTINGS_NODE_LOAD_SANDBOX_SUCCESS': {
       return {
         ...state,
-        // switch to sandbox
         activeNode: { ...action.payload.activeNode, connected: true },
         entities: {
           ...state.entities,

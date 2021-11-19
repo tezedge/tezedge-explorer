@@ -26,7 +26,10 @@ export class MemoryResourcesEffects {
             type: MemoryResourcesActionTypes.MEMORY_RESOURCES_LOAD_SUCCESS,
             payload: resource
           })),
-          catchError(error => of({ type: ErrorActionTypes.ADD_ERROR, payload: { title: 'Memory resources error', message: error.message } }))
+          catchError(error => of({
+            type: ErrorActionTypes.ADD_ERROR,
+            payload: { title: 'Memory resources error', message: error.message, initiator: MemoryResourcesActionTypes.MEMORY_RESOURCES_LOAD }
+          }))
         )
     )
   ));

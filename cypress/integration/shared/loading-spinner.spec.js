@@ -30,7 +30,8 @@ context('LOADING SPINNER', () => {
         expect(div.text()).to.equal('Loading system resources...');
       })
       .get('app-loading-spinner div mat-spinner').should('be.visible')
-      .wait('@getSystemResources', { timeout: 30000 })
+      .wait('@getSystemResources', { timeout: 100000 })
+      .wait(1000)
       .get('app-loading-spinner div.text-white-4', { timeout: 30000 }).should('not.exist')
       .get('app-loading-spinner div mat-spinner', { timeout: 30000 }).should('not.exist');
   });

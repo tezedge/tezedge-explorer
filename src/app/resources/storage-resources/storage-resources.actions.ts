@@ -12,7 +12,7 @@ export enum StorageResourcesActionTypes {
 export class LoadStorageResources implements Action {
   readonly type = StorageResourcesActionTypes.STORAGE_RESOURCES_LOAD;
 
-  constructor(public payload: string) { }
+  constructor(public payload: { context: string, protocol?: string }) { }
 }
 
 export class StorageResourcesLoaded implements Action {

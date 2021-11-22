@@ -4,6 +4,7 @@ import { State } from '@app/app.reducers';
 import { StateMachineActionTypes } from '@state-machine/state-machine/state-machine.actions';
 import { StorageResourcesActionTypes } from '@resources/storage-resources/storage-resources.actions';
 import { MemoryResourcesActionTypes } from '@resources/memory-resources/memory-resources.actions';
+import { ErrorActionTypes } from '@shared/error-popup/error-popup.actions';
 
 export interface LoadingSpinnerState {
   pendingValues: LoadingSpinner[];
@@ -15,6 +16,14 @@ const initialState: LoadingSpinnerState = {
 
 export function reducer(state: LoadingSpinnerState = initialState, action: any): LoadingSpinnerState {
   switch (action.type) {
+    case ErrorActionTypes.ADD_ERROR: {
+      if (action.payload.initiator) {
+        return {
+          pendingValues: state.pendingValues.filter(v => v.type !== action.payload.initiator)
+        };
+      }
+      break;
+    }
     case SystemResourcesActionTypes.SYSTEM_RESOURCES_LOAD: {
       return {
         pendingValues: [systemResourcesLoad, ...state.pendingValues]

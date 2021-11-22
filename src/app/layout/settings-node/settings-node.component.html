@@ -22,25 +22,25 @@
                     [value]="node.id"
                     (click)="selectNode(node.id)"
                     class="settings-node-option">
-          <div class="d-flex align-center">
+          <div class="d-flex align-center h-100">
             <div fxFlex="30px">
               <mat-icon *ngIf="node.id === activeNode.id"
                         svgIcon="check"
                         class="icon-20"></mat-icon>
             </div>
-            <div fxLayout="column">
+            <div class="d-flex flex-column h-100">
               <div class="d-flex align-center">
                 {{ node.name }}
-                <mat-icon *ngIf="node.connected === true"
+                <mat-icon *ngIf="node.connected === 'pending'"
                           class="node-status-option-icon icon-10 margin-left-5"
                           svgIcon="hourglass"></mat-icon>
-                <span *ngIf="node.connected === 'true'"
+                <span *ngIf="node.connected === true"
                       class="settings-node-status-icon margin-left-5"></span>
                 <span *ngIf="node.connected === false"
                       class="settings-node-status-icon margin-left-5 is-offline"></span>
               </div>
 
-              <div class="settings-node-option-status">
+              <div class="status f-10">
                 <span *ngIf="node.connected === 'pending'">connecting</span>
                 <span *ngIf="node.connected === true">
                   {{ node.header?.protocol | slice:0:10 }} | last block {{ node.relativeDateTime }}

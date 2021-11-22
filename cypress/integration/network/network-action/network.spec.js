@@ -2,9 +2,9 @@ import { testForTezedge } from '../../../support';
 
 context('NETWORK', () => {
   beforeEach(() => {
-    cy.intercept('GET', '/v2/p2p?node_name=*').as('getNetworkRequest')
+    cy.intercept('GET', '/v2/p2p?*').as('getNetworkRequest')
       .visit(Cypress.config().baseUrl + '/#/network', { timeout: 30000 })
-      .wait('@getNetworkRequest', { timeout: 30000 })
+      .wait('@getNetworkRequest', { timeout: 100000 })
       .wait(300);
   });
 
@@ -171,11 +171,11 @@ context('NETWORK', () => {
     cy.get('.stop-stream').click()
       .wait(300)
       .get('#previousPage').click()
-      .wait(600)
+      .wait(1500)
       .get('#previousPage').click()
-      .wait(1000)
+      .wait(1500)
       .get('#lastPage').click()
-      .wait(2000)
+      .wait(4000)
       .window()
       .its('store')
       .then(store => {

@@ -14,12 +14,17 @@ export class StorageResourceService {
   constructor(private http: HttpClient,
               private replacePipe: ReplaceCharacterPipe) { }
 
-  getStorageResources(api: string, contextName: string): Observable<StorageResourcesStats> {
-    return this.http.get<StorageResourcesStats>(`${api}/stats/context`, { params: { context_name: contextName }, reportProgress: true })
+  getStorageResources(api: string, { context, protocol }: { context: string, protocol: string }): Observable<StorageResourcesStats> {
+    const params = { context_name: context };
+    if (protocol) {
+      params['protocol'] = protocol;
+    }
+    return this.http.get<StorageResourcesStats>(`${api}/stats/context`, { params })
       .pipe(map(response => this.mapStorageResourcesResponse(response)));
   }
 
   checkStorageResourcesContext(api: string, contextName: string): Observable<StorageResourcesStats> {
+    api = 'http://storage.dev.tezedge.com:18732';
     return this.http.get<StorageResourcesStats>(`${api}/stats/context`, { params: { context_name: contextName } });
   }
 

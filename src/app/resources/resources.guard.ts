@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 import { Store } from '@ngrx/store';
 import { State } from '@app/app.reducers';
 import { selectActiveNode } from '@settings/settings-node.reducer';
-import { map } from 'rxjs/operators';
+import { filter, map } from 'rxjs/operators';
 import { SettingsNodeApi } from '@shared/types/settings-node/settings-node-api.type';
 
 @Injectable({
@@ -17,6 +17,7 @@ export class ResourcesGuard implements CanActivate {
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
     return this.store.select(selectActiveNode).pipe(
+      filter(Boolean),
       map((node: SettingsNodeApi) => {
         if (node.features.some(f => f.name.includes('/' + route.url[0].path))) {
           return true;

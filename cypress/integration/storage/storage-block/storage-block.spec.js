@@ -1,18 +1,11 @@
-import { testForTezedge } from '../../../support';
+import { beforeEachForTezedge, testForTezedge } from '../../../support';
 
 context('STORAGE BLOCK', () => {
-  beforeEach(() => {
-    cy.visit(Cypress.config().baseUrl)
-      .wait(1000)
-      .get('app-settings-node .settings-node-select mat-select')
-      .then(select => {
-        if (select.attr('id') === 'tezedge') {
-          cy.intercept('GET', '/dev/chains/main/blocks/*').as('getStorageBlockRequest')
-            .visit(Cypress.config().baseUrl + '/#/storage', { timeout: 100000 })
-            .wait('@getStorageBlockRequest', { timeout: 200000 })
-            .wait(1000);
-        }
-      });
+  beforeEachForTezedge(() => {
+    cy.intercept('GET', '/dev/chains/main/blocks/*').as('getStorageBlockRequest')
+      .visit(Cypress.config().baseUrl + '/#/storage', { timeout: 100000 })
+      .wait('@getStorageBlockRequest', { timeout: 200000 })
+      .wait(1000);
   });
 
   it('[STORAGE BLOCK] create rows for the virtual scroll table', () => testForTezedge(() => {

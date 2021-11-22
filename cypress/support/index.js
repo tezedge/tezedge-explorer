@@ -14,15 +14,29 @@
 // ***********************************************************
 
 // Import commands.js using ES2015 syntax:
-import './commands'
+import './commands';
 
 // Alternatively you can use CommonJS syntax:
 // require('./commands')
 
 export const testForTezedge = (test) => {
-  cy.get('app-settings-node .settings-node-select mat-select').then(select => {
-    if (select.attr('id') === 'tezedge') {
-      test();
-    }
+  cy.get('app-settings-node .settings-node-select mat-select')
+    .then(select => {
+      cy.log('id: ' + select.attr('id'))
+      if (select.attr('id') === 'tezedge') {
+        test();
+      }
+    });
+};
+
+export const beforeEachForTezedge = (beforeEachBlock) => {
+  beforeEach(() => {
+    cy.intercept('GET', '/chains/main/blocks/head/header').as('findNode')
+      .visit(Cypress.config().baseUrl)
+      .wait('@findNode')
+      .wait(1000)
+      .then(() => {
+        testForTezedge(() => beforeEachBlock());
+      });
   });
-}
+};

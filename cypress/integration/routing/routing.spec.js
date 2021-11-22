@@ -16,7 +16,7 @@ context('ROUTING', () => {
 
             cy.wait(1000).then(() => {
               store.select('settingsNode').subscribe(settingsNode => {
-                if (!settingsNode.activeNode.features.some(f => f.name === featureName)) {
+                if (!settingsNode.activeNode?.features.some(f => f.name === featureName)) {
                   cy.visit(Cypress.config().baseUrl + '/#/resources/system', { timeout: 2000 })
                     .url().should('not.include', '/resources/system');
                 }
@@ -36,7 +36,7 @@ context('ROUTING', () => {
 
           cy.wait(1000).then(() => {
             store.select('settingsNode').subscribe(settingsNode => {
-              if (!settingsNode.activeNode.features.some(f => f.name === featureName)) {
+              if (!settingsNode.activeNode?.features.some(f => f.name === featureName)) {
                 cy.visit(Cypress.config().baseUrl + '/#/resources/storage', { timeout: 2000 })
                   .url().should('not.include', '/resources/storage');
               }
@@ -56,7 +56,7 @@ context('ROUTING', () => {
 
           cy.wait(1000).then(() => {
             store.select('settingsNode').subscribe(settingsNode => {
-              if (!settingsNode.activeNode.features.some(f => f.name === featureName)) {
+              if (!settingsNode.activeNode?.features.some(f => f.name === featureName)) {
                 cy.visit(Cypress.config().baseUrl + '/#/resources/memory', { timeout: 2000 })
                   .url().should('not.include', '/resources/memory');
               }
@@ -76,7 +76,7 @@ context('ROUTING', () => {
 
           cy.wait(1000).then(() => {
             store.select('settingsNode').subscribe(settingsNode => {
-              if (!settingsNode.activeNode.features.some(f => f.name === featureName)) {
+              if (!settingsNode.activeNode?.features.some(f => f.name === featureName)) {
                 cy.visit(Cypress.config().baseUrl + '/#/storage', { timeout: 2000 })
                   .url().should('not.include', '/storage');
               }
@@ -96,7 +96,7 @@ context('ROUTING', () => {
 
           cy.wait(1000).then(() => {
             store.select('settingsNode').subscribe(settingsNode => {
-              if (!settingsNode.activeNode.features.some(f => f.name === featureName)) {
+              if (!settingsNode.activeNode?.features.some(f => f.name === featureName)) {
                 cy.visit(Cypress.config().baseUrl + '/#/storage/123456', { timeout: 2000 })
                   .url().should('not.include', '/storage/123456');
               }
@@ -116,7 +116,7 @@ context('ROUTING', () => {
 
           cy.wait(1000).then(() => {
             store.select('settingsNode').subscribe(settingsNode => {
-              if (!settingsNode.activeNode.features.some(f => f.name === featureName)) {
+              if (!settingsNode.activeNode?.features.some(f => f.name === featureName)) {
                 cy.visit(Cypress.config().baseUrl + '/#/logs', { timeout: 2000 })
                   .url().should('not.include', '/logs');
               }
@@ -136,7 +136,7 @@ context('ROUTING', () => {
 
           cy.wait(1000).then(() => {
             store.select('settingsNode').subscribe(settingsNode => {
-              if (!settingsNode.activeNode.features.some(f => f.name === featureName)) {
+              if (!settingsNode.activeNode?.features.some(f => f.name === featureName)) {
                 cy.visit(Cypress.config().baseUrl + '/#/state', { timeout: 2000 })
                   .url().should('not.include', '/state');
               }
@@ -150,7 +150,7 @@ context('ROUTING', () => {
 
 const disableFeatureAndExpectToBeDisabled = (store, zone, featureName) => {
   store.select('settingsNode').subscribe(settingsNode => {
-    if (settingsNode.activeNode.features.some(f => f.name === featureName)) {
+    if (settingsNode.activeNode?.features.some(f => f.name === featureName)) {
       const activeNode = { ...settingsNode.activeNode };
       activeNode.features = activeNode.features.filter(f => f.name !== featureName);
       activeNode.connected = false;

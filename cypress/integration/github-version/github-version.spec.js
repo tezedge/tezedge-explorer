@@ -1,7 +1,7 @@
-import { testForTezedge } from '../../support';
+import { beforeEachForTezedge, testForTezedge } from '../../support';
 
 context('GITHUB VERSION', () => {
-  beforeEach(() => {
+  beforeEachForTezedge(() => {
     cy.intercept('GET', '/dev/version/').as('getNodeTagRequest')
       .intercept('GET', '/monitor/commit_hash/').as('getNodeLastCommitRequest')
       .intercept('GET', '/v2/version/').as('getDebuggerLastCommitRequest')
@@ -37,7 +37,7 @@ context('GITHUB VERSION', () => {
       .window()
       .its('store')
       .then(store => {
-        store.select('githubVersion').subscribe((githubVersion) => {
+        store.select('githubVersion').subscribe(githubVersion => {
           cy.get('app-github-version')
             .trigger('click')
             .wait(1000)

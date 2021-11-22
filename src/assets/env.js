@@ -22,6 +22,7 @@
         { name: 'network' },
         { name: 'logs' },
         { name: 'state' },
+        { name: 'open-api' },
       ]
     },
     {

@@ -122,5 +122,4 @@ export function reducer(state: SettingsNode = initialState, action): SettingsNod
 }
 
 export const selectActiveNode = (state: State): SettingsNodeApi => state.settingsNode.activeNode;
-
 export const selectFeatures = (state: State) => state.settingsNode.activeNode.features;

@@ -31,7 +31,12 @@ export const testForTezedge = (test) => {
 
 export const beforeEachForTezedge = (beforeEachBlock) => {
   beforeEach(() => {
-    cy.visit(Cypress.config().baseUrl, { timeout: 60000 }).wait(1000);
-    testForTezedge(() => beforeEachBlock());
+    cy.intercept('GET', '/chains/main/blocks/head/header').as('findNode')
+      .visit(Cypress.config().baseUrl)
+      .wait('@findNode')
+      .wait(1000)
+      .then(() => {
+        testForTezedge(() => beforeEachBlock());
+      });
   });
 };

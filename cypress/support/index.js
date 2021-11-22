@@ -22,6 +22,7 @@ import './commands';
 export const testForTezedge = (test) => {
   cy.get('app-settings-node .settings-node-select mat-select')
     .then(select => {
+      cy.log('id: ' + select.attr('id'))
       if (select.attr('id') === 'tezedge') {
         test();
       }

@@ -30,7 +30,7 @@ export const testForTezedge = (test) => {
 
 export const beforeEachForTezedge = (beforeEachBlock) => {
   beforeEach(() => {
-    cy.visit(Cypress.config().baseUrl);
+    cy.visit(Cypress.config().baseUrl, { timeout: 60000 }).wait(1000);
     testForTezedge(() => beforeEachBlock());
   });
 };

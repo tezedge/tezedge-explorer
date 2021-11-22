@@ -30,7 +30,7 @@ export class SystemResourcesService {
               private datePipe: DatePipe) { }
 
   getSystemResources(endpoint: string, isSmallDevice: boolean): Observable<SystemResources> {
-    return this.http.get<SystemResources>(endpoint, { reportProgress: true })
+    return this.http.get<SystemResources>(endpoint)
       .pipe(
         map(response => this.mapGetSystemResourcesResponse(response, isSmallDevice)),
         catchError(err => throwError(err))

@@ -121,13 +121,6 @@ export function reducer(state: ResourcesState = initialState, action: SystemReso
       };
     }
 
-    case MemoryResourcesActionTypes.MEMORY_RESOURCES_LOAD_SUCCESS: {
-      return {
-        ...state,
-        memoryResources: action.payload
-      };
-    }
-
     case StorageResourcesActionTypes.STORAGE_RESOURCES_CLOSE: {
       return {
         ...state,
@@ -135,6 +128,13 @@ export function reducer(state: ResourcesState = initialState, action: SystemReso
           storageResources: null,
           availableContexts: []
         }
+      };
+    }
+
+    case MemoryResourcesActionTypes.MEMORY_RESOURCES_LOAD_SUCCESS: {
+      return {
+        ...state,
+        memoryResources: action.payload
       };
     }
 

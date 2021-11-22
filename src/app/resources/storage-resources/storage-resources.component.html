@@ -1,18 +1,28 @@
 <div class="d-flex flex-column h-100 w-100"
      *ngIf="storageStats$ | async as storageStats">
-  <div class="storage-toolbar flex-end d-flex">
-    <div class="border-bottom flex-grow d-flex align-center">
-      <div class="text-white-4 f-12 context">Current context: {{ storageResourcesContext }}</div>
-      <mat-icon *ngIf="displayContextSwitcher"
-                (click)="getStorageStatistics()"
-                svgIcon="arrow-around"
-                class="icon-20 icon-white-4 pointer node-switcher margin-left-10"></mat-icon>
+  <div class="storage-toolbar d-flex">
+    <div class="toolbar-left border-bottom flex-grow d-flex flex-wrap">
+      <div class="d-flex align-center">
+        <div class="text-white-4 f-12 context">Current context: {{ storageResourcesContext }}</div>
+        <mat-icon *ngIf="displayContextSwitcher"
+                  (click)="getStorageStatistics()"
+                  svgIcon="arrow-around"
+                  class="icon-20 icon-white-4 pointer node-switcher margin-left-10"></mat-icon>
+      </div>
+      <div class="protocol-list margin-left-10 padding-left-10 d-flex align-center flex-wrap">
+        <div *ngFor="let protocol of protocols; let i=index"
+             class="protocol">
+          <span class="protocol-name pointer text-white" [class.active]="activeProtocol === protocol"
+                (click)="selectProtocol(protocol)">{{ protocol }}</span>
+          <span class="bar text-white-7 context-menu" *ngIf="i < protocols.length - 1">|</span>
+        </div>
+      </div>
     </div>
-    <div class="toolbar-right border-bottom d-flex flex-between align-center text-white border-left padding-10"
+    <div class="toolbar-right pointer border-bottom d-flex flex-between align-center text-white border-left padding-10"
          [class.expanded]="expandedPanel"
          (click)="togglePanel()">
       <span>Overview</span>
-      <mat-icon svgIcon="arrow-expanded" class="icon-14 pointer icon-white-4"></mat-icon>
+      <mat-icon svgIcon="arrow-expanded" class="icon-14 icon-white-4"></mat-icon>
     </div>
   </div>
   <div class="storage-container p-relative d-flex overflow-hidden"
@@ -54,12 +64,17 @@
         <div fxFlex="28px" class="slice-header">
           <span class="text-uppercase">{{ operation.root | replaceCharacter: '_': ' '}}</span>
           <span class="total-time">
-        {{ operation.queriesCount | thousandTransform }}<span class="grayish"> calls</span>
+        {{ operation.queriesCount | thousandTransform }}
+            <span class="grayish"> call{{ operation.queriesCount !== 1 ? 's' : '' }}</span>
         &nbsp;·&nbsp;
-            {{ operation.totalTime | timeTransform: false: false: true }}<span class="grayish"> total duration </span>
-        <span class="grayish">(</span>{{ operation.totalTimeRead | timeTransform: false: false: true }}<span
-            class="grayish"> read, </span>
-            {{ operation.totalTimeWrite | timeTransform: false: false: true }}<span class="grayish"> write)</span>
+            {{ operation.totalTime | timeTransform: false: false: true }}
+            <span class="grayish"> total duration </span>
+        <span class="grayish">(</span>
+            {{ operation.totalTimeRead | timeTransform: false: false: true }}
+            <span
+              class="grayish"> read, </span>
+            {{ operation.totalTimeWrite | timeTransform: false: false: true }}
+            <span class="grayish"> write)</span>
       </span>
         </div>
         <div fxFlex="grow">

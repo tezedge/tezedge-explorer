@@ -8,6 +8,22 @@ import { filter, map } from 'rxjs/operators';
 import { storageResources } from '@resources/resources/resources.reducer';
 import { State } from '@app/app.reducers';
 
+const PROTOCOLS = [
+  'All protocols',
+  'Genesis',
+  'Bootstrap',
+  'Alpha1',
+  'Alpha2',
+  'Alpha3',
+  'Athens_a',
+  'Babylon',
+  'Carthage',
+  'Delphi',
+  'Edo',
+  'Florence',
+  'Granada'
+];
+
 @UntilDestroy()
 @Component({
   selector: 'app-storage-resources',
@@ -22,6 +38,8 @@ export class StorageResourcesComponent implements OnInit, OnDestroy {
   expandedPanel: boolean = true;
   displayContextSwitcher: boolean;
   storageResourcesContext: string;
+  readonly protocols = PROTOCOLS;
+  activeProtocol = 'All protocols';
 
   @ViewChild('miniGraph', { read: ElementRef }) set miniGraph(content: ElementRef) {
     if (content) {
@@ -45,22 +63,6 @@ export class StorageResourcesComponent implements OnInit, OnDestroy {
     this.store.dispatch({ type: StorageResourcesActionTypes.STORAGE_RESOURCES_CHECK_AVAILABLE_CONTEXTS, payload: ['tezedge', 'irmin'] });
   }
 
-  togglePanel(): void {
-    this.expandedPanel = !this.expandedPanel;
-  }
-
-  getStorageStatistics(): void {
-    const newContext = this.storageResourcesContext === 'tezedge' ? 'irmin' : 'tezedge';
-    this.store.dispatch<LoadStorageResources>({
-      type: StorageResourcesActionTypes.STORAGE_RESOURCES_LOAD,
-      payload: newContext
-    });
-    setTimeout(() => {
-      this.storageResourcesContext = newContext;
-      this.cdRef.detectChanges();
-    }, 50);
-  }
-
   private listenToStorageStateChange(): void {
     this.store.pipe(
       untilDestroyed(this),
@@ -75,9 +77,37 @@ export class StorageResourcesComponent implements OnInit, OnDestroy {
     });
   }
 
+  togglePanel(): void {
+    this.expandedPanel = !this.expandedPanel;
+  }
+
+  getStorageStatistics(): void {
+    const context = this.storageResourcesContext === 'tezedge' ? 'irmin' : 'tezedge';
+    this.loadResources(context);
+    setTimeout(() => {
+      this.storageResourcesContext = context;
+      this.cdRef.detectChanges();
+    }, 50);
+  }
+
   ngOnDestroy(): void {
     this.store.dispatch<CloseStorageResources>({
       type: StorageResourcesActionTypes.STORAGE_RESOURCES_CLOSE
+    });
+  }
+
+  selectProtocol(protocol: string): void {
+    this.activeProtocol = protocol;
+    if (protocol === this.protocols[0]) {
+      protocol = '';
+    }
+    this.loadResources(this.storageResourcesContext, protocol);
+  }
+
+  private loadResources(context: string, protocol?: string): void {
+    this.store.dispatch<LoadStorageResources>({
+      type: StorageResourcesActionTypes.STORAGE_RESOURCES_LOAD,
+      payload: { context, protocol: protocol.toLowerCase() }
     });
   }
 }

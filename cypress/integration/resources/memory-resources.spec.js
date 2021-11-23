@@ -6,7 +6,7 @@ context('MEMORY RESOURCES', () => {
       .wait(1000);
   });
 
-  it('[MEMORY RESOURCES] should have status code 200 for memory resources request', () =>{
+  it('[MEMORY RESOURCES] should have status code 200 for memory resources request', () => {
     cy.window()
       .its('store')
       .then(store => {
@@ -71,13 +71,16 @@ context('MEMORY RESOURCES', () => {
       .its('store')
       .then((store) => {
         store.select('resources').subscribe(root => {
-          cy.get('table.memory-table', { timeout: 10000 }).should('be.visible')
-            .get('table.memory-table tbody tr')
-            .then(trArray => {
-              if (root.memoryResources) {
-                expect(trArray).to.have.length(root.memoryResources.children.length);
-              }
-            });
+          cy.get('table.memory-table', { timeout: 10000 }).should('be.visible');
+
+          if (root.memoryResources.children.length) {
+            cy.get('table.memory-table tbody tr')
+              .then(trArray => {
+                if (root.memoryResources) {
+                  expect(trArray).to.have.length(root.memoryResources.children.length);
+                }
+              });
+          }
         });
       });
   });
@@ -85,16 +88,18 @@ context('MEMORY RESOURCES', () => {
   it('[MEMORY RESOURCES] should render the treemap graph', () => {
     cy.window()
       .its('store')
-      .then((store) => {
+      .then(store => {
         store.select('resources').subscribe(root => {
-          cy.wait(1000)
-            .get('.tree-map.observablehq svg', { timeout: 10000 }).should('be.visible')
-            .get('.tree-map.observablehq svg > g > g')
-            .then(trArray => {
-              if (root.memoryResources) {
-                expect(trArray).to.have.length(root.memoryResources.children.length);
-              }
-            });
+          if (root.memoryResources.children.length) {
+            cy.wait(1000)
+              .get('.tree-map.observablehq svg', { timeout: 10000 }).should('be.visible')
+              .get('.tree-map.observablehq svg > g > g')
+              .then(gArray => {
+                if (root.memoryResources) {
+                  expect(gArray).to.have.length(root.memoryResources.children.length);
+                }
+              });
+          }
         });
       });
   });

@@ -15,8 +15,6 @@ export class SettingsNodeService {
   getNodeFeatures(apiHttp: string, nodeId: string): Observable<any[]> {
     return of(environment.api.find(node => node.id === nodeId).features);
     // TODO: get features from backend, not from environment variables
-    // this.http.get<SettingsNodeFeature[]>(apiHttp + '/pathToFeatures')
-    //   .pipe(map(response => SettingsNodeService.mapGetNodeFeatures(response)));
   }
 
   getSettingsHeader(apiHttp: string): Observable<SettingsNodeEntityHeader> {
@@ -41,6 +39,6 @@ export class SettingsNodeService {
       priority: response.priority,
       seedNonceHash: response.seedNonceHash,
       proofOfWorkNonce: response.proofOfWorkNonce
-    } as SettingsNodeEntityHeader;
+    };
   }
 }

@@ -16,7 +16,7 @@ import { select, Store } from '@ngrx/store';
 import { State } from '@app/app.reducers';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { MemoryResource } from '@shared/types/resources/memory/memory-resource.type';
-import { MemoryResourcesActionTypes } from './memory-resources.actions';
+import { MemoryResourcesActionTypes, MemoryResourcesClose, MemoryResourcesLoad } from './memory-resources.actions';
 import { delay, filter } from 'rxjs/operators';
 import { memoryResources } from '@resources/resources/resources.reducer';
 import { appState } from '@app/app.reducer';
@@ -58,7 +58,7 @@ export class MemoryResourcesComponent implements AfterViewInit, OnInit, OnDestro
               private treeMapFactory: TreeMapFactoryService) { }
 
   ngOnInit(): void {
-    this.store.dispatch({ type: MemoryResourcesActionTypes.MEMORY_RESOURCES_LOAD, payload: { reversed: false } });
+    this.loadResources();
     this.store.pipe(
       untilDestroyed(this),
       select(appState),
@@ -68,9 +68,16 @@ export class MemoryResourcesComponent implements AfterViewInit, OnInit, OnDestro
       if (this.menuCollapsed !== app.sidenav.collapsed) {
         this.createTreemap(this.activeResource);
       } else {
-        this.store.dispatch({ type: MemoryResourcesActionTypes.MEMORY_RESOURCES_LOAD, payload: { reversed: false } });
+        this.loadResources();
       }
       this.menuCollapsed = app.sidenav.collapsed;
+    });
+  }
+
+  private loadResources(): void {
+    this.store.dispatch<MemoryResourcesLoad>({
+      type: MemoryResourcesActionTypes.MEMORY_RESOURCES_LOAD,
+      payload: { reversed: false }
     });
   }
 
@@ -128,7 +135,9 @@ export class MemoryResourcesComponent implements AfterViewInit, OnInit, OnDestro
   }
 
   ngOnDestroy(): void {
-    this.store.dispatch({ type: MemoryResourcesActionTypes.MEMORY_RESOURCES_CLOSE });
+    this.store.dispatch<MemoryResourcesClose>({
+      type: MemoryResourcesActionTypes.MEMORY_RESOURCES_CLOSE
+    });
     this.removeD3Tooltip();
   }
 

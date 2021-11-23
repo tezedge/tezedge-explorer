@@ -47,7 +47,7 @@ export class SettingsNodeComponent implements OnInit {
   selectNode(id: string): void {
     this.store.dispatch({
       type: 'APP_NODE_CHANGE',
-      payload: { activeNode: { id } },
+      payload: { activeNode: { id } }
     });
   }
 

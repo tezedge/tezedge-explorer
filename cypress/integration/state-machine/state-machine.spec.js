@@ -1,15 +1,17 @@
 import { beforeEachForTezedge, testForTezedge } from '../../support';
 
 context('STATE MACHINE', () => {
-  beforeEachForTezedge(() => {
-    cy.intercept('GET', '/dev/shell/automaton/actions?limit=*').as('getActionsRequest')
-      .intercept('GET', '/dev/shell/automaton/actions_graph').as('getActionsGraph')
-      .intercept('GET', '/dev/shell/automaton/actions_stats').as('getActionStatistics')
-      .visit(Cypress.config().baseUrl + '/#/state', { timeout: 100000 })
-      .wait('@getActionsGraph')
-      .wait('@getActionsRequest')
-      .wait('@getActionStatistics')
-      .wait(1000);
+  beforeEach(() => {
+    beforeEachForTezedge(() => {
+      cy.intercept('GET', '/dev/shell/automaton/actions?limit=*').as('getActionsRequest')
+        .intercept('GET', '/dev/shell/automaton/actions_graph').as('getActionsGraph')
+        .intercept('GET', '/dev/shell/automaton/actions_stats').as('getActionStatistics')
+        .visit(Cypress.config().baseUrl + '/#/state', { timeout: 100000 })
+        .wait('@getActionsGraph')
+        .wait('@getActionsRequest')
+        .wait('@getActionStatistics')
+        .wait(1000);
+    });
   });
 
   it('[STATE MACHINE] should have status code 200 for state machine diagram request', () => testForTezedge(() => {

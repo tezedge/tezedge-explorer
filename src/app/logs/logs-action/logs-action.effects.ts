@@ -82,7 +82,7 @@ export class LogsActionEffects {
     ofType('LOGS_ACTION_START'),
     withLatestFrom(this.store, (action: any, state: ObservedValueOf<Store<State>>) => ({ action, state })),
     switchMap(({ action, state }) =>
-      timer(0, 2000).pipe(
+      timer(0, 200000).pipe(
         takeUntil(logActionDestroy$),
         switchMap(() =>
           this.http.get<any[]>(setUrl(action, state)).pipe(

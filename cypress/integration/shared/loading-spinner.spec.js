@@ -23,7 +23,7 @@ context('LOADING SPINNER', () => {
   });
 
   it('[LOADING SPINNER] should show that it\'s loading the logs', () => {
-    cy.intercept('GET', '/v2/log?*', (req) => Cypress.Promise.delay(2000).then(req.reply))
+    cy.intercept('GET', '/v2/log?*', (req) => Cypress.Promise.delay(1500).then(req.reply))
       .visit(Cypress.config().baseUrl + '/#/logs')
       .wait(1000)
       .get('app-loading-spinner div.text-white-4', { timeout: 0 }).should('be.visible')
@@ -45,7 +45,7 @@ context('LOADING SPINNER', () => {
   }));
 
   it('[LOADING SPINNER] should show that it\'s loading the resources', () => {
-    cy.intercept('GET', '/resources/*', (req) => Cypress.Promise.delay(2000).then(req.reply))
+    cy.intercept('GET', '/resources/*', (req) => Cypress.Promise.delay(4000).then(req.reply))
       .visit(Cypress.config().baseUrl + '/#/resources/system')
       .wait(1000)
       .get('app-loading-spinner div.text-white-4', { timeout: 0 }).should('be.visible')
@@ -56,7 +56,7 @@ context('LOADING SPINNER', () => {
   });
 
   it('[LOADING SPINNER] should show that it\'s loading state machine', () => testForTezedge(() => {
-    cy.intercept('GET', '/dev/shell/automaton/actions_graph', (req) => Cypress.Promise.delay(2000).then(req.reply))
+    cy.intercept('GET', '/dev/shell/automaton/*', (req) => Cypress.Promise.delay(4000).then(req.reply))
       .visit(Cypress.config().baseUrl + '/#/state')
       .wait(1000)
       .get('app-loading-spinner div.text-white-4', { timeout: 0 }).should('be.visible')

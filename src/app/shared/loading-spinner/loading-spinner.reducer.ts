@@ -188,18 +188,15 @@ const logsActionLoad: LoadingSpinner = {
 
 const stateMachineStatisticsLoad: LoadingSpinner = {
   type: StateMachineActionTypes.STATE_MACHINE_ACTION_STATISTICS_LOAD,
-  message: 'Loading state machine action statistics...',
-  zIndex: 3
+  message: 'Loading state machine action statistics...'
 };
 
 const stateMachineActionsLoad: LoadingSpinner = {
   type: StateMachineActionTypes.STATE_MACHINE_ACTIONS_LOAD,
-  message: 'Loading state machine actions...',
-  zIndex: 2
+  message: 'Loading state machine actions...'
 };
 
 const stateMachineDiagramLoad: LoadingSpinner = {
   type: StateMachineActionTypes.STATE_MACHINE_DIAGRAM_LOAD,
-  message: 'Loading state machine diagram...',
-  zIndex: 1
+  message: 'Loading state machine diagram...'
 };

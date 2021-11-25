@@ -3871,7 +3871,12 @@
   "resolved" "https://registry.npmjs.org/custom-event/-/custom-event-1.0.1.tgz"
   "version" "1.0.1"
 
-"cypress@^8.7.0":
+"cypress-localstorage-commands@^1.6.1":
+  "integrity" "sha512-rvXCB0iLzC3i9y91XH4N2I55NicH62gQk5z/APblCjnNR3wWTbDs8svC7GvE1fjt9AMIHSQm1RfWx037y+TciQ=="
+  "resolved" "https://registry.npmjs.org/cypress-localstorage-commands/-/cypress-localstorage-commands-1.6.1.tgz"
+  "version" "1.6.1"
+
+"cypress@^8.7.0", "cypress@>=2.1.0":
   "integrity" "sha512-b1bMC3VQydC6sXzBMFnSqcvwc9dTZMgcaOzT0vpSD+Gq1yFc+72JDWi55sfUK5eIeNLAtWOGy1NNb6UlhMvB+Q=="
   "resolved" "https://registry.npmjs.org/cypress/-/cypress-8.7.0.tgz"
   "version" "8.7.0"

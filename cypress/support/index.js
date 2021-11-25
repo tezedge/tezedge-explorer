@@ -13,60 +13,20 @@
 // https://on.cypress.io/configuration
 // ***********************************************************
 
-// Import commands.js using ES2015 syntax:
 import './commands';
 
-// Alternatively you can use CommonJS syntax:
-// require('./commands')
-
 export const testForTezedge = (test) => {
-  cy.get('mat-select.hide-arrow', { withinSubject: null })
-    .then(select => {
-      // cy.log('id: ' + select.attr('id'));
-      if (select.attr('id') === 'tezedge') {
-        test();
-      }
-    });
+  if (localStorage.getItem('activeNode') === 'tezedge') {
+    test();
+  }
 };
 
 export const beforeEachForTezedge = (beforeEachBlock) => {
   cy.visit(Cypress.config().baseUrl)
     .wait(1000)
-    .get('mat-select.hide-arrow', { withinSubject: null })
-    .then(select => {
-      if (select && select.attr('id') === 'tezedge') {
+    .then(() => {
+      if (localStorage.getItem('activeNode') === 'tezedge') {
         beforeEachBlock();
       }
     });
-};
-
-export const beforeEachForTezedge2 = (beforeEachBlock) => {
-  // cy.intercept('GET', '/chains/main/blocks/head/header').as('findNode')
-  //   .visit(Cypress.config().baseUrl)
-  //   .wait('@findNode')
-  //   .wait(2000)
-  //   .window()
-  //   .its('store')
-  //   .then(store => {
-  //     store.select('settingsNode').subscribe(settingsNode => {
-  //       console.log(settingsNode.activeNode.id);
-  //       if (settingsNode.activeNode.id === 'tezedge') {
-  //         beforeEachBlock();
-  //       }
-  //     });
-  //   });
-  cy.visit(Cypress.config().baseUrl)
-    .wait(1000)
-    .get('mat-select.hide-arrow', { withinSubject: null })
-    .then(select => {
-      if (select.attr('id') === 'tezedge') {
-        beforeEachBlock();
-      }
-    });
-  // get('.settings-node-select mat-select.hide-arrow', { timeout: 10000 })
-  //   .then(select => {
-  //     if (select.attr('id') === 'tezedge') {
-  //       testForTezedge(() => beforeEachBlock());
-  //     }
-  //   });
 };

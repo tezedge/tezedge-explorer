@@ -44,6 +44,7 @@ import { GithubVersionComponent } from '@app/layout/github-version/github-versio
 import { SettingsNodeComponent } from '@settings/settings-node.component';
 import { ScriptLoaderService } from '@core/script-loader.service';
 import { SmartContractsEffects } from '@smart-contracts/smart-contracts/smart-contracts.effects';
+import { MempoolEffects } from '@mempool/mempool.effects';
 
 registerLocaleData(localeFr, 'fr');
 registerLocaleData(localeEnGb, 'en');
@@ -55,6 +56,29 @@ function loadIcons(matIconService: IconRegisterService): Function {
 function loadScripts(scriptLoaderService: ScriptLoaderService): Function {
   return () => scriptLoaderService.loadScripts();
 }
+
+const effects = [
+  AppEffects,
+  MonitoringEffects,
+  MempoolActionEffects,
+  MempoolEffects,
+  NetworkActionEffects,
+  StorageBlockEffects,
+  StorageActionEffects,
+  StorageSearchEffects,
+  EndpointsActionEffects,
+  LogsActionEffects,
+  SettingsNodeEffects,
+  SandboxEffects,
+  WalletsEffects,
+  GithubVersionEffects,
+  SystemResourcesEffects,
+  StorageResourcesEffects,
+  MemoryResourcesEffects,
+  ErrorPopupEffects,
+  StateMachineEffects,
+  SmartContractsEffects,
+];
 
 @NgModule({
   declarations: [
@@ -83,27 +107,7 @@ function loadScripts(scriptLoaderService: ScriptLoaderService): Function {
       }
     }),
 
-    EffectsModule.forRoot([
-      AppEffects,
-      MonitoringEffects,
-      MempoolActionEffects,
-      NetworkActionEffects,
-      StorageBlockEffects,
-      StorageActionEffects,
-      StorageSearchEffects,
-      EndpointsActionEffects,
-      LogsActionEffects,
-      SettingsNodeEffects,
-      SandboxEffects,
-      WalletsEffects,
-      GithubVersionEffects,
-      SystemResourcesEffects,
-      StorageResourcesEffects,
-      MemoryResourcesEffects,
-      ErrorPopupEffects,
-      StateMachineEffects,
-      SmartContractsEffects,
-    ]),
+    EffectsModule.forRoot(effects),
 
     // https://github.com/zalmoxisus/redux-devtools-extension
     !environment.production ? StoreDevtoolsModule.instrument({ maxAge: 50 }) : [],

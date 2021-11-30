@@ -1,5 +1,5 @@
 import { HttpError } from '@shared/types/shared/error-popup/http-error.type';
-import { ErrorActions, ErrorActionTypes } from './error-popup.actions';
+import { ADD_ERROR, REMOVE_ERROR, ErrorActions } from './error-popup.actions';
 import { State } from '@app/app.reducers';
 
 export interface ErrorState {
@@ -12,19 +12,21 @@ const initialState: ErrorState = {
 
 export function reducer(state: ErrorState = initialState, action: ErrorActions): ErrorState {
   switch (action.type) {
-    case ErrorActionTypes.ADD_ERROR: {
+    case ADD_ERROR: {
       return {
         errors: state.errors.findIndex(err => err.title === action.payload.title && err.message === action.payload.message) !== -1
           ? state.errors
-          : [...state.errors, action.payload]
+          : [action.payload, ...state.errors]
       };
     }
-    case ErrorActionTypes.REMOVE_ERRORS: {
-      return initialState;
+    case REMOVE_ERROR: {
+      return {
+        errors: state.errors.length ? state.errors.slice(0, -1) : state.errors
+      };
     }
     default:
       return state;
   }
 }
 
-export const selectErrors = (state: State) => state.error.errors;
+export const selectNewError = (state: State) => state.error.errors[0];

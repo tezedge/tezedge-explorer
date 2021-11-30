@@ -1,0 +1,23 @@
+
+.mempool {
+  background-color: #2A2A2E;
+  border-top-left-radius: 5px;
+
+  .tabs {
+    padding: 9px 10px 9px 15px;
+
+    .tab {
+      color: rgba(255, 255, 255, 0.6);
+
+      &:hover,
+      &.selected {
+        color: #fff;
+      }
+    }
+
+    .reversed-checkbox {
+      font-size: 12px;
+    }
+  }
+}
+

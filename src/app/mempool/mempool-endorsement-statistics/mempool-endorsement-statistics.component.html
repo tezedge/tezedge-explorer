@@ -1,0 +1,9 @@
+<div class="d-flex flex-column f-1r border-rad-4 border margin-10"
+     *ngIf="stats$ | async as stats">
+  <div class="d-flex flex-row flex-between align-center padding-horizontal-10 padding-top-5 padding-bottom-5"
+       [class.border-bottom]="i !== stats.endorsementTypes.length - 1"
+       *ngFor="let type of stats.endorsementTypes; let i=index; trackBy: trackStats">
+    <div>{{ type.name }}</div>
+    <div>{{ type.value }}</div>
+  </div>
+</div>

@@ -15,6 +15,7 @@ import * as fromApp from './app.reducer';
 import * as fromSettingsNode from './layout/settings-node/settings-node.reducer';
 import * as fromMonitoring from './monitoring/monitoring.reducer';
 import * as fromMempoolAction from './mempool/mempool-action/mempool-action.reducer';
+import * as fromMempool from './mempool/mempool.reducer';
 import * as fromNetworkAction from './network/network-action/network-action.reducer';
 import * as fromNetworkPeers from './network/network-peers/network-peers.reducer';
 import * as fromNetworkStats from './network/network-stats/network-stats.reducer';
@@ -51,11 +52,13 @@ import { GithubVersion } from '@shared/types/github-version/github-version.type'
 import { StateMachine } from '@shared/types/state-machine/state-machine.type';
 import { SmartContractsState } from '@shared/types/smart-contracts/smart-contracts-state.type';
 import { LoadingSpinnerState } from '@shared/loading-spinner/loading-spinner.reducer';
+import { MempoolEndorsementState } from '@shared/types/mempool/mempool-endorsement/mempool-endorsement-state.type';
 
 export interface State {
   app: App;
   monitoring: Monitoring;
   mempoolAction: any;
+  mempool: MempoolEndorsementState;
   networkAction: NetworkAction;
   networkPeers: NetworkPeers;
   networkStats: NetworkStats;
@@ -85,6 +88,7 @@ export const reducers: ActionReducerMap<State> = {
   app: fromApp.reducer,
   monitoring: fromMonitoring.reducer,
   mempoolAction: fromMempoolAction.reducer,
+  mempool: fromMempool.reducer,
   networkAction: fromNetworkAction.reducer,
   networkPeers: fromNetworkPeers.reducer,
   networkStats: fromNetworkStats.reducer,

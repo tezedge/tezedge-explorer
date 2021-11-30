@@ -1,0 +1,73 @@
+<div class="d-flex flex-row h-100">
+  <div class="h-100 d-flex flex-column overflow-auto" fxFlex="80">
+    <div class="h-100 d-flex flex-column table-container">
+      <div class="mempool-row head text-white-7">
+        <span>SLOT</span>
+        <span>BAKER</span>
+        <span>&nbsp;&nbsp;&nbsp;STATUS</span>
+        <span class="pointer"
+              (click)="sortTable('totalTime')">TOTAL TIME
+          <mat-icon class="icon-14 icon-white"
+                    [class.show]="currentSort.sortBy === 'totalTime'"
+                    [class.flip]="currentSort.sortDirection === 'descending'"
+                    [svgIcon]="'arrow-up'"></mat-icon></span>
+        <span class="pointer"
+              (click)="sortTable('broadcastTime')">BROADCAST
+          <mat-icon class="icon-14 icon-white"
+                    [class.show]="currentSort.sortBy === 'broadcastTime'"
+                    [class.flip]="currentSort.sortDirection === 'descending'"
+                    [svgIcon]="'arrow-up'"></mat-icon></span>
+        <span class="pointer"
+              (click)="sortTable('applyTime')">APPLY
+          <mat-icon class="icon-14 icon-white"
+                    [class.show]="currentSort.sortBy === 'applyTime'"
+                    [class.flip]="currentSort.sortDirection === 'descending'"
+                    [svgIcon]="'arrow-up'"></mat-icon></span>
+        <span class="pointer"
+              (click)="sortTable('precheckTime')">PRECHECK
+          <mat-icon class="icon-14 icon-white"
+                    [class.show]="currentSort.sortBy === 'precheckTime'"
+                    [class.flip]="currentSort.sortDirection === 'descending'"
+                    [svgIcon]="'arrow-up'"></mat-icon></span>
+        <span class="pointer"
+              (click)="sortTable('decodeTime')">DECODE
+          <mat-icon class="icon-14 icon-white"
+                    [class.show]="currentSort.sortBy === 'decodeTime'"
+                    [class.flip]="currentSort.sortDirection === 'descending'"
+                    [svgIcon]="'arrow-up'"></mat-icon></span>
+        <span class="pointer"
+              (click)="sortTable('receiveTime')">RECEIVE
+          <mat-icon class="icon-14 icon-white"
+                    [class.show]="currentSort.sortBy === 'receiveTime'"
+                    [class.flip]="currentSort.sortDirection === 'descending'"
+                    [svgIcon]="'arrow-up'"></mat-icon></span>
+      </div>
+      <cdk-virtual-scroll-viewport itemSize="36" class="f-14 overflow-y-auto overflow-x-hidden"
+                                   fxFlex="calc(100% - 36px)">
+        <div *cdkVirtualFor="let endorsement of endorsements$ | async; let i=index; trackBy: trackEndorsements"
+             class="mempool-row pointer"
+             [@rowsAnimation1]="i % 2 !== 0 ? animateRows : false"
+             [@rowsAnimation2]="i % 2 === 0 ? animateRows : false"
+             [class.active]="activeEndorsement === endorsement"
+             (click)="activeEndorsement = endorsement">
+          <span>{{ endorsement.slot }}</span>
+          <span>{{ endorsement.baker || 'null' }}</span>
+<!--          [@fadeInOut]="endorsement.status"-->
+          <span class="moving-span" [class.no-animation]="stopStatusAnimation">
+            <span class="status padding-horizontal-10" [ngClass]="endorsement.status || 'missing'">{{ endorsement.status || 'missing' }}</span>
+          </span>
+          <span>{{ endorsement.totalTime | nanoTransform }}</span>
+          <span>{{ endorsement.broadcastTime | nanoTransform }}</span>
+          <span>{{ endorsement.applyTime | nanoTransform }}</span>
+          <span>{{ endorsement.precheckTime | nanoTransform }}</span>
+          <span>{{ endorsement.decodeTime | nanoTransform }}</span>
+          <span>{{ endorsement.receiveTime | nanoTransform }}</span>
+        </div>
+      </cdk-virtual-scroll-viewport>
+    </div>
+  </div>
+  <div class="d-flex flex-column" fxFlex="20">
+    <div fxFlex="36px" class="details d-flex align-center text-white-7 padding-left-10">STATISTICS</div>
+    <app-mempool-endorsement-statistics></app-mempool-endorsement-statistics>
+  </div>
+</div>

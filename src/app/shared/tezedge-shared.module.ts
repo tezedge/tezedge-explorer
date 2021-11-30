@@ -60,7 +60,8 @@ const DIRECTIVES = [
         }
       },
       behaviour: {
-        onMouseover: 'pauseAutoHide'
+        onMouseover: 'pauseAutoHide',
+        autoHide: false
       }
     }),
     MaterialModule,

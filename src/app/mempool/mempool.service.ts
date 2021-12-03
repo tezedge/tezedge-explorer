@@ -38,17 +38,17 @@ export class MempoolService {
         //     return of(httpEndorsements).pipe(
         map((response: { [p: string]: number[] }) => this.mapGetEndorsements(response)),
       ),
-      this.http.get<any>('https://api.tzstats.com/explorer/bakers'),
+      // this.http.get<any>('https://api.tzstats.com/explorer/bakers'),
     ).pipe(
-      map((value: [MempoolEndorsement[], any]) => {
+      map((value: any) => {
         const endorsements = value[0];
-        const bakers = value[1];
-        endorsements.forEach((endorsement: MempoolEndorsement) => {
-          const bakerDetailsFound = bakers.find(b => b.address === endorsement.baker);
-          if (bakerDetailsFound) {
-            endorsement.baker = bakerDetailsFound.metadata?.alias?.name || endorsement.baker;
-          }
-        });
+        // const bakers = value[1];
+        // endorsements.forEach((endorsement: MempoolEndorsement) => {
+        //   const bakerDetailsFound = bakers.find(b => b.address === endorsement.baker);
+        //   if (bakerDetailsFound) {
+        //     endorsement.baker = bakerDetailsFound.metadata?.alias?.name || endorsement.baker;
+        //   }
+        // });
         return endorsements;
       })
     );

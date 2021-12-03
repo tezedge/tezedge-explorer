@@ -104,7 +104,7 @@ export class StorageResourcesComponent implements OnInit, OnDestroy {
     this.loadResources(this.storageResourcesContext, protocol);
   }
 
-  private loadResources(context: string, protocol?: string): void {
+  private loadResources(context: string, protocol: string = ''): void {
     this.store.dispatch<LoadStorageResources>({
       type: StorageResourcesActionTypes.STORAGE_RESOURCES_LOAD,
       payload: { context, protocol: protocol.toLowerCase() }

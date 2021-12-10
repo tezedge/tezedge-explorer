@@ -3,6 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { MempoolComponent } from '@mempool/mempool.component';
 import { MempoolOperationComponent } from '@mempool/mempool-operation/mempool-operation.component';
 import { MempoolEndorsementComponent } from '@mempool/mempool-endorsement/mempool-endorsement.component';
+import { MempoolBroadcastComponent } from '@mempool/mempool-broadcast/mempool-broadcast.component';
 
 const routes: Routes = [
   {
@@ -10,12 +11,16 @@ const routes: Routes = [
     component: MempoolComponent,
     children: [
       {
-        path: 'operations',
-        component: MempoolOperationComponent,
-      },
-      {
         path: 'endorsements',
         component: MempoolEndorsementComponent,
+      },
+      {
+        path: 'broadcast',
+        component: MempoolBroadcastComponent,
+      },
+      {
+        path: 'operations',
+        component: MempoolOperationComponent,
       },
       {
         path: '',

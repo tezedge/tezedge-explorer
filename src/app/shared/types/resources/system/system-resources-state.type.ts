@@ -1,7 +1,7 @@
 import { SystemResourcesPanel } from './system-resources-panel.type';
 import { SystemResourceCategory } from './system-resource-category.type';
 
-export interface SystemResources {
+export interface SystemResourcesState {
   cpu: SystemResourceCategory;
   memory: SystemResourceCategory;
   storage: SystemResourceCategory;

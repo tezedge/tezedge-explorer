@@ -1,16 +1,18 @@
 import { MemoryResourcesActions, MemoryResourcesActionTypes } from '@resources/memory-resources/memory-resources.actions';
 import { State } from '@app/app.reducers';
-import { MemoryResource } from '@shared/types/resources/memory/memory-resource.type';
+import { MemoryResourcesState } from '@shared/types/resources/memory/memory-resources-state.type';
 
 
-const initialState: MemoryResource = null;
+const initialState: MemoryResourcesState = {
+  memoryResources: null
+};
 
-export function reducer(state: MemoryResource = initialState, action: MemoryResourcesActions): MemoryResource {
+export function reducer(state: MemoryResourcesState = initialState, action: MemoryResourcesActions): MemoryResourcesState {
   switch (action.type) {
 
     case MemoryResourcesActionTypes.MEMORY_RESOURCES_LOAD_SUCCESS: {
       return {
-        ...action.payload
+        memoryResources: { ...action.payload }
       };
     }
 
@@ -23,4 +25,4 @@ export function reducer(state: MemoryResource = initialState, action: MemoryReso
   }
 }
 
-export const memoryResources = (state: State) => state.resources.memoryResources;
+export const memoryResources = (state: State) => state.resources.memoryResourcesState.memoryResources;

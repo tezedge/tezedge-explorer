@@ -11,7 +11,7 @@ import {
   SystemResourcesDetailsUpdateAction,
   SystemResourcesLoadAction
 } from './system-resources.actions';
-import { SystemResources } from '@shared/types/resources/system/system-resources.type';
+import { SystemResourcesState } from '@shared/types/resources/system/system-resources-state.type';
 import { appState } from '@app/app.reducer';
 import { SystemResourcesResourceType } from '@shared/types/resources/system/system-resources-panel.type';
 import { SystemResourceCategory } from '@shared/types/resources/system/system-resource-category.type';
@@ -29,7 +29,7 @@ import { systemResources } from '@resources/system-resources/system-resources.re
 })
 export class SystemResourcesComponent implements OnInit, OnDestroy {
 
-  systemResource: SystemResources;
+  systemResource: SystemResourcesState;
   activeSummary: SystemResourcesResourceType = 'cpu';
 
   readonly yAxisPercentageConversion = (value) => `${value}%`;

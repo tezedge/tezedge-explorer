@@ -46,6 +46,7 @@ import { SmartContractsEffects } from '@smart-contracts/smart-contracts/smart-co
 import { ThemeSwitcherService } from '@core/theme-switcher.service';
 import { MempoolEndorsementEffects } from '@mempool/mempool-endorsement/mempool-endorsement.effects';
 import { MempoolOperationEffects } from '@mempool/mempool-operation/mempool-operation.effects';
+import { MempoolBroadcastEffects } from '@mempool/mempool-broadcast/mempool-broadcast.effects';
 
 registerLocaleData(localeFr, 'fr');
 registerLocaleData(localeEnGb, 'en');
@@ -67,6 +68,7 @@ const effects = [
   MonitoringEffects,
   MempoolEndorsementEffects,
   MempoolOperationEffects,
+  MempoolBroadcastEffects,
   NetworkActionEffects,
   StorageBlockEffects,
   StorageActionEffects,

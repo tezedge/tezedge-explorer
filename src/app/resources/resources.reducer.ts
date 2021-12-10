@@ -1,19 +1,19 @@
-import { SystemResources } from '@shared/types/resources/system/system-resources.type';
+import { SystemResourcesState } from '@shared/types/resources/system/system-resources-state.type';
 import { StorageResourcesState } from '@shared/types/resources/storage/storage-resources-state.type';
-import { MemoryResource } from '@shared/types/resources/memory/memory-resource.type';
+import { MemoryResourcesState } from '@shared/types/resources/memory/memory-resources-state.type';
 import { combineReducers } from '@ngrx/store';
 import * as fromSystemResources from '@resources/system-resources/system-resources.reducer';
 import * as fromStorageResources from '@resources/storage-resources/storage-resources.reducer';
 import * as fromMemoryResources from '@resources/memory-resources/memory-resources.reducer';
 
 export interface ResourcesState {
-  systemResources: SystemResources;
+  systemResources: SystemResourcesState;
   storageResourcesState: StorageResourcesState;
-  memoryResources: MemoryResource;
+  memoryResourcesState: MemoryResourcesState;
 }
 
 export const reducer = combineReducers<ResourcesState>({
   systemResources: fromSystemResources.reducer,
   storageResourcesState: fromStorageResources.reducer,
-  memoryResources: fromMemoryResources.reducer,
+  memoryResourcesState: fromMemoryResources.reducer,
 });

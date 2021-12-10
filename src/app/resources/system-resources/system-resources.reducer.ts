@@ -3,9 +3,9 @@ import { State } from '@app/app.reducers';
 import { SystemResourcesPanel, SystemResourcesSortBy } from '@shared/types/resources/system/system-resources-panel.type';
 import { SystemResourceCategory } from '@shared/types/resources/system/system-resource-category.type';
 import { SystemResourcesSubcategoryRunnerGroup } from '@shared/types/resources/system/system-resources-subcategory-runner-group.type';
-import { SystemResources } from '@shared/types/resources/system/system-resources.type';
+import { SystemResourcesState } from '@shared/types/resources/system/system-resources-state.type';
 
-const initialState: SystemResources = {
+const initialState: SystemResourcesState = {
   cpu: null,
   memory: null,
   storage: null,
@@ -16,7 +16,7 @@ const initialState: SystemResources = {
   colorScheme: null,
 };
 
-export function reducer(state: SystemResources = initialState, action: SystemResourcesActions): SystemResources {
+export function reducer(state: SystemResourcesState = initialState, action: SystemResourcesActions): SystemResourcesState {
   switch (action.type) {
 
     case SystemResourcesActionTypes.SYSTEM_RESOURCES_LOAD_SUCCESS: {

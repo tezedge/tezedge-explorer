@@ -13,6 +13,9 @@ export class MempoolComponent {
       name: 'endorsement rights',
       link: 'endorsements'
     }, {
+      name: 'broadcast',
+      link: 'broadcast'
+    }, {
       name: 'operations',
       link: 'operations'
     },

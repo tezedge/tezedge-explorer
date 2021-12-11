@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { catchError, filter, map, mergeMap, switchMap, takeUntil, tap, withLatestFrom } from 'rxjs/operators';
-import { ObservedValueOf, of, Subject, timer } from 'rxjs';
+import { empty, ObservedValueOf, of, Subject, timer } from 'rxjs';
 import { State } from '@app/app.reducers';
 import { MempoolEndorsement } from '@shared/types/mempool/mempool-endorsement/mempool-endorsement.type';
 import { ADD_ERROR } from '@shared/error-popup/error-popup.actions';
@@ -50,7 +50,9 @@ export class MempoolEndorsementEffects {
     ofType(MEMPOOL_ENDORSEMENT_UPDATE_STATUSES),
     withLatestFrom(this.store, (action: MempoolEndorsementUpdateStatuses, state: ObservedValueOf<Store<State>>) => ({ action, state })),
     filter(({ action, state }) => !state.mempool.endorsementState.isLoadingNewBlock),
-    mergeMap(({ action, state }) => this.mempoolEndorsementService.getEndorsementStatusUpdates(state.settingsNode.activeNode.http)),
+    mergeMap(({ action, state }) => {
+        return this.mempoolEndorsementService.getEndorsementStatusUpdates(state.settingsNode.activeNode.http);
+    }),
     map((payload: { [slot: number]: MempoolEndorsement }) => ({ type: MEMPOOL_ENDORSEMENT_UPDATE_STATUSES_SUCCESS, payload })),
   ));
 

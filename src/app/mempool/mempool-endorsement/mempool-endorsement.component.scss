@@ -1,12 +1,12 @@
 @import 'utilities/layout';
 
 .table-container {
-  min-width: 1035px;
+  min-width: 1045px;
 
   .mempool-row {
     height: 36px;
     display: grid;
-    grid-template-columns: 60px 330px 100px 115px 80px 80px 95px 75px 100px;
+    grid-template-columns: 60px 330px 110px 115px 80px 80px 95px 75px 100px;
 
     &.head {
       background-color: unset;
@@ -56,16 +56,18 @@
     }
 
     .status {
+      display: block;
+      text-align: center;
       border-radius: 10px;
-      padding-top: 1px;
-      padding-bottom: 1px;
+      line-height: 20px;
+      height: 20px;
 
       &.broadcast, &.broadcast_prechecked {
-        background-color: darken(#bf5af2, 20);
+        background-color: darken(#32d74b, 20);
       }
 
       &.applied {
-        background-color: darken(#32d74b, 20);
+        background-color: #27645e;
       }
 
       &.prechecked {
@@ -73,15 +75,18 @@
       }
 
       &.decoded {
-        background-color: darken(#ff9f0a, 12);
+        background-color: darken(#bf5af2, 20);
       }
 
       &.received {
-        background-color: darken(#ffd60a, 15);
+        background-color: darken(#ff9f0a, 15);
       }
 
       &.missing {
         color: #ff566a;
+        border: 1px solid rgba(#ff566a, 30%);
+        height: 21px;
+        line-height: 18px;
       }
     }
   }

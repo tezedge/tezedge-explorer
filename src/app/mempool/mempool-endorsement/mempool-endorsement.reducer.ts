@@ -101,11 +101,11 @@ function calculateStatistics(currentStatistics: MempoolEndorsementStatistics, en
         value: endorsements.filter(e => !e.status).reduce((acc, curr) => [...acc, ...curr.slots], []).length
       },
       {
-        name: 'Broadcasted', color: '#bf5af2',
+        name: 'Broadcasted', color: '#32d74b',
         value: endorsements.filter(e => e.status === 'broadcast').reduce((acc, curr) => [...acc, ...curr.slots], []).length
       },
       {
-        name: 'Applied', color: '#32d74b',
+        name: 'Applied', color: '#27645e',
         value: endorsements.filter(e => e.status === 'applied').reduce((acc, curr) => [...acc, ...curr.slots], []).length
       },
       {
@@ -113,11 +113,11 @@ function calculateStatistics(currentStatistics: MempoolEndorsementStatistics, en
         value: endorsements.filter(e => e.status === 'prechecked').reduce((acc, curr) => [...acc, ...curr.slots], []).length
       },
       {
-        name: 'Decoded', color: '#ff9f0a',
+        name: 'Decoded', color: '#bf5af2',
         value: endorsements.filter(e => e.status === 'decoded').reduce((acc, curr) => [...acc, ...curr.slots], []).length
       },
       {
-        name: 'Received', color: '#ffd60a',
+        name: 'Received', color: '#ff9f0a',
         value: endorsements.filter(e => e.status === 'received').reduce((acc, curr) => [...acc, ...curr.slots], []).length
       },
     ],

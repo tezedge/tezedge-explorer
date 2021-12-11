@@ -38,8 +38,6 @@ export class MempoolEndorsementLoadSuccess implements Action {
 
 export class MempoolEndorsementUpdateStatuses implements Action {
   readonly type = MEMPOOL_ENDORSEMENT_UPDATE_STATUSES;
-
-  constructor(public payload: MempoolEndorsement[]) { }
 }
 
 export class MempoolEndorsementUpdateStatusesSuccess implements Action {

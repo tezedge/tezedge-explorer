@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { MempoolEndorsement } from '@shared/types/mempool/mempool-endorsement/mempool-endorsement.type';
-import { map, Observable } from 'rxjs';
+import { forkJoin, map, Observable, of } from 'rxjs';
+import { catchError } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -12,14 +13,19 @@ export class MempoolEndorsementService {
 
   private bakersDetails = {};
 
+  // TODO: remove
+  private i = 0;
+
   constructor(private http: HttpClient) {
     this.http.get<any>('assets/json/mempool-bakers.json').subscribe(bakers => this.bakersDetails = bakers);
   }
-
   getEndorsementStatusUpdates(api: string): Observable<{ [p: string]: MempoolEndorsement }> {
     return this.http.get<any>(api + '/dev/shell/automaton/endorsements_status').pipe(
-      // return of(mockUpdates).pipe(
+    // const str = Object.keys(this.endorsementUpdates).filter((key, ii) => ii === this.i)[0];
+    // return of({[str]: this.endorsementUpdates[str] }).pipe(
+    // return of(mockUpdates).pipe(
       map(response => {
+        this.i++;
         const updates = Object.keys(response).map(key => ({
           [response[key].slot]: {
             status: response[key].state,
@@ -43,8 +49,9 @@ export class MempoolEndorsementService {
   }
 
   getEndorsements(api: string, blockHash: string, level: number): Observable<MempoolEndorsement[]> {
-    const url = api + '/dev/shell/automaton/endorsing_rights?block=' + blockHash + '&level=' + level;
+    const url = `${api}/dev/shell/automaton/endorsing_rights?block=${blockHash}&level=${level}`;
     return this.http.get<{ [p: string]: number[] }>(url).pipe(
+      // return of(httpEndorsements).pipe(
       map((value: { [p: string]: number[] }) => {
         const endorsements: MempoolEndorsement[] = Object.keys(value).map(key => ({
           baker: key,
@@ -52,39 +59,78 @@ export class MempoolEndorsementService {
           logo: this.bakersDetails[key]?.logo,
           slots: value[key]
         }));
-        this.getNames(endorsements);
         return endorsements;
       })
     );
   }
-
-  getNames(endorsements: MempoolEndorsement[]): void {
-    // const sources = endorsements.map(endorsement => (
-    //   this.http.get<any>('https://api.tezos-nodes.com/v1/baker/' + endorsement.baker)
-    //     .pipe(catchError((err, c) => {
-    //       return of(null);
-    //     }))
-    // ));
-    // forkJoin(...sources)
-    //   .subscribe(value => {
-    //     console.log(JSON.stringify(value));
-    //   });
-  }
 }
 
 const httpEndorsements = {
-  tz1NFs6yP2sXd5vAAbR43bbDRpV2nahDZope: [1, 2, 3, 4],
-  tz1PUv7oRg5xpMf4nFewZrtRtnmCizW2ETtU: [5, 6, 7],
-  tz1SwJwrKe8H1yi6KnYKCYkVHPApJRnZcHsa: [8],
-  tz1aWed1gNGHyaiFBjTXsCLyMEPZZiSnXwLr: [9, 10, 11],
-  tz1fPKAtsYydh4f1wfWNfeNxWYu72TmM48fu: [12, 13, 14],
-  tz1VQnqCCqX4K5sP3FNkVSNKTdCAMJDd3E1n: [15, 16],
-  tz1gUNyn3hmnEWqkusWPzxRaon1cs7ndWh7h: [17, 18, 19, 20],
-  tz1T7duV5gZWSTq4YpBGbXNLTfznCLDrFxvs: [21, 22, 23, 24, 25, 26],
-  tz1TRqbYbUf2GyrjErf3hBzgBJPzW8y36qEs: [27, 28, 29, 30, 31, 32, 33],
-  tz1aW1vBxs6nEniJJxZFNtrMtwnKGgEQxo3P: [34, 35, 36, 37, 38, 39, 40],
-  tz1P2Po7YM526ughEsRbY4oR9zaUPDZjxFrb: [41, 42, 43, 44, 45, 46, 47],
-  tz1irJKkXS2DBWkU1NnmFQx1c1L7pbGg4yhk: [48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111, 112, 113, 114, 115, 116, 117, 118, 119, 120, 121, 122, 123, 124, 125, 126, 127, 128, 129, 130, 131, 132, 133, 134, 135, 136, 137, 138, 139, 140, 141, 142, 143, 144, 145, 146, 147, 148, 149, 150, 151, 152, 153, 154, 155, 156, 157, 158, 159, 160, 161, 162, 163, 164, 165, 166, 167, 168, 169, 170, 171, 172, 173, 174, 175, 176, 177, 178, 179, 180, 181, 182, 183, 184, 185, 186, 187, 188, 189, 190, 191, 192, 193, 194, 195, 196, 197, 198, 199, 200, 201, 202, 203, 204, 205, 206, 207, 208, 209, 210, 211, 212, 213, 214, 215, 216, 217, 218, 219, 220, 221, 222, 223, 224, 225, 226, 227, 228, 229, 230, 231, 232, 233, 234, 235, 236, 237, 238, 239, 240, 241, 242, 243, 244, 245, 246, 247, 248, 249, 250, 251, 252, 253, 254, 255, 256],
+  tz1KfEsrtDaA1sX7vdM4qmEPWuSytuqCDp5j: [100],
+  tz1Kt4P8BCaP93AEV4eA7gmpRryWt5hznjCP: [202],
+  tz1LYW7Yepo9qsQx2kjpek2RYVMCeGwBvDCQ: [163],
+  tz1Ldzz6k1BHdhuKvAtMRX7h5kJSMHESMHLC: [18, 103, 123, 248],
+  tz1MJx9vhaNRSimcuXPK2rW4fLccQnDAnVKJ: [204],
+  tz1NEKxGEHsFufk87CVZcrqWu8o22qh46GK6: [7],
+  tz1NMdMmWZN8QPB8pY4ddncACDg1cHi1xD2e: [49],
+  tz1NdhRv643wLW6zCcRP3VfT24dvDnh7nuh9: [116],
+  tz1Nf6tsK4G6bBqgSQERy4nUtkHNKUVdh7q1: [5, 156, 182, 201],
+  tz1P2Po7YM526ughEsRbY4oR9zaUPDZjxFrb: [2, 144, 160],
+  tz1PWCDnz783NNGGQjEFFsHtrcK5yBW4E2rm: [19, 155],
+  tz1Q8QkSBS63ZQnH3fBTiAMPes9R666Rn6Sc: [11, 59],
+  tz1RCFbB9GpALpsZtu6J58sb74dm8qe6XBzv: [15, 27, 29, 84, 85, 122],
+  tz1RjoHc98dBoqaH2jawF62XNKh7YsHwbkEv: [117, 139],
+  tz1S8MNvuFEUsWgjHvi3AxibRBf388NhT1q2: [14, 34, 55, 64, 89, 108, 111, 124, 131, 161, 164, 171, 180, 191, 192, 193, 205, 221, 241, 243, 253],
+  tz1S8e9GgdZG78XJRB3NqabfWeM37GnhZMWQ: [112, 185, 211, 239],
+  tz1SYq214SCBy9naR6cvycQsYcUGpBqQAE8d: [106, 121],
+  tz1Sm5iH2vfTtyPQdRHt4STaARTVqTHxJ6Ea: [69],
+  tz1T7duV5gZWSTq4YpBGbXNLTfznCLDrFxvs: [181, 233],
+  tz1TEc75UKXv4W5cwi14Na3NtqFD51yKQi7h: [56, 212],
+  tz1TRqbYbUf2GyrjErf3hBzgBJPzW8y36qEs: [3, 177, 215],
+  tz1TRspM5SeZpaQUhzByXbEvqKF1vnCM2YTK: [10, 41, 62, 189],
+  tz1V4qCyvPKZ5UeqdH14HN42rxvNPQfc9UZg: [225],
+  tz1VQnqCCqX4K5sP3FNkVSNKTdCAMJDd3E1n: [1, 32, 44, 63, 72, 73, 86, 132, 137, 140, 149, 150, 151, 159, 178, 187, 194, 224],
+  tz1W5VkdB5s7ENMESVBtwyt9kyvLqPcUczRT: [125, 252],
+  tz1WnyXakHZKotpQHxevTnLmomz5rTwdiccy: [97],
+  tz1YsFfbT76a69Co3CkmuvYsphKZuHCNksp7: [208],
+  tz1ZcTRk5uxD86EFEn1vvNffWWqJy7q5eVhc: [148],
+  tz1aJ8wxNeVRYbbx5YqzurmYzwKzkS96rHP4: [42],
+  tz1aRoaRhSpRYvFdyvgWLL6TGyRoGF51wDjM: [68, 81, 92, 101, 104, 113, 115, 119, 127, 145, 170, 227],
+  tz1aW1vBxs6nEniJJxZFNtrMtwnKGgEQxo3P: [76],
+  tz1abmz7jiCV2GH2u81LRrGgAFFgvQgiDiaf: [176, 218],
+  tz1ajgycuHmd2z2JbTSJxKv7x6cok2KuNSk1: [90],
+  tz1axcnVN9tZnCe4sQQhC6f3tfSEXdjPaXPY: [80],
+  tz1beersuEDv8Z7ngQ825xfbaJNS2EhXnyHR: [40],
+  tz1cYufsxHXJcvANhvS55h3aY32a9BAFB494: [82],
+  tz1dNVDWPf3Q59SdJqnjdnu277iyvReiRS9M: [136, 154],
+  tz1dRKU4FQ9QRRQPdaH4zCR6gmCmXfcvcgtB: [71, 226],
+  tz1eEnQhbwf6trb8Q8mPb2RaPkNk2rN7BKi8: [58, 174, 199],
+  tz1eVaNx3gCmG1EsLjijkmgAxdLYVf6Bf5Sq: [31],
+  tz1ei4WtWEMEJekSv8qDnu9PExG6Q8HgRGr3: [142, 165],
+  tz1gUNyn3hmnEWqkusWPzxRaon1cs7ndWh7h: [57, 168, 207, 222],
+  tz1gfArv665EUkSg2ojMBzcbfwuPxAvqPvjo: [17, 22, 33, 65, 74, 79, 94, 109, 157, 166, 190, 196, 197, 209, 231, 235],
+  tz1irJKkXS2DBWkU1NnmFQx1c1L7pbGg4yhk: [26, 28, 38, 47, 52, 54, 75, 77, 87, 98, 105, 107, 110, 120, 143, 152, 162, 173, 183, 186, 195, 200, 217, 220, 223, 228, 245],
+  tz2FCNBrERXtaTtNX6iimR1UJ5JSDxvdHM93: [25, 45, 70, 91, 134, 203, 214, 240, 255],
+  tz3NDpRj6WBrJPikcPVHRBEjWKxFw3c6eQPS: [6, 60, 102],
+  tz3NExpXn9aPNZPorRE4SdjJ2RGrfbJgMAaV: [16, 43, 61, 95, 96, 126, 147, 216, 247],
+  tz3NxTnke1acr8o3h5y9ytf5awQBGNJUKzVU: [213],
+  tz3QCNyySViKHmeSr45kzDxzchys7NiXCWoa: [13],
+  tz3QSGPoRp3Kn7n3vY24eYeu3Peuqo45LQ4D: [141],
+  tz3QT9dHYKDqh563chVa6za8526ys1UKfRfL: [130],
+  tz3RB4aoyjov4KEVRbuhvQ1CKJgBJMWhaeB8: [39, 53, 184],
+  tz3RDC3Jdn4j15J7bBHZd29EUee9gVB1CxD9: [23, 24, 37, 67, 153, 175],
+  tz3RKYFsLuQzKBtmYuLNas7uMu3AsYd4QdsA: [4, 12, 198, 238, 244],
+  tz3S6BBeKgJGXxvLyZ1xzXzMPn11nnFtq5L9: [36, 118, 135, 230, 237, 246, 249],
+  tz3UoffC7FG7zfpmvmjUmUeAaHvzdcUvAj6r: [114, 172],
+  tz3VEZ4k6a4Wx42iyev6i2aVAptTRLEAivNN: [93, 129, 219, 250],
+  tz3WMqdzXqRWXwyvj5Hp2H7QEepaUuS7vd9K: [78, 99, 254],
+  tz3ZbP2pM3nwvXztbuMJwJnDvV5xdpU8UkkD: [0, 20, 30],
+  tz3Zhs2dygr55yHyQyKjntAtY9bgfhLZ4Xj1: [21, 48, 50, 167, 169],
+  tz3bTdwZinP8U1JmSweNzVKhmwafqWmFWRfk: [8, 51, 232],
+  tz3bvNMQ95vfAYtG8193ymshqjSvmxiCUuR5: [66, 88, 128, 133, 179, 188, 242, 251],
+  tz3gtoUxdudfBRcNY7iVdKPHCYYX6xdPpoRS: [9, 35, 83, 206],
+  tz3hw2kqXhLUvY65ca1eety2oQTpAvd34R9Q: [46, 236],
+  tz3iJu5vrKZcsqRPs8yJ61UDoeEXZmtro4qh: [138, 146, 158, 210, 229, 234]
 };
 
 const mockUpdates = {
@@ -96,15 +142,15 @@ const mockUpdates = {
     received_time: 8703677063,
     applied_time: 1001000000,
     slot: 8,
-    state: 'broadcast'
+    state: 'prechecked'
   },
   onfVZ7t31uyqkmmHgq3StqGk9kRW3MbMSKQRkei82QMbKQpE9jX: {
     block_timestamp: 1638525814000000000,
     decoded_time: 8939728321,
     received_time: 8932988616,
     applied_time: 1001000000,
-    slot: 104,
-    state: 'decoded'
+    slot: 100,
+    state: 'applied'
   },
   ongxnxUVDSu7aR2Q3XMwFsfZSZ7x4wDBkcchbGqp5mNfTGEasAo: {
     block_timestamp: 1638525814000000000,
@@ -130,8 +176,8 @@ const mockUpdates = {
     decoded_time: 6799948426,
     prechecked_time: 6800660361,
     received_time: 6791802744,
-    slot: 58,
-    state: 'broadcast'
+    slot: 48,
+    state: 'received'
   },
   onkRzoFs2MdYWfB4Nn4BEnoKhgYvGzsnFbjssMMx4L1ti9WZ92A: {
     block_timestamp: 1638525814000000000,

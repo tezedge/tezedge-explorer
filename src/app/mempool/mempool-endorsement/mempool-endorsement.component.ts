@@ -7,11 +7,13 @@ import {
   MEMPOOL_ENDORSEMENT_LOAD,
   MEMPOOL_ENDORSEMENT_SORT,
   MEMPOOL_ENDORSEMENT_STOP,
+  MEMPOOL_ENDORSEMENT_UPDATE_STATUSES,
   MEMPOOL_ENDORSEMENTS_INIT,
   MempoolEndorsementLoad,
   MempoolEndorsementsInit,
   MempoolEndorsementSorting,
-  MempoolEndorsementStop
+  MempoolEndorsementStop,
+  MempoolEndorsementUpdateStatuses
 } from '@mempool/mempool-endorsement/mempool-endorsement.action';
 import { animate, style, transition, trigger } from '@angular/animations';
 import { distinctUntilChanged, filter, skip, tap } from 'rxjs/operators';
@@ -26,13 +28,13 @@ import {
 } from '@mempool/mempool-endorsement/mempool-endorsement.reducer';
 
 
-// const fadeInOut = trigger('fadeInOut', [
-//   transition('void => *', [style({ opacity: '1' }), animate(250)]),
-//   transition('* => *', [
-//     style({ opacity: '0.3' }),
-//     animate(250, style({ opacity: '1' })),
-//   ])
-// ]);
+const statusUpdate = trigger('statusUpdate', [
+  transition('void => *', [style({ opacity: 1, transform: 'translateX(0)' }), animate(0)]),
+  transition('* => *', [
+    style({ opacity: 0.7, transform: 'translateX(-10px)' }),
+    animate('.35s ease', style({ opacity: 1, transform: 'translateX(0)' }))
+  ])
+]);
 // const fadeInOut2 = trigger('fadeInOut2', [
 //   // transition('void => *', [style({ opacity: '1', background: 'blue' }), animate(fadeInOutTimeout)]),
 //   transition('* => *', [
@@ -60,7 +62,7 @@ const translateFromLeft = trigger('translateFromLeft', [
   templateUrl: './mempool-endorsement.component.html',
   styleUrls: ['./mempool-endorsement.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  animations: [translateFromRight, translateFromLeft],
+  animations: [translateFromRight, translateFromLeft, statusUpdate],
 })
 export class MempoolEndorsementComponent implements OnInit, OnDestroy {
 
@@ -76,7 +78,7 @@ export class MempoolEndorsementComponent implements OnInit, OnDestroy {
   constructor(private store: Store<State>,
               private cdRef: ChangeDetectorRef) { }
 
-  readonly trackEndorsements = endorsement => endorsement.slot;
+  readonly trackEndorsements = endorsement => endorsement.status;
 
   ngOnInit(): void {
     this.listenToNewAppliedBlock();
@@ -94,10 +96,6 @@ export class MempoolEndorsementComponent implements OnInit, OnDestroy {
         sortDirection
       }
     });
-  }
-
-  ngOnDestroy(): void {
-    this.store.dispatch<MempoolEndorsementStop>({ type: MEMPOOL_ENDORSEMENT_STOP });
   }
 
   private listenToNewAppliedBlock(): void {
@@ -127,11 +125,19 @@ export class MempoolEndorsementComponent implements OnInit, OnDestroy {
         if (!this.loaded) {
           this.loaded = true;
         }
+        // TODO: remove
+        // setTimeout(() => {
+        //   this.store.dispatch<MempoolEndorsementUpdateStatuses>({ type: MEMPOOL_ENDORSEMENT_UPDATE_STATUSES });
+        // }, 1000);
       }));
 
     this.store.select(selectMempoolEndorsementSorting)
       .pipe(untilDestroyed(this))
       .subscribe(sort => this.currentSort = sort);
+  }
+
+  ngOnDestroy(): void {
+    this.store.dispatch<MempoolEndorsementStop>({ type: MEMPOOL_ENDORSEMENT_STOP });
   }
 
 }

@@ -12,7 +12,7 @@ export class NanoTransformPipe implements PipeTransform {
 
   transform(value: number, defaultTime: string = 's'): unknown {
     if (!value) {
-      return '0' + defaultTime;
+      return '0.00' + defaultTime;
     }
     return NanoTransformPipe.getClosestMeasurementUnit(value,);
   }
@@ -30,6 +30,6 @@ export class NanoTransformPipe implements PipeTransform {
   }
 
   private static format(value: number): string {
-    return formatNumber(value, 'en-US', '1.0-2');
+    return formatNumber(value, 'en-US', '1.2-2');
   }
 }

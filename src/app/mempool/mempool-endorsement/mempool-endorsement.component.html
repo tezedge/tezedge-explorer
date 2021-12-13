@@ -5,10 +5,10 @@
         <span>SLOTS</span>
         <span>BAKER</span>
         <span>STATUS</span>
-        <span (click)="sortTable('maxTime')"
-              class="pointer">MAX LATENCY
+        <span (click)="sortTable('delta')"
+              class="pointer">DELTA
           <mat-icon [class.flip]="currentSort.sortDirection === 'descending'"
-                    [class.show]="currentSort.sortBy === 'maxTime'"
+                    [class.show]="currentSort.sortBy === 'delta'"
                     [svgIcon]="'arrow-up'"
                     class="icon-14 icon-foreground"></mat-icon>
         </span>
@@ -69,7 +69,7 @@
                   [ngClass]="endorsement.status || 'missing'">{{ endorsement.status || 'missing' }}</span>
           </span>
           <ng-container *ngIf="endorsement.status; else missingTemplate">
-            <span>{{ endorsement.maxTime | nanoTransform }}</span>
+            <span>{{ endorsement.delta | nanoTransform }}</span>
             <span>{{ endorsement.receiveTime | nanoTransform }}</span>
             <span>{{ endorsement.decodeTime | nanoTransform }}</span>
             <span>{{ endorsement.precheckTime | nanoTransform }}</span>

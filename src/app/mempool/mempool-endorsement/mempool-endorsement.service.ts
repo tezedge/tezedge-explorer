@@ -18,6 +18,7 @@ export class MempoolEndorsementService {
   constructor(private http: HttpClient) {
     this.http.get<any>('assets/json/mempool-bakers.json').subscribe(bakers => this.bakersDetails = bakers);
   }
+
   getEndorsementStatusUpdates(api: string): Observable<{ [p: string]: MempoolEndorsement }> {
     const str = Object.keys(this.endorsementUpdates).filter((key, i) => i === this.i)[0];
     // return of({[str]: this.endorsementUpdates[str] }).pipe(
@@ -36,13 +37,7 @@ export class MempoolEndorsementService {
             decodeTime: response[key].decoded_time,
             precheckTime: response[key].prechecked_time,
             broadcastTime: response[key].broadcast_time,
-            maxTime: Math.max(
-              response[key].received_time || 0,
-              response[key].decoded_time || 0,
-              response[key].applied_time || 0,
-              response[key].prechecked_time || 0,
-              response[key].broadcast_time || 0
-            )
+            delta: (response[key].received_time && response[key].broadcast_time) ? (response[key].broadcast_time - response[key].received_time) : undefined
           }
         }));
         return Object.assign({}, ...updates);

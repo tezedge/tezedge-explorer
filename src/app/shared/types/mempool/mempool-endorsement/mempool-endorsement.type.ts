@@ -9,5 +9,5 @@ export interface MempoolEndorsement {
   precheckTime?: number;
   decodeTime?: number;
   broadcastTime?: number;
-  maxTime?: number;
+  delta?: number;
 }

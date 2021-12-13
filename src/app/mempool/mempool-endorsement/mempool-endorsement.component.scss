@@ -1,12 +1,12 @@
 @import 'utilities/layout';
 
 .table-container {
-  min-width: 1045px;
+  min-width: 1020px;
 
   .mempool-row {
     height: 36px;
     display: grid;
-    grid-template-columns: 60px 330px 110px 115px 80px 80px 95px 75px 100px;
+    grid-template-columns: 60px 330px 110px 90px 80px 80px 95px 75px 100px;
 
     &.head {
       background-color: unset;

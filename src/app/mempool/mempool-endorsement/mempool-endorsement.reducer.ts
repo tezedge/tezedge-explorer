@@ -19,7 +19,7 @@ const initialState: MempoolEndorsementState = {
   isLoadingNewBlock: true,
   currentBlock: 0,
   sort: {
-    sortBy: 'maxTime',
+    sortBy: 'delta',
     sortDirection: 'ascending'
   }
 };

@@ -48,7 +48,7 @@
                     class="icon-14 icon-foreground"></mat-icon>
         </span>
       </div>
-      <div class="f-14 overflow-y-auto overflow-x-hidden" fxFlex="calc(100% - 36px)">
+      <div class="f-14 overflow-y-auto overflow-x-hidden" fxFlex="calc(100% - 36px)" #scrollableContainer>
         <div *ngFor="let endorsement of endorsements$ | async; let i=index; trackBy: trackEndorsements"
              (click)="activeEndorsement = endorsement"
              [@translateFromLeft]="i % 2 === 0 ? animateRows : false"
@@ -59,22 +59,22 @@
                 matTooltipClass="endorsement"
                 matTooltipPosition="below">{{ endorsement.slots?.length }}</span>
           <span class="d-flex align-center">
-            <img *ngIf="endorsement.logo" [src]="'https://tezos-nodes.com/storage/images/' + endorsement.logo" alt=""
-                 class="margin-right-10"
+            <img *ngIf="endorsement.logo" [src]="endorsement.logo"
+                 class="margin-right-10" alt=""
                  height="20px" width="20px">
             {{ endorsement.bakerName || endorsement.baker || 'null' }}
           </span>
-          <span class="moving-span padding-top-8" [@statusUpdate]="endorsement.status || 'missing'">
+          <span class="moving-span padding-top-8">
             <span class="status"
                   [ngClass]="endorsement.status || 'missing'">{{ endorsement.status || 'missing' }}</span>
           </span>
           <ng-container *ngIf="endorsement.status; else missingTemplate">
             <span>{{ endorsement.maxTime | nanoTransform }}</span>
-            <span>{{ endorsement.broadcastTime | nanoTransform }}</span>
-            <span>{{ endorsement.applyTime | nanoTransform }}</span>
-            <span>{{ endorsement.precheckTime | nanoTransform }}</span>
-            <span>{{ endorsement.decodeTime | nanoTransform }}</span>
             <span>{{ endorsement.receiveTime | nanoTransform }}</span>
+            <span>{{ endorsement.decodeTime | nanoTransform }}</span>
+            <span>{{ endorsement.precheckTime | nanoTransform }}</span>
+            <span>{{ endorsement.applyTime | nanoTransform }}</span>
+            <span>{{ endorsement.broadcastTime | nanoTransform }}</span>
           </ng-container>
           <ng-template #missingTemplate>
             <span>-</span>

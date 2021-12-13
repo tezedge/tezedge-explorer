@@ -1,8 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { MempoolEndorsement } from '@shared/types/mempool/mempool-endorsement/mempool-endorsement.type';
-import { forkJoin, map, Observable, of } from 'rxjs';
-import { catchError } from 'rxjs/operators';
+import { map, Observable, of } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -20,11 +19,14 @@ export class MempoolEndorsementService {
     this.http.get<any>('assets/json/mempool-bakers.json').subscribe(bakers => this.bakersDetails = bakers);
   }
   getEndorsementStatusUpdates(api: string): Observable<{ [p: string]: MempoolEndorsement }> {
-    return this.http.get<any>(api + '/dev/shell/automaton/endorsements_status').pipe(
-    // const str = Object.keys(this.endorsementUpdates).filter((key, ii) => ii === this.i)[0];
+    const str = Object.keys(this.endorsementUpdates).filter((key, i) => i === this.i)[0];
     // return of({[str]: this.endorsementUpdates[str] }).pipe(
-    // return of(mockUpdates).pipe(
+        return this.http.get<any>(api + '/dev/shell/automaton/endorsements_status').pipe(
+      // return of(mockUpdates).pipe(
       map(response => {
+        if (this.i > 40) {
+          this.i = -1;
+        }
         this.i++;
         const updates = Object.keys(response).map(key => ({
           [response[key].slot]: {
@@ -53,6 +55,7 @@ export class MempoolEndorsementService {
     return this.http.get<{ [p: string]: number[] }>(url).pipe(
       // return of(httpEndorsements).pipe(
       map((value: { [p: string]: number[] }) => {
+        this.i = 0;
         const endorsements: MempoolEndorsement[] = Object.keys(value).map(key => ({
           baker: key,
           bakerName: this.bakersDetails[key]?.name,
@@ -209,11 +212,9 @@ const mockUpdates = {
   },
   onoJiYKfV7vngMQNB58PJYScFhtmmA92jTGvaN3VUSJVzMch5CC: {
     block_timestamp: 1638525814000000000,
-    decoded_time: 8704746335,
-    applied_time: 1001000000,
     received_time: 8703677063,
     slot: 143,
-    state: 'decoded'
+    state: 'received'
   },
   onoiD5iukDBHzGQMb5fqNZvq7YAnNELJWaE8MMUcXasB14zFprD: {
     block_timestamp: 1638525814000000000,
@@ -227,29 +228,19 @@ const mockUpdates = {
   },
   onqF4T5xmoZKEM4ym3QBtiStTBn4S3YGsZQi6BpEhpk71dx8Hjy: {
     block_timestamp: 1638525814000000000,
-    broadcast_time: 9156988939,
-    applied_time: 1001000000,
-    decoded_time: 9156208635,
-    prechecked_time: 9156802198,
     received_time: 9151362510,
     slot: 1,
-    state: 'broadcast'
+    state: 'received'
   },
   onuTw5P1gLBVvZm3cA1j61pMcHxVWFPWtFUGvCfLgBquNBQknBm: {
     block_timestamp: 1638525814000000000,
-    broadcast_time: 5904394232,
-    decoded_time: 5903511019,
-    applied_time: 1001000000,
-    prechecked_time: 5904175237,
     received_time: 5902483471,
     slot: 239,
-    state: 'broadcast'
+    state: 'received'
   },
   onwc8LbhJyCAquUJuNM4QJjWXLasg3zhEEhnVK1kUcQeKwpzstN: {
     block_timestamp: 1638525814000000000,
-    decoded_time: 8051229614,
-    applied_time: 1001000000,
-    received_time: 8039657996,
+    received_time: 9039657997,
     slot: 29,
     state: 'decoded'
   },
@@ -261,7 +252,7 @@ const mockUpdates = {
     prechecked_time: 8887065263,
     received_time: 8884585128,
     slot: 169,
-    state: 'broadcast'
+    state: 'prechecked'
   },
   onymdyTCkobAsSnfn9pbYdYAYcZuatq3woCGPqJG2eCu499budD: {
     block_timestamp: 1638525814000000000,
@@ -291,7 +282,7 @@ const mockUpdates = {
     prechecked_time: 8547272471,
     received_time: 8535956954,
     slot: 7,
-    state: 'broadcast'
+    state: 'received'
   },
   oo32ogQe2QeBDwmAkrYpeGY4vQVzRj51ZJsXjp7Xh7jA4JVnRSs: {
     block_timestamp: 1638525814000000000,
@@ -329,7 +320,7 @@ const mockUpdates = {
     applied_time: 1001000000,
     received_time: 7371218030,
     slot: 77,
-    state: 'broadcast'
+    state: 'received'
   },
   ooDykz1HDNWDRx1rQL6B65cQVLRZ3RdQx3Po12Hfi8wNKVneJyR: {
     block_timestamp: 1638525814000000000,
@@ -349,7 +340,7 @@ const mockUpdates = {
     prechecked_time: 8652165506,
     received_time: 8615341320,
     slot: 30,
-    state: 'broadcast'
+    state: 'prechecked'
   },
   ooFkXrwYfNcAXrsGfo2LcK61fKZSmgxsLAVL4Zsce3s8moozZ1e: {
     block_timestamp: 1638525814000000000,
@@ -359,7 +350,7 @@ const mockUpdates = {
     prechecked_time: 8749316940,
     received_time: 8736802289,
     slot: 125,
-    state: 'broadcast'
+    state: 'received'
   },
   ooJPLaQjw6EgDAH5MAx52appHVNs34HBBTar5i2KJrYyQF27u2Y: {
     block_timestamp: 1638525814000000000,
@@ -419,7 +410,7 @@ const mockUpdates = {
     applied_time: 1001000000,
     received_time: 9068000881,
     slot: 78,
-    state: 'broadcast'
+    state: 'received'
   },
   ooTpsFN7zDaduLWhUfB8EkUZopBxPHajk7DhRLckHE4nSp5kixZ: {
     block_timestamp: 1638525814000000000,
@@ -439,7 +430,7 @@ const mockUpdates = {
     received_time: 5479363298,
     applied_time: 1001000000,
     slot: 68,
-    state: 'broadcast'
+    state: 'prechecked'
   },
   ooWy7krzQ8AVzCHFpdhexUEDxPYkWmWG4ndM18YVJe4zHMvC3Z4: {
     block_timestamp: 1638525814000000000,
@@ -459,7 +450,7 @@ const mockUpdates = {
     applied_time: 1001000000,
     received_time: 7556172861,
     slot: 131,
-    state: 'broadcast'
+    state: 'prechecked'
   },
   ooXjBdN33eEfDtVqj572wg7Ccr1an4cCSrSsCwnZ9hmD9iZ33z8: {
     block_timestamp: 1638525814000000000,
@@ -477,7 +468,7 @@ const mockUpdates = {
     applied_time: 1001000000,
     received_time: 7137720384,
     slot: 41,
-    state: 'broadcast'
+    state: 'received'
   },
   ooaEAdDbZBL5ucbf95NBdkmvJpLryWNrmNHMWWWWLyzdLZEuHHt: {
     block_timestamp: 1638525814000000000,
@@ -513,7 +504,7 @@ const mockUpdates = {
     prechecked_time: 9237321045,
     received_time: 9215035729,
     slot: 21,
-    state: 'broadcast'
+    state: 'received'
   },
   ooiLNGpLj58MUg4K9wjMniA63zE4ft1FD7mFVeXzkk9PZ77uBjR: {
     block_timestamp: 1638525814000000000,
@@ -523,7 +514,7 @@ const mockUpdates = {
     prechecked_time: 5682971568,
     received_time: 5671153910,
     slot: 230,
-    state: 'broadcast'
+    state: 'prechecked'
   },
   oojq28ZfJZikMJdSMKWF6r9RefsRGzHpyMJjGWdoUR8KPnc63d9: {
     block_timestamp: 1638525814000000000,
@@ -555,7 +546,7 @@ const mockUpdates = {
     applied_time: 1001000000,
     received_time: 8657540614,
     slot: 44,
-    state: 'decoded'
+    state: 'prechecked'
   },
   ooqbR4NNNQohXVz4MViT9rVuZiJv8grDUE1emU3PAQ2tE9g65th: {
     block_timestamp: 1638525814000000000,
@@ -565,7 +556,7 @@ const mockUpdates = {
     prechecked_time: 7690450223,
     received_time: 7683369681,
     slot: 79,
-    state: 'broadcast'
+    state: 'prechecked'
   },
   oorNNt5US9w9fiGNgPJoMbWRnD8jJjoqp8DxPUd3ND378JCcGHG: {
     block_timestamp: 1638525814000000000,
@@ -621,7 +612,7 @@ const mockUpdates = {
     prechecked_time: 7550648594,
     received_time: 7549264286,
     slot: 154,
-    state: 'broadcast'
+    state: 'applied'
   },
   oozY3qqJawKszqcr2HYy7oPVwEsFdX2BrVY6u1BJq85tkzy7MYP: {
     block_timestamp: 1638525814000000000,
@@ -637,7 +628,7 @@ const mockUpdates = {
     decoded_time: 8473473392,
     received_time: 8467857416,
     slot: 49,
-    state: 'decoded'
+    state: 'applied'
   },
   op9W6ZzJcBq2hK4RSQYXYAGQtusUbNAETtXFsp53mGEaa9NBgKN: {
     block_timestamp: 1638525814000000000,
@@ -647,7 +638,7 @@ const mockUpdates = {
     prechecked_time: 7429195670,
     received_time: 7427931182,
     slot: 88,
-    state: 'broadcast'
+    state: 'applied'
   },
   op9oPBCmpvf26P2rtjKGJqaHYDBQf7dxv76tEacjbjF1MRF1zph: {
     block_timestamp: 1638525814000000000,
@@ -667,7 +658,7 @@ const mockUpdates = {
     prechecked_time: 8355516745,
     received_time: 8353687588,
     slot: 231,
-    state: 'broadcast'
+    state: 'applied'
   },
   opKWEhaJQZ8Hofhhipmczq75hC9zaJHwsUsb2eWouvr4axbSc6j: {
     block_timestamp: 1638525814000000000,
@@ -677,7 +668,7 @@ const mockUpdates = {
     prechecked_time: 7355779319,
     received_time: 7345648684,
     slot: 218,
-    state: 'broadcast'
+    state: 'applied'
   },
   opQZoiwMLfTJ9UA5etS9bQHyms6ZrGtiHmyFDXf1DzhZ24c5z4e: {
     block_timestamp: 1638525814000000000,
@@ -687,7 +678,7 @@ const mockUpdates = {
     prechecked_time: 8477063540,
     received_time: 8473276454,
     slot: 126,
-    state: 'broadcast'
+    state: 'applied'
   },
   opSPasKvYhg1ix8GAyvP4PBVkjbphv47yFokHLvnGSt2iP2p16P: {
     block_timestamp: 1638525814000000000,
@@ -695,7 +686,7 @@ const mockUpdates = {
     applied_time: 1001000000,
     received_time: 9151362510,
     slot: 17,
-    state: 'decoded'
+    state: 'applied'
   },
   opTMAZXgQU13Jfbzm7xAAAEmAuUhUXqh7dUEEXRDSBc1pe1N3VS: {
     block_timestamp: 1638525814000000000,

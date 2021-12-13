@@ -37,7 +37,7 @@ export function reducer(state: MempoolEndorsementState = initialState, action: M
     }
 
     case MEMPOOL_ENDORSEMENT_LOAD_SUCCESS: {
-      const statistics = calculateStatistics(state.statistics, action.payload.endorsements);
+      const statistics = calculateStatistics(state.statistics, action.payload.endorsements, true);
 
       return {
         ...state,
@@ -86,42 +86,45 @@ export function reducer(state: MempoolEndorsementState = initialState, action: M
 
 function sortEndorsements(endorsements: MempoolEndorsement[], sort: MempoolEndorsementSort) {
   const sortProperty = sort.sortBy;
-  return endorsements.sort((e1: MempoolEndorsement, e2: MempoolEndorsement) => {
+  const updatedEndorsements = endorsements.filter(e => e.status);
+  const missedEndorsements = endorsements.filter(e => !e.status);
+  updatedEndorsements.sort((e1: MempoolEndorsement, e2: MempoolEndorsement) => {
     return sort.sortDirection === 'ascending'
       ? (e2[sortProperty] ?? Number.MIN_VALUE) - (e1[sortProperty] ?? Number.MIN_VALUE)
       : (e1[sortProperty] ?? Number.MAX_VALUE) - (e2[sortProperty] ?? Number.MAX_VALUE);
   });
+  return [...updatedEndorsements, ...missedEndorsements];
 }
 
-function calculateStatistics(currentStatistics: MempoolEndorsementStatistics, endorsements: MempoolEndorsement[]): MempoolEndorsementStatistics {
+function calculateStatistics(currentStatistics: MempoolEndorsementStatistics, newEndorsements: MempoolEndorsement[], isNewBlock?: boolean): MempoolEndorsementStatistics {
   return {
     endorsementTypes: [
       {
         name: 'Missing', color: '#fff',
-        value: endorsements.filter(e => !e.status).reduce((acc, curr) => [...acc, ...curr.slots], []).length
+        value: newEndorsements.filter(e => !e.status).reduce((acc, curr) => [...acc, ...curr.slots], []).length
       },
       {
         name: 'Broadcasted', color: '#32d74b',
-        value: endorsements.filter(e => e.status === 'broadcast').reduce((acc, curr) => [...acc, ...curr.slots], []).length
+        value: newEndorsements.filter(e => e.status === 'broadcast').reduce((acc, curr) => [...acc, ...curr.slots], []).length
       },
       {
-        name: 'Applied', color: '#27645e',
-        value: endorsements.filter(e => e.status === 'applied').reduce((acc, curr) => [...acc, ...curr.slots], []).length
+        name: 'Applied', color: '#287e76',
+        value: newEndorsements.filter(e => e.status === 'applied').reduce((acc, curr) => [...acc, ...curr.slots], []).length
       },
       {
         name: 'Prechecked', color: '#0a84ff',
-        value: endorsements.filter(e => e.status === 'prechecked').reduce((acc, curr) => [...acc, ...curr.slots], []).length
+        value: newEndorsements.filter(e => e.status === 'prechecked').reduce((acc, curr) => [...acc, ...curr.slots], []).length
       },
       {
         name: 'Decoded', color: '#bf5af2',
-        value: endorsements.filter(e => e.status === 'decoded').reduce((acc, curr) => [...acc, ...curr.slots], []).length
+        value: newEndorsements.filter(e => e.status === 'decoded').reduce((acc, curr) => [...acc, ...curr.slots], []).length
       },
       {
         name: 'Received', color: '#ff9f0a',
-        value: endorsements.filter(e => e.status === 'received').reduce((acc, curr) => [...acc, ...curr.slots], []).length
+        value: newEndorsements.filter(e => e.status === 'received').reduce((acc, curr) => [...acc, ...curr.slots], []).length
       },
     ],
-    previousBlockMissedEndorsements: currentStatistics ? currentStatistics.endorsementTypes[0].value : undefined
+    previousBlockMissedEndorsements: isNewBlock ? currentStatistics?.endorsementTypes[0].value : currentStatistics.previousBlockMissedEndorsements
   };
 }
 

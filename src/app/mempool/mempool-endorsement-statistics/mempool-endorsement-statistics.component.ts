@@ -27,11 +27,11 @@ export class MempoolEndorsementStatisticsComponent implements OnInit {
 
   statistics$: Observable<MempoolEndorsementStatistics>;
   currentBlock$: Observable<number>;
-  elapsedTime$: BehaviorSubject<number> = new BehaviorSubject<number>(0);
   previousBlockElapsedTime: number;
 
   private interval: Timeout;
 
+  readonly elapsedTime$: BehaviorSubject<number> = new BehaviorSubject<number>(null);
   readonly trackStats = entry => entry.value;
 
   constructor(private store: Store<State>,

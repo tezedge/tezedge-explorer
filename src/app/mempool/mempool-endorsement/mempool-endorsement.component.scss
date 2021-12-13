@@ -62,12 +62,12 @@
       line-height: 20px;
       height: 20px;
 
-      &.broadcast, &.broadcast_prechecked {
+      &.broadcast {
         background-color: darken(#32d74b, 20);
       }
 
       &.applied {
-        background-color: #27645e;
+        background-color: #287e76;
       }
 
       &.prechecked {
@@ -86,7 +86,7 @@
         color: #ff566a;
         border: 1px solid rgba(#ff566a, 30%);
         height: 21px;
-        line-height: 18px;
+        line-height: 19px;
       }
     }
   }

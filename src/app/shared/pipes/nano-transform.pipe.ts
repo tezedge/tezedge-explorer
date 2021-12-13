@@ -12,9 +12,9 @@ export class NanoTransformPipe implements PipeTransform {
 
   transform(value: number, defaultTime: string = 's'): unknown {
     if (!value) {
-      return '0.00' + defaultTime;
+      return '-';
     }
-    return NanoTransformPipe.getClosestMeasurementUnit(value,);
+    return NanoTransformPipe.getClosestMeasurementUnit(value);
   }
 
   private static getClosestMeasurementUnit(value: number): string {

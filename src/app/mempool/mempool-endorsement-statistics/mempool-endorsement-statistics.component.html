@@ -1,6 +1,6 @@
 <div class="padding-8 f-12">
   <div *ngIf="currentBlock$ | async as currentBlock"
-       class="d-flex flex-row flex-between margin-bottom-10">
+       class="d-flex flex-row flex-between margin-bottom-10 padding-top-5">
     <div [@refreshBlock]="currentBlock" class="block">APPLYING BLOCK {{ currentBlock }}</div>
     <div class="foreground-7">{{ elapsedTime$ | async | number: '1.1' }}s</div>
   </div>
@@ -21,8 +21,7 @@
         <div class="text-right">{{ type.value }}</div>
       </div>
     </div>
-    <div *ngIf="statistics.previousBlockMissedEndorsements"
-         class="d-flex flex-column border-rad-2 border padding-10 margin-top-10">
+    <div class="d-flex flex-column border-rad-2 border padding-10 margin-top-10">
       <div class="foreground-4 margin-bottom-10">Previous block summary</div>
       <div class="mem-stats-row margin-top-5 margin-bottom-5 d-flex flex-between text-red">
         <div>Missed Endorsements</div>
@@ -30,7 +29,7 @@
       </div>
       <div class="mem-stats-row margin-top-5 margin-bottom-5 d-flex flex-between">
         <div>Time to apply</div>
-        <div>{{ previousBlockElapsedTime | number: '1.1' }}s</div>
+        <div>{{ previousBlockElapsedTime | number: '1.1' }}{{ previousBlockElapsedTime ? 's' : '' }}</div>
       </div>
     </div>
   </ng-container>

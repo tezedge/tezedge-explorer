@@ -16,7 +16,7 @@ export class MempoolComponent {
       name: 'broadcast',
       link: 'broadcast'
     }, {
-      name: 'operations',
+      name: 'pending',
       link: 'operations'
     },
   ];

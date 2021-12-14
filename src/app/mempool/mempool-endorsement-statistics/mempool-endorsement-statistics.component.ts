@@ -8,13 +8,12 @@ import { MempoolEndorsementStatistics } from '@shared/types/mempool/mempool-endo
 import Timeout = NodeJS.Timeout;
 import { selectMempoolEndorsementCurrentBlock, selectMempoolEndorsementStatistics } from '@mempool/mempool-endorsement/mempool-endorsement.reducer';
 
-export const refreshBlock = trigger('refreshBlock', [
+const refreshBlock = trigger('refreshBlock', [
   transition('* => *', [
     style({ backgroundColor: 'lightgray' }),
     animate(250, style({ backgroundColor: 'transparent' })),
   ])
 ]);
-
 
 @Component({
   selector: 'app-mempool-endorsement-statistics',

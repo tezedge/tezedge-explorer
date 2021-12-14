@@ -1,3 +1,5 @@
+import { MempoolEndorsementNodeStatistics } from '@shared/types/mempool/mempool-endorsement/mempool-endorsement-node-statistics.type';
+
 export interface MempoolEndorsementStatistics {
   endorsementTypes: {
     name: string,
@@ -5,4 +7,5 @@ export interface MempoolEndorsementStatistics {
     value: number
   }[];
   previousBlockMissedEndorsements: number;
+  nodeStatistics: MempoolEndorsementNodeStatistics[];
 }

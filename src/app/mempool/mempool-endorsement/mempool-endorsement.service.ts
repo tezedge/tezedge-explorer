@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { MempoolEndorsement } from '@shared/types/mempool/mempool-endorsement/mempool-endorsement.type';
 import { map, Observable, of } from 'rxjs';
+import { MempoolEndorsementNodeStatistics } from '@shared/types/mempool/mempool-endorsement/mempool-endorsement-node-statistics.type';
 
 @Injectable({
   providedIn: 'root'
@@ -22,7 +23,7 @@ export class MempoolEndorsementService {
   getEndorsementStatusUpdates(api: string): Observable<{ [p: string]: MempoolEndorsement }> {
     const str = Object.keys(this.endorsementUpdates).filter((key, i) => i === this.i)[0];
     // return of({[str]: this.endorsementUpdates[str] }).pipe(
-        return this.http.get<any>(api + '/dev/shell/automaton/endorsements_status').pipe(
+    return this.http.get<any>(api + '/dev/shell/automaton/endorsements_status').pipe(
     // const updateAllEndorsements = {};
     // const array = new Array(256);
     // for (let i = 0; i < array.length; i++) {
@@ -36,6 +37,7 @@ export class MempoolEndorsementService {
     //     applied_time: 1001000000,
     //   };
     // }
+    // return of(mockUpdates).pipe(
     // return of(mockUpdates).pipe(
       map(response => {
         if (this.i > 40) {
@@ -73,6 +75,22 @@ export class MempoolEndorsementService {
         return endorsements;
       })
     );
+  }
+
+  getOperationNodeStats(api: string): Observable<MempoolEndorsementNodeStatistics[]> {
+    api = 'http://debug.dev.tezedge.com:18732';
+    const url = `${api}/dev/shell/automaton/mempool/operation_stats`;
+    return this.http.get<MempoolEndorsementNodeStatistics[]>(url).pipe(
+      map(this.mapOperationNodeStatsResponse)
+    );
+  }
+
+  private mapOperationNodeStatsResponse(response: any): MempoolEndorsementNodeStatistics[] {
+    const result = [];
+    Object.keys(response).forEach(key => {
+
+    });
+    return null;
   }
 }
 

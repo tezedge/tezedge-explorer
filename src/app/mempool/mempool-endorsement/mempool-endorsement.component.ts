@@ -64,7 +64,6 @@ const translateFromLeft = trigger('translateFromLeft', [
 export class MempoolEndorsementComponent implements OnInit, OnDestroy {
 
   endorsements$: Observable<MempoolEndorsement[]>;
-  activeEndorsement: MempoolEndorsement;
   animateRows = 0;
   currentSort: MempoolEndorsementSort;
 
@@ -74,6 +73,17 @@ export class MempoolEndorsementComponent implements OnInit, OnDestroy {
               private cdRef: ChangeDetectorRef) { }
 
   readonly trackEndorsements = endorsement => endorsement.status;
+  readonly tableHeads = [
+    { name: 'slots', sort: 'slotsLength' },
+    { name: 'baker', sort: 'bakerName' },
+    { name: 'status' },
+    { name: 'delta' },
+    { name: 'receive', sort: 'receiveTime' },
+    { name: 'decode', sort: 'decodeTime' },
+    { name: 'precheck', sort: 'precheckTime' },
+    { name: 'apply', sort: 'applyTime' },
+    { name: 'broadcast', sort: 'broadcastTime' },
+  ];
 
   ngOnInit(): void {
     this.listenToNewAppliedBlock();

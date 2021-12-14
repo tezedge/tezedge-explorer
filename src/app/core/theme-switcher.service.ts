@@ -47,7 +47,7 @@ export const THEMES: Theme[] = [DARK_THEME, LIGHT_THEME];
 })
 export class ThemeSwitcherService {
 
-  private renderer: Renderer2;
+  private readonly renderer: Renderer2;
 
   constructor(@Inject(DOCUMENT) private document: Document,
               rendererFactory: RendererFactory2) {

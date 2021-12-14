@@ -2,70 +2,19 @@
   <div class="h-100 d-flex flex-column overflow-auto border-bottom" fxFlex.gt-md="75">
     <div class="h-100 d-flex flex-column table-container">
       <div class="mempool-row head foreground-7 border-bottom">
-        <span (click)="sortTable('slotsLength')"
-              class="pointer">SLOTS
+        <span *ngFor="let tableHead of tableHeads"
+              (click)="sortTable(tableHead.sort ?? tableHead.name)"
+              class="pointer text-uppercase">{{ tableHead.name }}
           <mat-icon [class.flip]="currentSort.sortDirection === 'descending'"
-                    [class.show]="currentSort.sortBy === 'slotsLength'"
-                    [svgIcon]="'arrow-up'"
-                    class="icon-14 icon-foreground"></mat-icon>
-        </span>
-        <span (click)="sortTable('bakerName')"
-              class="pointer">BAKER
-          <mat-icon [class.flip]="currentSort.sortDirection === 'descending'"
-                    [class.show]="currentSort.sortBy === 'bakerName'"
-                    [svgIcon]="'arrow-up'"
-                    class="icon-14 icon-foreground"></mat-icon>
-        </span>
-        <span>STATUS</span>
-        <span (click)="sortTable('delta')"
-              class="pointer">DELTA
-          <mat-icon [class.flip]="currentSort.sortDirection === 'descending'"
-                    [class.show]="currentSort.sortBy === 'delta'"
-                    [svgIcon]="'arrow-up'"
-                    class="icon-14 icon-foreground"></mat-icon>
-        </span>
-        <span (click)="sortTable('receiveTime')"
-              class="pointer">RECEIVE
-          <mat-icon [class.flip]="currentSort.sortDirection === 'descending'"
-                    [class.show]="currentSort.sortBy === 'receiveTime'"
-                    [svgIcon]="'arrow-up'"
-                    class="icon-14 icon-foreground"></mat-icon>
-        </span>
-        <span (click)="sortTable('decodeTime')"
-              class="pointer">DECODE
-          <mat-icon [class.flip]="currentSort.sortDirection === 'descending'"
-                    [class.show]="currentSort.sortBy === 'decodeTime'"
-                    [svgIcon]="'arrow-up'"
-                    class="icon-14 icon-foreground"></mat-icon>
-        </span>
-        <span (click)="sortTable('precheckTime')"
-              class="pointer">PRECHECK
-          <mat-icon [class.flip]="currentSort.sortDirection === 'descending'"
-                    [class.show]="currentSort.sortBy === 'precheckTime'"
-                    [svgIcon]="'arrow-up'"
-                    class="icon-14 icon-foreground"></mat-icon>
-        </span>
-        <span (click)="sortTable('applyTime')"
-              class="pointer">APPLY
-          <mat-icon [class.flip]="currentSort.sortDirection === 'descending'"
-                    [class.show]="currentSort.sortBy === 'applyTime'"
-                    [svgIcon]="'arrow-up'"
-                    class="icon-14 icon-foreground"></mat-icon>
-        </span>
-        <span (click)="sortTable('broadcastTime')"
-              class="pointer">BROADCAST
-          <mat-icon [class.flip]="currentSort.sortDirection === 'descending'"
-                    [class.show]="currentSort.sortBy === 'broadcastTime'"
+                    [class.show]="currentSort.sortBy === (tableHead.sort ?? tableHead.name)"
                     [svgIcon]="'arrow-up'"
                     class="icon-14 icon-foreground"></mat-icon>
         </span>
       </div>
       <div class="f-14 overflow-y-auto overflow-x-hidden" fxFlex="calc(100% - 36px)" #scrollableContainer>
         <div *ngFor="let endorsement of endorsements$ | async; let i=index; trackBy: trackEndorsements"
-             (click)="activeEndorsement = endorsement"
              [@translateFromLeft]="i % 2 === 0 ? animateRows : false"
              [@translateFromRight]="i % 2 !== 0 ? animateRows : false"
-             [class.active]="activeEndorsement === endorsement"
              class="mempool-row pointer">
           <span [matTooltip]="'Slot numbers: ' + endorsement.slots?.join(', ')"
                 matTooltipClass="endorsement"
@@ -81,7 +30,7 @@
                   [ngClass]="endorsement.status || 'missing'">{{ endorsement.status || 'missing' }}</span>
           </span>
           <ng-container *ngIf="endorsement.status; else missingTemplate">
-            <span [ngClass]="endorsement.delta < 20000000 ? '' : endorsement.delta < 50000000 ? 'text-yellow' : 'text-red'">
+            <span [ngClass]="(endorsement.delta || 0) < 20000000 ? '' : endorsement.delta < 50000000 ? 'text-yellow' : 'text-red'">
               {{ endorsement.delta | nanoTransform }}
             </span>
             <span>{{ endorsement.receiveTime | nanoTransform }}</span>

@@ -84,17 +84,51 @@ export function reducer(state: MempoolEndorsementState = initialState, action: M
   }
 }
 
-function sortEndorsements(endorsements: MempoolEndorsement[], sort: MempoolEndorsementSort) {
+function sortEndorsements(endorsements: MempoolEndorsement[], sort: MempoolEndorsementSort): MempoolEndorsement[] {
   const sortProperty = sort.sortBy;
-  const updatedEndorsements = endorsements.filter(e => e.status);
-  const missedEndorsements = endorsements.filter(e => !e.status);
-  const sortFunction = (e1: MempoolEndorsement, e2: MempoolEndorsement) => {
+  const includeMissingEndorsements = ['slotsLength', 'bakerName', 'status'].includes(sortProperty);
+  const updatedEndorsements = includeMissingEndorsements ? endorsements : endorsements.filter(e => e.status);
+  const missedEndorsements = includeMissingEndorsements ? [] : endorsements.filter(e => !e.status);
+
+  const sortFunction = (e1: MempoolEndorsement, e2: MempoolEndorsement): number => {
+    if (sortProperty === 'bakerName') {
+      return sort.sortDirection === 'ascending'
+        ? e2[sortProperty].localeCompare(e1[sortProperty])
+        : e1[sortProperty].localeCompare(e2[sortProperty]);
+    } else if (sortProperty === 'status') {
+      return getSortOrder(e2.status, sort.sortDirection) - getSortOrder(e1.status, sort.sortDirection);
+    }
     return sort.sortDirection === 'ascending'
       ? (e2[sortProperty] ?? Number.MIN_VALUE) - (e1[sortProperty] ?? Number.MIN_VALUE)
       : (e1[sortProperty] ?? Number.MAX_VALUE) - (e2[sortProperty] ?? Number.MAX_VALUE);
   };
+
   updatedEndorsements.sort(sortFunction);
   return [...updatedEndorsements, ...missedEndorsements];
+}
+
+function getSortOrder(status: string, direction: 'ascending' | 'descending'): number {
+  const priority = direction === 'ascending' ? 1 : -1;
+  switch (status) {
+    case 'broadcast': {
+      return 5 * priority;
+    }
+    case 'applied': {
+      return 4 * priority;
+    }
+    case 'prechecked': {
+      return 3 * priority;
+    }
+    case 'decoded': {
+      return 2 * priority;
+    }
+    case 'received': {
+      return 1 * priority;
+    }
+    case undefined: {
+      return 0;
+    }
+  }
 }
 
 function calculateStatistics(currentStatistics: MempoolEndorsementStatistics, newEndorsements: MempoolEndorsement[], isNewBlock?: boolean): MempoolEndorsementStatistics {
@@ -125,12 +159,13 @@ function calculateStatistics(currentStatistics: MempoolEndorsementStatistics, ne
         value: newEndorsements.filter(e => e.status === 'received').reduce((acc, curr) => [...acc, ...curr.slots], []).length
       },
     ],
-    previousBlockMissedEndorsements: isNewBlock ? currentStatistics?.endorsementTypes[0].value : currentStatistics.previousBlockMissedEndorsements
+    previousBlockMissedEndorsements: isNewBlock ? currentStatistics?.endorsementTypes[0].value : currentStatistics.previousBlockMissedEndorsements,
+    nodeStatistics: null
   };
 }
 
-export const selectMempoolEndorsements = (state: State) => state.mempool.endorsementState.endorsements;
-export const selectMempoolEndorsementTableAnimate = (state: State) => state.mempool.endorsementState.animateTable;
-export const selectMempoolEndorsementStatistics = (state: State) => state.mempool.endorsementState.statistics;
-export const selectMempoolEndorsementCurrentBlock = (state: State) => state.mempool.endorsementState.currentBlock;
-export const selectMempoolEndorsementSorting = (state: State) => state.mempool.endorsementState.sort;
+export const selectMempoolEndorsements = (state: State): MempoolEndorsement[] => state.mempool.endorsementState.endorsements;
+export const selectMempoolEndorsementTableAnimate = (state: State): boolean => state.mempool.endorsementState.animateTable;
+export const selectMempoolEndorsementStatistics = (state: State): MempoolEndorsementStatistics => state.mempool.endorsementState.statistics;
+export const selectMempoolEndorsementCurrentBlock = (state: State): number => state.mempool.endorsementState.currentBlock;
+export const selectMempoolEndorsementSorting = (state: State): MempoolEndorsementSort => state.mempool.endorsementState.sort;

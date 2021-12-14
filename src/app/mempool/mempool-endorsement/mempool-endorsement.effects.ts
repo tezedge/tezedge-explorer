@@ -37,7 +37,7 @@ export class MempoolEndorsementEffects {
     ofType(MEMPOOL_ENDORSEMENT_LOAD),
     withLatestFrom(this.store, (action: MempoolEndorsementLoad, state: ObservedValueOf<Store<State>>) => ({ action, state })),
     mergeMap(({ action, state }) =>
-      this.mempoolEndorsementService.getEndorsements(state.settingsNode.activeNode.http, state.networkStats.lastAppliedBlock.hash, state.networkStats.downloadedBlocks)
+      this.mempoolEndorsementService.getEndorsements(state.settingsNode.activeNode.http, state.networkStats.lastAppliedBlock.hash, state.networkStats.lastAppliedBlock.level)
     ),
     map((endorsements: MempoolEndorsement[]) => ({ type: MEMPOOL_ENDORSEMENT_LOAD_SUCCESS, payload: { endorsements } })),
     catchError(error => of({

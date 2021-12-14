@@ -10,7 +10,7 @@ const NANOSECOND_FACTOR = 1000000000;
 })
 export class NanoTransformPipe implements PipeTransform {
 
-  transform(value: number, defaultTime: string = 's'): unknown {
+  transform(value: number): unknown {
     if (!value) {
       return '-';
     }

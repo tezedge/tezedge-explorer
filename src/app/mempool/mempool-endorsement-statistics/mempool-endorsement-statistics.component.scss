@@ -22,4 +22,12 @@
       min-width: 4px;
     }
   }
+
+  &.missed {
+    color: #ff453a;
+
+    &.missed-0 {
+      color: #32d74b;
+    }
+  }
 }

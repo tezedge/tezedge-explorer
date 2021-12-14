@@ -17,7 +17,7 @@ import { animate, style, transition, trigger } from '@angular/animations';
 import { distinctUntilChanged, filter, skip } from 'rxjs/operators';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { MempoolEndorsementSort } from '@shared/types/mempool/mempool-endorsement/mempool-endorsement-sort.type';
-import { selectNetworkDownloadedBlocks } from '@network/network-stats/network-stats.reducer';
+import { selectNetworkCurrentBlock } from '@network/network-stats/network-stats.reducer';
 import {
   selectMempoolEndorsements,
   selectMempoolEndorsementSorting,
@@ -95,7 +95,7 @@ export class MempoolEndorsementComponent implements OnInit, OnDestroy {
 
   private listenToNewAppliedBlock(): void {
     this.store.dispatch<MempoolEndorsementsInit>({ type: MEMPOOL_ENDORSEMENTS_INIT });
-    this.store.select(selectNetworkDownloadedBlocks).pipe(
+    this.store.select(selectNetworkCurrentBlock).pipe(
       untilDestroyed(this),
       filter(Boolean),
       distinctUntilChanged()

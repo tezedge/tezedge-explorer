@@ -2,8 +2,20 @@
   <div class="h-100 d-flex flex-column overflow-auto border-bottom" fxFlex.gt-md="75">
     <div class="h-100 d-flex flex-column table-container">
       <div class="mempool-row head foreground-7 border-bottom">
-        <span>SLOTS</span>
-        <span>BAKER</span>
+        <span (click)="sortTable('slotsLength')"
+              class="pointer">SLOTS
+          <mat-icon [class.flip]="currentSort.sortDirection === 'descending'"
+                    [class.show]="currentSort.sortBy === 'slotsLength'"
+                    [svgIcon]="'arrow-up'"
+                    class="icon-14 icon-foreground"></mat-icon>
+        </span>
+        <span (click)="sortTable('bakerName')"
+              class="pointer">BAKER
+          <mat-icon [class.flip]="currentSort.sortDirection === 'descending'"
+                    [class.show]="currentSort.sortBy === 'bakerName'"
+                    [svgIcon]="'arrow-up'"
+                    class="icon-14 icon-foreground"></mat-icon>
+        </span>
         <span>STATUS</span>
         <span (click)="sortTable('delta')"
               class="pointer">DELTA
@@ -62,14 +74,16 @@
             <img *ngIf="endorsement.logo" [src]="endorsement.logo"
                  class="margin-right-10" alt=""
                  height="20px" width="20px">
-            {{ endorsement.bakerName || endorsement.baker || 'null' }}
+            {{ endorsement.bakerName }}
           </span>
           <span class="moving-span padding-top-8">
             <span class="status"
                   [ngClass]="endorsement.status || 'missing'">{{ endorsement.status || 'missing' }}</span>
           </span>
           <ng-container *ngIf="endorsement.status; else missingTemplate">
-            <span>{{ endorsement.delta | nanoTransform }}</span>
+            <span [ngClass]="endorsement.delta < 20000000 ? '' : endorsement.delta < 50000000 ? 'text-yellow' : 'text-red'">
+              {{ endorsement.delta | nanoTransform }}
+            </span>
             <span>{{ endorsement.receiveTime | nanoTransform }}</span>
             <span>{{ endorsement.decodeTime | nanoTransform }}</span>
             <span>{{ endorsement.precheckTime | nanoTransform }}</span>

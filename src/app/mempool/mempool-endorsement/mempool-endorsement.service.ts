@@ -23,7 +23,20 @@ export class MempoolEndorsementService {
     const str = Object.keys(this.endorsementUpdates).filter((key, i) => i === this.i)[0];
     // return of({[str]: this.endorsementUpdates[str] }).pipe(
         return this.http.get<any>(api + '/dev/shell/automaton/endorsements_status').pipe(
-      // return of(mockUpdates).pipe(
+    // const updateAllEndorsements = {};
+    // const array = new Array(256);
+    // for (let i = 0; i < array.length; i++) {
+    //   updateAllEndorsements[i] = {
+    //     slot: i,
+    //     state: 'prechecked',
+    //     broadcast_time: 8731126317,
+    //     decoded_time: 8730296377,
+    //     prechecked_time: 8730913985,
+    //     received_time: 8703677063,
+    //     applied_time: 1001000000,
+    //   };
+    // }
+    // return of(mockUpdates).pipe(
       map(response => {
         if (this.i > 40) {
           this.i = -1;
@@ -48,14 +61,14 @@ export class MempoolEndorsementService {
   getEndorsements(api: string, blockHash: string, level: number): Observable<MempoolEndorsement[]> {
     const url = `${api}/dev/shell/automaton/endorsing_rights?block=${blockHash}&level=${level}`;
     return this.http.get<{ [p: string]: number[] }>(url).pipe(
-      // return of(httpEndorsements).pipe(
+    // return of(httpEndorsements).pipe(
       map((value: { [p: string]: number[] }) => {
         this.i = 0;
         const endorsements: MempoolEndorsement[] = Object.keys(value).map(key => ({
-          baker: key,
-          bakerName: this.bakersDetails[key]?.name,
+          bakerName: this.bakersDetails[key]?.name || key,
           logo: this.bakersDetails[key]?.logo,
-          slots: value[key]
+          slots: value[key],
+          slotsLength: value[key].length
         }));
         return endorsements;
       })
@@ -140,6 +153,10 @@ const mockUpdates = {
     received_time: 8703677063,
     applied_time: 1001000000,
     slot: 8,
+    state: 'prechecked'
+  },
+  x: {
+    slot: 138,
     state: 'prechecked'
   },
   onfVZ7t31uyqkmmHgq3StqGk9kRW3MbMSKQRkei82QMbKQpE9jX: {

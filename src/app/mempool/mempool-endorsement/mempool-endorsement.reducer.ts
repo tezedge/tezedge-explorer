@@ -88,11 +88,12 @@ function sortEndorsements(endorsements: MempoolEndorsement[], sort: MempoolEndor
   const sortProperty = sort.sortBy;
   const updatedEndorsements = endorsements.filter(e => e.status);
   const missedEndorsements = endorsements.filter(e => !e.status);
-  updatedEndorsements.sort((e1: MempoolEndorsement, e2: MempoolEndorsement) => {
+  const sortFunction = (e1: MempoolEndorsement, e2: MempoolEndorsement) => {
     return sort.sortDirection === 'ascending'
       ? (e2[sortProperty] ?? Number.MIN_VALUE) - (e1[sortProperty] ?? Number.MIN_VALUE)
       : (e1[sortProperty] ?? Number.MAX_VALUE) - (e2[sortProperty] ?? Number.MAX_VALUE);
-  });
+  };
+  updatedEndorsements.sort(sortFunction);
   return [...updatedEndorsements, ...missedEndorsements];
 }
 

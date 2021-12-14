@@ -23,7 +23,8 @@
     </div>
     <div class="d-flex flex-column border-rad-2 border padding-10 margin-top-10">
       <div class="foreground-4 margin-bottom-10">Previous block summary</div>
-      <div class="mem-stats-row margin-top-5 margin-bottom-5 d-flex flex-between text-red">
+      <div class="missed mem-stats-row margin-top-5 margin-bottom-5 d-flex flex-between"
+           [ngClass]="'missed-' + statistics.previousBlockMissedEndorsements">
         <div>Missed Endorsements</div>
         <div>{{ statistics.previousBlockMissedEndorsements }}</div>
       </div>

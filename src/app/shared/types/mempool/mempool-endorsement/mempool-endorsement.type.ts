@@ -1,7 +1,7 @@
 export interface MempoolEndorsement {
   slots?: number[];
+  slotsLength?: number;
   status?: string;
-  baker?: string;
   bakerName?: string;
   logo?: string;
   receiveTime?: number;

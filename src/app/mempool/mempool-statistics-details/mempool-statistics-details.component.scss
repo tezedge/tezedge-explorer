@@ -2,21 +2,25 @@
   line-height: 36px;
 }
 
-.node-row {
-  height: 36px;
-  display: grid;
-  grid-template-columns: 250px 75px 100px 50px 75px;
+.table-container {
+  min-width: 550px;
 
-  &:nth-child(even) {
-    background-color: rgba(255, 255, 255, 0.1);
-  }
+  .node-row {
+    height: 36px;
+    display: grid;
+    grid-template-columns: 250px 75px 100px 50px 75px;
 
-  &:hover:not(.active):not(.head) {
-    background-color: rgba(255, 255, 255, 0.2);
-  }
+    &:nth-child(even) {
+      background-color: rgba(255, 255, 255, 0.1);
+    }
 
-  > div {
-    line-height: 36px;
-    padding-left: 10px;
+    &:hover:not(.active):not(.head) {
+      background-color: rgba(255, 255, 255, 0.2);
+    }
+
+    > div {
+      line-height: 36px;
+      padding-left: 10px;
+    }
   }
 }

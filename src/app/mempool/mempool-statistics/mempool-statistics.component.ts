@@ -35,7 +35,7 @@ export class MempoolStatisticsComponent implements OnInit, OnDestroy {
   ];
 
   operations$: Observable<MempoolStatisticsOperation[]>;
-  activeOperationIndex = -1;
+  activeOperation: MempoolStatisticsOperation;
   currentSort: TableSort;
 
   constructor(private store: Store<State>) { }
@@ -50,9 +50,9 @@ export class MempoolStatisticsComponent implements OnInit, OnDestroy {
     this.operations$ = this.store.select(selectMempoolStatisticsOperations);
   }
 
-  selectOperation(i: number): void {
-    this.activeOperationIndex = i;
-    this.store.dispatch<MempoolStatisticsChangeActiveOperation>({ type: MEMPOOL_STATISTICS_CHANGE_ACTIVE_OPERATION, payload: i });
+  selectOperation(operation: MempoolStatisticsOperation): void {
+    this.activeOperation = operation;
+    this.store.dispatch<MempoolStatisticsChangeActiveOperation>({ type: MEMPOOL_STATISTICS_CHANGE_ACTIVE_OPERATION, payload: operation });
   }
 
   ngOnDestroy(): void {

@@ -29,7 +29,7 @@ export class MempoolStatisticsLoadSuccess implements Action {
 export class MempoolStatisticsChangeActiveOperation implements Action {
   readonly type = MEMPOOL_STATISTICS_CHANGE_ACTIVE_OPERATION;
 
-  constructor(public payload: number) { }
+  constructor(public payload: MempoolStatisticsOperation) { }
 }
 
 export class MempoolStatisticsStop implements Action {

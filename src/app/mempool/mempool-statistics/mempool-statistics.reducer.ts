@@ -24,16 +24,17 @@ export function reducer(state: MempoolStatisticsState = initialState, action: Me
   switch (action.type) {
 
     case MEMPOOL_STATISTICS_LOAD_SUCCESS: {
+      const operations = sortOperations([...action.payload], state.sort);
       return {
         ...state,
-        operations: action.payload
+        operations
       };
     }
 
     case MEMPOOL_STATISTICS_CHANGE_ACTIVE_OPERATION: {
       return {
         ...state,
-        activeOperation: state.operations[action.payload]
+        activeOperation: action.payload
       };
     }
 
@@ -58,7 +59,6 @@ export function reducer(state: MempoolStatisticsState = initialState, action: Me
 
 function sortOperations(operations: MempoolStatisticsOperation[], sort: TableSort): MempoolStatisticsOperation[] {
   const sortProperty = sort.sortBy;
-
   const sortFunction = (e1: MempoolStatisticsOperation, e2: MempoolStatisticsOperation): number => {
     if (sortProperty === 'dateTime' || sortProperty === 'hash') {
       return sort.sortDirection === 'ascending'

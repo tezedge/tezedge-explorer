@@ -20,6 +20,30 @@
 
     .progress-background {
       min-width: 4px;
+
+      &.broadcast {
+        background-color: #32d74b;
+      }
+
+      &.applied {
+        background-color: #287e76;
+      }
+
+      &.prechecked {
+        background-color: #0a84ff;
+      }
+
+      &.decoded {
+        background-color: #bf5af2;
+      }
+
+      &.received {
+        background-color: #ff9f0a;
+      }
+
+      &.missing {
+        background-color: #fff;
+      }
     }
   }
 

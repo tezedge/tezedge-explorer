@@ -7,6 +7,8 @@ import { TezedgeSharedModule } from '@shared/tezedge-shared.module';
 import { MempoolEndorsementComponent } from './mempool-endorsement/mempool-endorsement.component';
 import { MempoolEndorsementStatisticsComponent } from './mempool-endorsement-statistics/mempool-endorsement-statistics.component';
 import { MempoolBroadcastComponent } from './mempool-broadcast/mempool-broadcast.component';
+import { MempoolStatisticsComponent } from './mempool-statistics/mempool-statistics.component';
+import { MempoolStatisticsDetailsComponent } from './mempool-statistics-details/mempool-statistics-details.component';
 
 
 @NgModule({
@@ -16,6 +18,8 @@ import { MempoolBroadcastComponent } from './mempool-broadcast/mempool-broadcast
     MempoolEndorsementComponent,
     MempoolEndorsementStatisticsComponent,
     MempoolBroadcastComponent,
+    MempoolStatisticsComponent,
+    MempoolStatisticsDetailsComponent,
   ],
   imports: [
     CommonModule,

@@ -4,6 +4,7 @@ import { MempoolComponent } from '@mempool/mempool.component';
 import { MempoolOperationComponent } from '@mempool/mempool-operation/mempool-operation.component';
 import { MempoolEndorsementComponent } from '@mempool/mempool-endorsement/mempool-endorsement.component';
 import { MempoolBroadcastComponent } from '@mempool/mempool-broadcast/mempool-broadcast.component';
+import { MempoolStatisticsComponent } from '@mempool/mempool-statistics/mempool-statistics.component';
 
 const routes: Routes = [
   {
@@ -21,6 +22,10 @@ const routes: Routes = [
       {
         path: 'operations',
         component: MempoolOperationComponent,
+      },
+      {
+        path: 'statistics',
+        component: MempoolStatisticsComponent,
       },
       {
         path: '',

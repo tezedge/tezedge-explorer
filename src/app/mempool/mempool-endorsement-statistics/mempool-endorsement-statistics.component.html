@@ -9,10 +9,10 @@
       <div class="foreground-4 margin-bottom-10">256 endorsements grouped by status</div>
       <div *ngFor="let type of statistics.endorsementTypes; let i=index; trackBy: trackStats"
            class="mem-stats-row margin-top-5 margin-bottom-5">
-        <div>{{ type.name }}</div>
+        <div class="text-capitalize">{{ type.name }}</div>
         <div class="padding-right-10 d-flex align-center">
           <div class="progress-background">
-            <div [style.background-color]="type.color"
+            <div [ngClass]="type.name.toLowerCase()"
                  [style.width.%]="type.value / 256 * 100"
                  class="progress-background">
             </div>

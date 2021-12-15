@@ -1,0 +1,41 @@
+<div class="h-100" fxLayout="column" fxLayout.gt-md="row">
+  <ng-container *ngIf="operations$ | async as operations">
+    <div class="d-flex flex-column" fxFlex.gt-md="950px" fxFlex="50">
+      <div class="table-container h-100 d-flex flex-column">
+        <div class="mempool-row head border-bottom foreground-7">
+          <span *ngFor="let tableHead of tableHeads"
+                (click)="sortTable(tableHead.sort ?? tableHead.name)"
+                class="pointer text-uppercase">{{ tableHead.name }}
+            <mat-icon [class.flip]="currentSort.sortDirection === 'descending'"
+                      [class.show]="currentSort.sortBy === (tableHead.sort ?? tableHead.name)"
+                      [svgIcon]="'arrow-up'"
+                      class="icon-14 icon-foreground"></mat-icon>
+          </span>
+        </div>
+        <cdk-virtual-scroll-viewport class="border-bottom border-right f-14 overflow-y-auto overflow-x-hidden"
+                                     fxFlex="calc(100% - 36px)"
+                                     itemSize="36">
+          <div *cdkVirtualFor="let operation of operations; let i=index;"
+               (click)="selectOperation(i)"
+               [class.active]="i === activeOperationIndex"
+               class="mempool-row pointer">
+            <span>{{ operation.dateTime | dateTime }}</span>
+            <span>{{ operation.hash }}</span>
+            <span>{{ operation.nodesLength }}</span>
+            <span>{{ operation.maxReceived | nanoTransform }}</span>
+            <span>{{ operation.maxSent | nanoTransform }}</span>
+          </div>
+        </cdk-virtual-scroll-viewport>
+      </div>
+    </div>
+
+    <div class="d-flex flex-column flex-grow" fxFlex.gt-md="1 1 auto" fxFlex="50">
+      <div class="d-flex align-center border-bottom padding-left-10 foreground-7" fxFlex="36px">
+        <span class="padding-left-10">DETAILS</span>
+      </div>
+      <div fxFlex="calc(100% - 36px)">
+        <app-mempool-statistics-details></app-mempool-statistics-details>
+      </div>
+    </div>
+  </ng-container>
+</div>

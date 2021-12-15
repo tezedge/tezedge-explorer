@@ -26,11 +26,12 @@
             {{ endorsement.bakerName }}
           </span>
           <span class="moving-span padding-top-8">
-            <span class="status"
-                  [ngClass]="endorsement.status || 'missing'">{{ endorsement.status || 'missing' }}</span>
+            <span [ngClass]="endorsement.status || 'missing'"
+                  class="status">{{ endorsement.status || 'missing' }}</span>
           </span>
           <ng-container *ngIf="endorsement.status; else missingTemplate">
-            <span [ngClass]="(endorsement.delta || 0) < 20000000 ? '' : endorsement.delta < 50000000 ? 'text-yellow' : 'text-red'">
+            <span
+              [ngClass]="(endorsement.delta || 0) < 20000000 ? '' : endorsement.delta < 50000000 ? 'text-yellow' : 'text-red'">
               {{ endorsement.delta | nanoTransform }}
             </span>
             <span>{{ endorsement.receiveTime | nanoTransform }}</span>

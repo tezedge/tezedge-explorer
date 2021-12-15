@@ -1,0 +1,23 @@
+<div class="h-100 margin-left-10 flex-column"
+     *ngIf="activeOperation$ | async as activeOperation">
+  <div class="hash margin-left-10">{{ activeOperation.hash }}</div>
+  <div fxFlex="calc(100% - 36px)" class="flex-column border-left">
+    <div class="node-row head foreground-7 border-bottom border-top">
+      <div>NODE ID</div>
+      <div>RECEIVED</div>
+      <div>MAX RECEIVED</div>
+      <div>SENT</div>
+      <div>MAX SENT</div>
+    </div>
+    <div fxFlex="calc(100% - 36px)" class="overflow-auto flex-column">
+      <div *ngFor="let node of activeOperation.nodes"
+           class="node-row">
+        <div class="truncate">{{ node.id }}</div>
+        <div>{{ node.received.length }}</div>
+        <div>{{ node.maxReceived | nanoTransform }}</div>
+        <div>{{ node.sent.length }}</div>
+        <div>{{ node.maxSent | nanoTransform }}</div>
+      </div>
+    </div>
+  </div>
+</div>

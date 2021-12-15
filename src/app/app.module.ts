@@ -47,6 +47,7 @@ import { ThemeSwitcherService } from '@core/theme-switcher.service';
 import { MempoolEndorsementEffects } from '@mempool/mempool-endorsement/mempool-endorsement.effects';
 import { MempoolOperationEffects } from '@mempool/mempool-operation/mempool-operation.effects';
 import { MempoolBroadcastEffects } from '@mempool/mempool-broadcast/mempool-broadcast.effects';
+import { MempoolStatisticsEffects } from '@mempool/mempool-statistics/mempool-statistics.effects';
 
 registerLocaleData(localeFr, 'fr');
 registerLocaleData(localeEnGb, 'en');
@@ -69,6 +70,7 @@ const effects = [
   MempoolEndorsementEffects,
   MempoolOperationEffects,
   MempoolBroadcastEffects,
+  MempoolStatisticsEffects,
   NetworkActionEffects,
   StorageBlockEffects,
   StorageActionEffects,

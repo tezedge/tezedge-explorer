@@ -1,6 +1,6 @@
 import { MempoolEndorsementState } from '@shared/types/mempool/mempool-endorsement/mempool-endorsement-state.type';
 import { State } from '@app/app.reducers';
-import { MempoolEndorsement } from '@shared/types/mempool/mempool-endorsement/mempool-endorsement.type';
+import { MempoolEndorsement, MempoolEndorsementStatusTypes } from '@shared/types/mempool/mempool-endorsement/mempool-endorsement.type';
 import { MempoolEndorsementStatistics } from '@shared/types/mempool/mempool-endorsement/mempool-endorsement-statistics.type';
 import { MempoolEndorsementSort } from '@shared/types/mempool/mempool-endorsement/mempool-endorsement-sort.type';
 import {
@@ -110,19 +110,19 @@ function sortEndorsements(endorsements: MempoolEndorsement[], sort: MempoolEndor
 function getSortOrder(status: string, direction: 'ascending' | 'descending'): number {
   const priority = direction === 'ascending' ? 1 : -1;
   switch (status) {
-    case 'broadcast': {
+    case MempoolEndorsementStatusTypes.BROADCAST: {
       return 5 * priority;
     }
-    case 'applied': {
+    case MempoolEndorsementStatusTypes.APPLIED: {
       return 4 * priority;
     }
-    case 'prechecked': {
+    case MempoolEndorsementStatusTypes.PRECHECKED: {
       return 3 * priority;
     }
-    case 'decoded': {
+    case MempoolEndorsementStatusTypes.DECODED: {
       return 2 * priority;
     }
-    case 'received': {
+    case MempoolEndorsementStatusTypes.RECEIVED: {
       return 1 * priority;
     }
     case undefined: {
@@ -132,35 +132,25 @@ function getSortOrder(status: string, direction: 'ascending' | 'descending'): nu
 }
 
 function calculateStatistics(currentStatistics: MempoolEndorsementStatistics, newEndorsements: MempoolEndorsement[], isNewBlock?: boolean): MempoolEndorsementStatistics {
+  const valueObject = Object.keys(MempoolEndorsementStatusTypes)
+    .reduce((acc: any, curr: MempoolEndorsementStatusTypes) => ({ ...acc, [curr.toLowerCase()]: 0 }), {});
+
+  newEndorsements.forEach(e => {
+    const key = e.status ?? MempoolEndorsementStatusTypes.MISSING;
+    valueObject[key] = valueObject[key];
+    valueObject[key] += e.slotsLength;
+  });
+
   return {
     endorsementTypes: [
-      {
-        name: 'Missing', color: '#fff',
-        value: newEndorsements.filter(e => !e.status).reduce((acc, curr) => [...acc, ...curr.slots], []).length
-      },
-      {
-        name: 'Broadcasted', color: '#32d74b',
-        value: newEndorsements.filter(e => e.status === 'broadcast').reduce((acc, curr) => [...acc, ...curr.slots], []).length
-      },
-      {
-        name: 'Applied', color: '#287e76',
-        value: newEndorsements.filter(e => e.status === 'applied').reduce((acc, curr) => [...acc, ...curr.slots], []).length
-      },
-      {
-        name: 'Prechecked', color: '#0a84ff',
-        value: newEndorsements.filter(e => e.status === 'prechecked').reduce((acc, curr) => [...acc, ...curr.slots], []).length
-      },
-      {
-        name: 'Decoded', color: '#bf5af2',
-        value: newEndorsements.filter(e => e.status === 'decoded').reduce((acc, curr) => [...acc, ...curr.slots], []).length
-      },
-      {
-        name: 'Received', color: '#ff9f0a',
-        value: newEndorsements.filter(e => e.status === 'received').reduce((acc, curr) => [...acc, ...curr.slots], []).length
-      },
+      { name: MempoolEndorsementStatusTypes.MISSING, value: valueObject[MempoolEndorsementStatusTypes.MISSING] },
+      { name: MempoolEndorsementStatusTypes.BROADCAST, value: valueObject[MempoolEndorsementStatusTypes.BROADCAST] },
+      { name: MempoolEndorsementStatusTypes.APPLIED, value: valueObject[MempoolEndorsementStatusTypes.APPLIED] },
+      { name: MempoolEndorsementStatusTypes.PRECHECKED, value: valueObject[MempoolEndorsementStatusTypes.PRECHECKED] },
+      { name: MempoolEndorsementStatusTypes.DECODED, value: valueObject[MempoolEndorsementStatusTypes.DECODED] },
+      { name: MempoolEndorsementStatusTypes.RECEIVED, value: valueObject[MempoolEndorsementStatusTypes.RECEIVED] },
     ],
-    previousBlockMissedEndorsements: isNewBlock ? currentStatistics?.endorsementTypes[0].value : currentStatistics.previousBlockMissedEndorsements,
-    nodeStatistics: null
+    previousBlockMissedEndorsements: isNewBlock ? currentStatistics?.endorsementTypes[0].value : currentStatistics.previousBlockMissedEndorsements
   };
 }
 

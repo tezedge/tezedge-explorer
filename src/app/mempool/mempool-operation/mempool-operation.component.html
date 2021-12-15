@@ -10,7 +10,7 @@
                                    fxFlex="calc(100% - 36px)"
                                    itemSize="36">
         <div *cdkVirtualFor="let operation of mempoolOperations; let i=index;"
-             (click)="clickWallet(i)"
+             (click)="selectRow(i)"
              (mouseenter)="onRowEnter(i)"
              (mouseleave)="onRowLeave()"
              [class.active]="i === mempoolSelectedItem"

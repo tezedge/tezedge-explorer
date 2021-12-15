@@ -7,6 +7,7 @@ import { MemoryResourcesActionTypes } from '@resources/memory-resources/memory-r
 import { ADD_ERROR } from '@shared/error-popup/error-popup.actions';
 import { MEMPOOL_ENDORSEMENT_LOAD, MEMPOOL_ENDORSEMENT_LOAD_SUCCESS } from '@mempool/mempool-endorsement/mempool-endorsement.action';
 import { MEMPOOL_OPERATION_LOAD, MEMPOOL_OPERATION_LOAD_SUCCESS } from '@mempool/mempool-operation/mempool-operation.action';
+import { MEMPOOL_STATISTICS_LOAD, MEMPOOL_STATISTICS_LOAD_SUCCESS } from '@mempool/mempool-statistics/mempool-statistics.action';
 
 export interface LoadingSpinnerState {
   pendingValues: LoadingSpinner[];
@@ -164,6 +165,16 @@ export function reducer(state: LoadingSpinnerState = initialState, action: any):
         pendingValues: state.pendingValues.filter(v => v.type !== MEMPOOL_OPERATION_LOAD)
       };
     }
+    case MEMPOOL_STATISTICS_LOAD: {
+      return {
+        pendingValues: [mempoolStatisticsLoad, ...state.pendingValues]
+      };
+    }
+    case MEMPOOL_STATISTICS_LOAD_SUCCESS: {
+      return {
+        pendingValues: state.pendingValues.filter(v => v.type !== MEMPOOL_STATISTICS_LOAD)
+      };
+    }
     default:
       return state;
   }
@@ -214,15 +225,15 @@ const stateMachineStatisticsLoad: LoadingSpinner = {
   zIndex: 3
 };
 
-const stateMachineActionsLoad: LoadingSpinner = {
-  type: StateMachineActionTypes.STATE_MACHINE_ACTIONS_LOAD,
-  message: 'Loading state machine actions...',
-  zIndex: 2
-};
-
 const stateMachineDiagramLoad: LoadingSpinner = {
   type: StateMachineActionTypes.STATE_MACHINE_DIAGRAM_LOAD,
   message: 'Loading state machine diagram...',
+  zIndex: 2
+};
+
+const stateMachineActionsLoad: LoadingSpinner = {
+  type: StateMachineActionTypes.STATE_MACHINE_ACTIONS_LOAD,
+  message: 'Loading state machine actions...',
   zIndex: 1
 };
 
@@ -234,4 +245,9 @@ const mempoolEndorsementLoad: LoadingSpinner = {
 const mempoolOperationLoad: LoadingSpinner = {
   type: MEMPOOL_OPERATION_LOAD,
   message: 'Loading mempool operations...'
+};
+
+const mempoolStatisticsLoad: LoadingSpinner = {
+  type: MEMPOOL_STATISTICS_LOAD,
+  message: 'Loading mempool statistics...'
 };

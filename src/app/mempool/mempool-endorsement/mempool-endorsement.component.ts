@@ -63,15 +63,6 @@ const translateFromLeft = trigger('translateFromLeft', [
 })
 export class MempoolEndorsementComponent implements OnInit, OnDestroy {
 
-  endorsements$: Observable<MempoolEndorsement[]>;
-  animateRows = 0;
-  currentSort: MempoolEndorsementSort;
-
-  @ViewChild('scrollableContainer') private scrollableContainer: ElementRef<HTMLDivElement>;
-
-  constructor(private store: Store<State>,
-              private cdRef: ChangeDetectorRef) { }
-
   readonly trackEndorsements = endorsement => endorsement.status;
   readonly tableHeads = [
     { name: 'slots', sort: 'slotsLength' },
@@ -84,6 +75,15 @@ export class MempoolEndorsementComponent implements OnInit, OnDestroy {
     { name: 'apply', sort: 'applyTime' },
     { name: 'broadcast', sort: 'broadcastTime' },
   ];
+
+  endorsements$: Observable<MempoolEndorsement[]>;
+  currentSort: MempoolEndorsementSort;
+  animateRows = 0;
+
+  @ViewChild('scrollableContainer') private scrollableContainer: ElementRef<HTMLDivElement>;
+
+  constructor(private store: Store<State>,
+              private cdRef: ChangeDetectorRef) { }
 
   ngOnInit(): void {
     this.listenToNewAppliedBlock();
@@ -117,7 +117,7 @@ export class MempoolEndorsementComponent implements OnInit, OnDestroy {
   private listenToNewEndorsements(): void {
     this.store.select(selectMempoolEndorsementTableAnimate).pipe(
       untilDestroyed(this),
-      skip(2), /* no animation when first load the page */
+      skip(2), /* no rows animation on first load */
     ).subscribe(() => {
       this.scrollableContainer.nativeElement.scrollTo({ top: 0 });
       this.animateRows++;

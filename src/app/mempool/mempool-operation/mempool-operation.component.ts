@@ -36,7 +36,7 @@ export class MempoolOperationComponent implements OnInit, OnDestroy {
       );
   }
 
-  clickWallet(index: number): void {
+  selectRow(index: number): void {
     this.mempoolSelectedItem = index;
     this.mempoolHoveredItem = this.mempoolSelectedItem;
   }

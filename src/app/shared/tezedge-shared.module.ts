@@ -4,7 +4,6 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 import { ReplaceCharacterPipe } from './pipes/replace-character.pipe';
 import { TimeTransformPipe } from './pipes/time-transform.pipe';
 import { ThousandTransformPipe } from './pipes/thousand-transform.pipe';
-import { EtaTimePipe } from './pipes/eta-time.pipe';
 import { ErrorPopupComponent } from './error-popup/error-popup.component';
 import { NotifierModule } from 'angular-notifier';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
@@ -20,6 +19,7 @@ import { ResizeDirective } from '@shared/directives/resize.directive';
 import { CustomJsonParserInterceptorService } from '@core/custom-json-parser.interceptor.service';
 import { LoadingSpinnerComponent } from '@shared/loading-spinner/loading-spinner.component';
 import { NanoTransformPipe } from '@shared/pipes/nano-transform.pipe';
+import { DateTimePipe } from '@shared/pipes/date-time.pipe';
 
 const COMPONENTS = [
   ErrorPopupComponent,
@@ -30,8 +30,8 @@ const PIPES = [
   ReplaceCharacterPipe,
   TimeTransformPipe,
   ThousandTransformPipe,
-  EtaTimePipe,
   NanoTransformPipe,
+  DateTimePipe,
 ];
 
 const DIRECTIVES = [

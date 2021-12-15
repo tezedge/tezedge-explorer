@@ -1,7 +1,7 @@
 export interface MempoolEndorsement {
   slots?: number[];
   slotsLength?: number;
-  status?: string;
+  status?: MempoolEndorsementStatusTypes;
   bakerName?: string;
   logo?: string;
   receiveTime?: number;
@@ -10,4 +10,13 @@ export interface MempoolEndorsement {
   decodeTime?: number;
   broadcastTime?: number;
   delta?: number;
+}
+
+export enum MempoolEndorsementStatusTypes {
+  BROADCAST = 'broadcast',
+  APPLIED = 'applied',
+  PRECHECKED = 'prechecked',
+  DECODED = 'decoded',
+  RECEIVED = 'received',
+  MISSING = 'missing'
 }

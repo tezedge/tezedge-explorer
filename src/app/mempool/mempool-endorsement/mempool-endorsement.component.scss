@@ -14,21 +14,31 @@
       > span {
         @include flexRowVertCenter();
 
-        &:hover mat-icon:not(.show) {
-          opacity: 0.5;
-        }
-
         mat-icon {
           transition: 0.2s ease-in-out;
-          transform: rotateX(0);
+          transform: rotateX(0) translateY(6px);
           opacity: 0;
 
           &.show {
             opacity: 1;
+            transform: rotateX(0) translateY(0);
           }
 
           &.flip {
-            transform: rotateX(180deg);
+            transform: rotateX(180deg) translateY(0);
+
+            &:not(.show) {
+              transform: rotateX(180deg) translateY(6px);
+            }
+          }
+        }
+
+        &:hover mat-icon:not(.show) {
+          opacity: 0.5;
+          transform: rotateX(0) translateY(0);
+
+          &.flip {
+            transform: rotateX(180deg) translateY(0);
           }
         }
       }
@@ -41,14 +51,6 @@
 
     &:nth-child(even) {
       background-color: rgba(255, 255, 255, 0.1);
-    }
-
-    &.active {
-      background-color: #204e8a;
-    }
-
-    &.missing {
-      background-color: rgba(235, 83, 104, 0.5);
     }
 
     &:hover:not(.active):not(.head) {

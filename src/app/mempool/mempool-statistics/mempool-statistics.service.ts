@@ -25,8 +25,8 @@ export class MempoolStatisticsService {
     return Object.keys(response).map(opKey => {
 
       const nodes: MempoolStatisticsOperationNode[] = Object.keys(response[opKey].nodes).map(key => {
-        const received: number[] = response[opKey].nodes[key].received.map(r => r.time).filter(Boolean);
-        const sent: number[] = response[opKey].nodes[key].sent.map(s => s.time).filter(Boolean);
+        const received: number[] = response[opKey].nodes[key].received.map(r => r.latency).filter(Boolean);
+        const sent: number[] = response[opKey].nodes[key].sent.map(s => s.latency).filter(Boolean);
         return {
           id: key,
           received,

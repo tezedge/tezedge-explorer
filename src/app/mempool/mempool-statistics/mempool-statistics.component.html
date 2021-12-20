@@ -51,11 +51,11 @@
               </span>
             </span>
             <span class="foreground-7">{{ operation.nodesLength }}</span>
-            <span [innerHTML]="operation.preApply | nanoTransform: 50000000 : 20000000"></span>
             <span [innerHTML]="operation.delta | nanoTransform: 50000000 : 20000000"></span>
             <span [innerHTML]="operation.firstReceived | nanoTransform"></span>
             <span [innerHTML]="(deltaEnabled ? operation.contentReceivedDelta : operation.contentReceived) | nanoTransform: deltaEnabled ? 50000000 : undefined : deltaEnabled ? 20000000 : undefined"></span>
             <span [innerHTML]="(deltaEnabled ? operation.validationStartedDelta : operation.validationStarted) | nanoTransform: deltaEnabled ? 50000000 : undefined : deltaEnabled ? 20000000 : undefined"></span>
+            <span [innerHTML]="operation.preApply | nanoTransform: 50000000 : 20000000"></span>
             <span [innerHTML]="(deltaEnabled ? operation.validationResultDelta : operation.validationResult) | nanoTransform: deltaEnabled ? 50000000 : undefined : deltaEnabled ? 20000000 : undefined"></span>
             <span [innerHTML]="(deltaEnabled ? operation.firstSentDelta : operation.firstSent) | nanoTransform: deltaEnabled ? 50000000 : undefined : deltaEnabled ? 20000000 : undefined"></span>
             <span>{{ operation.kind || '-' }}</span>

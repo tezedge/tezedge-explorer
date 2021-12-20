@@ -4,13 +4,13 @@
   min-width: 1425px;
 
   .row.head {
-    grid-template-columns: 175px 110px 75px 90px 75px 90px 165px 165px 160px 60px 70px 135px;
+    grid-template-columns: 175px 110px 75px 75px 90px 165px 165px 90px 160px 60px 70px 135px;
   }
 
   .row {
     height: 36px;
     display: grid;
-    grid-template-columns: 175px 110px 75px 90px 75px 90px 165px 165px 160px 130px 135px;
+    grid-template-columns: 175px 110px 75px 75px 90px 165px 165px 90px 160px 130px 135px;
 
     > span {
       line-height: 36px;

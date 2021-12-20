@@ -62,6 +62,12 @@ export class MempoolStatisticsComponent implements OnInit, OnDestroy {
     this.operations$ = this.store.select(selectMempoolStatisticsOperations);
   }
 
+  private listenToSortChange(): void {
+    this.store.select(selectMempoolStatisticsSorting)
+      .pipe(untilDestroyed(this))
+      .subscribe(sort => this.currentSort = sort);
+  }
+
   selectOperation(operation: MempoolStatisticsOperation): void {
     this.activeOperation = operation;
     this.store.dispatch<MempoolStatisticsChangeActiveOperation>({ type: MEMPOOL_STATISTICS_CHANGE_ACTIVE_OPERATION, payload: operation });
@@ -75,12 +81,6 @@ export class MempoolStatisticsComponent implements OnInit, OnDestroy {
       type: MEMPOOL_STATISTICS_SORT,
       payload: { sortBy, sortDirection }
     });
-  }
-
-  private listenToSortChange(): void {
-    this.store.select(selectMempoolStatisticsSorting)
-      .pipe(untilDestroyed(this))
-      .subscribe(sort => this.currentSort = sort);
   }
 
   copyHashToClipboard(hash: string, event: MouseEvent): void {

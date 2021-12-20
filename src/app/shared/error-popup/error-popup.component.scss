@@ -5,25 +5,11 @@
 }
 
 .custom-notification {
-  padding-top: 5px;
-  padding-bottom: 5px;
-  width: 100%;
-
   .title {
-    padding-left: 10px;
-    padding-right: 10px;
-    padding-bottom: 5px;
-    font-size: 12px;
-    font-weight: 400;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+    border-bottom: 1px solid var(--foreground-2);
   }
 
   .message {
-    font-size: 12px;
-    padding-top: 5px;
-    padding-left: 10px;
-    padding-right: 10px;
-    width: 100%;
     word-wrap: break-word;
   }
 }

@@ -1,0 +1,35 @@
+<div class="h-100" fxLayout="column" fxLayout.gt-md="row">
+  <ng-container *ngIf="mempoolOperations$ | async as mempoolOperations">
+    <div class="d-flex flex-column" fxFlex.lt-lg="50">
+      <div class="mempool-row head border-bottom foreground-7">
+        <span>HASH</span>
+        <span>STATUS</span>
+        <span>TYPE</span>
+      </div>
+      <cdk-virtual-scroll-viewport class="border-bottom border-right f-14 overflow-y-auto overflow-x-hidden"
+                                   fxFlex="calc(100% - 36px)"
+                                   itemSize="36">
+        <div *cdkVirtualFor="let operation of mempoolOperations; let i=index;"
+             (click)="clickWallet(i)"
+             (mouseenter)="onRowEnter(i)"
+             (mouseleave)="onRowLeave()"
+             [class.active]="i === mempoolSelectedItem"
+             class="mempool-row pointer">
+          <span>{{ operation.hash }}</span>
+          <span>{{ operation.status }}</span>
+          <span>{{ operation.type }}</span>
+        </div>
+      </cdk-virtual-scroll-viewport>
+    </div>
+
+    <div class="d-flex flex-column flex-grow" fxFlex.lt-lg="50">
+      <div class="d-flex align-center border-bottom padding-left-10 foreground-7" fxFlex="36px">
+        <span class="padding-left-10">DETAILS</span>
+      </div>
+      <div class="padding-top-10 margin-left-5" fxFlex="calc(100% - 36px)">
+        <ngx-json-viewer [expanded]="false"
+                         [json]="mempoolOperations[mempoolHoveredItem] || {}"></ngx-json-viewer>
+      </div>
+    </div>
+  </ng-container>
+</div>

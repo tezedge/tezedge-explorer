@@ -39,6 +39,15 @@ steps:
     depends_on:
       - build
 
+  - name: test-mempool-operations
+    image: cypress/included:6.2.1
+    commands:
+      - cypress run --spec "cypress/integration/mempool/mempool-operation.spec.js"
+    environment:
+      CYPRESS_baseUrl: http://frontend-server:80
+    depends_on:
+      - build
+
   - name: test-github-version
     image: cypress/included:6.2.1
     commands:
@@ -190,6 +199,7 @@ steps:
     depends_on:
       - test-app
       - test-logs
+      - test-mempool-operations
       - test-github-version
       - test-network
       - test-open-api
@@ -276,6 +286,15 @@ steps:
     depends_on:
       - build
 
+  - name: test-mempool-operations
+    image: cypress/included:6.2.1
+    commands:
+      - cypress run --spec "cypress/integration/mempool/mempool-operation.spec.js"
+    environment:
+      CYPRESS_baseUrl: http://frontend-server:80
+    depends_on:
+      - build
+
   - name: test-github-version
     image: cypress/included:6.2.1
     commands:
@@ -427,6 +446,7 @@ steps:
     depends_on:
       - test-app
       - test-logs
+      - test-mempool-operations
       - test-github-version
       - test-network
       - test-open-api

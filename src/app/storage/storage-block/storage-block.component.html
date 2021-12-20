@@ -25,7 +25,7 @@
              fxLayoutGap="8px"
              class="block-hash">
           <mat-icon svgIcon="chevron-right"
-                    class="icon-12 icon-white-4"></mat-icon>
+                    class="icon-12 icon-foreground-4"></mat-icon>
           <span class="hash truncate">{{ virtualScrollItems.selected.hash }}</span>
           <mat-icon svgIcon="chevron-down"
                     class="pointer icon-12"
@@ -79,7 +79,7 @@
         <div class="json-wrap"
              *ngIf="virtualScrollItems?.selected?.hash">
           <div class="json-block">
-            <div class="json-header text-gray">JSON</div>
+            <div class="json-header foreground-4">JSON</div>
             <ngx-json-viewer [json]="virtualScrollItems.selected"
                              [expanded]="false">
             </ngx-json-viewer>

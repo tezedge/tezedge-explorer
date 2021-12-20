@@ -8,6 +8,7 @@ import { SettingsNode } from '@shared/types/settings-node/settings-node.type';
 import { App } from '@shared/types/app/app.type';
 import { selectActiveNode } from '@settings/settings-node.reducer';
 import { SettingsNodeApi } from '@shared/types/settings-node/settings-node-api.type';
+import { ThemeType } from '@shared/types/core/theme-switcher/theme-types.type';
 
 
 @Component({
@@ -20,8 +21,7 @@ export class AppComponent implements OnInit {
 
   app: App;
   isMobile = false;
-
-  pendingTransactions$: Observable<any[]>;
+  pendingTransactions: [];
   networkStats$: Observable<NetworkStats>;
   settingsNodeProtocol$: Observable<string>;
   activeNode$: Observable<SettingsNodeApi>;
@@ -52,7 +52,6 @@ export class AppComponent implements OnInit {
 
   ngOnInit(): void {
     this.initAppData();
-    this.getMempoolPendingTransactions();
     this.getNetworkStatsData();
     this.getSettingsNode();
 
@@ -81,22 +80,21 @@ export class AppComponent implements OnInit {
     });
   }
 
-  private getMempoolPendingTransactions(): void {
-    this.pendingTransactions$ = this.store.select('mempoolAction').pipe(map(mempool => mempool.ids));
-    // this.pendingTransactions = mempool.ids.filter(id => mempool.entities[id].type == 'applied' || mempool.entities[id].type == 'unprocessed')
-  }
+  changeTheme(theme: ThemeType): void {
+    return;
 
-  changeTheme(theme) {
-    // TODO: enabled once we have white theme ready
-    // this.store.dispatch({
-    //   type: 'APP_THEME_CHANGE',
-    //   payload: theme,
-    // });
-    //
+    document.body.classList.remove('theme-light', 'theme-dark');
+    document.body.classList.add('theme-' + theme);
+
+    this.store.dispatch({
+      type: 'APP_THEME_CHANGE',
+      payload: theme,
+    });
+
     // (document.getElementById('app-style-theme') as any).href = 'styles.' + theme + '.css';
   }
 
-  sandboxBakeBlock() {
+  sandboxBakeBlock(): void {
     if (this.app.statusbar.sandbox) {
       this.store.dispatch({
         type: 'SANDBOX_BAKE_BLOCK',

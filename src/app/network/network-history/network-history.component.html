@@ -4,18 +4,20 @@
        *ngFor="let votingPeriodRow of formattedNetworkHistory; trackBy: trackByRowPosition">
     <div class="history-voting-period border-rad-4"
          *ngFor="let votingPeriod of votingPeriodRow.votingPeriodRows; trackBy: trackByRowPeriod">
-      <div class="history-voting-period-label text-white-2 f-12">Proposal</div>
+      <div class="history-voting-period-label foreground-2 f-12">Proposal</div>
       <div class="d-flex">
         <ng-container *ngFor="let cycle of votingPeriod.cycles; trackBy: trackByCycle">
-          <span *ngIf="cycle.operations >= 4094"
+          <span *ngIf="cycle.operations >= 4094; else cycleTemplate2"
                 class="history-cycle border-rad-2"
                 [style.opacity]="0.15 + cycle.applications / 4096"></span>
-          <span *ngIf="cycle.operations < 4094">
-            <span class="history-cycle-headers"
-                  [style.opacity]="cycle.headers / 4096"></span>
-            <span class="history-cycle-operations"
-                  [style.opacity]="cycle.operations / 4096"></span>
-          </span>
+          <ng-template #cycleTemplate2>
+            <span>
+              <span class="history-cycle-headers"
+                    [style.opacity]="cycle.headers / 4096"></span>
+              <span class="history-cycle-operations"
+                    [style.opacity]="cycle.operations / 4096"></span>
+            </span>
+          </ng-template>
         </ng-container>
       </div>
     </div>

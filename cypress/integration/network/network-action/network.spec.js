@@ -75,7 +75,7 @@ context('NETWORK', () => {
 
   it('[NETWORK] should filter results by operation', () => {
     cy.get('.stop-stream').click()
-      .get('app-network-action .mat-expansion-panel-body .filters-row:last-child button')
+      .get('app-network-action .mat-expansion-panel-body .table-filters:last-child button')
       .then(buttons => {
         if (buttons) {
           const operationBtn = Array.from(buttons).find(btn => btn.textContent === ' Operation ');
@@ -96,7 +96,7 @@ context('NETWORK', () => {
 
   it('[NETWORK] should filter results by connection', () => {
     cy.get('.stop-stream').click()
-      .get('app-network-action .mat-expansion-panel-body .filters-row:first-child button')
+      .get('app-network-action .mat-expansion-panel-body .table-filters:first-child button')
       .then(buttons => {
         if (buttons) {
           const operationBtn = Array.from(buttons).find(btn => btn.textContent === ' Connection ');
@@ -117,7 +117,7 @@ context('NETWORK', () => {
 
   it('[NETWORK] should filter results by source type', () => {
     cy.get('.stop-stream').click()
-      .get('app-network-action .mat-expansion-panel-body .filters-row:first-child button')
+      .get('app-network-action .mat-expansion-panel-body .table-filters:first-child button')
       .then(buttons => {
         if (buttons) {
           const operationBtn = Array.from(buttons).find(btn => btn.textContent.includes('Local '));

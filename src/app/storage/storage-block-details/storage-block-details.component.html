@@ -3,18 +3,18 @@
      fxLayout="column"
      *ngIf="block">
   <div class="storage-details-block">
-    <div class="storage-block-header text-gray">ACTIONS</div>
+    <div class="storage-block-header foreground-4">ACTIONS</div>
     <div class="actions-count">{{ block.queriesCount }} actions</div>
   </div>
   <div class="storage-details-block">
-    <div class="storage-block-header text-gray"
+    <div class="storage-block-header foreground-4"
          fxLayoutAlign="space-between center">
       CONTEXT CHECKOUT
       <div class="d-flex align-center">
         <span class="context">Current context: {{ activeContextNode }}</span>
         <mat-icon (click)="switchContext()"
                   *ngIf="activeContextNode.length === 2"
-                  class="icon-20 icon-white-4 pointer node-switcher"
+                  class="icon-20 icon-foreground-4 pointer node-switcher"
                   svgIcon="arrow-around"></mat-icon>
       </div>
     </div>
@@ -22,7 +22,7 @@
          fxLayout="row"
          fxLayoutGap="20px">
       <div>CHECKOUT</div>
-      <div><span [innerHTML]="block.checkoutContextTime | timeTransform: true: true"></span> <span class="text-gray"> Total time</span>
+      <div><span [innerHTML]="block.checkoutContextTime | timeTransform: true: true"></span> <span class="foreground-4"> Total time</span>
       </div>
     </div>
 
@@ -30,7 +30,7 @@
       <table class="storage-details-table">
         <thead>
         <tr>
-          <th class="text-gray">CONTEXT OPERATIONS</th>
+          <th class="foreground-4">CONTEXT OPERATIONS</th>
           <th>TOTAL</th>
           <th>ACTIONS</th>
           <th>MEM</th>
@@ -61,12 +61,12 @@
       </table>
     </div>
 
-    <div class="storage-block-header text-gray">CONTEXT COMMIT</div>
+    <div class="storage-block-header foreground-4">CONTEXT COMMIT</div>
     <div fxLayout="row"
          fxLayoutGap="20px"
          fxLayoutAlign="start center">
       <div>COMMIT</div>
-      <div><span [innerHTML]="block.commitContextTime | timeTransform: true: true"></span> <span class="text-gray"> Total time</span>
+      <div><span [innerHTML]="block.commitContextTime | timeTransform: true: true"></span> <span class="foreground-4"> Total time</span>
       </div>
     </div>
   </div>
@@ -80,14 +80,14 @@
   <div fxLayout="column"
        class="tooltip-template"
        fxLayoutGap="8px">
-    <div><span class="text-white">{{ actions }}</span> Actions</div>
-    <div><span class="text-white"
+    <div><span class="foreground">{{ actions }}</span>Actions</div>
+    <div><span class="foreground"
                [innerHTML]="total | timeTransform: true: true"></span> Total Time
     </div>
-    <div><span class="text-white"
+    <div><span class="foreground"
                [innerHTML]="mean | timeTransform: true: true"></span> Mean
     </div>
-    <div><span class="text-white"
+    <div><span class="foreground"
                [innerHTML]="max | timeTransform: true: true"></span> Max
     </div>
   </div>

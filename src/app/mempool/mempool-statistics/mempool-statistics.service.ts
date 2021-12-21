@@ -37,12 +37,21 @@ export class MempoolStatisticsService {
       const firstSent = sentValues.length ? Math.min(...sentValues) : undefined;
       const contentReceived = contentReceivedValues.length ? Math.min(...contentReceivedValues) : undefined;
       const validationStarted = response[opKey].validation_started ?? undefined;
-      const validationResult = response[opKey].validation_result ? response[opKey].validation_result[0] : undefined;
+      let preApplyStarted;
+      let preApplyEnded;
+      let validationResult;
+      if (response[opKey].validation_result) {
+        preApplyStarted = response[opKey].validation_result[2];
+        preApplyEnded = response[opKey].validation_result[3];
+        validationResult = response[opKey].validation_result[0];
+      }
 
       const delta = firstSent - firstReceived;
       const contentReceivedDelta = contentReceived - firstReceived;
       const validationStartedDelta = validationStarted - contentReceived;
-      const validationResultDelta = validationResult - validationStarted;
+      const preApplyStartedDelta = preApplyStarted - validationStarted;
+      const preApplyEndedDelta = preApplyEnded - preApplyStarted;
+      const validationResultDelta = validationResult - preApplyEnded;
       const firstSentDelta = firstSent - validationResult;
 
       return {
@@ -53,17 +62,25 @@ export class MempoolStatisticsService {
         firstReceived,
         firstSent,
         validationStarted,
+        preApplyStarted,
+        preApplyEnded,
         validationResult,
         contentReceived: contentReceived ? contentReceived : undefined,
-        delta: isNaN(delta) ? undefined : delta,
-        contentReceivedDelta: isNaN(contentReceivedDelta) ? undefined : contentReceivedDelta,
-        validationStartedDelta: isNaN(validationStartedDelta) ? undefined : validationStartedDelta,
-        validationResultDelta: isNaN(validationResultDelta) ? undefined : validationResultDelta,
-        firstSentDelta: isNaN(firstSentDelta) ? undefined : firstSentDelta,
-        preApply: response[opKey].validation_result ? response[opKey].validation_result[2] : undefined,
+        delta: MempoolStatisticsService.numOrUndefined(delta),
+        contentReceivedDelta: MempoolStatisticsService.numOrUndefined(contentReceivedDelta),
+        validationStartedDelta: MempoolStatisticsService.numOrUndefined(validationStartedDelta),
+        preApplyStartedDelta: MempoolStatisticsService.numOrUndefined(preApplyStartedDelta),
+        preApplyEndedDelta: MempoolStatisticsService.numOrUndefined(preApplyEndedDelta),
+        validationResultDelta: MempoolStatisticsService.numOrUndefined(validationResultDelta),
+        firstSentDelta: MempoolStatisticsService.numOrUndefined(firstSentDelta),
+        validationsLength: response[opKey].validations?.length,
         kind: response[opKey].kind,
         dateTime: response[opKey].min_time.toString()
       };
     });
+  }
+
+  private static numOrUndefined(value: number): number | undefined {
+    return isNaN(value) ? undefined : value;
   }
 }

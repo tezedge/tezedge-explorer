@@ -103,7 +103,7 @@ const effects = [
       preloadingStrategy: PreloadAllModules,
       scrollPositionRestoration: 'enabled',
       relativeLinkResolution: 'legacy',
-      onSameUrlNavigation: 'ignore'
+      onSameUrlNavigation: 'ignore',
     }),
 
     StoreModule.forRoot(reducers, {

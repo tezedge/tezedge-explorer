@@ -1,75 +1,94 @@
 <div class="h-100" fxLayout="column" fxLayout.gt-md="row">
   <ng-container *ngIf="operations$ | async as operations">
-    <div class="d-flex flex-column overflow-auto" fxFlex.gt-md="80" fxFlex="50">
-      <div class="table-container h-100 d-flex flex-column">
-        <div class="row head border-bottom foreground-7">
-          <span *ngFor="let tableHead of tableHeads.slice(0, tableHeads.length - 1)"
-                [class.active]="currentSort.sortBy === (tableHead.sort ? (deltaEnabled && tableHead.deltaAvailable ? tableHead.sort + 'Delta' : tableHead.sort) : tableHead.name)"
-                (click)="sortTable(tableHead.sort ? (deltaEnabled && tableHead.deltaAvailable ? tableHead.sort + 'Delta' : tableHead.sort) : tableHead.name)"
-                class="pointer text-uppercase">{{ tableHead.name }}
-            <span class="icon-wrap d-flex">
-              <mat-icon [class.flip]="currentSort.sortDirection === 'descending'"
-                        [class.show]="currentSort.sortBy === (tableHead.sort ? (deltaEnabled && tableHead.deltaAvailable ? tableHead.sort + 'Delta' : tableHead.sort) : tableHead.name)"
-                        [svgIcon]="'arrow-up'"
-                        class="icon-14 icon-foreground"></mat-icon>
-            </span>
-          </span>
-          <span>
-            <mat-checkbox disableRipple
-                          class="f-12 foreground-7 margin-left-5"
-                          (click)="$event.stopPropagation()"
-                          (change)="onDeltaClick($event)"
-                          [checked]="deltaEnabled">DELTA
-            </mat-checkbox>
-          </span>
-          <span [class.active]="currentSort.sortBy === 'kind'"
-                (click)="sortTable('kind')"
-                class="pointer text-uppercase">KIND
-            <span class="icon-wrap d-flex">
-              <mat-icon [class.flip]="currentSort.sortDirection === 'descending'"
-                        [class.show]="currentSort.sortBy === 'kind'"
-                        [svgIcon]="'arrow-up'"
-                        class="icon-14 icon-foreground"></mat-icon>
-            </span>
-          </span>
-        </div>
-        <cdk-virtual-scroll-viewport class="border-bottom border-right f-14 overflow-y-auto overflow-x-hidden"
-                                     fxFlex="calc(100% - 36px)"
-                                     itemSize="36">
-          <div *cdkVirtualFor="let operation of operations; let i=index; trackBy: trackOperation"
-               (click)="selectOperation(operation)"
-               [class.active]="operations[i] === activeOperation"
-               class="row pointer">
-            <span class="foreground-7 text-nowrap">{{ operation.dateTime | dateTime }}</span>
-            <span class="truncate p-relative">
-              {{ operation.hash }}
-              <span matTooltip="Copy hash"
-                    class="copy-hash p-absolute border-rad-4"
-                    [cdkCopyToClipboard]="operation.hash"
-                    (click)="copyHashToClipboard(operation.hash, $event)">
-                <mat-icon svgIcon="copy" class="icon-foreground-7 icon-14"></mat-icon>
+
+    <div class="d-flex flex-column p-relative" fxFlex.gt-md="80" fxFlex="50">
+      <div class="scroll-left p-absolute pointer" (click)="scrollLeft()"
+           [class.hide-btn]="horizontalScroll === 0">
+        <mat-icon svgIcon="chevron-right" class="icon-12 icon-foreground-7"></mat-icon>
+      </div>
+      <div class="scroll-right p-absolute pointer" (click)="scrollRight()"
+           [class.hide-btn]="(hsc.scrollWidth - hsc.offsetWidth - horizontalScroll) < 2">
+        <mat-icon svgIcon="chevron-right" class="icon-12 icon-foreground-7"></mat-icon>
+      </div>
+      <div class="h-100 overflow-auto" #hsc>
+        <div class="table-container h-100 d-flex flex-column">
+          <div class="row head border-bottom foreground-7">
+            <span *ngFor="let tableHead of tableHeads.slice(0, tableHeads.length - 1)"
+                  [class.active]="currentSort.sortBy === (tableHead.sort ? (deltaEnabled && tableHead.deltaAvailable ? tableHead.sort + 'Delta' : tableHead.sort) : tableHead.name)"
+                  (click)="sortTable(tableHead.sort ? (deltaEnabled && tableHead.deltaAvailable ? tableHead.sort + 'Delta' : tableHead.sort) : tableHead.name)"
+                  class="pointer text-uppercase">{{ tableHead.name }}
+              <span class="icon-wrap d-flex">
+                <mat-icon [class.flip]="currentSort.sortDirection === 'descending'"
+                          [class.show]="currentSort.sortBy === (tableHead.sort ? (deltaEnabled && tableHead.deltaAvailable ? tableHead.sort + 'Delta' : tableHead.sort) : tableHead.name)"
+                          [svgIcon]="'arrow-up'"
+                          class="icon-14 icon-foreground"></mat-icon>
               </span>
             </span>
-            <span class="foreground-7">{{ operation.nodesLength }}</span>
-            <span [innerHTML]="operation.delta | nanoTransform: 50000000 : 20000000"></span>
-            <span [innerHTML]="operation.firstReceived | nanoTransform"></span>
-            <span [innerHTML]="(deltaEnabled ? operation.contentReceivedDelta : operation.contentReceived) | nanoTransform: deltaEnabled ? 50000000 : undefined : deltaEnabled ? 20000000 : undefined"></span>
-            <span [innerHTML]="(deltaEnabled ? operation.validationStartedDelta : operation.validationStarted) | nanoTransform: deltaEnabled ? 50000000 : undefined : deltaEnabled ? 20000000 : undefined"></span>
-            <span [innerHTML]="operation.preApply | nanoTransform: 50000000 : 20000000"></span>
-            <span [innerHTML]="(deltaEnabled ? operation.validationResultDelta : operation.validationResult) | nanoTransform: deltaEnabled ? 50000000 : undefined : deltaEnabled ? 20000000 : undefined"></span>
-            <span [innerHTML]="(deltaEnabled ? operation.firstSentDelta : operation.firstSent) | nanoTransform: deltaEnabled ? 50000000 : undefined : deltaEnabled ? 20000000 : undefined"></span>
-            <span>{{ operation.kind || '-' }}</span>
+            <span>
+              <mat-checkbox disableRipple
+                            class="f-12 foreground-7 margin-left-5"
+                            (click)="$event.stopPropagation()"
+                            (change)="onDeltaClick($event)"
+                            [checked]="deltaEnabled">DELTA
+              </mat-checkbox>
+            </span>
+            <span [class.active]="currentSort.sortBy === 'kind'"
+                  (click)="sortTable('kind')"
+                  class="pointer text-uppercase">KIND
+              <span class="icon-wrap d-flex">
+                <mat-icon [class.flip]="currentSort.sortDirection === 'descending'"
+                          [class.show]="currentSort.sortBy === 'kind'"
+                          [svgIcon]="'arrow-up'"
+                          class="icon-14 icon-foreground"></mat-icon>
+              </span>
+            </span>
           </div>
-        </cdk-virtual-scroll-viewport>
+          <cdk-virtual-scroll-viewport class="border-bottom border-right f-14 overflow-y-auto overflow-x-hidden"
+                                       fxFlex="calc(100% - 36px)" (scrolledIndexChange)="scrolledIndex = $event"
+                                       itemSize="36">
+            <div *cdkVirtualFor="let operation of operations; let i=index; trackBy: trackOperation"
+                 (click)="selectOperation(operation)"
+                 [class.active]="operations[i] === activeOperation"
+                 class="row pointer">
+              <span class="foreground-7 text-nowrap">{{ operation.dateTime | dateTime }}</span>
+              <span class="truncate p-relative">
+                {{ operation.hash }}
+                <span matTooltip="Copy hash"
+                      class="copy-hash p-absolute border-rad-4"
+                      [cdkCopyToClipboard]="operation.hash"
+                      (click)="copyHashToClipboard(operation.hash, $event)">
+                  <mat-icon svgIcon="copy" class="icon-foreground-7 icon-14"></mat-icon>
+                </span>
+              </span>
+              <span class="foreground-7">{{ operation.nodesLength }}</span>
+              <span [innerHTML]="operation.delta | nanoTransform: 50000000 : 20000000"></span>
+              <span [innerHTML]="operation.firstReceived | nanoTransform"></span>
+              <span
+                [innerHTML]="(deltaEnabled ? operation.contentReceivedDelta : operation.contentReceived) | nanoTransform: deltaEnabled ? 50000000 : undefined : deltaEnabled ? 20000000 : undefined"></span>
+              <span
+                [innerHTML]="(deltaEnabled ? operation.validationStartedDelta : operation.validationStarted) | nanoTransform: deltaEnabled ? 50000000 : undefined : deltaEnabled ? 20000000 : undefined"></span>
+              <span
+                [innerHTML]="(deltaEnabled ? operation.preApplyStartedDelta : operation.preApplyStarted) | nanoTransform: deltaEnabled ? 50000000 : undefined : deltaEnabled ? 20000000 : undefined"></span>
+              <span
+                [innerHTML]="(deltaEnabled ? operation.preApplyEndedDelta : operation.preApplyEnded) | nanoTransform: deltaEnabled ? 50000000 : undefined : deltaEnabled ? 20000000 : undefined"></span>
+              <span
+                [innerHTML]="(deltaEnabled ? operation.validationResultDelta : operation.validationResult) | nanoTransform: deltaEnabled ? 50000000 : undefined : deltaEnabled ? 20000000 : undefined"></span>
+              <span class="foreground-7">{{ operation.validationsLength }}</span>
+              <span
+                [innerHTML]="(deltaEnabled ? operation.firstSentDelta : operation.firstSent) | nanoTransform: deltaEnabled ? 50000000 : undefined : deltaEnabled ? 20000000 : undefined"></span>
+              <span>{{ operation.kind || '-' }}</span>
+            </div>
+          </cdk-virtual-scroll-viewport>
+        </div>
       </div>
     </div>
 
     <div class="d-flex flex-column flex-grow" fxFlex.gt-md="20" fxFlex="50">
-      <div class="d-flex align-center border-bottom padding-left-10 foreground-4" fxFlex="36px">
-        <span class="padding-left-10 pointer" [class.foreground]="activeSecondaryTab === 'DETAILS'"
+      <div class="d-flex align-center border-bottom padding-left-10" fxFlex="36px">
+        <span class="padding-left-10 pointer tab" [class.active]="activeSecondaryTab === 'DETAILS'"
               (click)="activeSecondaryTab = 'DETAILS'">DETAILS
         </span>
-        <span class="padding-left-10 pointer" [class.foreground]="activeSecondaryTab === 'JSON'"
+        <span class="padding-left-10 pointer tab" [class.active]="activeSecondaryTab === 'JSON'"
               (click)="activeSecondaryTab = 'JSON'">JSON
         </span>
       </div>

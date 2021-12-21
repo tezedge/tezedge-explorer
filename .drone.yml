@@ -448,19 +448,19 @@ steps:
       - test-logs
       - test-mempool-operations
       - test-github-version
-      - test-network
+   #   - test-network
       - test-open-api
       - test-system-resources
-      - test-storage-resources
-      - test-memory-resources
-      - test-routing
+  #    - test-storage-resources
+  #    - test-memory-resources
+  #    - test-routing
       - test-sandbox
       - test-settings-node
       - test-error-popup
       - test-loading-spinner
       - test-storage-action
       - test-storage-block
-      - test-state-machine
+  #    - test-state-machine
 
   - name: publish
     image: plugins/docker

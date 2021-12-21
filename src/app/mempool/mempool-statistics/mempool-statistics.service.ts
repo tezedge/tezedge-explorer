@@ -49,9 +49,16 @@ export class MempoolStatisticsService {
       const delta = firstSent - firstReceived;
       const contentReceivedDelta = contentReceived - firstReceived;
       const validationStartedDelta = validationStarted - contentReceived;
-      const preApplyStartedDelta = preApplyStarted - validationStarted;
-      const preApplyEndedDelta = preApplyEnded - preApplyStarted;
-      const validationResultDelta = validationResult - preApplyEnded;
+      let preApplyStartedDelta;
+      let preApplyEndedDelta;
+      let validationResultDelta;
+      if (response[opKey].kind !== 'EndorsementWithSlot') {
+        preApplyStartedDelta = preApplyStarted - validationStarted;
+        preApplyEndedDelta = preApplyEnded - preApplyStarted;
+        validationResultDelta = validationResult - preApplyEnded;
+      } else {
+        validationResultDelta = validationResult - validationStarted;
+      }
       const firstSentDelta = firstSent - validationResult;
 
       return {
@@ -65,7 +72,7 @@ export class MempoolStatisticsService {
         preApplyStarted,
         preApplyEnded,
         validationResult,
-        contentReceived: contentReceived ? contentReceived : undefined,
+        contentReceived,
         delta: MempoolStatisticsService.numOrUndefined(delta),
         contentReceivedDelta: MempoolStatisticsService.numOrUndefined(contentReceivedDelta),
         validationStartedDelta: MempoolStatisticsService.numOrUndefined(validationStartedDelta),

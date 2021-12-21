@@ -8,7 +8,6 @@ import { filter, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { App } from '@shared/types/app/app.type';
 import { appState } from '@app/app.reducer';
-import { selectFeatures } from '@settings/settings-node.reducer';
 
 
 @UntilDestroy()

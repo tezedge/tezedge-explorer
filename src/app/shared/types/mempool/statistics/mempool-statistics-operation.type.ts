@@ -6,6 +6,7 @@ export interface MempoolStatisticsOperation {
   kind: string | null;
   nodes: MempoolStatisticsOperationNode[];
   nodesLength: number;
+  preApply: number | undefined;
 
   firstReceived: number | undefined;
   contentReceived: number | undefined;

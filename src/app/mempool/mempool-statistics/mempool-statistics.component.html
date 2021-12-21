@@ -1,6 +1,6 @@
 <div class="h-100" fxLayout="column" fxLayout.gt-md="row">
   <ng-container *ngIf="operations$ | async as operations">
-    <div class="d-flex flex-column overflow-auto" fxFlex.gt-md="1335px" fxFlex="50">
+    <div class="d-flex flex-column overflow-auto" fxFlex.gt-md="80" fxFlex="50">
       <div class="table-container h-100 d-flex flex-column">
         <div class="row head border-bottom foreground-7">
           <span *ngFor="let tableHead of tableHeads.slice(0, tableHeads.length - 1)"
@@ -51,6 +51,7 @@
               </span>
             </span>
             <span class="foreground-7">{{ operation.nodesLength }}</span>
+            <span [innerHTML]="operation.preApply | nanoTransform: 50000000 : 20000000"></span>
             <span [innerHTML]="operation.delta | nanoTransform: 50000000 : 20000000"></span>
             <span [innerHTML]="operation.firstReceived | nanoTransform"></span>
             <span [innerHTML]="(deltaEnabled ? operation.contentReceivedDelta : operation.contentReceived) | nanoTransform: deltaEnabled ? 50000000 : undefined : deltaEnabled ? 20000000 : undefined"></span>
@@ -63,7 +64,7 @@
       </div>
     </div>
 
-    <div class="d-flex flex-column flex-grow" fxFlex.gt-md="calc(100% - 1335px)" fxFlex="50">
+    <div class="d-flex flex-column flex-grow" fxFlex.gt-md="20" fxFlex="50">
       <div class="d-flex align-center border-bottom padding-left-10 foreground-4" fxFlex="36px">
         <span class="padding-left-10 pointer" [class.foreground]="activeSecondaryTab === 'DETAILS'"
               (click)="activeSecondaryTab = 'DETAILS'">DETAILS

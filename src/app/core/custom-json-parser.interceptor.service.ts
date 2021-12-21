@@ -30,7 +30,7 @@ export class CustomJsonParserInterceptorService implements HttpInterceptor {
   }
 
   private getParsedBody(event: HttpResponse<any>): any {
-    const bodyWithEscapedLargeNumbers = event.body.replace(/([\[:])?(\d{17}|\d{19})([,\}\]])/g, '$1"$2"$3');
+    const bodyWithEscapedLargeNumbers = event.body.replace(/(: )(\d{17}|\d{18}|\d{19})([,\}\]])/g, '$1"$2"$3');
     return JSON.parse(bodyWithEscapedLargeNumbers);
   }
 }

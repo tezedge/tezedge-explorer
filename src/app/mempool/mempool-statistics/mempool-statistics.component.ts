@@ -32,6 +32,7 @@ export class MempoolStatisticsComponent implements OnInit, OnDestroy {
     { name: 'dateTime' },
     { name: 'hash' },
     { name: 'nodes', sort: 'nodesLength' },
+    { name: 'preApply' },
     { name: 'delta' },
     { name: 'received', sort: 'firstReceived' },
     { name: 'content received', sort: 'contentReceived', deltaAvailable: true },

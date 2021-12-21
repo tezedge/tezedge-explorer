@@ -60,6 +60,7 @@ export class MempoolStatisticsService {
         validationStartedDelta: isNaN(validationStartedDelta) ? undefined : validationStartedDelta,
         validationResultDelta: isNaN(validationResultDelta) ? undefined : validationResultDelta,
         firstSentDelta: isNaN(firstSentDelta) ? undefined : firstSentDelta,
+        preApply: response[opKey].validation_result ? response[opKey].validation_result[2] : undefined,
         kind: response[opKey].kind,
         dateTime: response[opKey].min_time.toString()
       };

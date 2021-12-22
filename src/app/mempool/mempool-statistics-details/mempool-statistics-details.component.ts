@@ -3,11 +3,7 @@ import { Observable } from 'rxjs';
 import { MempoolStatisticsOperation } from '@shared/types/mempool/statistics/mempool-statistics-operation.type';
 import { Store } from '@ngrx/store';
 import { State } from '@app/app.reducers';
-import {
-  selectMempoolStatisticsActiveOperation,
-  selectMempoolStatisticsDetailsSorting,
-  selectMempoolStatisticsSorting
-} from '@mempool/mempool-statistics/mempool-statistics.reducer';
+import { selectMempoolStatisticsActiveOperation, selectMempoolStatisticsDetailsSorting } from '@mempool/mempool-statistics/mempool-statistics.reducer';
 import { ADD_INFO, InfoAdd } from '@shared/error-popup/error-popup.actions';
 import { TableSort } from '@shared/types/shared/table-sort.type';
 import { MEMPOOL_STATISTICS_DETAILS_SORT, MempoolStatisticsDetailsSort } from '@mempool/mempool-statistics/mempool-statistics.action';

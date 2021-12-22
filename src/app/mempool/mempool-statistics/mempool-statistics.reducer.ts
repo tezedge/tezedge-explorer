@@ -83,7 +83,7 @@ export function reducer(state: MempoolStatisticsState = initialState, action: Me
 
 function sortOperations(operations: MempoolStatisticsOperation[], sort: TableSort): MempoolStatisticsOperation[] {
   const sortProperty = sort.sortBy;
-  const isStringSorting = ['dateTime', 'hash'].includes(sortProperty);
+  const isStringSorting = ['dateTime', 'hash', 'kind'].includes(sortProperty);
 
   const numberSort = (o1: MempoolStatisticsOperation, o2: MempoolStatisticsOperation): number => {
     const o2Sort = o2[sortProperty] ?? Number.MAX_VALUE;
@@ -108,8 +108,15 @@ function sortOperations(operations: MempoolStatisticsOperation[], sort: TableSor
 function sortNodes(nodes: MempoolStatisticsOperationNode[], sort: TableSort): MempoolStatisticsOperationNode[] {
   const sortProperty = sort.sortBy;
   const sortFunction = (o1: MempoolStatisticsOperationNode, o2: MempoolStatisticsOperationNode): number => {
-    const o2Sort = o2[sortProperty][0]?.latency ?? Number.MAX_VALUE;
-    const o1Sort = o1[sortProperty][0]?.latency ?? Number.MAX_VALUE;
+    let o2Sort;
+    let o1Sort;
+    if (sortProperty === 'content_received') {
+      o2Sort = o2[sortProperty][0] ?? Number.MAX_VALUE;
+      o1Sort = o1[sortProperty][0] ?? Number.MAX_VALUE;
+    } else {
+      o2Sort = o2[sortProperty][0]?.latency ?? Number.MAX_VALUE;
+      o1Sort = o1[sortProperty][0]?.latency ?? Number.MAX_VALUE;
+    }
     return sort.sortDirection === 'descending'
       ? o2Sort - o1Sort
       : o1Sort - o2Sort;

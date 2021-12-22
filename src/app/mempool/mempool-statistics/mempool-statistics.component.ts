@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
+import { AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { State } from '@app/app.reducers';
 import {
@@ -11,13 +11,15 @@ import {
   MempoolStatisticsSort,
   MempoolStatisticsStop
 } from '@mempool/mempool-statistics/mempool-statistics.action';
-import { Observable } from 'rxjs';
+import { debounce, debounceTime, fromEvent, interval, Observable, Subscription, tap, throttleTime } from 'rxjs';
 import { MempoolStatisticsOperation } from '@shared/types/mempool/statistics/mempool-statistics-operation.type';
 import { selectMempoolStatisticsOperations, selectMempoolStatisticsSorting } from '@mempool/mempool-statistics/mempool-statistics.reducer';
 import { TableSort } from '@shared/types/shared/table-sort.type';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { ADD_INFO, InfoAdd } from '@shared/error-popup/error-popup.actions';
 import { MatCheckboxChange } from '@angular/material/checkbox';
+import { ActivatedRoute, Router } from '@angular/router';
+import { CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
 
 @UntilDestroy()
 @Component({
@@ -26,7 +28,7 @@ import { MatCheckboxChange } from '@angular/material/checkbox';
   styleUrls: ['./mempool-statistics.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class MempoolStatisticsComponent implements OnInit, OnDestroy {
+export class MempoolStatisticsComponent implements OnInit, OnDestroy, AfterViewInit {
 
   readonly tableHeads = [
     { name: 'dateTime' },
@@ -36,8 +38,10 @@ export class MempoolStatisticsComponent implements OnInit, OnDestroy {
     { name: 'received', sort: 'firstReceived' },
     { name: 'content received', sort: 'contentReceived', deltaAvailable: true },
     { name: 'validation started', sort: 'validationStarted', deltaAvailable: true },
-    { name: 'preApply' },
+    { name: 'preApply started', sort: 'preApplyStarted', deltaAvailable: true },
+    { name: 'preApply ended', sort: 'preApplyEnded', deltaAvailable: true },
     { name: 'validation finished', sort: 'validationResult', deltaAvailable: true },
+    { name: 'val. len.', sort: 'validationsLength' },
     { name: 'sent', sort: 'firstSent', deltaAvailable: true },
     { name: 'kind' },
   ];
@@ -48,9 +52,19 @@ export class MempoolStatisticsComponent implements OnInit, OnDestroy {
   operations$: Observable<MempoolStatisticsOperation[]>;
   activeOperation: MempoolStatisticsOperation;
   currentSort: TableSort;
+  scrolledIndex: number;
+  horizontalScroll = 0;
+
   readonly trackOperation = (index: number, op: MempoolStatisticsOperation) => op.hash;
 
+  @ViewChild(CdkVirtualScrollViewport) private cdkVirtualScrollViewport: CdkVirtualScrollViewport;
+  @ViewChild('hsc') private horizontalScrollingContainer: ElementRef<HTMLDivElement>;
+
+  private scrollSubscription: Subscription;
+
   constructor(private store: Store<State>,
+              private router: Router,
+              private route: ActivatedRoute,
               private cdRef: ChangeDetectorRef) { }
 
   ngOnInit(): void {
@@ -59,8 +73,20 @@ export class MempoolStatisticsComponent implements OnInit, OnDestroy {
     this.listenToSortChange();
   }
 
+  ngAfterViewInit(): void {
+    fromEvent(this.horizontalScrollingContainer.nativeElement, 'scroll').pipe(
+      untilDestroyed(this),
+      debounceTime(100)
+    ).subscribe(() => {
+      this.horizontalScroll = this.horizontalScrollingContainer.nativeElement.scrollLeft;
+      this.cdRef.detectChanges();
+    });
+  }
+
   private listenToStatisticsChanges(): void {
-    this.operations$ = this.store.select(selectMempoolStatisticsOperations);
+    this.operations$ = this.store.select(selectMempoolStatisticsOperations).pipe(
+      tap(operations => this.scrollToActiveOperation(operations))
+    );
   }
 
   private listenToSortChange(): void {
@@ -69,8 +95,33 @@ export class MempoolStatisticsComponent implements OnInit, OnDestroy {
       .subscribe(sort => this.currentSort = sort);
   }
 
+  private scrollToActiveOperation(operations: MempoolStatisticsOperation[]): void {
+    const urlHash = this.route.snapshot.queryParams['operation'];
+    const index = operations.findIndex(op => op.hash === urlHash);
+    if (index !== -1) {
+      const targetIndex = Math.floor(this.cdkVirtualScrollViewport.elementRef.nativeElement.offsetHeight / 36 / 2);
+      let scrollTarget = index;
+      if (operations[targetIndex]) {
+        scrollTarget = index - targetIndex;
+      }
+      this.scrollSubscription = interval(200).subscribe(() => {
+        if (this.scrolledIndex !== scrollTarget) {
+          this.cdkVirtualScrollViewport.scrollToIndex(scrollTarget, 'auto');
+        } else {
+          this.scrollSubscription.unsubscribe();
+        }
+      });
+
+      this.selectOperation(operations[index]);
+    }
+  }
+
   selectOperation(operation: MempoolStatisticsOperation): void {
     this.activeOperation = operation;
+    this.router.navigate([], {
+      queryParams: { operation: operation.hash },
+      queryParamsHandling: 'merge',
+    });
     this.store.dispatch<MempoolStatisticsChangeActiveOperation>({ type: MEMPOOL_STATISTICS_CHANGE_ACTIVE_OPERATION, payload: operation });
   }
 
@@ -97,6 +148,14 @@ export class MempoolStatisticsComponent implements OnInit, OnDestroy {
     if (tableHead) {
       this.sortTable(this.deltaEnabled ? this.currentSort.sortBy + 'Delta' : tableHead.sort);
     }
+  }
+
+  scrollLeft(): void {
+    this.horizontalScrollingContainer.nativeElement.scrollBy({ top: 0, left: -300, behavior: 'smooth' });
+  }
+
+  scrollRight(): void {
+    this.horizontalScrollingContainer.nativeElement.scrollBy({ top: 0, left: 300, behavior: 'smooth' });
   }
 
   ngOnDestroy(): void {

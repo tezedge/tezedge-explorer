@@ -1,16 +1,16 @@
 .mempool {
-  background-color: #2a2a2e;
+  background-color: var(--background-surface);
   border-top-left-radius: 5px;
 
   .tabs {
     padding: 9px 10px 9px 15px;
 
     .tab {
-      color: rgba(255, 255, 255, 0.6);
+      color: var(--foreground-6);
 
       &:hover,
       &.selected {
-        color: #fff;
+        color: var(--foreground);
       }
     }
   }

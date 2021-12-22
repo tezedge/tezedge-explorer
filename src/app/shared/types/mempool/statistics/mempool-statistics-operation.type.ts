@@ -6,17 +6,21 @@ export interface MempoolStatisticsOperation {
   kind: string | null;
   nodes: MempoolStatisticsOperationNode[];
   nodesLength: number;
-  preApply: number | undefined;
+  validationsLength: number;
 
   firstReceived: number | undefined;
   contentReceived: number | undefined;
   validationStarted: number | undefined;
+  preApplyStarted: number | undefined;
+  preApplyEnded: number | undefined;
   validationResult: number | undefined;
   firstSent: number | undefined;
 
   delta: number | undefined;
   contentReceivedDelta: number | undefined;
   validationStartedDelta: number | undefined;
+  preApplyStartedDelta: number | undefined;
+  preApplyEndedDelta: number | undefined;
   validationResultDelta: number | undefined;
   firstSentDelta: number | undefined;
 }

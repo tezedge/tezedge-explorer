@@ -11,7 +11,7 @@ import {
   MempoolStatisticsSort,
   MempoolStatisticsStop
 } from '@mempool/mempool-statistics/mempool-statistics.action';
-import { debounce, debounceTime, fromEvent, interval, Observable, Subscription, tap, throttleTime } from 'rxjs';
+import { debounceTime, fromEvent, interval, Observable, Subscription, tap } from 'rxjs';
 import { MempoolStatisticsOperation } from '@shared/types/mempool/statistics/mempool-statistics-operation.type';
 import { selectMempoolStatisticsOperations, selectMempoolStatisticsSorting } from '@mempool/mempool-statistics/mempool-statistics.reducer';
 import { TableSort } from '@shared/types/shared/table-sort.type';
@@ -61,6 +61,7 @@ export class MempoolStatisticsComponent implements OnInit, OnDestroy, AfterViewI
   @ViewChild('hsc') private horizontalScrollingContainer: ElementRef<HTMLDivElement>;
 
   private scrollSubscription: Subscription;
+  private scrolledOnTableInitialization: boolean;
 
   constructor(private store: Store<State>,
               private router: Router,
@@ -96,6 +97,10 @@ export class MempoolStatisticsComponent implements OnInit, OnDestroy, AfterViewI
   }
 
   private scrollToActiveOperation(operations: MempoolStatisticsOperation[]): void {
+    if (this.scrolledOnTableInitialization || operations.length === 0) {
+      return;
+    }
+    this.scrolledOnTableInitialization = true;
     const urlHash = this.route.snapshot.queryParams['operation'];
     const index = operations.findIndex(op => op.hash === urlHash);
     if (index !== -1) {

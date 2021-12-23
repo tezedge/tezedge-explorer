@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { catchError, filter, map, mergeMap, switchMap, takeUntil, tap, withLatestFrom } from 'rxjs/operators';
-import { ObservedValueOf, of, Subject, timer } from 'rxjs';
+import { empty, ObservedValueOf, of, Subject, timer } from 'rxjs';
 import { State } from '@app/app.reducers';
 import { MempoolEndorsement } from '@shared/types/mempool/mempool-endorsement/mempool-endorsement.type';
 import { ADD_ERROR } from '@shared/error-popup/error-popup.actions';
@@ -14,6 +14,7 @@ import {
   MEMPOOL_ENDORSEMENT_UPDATE_STATUSES_SUCCESS,
   MEMPOOL_ENDORSEMENTS_INIT,
   MempoolEndorsementLoad,
+  MempoolEndorsementStop,
   MempoolEndorsementUpdateStatuses
 } from '@mempool/mempool-endorsement/mempool-endorsement.action';
 import { MempoolEndorsementService } from '@mempool/mempool-endorsement/mempool-endorsement.service';
@@ -37,9 +38,12 @@ export class MempoolEndorsementEffects {
   ));
 
   mempoolEndorsementLoad$ = createEffect(() => this.actions$.pipe(
-    ofType(MEMPOOL_ENDORSEMENT_LOAD),
-    withLatestFrom(this.store, (action: MempoolEndorsementLoad, state: ObservedValueOf<Store<State>>) => ({ action, state })),
+    ofType(MEMPOOL_ENDORSEMENT_LOAD, MEMPOOL_ENDORSEMENT_STOP),
+    withLatestFrom(this.store, (action: MempoolEndorsementLoad | MempoolEndorsementStop, state: ObservedValueOf<Store<State>>) => ({ action, state })),
     switchMap(({ action, state }) => {
+      if (action.type === MEMPOOL_ENDORSEMENT_STOP) {
+        return empty();
+      }
       this.stopUpdating = true;
       return this.mempoolEndorsementService
         .getEndorsements(state.settingsNode.activeNode.http, state.networkStats.lastAppliedBlock.hash, state.networkStats.lastAppliedBlock.level);

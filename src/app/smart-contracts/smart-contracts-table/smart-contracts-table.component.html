@@ -1,5 +1,5 @@
 <div fxFlex="440px" class="f-12 h-100 padding-right-10">
-  <div class="row text-white-7">
+  <div class="sm-row foreground-7">
     <span>ID</span>
     <span>CONTRACT</span>
     <span>CALLS</span>
@@ -8,10 +8,10 @@
     <div *ngFor="let contract of contractList"
          (click)="selectContract(contract)"
          [class.active]="activeContract === contract"
-         class="action row pointer">
-      <span class="text-white-6">{{ contract.id }}</span>
-      <span class="text-white">{{ contract.hash }}</span>
-      <span class="text-white">{{ contract.calls }}</span>
+         class="action sm-row pointer">
+      <span class="foreground-6">{{ contract.id }}</span>
+      <span class="foreground">{{ contract.hash }}</span>
+      <span class="foreground">{{ contract.calls }}</span>
     </div>
   </div>
 </div>

@@ -7,13 +7,13 @@
       <mat-icon svgIcon="arrow-toggle"
                 class="icon-16"></mat-icon>
     </div>
-    <div class="app-menu-toolbar-logo text-nowrap">TezEdge</div>
+    <div class="app-menu-toolbar-logo text-nowrap foreground">TezEdge</div>
   </div>
 
   <ng-container *ngIf="appFeatures$ | async as features">
     <div class="app-submenu"
          *ngIf="features['monitoring'] || haveResources">
-      <div class="text-nowrap">MONITORING</div>
+      <div class="text-nowrap foreground-4">MONITORING</div>
 
       <a *ngIf="features['monitoring']"
          mat-list-item
@@ -53,7 +53,7 @@
 
     <div *ngIf="haveExplorer"
          class="app-submenu">
-      <div class="text-nowrap">EXPLORER</div>
+      <div class="text-nowrap foreground-4">EXPLORER</div>
 
       <a *ngIf="features['mempool']"
          mat-list-item
@@ -174,7 +174,7 @@
     </div>
 
     <!-- <div class="app-submenu">
-        <span>
+        <span class="foreground-4 text-nowrap">
             DEVELOPER
         </span>
 
@@ -210,7 +210,7 @@
     <div class="app-submenu"
          *ngIf="false && haveSandbox">
       <!-- enable when we have sandbox back working -->
-      <div class="text-nowrap">SANDBOX</div>
+      <div class="text-nowrap foreground-4">SANDBOX</div>
 
       <a *ngIf="features['chains']"
          mat-list-item
@@ -264,7 +264,7 @@
     </div>
 
     <div class="app-submenu">
-      <div class="text-nowrap">DEVELOPMENT</div>
+      <div class="text-nowrap foreground-4">DEVELOPMENT</div>
 
       <a *ngIf="features['open-api'] || settingsNode.activeNode?.type === 'tezedge'"
          mat-list-item
@@ -299,7 +299,7 @@
     </div>
 
     <div class="app-submenu">
-      <div class="text-nowrap">LEARN</div>
+      <div class="text-nowrap foreground-4">LEARN</div>
       <a mat-list-item
          class="menu-item"
          href="https://docs.tezedge.com"

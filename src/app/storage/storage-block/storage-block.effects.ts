@@ -6,7 +6,7 @@ import { catchError, map, switchMap, takeUntil, tap, withLatestFrom } from 'rxjs
 import { combineLatest, ObservedValueOf, of, Subject, timer } from 'rxjs';
 import { State } from '@app/app.reducers';
 import { StorageBlockService } from './storage-block.service';
-import { ErrorActionTypes } from '@shared/error-popup/error-popup.actions';
+import { ADD_ERROR } from '@shared/error-popup/error-popup.actions';
 import { StorageBlockActionTypes } from './storage-block.actions';
 
 
@@ -104,7 +104,7 @@ export class StorageBlockEffects {
       this.storageBlockService.checkStorageBlockAvailableContexts(state.settingsNode.activeNode.http, state.storageBlock.entities[0].hash)
         .pipe(map((contexts: string[]) => ({ type: StorageBlockActionTypes.STORAGE_BLOCK_MAP_AVAILABLE_CONTEXTS, payload: contexts })))
     ),
-    catchError(error => of({ type: ErrorActionTypes.ADD_ERROR, payload: { title: 'Storage block details error', message: error.message } }))
+    catchError(error => of({ type: ADD_ERROR, payload: { title: 'Storage block details error', message: error.message } }))
   ));
 
   storageBlockDetailsLoad$ = createEffect(() => this.actions$.pipe(

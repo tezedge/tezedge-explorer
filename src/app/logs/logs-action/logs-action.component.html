@@ -3,12 +3,12 @@
   <div class="table-virtual-scroll">
     <div class="filters-container">
 
-      <div class="active-filters-row">
+      <div class="table-applied-filters">
         <div class="d-flex align-center search-div pointer"
              (click)="searchFocused = true; search.focus()"
              (clickOutside)="searchFocused = false">
           <mat-icon svgIcon="magnifying-glass"
-                    class="icon-14 icon-white-4 margin-left-10"></mat-icon>
+                    class="icon-14 icon-foreground-4 margin-left-10"></mat-icon>
           <span class="font-300 f-12">Search</span>
           <input #search
                  type="text"
@@ -48,7 +48,7 @@
                              hideToggle="true">
           <ng-template matExpansionPanelContent
                        class="filters-content">
-            <div class="filters-row">
+            <div class="table-filters d-flex">
               <span class="filters-label">Level</span>
               <button [class.active]="virtualScrollItems.filter.info || !activeFilters.length"
                       (click)="filterByType('info')">
@@ -161,7 +161,7 @@
         <mat-icon svgIcon="arrow-bottom"
                   class="icon-12 d-flex"></mat-icon>
       </button>
-      <button class="rectangle-button start-stream d-flex flex-center align-center text-white border-remove"
+      <button class="rectangle-button start-stream d-flex flex-center align-center foreground border-remove"
               mat-icon-button
               matTooltip="Start Streaming"
               (click)="scrollStart()"
@@ -226,7 +226,7 @@
           <mat-icon *ngIf="formGroup.get('time').value"
                     (click)="formGroup.get('time').setValue('')"
                     svgIcon="close-blank"
-                    class="p-absolute icon-10 icon-white-7 fill-opacity-1"></mat-icon>
+                    class="p-absolute icon-10 icon-foreground-7 fill-opacity-1"></mat-icon>
         </mat-form-field>
       </form>
 

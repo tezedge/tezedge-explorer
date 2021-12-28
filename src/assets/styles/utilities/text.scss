@@ -68,33 +68,41 @@
   text-overflow: ellipsis;
 }
 
-.text-white {
-  color: white !important;
+.foreground {
+  color: var(--foreground) !important;
 }
 
-.text-white-2 {
-  color: rgba(255, 255, 255, 0.2) !important;
+.foreground-1 {
+  color: var(--foreground-1) !important;
 }
 
-.text-white-4 {
-  color: rgba(255, 255, 255, 0.4) !important;
+.foreground-2 {
+  color: var(--foreground-2) !important;
 }
 
-.text-white-6 {
-  color: rgba(255, 255, 255, 0.6) !important;
+.foreground-4 {
+  color: var(--foreground-4) !important;
 }
 
-.text-white-7 {
-  color: rgba(255, 255, 255, 0.7) !important;
+.foreground-5 {
+  color: var(--foreground-5) !important;
 }
 
-.text-gray {
-  color: rgba(255, 255, 255, 0.4) !important;
+.foreground-6 {
+  color: var(--foreground-6) !important;
+}
+
+.foreground-7 {
+  color: var(--foreground-7) !important;
+}
+
+.foreground-9 {
+  color: var(--foreground-9) !important;
 }
 
 .text-red {
-  color: #FF453A !important;
-  fill: #FF453A !important;
+  color: #ff453a !important;
+  fill: #ff453a !important;
 }
 
 .text-orange {
@@ -103,6 +111,6 @@
 }
 
 .text-yellow {
-  color: #FF9F0A !important;
-  fill: #FF9F0A !important;
+  color: #ff9f0a !important;
+  fill: #ff9f0a !important;
 }

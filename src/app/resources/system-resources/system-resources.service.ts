@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Observable, throwError } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { catchError, map } from 'rxjs/operators';
-import { SystemResources } from '@shared/types/resources/system/system-resources.type';
+import { SystemResourcesState } from '@shared/types/resources/system/system-resources-state.type';
 import { DatePipe } from '@angular/common';
 import { SystemResourcesPanel } from '@shared/types/resources/system/system-resources-panel.type';
 import { SystemResourcesSubcategoryRunnerGroup } from '@shared/types/resources/system/system-resources-subcategory-runner-group.type';
@@ -29,15 +29,15 @@ export class SystemResourcesService {
   constructor(private http: HttpClient,
               private datePipe: DatePipe) { }
 
-  getSystemResources(endpoint: string, isSmallDevice: boolean): Observable<SystemResources> {
-    return this.http.get<SystemResources>(endpoint)
+  getSystemResources(endpoint: string, isSmallDevice: boolean): Observable<SystemResourcesState> {
+    return this.http.get<SystemResourcesState>(endpoint)
       .pipe(
         map(response => this.mapGetSystemResourcesResponse(response, isSmallDevice)),
         catchError(err => throwError(err))
       );
   }
 
-  private mapGetSystemResourcesResponse(response: any, isSmallDevice: boolean): SystemResources {
+  private mapGetSystemResourcesResponse(response: any, isSmallDevice: boolean): SystemResourcesState {
     const resources = response.reverse().map(responseItem => {
       const resource: any = {};
       resource.timestamp = this.datePipe.transform(responseItem.timestamp * 1000, 'MM/dd, HH:mm:ss');
@@ -137,7 +137,7 @@ export class SystemResourcesService {
     return this.createChartData(resources, isSmallDevice);
   }
 
-  private createChartData(resources: any[], isSmallDevice: boolean): SystemResources {
+  private createChartData(resources: any[], isSmallDevice: boolean): SystemResourcesState {
     const chartData = {
       cpu: { series: [], formattingType: '%' },
       memory: { series: [], formattingType: 'MB' },
@@ -146,7 +146,7 @@ export class SystemResourcesService {
       network: { series: [], formattingType: 'MB' },
       colorScheme: COLOR_SCHEME,
       resourcesPanel: this.createSummaryBlocks(resources),
-    } as SystemResources;
+    } as SystemResourcesState;
 
     if (!resources.length) {
       return chartData;

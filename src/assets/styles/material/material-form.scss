@@ -174,7 +174,7 @@ mat-form-field .mat-select-value {
 /* style position for mat-select dropdown panel */
 .mat-select-panel {
   border-radius: 4px !important;
-  background-color: #1b1b1d;
+  background-color: var(--background-base);
 }
 
 .mat-select-panel-wrap {
@@ -193,17 +193,17 @@ mat-form-field .mat-select-value {
 }
 
 .mat-select-panel .mat-option.mat-selected:not(.mat-option-multiple) {
-  color: white;
-  background-color: #2a2b2e;
-}
+  color: var(--foreground);
+  background-color: var(--background-surface);
 
-.mat-select-panel .mat-option.mat-selected:not(.mat-option-multiple):hover {
-  background-color: #333334;
+  &:hover {
+    background-color: var(--background-surface-fade-1);
+  }
 }
 
 .mat-option:hover:not(.mat-option-disabled), .mat-option:focus:not(.mat-option-disabled) {
-  color: white;
-  background-color: #333334;
+  color: var(--foreground);
+  background-color: var(--background-surface-fade-1);
 }
 
 .mat-option:not(:last-child) {

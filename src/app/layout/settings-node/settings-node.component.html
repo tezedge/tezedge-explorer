@@ -1,7 +1,7 @@
 <div *ngIf="activeNode"
      [style.opacity]="0.8">
 
-  <mat-form-field class="settings-node-select">
+  <mat-form-field class="settings-node-select foreground">
 
     <mat-select class="hide-arrow"
                 [id]="activeNode.type"
@@ -11,7 +11,7 @@
                 panelClass="settings-node">
 
       <mat-select-trigger class="d-flex align-center">
-        <span class="truncate">{{ activeNode.name }}</span>
+        <span class="truncate foreground">{{ activeNode.name }}</span>
         <span [class.is-offline]="!activeNode.connected"
               class="settings-node-status-icon margin-left-5"></span>
       </mat-select-trigger>

@@ -16,7 +16,7 @@
   border-radius: 4px;
 
   &:hover {
-    background-color: rgba(255, 255, 255, 0.13);
+    background-color: var(--foreground-1);
   }
 }
 
@@ -28,8 +28,7 @@
   height: 46px !important;
   width: 260px;
   padding: 3px 0 3px 10px;
-  background-color: #2a2b2e;
-  color: white;
+  background-color: var(--background-surface);
   line-height: unset !important;
 
   .status {
@@ -38,7 +37,7 @@
 }
 
 .sandbox-button-wrapper {
-  background-color: #2a2b2e;
+  background-color: var(--background-surface);
   padding: 12px 10px 12px 40px;
 
   button {

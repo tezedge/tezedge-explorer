@@ -1,25 +1,25 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { skip, switchMap, withLatestFrom } from 'rxjs/operators';
-import { ObservedValueOf, of, timer } from 'rxjs';
-import { Store } from '@ngrx/store';
+import { mergeMap, switchMap, tap, withLatestFrom } from 'rxjs/operators';
+import { delay, ObservedValueOf, of } from 'rxjs';
+import { ADD_ERROR, ADD_INFO, ErrorAdd, InfoAdd, REMOVE_ERROR, REMOVE_INFO } from './error-popup.actions';
+import { NotifierService } from 'angular-notifier';
 import { State } from '@app/app.reducers';
-import { ErrorActionTypes } from './error-popup.actions';
+import { Store } from '@ngrx/store';
 
 @Injectable({ providedIn: 'root' })
 export class ErrorPopupEffects {
 
-  clearErrorsEffect$ = createEffect(() => this.actions$.pipe(
-    ofType(ErrorActionTypes.SCHEDULE_ERROR_DELETION),
-    withLatestFrom(this.store, (action: any, state: ObservedValueOf<Store<State>>) => ({ action, state })),
-    switchMap(({ action, state }) =>
-      timer(0, 20000)
-        .pipe(
-          skip(1),
-          switchMap(() => of({ type: ErrorActionTypes.REMOVE_ERRORS }))
-        ))
+  clearPopupsEffect$ = createEffect(() => this.actions$.pipe(
+    ofType(ADD_ERROR, ADD_INFO),
+    withLatestFrom(this.store, (action: ErrorAdd | InfoAdd, state: ObservedValueOf<Store<State>>) => ({ action, state })),
+    mergeMap(({ action, state }) =>
+      of({ type: action.type === ADD_ERROR ? REMOVE_ERROR : REMOVE_INFO })
+        .pipe(delay(2500), tap(() => this.notifierService.hideOldest()))
+    )
   ));
 
   constructor(private actions$: Actions,
+              private notifierService: NotifierService,
               private store: Store<State>) { }
 }

@@ -5,6 +5,12 @@
     <span class="margin-left-10">Go to {{ date }}</span>
   </div>
   <div class="line"></div>
+  <div *ngIf="resourcesOption"
+       class="d-flex flex-row align-center pointer"
+       (click)="navigate('resources/system')">
+    <mat-icon svgIcon="resources" class="icon-16"></mat-icon>
+    <span class="margin-left-10 font-400">RESOURCES</span>
+  </div>
   <div class="d-flex flex-row align-center pointer"
        (click)="navigate('network')">
     <mat-icon svgIcon="peer" class="icon-16"></mat-icon>

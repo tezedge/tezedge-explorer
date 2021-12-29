@@ -6,14 +6,14 @@ import { SystemResourcesSubcategoryRunnerGroup } from '@shared/types/resources/s
 import { SystemResourcesState } from '@shared/types/resources/system/system-resources-state.type';
 
 const initialState: SystemResourcesState = {
-  cpu: null,
-  memory: null,
-  storage: null,
-  io: null,
-  network: null,
+  cpu: { series: [], formattingType: '' },
+  memory: { series: [], formattingType: '' },
+  storage: { series: [], formattingType: '' },
+  io: { series: [], formattingType: '' },
+  network: { series: [], formattingType: '' },
   xTicksValues: null,
   resourcesPanel: null,
-  colorScheme: null,
+  colorScheme: { domain: [] },
 };
 
 export function reducer(state: SystemResourcesState = initialState, action: SystemResourcesActions): SystemResourcesState {
@@ -22,14 +22,7 @@ export function reducer(state: SystemResourcesState = initialState, action: Syst
     case SystemResourcesActionTypes.SYSTEM_RESOURCES_LOAD_SUCCESS: {
       return {
         ...action.payload,
-        resourcesPanel: {
-          ...action.payload.resourcesPanel,
-          sortBy: state.resourcesPanel?.sortBy ?? action.payload.resourcesPanel.sortBy,
-          runnerGroups: sort(
-            action.payload.resourcesPanel.runnerGroups,
-            state.resourcesPanel?.sortBy ?? action.payload.resourcesPanel.sortBy
-          )
-        }
+        resourcesPanel: state.resourcesPanel?.type === 'runnerGroups' ? state.resourcesPanel : action.payload.resourcesPanel
       };
     }
 

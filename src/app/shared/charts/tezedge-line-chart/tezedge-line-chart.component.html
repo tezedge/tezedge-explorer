@@ -15,6 +15,7 @@
     </svg:clipPath>
   </svg:defs>
   <svg:g [attr.transform]="transform"
+         [style.opacity]="chartXReady && chartYReady ? 1 : 0"
          class="line-chart chart">
     <svg:g ngx-charts-x-axis
            *ngIf="xAxis"
@@ -89,6 +90,7 @@
                [chartElement]="chartElementRef"
                [tooltipDisabled]="tooltipDisabled"
                [tooltipTemplate]="seriesTooltipTemplate"
+               [routedTooltipReady]="chartXReady && chartYReady"
                [resourceType]="resourceType"
                (hover)="updateHoveredVertical($event)"
         />

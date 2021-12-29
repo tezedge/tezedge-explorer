@@ -22,7 +22,7 @@ export class MempoolBlockApplicationEffects {
     switchMap(({ action, state }) =>
       action.type === MEMPOOL_BLOCK_APPLICATION_STOP
         ? empty()
-        : this.mempoolBlockApplicationService.getBlockApplication()
+        : this.mempoolBlockApplicationService.getBlockApplication(state.settingsNode.activeNode.http)
     ),
     map((blocks: MempoolBlockApplication[]) => ({ type: MEMPOOL_BLOCK_APPLICATION_LOAD_SUCCESS, payload: { blocks } })),
     catchError(error => of({

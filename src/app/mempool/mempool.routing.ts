@@ -5,6 +5,7 @@ import { MempoolOperationComponent } from '@mempool/mempool-operation/mempool-op
 import { MempoolEndorsementComponent } from '@mempool/mempool-endorsement/mempool-endorsement.component';
 import { MempoolStatisticsComponent } from '@mempool/mempool-statistics/mempool-statistics.component';
 import { MempoolBlockApplicationComponent } from '@mempool/mempool-block-application/mempool-block-application.component';
+import { MempoolBakingRightsComponent } from '@mempool/mempool-baking-rights/mempool-baking-rights.component';
 
 const routes: Routes = [
   {
@@ -14,6 +15,10 @@ const routes: Routes = [
       {
         path: 'block-application',
         component: MempoolBlockApplicationComponent,
+      },
+      {
+        path: 'baking',
+        component: MempoolBakingRightsComponent,
       },
       {
         path: 'endorsements',

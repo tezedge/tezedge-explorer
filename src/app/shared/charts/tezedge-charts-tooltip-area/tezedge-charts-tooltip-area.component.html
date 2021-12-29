@@ -37,5 +37,13 @@
               [attr.height]="dims.height"
               [style.opacity]="anchorOpacity"
               [style.pointer-events]="'none'"/>
+    <svg:rect *ngIf="routedTooltipAnchorX"
+              class="routed-tooltip-anchor"
+              [attr.x]="routedTooltipAnchorX"
+              y="0"
+              [attr.width]="1"
+              [attr.height]="dims.height"
+              [style.opacity]="1"
+              [style.pointer-events]="'none'"/>
   </svg:g>
 </svg:g>

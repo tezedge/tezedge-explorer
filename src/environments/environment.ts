@@ -39,38 +39,18 @@ export const environment = {
     //     { name: 'state' }
     //   ]
     // },
-    // {
-    //   id: 'tezedge',
-    //   type: 'tezedge',
-    //   name: 'tezedge.debug.dev.tezedge.com',
-    //   http: 'http://debug.dev.tezedge.com:18732',
-    //   p2p_port: '9732',
-    //   features: [
-    //     { name: 'ws', url: 'ws://debug.dev.tezedge.com:4927' },
-    //     { name: 'debugger', url: 'http://debug.dev.tezedge.com:17732' },
-    //     { name: 'monitoring' },
-    //     { name: 'resources/system', monitoringUrl: 'http://debug.dev.tezedge.com:38732/resources/tezedge' },
-    //     { name: 'resources/memory', memoryProfilerUrl: 'http://debug.dev.tezedge.com:17832' },
-    //     { name: 'resources/storage' },
-    //     { name: 'mempool' },
-    //     { name: 'storage' },
-    //     { name: 'network' },
-    //     { name: 'logs' },
-    //     { name: 'state' }
-    //   ]
-    // },
     {
       id: 'tezedge',
       type: 'tezedge',
-      name: 'tezedge.develop.dev.tezedge.com',
-      http: 'http://develop.dev.tezedge.com:18732',
+      name: 'prod.tezedge.com',
+      http: 'http://prod.tezedge.com:18732',
       p2p_port: 9732,
       features: [
-        { name: 'ws', url: 'ws://develop.dev.tezedge.com:4927' },
-        { name: 'debugger', url: 'http://develop.dev.tezedge.com:17732' },
+        { name: 'ws', url: 'ws://prod.tezedge.com:4927' },
+        { name: 'debugger', url: 'http://prod.tezedge.com:17732' },
         { name: 'monitoring' },
-        { name: 'resources/system', monitoringUrl: 'http://develop.dev.tezedge.com:38732/resources/tezedge' },
-        { name: 'resources/memory', memoryProfilerUrl: 'http://develop.dev.tezedge.com:17832' },
+        { name: 'resources/system', monitoringUrl: 'http://prod.tezedge.com:38732/resources/tezedge' },
+        { name: 'resources/memory', memoryProfilerUrl: 'http://prod.tezedge.com:17832' },
         { name: 'resources/storage' },
         { name: 'mempool' },
         { name: 'storage' },
@@ -80,23 +60,23 @@ export const environment = {
         { name: 'smart-contracts' }
       ]
     },
-    {
-      id: 'octez',
-      name: 'octez.develop.dev.tezedge.com',
-      http: 'http://develop.dev.tezedge.com:18733',
-      p2p_port: '9733',
-      type: 'octez',
-      features: [
-        { name: 'debugger', url: 'http://develop.dev.tezedge.com:17732' },
-        { name: 'sandbox', url: 'http://localhost:3030' },
-        { name: 'monitoring' },
-        { name: 'resources/system', monitoringUrl: 'http://develop.dev.tezedge.com:38732/resources/ocaml' },
-        { name: 'resources/memory', memoryProfilerUrl: 'http://develop.dev.tezedge.com:17832' },
-        { name: 'mempool' },
-        { name: 'network' },
-        { name: 'logs' },
-      ]
-    },
+    // {
+    //   id: 'octez',
+    //   name: 'octez.develop.dev.tezedge.com',
+    //   http: 'http://develop.dev.tezedge.com:18733',
+    //   p2p_port: '9733',
+    //   type: 'octez',
+    //   features: [
+    //     { name: 'debugger', url: 'http://develop.dev.tezedge.com:17732' },
+    //     { name: 'sandbox', url: 'http://localhost:3030' },
+    //     { name: 'monitoring' },
+    //     { name: 'resources/system', monitoringUrl: 'http://develop.dev.tezedge.com:38732/resources/ocaml' },
+    //     { name: 'resources/memory', memoryProfilerUrl: 'http://develop.dev.tezedge.com:17832' },
+    //     { name: 'mempool' },
+    //     { name: 'network' },
+    //     { name: 'logs' },
+    //   ]
+    // },
   ]
 
 };

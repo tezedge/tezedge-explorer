@@ -5,10 +5,10 @@ import { StateMachineDiagramBlock } from '@shared/types/state-machine/state-mach
 import { StateMachineAction } from '@shared/types/state-machine/state-machine-action.type';
 import { StateMachineActionsFilter } from '@shared/types/state-machine/state-machine-actions-filter.type';
 import { map } from 'rxjs/operators';
-import * as moment from 'moment-mini-ts';
 import { formatNumber } from '@angular/common';
 import { StateMachineActionKindStatistics } from '@shared/types/state-machine/state-machine-action-kind-statistics.type';
 import { StateMachineActionStatistics } from '@shared/types/state-machine/state-machine-action-statistics.type';
+import { toReadableDate } from '@helpers/date.helper';
 
 const MILLISECOND_FACTOR = 1000;
 const MICROSECOND_FACTOR = 1000000;
@@ -53,7 +53,7 @@ export class StateMachineService {
 
   private calculateTimes(actions: any[]): StateMachineAction[] {
     actions.forEach(action => {
-      action.datetime = moment(Math.ceil(action.id / 1000000)).format('HH:mm:ss.SSS, DD MMM YY');
+      action.datetime = toReadableDate(action.id);
       action.duration = StateMachineService.transform(action.duration);
     });
     return actions;

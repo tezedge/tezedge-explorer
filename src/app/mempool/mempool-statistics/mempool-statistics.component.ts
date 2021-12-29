@@ -211,9 +211,4 @@ export class MempoolStatisticsComponent implements OnInit, OnDestroy, AfterViewI
   ngOnDestroy(): void {
     this.store.dispatch<MempoolStatisticsStop>({ type: MEMPOOL_STATISTICS_STOP });
   }
-
-  scrolledIndexUpdate($event: number) {
-    // console.log($event);
-    // this.scrolledIndex = $event
-  }
 }

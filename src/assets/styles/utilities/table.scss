@@ -31,6 +31,7 @@
 
   .copy-hash {
     @include flexRowCenter();
+    cursor: pointer;
     opacity: 0;
     right: 0;
     background-color: var(--background-surface);

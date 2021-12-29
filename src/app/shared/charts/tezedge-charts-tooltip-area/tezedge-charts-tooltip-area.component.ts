@@ -1,6 +1,7 @@
 import {
   AfterViewInit,
   ChangeDetectionStrategy,
+  ChangeDetectorRef,
   Component,
   ComponentRef,
   ElementRef,
@@ -8,13 +9,14 @@ import {
   Inject,
   Input,
   NgZone,
+  OnChanges,
   OnDestroy,
   PLATFORM_ID,
+  SimpleChanges,
   ViewChild
 } from '@angular/core';
 import { DOCUMENT, isPlatformBrowser } from '@angular/common';
 import { TooltipArea, TooltipDirective } from '@swimlane/ngx-charts';
-import { Router } from '@angular/router';
 import { Overlay, OverlayRef } from '@angular/cdk/overlay';
 import { ComponentPortal } from '@angular/cdk/portal';
 import { GraphRedirectionOverlayComponent } from '@shared/charts/graph-redirection-overlay/graph-redirection-overlay.component';
@@ -25,6 +27,7 @@ import { SystemResourcesResourceType } from '@shared/types/resources/system/syst
 import { fromEvent } from 'rxjs';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { TezedgeChartsService } from '@shared/charts/tezedge-charts.service';
+import { ActivatedRoute } from '@angular/router';
 
 @UntilDestroy()
 @Component({
@@ -32,10 +35,11 @@ import { TezedgeChartsService } from '@shared/charts/tezedge-charts.service';
   templateUrl: './tezedge-charts-tooltip-area.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class TezedgeChartsTooltipAreaComponent extends TooltipArea implements AfterViewInit, OnDestroy {
+export class TezedgeChartsTooltipAreaComponent extends TooltipArea implements AfterViewInit, OnChanges, OnDestroy {
 
   @Input() chartElement: SVGElement;
   @Input() resourceType: SystemResourcesResourceType | undefined;
+  @Input() routedTooltipReady: boolean;
 
   @ViewChild(TooltipDirective) private tooltipDirective: TooltipDirective;
   @ViewChild('tooltipTrigger') private tooltipTrigger: ElementRef<SVGRectElement>;
@@ -47,6 +51,8 @@ export class TezedgeChartsTooltipAreaComponent extends TooltipArea implements Af
     }
   }
 
+  routedTooltipAnchorX: any;
+
   private overlayRef: OverlayRef;
   private redirectionOverlayRef: ComponentRef<GraphRedirectionOverlayComponent>;
 
@@ -55,11 +61,41 @@ export class TezedgeChartsTooltipAreaComponent extends TooltipArea implements Af
   constructor(@Inject(PLATFORM_ID) private platformId: any,
               @Inject(DOCUMENT) private document: Document,
               private zone: NgZone,
-              private router: Router,
               private overlay: Overlay,
               private store: Store<State>,
+              private route: ActivatedRoute,
               private elementRef: ElementRef,
+              private cdRef: ChangeDetectorRef,
               private tezedgeChartsService: TezedgeChartsService) { super(); }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (
+      this.resourceType
+      && this.route.snapshot.queryParams.timestamp
+      && changes.routedTooltipReady?.previousValue !== changes.routedTooltipReady?.currentValue
+      && changes.routedTooltipReady.currentValue
+    ) {
+      this.zone.runOutsideAngular(() => {
+        setTimeout(() => {
+          const xSetValue = Number(this.route.snapshot.queryParams.timestamp);
+          const xSetTimestamps = this.xSet.map(date => Date.parse(date.replace(',', '/' + new Date().getFullYear() + ',')));
+          const output = xSetTimestamps.filter(v => v < xSetValue).reduce((prev, curr) => Math.abs(curr - xSetValue) < Math.abs(prev - xSetValue) ? curr : prev);
+          const index = xSetTimestamps.findIndex(value => value === output);
+
+          const percentage = index * 100 / this.xSet.length;
+          this.routedTooltipAnchorX = percentage / 100 * this.dims.width;
+          if (this.resourceType === 'io') {
+            this.tezedgeChartsService.updateSystemResources({
+              type: 'runnerGroups',
+              resourceType: this.resourceType,
+              timestamp: this.xSet[index]
+            });
+          }
+          this.cdRef.detectChanges();
+        }, 500);
+      });
+    }
+  }
 
   ngAfterViewInit(): void {
     this.tooltipDirective.tooltipCloseOnClickOutside = false;
@@ -94,7 +130,6 @@ export class TezedgeChartsTooltipAreaComponent extends TooltipArea implements Af
     this.anchorPos = this.xScale(closestPoint);
     this.anchorPos = Math.max(0, this.anchorPos);
     this.anchorPos = Math.min(this.dims.width, this.anchorPos);
-
     if (this.anchorPos !== this.lastAnchorPos) {
       this.anchorValues = this.getValues(closestPoint);
       const toolTipComponent = this.tooltipDirective['component'];
@@ -113,7 +148,7 @@ export class TezedgeChartsTooltipAreaComponent extends TooltipArea implements Af
 
   showTooltip(): void {
     this.tooltipDirective.showTooltip(true);
-    if (this.resourceType) {
+    if (this.resourceType && this.anchorValues[0]) {
       setTimeout(() => {
         this.store.dispatch<SystemResourcesDetailsUpdateAction>({
           type: SystemResourcesActionTypes.SYSTEM_RESOURCES_DETAILS_UPDATE,
@@ -160,7 +195,10 @@ export class TezedgeChartsTooltipAreaComponent extends TooltipArea implements Af
 
     const portal = new ComponentPortal(GraphRedirectionOverlayComponent);
     this.redirectionOverlayRef = this.overlayRef.attach(portal);
-    this.redirectionOverlayRef.instance.date = this.anchorValues[0].name;
+    this.redirectionOverlayRef.instance.date = this.anchorValues[0][this.resourceType ? 'name' : 'timestamp'];
+    if (!this.resourceType) { // is block application page
+      this.redirectionOverlayRef.instance.resourcesOption = true;
+    }
   }
 
   private detachTooltip(): void {

@@ -151,7 +151,7 @@ export function setUrl(action, state) {
 
 export function networkActionTimestamp(action, direction: string): string {
   return action.payload && action.payload.timestamp
-    ? `&timestamp=${action.payload.timestamp}&direction=${direction}`
+    ? `&from=${action.payload.timestamp}&direction=${direction}`
     : '';
 }
 

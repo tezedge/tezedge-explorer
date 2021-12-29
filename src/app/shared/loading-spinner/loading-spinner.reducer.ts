@@ -8,6 +8,11 @@ import { ADD_ERROR } from '@shared/error-popup/error-popup.actions';
 import { MEMPOOL_ENDORSEMENT_LOAD, MEMPOOL_ENDORSEMENT_LOAD_SUCCESS, MEMPOOL_ENDORSEMENT_STOP } from '@mempool/mempool-endorsement/mempool-endorsement.actions';
 import { MEMPOOL_OPERATION_LOAD, MEMPOOL_OPERATION_LOAD_SUCCESS, MEMPOOL_OPERATION_STOP } from '@mempool/mempool-operation/mempool-operation.actions';
 import { MEMPOOL_STATISTICS_LOAD, MEMPOOL_STATISTICS_LOAD_SUCCESS, MEMPOOL_STATISTICS_STOP } from '@mempool/mempool-statistics/mempool-statistics.actions';
+import {
+  MEMPOOL_BLOCK_APPLICATION_LOAD,
+  MEMPOOL_BLOCK_APPLICATION_LOAD_SUCCESS,
+  MEMPOOL_BLOCK_APPLICATION_STOP
+} from '@mempool/mempool-block-application/mempool-block-application.actions';
 
 export interface LoadingSpinnerState {
   pendingValues: LoadingSpinner[];
@@ -178,6 +183,17 @@ export function reducer(state: LoadingSpinnerState = initialState, action: any):
         pendingValues: state.pendingValues.filter(v => v.type !== MEMPOOL_STATISTICS_LOAD)
       };
     }
+    case MEMPOOL_BLOCK_APPLICATION_LOAD: {
+      return {
+        pendingValues: [mempoolBlockApplicationLoad, ...state.pendingValues]
+      };
+    }
+    case MEMPOOL_BLOCK_APPLICATION_LOAD_SUCCESS:
+    case MEMPOOL_BLOCK_APPLICATION_STOP: {
+      return {
+        pendingValues: state.pendingValues.filter(v => v.type !== MEMPOOL_BLOCK_APPLICATION_LOAD)
+      };
+    }
     default:
       return state;
   }
@@ -253,4 +269,9 @@ const mempoolOperationLoad: LoadingSpinner = {
 const mempoolStatisticsLoad: LoadingSpinner = {
   type: MEMPOOL_STATISTICS_LOAD,
   message: 'Loading mempool statistics...'
+};
+
+const mempoolBlockApplicationLoad: LoadingSpinner = {
+  type: MEMPOOL_BLOCK_APPLICATION_LOAD,
+  message: 'Loading mempool block application...'
 };

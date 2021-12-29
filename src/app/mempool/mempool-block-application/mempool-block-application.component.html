@@ -1,21 +1,20 @@
-<div class="padding-10">
-  <div class="border border-rad-4 graph-outer-container">
+<div class="padding-10 block-application">
+  <div class="graph-outer-container border border-rad-4 overflow-hidden" [class.fade]="chartData?.xTicksValues.length">
     <div class="foreground f-14 text-center">BLOCK APPLICATION</div>
-    <div class="graph-label-list f-12 context-menu text-right padding-top-8"
-         fxLayout="row wrap"
-         fxLayoutAlign="end">
+    <div class="graph-label-list f-12 context-menu text-right padding-top-8 padding-left-10"
+         fxLayout="row wrap" fxLayoutAlign="end">
       <span *ngFor="let label of labelList; let i=index"
             class="graph-label-item foreground-6">
-        <span class="label-color"
-              [style.background]="colorScheme.domain[i]"></span>
+        <span class="label-color" [style.background]="colorScheme.domain[i]"></span>
         {{ label }}
       </span>
     </div>
     <div class="graph-inner-container d-flex">
-      <div fxFlex="33px" fxHide.lt-md class="rotated-label f-12 d-flex align-center text-nowrap foreground margin-bottom-10 margin-top-10">
+      <div fxFlex="33px" fxHide.lt-md
+           class="rotated-label f-12 d-flex align-center text-nowrap foreground margin-bottom-10 margin-top-10">
         <span>{{ rotatedLabel }}</span>
       </div>
-      <div fxFlex="grow">
+      <div fxFlex="calc(100% - 33px)">
         <app-tezedge-line-chart *ngIf="chartData?.xTicksValues.length"
                                 [startWithYGridLine]="true"
                                 [yAxisTickFormatting]="yAxisTickFormatting"
@@ -24,6 +23,7 @@
                                 [results]="chartData.blockApplication.series"
                                 [circleAtTheEnd]="true"
                                 [scheme]="colorScheme"
+                                [yScaleMin]="6"
                                 [xAxis]="true"
                                 [yAxis]="true"
                                 [xAxisTicks]="chartData.xTicksValues"
@@ -41,24 +41,21 @@
 </div>
 
 
-<ng-template #customSeriesTooltipTemplate
-             let-model="model">
-  <div fxLayout="column"
-       class="ngx-series-tooltip">
-    <div class="time">Block level:
+<ng-template #customSeriesTooltipTemplate let-model="model">
+  <div fxLayout="column" class="ngx-series-tooltip">
+    <div class="tooltip-title f-12 border-bottom">Block level:
       <span class="foreground-7">{{ model[0].name | spaceNumber }}</span>
     </div>
-    <div class="data-wrapper"
-         fxLayout="column"
-         fxLayoutGap="8px">
+    <div class="tooltip-title f-12 border-bottom">First seen:
+      <span class="foreground-7">{{ model[0].timestamp }}</span>
+    </div>
+    <div class="data-wrapper" fxLayout="column" fxLayoutGap="8px">
       <div *ngFor="let entry of model"
-           fxLayout="row"
-           fxLayoutAlign="start center">
-        <div class="color-square"
-             [style.background]="entry.color"></div>
+           fxLayout="row" fxLayoutAlign="start center">
+        <div class="color-square" [style.background]="entry.color"></div>
         <div>{{ entry.series }}:&nbsp;</div>
         <div class="series-value foreground-7">
-          {{ entry.value | nanoTransform }}
+          {{ entry.value === 0 ? 0 : MATH.round(MATH.pow(10, entry.value)) | nanoTransform }}
         </div>
       </div>
     </div>

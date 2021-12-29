@@ -68,6 +68,7 @@ export class MempoolEndorsementService {
         this.i = 0;
         const endorsements: MempoolEndorsement[] = Object.keys(value).map(key => ({
           bakerName: this.bakersDetails[key]?.name || key,
+          bakerHash: key,
           logo: this.bakersDetails[key]?.logo,
           slots: value[key],
           slotsLength: value[key].length

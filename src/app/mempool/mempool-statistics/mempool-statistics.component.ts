@@ -10,16 +10,22 @@ import {
   MempoolStatisticsLoad,
   MempoolStatisticsSort,
   MempoolStatisticsStop
-} from '@mempool/mempool-statistics/mempool-statistics.action';
+} from '@mempool/mempool-statistics/mempool-statistics.actions';
 import { debounceTime, fromEvent, interval, Observable, Subscription, tap } from 'rxjs';
 import { MempoolStatisticsOperation } from '@shared/types/mempool/statistics/mempool-statistics-operation.type';
-import { selectMempoolStatisticsOperations, selectMempoolStatisticsSorting } from '@mempool/mempool-statistics/mempool-statistics.reducer';
+import {
+  selectMempoolStatisticsActiveOperation,
+  selectMempoolStatisticsOperations,
+  selectMempoolStatisticsSorting
+} from '@mempool/mempool-statistics/mempool-statistics.reducer';
 import { TableSort } from '@shared/types/shared/table-sort.type';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { ADD_INFO, InfoAdd } from '@shared/error-popup/error-popup.actions';
 import { MatCheckboxChange } from '@angular/material/checkbox';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
+import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import { filter } from 'rxjs/operators';
 
 @UntilDestroy()
 @Component({
@@ -54,6 +60,7 @@ export class MempoolStatisticsComponent implements OnInit, OnDestroy, AfterViewI
   currentSort: TableSort;
   scrolledIndex: number;
   horizontalScroll = 0;
+  formGroup: FormGroup;
 
   readonly trackOperation = (index: number, op: MempoolStatisticsOperation) => op.hash;
 
@@ -62,16 +69,37 @@ export class MempoolStatisticsComponent implements OnInit, OnDestroy, AfterViewI
 
   private scrollSubscription: Subscription;
   private scrolledOnTableInitialization: boolean;
+  private operations: MempoolStatisticsOperation[];
 
   constructor(private store: Store<State>,
               private router: Router,
               private route: ActivatedRoute,
-              private cdRef: ChangeDetectorRef) { }
+              private cdRef: ChangeDetectorRef,
+              private formBuilder: FormBuilder) { }
 
   ngOnInit(): void {
     this.store.dispatch<MempoolStatisticsLoad>({ type: MEMPOOL_STATISTICS_LOAD });
     this.listenToStatisticsChanges();
+    this.listenToActiveOperationChange();
     this.listenToSortChange();
+    this.initForm();
+  }
+
+  private initForm(): void {
+    this.formGroup = this.formBuilder.group({
+      hash: new FormControl('')
+    });
+
+    this.formGroup.valueChanges.pipe(
+      untilDestroyed(this),
+      debounceTime(300)
+    ).subscribe(value => {
+      const index = this.operations.findIndex(op => op.hash === value.hash);
+      if (index !== -1) {
+        this.selectOperation(this.operations[index]);
+        this.performScrollToActiveOperation(this.operations, index);
+      }
+    });
   }
 
   ngAfterViewInit(): void {
@@ -86,8 +114,23 @@ export class MempoolStatisticsComponent implements OnInit, OnDestroy, AfterViewI
 
   private listenToStatisticsChanges(): void {
     this.operations$ = this.store.select(selectMempoolStatisticsOperations).pipe(
-      tap(operations => this.scrollToActiveOperation(operations))
+      tap(operations => {
+        this.operations = operations;
+        if (this.scrolledOnTableInitialization || operations.length === 0) {
+          return;
+        }
+        this.scrollToActiveOperation(operations);
+      })
     );
+  }
+
+  private listenToActiveOperationChange(): void {
+    this.store.select(selectMempoolStatisticsActiveOperation)
+      .pipe(untilDestroyed(this), filter(Boolean))
+      .subscribe(operation => {
+        this.activeOperation = operation;
+        this.cdRef.detectChanges();
+      });
   }
 
   private listenToSortChange(): void {
@@ -97,32 +140,34 @@ export class MempoolStatisticsComponent implements OnInit, OnDestroy, AfterViewI
   }
 
   private scrollToActiveOperation(operations: MempoolStatisticsOperation[]): void {
-    if (this.scrolledOnTableInitialization || operations.length === 0) {
-      return;
-    }
     this.scrolledOnTableInitialization = true;
     const urlHash = this.route.snapshot.queryParams['operation'];
     const index = operations.findIndex(op => op.hash === urlHash);
     if (index !== -1) {
-      const targetIndex = Math.floor(this.cdkVirtualScrollViewport.elementRef.nativeElement.offsetHeight / 36 / 2);
-      let scrollTarget = index;
-      if (operations[targetIndex]) {
-        scrollTarget = index - targetIndex;
-      }
-      this.scrollSubscription = interval(200).subscribe(() => {
-        if (this.scrolledIndex !== scrollTarget) {
-          this.cdkVirtualScrollViewport.scrollToIndex(scrollTarget, 'auto');
-        } else {
-          this.scrollSubscription.unsubscribe();
-        }
-      });
-
+      this.performScrollToActiveOperation(operations, index);
       this.selectOperation(operations[index]);
     }
   }
 
+  private performScrollToActiveOperation(operations: MempoolStatisticsOperation[], index: number): void {
+    const elementsInView = this.cdkVirtualScrollViewport.elementRef.nativeElement.offsetHeight / 36;
+    const center = (operations.length - index) > (elementsInView / 2);
+    const targetIndex = Math.floor(elementsInView / (center ? 2 : 1));
+    let scrollTarget = index;
+    if (operations[targetIndex] && center) {
+      scrollTarget = index - targetIndex;
+    }
+    this.scrollSubscription = interval(200).subscribe(() => {
+      if (this.scrolledIndex !== scrollTarget) {
+        this.cdkVirtualScrollViewport.scrollToIndex(scrollTarget, 'auto');
+        this.scrolledIndex = scrollTarget;
+      } else {
+        this.scrollSubscription.unsubscribe();
+      }
+    });
+  }
+
   selectOperation(operation: MempoolStatisticsOperation): void {
-    this.activeOperation = operation;
     this.router.navigate([], {
       queryParams: { operation: operation.hash },
       queryParamsHandling: 'merge',
@@ -165,5 +210,10 @@ export class MempoolStatisticsComponent implements OnInit, OnDestroy, AfterViewI
 
   ngOnDestroy(): void {
     this.store.dispatch<MempoolStatisticsStop>({ type: MEMPOOL_STATISTICS_STOP });
+  }
+
+  scrolledIndexUpdate($event: number) {
+    // console.log($event);
+    // this.scrolledIndex = $event
   }
 }

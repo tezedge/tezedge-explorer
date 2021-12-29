@@ -1,10 +1,14 @@
 .row {
+  height: 36px;
+  display: grid;
+
   &:nth-child(even) {
     background-color: var(--foreground-1);
   }
 
   &.active {
     background-color: var(--active-surface);
+    color: #fff;
 
     > span {
       .copy-hash {
@@ -12,7 +16,7 @@
       }
 
       &.foreground-7 {
-        color: var(--foreground) !important;
+        color: #fff !important;
       }
     }
   }

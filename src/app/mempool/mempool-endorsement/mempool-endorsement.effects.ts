@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { catchError, filter, map, mergeMap, switchMap, takeUntil, tap, withLatestFrom } from 'rxjs/operators';
-import { empty, ObservedValueOf, of, Subject, timer } from 'rxjs';
+import { delay, empty, ObservedValueOf, of, Subject, timer } from 'rxjs';
 import { State } from '@app/app.reducers';
 import { MempoolEndorsement } from '@shared/types/mempool/mempool-endorsement/mempool-endorsement.type';
 import { ADD_ERROR } from '@shared/error-popup/error-popup.actions';
@@ -16,7 +16,7 @@ import {
   MempoolEndorsementLoad,
   MempoolEndorsementStop,
   MempoolEndorsementUpdateStatuses
-} from '@mempool/mempool-endorsement/mempool-endorsement.action';
+} from '@mempool/mempool-endorsement/mempool-endorsement.actions';
 import { MempoolEndorsementService } from '@mempool/mempool-endorsement/mempool-endorsement.service';
 
 const mempoolEndorsementsDestroy$ = new Subject<void>();

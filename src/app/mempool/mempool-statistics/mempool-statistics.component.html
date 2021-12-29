@@ -10,7 +10,7 @@
            [class.hide-btn]="(hsc.scrollWidth - hsc.offsetWidth - horizontalScroll) < 2">
         <mat-icon svgIcon="chevron-right" class="icon-12 icon-foreground-7"></mat-icon>
       </div>
-      <div class="h-100 overflow-auto" #hsc>
+      <div class="overflow-auto" fxFlex="calc(100% - 36px)" #hsc>
         <div class="table-container h-100 d-flex flex-column">
           <div class="row head border-bottom foreground-7">
             <span *ngFor="let tableHead of tableHeads.slice(0, tableHeads.length - 1)"
@@ -26,7 +26,7 @@
             </span>
             <span>
               <mat-checkbox disableRipple
-                            class="f-12 foreground-7 margin-left-5"
+                            class="f-12 foreground-7 margin-left-5 d-flex"
                             (click)="$event.stopPropagation()"
                             (change)="onDeltaClick($event)"
                             [checked]="deltaEnabled">DELTA
@@ -44,11 +44,11 @@
             </span>
           </div>
           <cdk-virtual-scroll-viewport class="border-bottom border-right f-14 overflow-y-auto overflow-x-hidden"
-                                       fxFlex="calc(100% - 36px)" (scrolledIndexChange)="scrolledIndex = $event"
+                                       fxFlex="calc(100% - 36px)" (scrolledIndexChange)="scrolledIndexUpdate($event)"
                                        itemSize="36">
             <div *cdkVirtualFor="let operation of operations; let i=index; trackBy: trackOperation"
                  (click)="selectOperation(operation)"
-                 [class.active]="operations[i] === activeOperation"
+                 [class.active]="operations[i]?.hash === activeOperation?.hash"
                  class="row pointer">
               <span class="foreground-7 text-nowrap">{{ operation.dateTime | dateTime }}</span>
               <span class="truncate p-relative">
@@ -80,6 +80,22 @@
             </div>
           </cdk-virtual-scroll-viewport>
         </div>
+      </div>
+      <div fxFlex="36px" class="table-footer d-flex align-center border-top">
+        <form [formGroup]="formGroup">
+          <mat-form-field appearance="fill"
+                          class="custom-bottom-form-field p-relative margin-left-5">
+            <input matInput
+                   type="text"
+                   formControlName="hash"
+                   placeholder="Search hash"
+                   autocomplete="off">
+            <mat-icon *ngIf="formGroup.get('hash').value"
+                      (click)="formGroup.get('hash').setValue('')"
+                      svgIcon="close-blank"
+                      class="p-absolute icon-10 icon-foreground-7 fill-opacity-1 pointer"></mat-icon>
+          </mat-form-field>
+        </form>
       </div>
     </div>
 

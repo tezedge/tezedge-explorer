@@ -10,7 +10,7 @@ import {
   MEMPOOL_STATISTICS_LOAD_SUCCESS,
   MEMPOOL_STATISTICS_STOP,
   MempoolStatisticsLoad, MempoolStatisticsStop
-} from '@mempool/mempool-statistics/mempool-statistics.action';
+} from '@mempool/mempool-statistics/mempool-statistics.actions';
 import { MempoolStatisticsService } from '@mempool/mempool-statistics/mempool-statistics.service';
 import { MempoolStatisticsOperation } from '@shared/types/mempool/statistics/mempool-statistics-operation.type';
 

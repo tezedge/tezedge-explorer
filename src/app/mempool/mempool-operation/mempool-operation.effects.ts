@@ -5,7 +5,7 @@ import { catchError, map, switchMap, withLatestFrom } from 'rxjs/operators';
 import { ObservedValueOf, of } from 'rxjs';
 import { State } from '@app/app.reducers';
 import { ADD_ERROR } from '@shared/error-popup/error-popup.actions';
-import { MEMPOOL_OPERATION_LOAD, MEMPOOL_OPERATION_LOAD_SUCCESS, MempoolOperationLoad } from '@mempool/mempool-operation/mempool-operation.action';
+import { MEMPOOL_OPERATION_LOAD, MEMPOOL_OPERATION_LOAD_SUCCESS, MempoolOperationLoad } from '@mempool/mempool-operation/mempool-operation.actions';
 import { MempoolOperationService } from '@mempool/mempool-operation/mempool-operation.service';
 
 @Injectable({ providedIn: 'root' })

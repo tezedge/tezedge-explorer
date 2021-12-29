@@ -20,7 +20,7 @@ context('MEMPOOL OPERATION', () => {
 
   it('[MEMPOOL OPERATION] should create rows for the virtual scroll table', () => {
     cy.get('cdk-virtual-scroll-viewport')
-      .find('.mempool-row')
+      .find('.row')
       .should('be.visible');
   });
 
@@ -30,7 +30,7 @@ context('MEMPOOL OPERATION', () => {
       .then(store => {
         store.select('mempool').subscribe(() => {
           let beforeScrollValue;
-          cy.get('cdk-virtual-scroll-viewport .mempool-row')
+          cy.get('cdk-virtual-scroll-viewport .row')
             .last()
             .find('span:first-child')
             .then(span => {
@@ -60,7 +60,7 @@ context('MEMPOOL OPERATION', () => {
             cy.get('cdk-virtual-scroll-viewport')
               .scrollTo('bottom')
               .wait(1000)
-              .find('.mempool-row')
+              .find('.row')
               .last()
               .find('span:first-child')
               .should(span => {
@@ -79,7 +79,7 @@ context('MEMPOOL OPERATION', () => {
           cy.get('cdk-virtual-scroll-viewport')
             .scrollTo('bottom')
             .wait(1000)
-            .find('.mempool-row')
+            .find('.row')
             .eq(-2)
             .trigger('click')
             .wait(1000)
@@ -97,7 +97,7 @@ context('MEMPOOL OPERATION', () => {
           cy.get('cdk-virtual-scroll-viewport')
             .scrollTo('bottom')
             .wait(1000)
-            .find('.mempool-row')
+            .find('.row')
             .eq(-2)
             .trigger('mouseenter')
             .wait(1000)
@@ -112,7 +112,7 @@ context('MEMPOOL OPERATION', () => {
       .then(store => {
         store.select('mempool').subscribe(mempool => {
           cy.get('cdk-virtual-scroll-viewport')
-            .find('.mempool-row')
+            .find('.row')
             .first()
             .then(row => expect(row.hasClass('active')).to.be.true)
             .get('cdk-virtual-scroll-viewport .mempool-row:first-child span:first-child')

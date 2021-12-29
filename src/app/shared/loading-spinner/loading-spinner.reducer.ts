@@ -5,9 +5,9 @@ import { StateMachineActionTypes } from '@state-machine/state-machine/state-mach
 import { StorageResourcesActionTypes } from '@resources/storage-resources/storage-resources.actions';
 import { MemoryResourcesActionTypes } from '@resources/memory-resources/memory-resources.actions';
 import { ADD_ERROR } from '@shared/error-popup/error-popup.actions';
-import { MEMPOOL_ENDORSEMENT_LOAD, MEMPOOL_ENDORSEMENT_LOAD_SUCCESS, MEMPOOL_ENDORSEMENT_STOP } from '@mempool/mempool-endorsement/mempool-endorsement.action';
-import { MEMPOOL_OPERATION_LOAD, MEMPOOL_OPERATION_LOAD_SUCCESS, MEMPOOL_OPERATION_STOP } from '@mempool/mempool-operation/mempool-operation.action';
-import { MEMPOOL_STATISTICS_LOAD, MEMPOOL_STATISTICS_LOAD_SUCCESS, MEMPOOL_STATISTICS_STOP } from '@mempool/mempool-statistics/mempool-statistics.action';
+import { MEMPOOL_ENDORSEMENT_LOAD, MEMPOOL_ENDORSEMENT_LOAD_SUCCESS, MEMPOOL_ENDORSEMENT_STOP } from '@mempool/mempool-endorsement/mempool-endorsement.actions';
+import { MEMPOOL_OPERATION_LOAD, MEMPOOL_OPERATION_LOAD_SUCCESS, MEMPOOL_OPERATION_STOP } from '@mempool/mempool-operation/mempool-operation.actions';
+import { MEMPOOL_STATISTICS_LOAD, MEMPOOL_STATISTICS_LOAD_SUCCESS, MEMPOOL_STATISTICS_STOP } from '@mempool/mempool-statistics/mempool-statistics.actions';
 
 export interface LoadingSpinnerState {
   pendingValues: LoadingSpinner[];

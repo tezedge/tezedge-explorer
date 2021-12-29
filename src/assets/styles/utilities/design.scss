@@ -1,5 +1,5 @@
 .border {
-  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  border: 1px solid var(--foreground-1) !important;
 }
 
 .border-rad-4 {
@@ -11,19 +11,19 @@
 }
 
 .border-top {
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  border-top: 1px solid var(--foreground-1);
 }
 
 .border-bottom {
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  border-bottom: 1px solid var(--foreground-1);
 }
 
 .border-right {
-  border-right: 1px solid rgba(255, 255, 255, 0.1);
+  border-right: 1px solid var(--foreground-1);
 }
 
 .border-left {
-  border-left: 1px solid rgba(255, 255, 255, 0.1);
+  border-left: 1px solid var(--foreground-1);
 }
 
 .border-remove {

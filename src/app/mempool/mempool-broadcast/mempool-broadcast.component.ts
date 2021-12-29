@@ -9,7 +9,7 @@ import {
   MEMPOOL_BROADCAST_STOP,
   MempoolBroadcastLoad,
   MempoolBroadcastStop
-} from '@mempool/mempool-broadcast/mempool-broadcast.action';
+} from '@mempool/mempool-broadcast/mempool-broadcast.actions';
 
 @Component({
   selector: 'app-mempool-broadcast',

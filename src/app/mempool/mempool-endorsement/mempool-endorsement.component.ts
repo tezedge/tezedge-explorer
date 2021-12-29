@@ -1,20 +1,20 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { State } from '@app/app.reducers';
-import { Observable } from 'rxjs';
+import { delay, Observable } from 'rxjs';
 import { MempoolEndorsement } from '@shared/types/mempool/mempool-endorsement/mempool-endorsement.type';
 import {
-  MEMPOOL_ENDORSEMENT_LOAD,
+  MEMPOOL_ENDORSEMENT_LOAD, MEMPOOL_ENDORSEMENT_SET_ACTIVE_BAKER,
   MEMPOOL_ENDORSEMENT_SORT,
   MEMPOOL_ENDORSEMENT_STOP,
   MEMPOOL_ENDORSEMENTS_INIT,
-  MempoolEndorsementLoad,
+  MempoolEndorsementLoad, MempoolEndorsementSetActiveBaker,
   MempoolEndorsementsInit,
   MempoolEndorsementSorting,
   MempoolEndorsementStop
-} from '@mempool/mempool-endorsement/mempool-endorsement.action';
+} from '@mempool/mempool-endorsement/mempool-endorsement.actions';
 import { animate, style, transition, trigger } from '@angular/animations';
-import { distinctUntilChanged, filter, skip } from 'rxjs/operators';
+import { debounceTime, distinctUntilChanged, filter, skip } from 'rxjs/operators';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { MempoolEndorsementSort } from '@shared/types/mempool/mempool-endorsement/mempool-endorsement-sort.type';
 import { selectNetworkCurrentBlock } from '@network/network-stats/network-stats.reducer';
@@ -25,18 +25,19 @@ import {
 } from '@mempool/mempool-endorsement/mempool-endorsement.reducer';
 import { ADD_INFO, InfoAdd } from '@shared/error-popup/error-popup.actions';
 import { MatCheckboxChange } from '@angular/material/checkbox';
+import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 
 
 const translateFromRight = trigger('translateFromRight', [
   transition(':increment', [
-    style({ height: '*', opacity: 0, transform: 'translateX(50px)' }),
+    style({ opacity: 0, transform: 'translateX(50px)' }),
     animate('.35s ease', style({ opacity: 1, transform: 'translateX(0)' }))
   ])
 ]);
 
 const translateFromLeft = trigger('translateFromLeft', [
   transition(':increment', [
-    style({ height: '*', opacity: 0, transform: 'translateX(-50px)' }),
+    style({ opacity: 0, transform: 'translateX(-50px)' }),
     animate('.35s ease', style({ opacity: 1, transform: 'translateX(0)' }))
   ])
 ]);
@@ -51,7 +52,7 @@ const translateFromLeft = trigger('translateFromLeft', [
 })
 export class MempoolEndorsementComponent implements OnInit, OnDestroy {
 
-  readonly trackEndorsements = (index: number, endorsement: MempoolEndorsement) => endorsement.status;
+  readonly trackEndorsements = (index: number, endorsement: MempoolEndorsement) => endorsement.bakerName;
   readonly tableHeads = [
     { name: 'slots', sort: 'slotsLength' },
     { name: 'baker', sort: 'bakerName' },
@@ -67,17 +68,36 @@ export class MempoolEndorsementComponent implements OnInit, OnDestroy {
 
   endorsements$: Observable<MempoolEndorsement[]>;
   currentSort: MempoolEndorsementSort;
-  animateRows = 0;
+  animateRows = 10;
   deltaEnabled = true;
+  formGroup: FormGroup;
 
   @ViewChild('scrollableContainer') private scrollableContainer: ElementRef<HTMLDivElement>;
 
   constructor(private store: Store<State>,
-              private cdRef: ChangeDetectorRef) { }
+              private cdRef: ChangeDetectorRef,
+              private formBuilder: FormBuilder) { }
 
   ngOnInit(): void {
     this.listenToNewAppliedBlock();
     this.listenToNewEndorsements();
+    this.initForm();
+  }
+
+  private initForm(): void {
+    this.formGroup = this.formBuilder.group({
+      hash: new FormControl(localStorage.getItem('activeBaker'))
+    });
+
+    this.formGroup.valueChanges.pipe(
+      untilDestroyed(this),
+      debounceTime(300)
+    ).subscribe(value => {
+      this.store.dispatch<MempoolEndorsementSetActiveBaker>({
+        type: MEMPOOL_ENDORSEMENT_SET_ACTIVE_BAKER,
+        payload: value.hash
+      });
+    });
   }
 
   sortTable(sortBy: string): void {
@@ -107,10 +127,11 @@ export class MempoolEndorsementComponent implements OnInit, OnDestroy {
   private listenToNewEndorsements(): void {
     this.store.select(selectMempoolEndorsementTableAnimate).pipe(
       untilDestroyed(this),
+      delay(100),
       skip(2), /* no rows animation on first load */
     ).subscribe(() => {
       this.scrollableContainer.nativeElement.scrollTo({ top: 0 });
-      this.animateRows++;
+      this.animateRows = this.animateRows + 1;
       this.cdRef.detectChanges();
     });
 

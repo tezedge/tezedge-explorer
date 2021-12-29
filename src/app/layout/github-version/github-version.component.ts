@@ -9,6 +9,16 @@ import { TemplatePortal } from '@angular/cdk/portal';
 import { selectActiveNode } from '@settings/settings-node.reducer';
 import { SettingsNodeApi } from '@shared/types/settings-node/settings-node-api.type';
 import { filter } from 'rxjs/operators';
+import {
+  GITHUB_VERSION_DEBUGGER_LOAD,
+  GITHUB_VERSION_EXPLORER_LOAD,
+  GITHUB_VERSION_NODE_LOAD,
+  GITHUB_VERSION_NODE_TAG_LOAD,
+  GithubVersionDebuggerLoad,
+  GithubVersionExplorerLoad,
+  GithubVersionNodeLoad,
+  GithubVersionNodeTagLoad
+} from '@app/layout/github-version/github-version.actions';
 
 @UntilDestroy()
 @Component({
@@ -56,11 +66,11 @@ export class GithubVersionComponent implements OnInit {
       this.currentNodeId = activeNode.id;
 
       const commit = activeNode.features.find(f => f.name === 'commit');
-      this.store.dispatch({ type: 'VERSION_EXPLORER_LOAD', payload: commit ? commit.id : '' });
-      this.store.dispatch({ type: 'VERSION_NODE_TAG_LOAD' });
-      this.store.dispatch({ type: 'VERSION_NODE_LOAD' });
+      this.store.dispatch<GithubVersionExplorerLoad>({ type: GITHUB_VERSION_EXPLORER_LOAD, payload: commit ? commit.id : '' });
+      this.store.dispatch<GithubVersionNodeTagLoad>({ type: GITHUB_VERSION_NODE_TAG_LOAD });
+      this.store.dispatch<GithubVersionNodeLoad>({ type: GITHUB_VERSION_NODE_LOAD });
       if (activeNode.features.some(f => f.name === 'debugger')) {
-        this.store.dispatch({ type: 'VERSION_DEBUGGER_LOAD' });
+        this.store.dispatch<GithubVersionDebuggerLoad>({ type: GITHUB_VERSION_DEBUGGER_LOAD });
       }
     });
 

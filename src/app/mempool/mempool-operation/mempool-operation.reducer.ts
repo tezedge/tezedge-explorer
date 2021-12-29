@@ -1,7 +1,7 @@
 import { State } from '@app/app.reducers';
-import { MEMPOOL_OPERATION_LOAD_SUCCESS, MEMPOOL_OPERATION_STOP } from '@mempool/mempool-operation/mempool-operation.action';
+import { MEMPOOL_OPERATION_LOAD_SUCCESS, MEMPOOL_OPERATION_STOP } from '@mempool/mempool-operation/mempool-operation.actions';
 import { MempoolOperationState } from '@shared/types/mempool/operation/mempool-operation-state.type';
-import { MempoolOperationActions } from '@mempool/mempool-operation/mempool-operation.action';
+import { MempoolOperationActions } from '@mempool/mempool-operation/mempool-operation.actions';
 
 const initialState: MempoolOperationState = {
   mempoolOperations: []

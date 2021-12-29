@@ -21,16 +21,18 @@ export const myMonacoLoad = () => {
         [/\[[a-zA-Z 0-9:]+\]/, 'custom-date'],
         [/[0-9]+/, 'number'],
         [/[A-Z][A-Z]+/, 'primitive'],
+        [/[_]+/, 'primitive'],
         [/[A-Z][a-z]+/, 'constant'],
         [/\"[^\"]*\"/, 'string'],
         [/#.*$/, 'comment'],
-        [/(code|storage)/, 'section'],
+        [/(code|storage|parameter)/, 'section'],
         [/[a-z]+/, 'type'],
         [/({|}|;|:)/, 'my-string'],
         [/[(\[]/, 'my-string'],
         [/[)\]]/, 'my-string'],
         [/[/*|*/]/, 'secondary'],
         [/((@([^\s]+)\b)+)/, 'secondary'],
+        [/(%keyMap|%keySet|%setMap|%setSet)/, 'key-map-set'],
       ]
     }
   });
@@ -54,6 +56,7 @@ export const myMonacoLoad = () => {
       { token: 'comment', foreground: '#928374' },
       { token: 'my-string', foreground: '#ffffff' },
       { token: 'secondary', foreground: '#c5ae0a' },
+      { token: 'key-map-set', foreground: '#c5ae0a' },
       { token: '', background: '#2a2a2e' },
     ],
     colors: {

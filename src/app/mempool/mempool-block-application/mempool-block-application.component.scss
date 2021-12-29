@@ -1,0 +1,29 @@
+.graph-outer-container {
+  padding: 20px 20px 20px 0;
+
+  .rotated-label span {
+    transform: rotate(-90deg) translateY(-6px);
+    padding-right: 3vh;
+  }
+
+  .graph-label-list {
+    margin-bottom: 12px;
+
+    .graph-label-item {
+      margin-right: 15px;
+
+      .label-color {
+        width: 7px;
+        height: 7px;
+        border-radius: 5px;
+        margin-right: 3px;
+        margin-bottom: 1px;
+        display: inline-block;
+      }
+    }
+  }
+
+  .graph-inner-container {
+    height: 300px;
+  }
+}

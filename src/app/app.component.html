@@ -36,7 +36,7 @@
           </span>
         </div>
         <div>CURRENT BLOCK
-          <span class="foreground">{{ networkStats.lastAppliedBlock.level }}</span>
+          <span class="foreground">{{ networkStats.lastAppliedBlock.level | spaceNumber }}</span>
         </div>
         <div *ngIf="settingsNodeProtocol$ | async as protocol">PROTOCOL
           <span class="foreground">{{ protocol | slice: 0: 10 }}</span>

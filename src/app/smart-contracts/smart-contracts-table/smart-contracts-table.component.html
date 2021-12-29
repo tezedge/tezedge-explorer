@@ -1,17 +1,26 @@
-<div fxFlex="440px" class="f-12 h-100 padding-right-10">
-  <div class="sm-row foreground-7">
+<div fxFlex="440px" class="f-12 h-100 padding-right-10"
+     *ngIf="contracts$ | async as contracts">
+  <div class="row head foreground-7">
     <span>ID</span>
     <span>CONTRACT</span>
     <span>CALLS</span>
   </div>
   <div class="contracts-table overflow-auto">
-    <div *ngFor="let contract of contractList"
+    <div *ngFor="let contract of contracts"
          (click)="selectContract(contract)"
          [class.active]="activeContract === contract"
-         class="action sm-row pointer">
-      <span class="foreground-6">{{ contract.id }}</span>
-      <span class="foreground">{{ contract.hash }}</span>
-      <span class="foreground">{{ contract.calls }}</span>
+         class="action row pointer foreground">
+      <span class="id">{{ contract.id }}</span>
+      <span class="p-relative">{{ contract.hash }}
+
+        <span matTooltip="Copy hash"
+              class="copy-hash p-absolute border-rad-4"
+              [cdkCopyToClipboard]="contract.hash"
+              (click)="copyHashToClipboard(contract.hash, $event)">
+          <mat-icon svgIcon="copy" class="icon-foreground-7 icon-14"></mat-icon>
+        </span>
+      </span>
+      <span>{{ contract.calls }}</span>
     </div>
   </div>
 </div>

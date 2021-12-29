@@ -9,7 +9,7 @@ import { MempoolEndorsementStatisticsComponent } from './mempool-endorsement-sta
 import { MempoolBroadcastComponent } from './mempool-broadcast/mempool-broadcast.component';
 import { MempoolStatisticsComponent } from './mempool-statistics/mempool-statistics.component';
 import { MempoolStatisticsDetailsComponent } from './mempool-statistics-details/mempool-statistics-details.component';
-import { ClipboardModule } from '@angular/cdk/clipboard';
+import { MempoolBlockApplicationComponent } from './mempool-block-application/mempool-block-application.component';
 
 
 @NgModule({
@@ -21,12 +21,12 @@ import { ClipboardModule } from '@angular/cdk/clipboard';
     MempoolBroadcastComponent,
     MempoolStatisticsComponent,
     MempoolStatisticsDetailsComponent,
+    MempoolBlockApplicationComponent,
   ],
   imports: [
     CommonModule,
     MempoolRoutingModule,
     TezedgeSharedModule,
-    ClipboardModule,
   ]
 })
 export class MempoolModule {}

@@ -97,4 +97,9 @@ export class NavigationMenuComponent implements OnInit, AfterViewInit {
   //     });
   //   }
   // }
+
+  // TODO: remove this
+  routeToSmartContracts() {
+    this.router.navigate(['smart-contracts'], { queryParamsHandling: 'merge', queryParams: { hash: 'tz1UXsFZ4ZexmdEGobShY8jKF7tcf4xCeXok' } });
+  }
 }

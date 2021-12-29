@@ -7,12 +7,15 @@ import * as fromMempoolEndorsement from '@mempool/mempool-endorsement/mempool-en
 import * as fromMempoolOperation from '@mempool/mempool-operation/mempool-operation.reducer';
 import * as fromMempoolBroadcast from '@mempool/mempool-broadcast/mempool-broadcast.reducer';
 import * as fromMempoolStatistics from '@mempool/mempool-statistics/mempool-statistics.reducer';
+import * as fromMempoolBlockApplication from '@mempool/mempool-block-application/mempool-block-application.reducer';
+import { MempoolBlockApplicationState } from '@shared/types/mempool/block-application/mempool-block-application-state.type';
 
 export interface MempoolState {
   endorsementState: MempoolEndorsementState;
   operationState: MempoolOperationState;
   broadcastState: MempoolBroadcastState;
   statisticsState: MempoolStatisticsState;
+  blockApplicationState: MempoolBlockApplicationState;
 }
 
 export const reducer = combineReducers<MempoolState>({
@@ -20,4 +23,5 @@ export const reducer = combineReducers<MempoolState>({
   operationState: fromMempoolOperation.reducer,
   broadcastState: fromMempoolBroadcast.reducer,
   statisticsState: fromMempoolStatistics.reducer,
+  blockApplicationState: fromMempoolBlockApplication.reducer,
 });

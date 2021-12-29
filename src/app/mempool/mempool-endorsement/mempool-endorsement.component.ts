@@ -32,14 +32,14 @@ import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 
 
 const translateFromRight = trigger('translateFromRight', [
-  transition(':increment', [
+  transition('static => animate', [
     style({ opacity: 0, transform: 'translateX(50px)' }),
     animate('.35s ease', style({ opacity: 1, transform: 'translateX(0)' }))
   ])
 ]);
 
 const translateFromLeft = trigger('translateFromLeft', [
-  transition(':increment', [
+  transition('static => animate', [
     style({ opacity: 0, transform: 'translateX(-50px)' }),
     animate('.35s ease', style({ opacity: 1, transform: 'translateX(0)' }))
   ])
@@ -55,7 +55,7 @@ const translateFromLeft = trigger('translateFromLeft', [
 })
 export class MempoolEndorsementComponent implements OnInit, OnDestroy {
 
-  readonly trackEndorsements = (index: number, endorsement: MempoolEndorsement) => endorsement.bakerName;
+  readonly trackEndorsements = (index: number, endorsement: MempoolEndorsement) => endorsement.status;
   readonly tableHeads = [
     { name: 'slots', sort: 'slotsLength' },
     { name: 'baker', sort: 'bakerName' },
@@ -71,7 +71,7 @@ export class MempoolEndorsementComponent implements OnInit, OnDestroy {
 
   endorsements$: Observable<MempoolEndorsement[]>;
   currentSort: MempoolEndorsementSort;
-  animateRows = 10;
+  animateRows: 'static' | 'animate' = 'static';
   deltaEnabled = true;
   formGroup: FormGroup;
   activeBaker: string;
@@ -142,8 +142,9 @@ export class MempoolEndorsementComponent implements OnInit, OnDestroy {
       skip(2), /* no rows animation on first load */
     ).subscribe(() => {
       this.scrollableContainer.nativeElement.scrollTo({ top: 0 });
-      this.animateRows = this.animateRows + 1;
+      this.animateRows = 'animate';
       this.cdRef.detectChanges();
+      setTimeout(() => this.animateRows = 'static', 500);
     });
 
     this.endorsements$ = this.store.select(selectMempoolEndorsements);

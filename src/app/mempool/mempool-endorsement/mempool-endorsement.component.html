@@ -25,7 +25,7 @@
           <div *ngFor="let endorsement of endorsements$ | async; let i=index; trackBy: trackEndorsements"
                [@translateFromLeft]="i % 2 === 0 ? animateRows : false"
                [@translateFromRight]="i % 2 !== 0 ? animateRows : false"
-               [class.active]="formGroup.get('hash').value === endorsement.bakerHash"
+               [class.active]="activeBaker === endorsement.bakerHash"
                class="row">
             <span [matTooltip]="'Slot numbers: ' + endorsement.slots?.join(', ')"
                   matTooltipClass="endorsement"
@@ -34,11 +34,11 @@
               <img *ngIf="endorsement.logo" [src]="endorsement.logo"
                    class="margin-right-10" alt=""
                    height="20px" width="20px">
-              <span class="truncate p-relative">{{ endorsement.bakerName }}
-                <span matTooltip="Copy hash" *ngIf="!endorsement.logo"
+              <span class="truncate p-relative w-100">{{ endorsement.bakerName }}
+                <span matTooltip="Copy hash"
                       class="copy-hash p-absolute border-rad-4 pointer"
-                      [cdkCopyToClipboard]="endorsement.bakerName"
-                      (click)="copyHashToClipboard(endorsement.bakerName)">
+                      [cdkCopyToClipboard]="endorsement.bakerHash"
+                      (click)="copyHashToClipboard(endorsement.bakerHash)">
                   <mat-icon svgIcon="copy" class="icon-foreground-7 icon-14"></mat-icon>
                 </span>
               </span>

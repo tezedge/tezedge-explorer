@@ -4,11 +4,13 @@ import { State } from '@app/app.reducers';
 import { delay, Observable } from 'rxjs';
 import { MempoolEndorsement } from '@shared/types/mempool/mempool-endorsement/mempool-endorsement.type';
 import {
-  MEMPOOL_ENDORSEMENT_LOAD, MEMPOOL_ENDORSEMENT_SET_ACTIVE_BAKER,
+  MEMPOOL_ENDORSEMENT_LOAD,
+  MEMPOOL_ENDORSEMENT_SET_ACTIVE_BAKER,
   MEMPOOL_ENDORSEMENT_SORT,
   MEMPOOL_ENDORSEMENT_STOP,
   MEMPOOL_ENDORSEMENTS_INIT,
-  MempoolEndorsementLoad, MempoolEndorsementSetActiveBaker,
+  MempoolEndorsementLoad,
+  MempoolEndorsementSetActiveBaker,
   MempoolEndorsementsInit,
   MempoolEndorsementSorting,
   MempoolEndorsementStop
@@ -19,6 +21,7 @@ import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { MempoolEndorsementSort } from '@shared/types/mempool/mempool-endorsement/mempool-endorsement-sort.type';
 import { selectNetworkCurrentBlock } from '@network/network-stats/network-stats.reducer';
 import {
+  selectMempoolEndorsementActiveBaker,
   selectMempoolEndorsements,
   selectMempoolEndorsementSorting,
   selectMempoolEndorsementTableAnimate
@@ -71,6 +74,7 @@ export class MempoolEndorsementComponent implements OnInit, OnDestroy {
   animateRows = 10;
   deltaEnabled = true;
   formGroup: FormGroup;
+  activeBaker: string;
 
   @ViewChild('scrollableContainer') private scrollableContainer: ElementRef<HTMLDivElement>;
 
@@ -81,6 +85,7 @@ export class MempoolEndorsementComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.listenToNewAppliedBlock();
     this.listenToNewEndorsements();
+    this.listenToActiveBakerChange();
     this.initForm();
   }
 
@@ -111,6 +116,12 @@ export class MempoolEndorsementComponent implements OnInit, OnDestroy {
         sortDirection
       }
     });
+  }
+
+  private listenToActiveBakerChange(): void {
+    this.store.select(selectMempoolEndorsementActiveBaker)
+      .pipe(untilDestroyed(this))
+      .subscribe(baker => this.activeBaker = baker);
   }
 
   private listenToNewAppliedBlock(): void {

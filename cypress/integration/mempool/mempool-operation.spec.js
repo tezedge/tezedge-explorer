@@ -40,7 +40,7 @@ context('MEMPOOL OPERATION', () => {
             .get('cdk-virtual-scroll-viewport')
             .scrollTo('bottom')
             .wait(1000)
-            .get('cdk-virtual-scroll-viewport .mempool-row')
+            .get('cdk-virtual-scroll-viewport .row')
             .last()
             .find('span:first-child')
             .should(span => {
@@ -115,7 +115,7 @@ context('MEMPOOL OPERATION', () => {
             .find('.row')
             .first()
             .then(row => expect(row.hasClass('active')).to.be.true)
-            .get('cdk-virtual-scroll-viewport .mempool-row:first-child span:first-child')
+            .get('cdk-virtual-scroll-viewport .row:first-child span:first-child')
             .should(span => {
               expect(span.text().trim()).to.equal(mempool.operationState.mempoolOperations[0].hash);
             });

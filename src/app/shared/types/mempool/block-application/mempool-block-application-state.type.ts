@@ -1,5 +1,7 @@
-import { MempoolBlockApplication } from '@shared/types/mempool/block-application/mempool-block-application.type';
+import { MempoolBlockApplicationChartLine } from '@shared/types/mempool/block-application/mempool-block-application-chart-line.type';
 
 export interface MempoolBlockApplicationState {
-  applicationBlocks: MempoolBlockApplication[];
+  chartLines: MempoolBlockApplicationChartLine[];
+  xTicksValues: string[];
+  xTicksValuesLength: number;
 }

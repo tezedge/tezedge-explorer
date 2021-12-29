@@ -32,6 +32,7 @@ export class TezedgeLineChartComponent extends LineChartComponent {
   @Input() extraYAxisValues: number = 0;
   @Input() startWithYGridLine: boolean;
   @Input() resourceType: SystemResourcesResourceType | undefined;
+  @Input() disableHoverGradient: boolean = true;
 
   chartXReady: boolean = false;
   chartYReady: boolean = false;

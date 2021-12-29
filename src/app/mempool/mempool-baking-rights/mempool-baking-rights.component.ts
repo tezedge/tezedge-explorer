@@ -25,36 +25,28 @@ import { MempoolBakingRight } from '@shared/types/mempool/baking-rights/mempool-
 })
 export class MempoolBakingRightsComponent implements OnInit, OnDestroy {
 
-  readonly trackBakingRight = (index: number, br: MempoolBakingRight) => br.address;
   readonly tableHeads = [
     { name: 'address' },
     { name: 'node id', sort: 'nodeId' },
     { name: 'baker' },
+    { name: 'baker priority', sort: 'bakerPriority' },
     { name: 'block hash', sort: 'blockHash' },
     { name: 'delta' },
     { name: 'received time', sort: 'receivedTime' },
+    { name: 'prechecked time', sort: 'precheckedTime' },
     { name: 'sent time', sort: 'sentTime' },
   ];
-
   state: MempoolBakingRightsState;
   currentSort: TableSort;
 
   constructor(private store: Store<State>,
               private cdRef: ChangeDetectorRef) { }
 
+  readonly trackBakingRight = (index: number, br: MempoolBakingRight) => br.address;
+
   ngOnInit(): void {
     this.store.dispatch<MempoolBakingRightsInit>({ type: MEMPOOL_BAKING_RIGHTS_INIT });
     this.listenToStateChange();
-  }
-
-  private listenToStateChange(): void {
-    this.store.select(mempoolBakingRights)
-      .pipe(untilDestroyed(this))
-      .subscribe((state: MempoolBakingRightsState) => {
-        this.state = state;
-        this.currentSort = state.sort;
-        this.cdRef.detectChanges();
-      });
   }
 
   sortTable(sortBy: string): void {
@@ -74,5 +66,15 @@ export class MempoolBakingRightsComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.store.dispatch<MempoolBakingRightsStop>({ type: MEMPOOL_BAKING_RIGHTS_STOP });
+  }
+
+  private listenToStateChange(): void {
+    this.store.select(mempoolBakingRights)
+      .pipe(untilDestroyed(this))
+      .subscribe((state: MempoolBakingRightsState) => {
+        this.state = state;
+        this.currentSort = state.sort;
+        this.cdRef.detectChanges();
+      });
   }
 }

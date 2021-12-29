@@ -45,15 +45,20 @@
   }
 
   .line-highlight {
-    display: none;
+    //display: none;
 
     &.active {
       display: block;
     }
   }
 
+  .no-hover-gradient .line-highlight {
+    display: none !important;
+  }
+
   .area {
     opacity: 0.6;
+    //opacity: 1 !important;
   }
 
   .circle {

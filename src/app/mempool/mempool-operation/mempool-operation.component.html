@@ -9,10 +9,10 @@
       <cdk-virtual-scroll-viewport class="border-bottom border-right f-14 overflow-y-auto overflow-x-hidden"
                                    fxFlex="calc(100% - 36px)"
                                    itemSize="36">
-        <div *cdkVirtualFor="let operation of mempoolOperations; let i=index;"
-             (click)="selectRow(i)"
+        <div (click)="selectRow(i)"
              (mouseenter)="onRowEnter(i)"
              (mouseleave)="onRowLeave()"
+             *cdkVirtualFor="let operation of mempoolOperations; let i=index;"
              [class.active]="i === mempoolSelectedItem"
              class="row pointer">
           <span>{{ operation.hash }}</span>

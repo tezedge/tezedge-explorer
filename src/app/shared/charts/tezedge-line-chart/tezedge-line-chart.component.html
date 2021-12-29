@@ -45,7 +45,8 @@
            [showRefLines]="showRefLines"
            [showRefLabels]="showRefLabels"
            (dimensionsChanged)="updateYAxisWidth($event)"></svg:g>
-    <svg:g [attr.clip-path]="clipPath">
+    <svg:g [attr.clip-path]="clipPath"
+           [class.no-hover-gradient]="disableHoverGradient">
       <svg:g *ngFor="let series of lineResults; trackBy: trackBy"
              [@animationState]="'active'">
         <svg:g ngx-charts-line-series
@@ -107,8 +108,7 @@
          [customColors]="customColors"
          [scaleType]="scaleType"
          [legend]="legend"
-         (onDomainChange)="updateDomain($event)"
-  >
+         (onDomainChange)="updateDomain($event)">
     <svg:g *ngFor="let series of results; trackBy: trackBy">
       <svg:g ngx-charts-line-series
              [xScale]="timelineXScale"

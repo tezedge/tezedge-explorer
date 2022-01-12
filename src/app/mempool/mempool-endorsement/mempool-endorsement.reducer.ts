@@ -6,11 +6,12 @@ import { MempoolEndorsementSort } from '@shared/types/mempool/mempool-endorsemen
 import {
   MEMPOOL_ENDORSEMENT_LOAD,
   MEMPOOL_ENDORSEMENT_LOAD_SUCCESS,
+  MEMPOOL_ENDORSEMENT_SET_ACTIVE_BAKER,
   MEMPOOL_ENDORSEMENT_SORT,
   MEMPOOL_ENDORSEMENT_STOP,
   MEMPOOL_ENDORSEMENT_UPDATE_STATUSES_SUCCESS,
   MempoolEndorsementActions
-} from '@mempool/mempool-endorsement/mempool-endorsement.action';
+} from '@mempool/mempool-endorsement/mempool-endorsement.actions';
 
 const initialState: MempoolEndorsementState = {
   endorsements: [],
@@ -18,6 +19,7 @@ const initialState: MempoolEndorsementState = {
   animateTable: false,
   isLoadingNewBlock: true,
   currentBlock: 0,
+  activeBaker: localStorage.getItem('activeBaker'),
   sort: {
     sortBy: 'delta',
     sortDirection: 'descending'
@@ -41,7 +43,7 @@ export function reducer(state: MempoolEndorsementState = initialState, action: M
 
       return {
         ...state,
-        endorsements: action.payload.endorsements,
+        endorsements: bringItemToBeginning(action.payload.endorsements, state.activeBaker),
         animateTable: !state.animateTable,
         isLoadingNewBlock: false,
         statistics
@@ -71,7 +73,7 @@ export function reducer(state: MempoolEndorsementState = initialState, action: M
 
       return {
         ...state,
-        endorsements,
+        endorsements: bringItemToBeginning(endorsements, state.activeBaker),
         statistics
       };
     }
@@ -81,8 +83,17 @@ export function reducer(state: MempoolEndorsementState = initialState, action: M
 
       return {
         ...state,
-        endorsements,
+        endorsements: bringItemToBeginning(endorsements, state.activeBaker),
         sort: { ...action.payload }
+      };
+    }
+
+    case MEMPOOL_ENDORSEMENT_SET_ACTIVE_BAKER: {
+      localStorage.setItem('activeBaker', action.payload);
+      return {
+        ...state,
+        endorsements: bringItemToBeginning(state.endorsements, action.payload),
+        activeBaker: action.payload
       };
     }
 
@@ -93,6 +104,14 @@ export function reducer(state: MempoolEndorsementState = initialState, action: M
     default:
       return state;
   }
+}
+
+function bringItemToBeginning(endorsements: MempoolEndorsement[], baker: string): MempoolEndorsement[] {
+  if (!baker) {
+    return endorsements;
+  }
+  // @ts-ignore
+  return [...endorsements].sort((e1, e2) => (e2.bakerHash === baker) - (e1.bakerHash === baker));
 }
 
 function sortEndorsements(endorsements: MempoolEndorsement[], sort: MempoolEndorsementSort): MempoolEndorsement[] {

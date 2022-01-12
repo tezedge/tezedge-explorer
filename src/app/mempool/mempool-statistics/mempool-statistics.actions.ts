@@ -31,7 +31,7 @@ export class MempoolStatisticsLoadSuccess implements Action {
 export class MempoolStatisticsChangeActiveOperation implements Action {
   readonly type = MEMPOOL_STATISTICS_CHANGE_ACTIVE_OPERATION;
 
-  constructor(public payload: MempoolStatisticsOperation) { }
+  constructor(public payload: MempoolStatisticsOperation | string) { }
 }
 
 export class MempoolStatisticsStop implements Action {

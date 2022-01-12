@@ -1,5 +1,5 @@
 import { State } from '@app/app.reducers';
-import { MEMPOOL_BROADCAST_LOAD_SUCCESS, MEMPOOL_BROADCAST_STOP, MempoolBroadcastActions } from '@mempool/mempool-broadcast/mempool-broadcast.action';
+import { MEMPOOL_BROADCAST_LOAD_SUCCESS, MEMPOOL_BROADCAST_STOP, MempoolBroadcastActions } from '@mempool/mempool-broadcast/mempool-broadcast.actions';
 import { MempoolBroadcastState } from '@shared/types/mempool/broadcast/mempool-broadcast-state.type';
 
 const initialState: MempoolBroadcastState = {

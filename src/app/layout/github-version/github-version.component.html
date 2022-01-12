@@ -1,4 +1,4 @@
-<div class="node-tag-number"
+<div class="node-tag-number pointer border-rad-4"
      *ngIf="!hideComponent && githubVersion$ | async as githubVersion"
      (click)="attachTooltip($event)">
   <span class="pointer-none f-12">
@@ -9,12 +9,12 @@
 </div>
 
 <ng-template #versionTooltip>
-  <div class="commit-numbers-container f-12"
+  <div class="commit-numbers-container f-12 border-rad-4 margin-bottom-5"
        *ngIf="githubVersion$ | async as githubVersion">
     <div class="commit-numbers-container-item"
          id="nodeCommit">
       <a [href]="githubRepositories.node + githubVersion.nodeCommit"
-         class="d-flex align-center"
+         class="d-flex align-center pointer"
          target="_blank"
          rel="noreferrer">
         <mat-icon svgIcon="github"
@@ -26,7 +26,7 @@
     <div class="commit-numbers-container-item"
          id="debuggerCommit">
       <a [href]="githubRepositories.debugger + githubVersion.debuggerCommit"
-         class="d-flex align-center"
+         class="d-flex align-center pointer"
          target="_blank"
          rel="noreferrer">
         <mat-icon svgIcon="github"
@@ -39,7 +39,7 @@
          class="commit-numbers-container-item"
          id="explorerCommit">
       <a [href]="githubRepositories.explorer + githubVersion.explorerCommit"
-         class="d-flex align-center"
+         class="d-flex align-center pointer"
          target="_blank"
          rel="noreferrer">
         <mat-icon svgIcon="github"

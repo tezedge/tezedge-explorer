@@ -1,4 +1,4 @@
-<div class="padding-8 f-12">
+<div class="padding-8 f-12 h-100 overflow-y-auto">
   <div *ngIf="currentBlock$ | async as currentBlock"
        class="d-flex flex-row flex-between margin-bottom-10 padding-top-5">
     <div [@refreshBlock]="currentBlock" class="block">ENDORSING BLOCK {{ currentBlock }}</div>

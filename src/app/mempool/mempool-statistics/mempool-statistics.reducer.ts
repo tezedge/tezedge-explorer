@@ -7,7 +7,7 @@ import {
   MEMPOOL_STATISTICS_SORT,
   MEMPOOL_STATISTICS_STOP,
   MempoolStatisticsActions
-} from '@mempool/mempool-statistics/mempool-statistics.action';
+} from '@mempool/mempool-statistics/mempool-statistics.actions';
 import { MempoolStatisticsOperation } from '@shared/types/mempool/statistics/mempool-statistics-operation.type';
 import { TableSort } from '@shared/types/shared/table-sort.type';
 import { MempoolStatisticsOperationNode } from '@shared/types/mempool/statistics/mempool-statistics-operation-node.type';
@@ -38,12 +38,18 @@ export function reducer(state: MempoolStatisticsState = initialState, action: Me
     }
 
     case MEMPOOL_STATISTICS_CHANGE_ACTIVE_OPERATION: {
-      const nodes = sortNodes([...action.payload.nodes], state.detailsSort);
+      let operation;
+      if (typeof action.payload === 'string') {
+        operation = state.operations.find(op => op.hash === action.payload);
+      } else {
+        operation = action.payload;
+      }
+      const nodes = sortNodes([...operation.nodes], state.detailsSort);
 
       return {
         ...state,
         activeOperation: {
-          ...action.payload,
+          ...operation,
           nodes
         }
       };

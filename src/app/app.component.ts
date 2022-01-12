@@ -81,7 +81,7 @@ export class AppComponent implements OnInit {
   }
 
   changeTheme(theme: ThemeType): void {
-    return;
+    // return;
 
     document.body.classList.remove('theme-light', 'theme-dark');
     document.body.classList.add('theme-' + theme);
@@ -90,8 +90,6 @@ export class AppComponent implements OnInit {
       type: 'APP_THEME_CHANGE',
       payload: theme,
     });
-
-    // (document.getElementById('app-style-theme') as any).href = 'styles.' + theme + '.css';
   }
 
   sandboxBakeBlock(): void {

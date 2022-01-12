@@ -193,3 +193,4 @@ export const selectMempoolEndorsementTableAnimate = (state: State): boolean => s
 export const selectMempoolEndorsementStatistics = (state: State): MempoolEndorsementStatistics => state.mempool.endorsementState.statistics;
 export const selectMempoolEndorsementCurrentBlock = (state: State): number => state.mempool.endorsementState.currentBlock;
 export const selectMempoolEndorsementSorting = (state: State): MempoolEndorsementSort => state.mempool.endorsementState.sort;
+export const selectMempoolEndorsementActiveBaker = (state: State): string => state.mempool.endorsementState.activeBaker;

@@ -139,56 +139,71 @@ context('MEMPOOL ENDORSEMENT', () => {
       });
   });
 
-  // it('[MEMPOOL OPERATION] should fill the right details part with the message of the clicked row - the second last record in our case', () => {
-  //   cy.window()
-  //     .its('store')
-  //     .then(store => {
-  //       store.select('mempool').subscribe(() => {
-  //         cy.get('cdk-virtual-scroll-viewport')
-  //           .scrollTo('bottom')
-  //           .wait(1000)
-  //           .find('.mempool-row')
-  //           .eq(-2)
-  //           .trigger('click')
-  //           .wait(1000)
-  //           .then(row => expect(row.hasClass('active')).to.be.true)
-  //           .get('.ngx-json-viewer').should('be.visible');
-  //       });
-  //     });
-  // });
-  //
-  // it('[MEMPOOL OPERATION] should fill the right details part with the message of the hovered row - the second last record in our case', () => {
-  //   cy.window()
-  //     .its('store')
-  //     .then(store => {
-  //       store.select('mempool').subscribe(() => {
-  //         cy.get('cdk-virtual-scroll-viewport')
-  //           .scrollTo('bottom')
-  //           .wait(1000)
-  //           .find('.mempool-row')
-  //           .eq(-2)
-  //           .trigger('mouseenter')
-  //           .wait(1000)
-  //           .get('.ngx-json-viewer').should('be.visible');
-  //       });
-  //     });
-  // });
-  //
-  // it('[MEMPOOL OPERATION] should auto select first row on load', () => {
-  //   cy.window()
-  //     .its('store')
-  //     .then(store => {
-  //       store.select('mempool').subscribe(mempool => {
-  //         cy.get('cdk-virtual-scroll-viewport')
-  //           .find('.mempool-row')
-  //           .first()
-  //           .then(row => expect(row.hasClass('active')).to.be.true)
-  //           .get('cdk-virtual-scroll-viewport .mempool-row:first-child span:first-child')
-  //           .should(span => {
-  //             expect(span.text().trim()).to.equal(mempool.operationState.mempoolOperations[0].hash);
-  //           });
-  //       });
-  //     });
-  // });
+  it('[MEMPOOL ENDORSEMENT] should move searched baker at the top of the table', () => {
+    let haveValue;
+    cy.window()
+      .its('store')
+      .then(store => {
+        store.select('mempool').subscribe(mempool => {
+          const tenthEndorsement = mempool.endorsementState.endorsements[9];
+          if (!haveValue) {
+            haveValue = true;
+            cy.get('app-mempool-endorsement .table-container .row:nth-child(10) span:nth-child(2) span')
+              .should(span => {
+                expect(span.text().trim()).to.equal(tenthEndorsement.bakerName || tenthEndorsement.bakerHash);
+              })
+              .get('app-mempool-endorsement .table-container .row:nth-child(1) span:nth-child(2) span')
+              .should(span => {
+                expect(span.text().trim()).to.not.equal(tenthEndorsement.bakerName || tenthEndorsement.bakerHash);
+              })
+              .get('.table-footer input')
+              .type(tenthEndorsement.bakerHash, { force: true })
+              .wait(300)
+              .get('app-mempool-endorsement .table-container .row:nth-child(1) span:nth-child(2) span')
+              .should(span => {
+                expect(span.text().trim()).to.equal(tenthEndorsement.bakerName || tenthEndorsement.bakerHash);
+                expect(localStorage.getItem('activeBaker')).to.equal(tenthEndorsement.bakerHash);
+              });
+          }
+        });
+      });
+  });
 
+  it('[MEMPOOL ENDORSEMENT] should display statistics for all types of endorsements', () => {
+    let haveValue;
+    cy.window()
+      .its('store')
+      .then(store => {
+        store.select('mempool').subscribe(mempool => {
+          const stats = mempool.endorsementState.statistics;
+          if (!haveValue) {
+            haveValue = true;
+            cy.get('app-mempool-endorsement-statistics .mem-stats-row:nth-child(2) div:last-child')
+              .should(div => {
+                expect(div.text().trim()).to.equal(stats.endorsementTypes[0].value.toString());
+              })
+              .get('app-mempool-endorsement-statistics .mem-stats-row:nth-child(3) div:last-child')
+              .should(div => {
+                expect(div.text().trim()).to.equal(stats.endorsementTypes[1].value.toString());
+              })
+              .get('app-mempool-endorsement-statistics .mem-stats-row:nth-child(4) div:last-child')
+              .should(div => {
+                expect(div.text().trim()).to.equal(stats.endorsementTypes[2].value.toString());
+              })
+              .get('app-mempool-endorsement-statistics .mem-stats-row:nth-child(5) div:last-child')
+              .should(div => {
+                expect(div.text().trim()).to.equal(stats.endorsementTypes[3].value.toString());
+              })
+              .get('app-mempool-endorsement-statistics .mem-stats-row:nth-child(6) div:last-child')
+              .should(div => {
+                expect(div.text().trim()).to.equal(stats.endorsementTypes[4].value.toString());
+              })
+              .get('app-mempool-endorsement-statistics .mem-stats-row:nth-child(7) div:last-child')
+              .should(div => {
+                expect(div.text().trim()).to.equal(stats.endorsementTypes[5].value.toString());
+              });
+          }
+        });
+      });
+  });
 });

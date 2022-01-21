@@ -9,8 +9,8 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
 export class MempoolComponent {
 
   readonly tabs = [
+    { name: 'block application', link: 'block-application' },
     { name: 'endorsements', link: 'endorsements' },
-    // { name: 'broadcast', link: 'broadcast' },
     { name: 'pending', link: 'operations' },
     { name: 'statistics', link: 'statistics' },
   ];

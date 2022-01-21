@@ -1,7 +1,7 @@
 <div class="padding-8 f-12 h-100 overflow-y-auto">
   <div *ngIf="currentBlock$ | async as currentBlock"
        class="d-flex flex-row flex-between margin-bottom-10 padding-top-5">
-    <div [@refreshBlock]="currentBlock" class="block">ENDORSING BLOCK {{ currentBlock }}</div>
+    <div [@refreshBlock]="currentBlock" class="block">ENDORSING BLOCK {{ currentBlock | spaceNumber }}</div>
     <div class="foreground-7">{{ elapsedTime$ | async | number: '1.1' }}s</div>
   </div>
   <div class="overflow-auto" *ngIf="statistics$ | async as statistics">

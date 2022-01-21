@@ -96,6 +96,7 @@ export class SystemResourcesComponent implements OnInit, OnDestroy {
       filter(resources => !!resources),
     ).subscribe(resources => {
       this.systemResource = resources;
+      console.log(this.systemResource);
       this.activeSummary = resources.resourcesPanel?.resourceType;
       this.cdRef.detectChanges();
     });

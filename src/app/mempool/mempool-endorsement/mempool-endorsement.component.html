@@ -23,8 +23,8 @@
         </div>
         <div class="f-14 overflow-y-auto overflow-x-hidden" fxFlex="calc(100% - 36px)" #scrollableContainer>
           <div *ngFor="let endorsement of endorsements$ | async; let i=index; trackBy: trackEndorsements"
-               [@translateFromLeft]="i % 2 === 0 ? animateRows : false"
-               [@translateFromRight]="i % 2 !== 0 ? animateRows : false"
+               [@translateFromLeft]="i % 2 === 0 ? animateRows : null"
+               [@translateFromRight]="i % 2 !== 0 ? animateRows : null"
                [class.active]="activeBaker === endorsement.bakerHash"
                class="row">
             <span [matTooltip]="'Slot numbers: ' + endorsement.slots?.join(', ')"

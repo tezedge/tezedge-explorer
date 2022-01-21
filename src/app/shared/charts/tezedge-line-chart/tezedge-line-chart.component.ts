@@ -31,7 +31,7 @@ export class TezedgeLineChartComponent extends LineChartComponent {
   @Input() circleAtTheEnd: boolean = false;
   @Input() extraYAxisValues: number = 0;
   @Input() startWithYGridLine: boolean;
-  @Input() resourceType: SystemResourcesResourceType | string;
+  @Input() resourceType: SystemResourcesResourceType | undefined;
 
   chartElementRef: ElementRef;
 

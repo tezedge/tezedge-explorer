@@ -1,8 +1,11 @@
 import { ChangeDetectorRef, Component, OnInit, Renderer2 } from '@angular/core';
 import { UntilDestroy } from '@ngneat/until-destroy';
-import { HttpClient } from '@angular/common/http';
 import { editor, Range } from 'monaco-editor';
-import { SmartContractsService } from '@smart-contracts/smart-contracts/smart-contracts.service';
+import { Store } from '@ngrx/store';
+import { State } from '@app/app.reducers';
+import { filter } from 'rxjs';
+import { SmartContract } from '@shared/types/smart-contracts/smart-contract.type';
+import { SMART_CONTRACTS_START_DEBUGGING, SMART_CONTRACTS_STOP_DEBUGGING } from '@smart-contracts/smart-contracts/smart-contracts.actions';
 import IStandaloneCodeEditor = editor.IStandaloneCodeEditor;
 
 @UntilDestroy()
@@ -15,8 +18,7 @@ export class SmartContractsComponent implements OnInit {
 
   readonly editorOptions = { theme: 'michelson-theme', language: 'michelson', readOnly: true };
 
-  contract = contract;
-  activeContract = { hash: 'tz1b7tUupMgCNw2cCLpKTkSD1NZzB5TkP2sv' };
+  activeContract: SmartContract;
   activeLineCode = null;
   breakpointList = [];
   debugConfig: any = {
@@ -28,28 +30,69 @@ export class SmartContractsComponent implements OnInit {
   };
 
   trace: any[];
+  gasTrace: number[];
 
   private parent: HTMLDivElement;
   private editor: IStandaloneCodeEditor;
   private monacoDeltaDecorations: string[] = [];
   private highlightServerResponse: any;
 
-  constructor(private renderer: Renderer2,
-              private http: HttpClient,
-              private cdRef: ChangeDetectorRef,
-              private smartContractsService: SmartContractsService) {}
+  constructor(private store: Store<State>,
+              private renderer: Renderer2,
+              private cdRef: ChangeDetectorRef) { }
 
   ngOnInit(): void {
-    // First call indent, then typecheck or get_trace
+
+    // First call indent, then typecheck or better get_trace
     // typecheck -> highlightServerResponse
 
     // TODO: check when going outside a step, is it the first parent taken?
 
-    this.smartContractsService.getContractTrace().subscribe(val => {
-      this.trace = val.history[0].receipt.result.trace.filter(trace => !trace.location.expanded);
-      console.log(this.trace);
-      this.cdRef.detectChanges();
-    });
+    this.store
+      .select('smartContracts')
+      .pipe(filter(Boolean))
+      .subscribe(smartContractState => {
+        this.activeContract = smartContractState.activeContract;
+
+        if (smartContractState.trace) {
+          this.trace = smartContractState.trace.history[0].receipt.result.trace.filter(trace => !trace.location.expanded);
+          const linesOfCode = Math.max(...this.trace.map(step => step.location.location.stop.line));
+          this.gasTrace = new Array(linesOfCode).fill(0);
+          const linesConsumingGas = this.trace.filter(step => step.location.location.start.line === step.location.location.stop.line);
+          const gasArray = [];
+
+          for (let i = 1; i <= linesOfCode; i++) {
+            const step = linesConsumingGas.find(line => line.location.location.start.line === i);
+            if (step) {
+              gasArray.push({
+                line: step.location.location.start.line,
+                gas: step.gas
+              });
+            } else {
+              let alternativeGas;
+              if (gasArray.length === 0) {
+                alternativeGas = linesConsumingGas[0].gas;
+              } else {
+                alternativeGas = gasArray[gasArray.length - 1].gas;
+              }
+              gasArray.push({
+                line: i,
+                gas: alternativeGas
+              });
+            }
+          }
+
+          this.gasTrace = gasArray.map((step, i) => {
+            if (gasArray[i + 1]) {
+              return Number(gasArray[i].gas) - Number(gasArray[i + 1].gas);
+            }
+            return 0;
+          });
+
+          this.cdRef.detectChanges();
+        }
+      });
+
   }
 
   onEditorInit(codeEditor: IStandaloneCodeEditor): void {
@@ -61,9 +104,9 @@ export class SmartContractsComponent implements OnInit {
   }
 
   private getStackAtCurrentPosition(line: number, column: number): void {
-    const clickedCharacterIndex = this.contract.code.split('\n', line - 1).join('\n').length + column;
+    const clickedCharacterIndex = this.activeContract.code.split('\n', line - 1).join('\n').length + column;
 
-    if (this.contract.code[clickedCharacterIndex] === ' ' && this.contract.code[clickedCharacterIndex - 1] === ' ') {
+    if (this.activeContract.code[clickedCharacterIndex] === ' ' && this.activeContract.code[clickedCharacterIndex - 1] === ' ') {
       this.activeLineCode = undefined;
       return;
     }
@@ -112,13 +155,21 @@ export class SmartContractsComponent implements OnInit {
   }
 
   startDebugger(): void {
+    this.store.dispatch({ type: SMART_CONTRACTS_START_DEBUGGING });
     const firstDebuggingElementStartPoint = Math.min(...this.trace.map(t => t.location.location.start.point).filter(Boolean));
     const firstDebuggingElement = this.trace.find(t => t.location.location.start.point === firstDebuggingElementStartPoint);
     this.highlightCurrentDebuggingCode(firstDebuggingElement);
     this.manageNextActions(firstDebuggingElement);
+    setTimeout(() => this.editor.layout(), 50);
+    setTimeout(() => this.editor.layout(), 100);
+    setTimeout(() => this.editor.layout(), 150);
+    setTimeout(() => this.editor.layout(), 200);
+    setTimeout(() => this.editor.layout(), 250);
+    setTimeout(() => this.editor.layout(), 300);
   }
 
   stopDebugger(): void {
+    this.store.dispatch({ type: SMART_CONTRACTS_STOP_DEBUGGING });
     this.monacoDeltaDecorations = this.editor.deltaDecorations(this.monacoDeltaDecorations, []);
     this.debugConfig = {
       previousStep: undefined,
@@ -127,6 +178,12 @@ export class SmartContractsComponent implements OnInit {
       stepIn: undefined,
       stepOut: undefined
     };
+    setTimeout(() => this.editor.layout(), 50);
+    setTimeout(() => this.editor.layout(), 100);
+    setTimeout(() => this.editor.layout(), 150);
+    setTimeout(() => this.editor.layout(), 200);
+    setTimeout(() => this.editor.layout(), 250);
+    setTimeout(() => this.editor.layout(), 300);
   }
 
   nextStep(): void {

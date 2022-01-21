@@ -2,6 +2,15 @@ import * as moment from 'moment-mini-ts';
 import { LogsAction } from '@shared/types/logs/logs-action.type';
 import { LogsActionEntity } from '@shared/types/logs/logs-action-entity.type';
 import { VirtualScrollActivePage } from '@shared/types/shared/virtual-scroll-active-page.type';
+import {
+  LOGS_ACTION_START,
+  LOGS_ACTION_RESET,
+  LOGS_ACTION_STOP,
+  LOGS_ACTION_LOAD_SUCCESS,
+  LOGS_ACTION_START_SUCCESS,
+  LOGS_ACTION_FILTER,
+  LOGS_ACTION_TIME_LOAD
+} from '@logs/logs-action/logs-action.actions';
 
 const initialState: LogsAction = {
   ids: [],
@@ -25,8 +34,8 @@ const initialState: LogsAction = {
 export function reducer(state: LogsAction = initialState, action): LogsAction {
   switch (action.type) {
 
-    case 'LOGS_ACTION_START_SUCCESS':
-    case 'LOGS_ACTION_LOAD_SUCCESS': {
+    case LOGS_ACTION_START_SUCCESS:
+    case LOGS_ACTION_LOAD_SUCCESS: {
       const entities = setEntities(action, state);
       const activePage = setActivePage(entities, action);
 
@@ -41,8 +50,8 @@ export function reducer(state: LogsAction = initialState, action): LogsAction {
       };
     }
 
-    case 'LOGS_ACTION_TIME_LOAD':
-    case 'LOGS_ACTION_FILTER': {
+    case LOGS_ACTION_TIME_LOAD:
+    case LOGS_ACTION_FILTER: {
       const stateFilter = {
         ...state.filter,
         [action.payload.filterType]: action.payload.filterType ? !state.filter[action.payload.filterType] : false
@@ -55,21 +64,21 @@ export function reducer(state: LogsAction = initialState, action): LogsAction {
       };
     }
 
-    case 'LOGS_ACTION_STOP': {
+    case LOGS_ACTION_STOP: {
       return {
         ...state,
         stream: false
       };
     }
 
-    case 'LOGS_ACTION_START': {
+    case LOGS_ACTION_START: {
       return {
         ...state,
         stream: true
       };
     }
 
-    case 'LOGS_ACTION_RESET': {
+    case LOGS_ACTION_RESET: {
       return {
         ...initialState
       };

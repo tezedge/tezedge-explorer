@@ -20,6 +20,8 @@ import { CustomJsonParserInterceptorService } from '@core/custom-json-parser.int
 import { LoadingSpinnerComponent } from '@shared/loading-spinner/loading-spinner.component';
 import { NanoTransformPipe } from '@shared/pipes/nano-transform.pipe';
 import { DateTimePipe } from '@shared/pipes/date-time.pipe';
+import { SpaceNumberPipe } from '@shared/pipes/space-number.pipe';
+import { TezedgeChartsModule } from '@shared/charts/tezedge-charts.module';
 
 const COMPONENTS = [
   ErrorPopupComponent,
@@ -32,6 +34,7 @@ const PIPES = [
   ThousandTransformPipe,
   NanoTransformPipe,
   DateTimePipe,
+  SpaceNumberPipe,
 ];
 
 const DIRECTIVES = [
@@ -51,7 +54,6 @@ const DIRECTIVES = [
   ],
   imports: [
     CommonModule,
-    FlexLayoutModule,
     NotifierModule.withConfig({
       position: {
         horizontal: {
@@ -66,20 +68,25 @@ const DIRECTIVES = [
         autoHide: false
       }
     }),
+    FlexLayoutModule,
     MaterialModule,
     NgxJsonViewerModule,
+    TezedgeChartsModule,
     ReactiveFormsModule,
   ],
   exports: [
     FlexLayoutModule,
     MaterialModule,
     NgxJsonViewerModule,
+    TezedgeChartsModule,
     ReactiveFormsModule,
     ...COMPONENTS,
     ...PIPES,
     ...DIRECTIVES
   ],
   providers: [
+    SpaceNumberPipe,
+    NanoTransformPipe,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: CustomJsonParserInterceptorService,

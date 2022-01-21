@@ -160,13 +160,11 @@
       <a *ngIf="features['smart-contracts']"
          mat-list-item
          class="menu-item"
-         routerLink="/smart-contracts"
-         routerLinkActive="active"
          id="smart-contracts-trigger"
          matTooltip="Smart contracts"
          matTooltipPosition="right"
          [matTooltipDisabled]="!app.sidenav.collapsed"
-         (click)="closeMenu()">
+         (click)="closeMenu(); routeToSmartContracts()">
         <span class="menu-content">
           <mat-icon svgIcon="handshake"
                     class="icon-18"></mat-icon>

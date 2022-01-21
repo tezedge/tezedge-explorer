@@ -35,7 +35,7 @@ import { TezedgeChartsService } from '@shared/charts/tezedge-charts.service';
 export class TezedgeChartsTooltipAreaComponent extends TooltipArea implements AfterViewInit, OnDestroy {
 
   @Input() chartElement: SVGElement;
-  @Input() resourceType: SystemResourcesResourceType;
+  @Input() resourceType: SystemResourcesResourceType | undefined;
 
   @ViewChild(TooltipDirective) private tooltipDirective: TooltipDirective;
   @ViewChild('tooltipTrigger') private tooltipTrigger: ElementRef<SVGRectElement>;
@@ -64,21 +64,23 @@ export class TezedgeChartsTooltipAreaComponent extends TooltipArea implements Af
   ngAfterViewInit(): void {
     this.tooltipDirective.tooltipCloseOnClickOutside = false;
 
-    this.zone.runOutsideAngular(() => {
-      this.document.querySelector('.resources-container')?.addEventListener('scroll', this.scrollListener);
-      this.document.querySelector('.centered-container')?.addEventListener('scroll', this.scrollListener);
+    if (this.resourceType) {
+      this.zone.runOutsideAngular(() => {
+        this.document.querySelector('.resources-container')?.addEventListener('scroll', this.scrollListener);
+        this.document.querySelector('.centered-container')?.addEventListener('scroll', this.scrollListener);
 
-      fromEvent(this.tooltipTrigger.nativeElement, 'mousemove')
-        .pipe(untilDestroyed(this))
-        .subscribe(() => {
-            this.tezedgeChartsService.updateSystemResources({
-              type: 'runnerGroups',
-              resourceType: this.resourceType,
-              timestamp: this.anchorValues[0].name
-            });
-          }
-        );
-    });
+        fromEvent(this.tooltipTrigger.nativeElement, 'mousemove')
+          .pipe(untilDestroyed(this))
+          .subscribe(() => {
+              this.tezedgeChartsService.updateSystemResources({
+                type: 'runnerGroups',
+                resourceType: this.resourceType,
+                timestamp: this.anchorValues[0].name
+              });
+            }
+          );
+      });
+    }
   }
 
   mouseMove(event): void {
@@ -111,16 +113,18 @@ export class TezedgeChartsTooltipAreaComponent extends TooltipArea implements Af
 
   showTooltip(): void {
     this.tooltipDirective.showTooltip(true);
-    setTimeout(() => {
-      this.store.dispatch<SystemResourcesDetailsUpdateAction>({
-        type: SystemResourcesActionTypes.SYSTEM_RESOURCES_DETAILS_UPDATE,
-        payload: {
-          type: 'runnerGroups',
-          resourceType: this.resourceType,
-          timestamp: this.anchorValues[0].name
-        }
+    if (this.resourceType) {
+      setTimeout(() => {
+        this.store.dispatch<SystemResourcesDetailsUpdateAction>({
+          type: SystemResourcesActionTypes.SYSTEM_RESOURCES_DETAILS_UPDATE,
+          payload: {
+            type: 'runnerGroups',
+            resourceType: this.resourceType,
+            timestamp: this.anchorValues[0].name
+          }
+        });
       });
-    });
+    }
   }
 
   hideTooltip(): void {
@@ -167,7 +171,9 @@ export class TezedgeChartsTooltipAreaComponent extends TooltipArea implements Af
 
   ngOnDestroy(): void {
     this.detachTooltip();
-    this.document.querySelector('.resources-container')?.removeEventListener('scroll', this.scrollListener);
-    this.document.querySelector('.centered-container')?.removeEventListener('scroll', this.scrollListener);
+    if (this.resourceType) {
+      this.document.querySelector('.resources-container')?.removeEventListener('scroll', this.scrollListener);
+      this.document.querySelector('.centered-container')?.removeEventListener('scroll', this.scrollListener);
+    }
   }
 }

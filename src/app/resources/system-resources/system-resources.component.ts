@@ -33,11 +33,11 @@ export class SystemResourcesComponent implements OnInit, OnDestroy {
   activeSummary: SystemResourcesResourceType = 'cpu';
 
   readonly yAxisPercentageConversion = (value) => `${value}%`;
-  readonly yAxisGigaBytesConversion = (value) => (value < 1 ? value : (value + '.00')) + ' GB';
+  readonly yAxisGigaBytesConversion = (value) => `${value} GB`;
   readonly yAxisMegaBytesConversion = (value) => `${value} MB`;
 
   private graphs: QueryList<ElementRef>;
-  private resourceTypes: SystemResourcesResourceType[] = ['cpu', 'memory', 'storage', 'io', 'network'];
+  private resourceTypes: SystemResourcesResourceType[] = ['cpu', 'memory', 'io', 'network', 'storage'];
   private isSmallDevice: boolean;
   private listenersInitialized: boolean;
 
@@ -67,7 +67,10 @@ export class SystemResourcesComponent implements OnInit, OnDestroy {
     this.zone.runOutsideAngular(() => {
       this.graphs.forEach((graph, i) => {
         fromEvent(graph.nativeElement, 'mouseenter')
-          .pipe(untilDestroyed(this))
+          .pipe(
+            untilDestroyed(this),
+            filter(() => this.activeSummary !== this.resourceTypes[i])
+          )
           .subscribe(() => {
             this.toggleActiveSummary(this.resourceTypes[i], this.systemResource[this.resourceTypes[i]]);
           });
@@ -75,10 +78,7 @@ export class SystemResourcesComponent implements OnInit, OnDestroy {
     });
   }
 
-  toggleActiveSummary(value: SystemResourcesResourceType, resource: SystemResourceCategory): void {
-    if (this.activeSummary === value) {
-      return;
-    }
+  private toggleActiveSummary(value: SystemResourcesResourceType, resource: SystemResourceCategory): void {
     this.activeSummary = value;
     this.zone.run(() =>
       this.tezedgeChartsService.updateSystemResources({
@@ -93,10 +93,9 @@ export class SystemResourcesComponent implements OnInit, OnDestroy {
     this.store.pipe(
       untilDestroyed(this),
       select(systemResources),
-      filter(resources => !!resources),
+      filter(resources => !!resources.xTicksValues),
     ).subscribe(resources => {
       this.systemResource = resources;
-      console.log(this.systemResource);
       this.activeSummary = resources.resourcesPanel?.resourceType;
       this.cdRef.detectChanges();
     });

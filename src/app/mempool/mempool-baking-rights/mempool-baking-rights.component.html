@@ -1,0 +1,52 @@
+<div class="h-100 d-flex flex-column table-container">
+  <div class="row head foreground-7 border-bottom">
+    <span *ngFor="let tableHead of tableHeads"
+          [class.active]="currentSort.sortBy === (tableHead.sort ?? tableHead.name)"
+          (click)="sortTable(tableHead.sort ?? tableHead.name)"
+          class="pointer text-uppercase">{{ tableHead.name }}
+      <mat-icon [class.flip]="currentSort.sortDirection === 'descending'"
+                [class.show]="currentSort.sortBy === (tableHead.sort ?? tableHead.name)"
+                [svgIcon]="'arrow-up'"
+                class="icon-14 icon-foreground"></mat-icon>
+    </span>
+  </div>
+  <cdk-virtual-scroll-viewport class="border-bottom border-right f-14 overflow-y-auto overflow-x-hidden"
+                               fxFlex="calc(100% - 36px)"
+                               itemSize="36">
+    <div *cdkVirtualFor="let right of state.currentHeads; let i=index; trackBy: trackBakingRight"
+         class="row">
+      <span class="foreground-7 text-nowrap">{{ right.address }}</span>
+      <span class="truncate p-relative">
+        {{ right.nodeId ?? '-' }}
+        <span matTooltip="Copy hash"
+              class="copy-hash p-absolute border-rad-4"
+              [cdkCopyToClipboard]="right.nodeId"
+              (click)="copyHashToClipboard(right.nodeId, $event)">
+          <mat-icon svgIcon="copy" class="icon-foreground-7 icon-14"></mat-icon>
+        </span>
+      </span>
+      <span class="foreground-7 truncate p-relative">
+        {{ right.baker ?? '-' }}
+        <span *ngIf="right.baker"
+              matTooltip="Copy hash"
+              class="copy-hash p-absolute border-rad-4"
+              [cdkCopyToClipboard]="right.baker"
+              (click)="copyHashToClipboard(right.baker, $event)">
+          <mat-icon svgIcon="copy" class="icon-foreground-7 icon-14"></mat-icon>
+        </span>
+      </span>
+      <span class="foreground-7 truncate p-relative">
+        {{ right.blockHash }}
+        <span matTooltip="Copy hash"
+              class="copy-hash p-absolute border-rad-4"
+              [cdkCopyToClipboard]="right.blockHash"
+              (click)="copyHashToClipboard(right.blockHash, $event)">
+          <mat-icon svgIcon="copy" class="icon-foreground-7 icon-14"></mat-icon>
+        </span>
+      </span>
+      <span [innerHTML]="right.delta | nanoTransform: 50000000 : 20000000"></span>
+      <span [innerHTML]="right.receivedTime | nanoTransform: 50000000 : 20000000"></span>
+      <span [innerHTML]="right.sentTime | nanoTransform: 50000000 : 20000000"></span>
+    </div>
+  </cdk-virtual-scroll-viewport>
+</div>

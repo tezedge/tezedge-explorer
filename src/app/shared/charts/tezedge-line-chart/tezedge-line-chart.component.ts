@@ -33,8 +33,9 @@ export class TezedgeLineChartComponent extends LineChartComponent {
   @Input() startWithYGridLine: boolean;
   @Input() resourceType: SystemResourcesResourceType | undefined;
 
+  chartXReady: boolean = false;
+  chartYReady: boolean = false;
   chartElementRef: ElementRef;
-
   lineResults = []; // line results are now used for line painting and `results` just for XAxis values
 
   update(): void {
@@ -42,6 +43,18 @@ export class TezedgeLineChartComponent extends LineChartComponent {
     super.update();
     this.removeExtraResultsOfTheLine();
     this.chartElementRef = this.chartElement.nativeElement.querySelector('svg.ngx-charts');
+  }
+
+  updateYAxisWidth({ width }: { width: number }): void {
+    this.yAxisWidth = width;
+    this.update();
+    this.chartYReady = true;
+  }
+
+  updateXAxisHeight({ height }: { height: number }): void {
+    this.xAxisHeight = height;
+    this.update();
+    this.chartXReady = true;
   }
 
   private getExtraYAxisGridLine(): void {
@@ -61,10 +74,10 @@ export class TezedgeLineChartComponent extends LineChartComponent {
 
   private removeExtraResultsOfTheLine(): void {
     this.lineResults = [];
-    this.results.forEach((item, index) => {
-      this.lineResults.push({ ...item });
-      this.lineResults[index].series = this.results[index].series.filter(s => s.value !== null && s.value !== undefined);
-    });
+    this.lineResults = this.results.map(item => ({
+      ...item,
+      series: item.series.filter(s => s.value !== null && s.value !== undefined)
+    }));
   }
 
   getYDomain(): any[] {

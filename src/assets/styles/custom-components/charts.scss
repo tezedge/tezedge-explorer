@@ -1,17 +1,13 @@
-$tooltip-background: #2A2A2E;
-$white-7: rgba(255, 255, 255, 0.7);
-$white-4: rgba(255, 255, 255, 0.4);
-$white-1: rgba(255, 255, 255, 0.1);
 
 app-tezedge-line-chart {
-  color: rgba(255, 255, 255, 0.6);
-  fill: rgba(255, 255, 255, 0.6);
+  color: var(--foreground-6);
+  fill: var(--foreground-6);
 }
 
 .ngx-charts-tooltip-content {
   padding: 0 !important;
-  background-color: $tooltip-background !important;
-  color: rgba(255, 255, 255, 0.6) !important;
+  background-color: var(--background-surface) !important;
+  color: var(--foreground-6) !important;
   border-radius: 4px !important;
   border: 1px solid rgba(0, 0, 0, 0.2);
   box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
@@ -22,27 +18,25 @@ app-tezedge-line-chart {
   }
 
   .tooltip-caret.position-right {
-    border-right-color: $tooltip-background !important;
+    border-right-color: var(--background-surface) !important;
   }
 
   .tooltip-caret.position-left {
-    border-left-color: $tooltip-background !important;
+    border-left-color: var(--background-surface) !important;
   }
 
   .tooltip-caret.position-top {
-    border-top-color: $tooltip-background !important;
+    border-top-color: var(--background-surface) !important;
   }
 
   .tooltip-caret.position-bottom {
-    border-bottom-color: $tooltip-background !important;
+    border-bottom-color: var(--background-surface) !important;
   }
 
   .ngx-series-tooltip {
-    .time {
+    .tooltip-title {
       padding: 7px 12px;
       text-align: left;
-      font-size: 14px;
-      border-bottom: 1px solid rgba(0, 0, 0, 0.2);
     }
 
     .data-wrapper {
@@ -85,45 +79,15 @@ g.label-container {
   .node {
     rect {
       stroke-width: 1.5px;
-      fill: $white-1;
+      fill: var(--foreground-1);
     }
 
     .label {
       pointer-events: none;
     }
 
-    &.completed rect {
-      fill: $white-1;
-    }
-
     &.active rect {
-      fill: rgba(32, 78, 138, 1);
-    }
-
-    &.error {
-      transition: opacity 0.2s;
-
-      &.hidden-svg {
-        opacity: 0 !important;
-      }
-
-      rect {
-        stroke: #b14933;
-        fill: #5f352d;
-      }
-    }
-
-    &.pending {
-      rect {
-        stroke: $white-4;
-        stroke-width: 1px;
-        stroke-dasharray: 7 10;
-        fill: transparent;
-      }
-
-      tspan {
-        fill: $white-4;
-      }
+      fill: var(--active-surface);
     }
   }
 

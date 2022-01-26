@@ -1,6 +1,6 @@
 <ng-container *ngIf="resource$ | async as resource">
   <div class="details-container">
-    <div class="list-group d-flex flex-column">
+    <div class="list-group border d-flex flex-column">
       <div class="summary-row text-uppercase foreground-4 d-flex flex-between">
         <span>{{ resource.resourceType }}</span>
         <span>{{ resource.type === 'recently' ? 'Recently' : resource.timestamp }}</span>

@@ -49,6 +49,7 @@ import { MempoolOperationEffects } from '@mempool/mempool-operation/mempool-oper
 import { MempoolBroadcastEffects } from '@mempool/mempool-broadcast/mempool-broadcast.effects';
 import { MempoolStatisticsEffects } from '@mempool/mempool-statistics/mempool-statistics.effects';
 import { MempoolBlockApplicationEffects } from '@mempool/mempool-block-application/mempool-block-application.effects';
+import { MempoolBakingRightsEffects } from '@mempool/mempool-baking-rights/mempool-baking-rights.effects';
 
 registerLocaleData(localeFr, 'fr');
 registerLocaleData(localeEnGb, 'en');
@@ -73,6 +74,7 @@ const effects = [
   MempoolBroadcastEffects,
   MempoolStatisticsEffects,
   MempoolBlockApplicationEffects,
+  MempoolBakingRightsEffects,
   NetworkActionEffects,
   StorageBlockEffects,
   StorageActionEffects,

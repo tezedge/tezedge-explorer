@@ -1,29 +1,42 @@
-.graph-outer-container {
-  padding: 20px 20px 20px 0;
+.block-application {
+  height: 820px;
+  max-height: 140vh;
 
-  .rotated-label span {
-    transform: rotate(-90deg) translateY(-6px);
-    padding-right: 3vh;
-  }
+  .graph-outer-container {
+    padding: 20px 20px 20px 0;
+    opacity: 0;
+    transition: opacity 600ms;
+    transition-delay: 400ms;
 
-  .graph-label-list {
-    margin-bottom: 12px;
+    &.fade {
+      opacity: 1;
+    }
 
-    .graph-label-item {
-      margin-right: 15px;
+    .rotated-label span {
+      transform: rotate(-90deg);
+      padding-left: 20px;
+    }
 
-      .label-color {
-        width: 7px;
-        height: 7px;
-        border-radius: 5px;
-        margin-right: 3px;
-        margin-bottom: 1px;
-        display: inline-block;
+    .graph-label-list {
+      margin-bottom: 12px;
+
+      .graph-label-item {
+        margin-right: 15px;
+
+        .label-color {
+          width: 7px;
+          height: 7px;
+          border-radius: 5px;
+          margin-right: 3px;
+          margin-bottom: 1px;
+          display: inline-block;
+        }
       }
     }
-  }
 
-  .graph-inner-container {
-    height: 300px;
+    .graph-inner-container {
+      height: 540px;
+      max-height: 80vh;
+    }
   }
 }

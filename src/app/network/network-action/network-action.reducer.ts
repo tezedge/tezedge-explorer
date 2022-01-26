@@ -1,8 +1,8 @@
-import * as moment from 'moment-mini-ts';
 import { NetworkAction } from '@shared/types/network/network-action.type';
 import { NetworkActionEntity } from '@shared/types/network/network-action-entity.type';
 import { VirtualScrollActivePage } from '@shared/types/shared/virtual-scroll-active-page.type';
 import { NetworkActionDetails } from '@shared/types/network/network-action-details.type';
+import { toReadableDate } from '@helpers/date.helper';
 
 const initialState: NetworkAction = {
   ids: [],
@@ -156,7 +156,7 @@ export function setEntities(action, state): { [id: string]: NetworkActionEntity 
           id: virtualScrollId,
           originalId: networkAction.id,
           payload: networkAction.message,
-          datetime: moment(Math.ceil(networkAction.timestamp / 1000000)).format('HH:mm:ss.SSS, DD MMM YY')
+          datetime: toReadableDate(networkAction.timestamp)
         }
       };
     }, {});

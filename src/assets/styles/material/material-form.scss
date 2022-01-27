@@ -1,3 +1,5 @@
+@import 'variables';
+
 mat-form-field .mat-select-value {
   font-size: 12px !important;
 }
@@ -12,11 +14,11 @@ mat-form-field .mat-select-value {
 
 .mat-checkbox {
   &.mat-checkbox-checked.mat-accent .mat-checkbox-background {
-    background-color: var(--active-surface);
+    background-color: $active-surface;
   }
 
   .mat-checkbox-frame {
-    border-color: var(--foreground-1);
+    border-color: $foreground-1;
   }
 
   .mat-ripple-element {
@@ -33,7 +35,7 @@ mat-form-field.custom-bottom-form-field {
 
   &.mat-focused:not(.mat-form-field-invalid) .mat-form-field-wrapper .mat-form-field-flex,
   &:not(.mat-form-field-invalid) .mat-form-field-wrapper .mat-form-field-flex:hover {
-    background-color: var(--foreground-2);
+    background-color: $foreground-2;
   }
 
   .mat-form-field-wrapper {
@@ -41,7 +43,7 @@ mat-form-field.custom-bottom-form-field {
 
     .mat-form-field-flex {
       padding: 0;
-      background-color: var(--foreground-1);
+      background-color: $foreground-1;
       border-radius: 2px;
       height: 100%;
 
@@ -52,7 +54,7 @@ mat-form-field.custom-bottom-form-field {
           height: 100%;
           width: calc(100% - 7px);
           padding-left: 7px;
-          caret-color: var(--foreground-7);
+          caret-color: $foreground-7;
         }
 
         input {
@@ -60,7 +62,7 @@ mat-form-field.custom-bottom-form-field {
         }
 
         input::placeholder {
-          color: var(--foreground-4) !important;
+          color: $foreground-4 !important;
         }
       }
     }
@@ -78,16 +80,16 @@ mat-form-field.custom-bottom-form-field {
 mat-form-field.tezedge-form-field {
 
   .mat-form-field-flex {
-    background-color: var(--foreground-1);
+    background-color: $foreground-1;
     border-radius: 4px;
-    color: var(--foreground);
+    color: $foreground;
 
     .mat-form-field-outline, .mat-form-field-appearance-outline {
       opacity: 0 !important;
     }
 
     &:hover {
-      background-color: var(--foreground-2);
+      background-color: $foreground-2;
     }
   }
 
@@ -106,7 +108,7 @@ mat-form-field.tezedge-form-field {
       margin-bottom: 0;
 
       &::placeholder {
-        color: var(--foreground-4);
+        color: $foreground-4;
       }
     }
   }
@@ -142,7 +144,7 @@ mat-form-field.tezedge-form-field {
       margin-bottom: 10px;
 
       .mat-icon-button[disabled][disabled] {
-        color: var(--foreground-1);
+        color: $foreground-1;
       }
     }
 
@@ -154,16 +156,16 @@ mat-form-field.tezedge-form-field {
   mat-month-view {
     .mat-calendar-table-header th {
       font-size: 12px;
-      color: var(--foreground-4);
+      color: $foreground-4;
     }
 
     tbody {
       .mat-calendar-body-cell:not(.mat-calendar-body-disabled):hover > .mat-calendar-body-cell-content:not(.mat-calendar-body-selected) {
-        background-color: var(--foreground-2);
+        background-color: $foreground-2;
       }
 
       .mat-calendar-body-in-preview {
-        color: var(--foreground-2);
+        color: $foreground-2;
       }
 
       .mat-calendar-body-cell-content {
@@ -174,7 +176,7 @@ mat-form-field.tezedge-form-field {
       }
 
       .mat-calendar-body-selected {
-        background-color: var(--active-surface);
+        background-color: $active-surface;
       }
 
       .mat-calendar-body-in-range::before {
@@ -192,7 +194,7 @@ mat-form-field.tezedge-form-field {
   }
 
   .mat-calendar-arrow {
-    border-top-color: var(--foreground);
+    border-top-color: $foreground;
   }
 
   .mat-calendar-body-cell-content, .mat-date-range-input-separator {
@@ -208,7 +210,7 @@ mat-form-field.tezedge-form-field {
 
 
 mat-form-field .mat-select-value {
-  color: $color-focus;
+  color: $foreground;
   font-size: 13px;
   font-weight: 300;
 }
@@ -217,7 +219,7 @@ mat-form-field .mat-select-value {
 /* style position for mat-select dropdown panel */
 .mat-select-panel {
   border-radius: 4px !important;
-  background-color: var(--background-base);
+  background-color: $background-base;
 }
 
 .mat-select-panel-wrap {
@@ -236,17 +238,17 @@ mat-form-field .mat-select-value {
 }
 
 .mat-select-panel .mat-option.mat-selected:not(.mat-option-multiple) {
-  color: var(--foreground);
-  background-color: var(--background-surface);
+  color: $foreground;
+  background-color: $background-surface;
 
   &:hover {
-    background-color: var(--background-surface-fade-1);
+    background-color: $background-surface-fade-1;
   }
 }
 
 .mat-option:hover:not(.mat-option-disabled), .mat-option:focus:not(.mat-option-disabled) {
-  color: var(--foreground);
-  background-color: var(--background-surface-fade-1);
+  color: $foreground;
+  background-color: $background-surface-fade-1;
 }
 
 .mat-option:not(:last-child) {
@@ -254,7 +256,7 @@ mat-form-field .mat-select-value {
 }
 
 .mat-select-panel .mat-option {
-  color: $color;
+  color: $foreground-7;
 }
 
 /* remove underline in mat-select */

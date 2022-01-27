@@ -7,13 +7,16 @@ import { State } from '@app/app.reducers';
 import { ADD_ERROR } from '@shared/components/error-popup/error-popup.actions';
 import { MempoolBakingRightsService } from '@mempool/mempool-baking-rights/mempool-baking-rights.service';
 import {
+  MEMPOOL_BAKING_RIGHTS_DETAILS_LOAD,
+  MEMPOOL_BAKING_RIGHTS_DETAILS_LOAD_SUCCESS,
   MEMPOOL_BAKING_RIGHTS_INIT,
   MEMPOOL_BAKING_RIGHTS_LOAD,
   MEMPOOL_BAKING_RIGHTS_LOAD_SUCCESS,
-  MEMPOOL_BAKING_RIGHTS_STOP,
+  MEMPOOL_BAKING_RIGHTS_STOP, MempoolBakingRightsDetailsLoad,
   MempoolBakingRightsLoad
 } from '@mempool/mempool-baking-rights/mempool-baking-rights.actions';
-import { MempoolBakingRightsState } from '@shared/types/mempool/baking-rights/mempool-baking-rights-state.type';
+import { MempoolBakingRight } from '@shared/types/mempool/baking-rights/mempool-baking-right.type';
+import { MempoolBlockDetails } from '@shared/types/mempool/common/mempool-block-details.type';
 
 const mempoolBakingRightsSubject = new Subject<void>();
 
@@ -27,7 +30,10 @@ export class MempoolBakingRightsEffects {
     switchMap(() =>
       timer(0, 1000).pipe(
         takeUntil(mempoolBakingRightsSubject),
-        map(() => ({ type: MEMPOOL_BAKING_RIGHTS_LOAD }))
+        switchMap(() => [
+          { type: MEMPOOL_BAKING_RIGHTS_LOAD },
+          { type: MEMPOOL_BAKING_RIGHTS_DETAILS_LOAD },
+        ])
       )
     )
   ));
@@ -39,10 +45,24 @@ export class MempoolBakingRightsEffects {
     switchMap(({ action, state }) =>
       this.mempoolBakingRightsService.getBakingRights(state.settingsNode.activeNode.http, state.networkStats.lastAppliedBlock.level)
     ),
-    map((payload: Partial<MempoolBakingRightsState>) => ({ type: MEMPOOL_BAKING_RIGHTS_LOAD_SUCCESS, payload })),
+    map((bakingRights: MempoolBakingRight[]) => ({ type: MEMPOOL_BAKING_RIGHTS_LOAD_SUCCESS, payload: { bakingRights } })),
     catchError(error => of({
       type: ADD_ERROR,
       payload: { title: 'Error when loading mempool baking rights: ', message: error.message, initiator: MEMPOOL_BAKING_RIGHTS_LOAD }
+    }))
+  ));
+
+  mempoolBakingRightsDetailsLoad$ = createEffect(() => this.actions$.pipe(
+    ofType(MEMPOOL_BAKING_RIGHTS_DETAILS_LOAD),
+    withLatestFrom(this.store, (action: MempoolBakingRightsDetailsLoad, state: ObservedValueOf<Store<State>>) => ({ action, state })),
+    filter(({ action, state }) => state.networkStats.lastAppliedBlock.level > 0),
+    switchMap(({ action, state }) =>
+      this.mempoolBakingRightsService.getBakingRightDetails(state.settingsNode.activeNode.http, state.networkStats.lastAppliedBlock.level)
+    ),
+    map((details: MempoolBlockDetails[]) => ({ type: MEMPOOL_BAKING_RIGHTS_DETAILS_LOAD_SUCCESS, payload: { details } })),
+    catchError(error => of({
+      type: ADD_ERROR,
+      payload: { title: 'Error when loading mempool baking rights details: ', message: error.message }
     }))
   ));
 

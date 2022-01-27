@@ -16,6 +16,7 @@ export const environment = {
         { name: 'storage' },
         { name: 'network' },
         { name: 'logs' },
+        { name: 'open-api' },
         { name: 'state' }
       ]
     },
@@ -60,6 +61,27 @@ export const environment = {
     //     { name: 'smart-contracts' }
     //   ]
     // },
+    {
+      id: 'tezedge',
+      type: 'tezedge',
+      name: 'prod.tezedge.com',
+      http: 'http://prod.tezedge.com:18732',
+      p2p_port: 9732,
+      features: [
+        { name: 'ws', url: 'ws://prod.tezedge.com:4927' },
+        { name: 'debugger', url: 'http://prod.tezedge.com:17732' },
+        { name: 'monitoring' },
+        { name: 'resources/system', monitoringUrl: 'http://prod.tezedge.com:38732/resources/tezedge' },
+        { name: 'resources/memory', memoryProfilerUrl: 'http://prod.tezedge.com:17832' },
+        { name: 'resources/storage' },
+        { name: 'mempool' },
+        { name: 'storage' },
+        { name: 'network' },
+        { name: 'logs' },
+        { name: 'state' },
+        { name: 'smart-contracts' }
+      ]
+    },
     // {
     //   id: 'octez',
     //   name: 'octez.develop.dev.tezedge.com',

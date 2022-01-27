@@ -12,6 +12,7 @@ import {
   MEMPOOL_ENDORSEMENT_UPDATE_STATUSES_SUCCESS,
   MempoolEndorsementActions
 } from '@mempool/mempool-endorsement/mempool-endorsement.actions';
+import { SortDirection } from '@shared/types/shared/table-sort.type';
 
 const initialState: MempoolEndorsementState = {
   endorsements: [],
@@ -22,7 +23,7 @@ const initialState: MempoolEndorsementState = {
   activeBaker: localStorage.getItem('activeBaker'),
   sort: {
     sortBy: 'delta',
-    sortDirection: 'descending'
+    sortDirection: SortDirection.DSC
   }
 };
 
@@ -122,13 +123,13 @@ function sortEndorsements(endorsements: MempoolEndorsement[], sort: MempoolEndor
 
   const sortFunction = (e1: MempoolEndorsement, e2: MempoolEndorsement): number => {
     if (sortProperty === 'bakerName') {
-      return sort.sortDirection === 'descending'
+      return sort.sortDirection === SortDirection.DSC
         ? e2[sortProperty].localeCompare(e1[sortProperty])
         : e1[sortProperty].localeCompare(e2[sortProperty]);
     } else if (sortProperty === 'status') {
       return getSortOrder(e2.status, sort.sortDirection) - getSortOrder(e1.status, sort.sortDirection);
     }
-    return sort.sortDirection === 'descending'
+    return sort.sortDirection === SortDirection.DSC
       ? (e2[sortProperty] ?? Number.MAX_VALUE) - (e1[sortProperty] ?? Number.MAX_VALUE)
       : (e1[sortProperty] ?? Number.MAX_VALUE) - (e2[sortProperty] ?? Number.MAX_VALUE);
   };
@@ -137,8 +138,8 @@ function sortEndorsements(endorsements: MempoolEndorsement[], sort: MempoolEndor
   return [...updatedEndorsements, ...missedEndorsements];
 }
 
-function getSortOrder(status: string, direction: 'ascending' | 'descending'): number {
-  const priority = direction === 'descending' ? 1 : -1;
+function getSortOrder(status: string, direction: SortDirection.ASC | SortDirection.DSC): number {
+  const priority = direction === SortDirection.DSC ? 1 : -1;
   switch (status) {
     case MempoolEndorsementStatusTypes.BROADCAST: {
       return 5 * priority;

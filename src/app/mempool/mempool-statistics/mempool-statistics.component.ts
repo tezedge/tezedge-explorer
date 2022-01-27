@@ -18,7 +18,7 @@ import {
   selectMempoolStatisticsOperations,
   selectMempoolStatisticsSorting
 } from '@mempool/mempool-statistics/mempool-statistics.reducer';
-import { TableSort } from '@shared/types/shared/table-sort.type';
+import { SortDirection, TableSort } from '@shared/types/shared/table-sort.type';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { ADD_INFO, InfoAdd } from '@shared/components/error-popup/error-popup.actions';
 import { MatCheckboxChange } from '@angular/material/checkbox';
@@ -104,7 +104,7 @@ export class MempoolStatisticsComponent implements OnInit, OnDestroy, AfterViewI
   sortTable(sortBy: string): void {
     const sortDirection = sortBy !== this.currentSort.sortBy
       ? this.currentSort.sortDirection
-      : this.currentSort.sortDirection === 'ascending' ? 'descending' : 'ascending';
+      : this.currentSort.sortDirection === SortDirection.ASC ? SortDirection.DSC : SortDirection.ASC;
     this.store.dispatch<MempoolStatisticsSort>({
       type: MEMPOOL_STATISTICS_SORT,
       payload: { sortBy, sortDirection }

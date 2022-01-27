@@ -49,6 +49,7 @@
     "d3": "^7.1.1",
     "d3-shape": "^2.1.0",
     "dagre-d3": "^0.6.4",
+    "memo-decorator": "^2.0.1",
     "moment-mini-ts": "^2.20.1",
     "monaco-editor": "^0.27.0",
     "ngx-json-viewer": "^3.0.2",

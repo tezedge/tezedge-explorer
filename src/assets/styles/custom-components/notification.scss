@@ -1,4 +1,5 @@
 @import '../../../../node_modules/angular-notifier/styles';
+@import 'variables';
 
 .notifier__notification--material {
   padding: 0;
@@ -15,5 +16,5 @@
 }
 
 .notifier__notification--info {
-  background-color: var(--background-surface-fade-2);
+  background-color: $background-surface-fade-2;
 }

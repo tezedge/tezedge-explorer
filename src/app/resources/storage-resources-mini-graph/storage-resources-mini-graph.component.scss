@@ -110,25 +110,3 @@ $border-color: rgba(255, 255, 255, 0.1);
 .main-graph .y-steps {
   color: #fff;
 }
-
-.tooltip-template {
-  background-color: #2A2A2E;
-  padding: 8px;
-  border: 1px solid rgba(0, 0, 0, 0.2);
-  box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
-  border-radius: 4px;
-  font-size: 12px;
-  display: flex;
-  flex-direction: column;
-  color: rgba(255, 255, 255, 0.4);
-
-  > div {
-    margin-bottom: 8px;
-  }
-
-  .header {
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 4px;
-    padding: 6px 8px;
-  }
-}

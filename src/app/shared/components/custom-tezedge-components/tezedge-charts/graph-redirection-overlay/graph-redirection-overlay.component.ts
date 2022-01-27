@@ -10,6 +10,7 @@ export class GraphRedirectionOverlayComponent implements OnInit {
 
   @Input() date: string;
   @Input() resourcesOption: boolean = false;
+  @Input() blockLevel: number;
 
   private timestamp: number;
 
@@ -30,5 +31,9 @@ export class GraphRedirectionOverlayComponent implements OnInit {
       queryParams: { timestamp: this.timestamp },
       queryParamsHandling: 'merge'
     });
+  }
+
+  navigateToExternalURL(): void {
+    window.open('https://tzstats.com/' + this.blockLevel, '_blank');
   }
 }

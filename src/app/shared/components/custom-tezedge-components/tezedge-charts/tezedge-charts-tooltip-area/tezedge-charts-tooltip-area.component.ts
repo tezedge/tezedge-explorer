@@ -28,6 +28,10 @@ import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { ActivatedRoute } from '@angular/router';
 import { GraphRedirectionOverlayComponent } from '@shared/components/custom-tezedge-components/tezedge-charts/graph-redirection-overlay/graph-redirection-overlay.component';
 import { TezedgeChartsService } from '@shared/components/custom-tezedge-components/tezedge-charts/tezedge-charts.service';
+import {
+  MEMPOOL_BLOCK_APPLICATION_DETAILS_LOAD,
+  MempoolBlockApplicationDetailsLoad
+} from '@mempool/mempool-block-application/mempool-block-application.actions';
 
 @UntilDestroy()
 @Component({
@@ -37,9 +41,11 @@ import { TezedgeChartsService } from '@shared/components/custom-tezedge-componen
 })
 export class TezedgeChartsTooltipAreaComponent extends TooltipArea implements AfterViewInit, OnChanges, OnDestroy {
 
+  @Input() graphType: string;
   @Input() chartElement: SVGElement;
   @Input() resourceType: SystemResourcesResourceType | undefined;
   @Input() routedTooltipReady: boolean;
+  @Input() disableRedirection: boolean = false;
   @Input() tooltipPlacement: 'top' | 'bottom' = 'top';
 
   @ViewChild(TooltipDirective) private tooltipDirective: TooltipDirective;
@@ -101,7 +107,7 @@ export class TezedgeChartsTooltipAreaComponent extends TooltipArea implements Af
   ngAfterViewInit(): void {
     this.tooltipDirective.tooltipCloseOnClickOutside = false;
 
-    if (this.resourceType) {
+    if (this.resourceType && this.tooltipTrigger) {
       this.zone.runOutsideAngular(() => {
         this.document.querySelector('.resources-container')?.addEventListener('scroll', this.scrollListener);
         this.document.querySelector('.centered-container')?.addEventListener('scroll', this.scrollListener);
@@ -171,6 +177,9 @@ export class TezedgeChartsTooltipAreaComponent extends TooltipArea implements Af
   }
 
   attachOverlay(event: MouseEvent): void {
+    if (this.disableRedirection) {
+      return;
+    }
     this.detachTooltip();
 
     const rect = (event.target as SVGRectElement).getBoundingClientRect();
@@ -193,12 +202,18 @@ export class TezedgeChartsTooltipAreaComponent extends TooltipArea implements Af
           offsetY: rect.height + 15
         }])
     });
-
     const portal = new ComponentPortal(GraphRedirectionOverlayComponent);
     this.redirectionOverlayRef = this.overlayRef.attach(portal);
     this.redirectionOverlayRef.instance.date = this.anchorValues[0][this.resourceType ? 'name' : 'timestamp'];
-    if (!this.resourceType) { // is block application page
+    if (this.graphType === 'block-application') {
       this.redirectionOverlayRef.instance.resourcesOption = true;
+      this.redirectionOverlayRef.instance.blockLevel = Number(this.anchorValues[0].name);
+      this.store.dispatch<MempoolBlockApplicationDetailsLoad>({
+        type: MEMPOOL_BLOCK_APPLICATION_DETAILS_LOAD,
+        payload: {
+          level: Number(this.anchorValues[0].name)
+        }
+      });
     }
   }
 

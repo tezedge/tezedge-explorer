@@ -32,7 +32,8 @@
             "stylePreprocessorOptions": {
               "includePaths": [
                 "src/assets",
-                "src/assets/styles"
+                "src/assets/styles",
+                "src/assets/styles/utilities"
               ]
             },
             "aot": true,
@@ -61,14 +62,7 @@
                 "bundleName": "swagger-ui"
               },
               {
-                "input": "src/styles.light.scss",
-                "bundleName": "styles.light",
-                "inject": false
-              },
-              {
-                "input": "src/styles.dark.scss",
-                "bundleName": "styles.dark",
-                "inject": false
+                "input": "src/styles.scss"
               }
             ],
             "scripts": [
@@ -191,14 +185,7 @@
             ],
             "styles": [
               {
-                "input": "src/styles.light.scss",
-                "bundleName": "styles.light",
-                "inject": false
-              },
-              {
-                "input": "src/styles.dark.scss",
-                "bundleName": "styles.dark",
-                "inject": false
+                "input": "src/styles.scss"
               }
             ],
             "scripts": []

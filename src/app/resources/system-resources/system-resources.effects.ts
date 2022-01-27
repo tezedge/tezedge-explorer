@@ -51,8 +51,7 @@ export class SystemResourcesEffects {
 
   resourcesCloseEffect$ = createEffect(() => this.actions$.pipe(
     ofType(SystemResourcesActionTypes.SYSTEM_RESOURCES_CLOSE),
-    withLatestFrom(this.store, (action: any, state: ObservedValueOf<Store<State>>) => ({ action, state })),
-    tap(({ action, state }) => {
+    tap(() => {
       this.resourcesDestroy$.next(null);
       this.resourcesDestroy$.complete();
     })

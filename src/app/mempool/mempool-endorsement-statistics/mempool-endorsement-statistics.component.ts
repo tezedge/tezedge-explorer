@@ -2,18 +2,12 @@ import { ChangeDetectionStrategy, Component, NgZone, OnInit } from '@angular/cor
 import { Store } from '@ngrx/store';
 import { State } from '@app/app.reducers';
 import { BehaviorSubject, Observable, tap } from 'rxjs';
-import { animate, style, transition, trigger } from '@angular/animations';
 import { distinctUntilChanged, filter } from 'rxjs/operators';
 import { MempoolEndorsementStatistics } from '@shared/types/mempool/mempool-endorsement/mempool-endorsement-statistics.type';
 import { selectMempoolEndorsementCurrentBlock, selectMempoolEndorsementStatistics } from '@mempool/mempool-endorsement/mempool-endorsement.reducer';
+import { refreshBlock } from '@shared/constants/animations';
 import Timeout = NodeJS.Timeout;
 
-const refreshBlock = trigger('refreshBlock', [
-  transition('* => *', [
-    style({ backgroundColor: 'lightgray' }),
-    animate(250, style({ backgroundColor: 'transparent' })),
-  ])
-]);
 
 @Component({
   selector: 'app-mempool-endorsement-statistics',

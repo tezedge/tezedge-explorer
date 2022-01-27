@@ -1,15 +1,17 @@
+@import 'variables';
+
 .mat-calendar-header {
-  color: var(--foreground);
+  color: $foreground;
 
   .mat-calendar-controls .mat-calendar-arrow {
-    fill: var(--foreground);
+    fill: $foreground;
   }
 }
 
 .mat-calendar-content {
   .mat-calendar-table-header {
     .mat-calendar-abbr {
-      color: var(--foreground-4);
+      color: $foreground-4;
     }
 
     .mat-calendar-table-header-divider {
@@ -23,15 +25,15 @@
     }
 
     .mat-calendar-body-cell-content {
-      color: var(--foreground);
+      color: $foreground;
 
       &.mat-calendar-body-selected {
-        background-color: var(--active-surface);
+        background-color: $active-surface;
       }
     }
 
     .mat-calendar-body-cell:hover > .mat-calendar-body-cell-content:not(.mat-calendar-body-selected) {
-      background-color: var(--foreground-1) !important;
+      background-color: $foreground-1 !important;
     }
   }
 }

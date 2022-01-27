@@ -2,6 +2,10 @@
 app-tezedge-line-chart {
   color: var(--foreground-6);
   fill: var(--foreground-6);
+
+  .line-highlight linearGradient stop {
+    //stop-opacity: 1 !important;
+  }
 }
 
 .ngx-charts-tooltip-content {

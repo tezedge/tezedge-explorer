@@ -21,10 +21,12 @@
          [r]="radius"
          [fill]="circle.color"
          [class.active]="isActive({ name: circle.seriesName })"
-         [pointerEvents]="'none'"
+         [pointerEvents]="circle.value === 0 ? 'none' : 'all'"
          [data]="circle.value"
          [classNames]="circle.classNames"
-         (select)="onClick(circle.data)"/>
+         (select)="onClick(circle.data)"
+         (activate)="activateCircle()"
+         (deactivate)="deactivateCircle()"/>
   <svg:g ngx-charts-circle
          class="circle"
          [cx]="endOfLineCircle.cx"

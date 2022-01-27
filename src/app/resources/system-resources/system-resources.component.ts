@@ -18,6 +18,7 @@ import { SystemResourceCategory } from '@shared/types/resources/system/system-re
 import { SystemResourcesGraphComponent } from '@resources/system-resources-graph/system-resources-graph.component';
 import { TezedgeChartsService } from '@shared/charts/tezedge-charts.service';
 import { systemResources } from '@resources/system-resources/system-resources.reducer';
+import { MIN_WIDTH_1100 } from '@shared/constants/breakpoint-observer';
 
 
 @UntilDestroy()
@@ -120,7 +121,7 @@ export class SystemResourcesComponent implements OnInit, OnDestroy {
 
   private handleSmallDevices(): void {
     this.isSmallDevice = window.innerWidth < 1100;
-    this.breakpointObserver.observe('(min-width: 1100px)')
+    this.breakpointObserver.observe(MIN_WIDTH_1100)
       .pipe(untilDestroyed(this), skip(1))
       .subscribe(() => {
         this.isSmallDevice = window.innerWidth < 1100;

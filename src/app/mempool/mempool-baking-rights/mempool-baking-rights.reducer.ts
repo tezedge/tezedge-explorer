@@ -8,7 +8,6 @@ import {
 } from '@mempool/mempool-baking-rights/mempool-baking-rights.actions';
 import { MempoolBakingRight } from '@shared/types/mempool/baking-rights/mempool-baking-right.type';
 import { TableSort } from '@shared/types/shared/table-sort.type';
-import { MempoolStatisticsOperation } from '@shared/types/mempool/statistics/mempool-statistics-operation.type';
 
 const initialState: MempoolBakingRightsState = {
   blockLevel: null,

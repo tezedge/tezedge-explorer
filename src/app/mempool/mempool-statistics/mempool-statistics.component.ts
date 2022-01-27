@@ -61,12 +61,8 @@ export class MempoolStatisticsComponent implements OnInit, OnDestroy, AfterViewI
   scrolledIndex: number;
   horizontalScroll = 0;
   formGroup: FormGroup;
-
-  readonly trackOperation = (index: number, op: MempoolStatisticsOperation) => op.hash;
-
   @ViewChild(CdkVirtualScrollViewport) private cdkVirtualScrollViewport: CdkVirtualScrollViewport;
   @ViewChild('hsc') private horizontalScrollingContainer: ElementRef<HTMLDivElement>;
-
   private scrollSubscription: Subscription;
   private scrolledOnTableInitialization: boolean;
   private operations: MempoolStatisticsOperation[];
@@ -77,12 +73,69 @@ export class MempoolStatisticsComponent implements OnInit, OnDestroy, AfterViewI
               private cdRef: ChangeDetectorRef,
               private formBuilder: FormBuilder) { }
 
+  readonly trackOperation = (index: number, op: MempoolStatisticsOperation) => op.hash;
+
   ngOnInit(): void {
     this.store.dispatch<MempoolStatisticsLoad>({ type: MEMPOOL_STATISTICS_LOAD });
     this.listenToStatisticsChanges();
     this.listenToActiveOperationChange();
     this.listenToSortChange();
     this.initForm();
+  }
+
+  ngAfterViewInit(): void {
+    fromEvent(this.horizontalScrollingContainer.nativeElement, 'scroll').pipe(
+      untilDestroyed(this),
+      debounceTime(100)
+    ).subscribe(() => {
+      this.horizontalScroll = this.horizontalScrollingContainer.nativeElement.scrollLeft;
+      this.cdRef.detectChanges();
+    });
+  }
+
+  selectOperation(operation: MempoolStatisticsOperation): void {
+    this.router.navigate([], {
+      queryParams: { operation: operation.hash },
+      queryParamsHandling: 'merge',
+    });
+    this.store.dispatch<MempoolStatisticsChangeActiveOperation>({ type: MEMPOOL_STATISTICS_CHANGE_ACTIVE_OPERATION, payload: operation });
+  }
+
+  sortTable(sortBy: string): void {
+    const sortDirection = sortBy !== this.currentSort.sortBy
+      ? this.currentSort.sortDirection
+      : this.currentSort.sortDirection === 'ascending' ? 'descending' : 'ascending';
+    this.store.dispatch<MempoolStatisticsSort>({
+      type: MEMPOOL_STATISTICS_SORT,
+      payload: { sortBy, sortDirection }
+    });
+  }
+
+  copyHashToClipboard(hash: string, event: MouseEvent): void {
+    event.stopPropagation();
+    this.store.dispatch<InfoAdd>({ type: ADD_INFO, payload: 'Copied to clipboard: ' + hash });
+  }
+
+  onDeltaClick(event: MatCheckboxChange): void {
+    this.deltaEnabled = event.checked;
+    this.cdRef.detectChanges();
+
+    const tableHead = this.tableHeads.find(th => th.deltaAvailable && this.currentSort.sortBy.includes(th.sort));
+    if (tableHead) {
+      this.sortTable(this.deltaEnabled ? this.currentSort.sortBy + 'Delta' : tableHead.sort);
+    }
+  }
+
+  scrollLeft(): void {
+    this.horizontalScrollingContainer.nativeElement.scrollBy({ top: 0, left: -300, behavior: 'smooth' });
+  }
+
+  scrollRight(): void {
+    this.horizontalScrollingContainer.nativeElement.scrollBy({ top: 0, left: 300, behavior: 'smooth' });
+  }
+
+  ngOnDestroy(): void {
+    this.store.dispatch<MempoolStatisticsStop>({ type: MEMPOOL_STATISTICS_STOP });
   }
 
   private initForm(): void {
@@ -99,16 +152,6 @@ export class MempoolStatisticsComponent implements OnInit, OnDestroy, AfterViewI
         this.selectOperation(this.operations[index]);
         this.performScrollToActiveOperation(this.operations, index);
       }
-    });
-  }
-
-  ngAfterViewInit(): void {
-    fromEvent(this.horizontalScrollingContainer.nativeElement, 'scroll').pipe(
-      untilDestroyed(this),
-      debounceTime(100)
-    ).subscribe(() => {
-      this.horizontalScroll = this.horizontalScrollingContainer.nativeElement.scrollLeft;
-      this.cdRef.detectChanges();
     });
   }
 
@@ -165,50 +208,5 @@ export class MempoolStatisticsComponent implements OnInit, OnDestroy, AfterViewI
         this.scrollSubscription.unsubscribe();
       }
     });
-  }
-
-  selectOperation(operation: MempoolStatisticsOperation): void {
-    this.router.navigate([], {
-      queryParams: { operation: operation.hash },
-      queryParamsHandling: 'merge',
-    });
-    this.store.dispatch<MempoolStatisticsChangeActiveOperation>({ type: MEMPOOL_STATISTICS_CHANGE_ACTIVE_OPERATION, payload: operation });
-  }
-
-  sortTable(sortBy: string): void {
-    const sortDirection = sortBy !== this.currentSort.sortBy
-      ? this.currentSort.sortDirection
-      : this.currentSort.sortDirection === 'ascending' ? 'descending' : 'ascending';
-    this.store.dispatch<MempoolStatisticsSort>({
-      type: MEMPOOL_STATISTICS_SORT,
-      payload: { sortBy, sortDirection }
-    });
-  }
-
-  copyHashToClipboard(hash: string, event: MouseEvent): void {
-    event.stopPropagation();
-    this.store.dispatch<InfoAdd>({ type: ADD_INFO, payload: 'Copied to clipboard: ' + hash });
-  }
-
-  onDeltaClick(event: MatCheckboxChange): void {
-    this.deltaEnabled = event.checked;
-    this.cdRef.detectChanges();
-
-    const tableHead = this.tableHeads.find(th => th.deltaAvailable && this.currentSort.sortBy.includes(th.sort));
-    if (tableHead) {
-      this.sortTable(this.deltaEnabled ? this.currentSort.sortBy + 'Delta' : tableHead.sort);
-    }
-  }
-
-  scrollLeft(): void {
-    this.horizontalScrollingContainer.nativeElement.scrollBy({ top: 0, left: -300, behavior: 'smooth' });
-  }
-
-  scrollRight(): void {
-    this.horizontalScrollingContainer.nativeElement.scrollBy({ top: 0, left: 300, behavior: 'smooth' });
-  }
-
-  ngOnDestroy(): void {
-    this.store.dispatch<MempoolStatisticsStop>({ type: MEMPOOL_STATISTICS_STOP });
   }
 }

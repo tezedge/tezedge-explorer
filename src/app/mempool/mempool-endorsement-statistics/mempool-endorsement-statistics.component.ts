@@ -5,8 +5,8 @@ import { BehaviorSubject, Observable, tap } from 'rxjs';
 import { animate, style, transition, trigger } from '@angular/animations';
 import { distinctUntilChanged, filter } from 'rxjs/operators';
 import { MempoolEndorsementStatistics } from '@shared/types/mempool/mempool-endorsement/mempool-endorsement-statistics.type';
-import Timeout = NodeJS.Timeout;
 import { selectMempoolEndorsementCurrentBlock, selectMempoolEndorsementStatistics } from '@mempool/mempool-endorsement/mempool-endorsement.reducer';
+import Timeout = NodeJS.Timeout;
 
 const refreshBlock = trigger('refreshBlock', [
   transition('* => *', [
@@ -27,14 +27,13 @@ export class MempoolEndorsementStatisticsComponent implements OnInit {
   statistics$: Observable<MempoolEndorsementStatistics>;
   currentBlock$: Observable<number>;
   previousBlockElapsedTime: number;
-
-  private interval: Timeout;
-
   readonly elapsedTime$: BehaviorSubject<number> = new BehaviorSubject<number>(null);
-  readonly trackStats = entry => entry.value;
+  private interval: Timeout;
 
   constructor(private store: Store<State>,
               private zone: NgZone) { }
+
+  readonly trackStats = entry => entry.value;
 
   ngOnInit(): void {
     this.listenToEndorsementStatisticsChanges();

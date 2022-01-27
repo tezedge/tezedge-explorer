@@ -29,16 +29,6 @@ export class MempoolStatisticsDetailsComponent implements OnInit {
     this.listenToSortChange();
   }
 
-  private listenToStatisticsChanges(): void {
-    this.activeOperation$ = this.store.select(selectMempoolStatisticsActiveOperation);
-  }
-
-  private listenToSortChange(): void {
-    this.store.select(selectMempoolStatisticsDetailsSorting)
-      .pipe(untilDestroyed(this))
-      .subscribe(sort => this.currentSort = sort);
-  }
-
   copyHashToClipboard(hash: string): void {
     this.store.dispatch<InfoAdd>({ type: ADD_INFO, payload: 'Copied to clipboard: ' + hash });
   }
@@ -51,6 +41,16 @@ export class MempoolStatisticsDetailsComponent implements OnInit {
       type: MEMPOOL_STATISTICS_DETAILS_SORT,
       payload: { sortBy, sortDirection }
     });
+  }
+
+  private listenToStatisticsChanges(): void {
+    this.activeOperation$ = this.store.select(selectMempoolStatisticsActiveOperation);
+  }
+
+  private listenToSortChange(): void {
+    this.store.select(selectMempoolStatisticsDetailsSorting)
+      .pipe(untilDestroyed(this))
+      .subscribe(sort => this.currentSort = sort);
   }
 
 }

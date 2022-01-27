@@ -55,7 +55,6 @@ const translateFromLeft = trigger('translateFromLeft', [
 })
 export class MempoolEndorsementComponent implements OnInit, OnDestroy {
 
-  readonly trackEndorsements = (index: number, endorsement: MempoolEndorsement) => endorsement.status;
   readonly tableHeads = [
     { name: 'slots', sort: 'slotsLength' },
     { name: 'baker', sort: 'bakerName' },
@@ -68,25 +67,56 @@ export class MempoolEndorsementComponent implements OnInit, OnDestroy {
     { name: 'apply', sort: 'applyTime', deltaAvailable: true },
     { name: 'broadcast', sort: 'broadcastTime', deltaAvailable: true },
   ];
-
   endorsements$: Observable<MempoolEndorsement[]>;
   currentSort: MempoolEndorsementSort;
   animateRows: 'static' | 'animate' = 'static';
   deltaEnabled = true;
   formGroup: FormGroup;
   activeBaker: string;
-
   @ViewChild('scrollableContainer') private scrollableContainer: ElementRef<HTMLDivElement>;
 
   constructor(private store: Store<State>,
               private cdRef: ChangeDetectorRef,
               private formBuilder: FormBuilder) { }
 
+  readonly trackEndorsements = (index: number, endorsement: MempoolEndorsement) => endorsement.status;
+
   ngOnInit(): void {
     this.listenToNewAppliedBlock();
     this.listenToNewEndorsements();
     this.listenToActiveBakerChange();
     this.initForm();
+  }
+
+  sortTable(sortBy: string): void {
+    const sortDirection = sortBy !== this.currentSort.sortBy
+      ? this.currentSort.sortDirection
+      : this.currentSort.sortDirection === 'ascending' ? 'descending' : 'ascending';
+    this.store.dispatch<MempoolEndorsementSorting>({
+      type: MEMPOOL_ENDORSEMENT_SORT,
+      payload: {
+        sortBy,
+        sortDirection
+      }
+    });
+  }
+
+  copyHashToClipboard(hash: string): void {
+    this.store.dispatch<InfoAdd>({ type: ADD_INFO, payload: 'Copied to clipboard: ' + hash });
+  }
+
+  onDeltaClick(event: MatCheckboxChange): void {
+    this.deltaEnabled = event.checked;
+    this.cdRef.detectChanges();
+
+    const tableHead = this.tableHeads.find(th => th.deltaAvailable && this.currentSort.sortBy.includes(th.sort));
+    if (tableHead) {
+      this.sortTable(this.deltaEnabled ? this.currentSort.sortBy + 'Delta' : tableHead.sort);
+    }
+  }
+
+  ngOnDestroy(): void {
+    this.store.dispatch<MempoolEndorsementStop>({ type: MEMPOOL_ENDORSEMENT_STOP });
   }
 
   private initForm(): void {
@@ -102,19 +132,6 @@ export class MempoolEndorsementComponent implements OnInit, OnDestroy {
         type: MEMPOOL_ENDORSEMENT_SET_ACTIVE_BAKER,
         payload: value.hash
       });
-    });
-  }
-
-  sortTable(sortBy: string): void {
-    const sortDirection = sortBy !== this.currentSort.sortBy
-      ? this.currentSort.sortDirection
-      : this.currentSort.sortDirection === 'ascending' ? 'descending' : 'ascending';
-    this.store.dispatch<MempoolEndorsementSorting>({
-      type: MEMPOOL_ENDORSEMENT_SORT,
-      payload: {
-        sortBy,
-        sortDirection
-      }
     });
   }
 
@@ -152,23 +169,5 @@ export class MempoolEndorsementComponent implements OnInit, OnDestroy {
     this.store.select(selectMempoolEndorsementSorting)
       .pipe(untilDestroyed(this))
       .subscribe(sort => this.currentSort = sort);
-  }
-
-  copyHashToClipboard(hash: string): void {
-    this.store.dispatch<InfoAdd>({ type: ADD_INFO, payload: 'Copied to clipboard: ' + hash });
-  }
-
-  onDeltaClick(event: MatCheckboxChange): void {
-    this.deltaEnabled = event.checked;
-    this.cdRef.detectChanges();
-
-    const tableHead = this.tableHeads.find(th => th.deltaAvailable && this.currentSort.sortBy.includes(th.sort));
-    if (tableHead) {
-      this.sortTable(this.deltaEnabled ? this.currentSort.sortBy + 'Delta' : tableHead.sort);
-    }
-  }
-
-  ngOnDestroy(): void {
-    this.store.dispatch<MempoolEndorsementStop>({ type: MEMPOOL_ENDORSEMENT_STOP });
   }
 }

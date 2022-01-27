@@ -206,7 +206,6 @@ export class TezedgeChartsTooltipAreaComponent extends TooltipArea implements Af
     this.redirectionOverlayRef = this.overlayRef.attach(portal);
     this.redirectionOverlayRef.instance.date = this.anchorValues[0][this.resourceType ? 'name' : 'timestamp'];
     if (this.graphType === 'block-application') {
-      this.redirectionOverlayRef.instance.resourcesOption = true;
       this.redirectionOverlayRef.instance.blockLevel = Number(this.anchorValues[0].name);
       this.store.dispatch<MempoolBlockApplicationDetailsLoad>({
         type: MEMPOOL_BLOCK_APPLICATION_DETAILS_LOAD,

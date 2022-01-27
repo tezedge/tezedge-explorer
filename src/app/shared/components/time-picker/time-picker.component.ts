@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 
 @Component({
@@ -8,6 +8,8 @@ import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class TimePickerComponent implements OnInit {
+
+  @Output() timeChange = new EventEmitter<any>();
 
   selectedRangeValue: any;
 
@@ -22,7 +24,7 @@ export class TimePickerComponent implements OnInit {
   private initForm(): void {
     this.formGroup = this.formBuilder.group({
       date: new FormControl(),
-      hour: new FormControl(23),
+      hour: new FormControl(),
       minute: new FormControl(),
       second: new FormControl(),
       milliSecond: new FormControl()

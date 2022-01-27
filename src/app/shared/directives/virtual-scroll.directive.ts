@@ -167,6 +167,9 @@ export class VirtualScrollDirective implements AfterViewInit, OnDestroy, OnChang
   }
 
   public onResize(): void {
+    if (!this) {
+      return;
+    }
     this.initDimensions();
     this.load();
     this.scrollToBottom();

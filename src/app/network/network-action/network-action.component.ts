@@ -24,7 +24,6 @@ export class NetworkActionComponent implements OnInit, OnDestroy {
 
   virtualScrollItems: NetworkAction;
   selectedNetworkId: number = -1;
-  networkActionShow: boolean;
   virtualPageSize = 1000;
   activeFilters = [];
 
@@ -49,7 +48,7 @@ export class NetworkActionComponent implements OnInit, OnDestroy {
     this.listenToFormChange();
     this.listenToRouteChange();
     this.listenToNetworkChange();
-    this.openTimePicker();
+    // this.openTimePicker();
   }
 
   private getNetwork(): void {
@@ -66,10 +65,9 @@ export class NetworkActionComponent implements OnInit, OnDestroy {
       .pipe(untilDestroyed(this))
       .subscribe((data: NetworkAction) => {
         this.virtualScrollItems = data;
-        this.networkActionShow = this.virtualScrollItems.ids.length > 0;
         this.activeFilters = this.setActiveFilters();
-
-        this.preselectRow();
+        // console.log(data.selected);
+        // this.preselectRow();
 
         this.changeDetector.detectChanges();
       });
@@ -77,18 +75,18 @@ export class NetworkActionComponent implements OnInit, OnDestroy {
 
   private preselectRow(): void {
     if (
-      this.virtualScrollItems.timestamp && this.virtualScrollItems.ids.length && !this.virtualScrollItems.stream
+      this.virtualScrollItems.timestamp && this.virtualScrollItems.ids.length && !this.virtualScrollItems.stream && !this.virtualScrollItems.selected
     ) {
       const network: NetworkActionEntity[] = Object.keys(this.virtualScrollItems.entities).map(key => this.virtualScrollItems.entities[key]);
       const timestampToFind = Number(this.routeTimestamp);
-      const closestNetworkToTimestamp = network.reduce((prev: NetworkActionEntity, curr: NetworkActionEntity) =>
+      const closestNetworkRowToTimestamp = network.reduce((prev: NetworkActionEntity, curr: NetworkActionEntity) =>
         Math.abs(curr.timestamp / 1000000 - timestampToFind) < Math.abs(prev.timestamp / 1000000 - timestampToFind)
           ? curr
           : prev);
-      if (closestNetworkToTimestamp.originalId !== this.selectedNetworkId) {
-        this.selectedNetworkId = closestNetworkToTimestamp.originalId;
-        this.getItemDetails(closestNetworkToTimestamp);
-        this.initialSelectedIndex = network.findIndex(item => item.id === closestNetworkToTimestamp.id);
+      if (closestNetworkRowToTimestamp.originalId !== this.selectedNetworkId) {
+        this.selectedNetworkId = closestNetworkRowToTimestamp.originalId;
+        this.getItemDetails(closestNetworkRowToTimestamp);
+        this.initialSelectedIndex = network.findIndex(item => item.id === closestNetworkRowToTimestamp.id);
       }
     } else {
       this.initialSelectedIndex = undefined;
@@ -191,7 +189,6 @@ export class NetworkActionComponent implements OnInit, OnDestroy {
     if (networkItem.originalId === undefined) {
       return;
     }
-
     this.store.dispatch({
       type: 'NETWORK_ACTION_DETAILS_LOAD',
       payload: {
@@ -331,12 +328,12 @@ export class NetworkActionComponent implements OnInit, OnDestroy {
       positionStrategy: this.overlay.position()
         .flexibleConnectedTo(event?.target as HTMLElement)
         .withPositions([{
-          originX: 'center',
+          originX: 'start',
           originY: 'top',
           overlayX: 'start',
           overlayY: 'top',
           offsetX: 0,
-          offsetY: 200
+          offsetY: -50
         }])
     });
     event?.stopPropagation();

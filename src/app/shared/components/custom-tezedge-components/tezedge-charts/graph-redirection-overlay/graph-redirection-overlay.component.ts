@@ -9,7 +9,6 @@ import { Router } from '@angular/router';
 export class GraphRedirectionOverlayComponent implements OnInit {
 
   @Input() date: string;
-  @Input() resourcesOption: boolean = false;
   @Input() blockLevel: number;
 
   private timestamp: number;

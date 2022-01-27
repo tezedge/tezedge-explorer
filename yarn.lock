@@ -11010,6 +11010,11 @@
   "resolved" "https://registry.npmjs.org/typedarray/-/typedarray-0.0.6.tgz"
   "version" "0.0.6"
 
+"typescript-debounce-decorator@^0.0.18":
+  "integrity" "sha512-AaCIL9z/hHkD+x63xrjjPpRGCfYhrwtfP0E5liwnopmvCrXrb7ozcKCalnh82w9c9OM8tZqRslCwOHsKBvw1tw=="
+  "resolved" "https://registry.npmjs.org/typescript-debounce-decorator/-/typescript-debounce-decorator-0.0.18.tgz"
+  "version" "0.0.18"
+
 "typescript@>=2.7", "typescript@>=4.2.3 <4.4", "typescript@~4.2.3 || ~4.3.2", "typescript@~4.3.5", "typescript@4.3.5":
   "integrity" "sha512-DqQgihaQ9cUrskJo9kIyW/+g0Vxsk8cDtZ52a3NGh0YNTfpUSArXSohyUGnvbPazEPLu398C0UxmKSOrPumUzA=="
   "resolved" "https://registry.npmjs.org/typescript/-/typescript-4.3.5.tgz"

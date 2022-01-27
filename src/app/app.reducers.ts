@@ -71,7 +71,7 @@ export interface State {
   chainFinish: any;
   settingsNode: SettingsNode;
   sandbox: any;
-  routerReducer: fromRouter.RouterReducerState<RouterStateUrl>;
+  // routerReducer: fromRouter.RouterReducerState<RouterStateUrl>;
   wallets: any;
   error: ErrorState;
   githubVersion: GithubVersion;
@@ -100,7 +100,7 @@ export const reducers: ActionReducerMap<State> = {
   chainFinish: fromChainFinish.reducer,
   sandbox: fromSandbox.reducer,
   settingsNode: fromSettingsNode.reducer,
-  routerReducer: fromRouter.routerReducer,
+  // routerReducer: fromRouter.routerReducer,
   wallets: fromWallets.reducer,
   githubVersion: fromVersion.reducer,
   resources: fromResources.reducer,

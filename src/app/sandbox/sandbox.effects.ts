@@ -205,7 +205,7 @@ export class SandboxEffects {
             { type: 'MEMPOOL_ACTION_LOAD' },
             { type: 'STORAGE_BLOCK_FETCH' },
             { type: 'WALLETS_LIST_INIT' },
-            { type: 'SANDBOX_BAKE_BLOCK_SUCCESS', payload: payload },
+            { type: 'SANDBOX_BAKE_BLOCK_SUCCESS', payload },
         ]),
         catchError((error, caught) => {
             console.error(error)

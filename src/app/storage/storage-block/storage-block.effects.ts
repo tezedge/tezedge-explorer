@@ -2,12 +2,12 @@ import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { HttpClient } from '@angular/common/http';
 import { Store } from '@ngrx/store';
-import { catchError, map, switchMap, takeUntil, tap, withLatestFrom } from 'rxjs/operators';
+import { catchError, filter, map, switchMap, takeUntil, tap, withLatestFrom } from 'rxjs/operators';
 import { combineLatest, ObservedValueOf, of, Subject, timer } from 'rxjs';
 import { State } from '@app/app.reducers';
 import { StorageBlockService } from './storage-block.service';
 import { ADD_ERROR } from '@shared/components/error-popup/error-popup.actions';
-import { StorageBlockActionTypes } from './storage-block.actions';
+import { STORAGE_BLOCK_CHECK_AVAILABLE_CONTEXTS, STORAGE_BLOCK_LOAD_ROUTED_BLOCK, STORAGE_BLOCK_MAP_AVAILABLE_CONTEXTS } from './storage-block.actions';
 
 
 @Injectable({ providedIn: 'root' })
@@ -15,29 +15,12 @@ export class StorageBlockEffects {
 
   private storageBlockDestroy$ = new Subject();
 
-  storageBlockReset$ = createEffect(() => this.actions$.pipe(
-    ofType('STORAGE_BLOCK_RESET', 'STORAGE_BLOCK_LOAD'),
-    map((payload) => ({ type: 'STORAGE_BLOCK_RESET_SUCCESS', payload })),
-    catchError((error, caught) => {
-      console.error(error);
-      this.store.dispatch({
-        type: 'STORAGE_BLOCK_RESET_ERROR',
-        payload: error
-      });
-      return caught;
-    })
-  ));
-
   storageBlockLoad$ = createEffect(() => this.actions$.pipe(
     ofType('STORAGE_BLOCK_FETCH'),
-
-    // merge state
     withLatestFrom(this.store, (action: any, state: ObservedValueOf<Store<State>>) => ({ action, state })),
     switchMap(({ action, state }) => {
       return this.http.get(setUrl(action, state));
     }),
-
-    // dispatch action
     map((payload) => ({ type: 'STORAGE_BLOCK_FETCH_SUCCESS', payload })),
     catchError((error, caught) => {
       console.error(error);
@@ -65,10 +48,22 @@ export class StorageBlockEffects {
     )
   ));
 
-  storageBlockStartSuccessEffect$ = createEffect(() => this.actions$.pipe(
-    ofType('STORAGE_BLOCK_START_SUCCESS'),
+  storageBlockLoadRoutedBlockEffect$ = createEffect(() => this.actions$.pipe(
+    ofType(STORAGE_BLOCK_LOAD_ROUTED_BLOCK),
     withLatestFrom(this.store, (action: any, state: ObservedValueOf<Store<State>>) => ({ action, state })),
-    map(({ action, state }) => ({ type: StorageBlockActionTypes.STORAGE_BLOCK_CHECK_AVAILABLE_CONTEXTS }))
+    switchMap(({ action, state }) =>
+      this.http.get(setUrl(action, state))
+    ),
+    switchMap((response: any[]) => [
+      { type: 'STORAGE_BLOCK_STOP' },
+      { type: 'STORAGE_BLOCK_START_SUCCESS', payload: response }
+    ]),
+  ));
+
+  storageBlockStartSuccessEffect$ = createEffect(() => this.actions$.pipe(
+    ofType('STORAGE_BLOCK_START_SUCCESS', 'STORAGE_BLOCK_FETCH_SUCCESS'),
+    withLatestFrom(this.store, (action: any, state: ObservedValueOf<Store<State>>) => ({ action, state })),
+    map(({ action, state }) => ({ type: STORAGE_BLOCK_CHECK_AVAILABLE_CONTEXTS }))
   ));
 
   storageBlockGetNextBlockDetailsEffect$ = createEffect(() => this.actions$.pipe(
@@ -91,19 +86,21 @@ export class StorageBlockEffects {
     })
   ));
 
-  storageBlockStopEffect$ = createEffect(() => this.actions$.pipe(
-    ofType('STORAGE_BLOCK_STOP'),
-    withLatestFrom(this.store, (action: any, state: ObservedValueOf<Store<State>>) => ({ action, state })),
-    tap(({ action, state }) => this.storageBlockDestroy$.next(null))
-  ), { dispatch: false });
-
   storageBlockCheckAvailableContextsEffect$ = createEffect(() => this.actions$.pipe(
-    ofType(StorageBlockActionTypes.STORAGE_BLOCK_CHECK_AVAILABLE_CONTEXTS),
+    ofType(STORAGE_BLOCK_CHECK_AVAILABLE_CONTEXTS),
     withLatestFrom(this.store, (action: any, state: ObservedValueOf<Store<State>>) => ({ action, state })),
     switchMap(({ action, state }) =>
       this.storageBlockService.checkStorageBlockAvailableContexts(state.settingsNode.activeNode.http, state.storageBlock.entities[0].hash)
-        .pipe(map((contexts: string[]) => ({ type: StorageBlockActionTypes.STORAGE_BLOCK_MAP_AVAILABLE_CONTEXTS, payload: contexts })))
     ),
+    map((contexts: string[]) => ({ type: STORAGE_BLOCK_MAP_AVAILABLE_CONTEXTS, payload: contexts })),
+    catchError(error => of({ type: ADD_ERROR, payload: { title: 'Storage block details error', message: error.message } }))
+  ));
+
+  storageBlockMapAvailableContextsEffect$ = createEffect(() => this.actions$.pipe(
+    ofType(STORAGE_BLOCK_MAP_AVAILABLE_CONTEXTS),
+    withLatestFrom(this.store, (action: any, state: ObservedValueOf<Store<State>>) => ({ action, state })),
+    filter(({ action, state }) => state.storageBlock.routedBlock),
+    map(({ action, state }) => ({ type: 'STORAGE_BLOCK_DETAILS_LOAD', payload: { hash: state.storageBlock.entities[state.storageBlock.ids.length - 1].hash } })),
     catchError(error => of({ type: ADD_ERROR, payload: { title: 'Storage block details error', message: error.message } }))
   ));
 
@@ -113,7 +110,11 @@ export class StorageBlockEffects {
     switchMap(({ action, state }) => {
       return combineLatest(
         this.http.get(setDetailsUrl(action, state)),
-        this.storageBlockService.getStorageBlockContextDetails(state.settingsNode.activeNode.http, action.payload.hash, action.payload.context),
+        this.storageBlockService.getStorageBlockContextDetails(
+          state.settingsNode.activeNode.http,
+          action.payload.hash,
+          action.payload.context || state.storageBlock.availableContexts[0]
+        ),
       );
     }),
     map((response) => {
@@ -132,6 +133,11 @@ export class StorageBlockEffects {
       return caught;
     })
   ));
+
+  storageBlockStopEffect$ = createEffect(() => this.actions$.pipe(
+    ofType('STORAGE_BLOCK_STOP', 'STORAGE_BLOCK_RESET'),
+    tap(() => this.storageBlockDestroy$.next(null))
+  ), { dispatch: false });
 
   constructor(private http: HttpClient,
               private actions$: Actions,

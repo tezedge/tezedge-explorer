@@ -8,7 +8,7 @@ const initialState: NetworkAction = {
   ids: [],
   entities: {},
   lastCursorId: 0,
-  selected: {},
+  selected: null,
   filter: {
     local: false,
     remote: false,
@@ -54,7 +54,7 @@ export function reducer(state: NetworkAction = initialState, action): NetworkAct
         lastCursorId: setLastCursorId(action),
         activePage,
         pages: setPages(activePage, state),
-        timestamp: action.payload.timestamp
+        // timestamp: action.payload.timestamp
       };
     }
 
@@ -67,7 +67,7 @@ export function reducer(state: NetworkAction = initialState, action): NetworkAct
 
       return {
         ...state,
-        selected: {},
+        selected: null,
         stream: false,
         urlParams: state.urlParams,
         filter: stateFilter,
@@ -156,7 +156,8 @@ export function setEntities(action, state): { [id: string]: NetworkActionEntity 
           id: virtualScrollId,
           originalId: networkAction.id,
           payload: networkAction.message,
-          datetime: toReadableDate(networkAction.timestamp)
+          datetime: toReadableDate(networkAction.timestamp),
+          timestamp: networkAction.timestamp
         }
       };
     }, {});

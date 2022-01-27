@@ -6,6 +6,7 @@ import { catchError, map, switchMap, takeUntil, tap, withLatestFrom } from 'rxjs
 import { forkJoin, ObservedValueOf, of, Subject, timer } from 'rxjs';
 import { State } from '@app/app.reducers';
 import { ADD_ERROR } from '@shared/components/error-popup/error-popup.actions';
+import { NetworkActionEntity } from '@shared/types/network/network-action-entity.type';
 
 const networkActionDestroy$ = new Subject();
 
@@ -39,13 +40,31 @@ export class NetworkActionEffects {
         this.http.get<any[]>(urlBackward),
         this.http.get<any[]>(urlForward)
       ]).pipe(
-        map(([backwardSlice, forwardSlice]) => ({
-          type: 'NETWORK_ACTION_LOAD_SUCCESS',
-          payload: {
-            timestamp: action.payload.timestamp,
-            network: [...forwardSlice.reverse(), ...backwardSlice]
-          }
-        }))
+        switchMap(([backwardSlice, forwardSlice]) => {
+
+          const networkList = [...forwardSlice.reverse(), ...backwardSlice];
+          const timestampToFind = action.payload.timestamp;
+          const closestNetworkRowToTimestamp = networkList.reduce((prev: NetworkActionEntity, curr: NetworkActionEntity) =>
+            Math.abs(curr.timestamp / 1000000 - timestampToFind) < Math.abs(prev.timestamp / 1000000 - timestampToFind)
+              ? curr
+              : prev);
+
+          return [
+            {
+              type: 'NETWORK_ACTION_LOAD_SUCCESS',
+              payload: {
+                timestamp: action.payload.timestamp,
+                network: networkList
+              }
+            },
+            {
+              type: 'NETWORK_ACTION_DETAILS_LOAD',
+              payload: {
+                originalId:  closestNetworkRowToTimestamp.id
+              }
+            }
+          ];
+        })
       );
     }),
     catchError((error, caught) => {
@@ -151,7 +170,7 @@ export function setUrl(action, state) {
 
 export function networkActionTimestamp(action, direction: string): string {
   return action.payload && action.payload.timestamp
-    ? `&from=${action.payload.timestamp}&direction=${direction}`
+    ? `&from=${action.payload.timestamp * 1000000}&direction=${direction}`
     : '';
 }
 

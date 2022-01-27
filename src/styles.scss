@@ -639,19 +639,8 @@ input.mat-input-element {
   border-left: 1px solid $background-surface-fade-1;
 }
 
-.storage-block-container {
-  background-color: $background-base;
-  display: flex;
-  align-items: flex-start;
-  // justify-content: center;
-  flex-direction: column;
-  margin-top: 25px;
-}
-
 .storage-block-table-viewport {
   overflow-x: hidden;
-  /* height: 504px; */
-  /* 36*14 */
   width: 60%;
 }
 

@@ -36,7 +36,7 @@ export class MempoolBakingRightsService {
     }
   }
 
-  private mapBakingRightsDetails(response: any): any {
+  private mapBakingRightsDetails(response: any[]): any {
     const result: MempoolBlockDetails[] = [];
     response.forEach((dr: any) => {
       const detailResult: MempoolBlockDetails = {

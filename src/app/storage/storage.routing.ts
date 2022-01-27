@@ -2,7 +2,6 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { StorageComponent } from './storage.component';
 import { StorageBlockComponent } from './storage-block/storage-block.component';
-import { StorageActionComponent } from './storage-action/storage-action.component';
 import { StorageGuard } from './storage.guard';
 
 const routes: Routes = [
@@ -13,12 +12,13 @@ const routes: Routes = [
     children: [
       {
         path: '',
-        component: StorageBlockComponent
-      },
-      {
-        path: ':search',
-        canActivate: [StorageGuard],
-        component: StorageActionComponent
+        component: StorageBlockComponent,
+        children: [
+          {
+            path: ':hash',
+            component: StorageBlockComponent
+          }
+        ]
       }
     ]
   },

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, tap } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { map } from 'rxjs/operators';
 import { snakeCaseToCamelCase } from '@helpers/object.helper';
@@ -16,6 +16,7 @@ export class MempoolBakingRightsService {
   getBakingRights(http: string, level: number): Observable<MempoolBakingRight[]> {
     const url = `${http}/dev/shell/automaton/stats/current_head/peers?level=${level}`;
     return this.http.get<MempoolBakingRight[]>(url).pipe(
+      tap(this.handleError),
       map(snakeCaseToCamelCase)
     );
   }
@@ -23,16 +24,20 @@ export class MempoolBakingRightsService {
   getBakingRightDetails(http: string, level: number): Observable<[]> {
     const url = `${http}/dev/shell/automaton/stats/current_head/application?level=${level}`;
     return this.http.get<MempoolBlockDetails[]>(url).pipe(
+      tap(this.handleError),
       map(snakeCaseToCamelCase),
       map(this.mapBakingRightsDetails)
     );
   }
 
+  private handleError(res): any {
+    if (res.error) {
+      throw new Error(res.error);
+    }
+  }
+
   private mapBakingRightsDetails(response: any): any {
     const result: MempoolBlockDetails[] = [];
-    if (response.error) {
-      return null;
-    }
     response.forEach((dr: any) => {
       const detailResult: MempoolBlockDetails = {
         blockTimestamp: dr.blockTimestamp,

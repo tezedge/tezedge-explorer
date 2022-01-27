@@ -31,14 +31,14 @@ import * as fromSandbox from './sandbox/sandbox.reducer';
 import * as fromWallets from './wallets/wallets.reducer';
 import * as fromVersion from './layout/github-version/github-version.reducer';
 import * as fromResources from './resources/resources.reducer';
-import * as fromError from './shared/error-popup/error-popup.reducer';
+import * as fromError from './shared/components/error-popup/error-popup.reducer';
 import * as fromStateMachine from './state-machine/state-machine/state-machine.reducer';
 import * as fromSmartContracts from './smart-contracts/smart-contracts/smart-contracts.reducer';
-import * as fromSpinner from './shared/loading-spinner/loading-spinner.reducer';
+import * as fromSpinner from './shared/components/loading-spinner/loading-spinner.reducer';
 
 import { MempoolState } from '@mempool/mempool.reducer';
 import { ResourcesState } from '@resources/resources.reducer';
-import { ErrorState } from '@shared/error-popup/error-popup.reducer';
+import { ErrorState } from '@shared/components/error-popup/error-popup.reducer';
 import { SettingsNode } from '@shared/types/settings-node/settings-node.type';
 import { NetworkStats } from '@shared/types/network/network-stats.type';
 import { NetworkPeers } from '@shared/types/network/network-peers.type';
@@ -51,7 +51,7 @@ import { StorageBlock } from '@shared/types/storage/storage-block/storage-block.
 import { GithubVersion } from '@shared/types/github-version/github-version.type';
 import { StateMachine } from '@shared/types/state-machine/state-machine.type';
 import { SmartContractsState } from '@shared/types/smart-contracts/smart-contracts-state.type';
-import { LoadingSpinnerState } from '@shared/loading-spinner/loading-spinner.reducer';
+import { LoadingSpinnerState } from '@shared/components/loading-spinner/loading-spinner.reducer';
 
 export interface State {
   app: App;

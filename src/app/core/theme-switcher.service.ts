@@ -39,7 +39,7 @@ const LIGHT_THEME: Theme = {
     '--foreground-6': 'rgba(0,0,0,0.6)',
     '--foreground-7': 'rgba(0,0,0,0.7)',
     '--foreground-9': 'rgba(0,0,0,0.9)',
-    '--active-surface': '#204E8A',
+    '--active-surface': '#204e8a',
   }
 };
 

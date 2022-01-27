@@ -16,15 +16,15 @@ export class MempoolBakingRightsService {
     const url = `${http}/dev/shell/automaton/stats/current_head?level=${level}`;
     return this.http.get<Partial<MempoolBakingRightsState>>(url).pipe(
       map(snakeCaseToCamelCase),
-      map((response: Partial<MempoolBakingRightsState>) => {
-        return {
-          ...response,
-          currentHeads: response.currentHeads.map(right => ({
-            ...right,
-            delta: (right.sentTime && right.receivedTime) ? (right.sentTime - right.receivedTime) : right.delta
-          }))
-        };
-      })
+      // map((response: Partial<MempoolBakingRightsState>) => {
+      //   return {
+      //     ...response,
+      //     currentHeads: response.currentHeads.map(right => ({
+      //       ...right,
+      //       delta: (right.sentTime && right.receivedTime) ? (right.sentTime - right.receivedTime) : right.delta
+      //     }))
+      //   };
+      // })
     );
   }
 }

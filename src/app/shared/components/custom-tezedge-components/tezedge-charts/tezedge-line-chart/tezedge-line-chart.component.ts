@@ -33,6 +33,7 @@ export class TezedgeLineChartComponent extends LineChartComponent {
   @Input() startWithYGridLine: boolean;
   @Input() resourceType: SystemResourcesResourceType | undefined;
   @Input() disableHoverGradient: boolean = true;
+  @Input() tooltipPlacement: 'top' | 'bottom';
 
   chartXReady: boolean = false;
   chartYReady: boolean = false;

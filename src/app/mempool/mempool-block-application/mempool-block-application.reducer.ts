@@ -7,11 +7,14 @@ import {
 } from '@mempool/mempool-block-application/mempool-block-application.actions';
 import { State } from '@app/app.reducers';
 import { getFilteredXTicks } from '@helpers/chart.helper';
+import { MempoolBlockApplicationChartLine } from '@shared/types/mempool/block-application/mempool-block-application-chart-line.type';
 
 const initialState: MempoolBlockApplicationState = {
   chartLines: [],
   xTicksValues: [],
   xTicksValuesLength: null,
+  averageValues: [],
+  noOfBlocks: null
 };
 
 export function reducer(state: MempoolBlockApplicationState = initialState, action: MempoolBlockApplicationActions): MempoolBlockApplicationState {
@@ -27,11 +30,17 @@ export function reducer(state: MempoolBlockApplicationState = initialState, acti
     case MEMPOOL_BLOCK_APPLICATION_LOAD_SUCCESS: {
       const series = action.payload.chartLines[0].series;
       const xTicksValues = getFilteredXTicks(series, Math.min(series.length, state.xTicksValuesLength), 'name');
+      const averageValues = action.payload.chartLines.map((line: MempoolBlockApplicationChartLine) => ({
+        name: line.name,
+        value: line.series.reduce((a, b) => a + b.value, 0) / line.series.length
+      }));
 
       return {
         ...state,
         chartLines: action.payload.chartLines,
-        xTicksValues
+        noOfBlocks: series.length,
+        xTicksValues,
+        averageValues
       };
     }
 

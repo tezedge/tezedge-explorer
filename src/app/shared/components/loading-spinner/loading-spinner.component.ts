@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@
 import { delay } from 'rxjs';
 import { Store } from '@ngrx/store';
 import { State } from '@app/app.reducers';
-import { spinnerActiveMessage } from '@shared/loading-spinner/loading-spinner.reducer';
+import { spinnerActiveMessage } from '@shared/components/loading-spinner/loading-spinner.reducer';
 import { LoadingSpinner } from '@shared/types/shared/loading-spinner/loading-spinner.type';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 

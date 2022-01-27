@@ -3,7 +3,7 @@ import { Store } from '@ngrx/store';
 import { State } from '@app/app.reducers';
 import { Observable, tap } from 'rxjs';
 import { SMART_CONTRACTS_LOAD, SMART_CONTRACTS_SET_ACTIVE_CONTRACT } from '@smart-contracts/smart-contracts/smart-contracts.actions';
-import { ADD_INFO, InfoAdd } from '@shared/error-popup/error-popup.actions';
+import { ADD_INFO, InfoAdd } from '@shared/components/error-popup/error-popup.actions';
 import { ActivatedRoute, Router } from '@angular/router';
 import { SmartContract } from '@shared/types/smart-contracts/smart-contract.type';
 import { selectSmartContracts, selectSmartContractsActiveContract } from '@smart-contracts/smart-contracts/smart-contracts.reducer';

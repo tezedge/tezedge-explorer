@@ -1,8 +1,10 @@
 @import 'utilities/layout';
 
 .table-container {
+  width: 2170px;
+
   .row {
-    grid-template-columns: 160px 180px 180px 130px 180px 120px 140px 155px 140px;
+    grid-template-columns: 175px 90px 80px 130px 130px 110px 115px 185px 165px 145px 130px 160px 145px 160px 150px 100px;
 
     &.head {
       background-color: unset;

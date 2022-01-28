@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { select, Store } from '@ngrx/store';
 import { State } from '@app/app.reducers';
 import {
@@ -13,11 +13,10 @@ import { MempoolBlockApplicationState } from '@shared/types/mempool/block-applic
 import { CurveFactory, curveLinear } from 'd3-shape';
 import { SpaceNumberPipe } from '@shared/pipes/space-number.pipe';
 import { NanoTransformPipe } from '@shared/pipes/nano-transform.pipe';
-import { delay, filter, skip, tap } from 'rxjs/operators';
+import { delay, filter, skip } from 'rxjs/operators';
 import { BreakpointObserver, BreakpointState } from '@angular/cdk/layout';
 import { navigationMenuCollapsing } from '@app/app.reducer';
 import { MIN_WIDTH_1200, MIN_WIDTH_1500, MIN_WIDTH_700 } from '@shared/constants/breakpoint-observer';
-import { Observable } from 'rxjs';
 
 const COLOR_SCHEME = {
   domain: [
@@ -43,13 +42,14 @@ export class MempoolBlockApplicationComponent implements OnInit, OnDestroy {
   readonly colorScheme = COLOR_SCHEME;
   readonly MATH = Math;
 
-  mempoolState$: Observable<MempoolBlockApplicationState>;
+  mempoolState: MempoolBlockApplicationState;
   labelList = [];
   maxValue: number;
 
   private xTicksValuesLength: number;
 
   constructor(private store: Store<State>,
+              private cdRef: ChangeDetectorRef,
               private spaceNumber: SpaceNumberPipe,
               private nanoTransformPipe: NanoTransformPipe,
               private breakpointObserver: BreakpointObserver) { }
@@ -68,13 +68,15 @@ export class MempoolBlockApplicationComponent implements OnInit, OnDestroy {
   }
 
   private listenToMempoolBlockApplicationStateChange(): void {
-    this.mempoolState$ = this.store.select(mempoolBlockApplication).pipe(
+    this.store.select(mempoolBlockApplication).pipe(
+      untilDestroyed(this),
       filter(state => !!state.chartLines.length),
-      tap(mempoolState => {
-        this.labelList = mempoolState.chartLines.map(line => line.name);
-        this.maxValue = Math.max(...mempoolState.chartLines[0].series.map(total => total.value));
-      })
-    );
+    ).subscribe(mempoolState => {
+      this.mempoolState = mempoolState;
+      this.labelList = mempoolState.chartLines.map(line => line.name);
+      this.maxValue = Math.max(...mempoolState.chartLines[0].series.map(total => total.value));
+      this.cdRef.detectChanges();
+    });
   }
 
   private listenToResizeEvent(): void {

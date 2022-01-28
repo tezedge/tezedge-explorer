@@ -7,7 +7,7 @@ import { StorageResourcesActionTypes } from './storage-resources.actions';
 import { State } from '@app/app.reducers';
 import { StorageResourcesService } from './storage-resources.service';
 import { StorageResourcesStats } from '@shared/types/resources/storage/storage-resources-stats.type';
-import { ADD_ERROR } from '@shared/error-popup/error-popup.actions';
+import { ADD_ERROR } from '@shared/components/error-popup/error-popup.actions';
 
 @Injectable({ providedIn: 'root' })
 export class StorageResourcesEffects {

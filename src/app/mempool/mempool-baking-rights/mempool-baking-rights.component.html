@@ -1,5 +1,6 @@
-<div class="h-100 d-flex flex-column table-container">
-  <div class="row head foreground-7 border-bottom">
+<div class="h-100 table-container overflow-auto d-flex flex-column">
+  <div class="row head foreground-7 border-bottom"
+       fxFlex="36px">
     <span (click)="sortTable(tableHead.sort ?? tableHead.name)"
           *ngFor="let tableHead of tableHeads"
           [class.active]="currentSort.sortBy === (tableHead.sort ?? tableHead.name)"
@@ -10,45 +11,53 @@
                 class="icon-14 icon-foreground"></mat-icon>
     </span>
   </div>
-  <cdk-virtual-scroll-viewport class="border-bottom border-right f-14 overflow-y-auto overflow-x-hidden"
-                               fxFlex="calc(100% - 36px)"
-                               itemSize="36">
-    <div *cdkVirtualFor="let right of state.currentHeads; let i=index; trackBy: trackBakingRight"
-         class="row">
-      <span class="foreground-7 text-nowrap">{{ right.address }}</span>
-      <span class="truncate p-relative">
-        {{ right.nodeId ?? '-' }}
-        <span (click)="copyHashToClipboard(right.nodeId, $event)"
-              [cdkCopyToClipboard]="right.nodeId"
-              class="copy-hash p-absolute border-rad-4"
-              matTooltip="Copy hash">
-          <mat-icon class="icon-foreground-7 icon-14" svgIcon="copy"></mat-icon>
+  <div fxFlex="calc(100% - 36px)">
+    <cdk-virtual-scroll-viewport class="border-bottom border-right f-14 overflow-y-auto overflow-x-hidden w-100 h-100"
+                                 itemSize="36">
+      <div *cdkVirtualFor="let right of state.currentHeads; let i=index; trackBy: trackBakingRight"
+           class="row">
+        <span class="foreground-7 text-nowrap">{{ right.address }}</span>
+        <span class="truncate p-relative">
+          {{ right.nodeId ?? '-' }}
+          <span (click)="copyHashToClipboard(right.nodeId, $event)"
+                [cdkCopyToClipboard]="right.nodeId"
+                class="copy-hash p-absolute border-rad-4"
+                matTooltip="Copy hash">
+            <mat-icon class="icon-foreground-7 icon-14" svgIcon="copy"></mat-icon>
+          </span>
         </span>
-      </span>
-      <span class="foreground-7 truncate p-relative">
-        {{ right.baker ?? '-' }}
-        <span (click)="copyHashToClipboard(right.baker, $event)"
-              *ngIf="right.baker"
-              [cdkCopyToClipboard]="right.baker"
-              class="copy-hash p-absolute border-rad-4"
-              matTooltip="Copy hash">
-          <mat-icon class="icon-foreground-7 icon-14" svgIcon="copy"></mat-icon>
+        <span class="foreground-7 truncate p-relative">
+          {{ right.baker ?? '-' }}
+          <span (click)="copyHashToClipboard(right.baker, $event)"
+                *ngIf="right.baker"
+                [cdkCopyToClipboard]="right.baker"
+                class="copy-hash p-absolute border-rad-4"
+                matTooltip="Copy hash">
+            <mat-icon class="icon-foreground-7 icon-14" svgIcon="copy"></mat-icon>
+          </span>
         </span>
-      </span>
-      <span>{{ right.bakerPriority }}</span>
-      <span class="foreground-7 truncate p-relative">
-        {{ right.blockHash }}
-        <span (click)="copyHashToClipboard(right.blockHash, $event)"
-              [cdkCopyToClipboard]="right.blockHash"
-              class="copy-hash p-absolute border-rad-4"
-              matTooltip="Copy hash">
-          <mat-icon class="icon-foreground-7 icon-14" svgIcon="copy"></mat-icon>
+        <span>{{ right.bakerPriority }}</span>
+        <span class="foreground-7 truncate p-relative">
+          {{ right.blockHash }}
+          <span (click)="copyHashToClipboard(right.blockHash, $event)"
+                [cdkCopyToClipboard]="right.blockHash"
+                class="copy-hash p-absolute border-rad-4"
+                matTooltip="Copy hash">
+            <mat-icon class="icon-foreground-7 icon-14" svgIcon="copy"></mat-icon>
+          </span>
         </span>
-      </span>
-      <span [innerHTML]="right.delta | nanoTransform: 50000000 : 20000000"></span>
-      <span [innerHTML]="right.receivedTime | nanoTransform: 50000000 : 20000000"></span>
-      <span [innerHTML]="right.precheckedTime | nanoTransform: 50000000 : 20000000"></span>
-      <span [innerHTML]="right.sentTime | nanoTransform: 50000000 : 20000000"></span>
-    </div>
-  </cdk-virtual-scroll-viewport>
+        <span [innerHTML]="right.receivedTime | nanoTransform: 50000000 : 20000000"></span>
+        <span [innerHTML]="right.precheckedTime | nanoTransform: 50000000 : 20000000"></span>
+        <span [innerHTML]="right.downloadDataStart | nanoTransform: 50000000 : 20000000"></span>
+        <span [innerHTML]="right.downloadDataEnd | nanoTransform: 50000000 : 20000000"></span>
+        <span [innerHTML]="right.loadDataStart | nanoTransform: 50000000 : 20000000"></span>
+        <span [innerHTML]="right.loadDataEnd | nanoTransform: 50000000 : 20000000"></span>
+        <span [innerHTML]="right.applyBlockStart | nanoTransform: 50000000 : 20000000"></span>
+        <span [innerHTML]="right.applyBlockEnd | nanoTransform: 50000000 : 20000000"></span>
+        <span [innerHTML]="right.storeResultStart | nanoTransform: 50000000 : 20000000"></span>
+        <span [innerHTML]="right.storeResultEnd | nanoTransform: 50000000 : 20000000"></span>
+        <span [innerHTML]="right.sentTime | nanoTransform: 50000000 : 20000000"></span>
+      </div>
+    </cdk-virtual-scroll-viewport>
+  </div>
 </div>

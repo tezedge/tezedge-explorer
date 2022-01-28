@@ -17,27 +17,24 @@
          fxLayoutAlign="space-between stretch"
          fxLayoutAlign.lt-sm="end stretch">
       <div *ngIf="networkStats$ | async as networkStats"
-           fxHide.lt-sm
-           fxLayout="row"
-           fxLayoutGap="10px"
-           fxLayoutAlign="start center">
-        <div class="toolbar-divider"></div>
-        <div>
-          BOOTSTRAP
-          <span class="foreground">
-            {{ (networkStats?.downloadedBlocks / (networkStats?.currentBlockCount * 0.01)) || 0.0 | number:'1.1-1'}}%
-          </span>
-        </div>
-        <div>
-          APPLIED OPERATIONS
-          <span class="foreground">
-            {{ (networkStats?.lastAppliedBlock?.level / (networkStats?.currentBlockCount * 0.01)) || 0.0 | number:'1.1-1'}}
-            %
-          </span>
-        </div>
-        <div>CURRENT BLOCK
-          <span class="foreground">{{ networkStats.lastAppliedBlock.level | spaceNumber }}</span>
-        </div>
+           fxHide.lt-sm fxLayout="row" fxLayoutGap="10px" fxLayoutAlign="start center">
+        <ng-container *ngIf="networkStats">
+          <div class="margin-left-10">
+            BOOTSTRAP
+            <span class="foreground">
+              {{ (networkStats.downloadedBlocks / (networkStats.currentBlockCount * 0.01)) || 0.0 | number:'1.1-1' }}%
+            </span>
+          </div>
+          <div>
+            APPLIED OPERATIONS
+            <span class="foreground">
+              {{ (networkStats.lastAppliedBlock.level / (networkStats.currentBlockCount * 0.01)) || 0.0 | number:'1.1-1' }}%
+            </span>
+          </div>
+          <div>CURRENT BLOCK
+            <span class="foreground">{{ networkStats.lastAppliedBlock.level | spaceNumber }}</span>
+          </div>
+        </ng-container>
         <div *ngIf="settingsNodeProtocol$ | async as protocol">PROTOCOL
           <span class="foreground">{{ protocol | slice: 0: 10 }}</span>
         </div>
@@ -57,11 +54,9 @@
         <button class="theme-switcher f-12" mat-icon-button
                 (click)="changeTheme(app.theme.active === 'dark' ? 'light' : 'dark')">
           <mat-icon *ngIf="app.theme.active === 'dark'"
-                    class="f-12 icon-16"
-                    svgIcon="sunny"></mat-icon>
+                    class="f-12 icon-16" svgIcon="sunny"></mat-icon>
           <mat-icon *ngIf="app.theme.active === 'light'"
-                    class="f-12 icon-16"
-                    svgIcon="night"></mat-icon>
+                    class="f-12 icon-16" svgIcon="night"></mat-icon>
         </button>
       </div>
     </div>

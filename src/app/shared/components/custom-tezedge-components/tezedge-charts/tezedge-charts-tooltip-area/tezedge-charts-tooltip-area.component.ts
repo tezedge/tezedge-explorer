@@ -19,15 +19,15 @@ import { DOCUMENT, isPlatformBrowser } from '@angular/common';
 import { TooltipArea, TooltipDirective } from '@swimlane/ngx-charts';
 import { Overlay, OverlayRef } from '@angular/cdk/overlay';
 import { ComponentPortal } from '@angular/cdk/portal';
-import { GraphRedirectionOverlayComponent } from '@shared/charts/graph-redirection-overlay/graph-redirection-overlay.component';
 import { Store } from '@ngrx/store';
 import { State } from '@app/app.reducers';
 import { SystemResourcesActionTypes, SystemResourcesDetailsUpdateAction } from '@resources/system-resources/system-resources.actions';
 import { SystemResourcesResourceType } from '@shared/types/resources/system/system-resources-panel.type';
 import { fromEvent } from 'rxjs';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { TezedgeChartsService } from '@shared/charts/tezedge-charts.service';
 import { ActivatedRoute } from '@angular/router';
+import { GraphRedirectionOverlayComponent } from '@shared/components/custom-tezedge-components/tezedge-charts/graph-redirection-overlay/graph-redirection-overlay.component';
+import { TezedgeChartsService } from '@shared/components/custom-tezedge-components/tezedge-charts/tezedge-charts.service';
 
 @UntilDestroy()
 @Component({
@@ -40,6 +40,7 @@ export class TezedgeChartsTooltipAreaComponent extends TooltipArea implements Af
   @Input() chartElement: SVGElement;
   @Input() resourceType: SystemResourcesResourceType | undefined;
   @Input() routedTooltipReady: boolean;
+  @Input() tooltipPlacement: 'top' | 'bottom' = 'top';
 
   @ViewChild(TooltipDirective) private tooltipDirective: TooltipDirective;
   @ViewChild('tooltipTrigger') private tooltipTrigger: ElementRef<SVGRectElement>;

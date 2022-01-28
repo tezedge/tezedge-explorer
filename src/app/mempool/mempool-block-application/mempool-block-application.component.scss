@@ -1,9 +1,8 @@
 .block-application {
   height: 820px;
-  max-height: 140vh;
+  max-height: 160vh;
 
   .graph-outer-container {
-    padding: 20px 20px 20px 0;
     opacity: 0;
     transition: opacity 600ms;
     transition-delay: 400ms;
@@ -12,14 +11,20 @@
       opacity: 1;
     }
 
+    .average-values {
+      letter-spacing: 0.4px;
+    }
+
     .rotated-label span {
       transform: rotate(-90deg);
       padding-left: 20px;
     }
 
-    .graph-label-list {
-      margin-bottom: 12px;
+    .blocks-overview {
+      margin-top: 30px;
+    }
 
+    .graph-label-list {
       .graph-label-item {
         margin-right: 15px;
 
@@ -35,8 +40,12 @@
     }
 
     .graph-inner-container {
-      height: 540px;
-      max-height: 80vh;
+      padding: 8px 20px 20px 0;
+
+      .graph-super-inner-container {
+        height: 540px;
+        max-height: 80vh;
+      }
     }
   }
 }

@@ -3,7 +3,7 @@ import { ChangeDetectorRef, Component, NgZone, OnDestroy, OnInit, ViewChild } fr
 import { ActivatedRoute } from '@angular/router';
 import { Store } from '@ngrx/store';
 
-import { VirtualScrollFromTopDirective } from '@shared/virtual-scroll/virtual-scroll-from-top.directive';
+import { VirtualScrollFromTopDirective } from '@shared/directives/virtual-scroll-from-top.directive';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { State } from '@app/app.reducers';
 

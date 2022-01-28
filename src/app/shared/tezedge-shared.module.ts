@@ -4,12 +4,12 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 import { ReplaceCharacterPipe } from './pipes/replace-character.pipe';
 import { TimeTransformPipe } from './pipes/time-transform.pipe';
 import { ThousandTransformPipe } from './pipes/thousand-transform.pipe';
-import { ErrorPopupComponent } from './error-popup/error-popup.component';
+import { ErrorPopupComponent } from './components/error-popup/error-popup.component';
 import { NotifierModule } from 'angular-notifier';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { VarDirective } from './directives/var.directive';
-import { VirtualScrollDirective } from './virtual-scroll/virtual-scroll.directive';
-import { VirtualScrollFromTopDirective } from './virtual-scroll/virtual-scroll-from-top.directive';
+import { VirtualScrollDirective } from './directives/virtual-scroll.directive';
+import { VirtualScrollFromTopDirective } from './directives/virtual-scroll-from-top.directive';
 import { ClickOutsideDirective } from './directives/click-outside.directive';
 import { MaterialModule } from '@shared/material.module';
 import { NgxJsonViewerModule } from 'ngx-json-viewer';
@@ -17,15 +17,17 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { NgrxFormDirective } from '@shared/ngrx-form.directive';
 import { ResizeDirective } from '@shared/directives/resize.directive';
 import { CustomJsonParserInterceptorService } from '@core/custom-json-parser.interceptor.service';
-import { LoadingSpinnerComponent } from '@shared/loading-spinner/loading-spinner.component';
+import { LoadingSpinnerComponent } from '@shared/components/loading-spinner/loading-spinner.component';
 import { NanoTransformPipe } from '@shared/pipes/nano-transform.pipe';
 import { DateTimePipe } from '@shared/pipes/date-time.pipe';
 import { SpaceNumberPipe } from '@shared/pipes/space-number.pipe';
-import { TezedgeChartsModule } from '@shared/charts/tezedge-charts.module';
+import { TezedgeChartsModule } from '@shared/components/custom-tezedge-components/tezedge-charts/tezedge-charts.module';
+import { TimePickerComponent } from '@shared/components/time-picker/time-picker.component';
 
 const COMPONENTS = [
   ErrorPopupComponent,
   LoadingSpinnerComponent,
+  TimePickerComponent,
 ];
 
 const PIPES = [

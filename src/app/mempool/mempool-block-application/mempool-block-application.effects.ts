@@ -4,7 +4,7 @@ import { Store } from '@ngrx/store';
 import { catchError, map, switchMap, withLatestFrom } from 'rxjs/operators';
 import { empty, ObservedValueOf, of } from 'rxjs';
 import { State } from '@app/app.reducers';
-import { ADD_ERROR } from '@shared/error-popup/error-popup.actions';
+import { ADD_ERROR } from '@shared/components/error-popup/error-popup.actions';
 import { MempoolBlockApplicationService } from '@mempool/mempool-block-application/mempool-block-application.service';
 import {
   MEMPOOL_BLOCK_APPLICATION_LOAD,

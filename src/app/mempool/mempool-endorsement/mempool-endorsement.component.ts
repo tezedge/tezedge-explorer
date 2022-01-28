@@ -26,7 +26,7 @@ import {
   selectMempoolEndorsementSorting,
   selectMempoolEndorsementTableAnimate
 } from '@mempool/mempool-endorsement/mempool-endorsement.reducer';
-import { ADD_INFO, InfoAdd } from '@shared/error-popup/error-popup.actions';
+import { ADD_INFO, InfoAdd } from '@shared/components/error-popup/error-popup.actions';
 import { MatCheckboxChange } from '@angular/material/checkbox';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 

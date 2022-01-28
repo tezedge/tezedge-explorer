@@ -6,7 +6,7 @@
 </g>
 <defs>
 <clipPath id="clip0">
-<rect width="10.5" height="12" fill="white" transform="translate(3 2)"/>
+<rect width="10.5" height="12" fill="var(--foreground)" transform="translate(3 2)"/>
 </clipPath>
 </defs>
 </svg>

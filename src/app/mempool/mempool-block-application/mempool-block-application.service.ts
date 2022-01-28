@@ -26,7 +26,6 @@ export class MempoolBlockApplicationService {
         ];
 
         blocks
-          .slice(0, limit - 1)
           .forEach(block => {
             const name = block.block_level.toString();
             chartLines[0].series.push({

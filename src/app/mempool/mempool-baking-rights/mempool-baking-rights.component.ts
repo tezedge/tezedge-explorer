@@ -13,7 +13,7 @@ import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { MempoolBakingRightsState } from '@shared/types/mempool/baking-rights/mempool-baking-rights-state.type';
 import { mempoolBakingRights } from '@mempool/mempool-baking-rights/mempool-baking-rights.reducer';
 import { TableSort } from '@shared/types/shared/table-sort.type';
-import { ADD_INFO, InfoAdd } from '@shared/error-popup/error-popup.actions';
+import { ADD_INFO, InfoAdd } from '@shared/components/error-popup/error-popup.actions';
 import { MempoolBakingRight } from '@shared/types/mempool/baking-rights/mempool-baking-right.type';
 
 @UntilDestroy()
@@ -21,6 +21,7 @@ import { MempoolBakingRight } from '@shared/types/mempool/baking-rights/mempool-
   selector: 'app-mempool-baking-rights',
   templateUrl: './mempool-baking-rights.component.html',
   styleUrls: ['./mempool-baking-rights.component.scss'],
+  host: { class: 'h-100 overflow-auto d-block' },
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class MempoolBakingRightsComponent implements OnInit, OnDestroy {
@@ -31,10 +32,17 @@ export class MempoolBakingRightsComponent implements OnInit, OnDestroy {
     { name: 'baker' },
     { name: 'baker priority', sort: 'bakerPriority' },
     { name: 'block hash', sort: 'blockHash' },
-    { name: 'delta' },
-    { name: 'received time', sort: 'receivedTime' },
-    { name: 'prechecked time', sort: 'precheckedTime' },
-    { name: 'sent time', sort: 'sentTime' },
+    { name: 'received', sort: 'receivedTime' },
+    { name: 'prechecked', sort: 'precheckedTime' },
+    { name: 'download data start', sort: 'downloadDataStart' },
+    { name: 'download data end', sort: 'downloadDataEnd' },
+    { name: 'load data start', sort: 'loadDataStart' },
+    { name: 'load data end', sort: 'loadDataEnd' },
+    { name: 'apply block start', sort: 'applyBlockStart' },
+    { name: 'apply block end', sort: 'applyBlockEnd' },
+    { name: 'store result start', sort: 'storeResultStart' },
+    { name: 'store result end', sort: 'storeResultEnd' },
+    { name: 'sent', sort: 'sentTime' },
   ];
   state: MempoolBakingRightsState;
   currentSort: TableSort;

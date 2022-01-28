@@ -4,7 +4,7 @@ import * as d3 from 'd3';
 @Injectable({
   providedIn: 'root'
 })
-export class TreeMapFactoryService {
+export class TreeMapFactory {
 
   define(runtime, observer): any {
     const main = runtime.module();

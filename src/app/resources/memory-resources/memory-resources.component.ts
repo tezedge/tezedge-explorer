@@ -11,7 +11,7 @@ import {
   ViewChild
 } from '@angular/core';
 import { Inspector, Runtime } from '@observablehq/runtime';
-import { TreeMapFactoryService } from '@shared/tree-map/tree-map-factory.service';
+import { TreeMapFactory } from '@shared/factories/tree-map.factory';
 import { select, Store } from '@ngrx/store';
 import { State } from '@app/app.reducers';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
@@ -55,7 +55,7 @@ export class MemoryResourcesComponent implements AfterViewInit, OnInit, OnDestro
   constructor(private zone: NgZone,
               private store: Store<State>,
               private cdRef: ChangeDetectorRef,
-              private treeMapFactory: TreeMapFactoryService) { }
+              private treeMapFactory: TreeMapFactory) { }
 
   ngOnInit(): void {
     this.loadResources();

@@ -301,6 +301,7 @@
       <form [formGroup]="formGroup"
             class="d-flex">
         <mat-form-field appearance="fill"
+                        (click)="openTimePicker($event)"
                         class="custom-bottom-form-field p-relative">
           <input matInput
                  type="text"

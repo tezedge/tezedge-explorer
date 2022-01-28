@@ -4,7 +4,7 @@ import { catchError, filter, map, switchMap, takeUntil, tap, withLatestFrom } fr
 import { ObservedValueOf, of, Subject, timer } from 'rxjs';
 import { Store } from '@ngrx/store';
 import { State } from '@app/app.reducers';
-import { ADD_ERROR } from '@shared/error-popup/error-popup.actions';
+import { ADD_ERROR } from '@shared/components/error-popup/error-popup.actions';
 import { MempoolBakingRightsService } from '@mempool/mempool-baking-rights/mempool-baking-rights.service';
 import {
   MEMPOOL_BAKING_RIGHTS_INIT,

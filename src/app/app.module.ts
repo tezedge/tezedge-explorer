@@ -29,7 +29,7 @@ import { WalletsEffects } from '@wallets/wallets.effects';
 import { SystemResourcesEffects } from '@resources/system-resources/system-resources.effects';
 import { StorageResourcesEffects } from '@resources/storage-resources/storage-resources.effects';
 import { MemoryResourcesEffects } from '@resources/memory-resources/memory-resources.effects';
-import { ErrorPopupEffects } from '@shared/error-popup/error-popup.effects';
+import { ErrorPopupEffects } from '@shared/components/error-popup/error-popup.effects';
 import { StateMachineEffects } from '@state-machine/state-machine/state-machine.effects';
 import { GithubVersionEffects } from '@app/layout/github-version/github-version.effects';
 import { SettingsNodeEffects } from '@settings/settings-node.effects';

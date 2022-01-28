@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, NgZone, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ComponentRef, NgZone, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 
 import { Store } from '@ngrx/store';
@@ -9,6 +9,9 @@ import { NetworkActionEntity } from '@shared/types/network/network-action-entity
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { TezedgeTimeValidator } from '@shared/validators/tezedge-time.validator';
+import { Overlay, OverlayRef } from '@angular/cdk/overlay';
+import { ComponentPortal } from '@angular/cdk/portal';
+import { TimePickerComponent } from '@shared/components/time-picker/time-picker.component';
 
 @UntilDestroy()
 @Component({
@@ -29,8 +32,12 @@ export class NetworkActionComponent implements OnInit, OnDestroy {
   currentDatePlaceholder: string;
   initialSelectedIndex: number;
 
-  constructor(public store: Store<State>,
+  private overlayRef: OverlayRef;
+  private timePickerComponentRef: ComponentRef<TimePickerComponent>;
+
+  constructor(private store: Store<State>,
               private route: ActivatedRoute,
+              private overlay: Overlay,
               private ngZone: NgZone,
               private router: Router,
               private changeDetector: ChangeDetectorRef,
@@ -42,6 +49,7 @@ export class NetworkActionComponent implements OnInit, OnDestroy {
     this.listenToFormChange();
     this.listenToRouteChange();
     this.listenToNetworkChange();
+    this.openTimePicker();
   }
 
   private getNetwork(): void {
@@ -309,6 +317,38 @@ export class NetworkActionComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
+    this.detachTooltip();
     this.store.dispatch({ type: 'NETWORK_ACTION_STOP' });
+  }
+
+  openTimePicker(event?: MouseEvent): void {
+    return;
+    this.detachTooltip();
+
+    this.overlayRef = this.overlay.create({
+      hasBackdrop: false,
+      // scrollStrategy: this.overlay.scrollStrategies.noop(),
+      positionStrategy: this.overlay.position()
+        .flexibleConnectedTo(event?.target as HTMLElement)
+        .withPositions([{
+          originX: 'center',
+          originY: 'top',
+          overlayX: 'start',
+          overlayY: 'top',
+          offsetX: 0,
+          offsetY: 200
+        }])
+    });
+    event?.stopPropagation();
+
+    const portal = new ComponentPortal(TimePickerComponent);
+    this.timePickerComponentRef = this.overlayRef.attach<TimePickerComponent>(portal);
+    // this.timePickerComponentRef.instance.date = null;
+  }
+
+  detachTooltip(): void {
+    if (this.overlayRef && this.overlayRef.hasAttached()) {
+      this.overlayRef.detach();
+    }
   }
 }

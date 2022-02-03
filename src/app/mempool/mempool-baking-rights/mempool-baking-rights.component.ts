@@ -11,8 +11,8 @@ import {
 } from '@mempool/mempool-baking-rights/mempool-baking-rights.actions';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { MempoolBakingRightsState } from '@shared/types/mempool/baking-rights/mempool-baking-rights-state.type';
-import { mempoolBakingRights } from '@mempool/mempool-baking-rights/mempool-baking-rights.reducer';
-import { TableSort } from '@shared/types/shared/table-sort.type';
+import { mempoolBakingRightsState } from '@mempool/mempool-baking-rights/mempool-baking-rights.reducer';
+import { SortDirection, TableSort } from '@shared/types/shared/table-sort.type';
 import { ADD_INFO, InfoAdd } from '@shared/components/error-popup/error-popup.actions';
 import { MempoolBakingRight } from '@shared/types/mempool/baking-rights/mempool-baking-right.type';
 
@@ -29,19 +29,8 @@ export class MempoolBakingRightsComponent implements OnInit, OnDestroy {
   readonly tableHeads = [
     { name: 'address' },
     { name: 'node id', sort: 'nodeId' },
-    { name: 'baker' },
-    { name: 'baker priority', sort: 'bakerPriority' },
     { name: 'block hash', sort: 'blockHash' },
     { name: 'received', sort: 'receivedTime' },
-    { name: 'prechecked', sort: 'precheckedTime' },
-    { name: 'download data start', sort: 'downloadDataStart' },
-    { name: 'download data end', sort: 'downloadDataEnd' },
-    { name: 'load data start', sort: 'loadDataStart' },
-    { name: 'load data end', sort: 'loadDataEnd' },
-    { name: 'apply block start', sort: 'applyBlockStart' },
-    { name: 'apply block end', sort: 'applyBlockEnd' },
-    { name: 'store result start', sort: 'storeResultStart' },
-    { name: 'store result end', sort: 'storeResultEnd' },
     { name: 'sent', sort: 'sentTime' },
   ];
   state: MempoolBakingRightsState;
@@ -60,7 +49,7 @@ export class MempoolBakingRightsComponent implements OnInit, OnDestroy {
   sortTable(sortBy: string): void {
     const sortDirection = sortBy !== this.currentSort.sortBy
       ? this.currentSort.sortDirection
-      : this.currentSort.sortDirection === 'ascending' ? 'descending' : 'ascending';
+      : this.currentSort.sortDirection === SortDirection.ASC ? SortDirection.DSC : SortDirection.ASC;
     this.store.dispatch<MempoolBakingRightsSort>({
       type: MEMPOOL_BAKING_RIGHTS_SORT,
       payload: { sortBy, sortDirection }
@@ -77,7 +66,7 @@ export class MempoolBakingRightsComponent implements OnInit, OnDestroy {
   }
 
   private listenToStateChange(): void {
-    this.store.select(mempoolBakingRights)
+    this.store.select(mempoolBakingRightsState)
       .pipe(untilDestroyed(this))
       .subscribe((state: MempoolBakingRightsState) => {
         this.state = state;

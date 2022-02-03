@@ -1,10 +1,13 @@
 @import 'utilities/layout';
 
 .table-container {
-  width: 2170px;
+  cdk-virtual-scroll-viewport, .row {
+    width: 645px;
+    min-width: 100%;
+  }
 
   .row {
-    grid-template-columns: 175px 90px 80px 130px 130px 110px 115px 185px 165px 145px 130px 160px 145px 160px 150px 100px;
+    grid-template-columns: 175px 110px 130px 130px 100px;
 
     &.head {
       background-color: unset;

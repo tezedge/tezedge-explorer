@@ -1,10 +1,10 @@
-$white-7: rgba(255, 255, 255, 0.7);
+@import 'variables';
 
 #node-open-api,
 #memory-profiler-open-api,
 #network-recorder-open-api {
   .swagger-ui {
-    color: $white-7;
+    color: $foreground-7;
     font-family: 'Inter', sans-serif;
 
     .scheme-container {
@@ -23,7 +23,7 @@ $white-7: rgba(255, 255, 255, 0.7);
     .model-title,
     .model,
     tr > td {
-      color: $white-7;
+      color: $foreground-7;
     }
 
     .opblock-description p,
@@ -52,7 +52,7 @@ $white-7: rgba(255, 255, 255, 0.7);
 
     .opblock .opblock-summary-path a span {
       font-size: 12px;
-      color: rgba(255, 255, 255, 0.7);
+      color: $foreground-7;
     }
 
     .opblock .opblock-summary-method {
@@ -149,7 +149,7 @@ $white-7: rgba(255, 255, 255, 0.7);
 
           .block-desktop {
             border-radius: 4px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            border: 1px solid $foreground-1;
 
             span:nth-child(odd) .opblock-tag-section {
               &.is-open {
@@ -166,7 +166,7 @@ $white-7: rgba(255, 255, 255, 0.7);
             }
 
             span .opblock-tag {
-              color: white;
+              color: $foreground;
             }
           }
         }
@@ -174,7 +174,7 @@ $white-7: rgba(255, 255, 255, 0.7);
         &:nth-child(5) .block-desktop {
           .models {
             margin: 0;
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            border: 1px solid $foreground-1;
 
             &.is-open h4 {
               margin-bottom: 0;
@@ -225,7 +225,7 @@ $white-7: rgba(255, 255, 255, 0.7);
       padding-bottom: 0;
 
       h4 {
-        border-color: rgba(255, 255, 255, 0.1);
+        border-color: $foreground-1;
       }
     }
 
@@ -252,7 +252,7 @@ $white-7: rgba(255, 255, 255, 0.7);
       }
 
       .model-title__text {
-        color: $white-7;
+        color: $foreground-7;
       }
     }
 
@@ -286,7 +286,7 @@ $white-7: rgba(255, 255, 255, 0.7);
       background: #444 !important;
       outline: unset !important;
       border: unset !important;
-      color: $white-7;
+      color: $foreground-7;
 
       &:disabled {
         background: transparent !important;
@@ -296,10 +296,10 @@ $white-7: rgba(255, 255, 255, 0.7);
 
     .opblock-tag-section {
       .opblock-section-header {
-        background: #3F3F43;
+        background: $background-surface-fade-2;
 
         h4 {
-          color: $white-7;
+          color: $foreground-7;
         }
 
         .opblock-title {
@@ -312,16 +312,16 @@ $white-7: rgba(255, 255, 255, 0.7);
 
         .try-out .btn {
           box-shadow: unset;
-          background: rgba(255, 255, 255, 0.1);
+          background: $foreground-1;
           border: unset;
-          color: $white-7;
+          color: $foreground-7;
           line-height: initial;
           font-weight: 400;
           font-size: 12px;
           padding: 7px 10px;
 
           &:hover {
-            background: rgba(255, 255, 255, 0.25);
+            background: $foreground-2;
           }
         }
       }
@@ -333,7 +333,7 @@ $white-7: rgba(255, 255, 255, 0.7);
         margin-bottom: 0;
 
         &:hover {
-          background: rgba(255, 255, 255, 0.1) !important;
+          background: $foreground-1 !important;
         }
 
         a {
@@ -361,12 +361,12 @@ $white-7: rgba(255, 255, 255, 0.7);
         .opblock-body {
           .responses-wrapper .responses-inner {
             h4, h5 {
-              color: $white-7;
+              color: $foreground-7;
             }
           }
 
           pre.microlight {
-            background: #1b1b1b !important;
+            background: $background-base !important;
           }
         }
       }
@@ -374,7 +374,7 @@ $white-7: rgba(255, 255, 255, 0.7);
 
     svg.arrow,
     .models-control svg {
-      fill: $white-7 !important;
+      fill: $foreground-7 !important;
     }
 
     button {
@@ -389,7 +389,7 @@ $white-7: rgba(255, 255, 255, 0.7);
 
     .operation-tag-content {
       .opblock-summary-path {
-        color: white;
+        color: $foreground;
         font-weight: 300;
       }
     }

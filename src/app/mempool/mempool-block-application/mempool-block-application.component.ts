@@ -18,16 +18,6 @@ import { BreakpointObserver, BreakpointState } from '@angular/cdk/layout';
 import { navigationMenuCollapsing } from '@app/app.reducer';
 import { MIN_WIDTH_1200, MIN_WIDTH_1500, MIN_WIDTH_700 } from '@shared/constants/breakpoint-observer';
 
-const COLOR_SCHEME = {
-  domain: [
-    '#46afe3',
-    '#ff9f0a',
-    '#ffd60a',
-    '#32d74b',
-    '#bf5af2',
-  ]
-};
-
 @UntilDestroy()
 @Component({
   selector: 'app-mempool-block-application',
@@ -39,7 +29,6 @@ const COLOR_SCHEME = {
 export class MempoolBlockApplicationComponent implements OnInit, OnDestroy {
 
   readonly curve: CurveFactory = curveLinear;
-  readonly colorScheme = COLOR_SCHEME;
   readonly MATH = Math;
 
   mempoolState: MempoolBlockApplicationState;
@@ -85,9 +74,9 @@ export class MempoolBlockApplicationComponent implements OnInit, OnDestroy {
       .pipe(untilDestroyed(this))
       .subscribe((value: BreakpointState) => {
         if (value.breakpoints[MIN_WIDTH_1500]) {
-          this.xTicksValuesLength = 15;
-        } else if (value.breakpoints[MIN_WIDTH_1200]) {
           this.xTicksValuesLength = 11;
+        } else if (value.breakpoints[MIN_WIDTH_1200]) {
+          this.xTicksValuesLength = 10;
         } else if (value.breakpoints[MIN_WIDTH_700]) {
           this.xTicksValuesLength = 5;
         } else {

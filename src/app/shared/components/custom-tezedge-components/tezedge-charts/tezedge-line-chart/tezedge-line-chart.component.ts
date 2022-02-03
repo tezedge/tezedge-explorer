@@ -34,6 +34,8 @@ export class TezedgeLineChartComponent extends LineChartComponent {
   @Input() resourceType: SystemResourcesResourceType | undefined;
   @Input() disableHoverGradient: boolean = true;
   @Input() tooltipPlacement: 'top' | 'bottom';
+  @Input() disableRedirection: boolean;
+  @Input() graphType: string;
 
   chartXReady: boolean = false;
   chartYReady: boolean = false;

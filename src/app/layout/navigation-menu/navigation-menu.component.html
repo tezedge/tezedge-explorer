@@ -2,7 +2,7 @@
      [class.slim]="app.sidenav.collapsed">
 
   <div fxFlex="44px" class="menu-collapse-trigger p-relative d-flex align-center">
-    <div class="arrow-collapse d-flex flex-center align-center"
+    <div fxHide.lt-sm fxLayoutAlign="center center" class="arrow-collapse"
          [class.slim]="app.sidenav.collapsed"
          (click)="toggleMenuSize()">
       <mat-icon svgIcon="arrow-toggle"
@@ -11,7 +11,7 @@
     <div class="tezedge-name text-nowrap foreground f-14">TezEdge</div>
   </div>
 
-  <div fxFlex="1 1 auto" class="overflow-y-auto overflow-x-hidden" *ngIf="appFeatures$ | async as features">
+  <div fxFlex="1 1 auto" class="overflow-y-auto overflow-x-hidden" *ngIf="features">
 
     <div class="app-submenu"
          *ngIf="features['monitoring'] || haveResources">

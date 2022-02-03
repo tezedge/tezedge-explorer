@@ -1,18 +1,20 @@
+@import 'variables';
+
 .row {
   height: 36px;
   display: grid;
 
   &:nth-child(even) {
-    background-color: var(--foreground-1);
+    background-color: $foreground-1;
   }
 
   &.active {
-    background-color: var(--active-surface);
+    background-color: $active-surface;
     color: #fff;
 
     > span {
       .copy-hash {
-        box-shadow: -10px 0px 8px 0px var(--active-surface);
+        box-shadow: -10px 0px 8px 0px $active-surface;
       }
 
       &.foreground-7 {
@@ -22,7 +24,7 @@
   }
 
   &:hover:not(.active):not(.head) {
-    background-color: var(--foreground-2);
+    background-color: $foreground-2;
   }
 
   &:hover > span .copy-hash {
@@ -34,14 +36,14 @@
     cursor: pointer;
     opacity: 0;
     right: 0;
-    background-color: var(--background-surface);
+    background-color: $background-surface;
     height: 26px;
     width: 26px;
     top: 5px;
-    box-shadow: -10px 0px 8px 0px var(--table-hovered-row-background);
+    box-shadow: -10px 0px 8px 0px $table-hovered-row-background;
 
     &:hover {
-      background-color: var(--background-surface-fade-2);
+      background-color: $background-surface-fade-2;
     }
   }
 }

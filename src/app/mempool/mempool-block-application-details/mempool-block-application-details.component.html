@@ -1,0 +1,26 @@
+<div class="border border-rad-4 h-100 d-flex flex-column overflow-y-auto">
+  <div fxFlex="36px" class="padding-left-10 d-flex align-center flex-between border-bottom"
+       *ngIf="blockLevel$ | async as blockLevel">
+    <div class="font-500">BLOCK DETAILS - {{ blockLevel | spaceNumber }}</div>
+    <div class="margin-right-10">
+      <mat-checkbox (change)="onDeltaClick()"
+                    (click)="$event.stopPropagation()"
+                    [checked]="delta"
+                    class="f-12 foreground-7 d-flex"
+                    disableRipple>DELTA
+      </mat-checkbox>
+    </div>
+  </div>
+  <div fxFlex="calc(100% - 36px)" class="overflow-y-auto" *ngIf="details$ | async as details; else noStats">
+    <div *ngFor="let detail of details">
+      <app-mempool-block-details [detail]="detail"
+                                 [delta]="delta"
+                                 [isBlockApplication]="true"></app-mempool-block-details>
+    </div>
+  </div>
+</div>
+
+<ng-template #noStats>
+  <div class="padding-10 foreground-7 f-12"
+       *ngIf="blockLevel$ | async as blockLevel">No stats for block {{ blockLevel | spaceNumber }}</div>
+</ng-template>

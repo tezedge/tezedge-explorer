@@ -7335,6 +7335,11 @@
   dependencies:
     "fs-monkey" "1.0.3"
 
+"memo-decorator@^2.0.1":
+  "integrity" "sha512-Cydoauo7y1Uad1UuznJqhuEQCt6adIl1w5ik3WmNl4FJeBmWAaMs64qyGRahaXWK/Dlmt/+QNesRTeFUcpJPkQ=="
+  "resolved" "https://registry.npmjs.org/memo-decorator/-/memo-decorator-2.0.1.tgz"
+  "version" "2.0.1"
+
 "memory-fs@^0.4.1":
   "integrity" "sha1-OpoguEYlI+RHz7x+i7gO1me/xVI="
   "resolved" "https://registry.npmjs.org/memory-fs/-/memory-fs-0.4.1.tgz"

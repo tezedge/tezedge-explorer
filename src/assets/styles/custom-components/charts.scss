@@ -1,17 +1,14 @@
+@import 'variables';
 
 app-tezedge-line-chart {
-  color: var(--foreground-6);
-  fill: var(--foreground-6);
-
-  .line-highlight linearGradient stop {
-    //stop-opacity: 1 !important;
-  }
+  color: $foreground-6;
+  fill: $foreground-6;
 }
 
 .ngx-charts-tooltip-content {
   padding: 0 !important;
-  background-color: var(--background-surface) !important;
-  color: var(--foreground-6) !important;
+  background-color: $background-surface !important;
+  color: $foreground-6 !important;
   border-radius: 4px !important;
   border: 1px solid rgba(0, 0, 0, 0.2);
   box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
@@ -22,19 +19,19 @@ app-tezedge-line-chart {
   }
 
   .tooltip-caret.position-right {
-    border-right-color: var(--background-surface) !important;
+    border-right-color: $background-surface !important;
   }
 
   .tooltip-caret.position-left {
-    border-left-color: var(--background-surface) !important;
+    border-left-color: $background-surface !important;
   }
 
   .tooltip-caret.position-top {
-    border-top-color: var(--background-surface) !important;
+    border-top-color: $background-surface !important;
   }
 
   .tooltip-caret.position-bottom {
-    border-bottom-color: var(--background-surface) !important;
+    border-bottom-color: $background-surface !important;
   }
 
   .ngx-series-tooltip {
@@ -83,7 +80,7 @@ g.label-container {
   .node {
     rect {
       stroke-width: 1.5px;
-      fill: var(--foreground-1);
+      fill: $foreground-1;
     }
 
     .label {
@@ -91,7 +88,7 @@ g.label-container {
     }
 
     &.active rect {
-      fill: var(--active-surface);
+      fill: $active-surface;
     }
   }
 

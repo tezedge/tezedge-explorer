@@ -11,6 +11,10 @@ import { MempoolStatisticsComponent } from './mempool-statistics/mempool-statist
 import { MempoolStatisticsDetailsComponent } from './mempool-statistics-details/mempool-statistics-details.component';
 import { MempoolBlockApplicationComponent } from './mempool-block-application/mempool-block-application.component';
 import { MempoolBakingRightsComponent } from './mempool-baking-rights/mempool-baking-rights.component';
+import { MempoolBakingRightsDetailsComponent } from './mempool-baking-rights-details/mempool-baking-rights-details.component';
+import { MempoolBakingRightsGraphComponent } from './mempool-baking-rights-graph/mempool-baking-rights-graph.component';
+import { MempoolBlockApplicationDetailsComponent } from './mempool-block-application-details/mempool-block-application-details.component';
+import { MempoolBlockDetailsComponent } from './mempool-block-details/mempool-block-details.component';
 
 
 @NgModule({
@@ -24,6 +28,10 @@ import { MempoolBakingRightsComponent } from './mempool-baking-rights/mempool-ba
     MempoolStatisticsDetailsComponent,
     MempoolBlockApplicationComponent,
     MempoolBakingRightsComponent,
+    MempoolBakingRightsDetailsComponent,
+    MempoolBakingRightsGraphComponent,
+    MempoolBlockApplicationDetailsComponent,
+    MempoolBlockDetailsComponent,
   ],
   imports: [
     CommonModule,

@@ -29,6 +29,7 @@ import {
 import { ADD_INFO, InfoAdd } from '@shared/components/error-popup/error-popup.actions';
 import { MatCheckboxChange } from '@angular/material/checkbox';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import { SortDirection } from '@shared/types/shared/table-sort.type';
 
 
 const translateFromRight = trigger('translateFromRight', [
@@ -91,7 +92,7 @@ export class MempoolEndorsementComponent implements OnInit, OnDestroy {
   sortTable(sortBy: string): void {
     const sortDirection = sortBy !== this.currentSort.sortBy
       ? this.currentSort.sortDirection
-      : this.currentSort.sortDirection === 'ascending' ? 'descending' : 'ascending';
+      : this.currentSort.sortDirection === SortDirection.ASC ? SortDirection.DSC : SortDirection.ASC;
     this.store.dispatch<MempoolEndorsementSorting>({
       type: MEMPOOL_ENDORSEMENT_SORT,
       payload: {

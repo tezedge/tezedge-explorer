@@ -5,7 +5,7 @@ import { Store } from '@ngrx/store';
 import { State } from '@app/app.reducers';
 import { selectMempoolStatisticsActiveOperation, selectMempoolStatisticsDetailsSorting } from '@mempool/mempool-statistics/mempool-statistics.reducer';
 import { ADD_INFO, InfoAdd } from '@shared/components/error-popup/error-popup.actions';
-import { TableSort } from '@shared/types/shared/table-sort.type';
+import { SortDirection, TableSort } from '@shared/types/shared/table-sort.type';
 import { MEMPOOL_STATISTICS_DETAILS_SORT, MempoolStatisticsDetailsSort } from '@mempool/mempool-statistics/mempool-statistics.actions';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 
@@ -36,7 +36,7 @@ export class MempoolStatisticsDetailsComponent implements OnInit {
   sortTable(sortBy: string): void {
     const sortDirection = sortBy !== this.currentSort.sortBy
       ? this.currentSort.sortDirection
-      : this.currentSort.sortDirection === 'ascending' ? 'descending' : 'ascending';
+      : this.currentSort.sortDirection === SortDirection.ASC ? SortDirection.DSC : SortDirection.ASC;
     this.store.dispatch<MempoolStatisticsDetailsSort>({
       type: MEMPOOL_STATISTICS_DETAILS_SORT,
       payload: { sortBy, sortDirection }

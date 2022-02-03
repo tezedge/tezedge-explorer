@@ -1,9 +1,6 @@
 import { Pipe, PipeTransform } from '@angular/core';
 import { formatNumber } from '@angular/common';
-
-const MILLISECOND_FACTOR = 1000;
-const MICROSECOND_FACTOR = 1000000;
-const NANOSECOND_FACTOR = 1000000000;
+import { MICROSECOND_FACTOR, MILLISECOND_FACTOR, NANOSECOND_FACTOR } from '@shared/constants/unit-measurements';
 
 @Pipe({
   name: 'nanoTransform'

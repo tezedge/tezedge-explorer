@@ -66,7 +66,6 @@ export class MempoolBakingRightsGraphComponent implements OnInit, OnDestroy {
         filter(rights => rights.some((curr, i) => curr.receivedTime !== this.rights[i]?.receivedTime)),
       )
       .subscribe((rights: MempoolBakingRight[]) => {
-        console.log(123);
         this.rights = rights;
         this.bakingRightsLength = rights.length;
         this.chartColumns = this.generateChartLine(rights);

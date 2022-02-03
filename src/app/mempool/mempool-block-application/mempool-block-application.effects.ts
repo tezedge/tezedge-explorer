@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
-import { catchError, filter, map, switchMap, withLatestFrom } from 'rxjs/operators';
+import { catchError, filter, map, repeat, switchMap, withLatestFrom } from 'rxjs/operators';
 import { empty, ObservedValueOf, of } from 'rxjs';
 import { State } from '@app/app.reducers';
 import { ADD_ERROR } from '@shared/components/error-popup/error-popup.actions';
@@ -49,11 +49,7 @@ export class MempoolBlockApplicationEffects {
     switchMap(({ action, state }) => {
       const series = state.mempool.blockApplicationState.chartLines[0].series;
       return of({ type: MEMPOOL_BLOCK_APPLICATION_DETAILS_LOAD, payload: { level: Number(series[series.length - 1].name) } });
-    }),
-    catchError(error => of({
-      type: ADD_ERROR,
-      payload: { title: 'Error when loading block details: ', message: error.message }
-    }))
+    })
   ));
 
   mempoolBakingRightsDetailsLoad$ = createEffect(() => this.actions$.pipe(
@@ -66,7 +62,8 @@ export class MempoolBlockApplicationEffects {
     catchError(error => of({
       type: ADD_ERROR,
       payload: { title: 'Error when loading block details: ', message: error.message }
-    }))
+    })),
+    repeat()
   ));
 
   constructor(private mempoolBlockApplicationService: MempoolBlockApplicationService,

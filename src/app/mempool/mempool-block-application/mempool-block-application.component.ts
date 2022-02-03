@@ -49,7 +49,6 @@ export class MempoolBlockApplicationComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.listenToResizeEvent();
     this.listenToMempoolBlockApplicationStateChange();
-    this.triggerDataLoad();
   }
 
   private triggerDataLoad(): void {

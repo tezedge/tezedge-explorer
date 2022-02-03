@@ -25,31 +25,30 @@ export class MempoolBlockApplicationService {
           { name: 'Store result', series: [] },
         ];
 
-        blocks
-          .forEach(block => {
-            const name = block.block_level.toString();
-            chartLines[0].series.push({
-              name,
-              value: Math.max(Math.log10(block.data_ready + block.load_data + block.apply_block + block.store_result), 0),
-              timestamp: toReadableDate(block.block_first_seen),
-            });
-            chartLines[1].series.push({
-              name,
-              value: Math.max(Math.log10(block.data_ready), 0),
-            });
-            chartLines[2].series.push({
-              name,
-              value: Math.max(Math.log10(block.load_data), 0),
-            });
-            chartLines[3].series.push({
-              name,
-              value: Math.max(Math.log10(block.apply_block), 0),
-            });
-            chartLines[4].series.push({
-              name,
-              value: Math.max(Math.log10(block.store_result), 0),
-            });
+        blocks.forEach(block => {
+          const name = block.block_level.toString();
+          chartLines[0].series.push({
+            name,
+            value: Math.max(Math.log10(block.data_ready + block.load_data + block.apply_block + block.store_result), 0),
+            timestamp: toReadableDate(block.block_first_seen),
           });
+          chartLines[1].series.push({
+            name,
+            value: Math.max(Math.log10(block.data_ready), 0),
+          });
+          chartLines[2].series.push({
+            name,
+            value: Math.max(Math.log10(block.load_data), 0),
+          });
+          chartLines[3].series.push({
+            name,
+            value: Math.max(Math.log10(block.apply_block), 0),
+          });
+          chartLines[4].series.push({
+            name,
+            value: Math.max(Math.log10(block.store_result), 0),
+          });
+        });
 
         return chartLines;
       })

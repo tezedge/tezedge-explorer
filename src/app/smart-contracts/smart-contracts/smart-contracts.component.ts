@@ -7,6 +7,7 @@ import { filter } from 'rxjs';
 import { SmartContract } from '@shared/types/smart-contracts/smart-contract.type';
 import { SMART_CONTRACTS_START_DEBUGGING, SMART_CONTRACTS_STOP_DEBUGGING } from '@smart-contracts/smart-contracts/smart-contracts.actions';
 import IStandaloneCodeEditor = editor.IStandaloneCodeEditor;
+import { SmartContractResult } from '@shared/types/smart-contracts/smart-contract-result.type';
 
 @UntilDestroy()
 @Component({
@@ -19,6 +20,7 @@ export class SmartContractsComponent implements OnInit {
   readonly editorOptions = { theme: 'michelson-theme', language: 'michelson', readOnly: true };
 
   activeContract: SmartContract;
+  result: SmartContractResult;
   activeLineCode = null;
   breakpointList = [];
   debugConfig: any = {
@@ -53,8 +55,9 @@ export class SmartContractsComponent implements OnInit {
       .pipe(filter(Boolean))
       .subscribe(smartContractState => {
         this.activeContract = smartContractState.activeContract;
+        this.result = smartContractState.result;
 
-        if (smartContractState.trace) {
+        if (smartContractState.trace?.history[0].receipt.result.trace) {
           this.trace = smartContractState.trace.history[0].receipt.result.trace.filter(trace => !trace.location.expanded);
           const linesOfCode = Math.max(...this.trace.map(step => step.location.location.stop.line));
           this.gasTrace = new Array(linesOfCode).fill(0);

@@ -1,5 +1,6 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import { MatCalendar } from '@angular/material/datepicker';
 
 @Component({
   selector: 'app-time-picker',
@@ -9,11 +10,14 @@ import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 })
 export class TimePickerComponent implements OnInit {
 
-  @Output() timeChange = new EventEmitter<any>();
+  @Input() timestamp: number;
 
-  selectedRangeValue: any;
+  @Output() onSubmit = new EventEmitter<number>();
+  @Output() onCancel = new EventEmitter<void>();
 
   formGroup: FormGroup;
+
+  @ViewChild(MatCalendar, { static: true }) private calendar: MatCalendar<Date>;
 
   constructor(private formBuilder: FormBuilder) { }
 
@@ -22,8 +26,10 @@ export class TimePickerComponent implements OnInit {
   }
 
   private initForm(): void {
+    const date = new Date(this.timestamp);
+    this.calendar.selected = date;
     this.formGroup = this.formBuilder.group({
-      date: new FormControl(),
+      date: new FormControl(date),
       hour: new FormControl(),
       minute: new FormControl(),
       second: new FormControl(),
@@ -31,8 +37,22 @@ export class TimePickerComponent implements OnInit {
     });
   }
 
-  selectedChange($event: any) {
-    console.log($event);
-    this.selectedRangeValue = $event;
+  selectedChange(date: Date) {
+    this.calendar.selected = date;
+  }
+
+  submit(): void {
+    const hour = this.formGroup.value.hour ?? 0;
+    const minute = this.formGroup.value.minute ?? 0;
+    const second = this.formGroup.value.second ?? 0;
+    const milliSecond = this.formGroup.value.milliSecond ?? 0;
+    const date = this.calendar.selected as Date;
+
+    date.setHours(hour, minute, second, milliSecond);
+    this.onSubmit.emit(date.getTime());
+  }
+
+  cancel(): void {
+    this.onCancel.emit();
   }
 }

@@ -1,7 +1,9 @@
+@import 'variables';
+
 :host {
   height: 100%;
   display: block;
-  background-color: var(--background-surface);
+  background-color: $background-surface;
   border-top-left-radius: 6px;
 }
 
@@ -9,23 +11,23 @@
   padding: 5px;
 
   .primary-button {
-    background-color: var(--foreground-1);
+    background-color: $foreground-1;
     height: 24px;
 
     &:hover {
-      background-color: var(--foreground-2);
+      background-color: $foreground-2;
     }
   }
 }
 
 button {
   color: white;
-  background: var(--background-surface-fade-2);
+  background: $background-surface-fade-2;
   margin-right: 10px;
 
   &:disabled {
     color: gray !important;
-    background: var(--background-surface-fade-2);
+    background: $background-surface-fade-2;
   }
 }
 
@@ -93,18 +95,18 @@ ngx-monaco-editor {
     margin-right: 5px;
     height: 24px;
     width: 24px;
-    background: var(--foreground-1);
+    background: $foreground-1;
     border-radius: 2px;
     border: none;
   }
 
   .stack-representation {
-    background-color: var(--foreground-1);
+    background-color: $foreground-1;
 
     .stack-row {
       display: grid;
       grid-template-columns: 40px 0.5fr 0.5fr;
-      background-color: var(--table-hovered-row-background);
+      background-color: $table-hovered-row-background;
       margin-bottom: 1px;
       height: 24px;
 

@@ -1,0 +1,24 @@
+<div *ngIf="result$ | async as result" class="result padding-10 f-12 flex-column border border-rad-2 margin-bottom-10">
+  <div class="margin-bottom-5">
+    <span [ngClass]="result.status === 'success' ? 'text-green' : 'text-red'"
+          class="text-uppercase">{{ result.status }}</span>
+  </div>
+  <ng-container *ngIf="result.status === 'success'; else failTemplate">
+    <div>Kind:
+      <span>{{ result.kind }}</span>
+    </div>
+    <div>Consumed gas:
+      <span>{{ result.consumedGas | spaceNumber }}</span>
+    </div>
+    <div>Storage size:
+      <span>{{ result.storageSize }}</span>
+    </div>
+    <div>Paid storage size diff:
+      <span>{{ result.paidStorageSizeDiff }}</span>
+    </div>
+  </ng-container>
+  <ng-template #failTemplate>
+    <ngx-json-viewer *ngIf="trace$ | async as trace"
+                     [expanded]="false" [json]="trace"></ngx-json-viewer>
+  </ng-template>
+</div>

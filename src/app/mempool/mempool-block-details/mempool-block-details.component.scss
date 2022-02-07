@@ -33,7 +33,7 @@
   .row-within {
     > div:not(.p-absolute) {
       display: grid;
-      grid-template-columns: minmax(100px, 270px) 70px;
+      grid-template-columns: minmax(100px, 1fr) 70px;
       padding-left: 10px;
       height: 26px;
       line-height: 26px;

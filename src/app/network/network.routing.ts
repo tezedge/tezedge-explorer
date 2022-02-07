@@ -10,11 +10,6 @@ const routes: Routes = [
     component: NetworkComponent,
   },
   {
-    path: ':address',
-    canActivate: [NetworkGuard],
-    component: NetworkComponent,
-  },
-  {
     path: '**',
     pathMatch: 'full',
     redirectTo: ''

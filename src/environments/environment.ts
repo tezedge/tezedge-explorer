@@ -3,7 +3,8 @@ export const environment = {
   api: [
     {
       id: 'prechecker.mempool.tezedge.com',
-      name: 'tezedge',
+      type: 'tezedge',
+      name: 'prechecker.tezedge',
       http: 'http://prechecker.mempool.tezedge.com:18732',
       p2p_port: 9732,
       features: [
@@ -17,7 +18,8 @@ export const environment = {
         { name: 'network' },
         { name: 'logs' },
         { name: 'open-api' },
-        { name: 'state' }
+        { name: 'state' },
+        { name: 'smart-contracts' },
       ]
     },
     // {

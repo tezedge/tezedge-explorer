@@ -41,15 +41,9 @@ export class NetworkActionEffects {
         this.http.get<any[]>(urlForward)
       ]).pipe(
         switchMap(([backwardSlice, forwardSlice]) => {
-
           const networkList = [...forwardSlice.reverse(), ...backwardSlice];
-          const timestampToFind = action.payload.timestamp;
-          const closestNetworkRowToTimestamp = networkList.reduce((prev: NetworkActionEntity, curr: NetworkActionEntity) =>
-            Math.abs(curr.timestamp / 1000000 - timestampToFind) < Math.abs(prev.timestamp / 1000000 - timestampToFind)
-              ? curr
-              : prev);
 
-          return [
+          const actions: any[] = [
             {
               type: 'NETWORK_ACTION_LOAD_SUCCESS',
               payload: {
@@ -57,13 +51,24 @@ export class NetworkActionEffects {
                 network: networkList
               }
             },
-            {
+          ];
+
+          if (networkList.length) {
+            const timestampToFind = action.payload.timestamp;
+            const closestNetworkRowToTimestamp = networkList?.reduce((prev: NetworkActionEntity, curr: NetworkActionEntity) =>
+              Math.abs(curr.timestamp / 1000000 - timestampToFind) < Math.abs(prev.timestamp / 1000000 - timestampToFind)
+                ? curr
+                : prev);
+
+            actions.push({
               type: 'NETWORK_ACTION_DETAILS_LOAD',
               payload: {
-                originalId:  closestNetworkRowToTimestamp.id
+                originalId: closestNetworkRowToTimestamp?.id
               }
-            }
-          ];
+            });
+          }
+
+          return actions;
         })
       );
     }),

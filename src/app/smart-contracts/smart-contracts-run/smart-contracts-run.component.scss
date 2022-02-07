@@ -1,0 +1,10 @@
+@import 'variables';
+
+.run-contract {
+  padding: 5px 7px;
+  background-color: $foreground-2;
+
+  &:hover {
+    background-color: $background-surface-fade-2;
+  }
+}

@@ -1,13 +1,39 @@
+@import 'variables';
+
 form {
   width: 300px;
-  padding: 0 2px;
-  border-radius: 4px !important;
+  padding: 0 3px;
   border: 1px solid rgba(0, 0, 0, 0.2);
   box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
 }
 
 mat-calendar {
   width: 100%;
-  height: 354px;
+  height: 331px;
 }
 
+.cancel-btn,
+.filter-btn {
+  height: 30px;
+  width: 67px;
+  transition: background-color 0.1s;
+}
+
+.cancel-btn {
+  background-color: $foreground-1;
+  color: $foreground-9;
+
+  &:hover {
+    color: $foreground;
+    background-color: $foreground-2;
+  }
+}
+
+.filter-btn {
+  color: #fff;
+  background-color: $active-surface;
+
+  &:hover {
+    filter: brightness(110%);
+  }
+}

@@ -20,7 +20,7 @@ export class SmartContractsService {
     //   .subscribe(res => console.log('INDENT RESPONSE', res));
 
     const body = this.buildGetTraceRequestBody(`${contract.code}`, contract.codeParameter);
-    return this.http.post('https://tezos-lang-server.tzalpha.net//get_trace', body);
+    return this.http.post('http://trace.dev.tezedge.com:8282//get_trace', body);
   }
 
   getContractTraceMock(): Observable<any> {
@@ -219,9 +219,9 @@ export class SmartContractsService {
     return {
       code,
       storage: parameters[0] ?? 'Unit',
-      balance: 199,
+      balance: 100000,
       parameter: parameters[1] ?? 'Unit',
-      gas: 200000,
+      gas: 800000000,
       amount: 300,
       self: 'KT1QuofAgnsWffHzLA7D78rxytJruGHDe7XG',
       entrypoint: 'default',
@@ -231,11 +231,11 @@ export class SmartContractsService {
         addr: 'KT1QuofAgnsWffHzLA7D78rxytJruGHDe7XG',
         code,
         storage: parameters[0] ?? 'Unit',
-        balance: 999999
+        balance: 100000
       }],
-      boot_balances: [90300, 90300, 90300, 90300],
+      boot_balances: [100000, 100000, 100000, 100000],
       timestamp: '2018-03-26T13:37:00Z',
-      protocol: 'athens'
+      protocol: 'granada'
     };
   }
 }
@@ -276,7 +276,7 @@ const contracts: SmartContract[] = [
   },
   {
     id: 8763,
-    hash: 'tz1VYcWWnA5gAc7hVacDSPTWXywujmhMTDzg',
+    hash: 'tz1VYcWWnA5gAc7hVacD34F3443jmhMTDzg',
     calls: 36,
     code: 'parameter unit;\nstorage unit;\ncode { CAR; NIL operation; PAIR }'
   },
@@ -332,9 +332,53 @@ const contracts: SmartContract[] = [
   },
   {
     id: 6993,
-    hash: 'LLojLSWEFWJfeuluGWR8ulgwrfejEfew9FJEle',
+    hash: 'LLojLSWEFWJfeuluGWR8ulgwrfejEfew9FJe',
     calls: 88,
-    code: 'parameter unit ;\nstorage unit ;\ncode { CAR ;\n       PUSH int 3 ;\n       PUSH int 3 ;\n       IFCMPEQ { DROP } { DROP } ;\n       UNIT;\n       NIL operation ;\n       PAIR }'
+    codeParameter: [
+      'Pair (Pair { Pair (Pair \"kepler://zCT5htke43MjKGP7hwY1rpTLjfvXZMiamXRx45QnGQc36HoaEBAs/zb38S8iCDyGG4fKH6Yw7Hwipn7gXaoZWMRkmMgVAtQZDBFLej\" 0x2fb9dfa0eb302c1f7be2f74ec727e141a144fb3d4f5e47871d9e2585a4e862e8) \"VerifiableCredential\"; Pair (Pair \"kepler://zCT5htke43MjKGP7hwY1rpTLjfvXZMiamXRx45QnGQc36HoaEBAs/zb38SDRpkZYFZYcccaMmhoQjFVkB8An8hYPnDaHJamUdC3uig\" 0x7e6581d2675c580192d84a8be8032c562c4724cabf39cd901020c7bf2c163f4e) \"VerifiableCredential\"; Pair (Pair \"kepler://zCT5htke43MjKGP7hwY1rpTLjfvXZMiamXRx45QnGQc36HoaEBAs/zb38SDuT7PeNu1LpzbcAh4g1p7tLPz2jjG3HYMaMvGNjdEdWu\" 0x97dd54a4678477276ec654259287a34e572b327a19973cfd5a5044a98987ca2c) \"VerifiableCredential\"; Pair (Pair \"kepler://zCT5htke43MjKGP7hwY1rpTLjfvXZMiamXRx45QnGQc36HoaEBAs/zb38SHtVkmgZsLM1Gaq3T7JcADxvs8jCoDrnat3jS2Z8GS18L\" 0x13df04f64e25893659a601e52c7f9c34da7d1df4fa347b264a8c94e221f89317) \"VerifiableCredential\" } \"tzprofiles\") (Pair {} \"tz1QdAAAkvDLRYRF8r3SzbS5hEoR4qZ1syPC\")',
+      'Pair { Pair (Pair "hello" 0xdeadc0de) "hello"; Pair (Pair "hello" 0xdeadc0de) "hello"} True'
+    ],
+    code: 'parameter (pair (list (pair (pair string bytes) string)) bool);\n' +
+      'storage (pair\n' +
+      '          (pair (set %claims (pair (pair string bytes) string)) (string %contract_type))\n' +
+      '          (pair (big_map %metadata string bytes) (address %owner)));\n' +
+      'code { UNPAIR ;\n' +
+      '       SWAP ;\n' +
+      '       DUP ;\n' +
+      '       DUG 2 ;\n' +
+      '       CDR ;\n' +
+      '       CDR ;\n' +
+      '       SENDER ;\n' +
+      '       COMPARE ;\n' +
+      '       NEQ ;\n' +
+      '       IF { PUSH string "Unauthorized." ; FAILWITH } {} ;\n' +
+      '       PUSH mutez 0 ;\n' +
+      '       AMOUNT ;\n' +
+      '       COMPARE ;\n' +
+      '       GT ;\n' +
+      '       IF { PUSH string "Tez not accepted." ; FAILWITH } {} ;\n' +
+      '       UNPAIR ;\n' +
+      '       DUP 3 ;\n' +
+      '       CDR ;\n' +
+      '       CDR ;\n' +
+      '       DUP 4 ;\n' +
+      '       CDR ;\n' +
+      '       CAR ;\n' +
+      '       PAIR ;\n' +
+      '       DUP 4 ;\n' +
+      '       CAR ;\n' +
+      '       CDR ;\n' +
+      '       DIG 4 ;\n' +
+      '       CAR ;\n' +
+      '       CAR ;\n' +
+      '       DIG 3 ;\n' +
+      '       ITER { SWAP ; DUP 5 ; DIG 2 ; UPDATE } ;\n' +
+      '       DIG 3 ;\n' +
+      '       DROP ;\n' +
+      '       PAIR ;\n' +
+      '       PAIR ;\n' +
+      '       NIL operation ;\n' +
+      '       PAIR }'
   },
   {
     id: 3822,

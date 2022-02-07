@@ -70,7 +70,7 @@ export class StorageResourcesMiniGraphComponent implements OnDestroy {
               private viewContainerRef: ViewContainerRef) { }
 
   openDetailsOverlay(column: ResourceStorageQueryDetails, index: number, event: MouseEvent): void {
-    if (this.overlayRef && this.overlayRef.hasAttached()) {
+    if (this.overlayRef?.hasAttached()) {
       this.overlayRef.detach();
     }
 
@@ -108,7 +108,7 @@ export class StorageResourcesMiniGraphComponent implements OnDestroy {
   }
 
   ngOnDestroy(): void {
-    if (this.overlayRef && this.overlayRef.hasAttached()) {
+    if (this.overlayRef?.hasAttached()) {
       this.overlayRef.detach();
     }
   }

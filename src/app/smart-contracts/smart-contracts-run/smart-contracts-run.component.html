@@ -1,0 +1,22 @@
+<div class="f-12 flex-column border border-rad-2 margin-bottom-10" *ngIf="contract">
+  <div class="foreground-4 padding-10 flex-row flex-between padding-bottom-remove">
+    PARAMETERS
+    <button class="run-contract foreground border-rad-2 pointer"
+            (click)="runContract()">RUN CONTRACT
+    </button>
+  </div>
+  <form [formGroup]="formGroup" fxFlex="row" fxLayoutGap="10px" class="padding-horizontal-10 padding-bottom-10">
+    <div fxFlex="50" class="flex-column">
+      Parameter
+      <mat-form-field class="tezedge-form-field margin-top-5">
+        <textarea matInput name="param" rows="6" class="no-resize" formControlName="parameter"></textarea>
+      </mat-form-field>
+    </div>
+    <div fxFlex="50" class="flex-column">
+      Storage
+      <mat-form-field class="tezedge-form-field margin-top-5">
+        <textarea matInput name="param" rows="6" class="no-resize" formControlName="storage"></textarea>
+      </mat-form-field>
+    </div>
+  </form>
+</div>

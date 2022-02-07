@@ -1,11 +1,8 @@
 <div class="border border-rad-4 margin-10">
 
   <div class="padding-10 d-flex flex-row flex-between text-uppercase"
-       [class.hidden]="!currentBlock">
+       [class.hidden]="!bakingRightsLength">
     <div class="font-500">Received time count histogram - {{ bakingRightsLength }} nodes</div>
-    <div [@refreshBlock]="currentBlock" class="block">
-      <span class="foreground-7">CURRENT BLOCK</span>
-      {{ currentBlock ?? '' | spaceNumber }}</div>
   </div>
   <div class="outer-graph-container border-top">
     <div class="rotated-label f-12 d-flex align-center text-nowrap foreground"
@@ -42,14 +39,14 @@
 </div>
 
 <ng-template #tooltipTemplate let-range="range" let-count="count">
-  <div class="custom-tooltip-template">
-    <div class="foreground header" fxLayout="column" fxLayoutGap="7px">
-      <div>
-        <span class="foreground-6">Range:</span>
+  <div class="custom-tooltip-template padding-left-remove padding-right-remove">
+    <div class="foreground" fxLayout="column" fxLayoutGap="7px">
+      <div class="border-bottom padding-bottom-10">
+        <span class="foreground-6 padding-left-10">Range:</span>
         {{ range }}
       </div>
       <div>
-        <span class="foreground-6">Count:</span>
+        <span class="foreground-6 padding-left-10">Count:</span>
         {{ count }}
       </div>
     </div>

@@ -28,6 +28,7 @@ export class SettingsNodeService {
     return {
       hash: response.hash,
       chainId: response.chain_id,
+      network: this.getNodeNetwork(response.chain_id),
       level: response.level,
       proto: response.proto,
       predecessor: response.predecessor,
@@ -42,5 +43,14 @@ export class SettingsNodeService {
       seedNonceHash: response.seedNonceHash,
       proofOfWorkNonce: response.proofOfWorkNonce
     } as SettingsNodeEntityHeader;
+  }
+
+  private static getNodeNetwork(chainId: string): string {
+    switch (chainId) {
+      case 'NetXdQprcVkpaWU':
+        return 'mainnet';
+      case 'NetXZSsxBpMQeAT':
+        return 'hangzhou';
+    }
   }
 }

@@ -17,7 +17,8 @@ export class MempoolBakingRightsService {
     const url = `${http}/dev/shell/automaton/stats/current_head/peers?level=${level}`;
     return this.http.get<MempoolBakingRight[]>(url).pipe(
       tap(this.handleError),
-      map(snakeCaseToCamelCase)
+      map(snakeCaseToCamelCase),
+      map(this.mapBakingRights)
     );
   }
 
@@ -34,6 +35,17 @@ export class MempoolBakingRightsService {
     if (res.error) {
       throw new Error(res.error);
     }
+  }
+
+  private mapBakingRights(response: any[]): MempoolBakingRight[] {
+    return response.map(right => ({
+      ...right,
+      getOperationsRecvStartTime: right.getOperationsRecvStartTime - right.sentTime,
+      getOperationsRecvEndTime: right.getOperationsRecvEndTime - right.getOperationsRecvStartTime,
+      operationsSendStartTime: right.operationsSendStartTime - right.getOperationsRecvEndTime,
+      operationsSendEndTime: right.operationsSendEndTime - right.operationsSendStartTime,
+      responseRate: (right.operationsSendNum ?? 0) + '/' + (right.getOperationsRecvNum ?? 0),
+    }));
   }
 
   private mapBakingRightsDetails(response: any[]): any {

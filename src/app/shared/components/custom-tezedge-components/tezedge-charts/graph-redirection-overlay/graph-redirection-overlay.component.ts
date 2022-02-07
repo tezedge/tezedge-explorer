@@ -10,6 +10,7 @@ export class GraphRedirectionOverlayComponent implements OnInit {
 
   @Input() date: string;
   @Input() blockLevel: number;
+  @Input() network: string;
 
   private timestamp: number;
 
@@ -33,6 +34,11 @@ export class GraphRedirectionOverlayComponent implements OnInit {
   }
 
   navigateToExternalURL(): void {
-    window.open('https://tzstats.com/' + this.blockLevel, '_blank');
+    if (this.network === 'mainnet') {
+      this.network = '';
+    } else {
+      this.network += '.';
+    }
+    window.open('https://' + this.network + 'tzstats.com/' + this.blockLevel, '_blank');
   }
 }

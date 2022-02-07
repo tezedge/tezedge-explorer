@@ -5,14 +5,13 @@
     <span>CONTRACT</span>
     <span>CALLS</span>
   </div>
-  <div class="contracts-table overflow-auto">
+  <div class="contracts-table overflow-auto border-top">
     <div *ngFor="let contract of contracts"
          (click)="selectContract(contract)"
          [class.active]="activeContract === contract"
          class="action row pointer foreground">
       <span class="id">{{ contract.id }}</span>
-      <span class="p-relative">{{ contract.hash }}
-
+      <span class="p-relative truncate">{{ contract.hash }}
         <span matTooltip="Copy hash"
               class="copy-hash p-absolute border-rad-4"
               [cdkCopyToClipboard]="contract.hash"

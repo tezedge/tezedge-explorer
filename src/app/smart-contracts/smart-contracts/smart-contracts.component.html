@@ -12,14 +12,17 @@
     <app-smart-contracts-table fxFlex="440px"></app-smart-contracts-table>
     <div fxFlex="calc(100% - 440px)" class="d-flex flex-column align-stretch padding-right-10 padding-bottom-10">
       <div class="d-flex flex-column">
-        <div fxFlex="32px" class="d-flex align-center f-12">
-          <span class="foreground margin-right-10">CONTRACT DETAIL</span>
+        <div fxFlex="36px" class="d-flex align-center f-12">
+          <span class="foreground margin-right-10 margin-left-10">CONTRACT DETAIL</span>
           <mat-icon svgIcon="chevron-right" class="icon-12 icon-foreground-4"></mat-icon>
           <span class="foreground-4 margin-left-10">{{ activeContract?.hash }}</span>
         </div>
-        <div class="debugger-inspect f-12 d-flex flex-column border border-rad-2">
+        <app-smart-contracts-run></app-smart-contracts-run>
+        <app-smart-contracts-result></app-smart-contracts-result>
+        <div class="debugger-inspect f-12 d-flex flex-column border border-rad-2 margin-bottom-10"
+             *ngIf="result?.status === 'success'">
           <div class="foreground-4 padding-10">DEBUG</div>
-          <div class="d-flex align-center foreground-4 f-12 padding-left-10">
+          <div class="d-flex align-center foreground-4 f-12 padding-left-10 padding-bottom-10">
             <button mat-icon-button class="square-button d-flex align-center flex-center"
                     matTooltip="Start debugger" [disabled]="debugConfig.currentStep"
                     (click)="startDebugger()">
@@ -66,7 +69,7 @@
               <span class="foreground-4">{{ debugConfig.currentStep.gas }}</span>
             </span>
           </div>
-          <div class="padding-10 d-flex">
+          <div *ngIf="debugConfig.currentStep" class="padding-horizontal-10 padding-bottom-10 flex-row">
             <div fxFlex="50" class="stack-representation border-rad-2 padding-5 margin-right-5">
               <span class="foreground-7">Before</span>
               <div class="margin-top-5 border-rad-2">
@@ -92,7 +95,7 @@
           </div>
         </div>
       </div>
-      <div fxFlex="1 1 auto" class="p-relative border border-rad-2 margin-top-10 d-flex flex-column">
+      <div fxFlex="1 1 auto" class="p-relative border border-rad-2 d-flex flex-column">
         <div class="breakpoint-list p-absolute">
           <div class="bullet"
                (click)="toggleBreakpoint(i)"
@@ -117,8 +120,7 @@
             </ng-container>
           </div>
 
-          <div #codeWrapper
-               class="code-wrapper overflow-hidden"
+          <div class="code-wrapper overflow-hidden"
                [class.is-debugging]="debugConfig.currentStep !== undefined">
             <ngx-monaco-editor [options]="editorOptions"
                                (onInit)="onEditorInit($event)"

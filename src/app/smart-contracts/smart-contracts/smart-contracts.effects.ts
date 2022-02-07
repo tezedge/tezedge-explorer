@@ -6,7 +6,7 @@ import { State } from '@app/app.reducers';
 import { SmartContractsService } from '@smart-contracts/smart-contracts/smart-contracts.service';
 import {
   SMART_CONTRACTS_LOAD,
-  SMART_CONTRACTS_LOAD_SUCCESS,
+  SMART_CONTRACTS_LOAD_SUCCESS, SMART_CONTRACTS_RUN,
   SMART_CONTRACTS_SET_ACTIVE_CONTRACT,
   SMART_CONTRACTS_SET_ACTIVE_CONTRACT_SUCCESS
 } from '@smart-contracts/smart-contracts/smart-contracts.actions';
@@ -23,7 +23,7 @@ export class SmartContractsEffects {
   ));
 
   smartContractsSetActiveContract$ = createEffect(() => this.actions$.pipe(
-    ofType(SMART_CONTRACTS_SET_ACTIVE_CONTRACT),
+    ofType(SMART_CONTRACTS_SET_ACTIVE_CONTRACT, SMART_CONTRACTS_RUN),
     withLatestFrom(this.store, (action: any, state: ObservedValueOf<Store<State>>) => ({ action, state })),
     switchMap(({ action, state }) => this.smartContractsService.getContractTrace(action.payload)),
     map((trace: any) => ({ type: SMART_CONTRACTS_SET_ACTIVE_CONTRACT_SUCCESS, payload: trace })),

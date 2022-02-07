@@ -1,26 +1,31 @@
-<form [formGroup]="formGroup" class="background-surface-fade-2">
-  <mat-calendar [selected]="selectedRangeValue"
-                (selectedChange)="selectedChange($event)"></mat-calendar>
+<form [formGroup]="formGroup"
+      (clickOutside)="cancel()"
+      class="background-surface-fade-2 border-rad-4">
+  <mat-calendar (selectedChange)="selectedChange($event)"></mat-calendar>
   <div class="d-flex flex-row padding-bottom-5">
     <mat-form-field fxFlex="25" class="tezedge-form-field margin-left-5" appearance="outline">
       <input formControlName="hour"
-             placeholder="hh"
+             placeholder="hh" oninput="validity.valid || (value='');"
              matInput type="number" [min]="0" [max]="23" autocomplete="off">
     </mat-form-field>
     <mat-form-field fxFlex="25" class="tezedge-form-field margin-left-5" appearance="outline">
       <input formControlName="minute"
-             placeholder="mm"
+             placeholder="mm" oninput="validity.valid || (value='');"
              matInput type="number" [min]="0" [max]="59" autocomplete="off">
     </mat-form-field>
     <mat-form-field fxFlex="25" class="tezedge-form-field margin-left-5" appearance="outline">
-      <input formControlName="ss"
-             placeholder="sec"
+      <input formControlName="second"
+             placeholder="ss" oninput="validity.valid || (value='');"
              matInput type="number" [min]="0" [max]="59" autocomplete="off">
     </mat-form-field>
     <mat-form-field fxFlex="25" class="tezedge-form-field margin-left-5 margin-right-5" appearance="outline">
       <input formControlName="milliSecond"
-             placeholder="ms"
+             placeholder="ms" oninput="validity.valid || (value='');"
              matInput type="number" [min]="0" [max]="999" autocomplete="off">
     </mat-form-field>
+  </div>
+  <div class="d-flex flex-end padding-bottom-8">
+    <button (click)="cancel()" class="cancel-btn border-rad-2 margin-right-5 pointer">Cancel</button>
+    <button (click)="submit()" class="filter-btn border-rad-2 margin-right-5 pointer">Filter</button>
   </div>
 </form>

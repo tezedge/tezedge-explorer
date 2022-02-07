@@ -129,3 +129,8 @@ export function reducer(state: SettingsNode = initialState, action): SettingsNod
 
 export const selectActiveNode = (state: State): SettingsNodeApi => state.settingsNode.activeNode;
 export const selectFeatures = (state: State) => state.settingsNode.activeNode.features;
+export const selectActiveNodeNetwork = (state: State): string => Object.keys(state.settingsNode.entities)
+  .map(key => state.settingsNode.entities[key])
+  .find(node => node.id === state.settingsNode.activeNode.id)
+  .header
+  .network;

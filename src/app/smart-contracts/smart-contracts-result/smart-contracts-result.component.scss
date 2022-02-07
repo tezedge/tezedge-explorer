@@ -1,0 +1,15 @@
+@import 'variables';
+
+.result {
+  max-height: 35vh;
+  overflow: auto;
+
+  div {
+    line-height: 22px;
+    color: $foreground-7;
+
+    span {
+      color: $foreground;
+    }
+  }
+}

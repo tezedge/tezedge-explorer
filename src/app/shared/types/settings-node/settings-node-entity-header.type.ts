@@ -1,6 +1,7 @@
 export class SettingsNodeEntityHeader {
   hash: string;
   chainId: string;
+  network: string;
   level: number;
   proto: number;
   predecessor: string;

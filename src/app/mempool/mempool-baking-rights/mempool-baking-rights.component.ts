@@ -15,14 +15,18 @@ import { mempoolBakingRightsState } from '@mempool/mempool-baking-rights/mempool
 import { SortDirection, TableSort } from '@shared/types/shared/table-sort.type';
 import { ADD_INFO, InfoAdd } from '@shared/components/error-popup/error-popup.actions';
 import { MempoolBakingRight } from '@shared/types/mempool/baking-rights/mempool-baking-right.type';
+import { refreshBlock } from '@shared/constants/animations';
+import { selectNetworkCurrentBlock } from '@network/network-stats/network-stats.reducer';
+import { distinctUntilChanged, filter } from 'rxjs/operators';
 
 @UntilDestroy()
 @Component({
   selector: 'app-mempool-baking-rights',
   templateUrl: './mempool-baking-rights.component.html',
   styleUrls: ['./mempool-baking-rights.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
   host: { class: 'h-100 overflow-auto d-block' },
-  changeDetection: ChangeDetectionStrategy.OnPush
+  animations: [refreshBlock]
 })
 export class MempoolBakingRightsComponent implements OnInit, OnDestroy {
 
@@ -32,9 +36,18 @@ export class MempoolBakingRightsComponent implements OnInit, OnDestroy {
     { name: 'block hash', sort: 'blockHash' },
     { name: 'received', sort: 'receivedTime' },
     { name: 'sent', sort: 'sentTime' },
+    { name: 'get op. recv start', sort: 'getOperationsRecvStartTime' },
+    { name: 'get op. recv end', sort: 'getOperationsRecvEndTime' },
+    { name: 'op. send start', sort: 'operationsSendStartTime' },
+    { name: 'op. send end', sort: 'operationsSendEndTime' },
+    { name: 'response rate', sort: 'responseRate' },
   ];
+  readonly FIFTY_MS = 50000000;
+  readonly TWENTY_MS = 20000000;
+
   state: MempoolBakingRightsState;
   currentSort: TableSort;
+  currentBlock: number;
 
   constructor(private store: Store<State>,
               private cdRef: ChangeDetectorRef) { }
@@ -44,6 +57,15 @@ export class MempoolBakingRightsComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.store.dispatch<MempoolBakingRightsInit>({ type: MEMPOOL_BAKING_RIGHTS_INIT });
     this.listenToStateChange();
+    this.listenToBlockChange();
+  }
+
+  private listenToBlockChange(): void {
+    this.store.select(selectNetworkCurrentBlock).pipe(
+      untilDestroyed(this),
+      filter(Boolean),
+      distinctUntilChanged()
+    ).subscribe((currentBlock: number) => this.currentBlock = currentBlock);
   }
 
   sortTable(sortBy: string): void {

@@ -4,4 +4,11 @@ export interface MempoolBakingRight {
   nodeId: string;
   receivedTime: number;
   sentTime: number;
+  getOperationsRecvStartTime: number;
+  getOperationsRecvEndTime: number;
+  getOperationsRecvNum: number;
+  operationsSendStartTime: number;
+  operationsSendEndTime: number;
+  operationsSendNum: number;
+  responseRate: string;
 }

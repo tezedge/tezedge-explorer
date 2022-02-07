@@ -107,7 +107,7 @@ export class StorageBlockDetailsComponent implements OnInit, OnChanges, OnDestro
   }
 
   detachTooltip(): void {
-    if (this.overlayRef && this.overlayRef.hasAttached()) {
+    if (this.overlayRef?.hasAttached()) {
       this.overlayRef.detach();
     }
   }

@@ -1,6 +1,6 @@
 <div fxLayout.lt-lg="column" fxLayout.gt-md="row" fxFlexFill>
 
-  <div fxFlex.gt-md="50" fxFlex.lt-lg="50" class="table-container overflow-x-auto overflow-y-hidden d-flex flex-column">
+  <div fxFlex.gt-md="70" fxFlex.lt-lg="50" class="table-container overflow-x-auto overflow-y-hidden d-flex flex-column">
     <div fxFlex="36px" class="row head foreground-7 border-bottom">
       <span (click)="sortTable(tableHead.sort ?? tableHead.name)"
             *ngFor="let tableHead of tableHeads"
@@ -36,16 +36,25 @@
               <mat-icon class="icon-foreground-7 icon-14" svgIcon="copy"></mat-icon>
             </span>
           </span>
-          <span [innerHTML]="right.receivedTime | nanoTransform: 50000000 : 20000000"></span>
-          <span [innerHTML]="right.sentTime | nanoTransform: 50000000 : 20000000"></span>
+          <span [innerHTML]="right.receivedTime | nanoTransform: FIFTY_MS : TWENTY_MS"></span>
+          <span [innerHTML]="right.sentTime | nanoTransform: FIFTY_MS : TWENTY_MS"></span>
+          <span [innerHTML]="right.getOperationsRecvStartTime | nanoTransform: FIFTY_MS : TWENTY_MS"></span>
+          <span [innerHTML]="right.getOperationsRecvEndTime | nanoTransform: FIFTY_MS : TWENTY_MS"></span>
+          <span [innerHTML]="right.operationsSendStartTime | nanoTransform: FIFTY_MS : TWENTY_MS"></span>
+          <span [innerHTML]="right.operationsSendEndTime | nanoTransform: FIFTY_MS : TWENTY_MS"></span>
+          <span>{{ right.responseRate }}</span>
         </div>
       </cdk-virtual-scroll-viewport>
     </div>
   </div>
 
-  <div fxFlex.gt-md="50" fxFlex.lt-lg="50" fxLayout="column" class="baking-details">
-    <div fxFlex="36px" class="tab border-bottom d-flex align-center padding-left-10">
+  <div fxFlex.gt-md="30" fxFlex.lt-lg="50" fxLayout="column" class="baking-details">
+    <div fxFlex="36px" class="tab border-bottom d-flex align-center flex-between padding-left-10">
       <span class="margin-left-10">DETAILS</span>
+      <div [class.hidden]="!currentBlock" [@refreshBlock]="currentBlock" class="block margin-right-10">
+        <span class="foreground-7">CURRENT BLOCK</span>
+        {{ currentBlock ?? '' | spaceNumber }}
+      </div>
     </div>
     <app-mempool-baking-rights-details fxFlex="calc(100% - 36px)"></app-mempool-baking-rights-details>
   </div>

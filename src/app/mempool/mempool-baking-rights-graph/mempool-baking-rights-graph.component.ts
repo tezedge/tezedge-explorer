@@ -4,7 +4,7 @@ import { State } from '@app/app.reducers';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { mempoolBakingRights } from '@mempool/mempool-baking-rights/mempool-baking-rights.reducer';
 import { getFilteredXTicks } from '@helpers/chart.helper';
-import { distinctUntilChanged, filter } from 'rxjs/operators';
+import { filter } from 'rxjs/operators';
 import { MempoolBakingRight } from '@shared/types/mempool/baking-rights/mempool-baking-right.type';
 import { NANOSECOND_FACTOR, ONE_HUNDRED_MS } from '@shared/constants/unit-measurements';
 import { MIN_WIDTH_700 } from '@shared/constants/breakpoint-observer';
@@ -12,16 +12,13 @@ import { BreakpointObserver, BreakpointState } from '@angular/cdk/layout';
 import memo from 'memo-decorator';
 import { Overlay, OverlayRef } from '@angular/cdk/overlay';
 import { TemplatePortal } from '@angular/cdk/portal';
-import { selectNetworkCurrentBlock } from '@network/network-stats/network-stats.reducer';
-import { refreshBlock } from '@shared/constants/animations';
 
 @UntilDestroy()
 @Component({
   selector: 'app-mempool-baking-rights-graph',
   templateUrl: './mempool-baking-rights-graph.component.html',
   styleUrls: ['./mempool-baking-rights-graph.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  animations: [refreshBlock]
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class MempoolBakingRightsGraphComponent implements OnInit, OnDestroy {
 
@@ -30,7 +27,6 @@ export class MempoolBakingRightsGraphComponent implements OnInit, OnDestroy {
   chartColumns: any[];
   xTicksValues: string[];
   bakingRightsLength: number;
-  currentBlock: number;
 
   @ViewChild('tooltipTemplate') private tooltipTemplate: TemplateRef<{ count: number, range: string }>;
 
@@ -47,15 +43,6 @@ export class MempoolBakingRightsGraphComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.listenToResizeEvent();
     this.listenToMempoolBakingRightsChange();
-    this.listenToBlockChange();
-  }
-
-  private listenToBlockChange(): void {
-    this.store.select(selectNetworkCurrentBlock).pipe(
-      untilDestroyed(this),
-      filter(Boolean),
-      distinctUntilChanged()
-    ).subscribe((currentBlock: number) => this.currentBlock = currentBlock);
   }
 
   private listenToMempoolBakingRightsChange(): void {
@@ -99,7 +86,7 @@ export class MempoolBakingRightsGraphComponent implements OnInit, OnDestroy {
   }
 
   openDetailsOverlay(item, event: MouseEvent): void {
-    if (this.overlayRef && this.overlayRef.hasAttached()) {
+    if (this.overlayRef?.hasAttached()) {
       this.overlayRef.detach();
     }
 
@@ -134,7 +121,7 @@ export class MempoolBakingRightsGraphComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    if (this.overlayRef && this.overlayRef.hasAttached()) {
+    if (this.overlayRef?.hasAttached()) {
       this.overlayRef.detach();
     }
   }

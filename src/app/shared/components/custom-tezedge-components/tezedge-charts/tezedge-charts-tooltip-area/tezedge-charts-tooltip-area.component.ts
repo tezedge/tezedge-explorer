@@ -11,6 +11,7 @@ import {
   NgZone,
   OnChanges,
   OnDestroy,
+  OnInit,
   PLATFORM_ID,
   SimpleChanges,
   ViewChild
@@ -32,6 +33,7 @@ import {
   MEMPOOL_BLOCK_APPLICATION_DETAILS_LOAD,
   MempoolBlockApplicationDetailsLoad
 } from '@mempool/mempool-block-application/mempool-block-application.actions';
+import { selectActiveNodeNetwork } from '@settings/settings-node.reducer';
 
 @UntilDestroy()
 @Component({
@@ -39,14 +41,14 @@ import {
   templateUrl: './tezedge-charts-tooltip-area.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class TezedgeChartsTooltipAreaComponent extends TooltipArea implements AfterViewInit, OnChanges, OnDestroy {
+export class TezedgeChartsTooltipAreaComponent extends TooltipArea implements OnInit, AfterViewInit, OnChanges, OnDestroy {
 
   @Input() graphType: string;
   @Input() chartElement: SVGElement;
   @Input() resourceType: SystemResourcesResourceType | undefined;
   @Input() routedTooltipReady: boolean;
   @Input() disableRedirection: boolean = false;
-  @Input() tooltipPlacement: 'top' | 'bottom' = 'top';
+  @Input() tooltipPlacement: 'top' | 'bottom';
 
   @ViewChild(TooltipDirective) private tooltipDirective: TooltipDirective;
   @ViewChild('tooltipTrigger') private tooltipTrigger: ElementRef<SVGRectElement>;
@@ -62,6 +64,7 @@ export class TezedgeChartsTooltipAreaComponent extends TooltipArea implements Af
 
   private overlayRef: OverlayRef;
   private redirectionOverlayRef: ComponentRef<GraphRedirectionOverlayComponent>;
+  private nodeNetwork: string;
 
   private readonly scrollListener = () => this.detachTooltip();
 
@@ -102,6 +105,12 @@ export class TezedgeChartsTooltipAreaComponent extends TooltipArea implements Af
         }, 500);
       });
     }
+  }
+
+  ngOnInit(): void {
+    this.store.select(selectActiveNodeNetwork)
+      .pipe(untilDestroyed(this))
+      .subscribe((network: string) => this.nodeNetwork = network);
   }
 
   ngAfterViewInit(): void {
@@ -207,6 +216,7 @@ export class TezedgeChartsTooltipAreaComponent extends TooltipArea implements Af
     this.redirectionOverlayRef.instance.date = this.anchorValues[0][this.resourceType ? 'name' : 'timestamp'];
     if (this.graphType === 'block-application') {
       this.redirectionOverlayRef.instance.blockLevel = Number(this.anchorValues[0].name);
+      this.redirectionOverlayRef.instance.network = this.nodeNetwork;
       this.store.dispatch<MempoolBlockApplicationDetailsLoad>({
         type: MEMPOOL_BLOCK_APPLICATION_DETAILS_LOAD,
         payload: {
@@ -217,7 +227,7 @@ export class TezedgeChartsTooltipAreaComponent extends TooltipArea implements Af
   }
 
   private detachTooltip(): void {
-    if (this.overlayRef && this.overlayRef.hasAttached()) {
+    if (this.overlayRef?.hasAttached()) {
       this.overlayRef.detach();
     }
   }

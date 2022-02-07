@@ -3,7 +3,10 @@ import { ADD_INFO, InfoAdd } from '@shared/components/error-popup/error-popup.ac
 import { Store } from '@ngrx/store';
 import { State } from '@app/app.reducers';
 import { MempoolBlockDetails } from '@shared/types/mempool/common/mempool-block-details.type';
-import { UntilDestroy } from '@ngneat/until-destroy';
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
+import { Router } from '@angular/router';
+import { mempoolBlockApplication } from '@mempool/mempool-block-application/mempool-block-application.reducer';
+import { take } from 'rxjs/operators';
 
 @UntilDestroy()
 @Component({
@@ -23,13 +26,27 @@ export class MempoolBlockDetailsComponent implements OnInit {
   readonly FIFTY_MS = 50000000;
   readonly TWENTY_MS = 20000000;
 
-  constructor(private store: Store<State>) { }
+  constructor(private store: Store<State>,
+              private router: Router) { }
 
   ngOnInit(): void {
-    this.colors = this.isBlockApplication ? ['#ff9f0acc', '#ffd60acc', '#32d74bcc', '#bf5af2cc'] : [];
+    if (this.isBlockApplication) {
+      this.store.select(mempoolBlockApplication)
+        .pipe(untilDestroyed(this), take(1))
+        .subscribe(state => {
+          this.colors = state.colorScheme.slice(1).map(color => color + 'cc'); // darker
+        });
+    }
   }
 
   copyHashToClipboard(hash: string): void {
     this.store.dispatch<InfoAdd>({ type: ADD_INFO, payload: 'Copied to clipboard: ' + hash });
+  }
+
+  navigateToNetwork(timestamp: number): void {
+    this.router.navigate(['network'], {
+      queryParams: { timestamp: Math.ceil(timestamp / 1000000) },
+      queryParamsHandling: 'merge'
+    });
   }
 }

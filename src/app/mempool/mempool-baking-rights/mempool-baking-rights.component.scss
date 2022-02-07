@@ -2,12 +2,12 @@
 
 .table-container {
   cdk-virtual-scroll-viewport, .row {
-    width: 645px;
+    width: 1345px;
     min-width: 100%;
   }
 
   .row {
-    grid-template-columns: 175px 110px 130px 130px 100px;
+    grid-template-columns: 175px 110px 130px 130px 100px 160px 145px 130px 130px 135px;
 
     &.head {
       background-color: unset;
@@ -59,4 +59,10 @@
     }
 
   }
+}
+
+.block {
+  border-radius: 5px;
+  padding-left: 4px;
+  padding-right: 4px;
 }

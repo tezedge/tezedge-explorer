@@ -7,6 +7,8 @@ import { SmartContractsComponent } from './smart-contracts/smart-contracts.compo
 import { FormsModule } from '@angular/forms';
 import { MonacoEditorModule, NgxMonacoEditorConfig } from 'ngx-monaco-editor';
 import { SmartContractsTableComponent } from './smart-contracts-table/smart-contracts-table.component';
+import { SmartContractsRunComponent } from './smart-contracts-run/smart-contracts-run.component';
+import { SmartContractsResultComponent } from './smart-contracts-result/smart-contracts-result.component';
 
 export const myMonacoLoad = () => {
   (window as any).monaco.languages.register({ id: 'michelson' });
@@ -116,7 +118,9 @@ const monacoConfig: NgxMonacoEditorConfig = {
 @NgModule({
   declarations: [
     SmartContractsComponent,
-    SmartContractsTableComponent
+    SmartContractsTableComponent,
+    SmartContractsRunComponent,
+    SmartContractsResultComponent
   ],
   imports: [
     CommonModule,

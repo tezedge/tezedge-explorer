@@ -65,7 +65,7 @@ export function reducer(state: MempoolBakingRightsState = initialState, action: 
 
 function sortBakingRights(bakingRights: MempoolBakingRight[], sort: TableSort): MempoolBakingRight[] {
   const sortProperty = sort.sortBy;
-  const isStringSorting = ['address', 'nodeId'].includes(sortProperty);
+  const isStringSorting = ['address', 'nodeId', 'responseRate'].includes(sortProperty);
 
   const numberSort = (o1: MempoolBakingRight, o2: MempoolBakingRight): number => {
     const o2Sort = o2[sortProperty] ?? Number.MAX_VALUE;

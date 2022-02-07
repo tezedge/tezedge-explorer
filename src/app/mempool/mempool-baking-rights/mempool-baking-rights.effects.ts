@@ -7,9 +7,9 @@ import { State } from '@app/app.reducers';
 import { ADD_ERROR } from '@shared/components/error-popup/error-popup.actions';
 import { MempoolBakingRightsService } from '@mempool/mempool-baking-rights/mempool-baking-rights.service';
 import {
+  MEMPOOL_BAKING_RIGHTS_INIT,
   MEMPOOL_BAKING_RIGHTS_DETAILS_LOAD,
   MEMPOOL_BAKING_RIGHTS_DETAILS_LOAD_SUCCESS,
-  MEMPOOL_BAKING_RIGHTS_INIT,
   MEMPOOL_BAKING_RIGHTS_LOAD,
   MEMPOOL_BAKING_RIGHTS_LOAD_SUCCESS,
   MEMPOOL_BAKING_RIGHTS_STOP,

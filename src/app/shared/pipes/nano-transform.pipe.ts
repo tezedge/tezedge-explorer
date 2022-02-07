@@ -8,7 +8,7 @@ import { MICROSECOND_FACTOR, MILLISECOND_FACTOR, NANOSECOND_FACTOR } from '@shar
 export class NanoTransformPipe implements PipeTransform {
 
   transform(value: number, redThreshold?: number, yellowThreshold?: number, fractionalDigits: number = 2): string {
-    if (isNaN(value)) {
+    if (isNaN(value) || value === null) {
       return '-';
     } else if (value === 0) {
       return '0';

@@ -3,8 +3,12 @@
 .mat-calendar-header {
   color: $foreground;
 
-  .mat-calendar-controls .mat-calendar-arrow {
-    fill: $foreground;
+  .mat-calendar-controls {
+    margin: 1% 0 5% 0;
+
+    .mat-calendar-arrow {
+      fill: $foreground;
+    }
   }
 }
 

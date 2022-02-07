@@ -45,7 +45,7 @@ export class GithubVersionComponent implements OnInit {
 
   @HostListener('window:click')
   onDomClick(): void {
-    if (this.overlayRef && this.overlayRef.hasAttached()) {
+    if (this.overlayRef?.hasAttached()) {
       this.detachTooltip();
     }
   }
@@ -85,7 +85,7 @@ export class GithubVersionComponent implements OnInit {
   attachTooltip(event: MouseEvent): void {
     event.stopPropagation();
 
-    if (this.overlayRef && this.overlayRef.hasAttached()) {
+    if (this.overlayRef?.hasAttached()) {
       this.detachTooltip();
       return;
     }

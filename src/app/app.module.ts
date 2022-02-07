@@ -50,6 +50,7 @@ import { MempoolBroadcastEffects } from '@mempool/mempool-broadcast/mempool-broa
 import { MempoolStatisticsEffects } from '@mempool/mempool-statistics/mempool-statistics.effects';
 import { MempoolBlockApplicationEffects } from '@mempool/mempool-block-application/mempool-block-application.effects';
 import { MempoolBakingRightsEffects } from '@mempool/mempool-baking-rights/mempool-baking-rights.effects';
+import { MAT_FORM_FIELD_DEFAULT_OPTIONS } from '@angular/material/form-field';
 
 registerLocaleData(localeFr, 'fr');
 registerLocaleData(localeEnGb, 'en');
@@ -154,6 +155,7 @@ const effects = [
     },
     { provide: LOCALE_ID, useValue: 'fr' },
     { provide: LOCALE_ID, useValue: 'en' },
+    { provide: MAT_FORM_FIELD_DEFAULT_OPTIONS, useValue: 'outline' },
   ],
   exports: [],
   bootstrap: [AppComponent]

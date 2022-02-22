@@ -29,7 +29,7 @@ import { WalletsEffects } from '@wallets/wallets.effects';
 import { SystemResourcesEffects } from '@resources/system-resources/system-resources.effects';
 import { StorageResourcesEffects } from '@resources/storage-resources/storage-resources.effects';
 import { MemoryResourcesEffects } from '@resources/memory-resources/memory-resources.effects';
-import { ErrorPopupEffects } from '@shared/error-popup/error-popup.effects';
+import { ErrorPopupEffects } from '@shared/components/error-popup/error-popup.effects';
 import { StateMachineEffects } from '@state-machine/state-machine/state-machine.effects';
 import { GithubVersionEffects } from '@app/layout/github-version/github-version.effects';
 import { SettingsNodeEffects } from '@settings/settings-node.effects';
@@ -48,6 +48,10 @@ import { MempoolEndorsementEffects } from '@mempool/mempool-endorsement/mempool-
 import { MempoolOperationEffects } from '@mempool/mempool-operation/mempool-operation.effects';
 import { MempoolBroadcastEffects } from '@mempool/mempool-broadcast/mempool-broadcast.effects';
 import { MempoolStatisticsEffects } from '@mempool/mempool-statistics/mempool-statistics.effects';
+import { MempoolBlockApplicationEffects } from '@mempool/mempool-block-application/mempool-block-application.effects';
+import { MempoolBakingRightsEffects } from '@mempool/mempool-baking-rights/mempool-baking-rights.effects';
+import { MAT_FORM_FIELD_DEFAULT_OPTIONS } from '@angular/material/form-field';
+import { NgrxRouterStoreModule } from '@shared/router/ngrx-router.module';
 
 registerLocaleData(localeFr, 'fr');
 registerLocaleData(localeEnGb, 'en');
@@ -71,6 +75,8 @@ const effects = [
   MempoolOperationEffects,
   MempoolBroadcastEffects,
   MempoolStatisticsEffects,
+  MempoolBlockApplicationEffects,
+  MempoolBakingRightsEffects,
   NetworkActionEffects,
   StorageBlockEffects,
   StorageActionEffects,
@@ -105,6 +111,7 @@ const effects = [
       relativeLinkResolution: 'legacy',
       onSameUrlNavigation: 'ignore',
     }),
+    NgrxRouterStoreModule,
 
     StoreModule.forRoot(reducers, {
       metaReducers,
@@ -150,6 +157,7 @@ const effects = [
     },
     { provide: LOCALE_ID, useValue: 'fr' },
     { provide: LOCALE_ID, useValue: 'en' },
+    { provide: MAT_FORM_FIELD_DEFAULT_OPTIONS, useValue: 'outline' },
   ],
   exports: [],
   bootstrap: [AppComponent]

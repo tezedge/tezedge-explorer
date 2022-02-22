@@ -6,6 +6,7 @@ import { SystemResourcesState } from '@shared/types/resources/system/system-reso
 import { DatePipe } from '@angular/common';
 import { SystemResourcesPanel } from '@shared/types/resources/system/system-resources-panel.type';
 import { SystemResourcesSubcategoryRunnerGroup } from '@shared/types/resources/system/system-resources-subcategory-runner-group.type';
+import { getFilteredXTicks } from '@helpers/chart.helper';
 
 const MB_DIVISOR = 1048576;
 const GB_DIVISOR = 1073741824;
@@ -44,20 +45,20 @@ export class SystemResourcesService {
 
       resource.memory = {};
       resource.memory.node = {};
-      resource.memory.node = responseItem.memory.node / MB_DIVISOR;
+      resource.memory.node = responseItem.memory.node / GB_DIVISOR;
       resource.memory.total = resource.memory.node;
 
       if (responseItem.memory.validators) {
         resource.memory.validators = {};
-        resource.memory.validators.total = responseItem.memory.validators.total / MB_DIVISOR;
+        resource.memory.validators.total = responseItem.memory.validators.total / GB_DIVISOR;
         resource.memory.total += resource.memory.validators.total;
         resource.memory.runnerGroups = [{
           property: 'Validators',
-          label: 'MB',
+          label: 'GB',
           total: responseItem.memory.validators.validators.total,
           values: Object.keys(responseItem.memory.validators.validators).map(key => ({
             name: key,
-            total: responseItem.memory.validators.validators[key] / MB_DIVISOR
+            total: responseItem.memory.validators.validators[key] / GB_DIVISOR
           }))
         }] as SystemResourcesSubcategoryRunnerGroup[];
       }
@@ -140,7 +141,7 @@ export class SystemResourcesService {
   private createChartData(resources: any[], isSmallDevice: boolean): SystemResourcesState {
     const chartData = {
       cpu: { series: [], formattingType: '%' },
-      memory: { series: [], formattingType: 'MB' },
+      memory: { series: [], formattingType: 'GB' },
       storage: { series: [], formattingType: 'GB' },
       io: { series: [], formattingType: 'MB' },
       network: { series: [], formattingType: 'MB' },
@@ -266,7 +267,7 @@ export class SystemResourcesService {
     });
     chartData.io.labels = ['Total read', 'Total write', 'Node - read per second', 'Node - written per second', 'Validators - read per second', 'Validators - written per second'];
 
-    chartData.xTicksValues = this.getFilteredXTicks(resources, Math.min(resources.length, isSmallDevice ? 2 : 7));
+    chartData.xTicksValues = getFilteredXTicks(resources, Math.min(resources.length, isSmallDevice ? 2.5 : 7), 'timestamp');
 
     return chartData;
   }
@@ -281,17 +282,6 @@ export class SystemResourcesService {
 
   private getValueFromNestedResourceProperty(resource: any, pathToProperty: string): number {
     return pathToProperty.split('.').reduce((obj: any, property: string) => obj[property], resource);
-  }
-
-  private getFilteredXTicks(resources: any[], noOfResults: number): string[] {
-    const xTicks = [];
-    const delta = Math.floor(resources.length / noOfResults);
-    for (let i = 0; i <= resources.length; i = i + delta) {
-      if (resources[i]) {
-        xTicks.push(resources[i].timestamp);
-      }
-    }
-    return xTicks;
   }
 
   private createSummaryBlocks(resources: any[]): SystemResourcesPanel {

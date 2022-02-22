@@ -1,3 +1,5 @@
+@import 'variables';
+
 .editor-container {
   height: 100% !important;
 
@@ -5,10 +7,10 @@
     .editor-scrollable {
       .scrollbar {
         .slider {
-          background: rgba(255, 255, 255, 0.1) !important;
+          background: $foreground-1 !important;
 
           &:hover {
-            background: rgba(255, 255, 255, 0.4) !important;
+            background: $foreground-4 !important;
           }
         }
       }

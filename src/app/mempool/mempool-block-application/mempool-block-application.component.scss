@@ -1,0 +1,51 @@
+.block-application {
+  height: 820px;
+  max-height: 100%;
+
+  .graph-outer-container {
+    opacity: 0;
+    transition: opacity 600ms;
+    transition-delay: 400ms;
+
+    &.fade {
+      opacity: 1;
+    }
+
+    .average-values {
+      letter-spacing: 0.4px;
+    }
+
+    .rotated-label span {
+      transform: rotate(-90deg);
+      padding-left: 20px;
+    }
+
+    .blocks-overview {
+      margin-top: 30px;
+    }
+
+    .graph-label-list {
+      .graph-label-item {
+        margin-right: 15px;
+
+        .label-color {
+          width: 7px;
+          height: 7px;
+          border-radius: 5px;
+          margin-right: 3px;
+          margin-bottom: 1px;
+          display: inline-block;
+        }
+      }
+    }
+
+    .graph-inner-container {
+      padding: 8px 20px 20px 0;
+
+      .graph-super-inner-container {
+        height: 540px;
+        max-height: 80vh;
+      }
+    }
+  }
+}

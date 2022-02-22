@@ -6,8 +6,8 @@
     <div class="storage-block-header foreground-4">ACTIONS</div>
     <div class="actions-count">{{ block.queriesCount }} actions</div>
   </div>
-  <div class="storage-details-block">
-    <div class="storage-block-header foreground-4"
+  <div class="storage-details-block padding-left-remove padding-right-remove">
+    <div class="storage-block-header foreground-4 padding-horizontal-8"
          fxLayoutAlign="space-between center">
       CONTEXT CHECKOUT
       <div class="d-flex align-center">
@@ -20,53 +20,57 @@
     </div>
     <div fxLayoutAlign="start center"
          fxLayout="row"
-         fxLayoutGap="20px">
+         fxLayoutGap="20px" class="padding-horizontal-8">
       <div>CHECKOUT</div>
-      <div><span [innerHTML]="block.checkoutContextTime | timeTransform: true: true"></span> <span class="foreground-4"> Total time</span>
+      <div>
+        <span [innerHTML]="block.checkoutContextTime | timeTransform: true: true"></span>
+        <span class="foreground-4"> Total time</span>
       </div>
     </div>
 
-    <div class="overflow-x-auto">
+    <div class="overflow-x-auto padding-right-10">
       <table class="storage-details-table">
         <thead>
-        <tr>
-          <th class="foreground-4">CONTEXT OPERATIONS</th>
-          <th>TOTAL</th>
-          <th>ACTIONS</th>
-          <th>MEM</th>
-          <th>MEM TREE</th>
-          <th>FIND</th>
-          <th>FIND TREE</th>
-          <th>ADD</th>
-          <th>ADD TREE</th>
-          <th>REMOVE</th>
-        </tr>
+          <tr>
+            <th class="foreground-4">CONTEXT OPERATIONS</th>
+            <th>TOTAL</th>
+            <th>ACTIONS</th>
+            <th>MEM</th>
+            <th>MEM TREE</th>
+            <th>FIND</th>
+            <th>FIND TREE</th>
+            <th>ADD</th>
+            <th>ADD TREE</th>
+            <th>REMOVE</th>
+          </tr>
         </thead>
         <tbody>
-        <tr *ngFor="let row of block.operationsContext; let i=index"
-            (mouseenter)="attachTooltip(row, $event)"
-            (mouseleave)="detachTooltip()">
-          <td>{{ row.data.root }}</td>
-          <td [innerHTML]="row.data.totalTime | timeTransform: true: true"></td>
-          <td [innerHTML]="row.data.queriesCount"></td>
-          <td [innerHTML]="row.mem | timeTransform: true: true"></td>
-          <td [innerHTML]="row.memTree | timeTransform: true: true"></td>
-          <td [innerHTML]="row.find | timeTransform: true: true">{{ row.find }}</td>
-          <td [innerHTML]="row.findTree | timeTransform: true: true">{{ row.findTree }}</td>
-          <td [innerHTML]="row.add | timeTransform: true: true">{{ row.add }}</td>
-          <td [innerHTML]="row.addTree | timeTransform: true: true">{{ row.addTree }}</td>
-          <td [innerHTML]="row.remove | timeTransform: true: true">{{ row.remove }}</td>
-        </tr>
+          <tr *ngFor="let row of block.operationsContext; let i=index"
+              (mouseenter)="attachTooltip(row, $event)"
+              (mouseleave)="detachTooltip()">
+            <td>{{ row.data.root }}</td>
+            <td [innerHTML]="row.data.totalTime | timeTransform: true: true"></td>
+            <td [innerHTML]="row.data.queriesCount"></td>
+            <td [innerHTML]="row.mem | timeTransform: true: true"></td>
+            <td [innerHTML]="row.memTree | timeTransform: true: true"></td>
+            <td [innerHTML]="row.find | timeTransform: true: true">{{ row.find }}</td>
+            <td [innerHTML]="row.findTree | timeTransform: true: true">{{ row.findTree }}</td>
+            <td [innerHTML]="row.add | timeTransform: true: true">{{ row.add }}</td>
+            <td [innerHTML]="row.addTree | timeTransform: true: true">{{ row.addTree }}</td>
+            <td [innerHTML]="row.remove | timeTransform: true: true">{{ row.remove }}</td>
+          </tr>
         </tbody>
       </table>
     </div>
 
-    <div class="storage-block-header foreground-4">CONTEXT COMMIT</div>
+    <div class="storage-block-header foreground-4 padding-horizontal-8">CONTEXT COMMIT</div>
     <div fxLayout="row"
          fxLayoutGap="20px"
-         fxLayoutAlign="start center">
+         fxLayoutAlign="start center" class="padding-horizontal-8">
       <div>COMMIT</div>
-      <div><span [innerHTML]="block.commitContextTime | timeTransform: true: true"></span> <span class="foreground-4"> Total time</span>
+      <div>
+        <span [innerHTML]="block.commitContextTime | timeTransform: true: true"></span>
+        <span class="foreground-4"> Total time</span>
       </div>
     </div>
   </div>
@@ -80,15 +84,24 @@
   <div fxLayout="column"
        class="tooltip-template"
        fxLayoutGap="8px">
-    <div><span class="foreground">{{ actions }}</span>Actions</div>
-    <div><span class="foreground"
-               [innerHTML]="total | timeTransform: true: true"></span> Total Time
+    <div>
+      <span class="foreground">{{ actions || 0 }}</span>
+      Actions
     </div>
-    <div><span class="foreground"
-               [innerHTML]="mean | timeTransform: true: true"></span> Mean
+    <div>
+      <span class="foreground"
+            [innerHTML]="total | timeTransform: true: true"></span>
+      Total Time
     </div>
-    <div><span class="foreground"
-               [innerHTML]="max | timeTransform: true: true"></span> Max
+    <div>
+      <span class="foreground"
+            [innerHTML]="mean | timeTransform: true: true"></span>
+      Mean
+    </div>
+    <div>
+      <span class="foreground"
+            [innerHTML]="max | timeTransform: true: true"></span>
+      Max
     </div>
   </div>
 </ng-template>

@@ -84,4 +84,5 @@ function numberOrSpace(value: number, mu: string, canBeZero?: boolean): string {
     : '';
 }
 
-export const selectNetworkCurrentBlock = (state: State) => state.networkStats.lastAppliedBlock.level;
+export const selectNetworkCurrentBlockLevel = (state: State) => state.networkStats.lastAppliedBlock.level;
+export const selectNetworkCurrentBlockHash = (state: State) => state.networkStats.lastAppliedBlock.hash;

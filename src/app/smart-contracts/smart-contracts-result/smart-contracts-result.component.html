@@ -1,0 +1,41 @@
+<div fxFlexFill class="padding-bottom-10">
+  <div class="h-100 padding-left-10 padding-top-10 f-12 flex-column border border-rad-2">
+    <div fxFlex="18px" class="foreground-4 padding-bottom-remove flex-row align-center">
+      RESULT
+      <ng-container *ngIf="failCause; else noFail">
+        <span class="margin-left-5">-</span>
+        <span class="fail-cause truncate text-red margin-left-5">{{ failCause }}</span>
+      </ng-container>
+      <ng-template #noFail>
+        <ng-container *ngIf="result">
+          <span class="margin-left-5">-</span>
+          <span class="text-green margin-left-5">SUCCESS</span>
+        </ng-container>
+      </ng-template>
+      <span *ngIf="result" class="margin-left-5 flex-row align-center">
+        <span>-</span>
+        <mat-icon svgIcon="gas" class="icon-foreground-7 icon-14 margin-right-5 margin-left-5"></mat-icon>
+        {{ result.consumedGas | spaceNumber }}
+      </span>
+    </div>
+    <div fxFlex="calc(100% - 18px)" class="overflow-auto" *ngIf="result">
+      <ng-container *ngIf="result.status === 'success'; else failTemplate">
+        <div class="result">Kind:
+          <span>{{ result.kind }}</span>
+        </div>
+        <div class="result">Consumed gas:
+          <span>{{ result.consumedGas | spaceNumber }}</span>
+        </div>
+        <div class="result">Storage size:
+          <span>{{ result.storageSize }}</span>
+        </div>
+        <div class="result">Paid storage size diff:
+          <span>{{ result.paidStorageSizeDiff }}</span>
+        </div>
+      </ng-container>
+      <ng-template #failTemplate>
+        <ngx-json-viewer [expanded]="false" [json]="result.executionInfo"></ngx-json-viewer>
+      </ng-template>
+    </div>
+  </div>
+</div>

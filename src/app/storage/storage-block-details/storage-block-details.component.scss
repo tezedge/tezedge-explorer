@@ -1,3 +1,5 @@
+@import 'variables';
+
 .block-action-details {
   padding: 10px;
 
@@ -34,18 +36,13 @@
 
       .storage-details-table {
         border-collapse: collapse;
-        margin-left: -8px;
 
         thead tr th {
           font-weight: normal;
           text-align: left;
           white-space: nowrap;
           padding-bottom: 5px;
-          padding-right: 8px;
-
-          &:not(:first-child) {
-            text-align: right;
-          }
+          padding-left: 8px;
 
           &:first-child {
             padding-right: 15px;
@@ -66,17 +63,16 @@
           cursor: pointer;
 
           &:hover {
-            background-color: #3F3F43;
+            background-color: #3f3f43;
           }
 
           td {
             white-space: nowrap;
-            padding: 5px 8px 5px 0;
+            padding: 5px 0 5px 8px;
 
             &:not(:first-child) {
-              text-align: right;
               padding-top: 8px;
-              color: rgba(255, 255, 255, 0.4);
+              color: $foreground-4;
             }
 
             &:first-child {
@@ -94,7 +90,7 @@
 }
 
 .tooltip-template {
-  background-color: #2A2A2E;
+  background-color: #2a2a2e;
   padding: 8px;
   border: 1px solid rgba(0, 0, 0, 0.2);
   box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);

@@ -1,0 +1,55 @@
+<div class="border border-rad-4 margin-10">
+
+  <div class="padding-10 d-flex flex-row flex-between text-uppercase"
+       [class.hidden]="!bakingRightsLength">
+    <div class="font-500">Received time count histogram - {{ bakingRightsLength }} nodes</div>
+  </div>
+  <div class="outer-graph-container border-top">
+    <div class="rotated-label f-12 d-flex align-center text-nowrap foreground"
+         fxFlex="50px" fxHide.lt-md>
+      <span>Count</span>
+    </div>
+    <div fxFlex="calc(100% - 50px)" fxFlex.lt-md="100" class="inner-graph-container d-flex flex-column">
+      <div fxFlex="90" class="p-relative">
+        <div class="y-grid-marks p-absolute h-100 w-100 foreground-6">
+          <div *ngFor="let n of [30,25,20,15,10,5,0]"
+               class="y-tick-line">
+            <div class="p-relative">{{ n }}</div>
+          </div>
+        </div>
+        <div class="d-flex p-relative h-100" *ngIf="chartColumns">
+          <div *ngFor="let item of chartColumns; trackBy: trackHistogramItems"
+               (mouseenter)="openDetailsOverlay(item, $event)"
+               (mouseleave)="detachOverlay()"
+               class="h-100 histo-col"
+               [style.width.%]="100 / 51">
+            <div class="histo-bar"
+                 [style.height.%]="(item.value / 30 * 100) || 1"></div>
+          </div>
+        </div>
+      </div>
+      <div fxFlex="10" class="d-flex flex-row flex-between foreground-6 padding-top-10">
+        <div *ngFor="let tick of xTicksValues">
+          {{ tick }}
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<ng-template #tooltipTemplate let-range="range" let-count="count">
+  <div class="custom-tooltip-template padding-left-remove padding-right-remove">
+    <div class="foreground" fxLayout="column" fxLayoutGap="7px">
+      <div class="border-bottom padding-bottom-10">
+        <span class="foreground-6 padding-left-10">Range:</span>
+        {{ range }}
+      </div>
+      <div>
+        <span class="foreground-6 padding-left-10">Count:</span>
+        {{ count }}
+      </div>
+    </div>
+  </div>
+</ng-template>
+

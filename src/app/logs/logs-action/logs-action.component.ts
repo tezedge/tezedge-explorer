@@ -8,6 +8,15 @@ import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { TezedgeTimeValidator } from '@shared/validators/tezedge-time.validator';
 import { filter } from 'rxjs/operators';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
+import {
+  LOGS_ACTION_FILTER,
+  LOGS_ACTION_LOAD,
+  LOGS_ACTION_RESET, LOGS_ACTION_START, LOGS_ACTION_STOP,
+  LOGS_ACTION_TIME_LOAD, LogsActionFilter,
+  LogsActionLoad,
+  LogsActionReset, LogsActionStart, LogsActionStop,
+  LogsActionTimeLoad
+} from '@logs/logs-action/logs-action.actions';
 
 @UntilDestroy()
 @Component({
@@ -49,7 +58,7 @@ export class LogsActionComponent implements OnInit, OnDestroy {
   }
 
   private getLogs(): void {
-    this.store.dispatch({ type: 'LOGS_ACTION_RESET' });
+    this.store.dispatch<LogsActionReset>({ type: LOGS_ACTION_RESET });
     if (this.routeTimestamp) {
       this.triggerLogsTimeLoad();
     } else {
@@ -115,8 +124,8 @@ export class LogsActionComponent implements OnInit, OnDestroy {
   }
 
   private triggerLogsTimeLoad(filterType?: string): void {
-    this.store.dispatch({
-      type: 'LOGS_ACTION_TIME_LOAD',
+    this.store.dispatch<LogsActionTimeLoad>({
+      type: LOGS_ACTION_TIME_LOAD,
       payload: {
         filterType,
         limit: 500,
@@ -171,8 +180,8 @@ export class LogsActionComponent implements OnInit, OnDestroy {
   }
 
   getItems(params: { nextCursorId: number, limit: number }): void {
-    this.store.dispatch({
-      type: 'LOGS_ACTION_LOAD',
+    this.store.dispatch<LogsActionLoad>({
+      type: LOGS_ACTION_LOAD,
       payload: {
         cursor_id: params.nextCursorId,
         limit: params.limit
@@ -216,8 +225,8 @@ export class LogsActionComponent implements OnInit, OnDestroy {
     this.searchInput.nativeElement.value = '';
     this.formGroup.get('time').patchValue('');
 
-    this.store.dispatch({
-      type: 'LOGS_ACTION_LOAD',
+    this.store.dispatch<LogsActionLoad>({
+      type: LOGS_ACTION_LOAD,
       payload: {
         limit: this.virtualPageSize,
         query: this.searchText
@@ -245,8 +254,8 @@ export class LogsActionComponent implements OnInit, OnDestroy {
 
     this.logsActionItem = undefined;
 
-    this.store.dispatch({
-      type: 'LOGS_ACTION_START',
+    this.store.dispatch<LogsActionStart>({
+      type: LOGS_ACTION_START,
       payload: {
         limit: value ? value.limit : this.virtualPageSize
       }
@@ -258,7 +267,7 @@ export class LogsActionComponent implements OnInit, OnDestroy {
       return;
     }
 
-    this.store.dispatch({ type: 'LOGS_ACTION_STOP' });
+    this.store.dispatch<LogsActionStop>({ type: LOGS_ACTION_STOP });
   }
 
   scrollToEnd(): void {
@@ -276,8 +285,8 @@ export class LogsActionComponent implements OnInit, OnDestroy {
     if (this.routeTimestamp) {
       this.triggerLogsTimeLoad(filterType);
     } else {
-      this.store.dispatch({
-        type: 'LOGS_ACTION_FILTER',
+      this.store.dispatch<LogsActionFilter>({
+        type: LOGS_ACTION_FILTER,
         payload: { filterType }
       });
     }
@@ -323,6 +332,6 @@ export class LogsActionComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.store.dispatch({ type: 'LOGS_ACTION_STOP' });
+    this.store.dispatch<LogsActionStop>({ type: LOGS_ACTION_STOP });
   }
 }

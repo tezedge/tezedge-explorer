@@ -40,7 +40,7 @@ context('GITHUB VERSION', () => {
       .its('store')
       .then(store => {
         store.select('githubVersion').subscribe(githubVersion => {
-          cy.get('app-github-version')
+          cy.get('app-github-version .node-tag-number')
             .trigger('click')
             .wait(1000)
             .get('#nodeCommit')

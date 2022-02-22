@@ -7,6 +7,11 @@ import { SmartContractsComponent } from './smart-contracts/smart-contracts.compo
 import { FormsModule } from '@angular/forms';
 import { MonacoEditorModule, NgxMonacoEditorConfig } from 'ngx-monaco-editor';
 import { SmartContractsTableComponent } from './smart-contracts-table/smart-contracts-table.component';
+import { SmartContractsRunComponent } from './smart-contracts-run/smart-contracts-run.component';
+import { SmartContractsResultComponent } from './smart-contracts-result/smart-contracts-result.component';
+import { SmartContractsCodeComponent } from './smart-contracts-code/smart-contracts-code.component';
+import { SmartContractsFiltersComponent } from './smart-contracts-filters/smart-contracts-filters.component';
+import { NgxObjectDiffModule } from 'ngx-object-diff';
 
 export const myMonacoLoad = () => {
   (window as any).monaco.languages.register({ id: 'michelson' });
@@ -19,18 +24,26 @@ export const myMonacoLoad = () => {
         [/\[notice.*/, 'custom-notice'],
         [/\[info.*/, 'custom-info'],
         [/\[[a-zA-Z 0-9:]+\]/, 'custom-date'],
-        [/[0-9]+/, 'number'],
         [/[A-Z][A-Z]+/, 'primitive'],
-        [/[A-Z][a-z]+/, 'constant'],
-        [/\"[^\"]*\"/, 'string'],
+        [/[0-9]+/, 'number'],
+        [/(%[\w]+)/, 'percentValue'],
+        [/"(.*?)"/g, 'string'],
         [/#.*$/, 'comment'],
-        [/(code|storage)/, 'section'],
-        [/[a-z]+/, 'type'],
-        [/({|}|;|:)/, 'my-string'],
-        [/[(\[]/, 'my-string'],
-        [/[)\]]/, 'my-string'],
+        [/(code|storage|parameter)/, 'definition'],
+        [/[A-Z][a-z]+/, 'constant'],
+        [/(?<=\()(.*?)(?= +)/, 'typeitalic'],
+        [/[a-z]|[A-Z]+/, 'type'],
+        [/[_]+/, 'type'],
+        [/({|}|;|:)/, 'white'],
+        [/[(\[]/, 'white'],
+        [/[)\]]/, 'white'],
         [/[/*|*/]/, 'secondary'],
-        [/((@([^\s]+)\b)+)/, 'secondary'],
+        // [/[^[A-Z0-9_]*$/, 'primitive'],
+        // [/((@([^\s]+)\b)+)/, 'secondary'],
+        // [/(\%)(.*?)(?=(\A|([^A-Z|a-z|0-9|_])))/g, 'key-map-set'],
+        // [/(\%)(.*?)(?=\))/g, 'key-map-set'],
+        // [/(\%)(.*?)(?=\))/g, 'key-map-set'],
+        // [/(%keyMap|%keySet|%setMap|%setSet)/, 'key-map-set'],
       ]
     }
   });
@@ -39,25 +52,26 @@ export const myMonacoLoad = () => {
     base: 'hc-black',
     inherit: false,
     rules: [
-      { token: 'custom-info', foreground: '808080' },
-      { token: 'custom-error', foreground: 'ff0000', fontStyle: 'bold' },
-      { token: 'custom-notice', foreground: 'FFA500' },
-      { token: 'custom-date', foreground: '008800' },
+      { token: 'custom-info', foreground: '#808080' },
+      { token: 'custom-error', foreground: '#ff0000', fontStyle: 'bold' },
+      { token: 'custom-notice', foreground: '#ffa500' },
+      { token: 'custom-date', foreground: '#008800' },
       { token: 'bracket', foreground: '#ffffff' },
       { token: 'brackets', foreground: '#ffffff' },
-      { token: 'number', foreground: '#e37a01' },
-      { token: 'constant', foreground: '#e37a01' },
-      { token: 'string', foreground: '#e37a01' },
-      { token: 'primitive', foreground: '#95a4dc' },
-      { token: 'section', foreground: '#37a2b6' },
-      { token: 'type', foreground: '#689d6a' },
-      { token: 'comment', foreground: '#928374' },
-      { token: 'my-string', foreground: '#ffffff' },
-      { token: 'secondary', foreground: '#c5ae0a' },
+      { token: 'number', foreground: '#dee8ff' },
+      { token: 'constant', foreground: '#ced7a6' },
+      { token: 'string', foreground: '#c28568' },
+      { token: 'primitive', foreground: '#ced7a6' },
+      { token: 'definition', foreground: '#4bc3a7' },
+      { token: 'typeitalic', foreground: '#689d6a', fontStyle: 'bold' },
+      { token: 'type', foreground: '#4391b3' },
+      { token: 'comment', foreground: '#5f8c4e' },
+      { token: 'white', foreground: '#ffffff' },
+      { token: 'secondary', foreground: '#37a2b6' },
+      { token: 'percentValue', foreground: '#ced7a6' },
       { token: '', background: '#2a2a2e' },
     ],
     colors: {
-      // ["editor.background"]: "#f9f5d7",
       'editor.brackets': '#928374',
       'editor.background': '#2a2a2e',
       'editor.selectionBackground': '#b36539bf',
@@ -113,7 +127,11 @@ const monacoConfig: NgxMonacoEditorConfig = {
 @NgModule({
   declarations: [
     SmartContractsComponent,
-    SmartContractsTableComponent
+    SmartContractsTableComponent,
+    SmartContractsRunComponent,
+    SmartContractsResultComponent,
+    SmartContractsCodeComponent,
+    SmartContractsFiltersComponent
   ],
   imports: [
     CommonModule,
@@ -121,6 +139,7 @@ const monacoConfig: NgxMonacoEditorConfig = {
     TezedgeSharedModule,
     MonacoEditorModule.forRoot(monacoConfig),
     FormsModule,
+    NgxObjectDiffModule,
   ],
 })
 export class SmartContractsModule {}

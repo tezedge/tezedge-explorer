@@ -5,6 +5,8 @@ import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { StorageBlock } from '@shared/types/storage/storage-block/storage-block.type';
 import { selectActiveNode } from '@settings/settings-node.reducer';
 import { State } from '@app/app.reducers';
+import { debounce } from 'typescript-debounce-decorator';
+import { STORAGE_BLOCK_LOAD_ROUTED_BLOCK } from '@storage/storage-block/storage-block.actions';
 
 @UntilDestroy()
 @Component({
@@ -25,14 +27,25 @@ export class StorageBlockComponent implements OnInit, OnDestroy {
   @ViewChild('vsContainer') vsContainer: ElementRef<HTMLDivElement>;
 
   private isStorageActionFeatureEnabled: boolean;
+  hash;
 
   constructor(private store: Store<State>,
               private changeDetector: ChangeDetectorRef,
               private router: Router) { }
 
-  ngOnInit() {
-    this.store.dispatch({ type: 'STORAGE_BLOCK_RESET' });
-    this.scrollStart(null);
+  ngOnInit(): void {
+    const blockLevel = Number(this.router.url.replace('/storage/', ''));
+    if (blockLevel) {
+      this.store.dispatch({
+        type: STORAGE_BLOCK_LOAD_ROUTED_BLOCK,
+        payload: {
+          limit: this.virtualPageSize,
+          cursor_id: blockLevel,
+        }
+      });
+    } else {
+      this.scrollStart(null);
+    }
 
     this.store.select('storageBlock')
       .pipe(untilDestroyed(this))
@@ -57,7 +70,9 @@ export class StorageBlockComponent implements OnInit, OnDestroy {
       });
   }
 
+  @debounce(300)
   getItemDetails($event): void {
+    this.router.navigate(['storage', $event?.originalId]);
     this.store.dispatch({
       type: 'STORAGE_BLOCK_DETAILS_LOAD',
       payload: {
@@ -137,11 +152,10 @@ export class StorageBlockComponent implements OnInit, OnDestroy {
     if (this.virtualScrollItems && this.virtualScrollItems.stream) {
       return;
     }
-
     this.store.dispatch({
       type: 'STORAGE_BLOCK_START',
       payload: {
-        limit: $event?.limit ? $event.limit : this.virtualPageSize
+        limit: $event?.limit ? $event.limit : this.virtualPageSize,
       }
     });
   }
@@ -160,13 +174,6 @@ export class StorageBlockComponent implements OnInit, OnDestroy {
     this.scrollStart(null);
   }
 
-  goToStorageActions(hash): void {
-    if (!hash || !this.isStorageActionFeatureEnabled) {
-      return;
-    }
-    this.router.navigate(['storage', hash]);
-  }
-
   // tableMouseEnter(item) {
   //   this.ngZone.runOutsideAngular(() => {
   //     // check by hash because the id is not present on this.storageBlockItem
@@ -182,6 +189,5 @@ export class StorageBlockComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.store.dispatch({ type: 'STORAGE_BLOCK_RESET' });
-    this.store.dispatch({ type: 'STORAGE_BLOCK_STOP' });
   }
 }

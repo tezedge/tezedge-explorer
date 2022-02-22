@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { ResourceStorageQuery } from '@shared/types/resources/storage/storage-resource-operation.type';
 
 @Component({
@@ -7,14 +7,9 @@ import { ResourceStorageQuery } from '@shared/types/resources/storage/storage-re
   styleUrls: ['./storage-resources-overview.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class StorageResourcesOverviewComponent implements OnInit {
+export class StorageResourcesOverviewComponent {
 
   @Input() data: ResourceStorageQuery;
   @Input() sliceNames: string[];
-
-  constructor() { }
-
-  ngOnInit(): void {
-  }
 
 }

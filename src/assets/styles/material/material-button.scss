@@ -1,5 +1,9 @@
 button {
   border: none;
+
+  &[disabled] {
+    cursor: context-menu !important;
+  }
 }
 
 .mat-icon-button {

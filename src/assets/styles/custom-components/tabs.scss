@@ -1,0 +1,15 @@
+@import 'variables';
+
+.tabs {
+  padding: 9px 10px 9px 15px;
+
+  .tab {
+    color: $foreground-6;
+    cursor: pointer;
+
+    &:hover,
+    &.selected {
+      color: $foreground;
+    }
+  }
+}

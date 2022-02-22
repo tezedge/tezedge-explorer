@@ -2,9 +2,6 @@ import { ActionReducer, ActionReducerMap, MetaReducer, } from '@ngrx/store';
 // import { storeLogger } from 'ngrx-store-logger';
 import { environment } from '@environment/environment';
 
-import * as fromRouter from '@ngrx/router-store';
-import { RouterStateUrl } from '@app/app.routing';
-
 // add remote error loging
 //   import * as LogRocket from 'logrocket';
 //   import createNgrxMiddleware from 'logrocket-ngrx';
@@ -31,14 +28,14 @@ import * as fromSandbox from './sandbox/sandbox.reducer';
 import * as fromWallets from './wallets/wallets.reducer';
 import * as fromVersion from './layout/github-version/github-version.reducer';
 import * as fromResources from './resources/resources.reducer';
-import * as fromError from './shared/error-popup/error-popup.reducer';
+import * as fromError from './shared/components/error-popup/error-popup.reducer';
 import * as fromStateMachine from './state-machine/state-machine/state-machine.reducer';
 import * as fromSmartContracts from './smart-contracts/smart-contracts/smart-contracts.reducer';
-import * as fromSpinner from './shared/loading-spinner/loading-spinner.reducer';
+import * as fromSpinner from './shared/components/loading-spinner/loading-spinner.reducer';
 
 import { MempoolState } from '@mempool/mempool.reducer';
 import { ResourcesState } from '@resources/resources.reducer';
-import { ErrorState } from '@shared/error-popup/error-popup.reducer';
+import { ErrorState } from '@shared/components/error-popup/error-popup.reducer';
 import { SettingsNode } from '@shared/types/settings-node/settings-node.type';
 import { NetworkStats } from '@shared/types/network/network-stats.type';
 import { NetworkPeers } from '@shared/types/network/network-peers.type';
@@ -50,8 +47,8 @@ import { LogsAction } from '@shared/types/logs/logs-action.type';
 import { StorageBlock } from '@shared/types/storage/storage-block/storage-block.type';
 import { GithubVersion } from '@shared/types/github-version/github-version.type';
 import { StateMachine } from '@shared/types/state-machine/state-machine.type';
-import { SmartContractsState } from '@shared/types/smart-contracts/smart-contracts-state.type';
-import { LoadingSpinnerState } from '@shared/loading-spinner/loading-spinner.reducer';
+import { SmartContractsState } from '@smart-contracts/smart-contracts/smart-contracts.index';
+import { LoadingSpinnerState } from '@shared/components/loading-spinner/loading-spinner.reducer';
 
 export interface State {
   app: App;
@@ -71,7 +68,6 @@ export interface State {
   chainFinish: any;
   settingsNode: SettingsNode;
   sandbox: any;
-  routerReducer: fromRouter.RouterReducerState<RouterStateUrl>;
   wallets: any;
   error: ErrorState;
   githubVersion: GithubVersion;
@@ -100,7 +96,7 @@ export const reducers: ActionReducerMap<State> = {
   chainFinish: fromChainFinish.reducer,
   sandbox: fromSandbox.reducer,
   settingsNode: fromSettingsNode.reducer,
-  routerReducer: fromRouter.routerReducer,
+  // routerReducer: fromRouter.routerReducer,
   wallets: fromWallets.reducer,
   githubVersion: fromVersion.reducer,
   resources: fromResources.reducer,

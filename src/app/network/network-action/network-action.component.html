@@ -298,23 +298,15 @@
                   class="icon-16"></mat-icon>
       </button>
 
-      <form [formGroup]="formGroup"
-            class="d-flex">
-        <mat-form-field appearance="fill"
-                        class="custom-bottom-form-field p-relative">
-          <input matInput
-                 type="text"
-                 formControlName="time"
-                 matTooltip="Filtering network based on time frame"
-                 [placeholder]="currentDatePlaceholder"
-                 maxlength="24"
-                 autocomplete="off">
-          <mat-icon *ngIf="formGroup.get('time').value"
-                    (click)="formGroup.get('time').setValue('')"
-                    svgIcon="close-blank"
-                    class="p-absolute pointer icon-10 icon-foreground-7 fill-opacity-1"></mat-icon>
-        </mat-form-field>
-      </form>
+      <div class="user-date d-flex flex-between align-center padding-left-8 pointer border-rad-2 f-12 font-400"
+           matTooltip="Filtering network based on time frame"
+           (click)="openTimePicker($event)">
+        <div [ngClass]="dateUserFormat ? 'foreground' : 'foreground-4'">{{ dateUserFormat ?? 'Search by time' }}</div>
+        <div *ngIf="dateUserFormat" class="padding-left-5 padding-right-5" (click)="removeDateFilter($event)">
+          <mat-icon svgIcon="close-blank"
+                    class="pointer icon-10 icon-foreground-7 fill-opacity-1"></mat-icon>
+        </div>
+      </div>
 
       <span class="active-page-details">
         Active Page:
@@ -325,7 +317,7 @@
           {{virtualScrollItems.activePage.start?.datetime}}
           to:
           {{virtualScrollItems.activePage.end?.datetime}}
-          </span>
+        </span>
       </span>
     </div>
 

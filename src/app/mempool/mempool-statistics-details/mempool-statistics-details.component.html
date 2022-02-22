@@ -1,15 +1,15 @@
-<div class="h-100 margin-left-10 flex-column"
-     *ngIf="activeOperation$ | async as activeOperation">
+<div *ngIf="activeOperation$ | async as activeOperation"
+     class="h-100 margin-left-10 flex-column">
   <div class="hash margin-left-10 d-flex align-center">
     <div class="truncate">{{ activeOperation.hash }}</div>
-    <div matTooltip="Copy hash" fxFlex="26px"
+    <div (click)="copyHashToClipboard(activeOperation.hash)" [cdkCopyToClipboard]="activeOperation.hash"
          class="copy-hash border-rad-4 margin-left-5 margin-right-5 pointer"
-         [cdkCopyToClipboard]="activeOperation.hash"
-         (click)="copyHashToClipboard(activeOperation.hash)">
-      <mat-icon svgIcon="copy" class="icon-foreground-7 icon-14"></mat-icon>
+         fxFlex="26px"
+         matTooltip="Copy hash">
+      <mat-icon class="icon-foreground-7 icon-14" svgIcon="copy"></mat-icon>
     </div>
   </div>
-  <div fxFlex="calc(100% - 36px)" class="overflow-x-auto overflow-y-hidden">
+  <div class="overflow-x-auto overflow-y-hidden" fxFlex="calc(100% - 36px)">
     <div class="h-100 flex-column border-left table-container">
       <div class="node-row head foreground-7">
         <div>NODE ID</div>
@@ -38,15 +38,15 @@
         <div>CONTENT RECEIVED</div>
         <div>SENT</div>
       </div>
-      <div fxFlex="calc(100% - 36px)" class="overflow-y-auto flex-column overflow-x-hidden">
+      <div class="overflow-y-auto flex-column overflow-x-hidden" fxFlex="calc(100% - 36px)">
         <div *ngFor="let node of activeOperation.nodes"
              class="node-row">
           <div class="truncate p-relative">{{ node.id }}
-            <span matTooltip="Copy hash"
-                  class="copy-hash p-absolute border-rad-4"
+            <span (click)="copyHashToClipboard(node.id)"
                   [cdkCopyToClipboard]="node.id"
-                  (click)="copyHashToClipboard(node.id)">
-              <mat-icon svgIcon="copy" class="icon-foreground-7 icon-14"></mat-icon>
+                  class="copy-hash p-absolute border-rad-4"
+                  matTooltip="Copy hash">
+              <mat-icon class="icon-foreground-7 icon-14" svgIcon="copy"></mat-icon>
             </span>
           </div>
           <div [innerHTML]="(node.received[0] ? node.received[0].latency : undefined) | nanoTransform"></div>

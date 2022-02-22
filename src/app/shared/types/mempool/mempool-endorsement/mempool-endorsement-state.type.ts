@@ -8,5 +8,6 @@ export interface MempoolEndorsementState {
   animateTable: boolean;
   isLoadingNewBlock: boolean;
   currentBlock: number;
+  activeBaker: string;
   sort: MempoolEndorsementSort;
 }

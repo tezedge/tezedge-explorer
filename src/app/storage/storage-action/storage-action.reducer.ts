@@ -68,7 +68,6 @@ export function reducer(state = initialState, action) {
     }
 
     case 'STORAGE_ACTION_FILTER': {
-      console.log(action.payload);
       return {
         ...state,
         filters: [

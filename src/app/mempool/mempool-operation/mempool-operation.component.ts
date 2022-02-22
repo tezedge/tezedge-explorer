@@ -9,7 +9,7 @@ import {
   MEMPOOL_OPERATION_STOP,
   MempoolOperationLoad,
   MempoolOperationStop
-} from '@mempool/mempool-operation/mempool-operation.action';
+} from '@mempool/mempool-operation/mempool-operation.actions';
 
 @Component({
   selector: 'app-mempool-operation',

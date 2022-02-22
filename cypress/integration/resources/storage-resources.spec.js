@@ -116,7 +116,7 @@ context('STORAGE RESOURCES', () => {
       .its('store')
       .then((store) => {
         store.select('resources').subscribe(resources => {
-          if (resources.storageResourcesState) {
+          if (resources.storageResourcesState.storageResources) {
             cy.get('app-storage-resources .storage-toolbar .context', { timeout: 5000 }).should('be.visible');
 
             let currentContext = '';

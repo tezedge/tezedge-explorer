@@ -38,6 +38,7 @@
       "@storage/*": ["src/app/storage/*"],
       "@wallets/*": ["src/app/wallets/*"],
       "@shared/*": ["src/app/shared/*"],
+      "@helpers/*": ["src/app/shared/helpers/*"],
       "@environment/*": ["src/environments/*"],
     }
   },

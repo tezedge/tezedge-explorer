@@ -1,0 +1,14 @@
+@import 'variables';
+
+.result {
+  line-height: 22px;
+  color: $foreground-7;
+
+  span {
+    color: $foreground;
+  }
+}
+
+.fail-cause {
+  max-width: 60%;
+}

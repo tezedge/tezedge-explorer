@@ -19,10 +19,8 @@
         {{ label }}
       </span>
     </div>
-    <div fxFlex="grow"
-         class="chart-container">
-      <app-tezedge-line-chart *ngIf="chartData[0].series.length"
-                              [startWithYGridLine]="true"
+    <div fxFlex="150px">
+      <app-tezedge-line-chart [startWithYGridLine]="true"
                               [yAxisTickFormatting]="yAxisTickFormatting"
                               [xAxisTicks]="xTicksValues"
                               [rotateXAxisTicks]="false"
@@ -39,11 +37,6 @@
           <ng-container
             *ngTemplateOutlet="customSeriesTooltipTemplate; context: { model: model, type: formattingType }"></ng-container>
         </ng-template>
-        <ng-template #tooltipTemplate
-                     let-model="model">
-          <ng-container
-            *ngTemplateOutlet="customTooltipTemplate; context: { model: model, type: formattingType }"></ng-container>
-        </ng-template>
       </app-tezedge-line-chart>
     </div>
   </div>
@@ -52,9 +45,8 @@
 <ng-template #customSeriesTooltipTemplate
              let-model="model"
              let-type="type">
-  <div fxLayout="column"
-       class="ngx-series-tooltip">
-    <div class="time">Time: {{ model[0].name }}</div>
+  <div *ngIf="model[0]" fxLayout="column" class="ngx-series-tooltip">
+    <div class="tooltip-title f-14 border-bottom">Time: {{ model[0].name }}</div>
     <div class="data-wrapper"
          fxLayout="column"
          fxLayoutGap="8px">
@@ -64,32 +56,10 @@
         <div class="color-square"
              [style.background]="entry.color"></div>
         <div>{{ entry.series }}:&nbsp;</div>
-        <div class="series-value">
+        <div class="series-value foreground-7">
           {{ entry.value | number: '1.2-2' }}{{ type }}
         </div>
       </div>
     </div>
-  </div>
-</ng-template>
-
-<ng-template #customTooltipTemplate
-             let-model="model"
-             let-type="type">
-  <div class="tooltip-content tooltip-template">
-    <span fxLayout="column"
-          fxLayoutGap="5px">
-      <span class="tooltip-label">{{ model.series }} • {{ model.name }}</span>
-      <span *ngIf="type === 'percentage'"
-            class="tooltip-val">{{ model.value }}%
-      </span>
-      <span *ngIf="type === 'GB'"
-            class="tooltip-val">{{ model.value | number: '1.2-2' }} GB
-      </span>
-      <span *ngIf="type === 'MB'"
-            class="tooltip-val">{{ model.value | number: '1.2-2' }} MB
-      </span>
-      <span *ngIf="type === ''"
-            class="tooltip-val">{{ model.value }}</span>
-    </span>
   </div>
 </ng-template>

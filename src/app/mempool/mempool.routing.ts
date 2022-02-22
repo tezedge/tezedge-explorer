@@ -3,8 +3,9 @@ import { RouterModule, Routes } from '@angular/router';
 import { MempoolComponent } from '@mempool/mempool.component';
 import { MempoolOperationComponent } from '@mempool/mempool-operation/mempool-operation.component';
 import { MempoolEndorsementComponent } from '@mempool/mempool-endorsement/mempool-endorsement.component';
-import { MempoolBroadcastComponent } from '@mempool/mempool-broadcast/mempool-broadcast.component';
 import { MempoolStatisticsComponent } from '@mempool/mempool-statistics/mempool-statistics.component';
+import { MempoolBlockApplicationComponent } from '@mempool/mempool-block-application/mempool-block-application.component';
+import { MempoolBakingRightsComponent } from '@mempool/mempool-baking-rights/mempool-baking-rights.component';
 
 const routes: Routes = [
   {
@@ -12,12 +13,16 @@ const routes: Routes = [
     component: MempoolComponent,
     children: [
       {
-        path: 'endorsements',
-        component: MempoolEndorsementComponent,
+        path: 'block-application',
+        component: MempoolBlockApplicationComponent,
       },
       {
-        path: 'broadcast',
-        component: MempoolBroadcastComponent,
+        path: 'baking',
+        component: MempoolBakingRightsComponent,
+      },
+      {
+        path: 'endorsements',
+        component: MempoolEndorsementComponent,
       },
       {
         path: 'operations',
@@ -29,7 +34,7 @@ const routes: Routes = [
       },
       {
         path: '',
-        redirectTo: 'endorsements'
+        redirectTo: 'block-application'
       },
     ]
   },

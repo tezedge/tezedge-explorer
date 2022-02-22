@@ -1,10 +1,10 @@
-<div class="padding-8 f-12">
+<div class="padding-8 f-12 h-100 overflow-y-auto">
   <div *ngIf="currentBlock$ | async as currentBlock"
        class="d-flex flex-row flex-between margin-bottom-10 padding-top-5">
-    <div [@refreshBlock]="currentBlock" class="block">ENDORSING BLOCK {{ currentBlock }}</div>
+    <div [@refreshBlock]="currentBlock" class="block">ENDORSING BLOCK {{ currentBlock | spaceNumber }}</div>
     <div class="foreground-7">{{ elapsedTime$ | async | number: '1.1' }}s</div>
   </div>
-  <div class="overflow-auto" *ngIf="statistics$ | async as statistics">
+  <div *ngIf="statistics$ | async as statistics" class="overflow-auto">
     <div class="d-flex flex-column border-rad-2 border padding-10">
       <div class="foreground-4 margin-bottom-10">256 endorsements grouped by status</div>
       <div *ngFor="let type of statistics.endorsementTypes; let i=index; trackBy: trackStats"
@@ -23,8 +23,8 @@
     </div>
     <div class="d-flex flex-column border-rad-2 border padding-10 margin-top-10">
       <div class="foreground-4 margin-bottom-10">Previous block summary</div>
-      <div class="missed mem-stats-row margin-top-5 margin-bottom-5 d-flex flex-between"
-           [ngClass]="'missed-' + statistics.previousBlockMissedEndorsements">
+      <div [ngClass]="'missed-' + statistics.previousBlockMissedEndorsements"
+           class="missed mem-stats-row margin-top-5 margin-bottom-5 d-flex flex-between">
         <div>Missed Endorsements</div>
         <div>{{ statistics.previousBlockMissedEndorsements }}</div>
       </div>

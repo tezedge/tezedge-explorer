@@ -45,8 +45,6 @@
   }
 
   .row {
-    height: 36px;
-    display: grid;
     grid-template-columns: 175px 110px 70px 75px 90px 150px 160px 150px 140px 160px 90px 130px 135px;
 
     > span {
@@ -105,3 +103,22 @@
     color: var(--foreground);
   }
 }
+
+.table-footer {
+  background-color: var(--background-surface-fade-2);
+
+  form {
+    height: 24px;
+
+    .custom-bottom-form-field {
+      max-width: 100%;
+      width: 440px;
+
+      .p-absolute {
+        right: 6px;
+        height: 100%;
+      }
+    }
+  }
+}
+

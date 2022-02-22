@@ -1,7 +1,7 @@
 <div class="h-100" fxLayout="column" fxLayout.gt-md="row">
   <ng-container *ngIf="mempoolOperations$ | async as mempoolOperations">
     <div class="d-flex flex-column" fxFlex.lt-lg="50">
-      <div class="mempool-row head border-bottom foreground-7">
+      <div class="row head border-bottom foreground-7">
         <span>HASH</span>
         <span>STATUS</span>
         <span>TYPE</span>
@@ -9,12 +9,12 @@
       <cdk-virtual-scroll-viewport class="border-bottom border-right f-14 overflow-y-auto overflow-x-hidden"
                                    fxFlex="calc(100% - 36px)"
                                    itemSize="36">
-        <div *cdkVirtualFor="let operation of mempoolOperations; let i=index;"
-             (click)="selectRow(i)"
+        <div (click)="selectRow(i)"
              (mouseenter)="onRowEnter(i)"
              (mouseleave)="onRowLeave()"
+             *cdkVirtualFor="let operation of mempoolOperations; let i=index;"
              [class.active]="i === mempoolSelectedItem"
-             class="mempool-row pointer">
+             class="row pointer">
           <span>{{ operation.hash }}</span>
           <span>{{ operation.status }}</span>
           <span>{{ operation.type }}</span>

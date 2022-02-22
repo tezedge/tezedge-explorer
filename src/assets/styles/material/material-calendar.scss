@@ -1,0 +1,48 @@
+@import 'variables';
+
+.mat-calendar-header {
+  color: $foreground;
+
+  .mat-calendar-controls {
+    margin: 1% 0 5% 0;
+
+    .mat-calendar-arrow {
+      fill: $foreground;
+    }
+  }
+}
+
+.mat-calendar-content {
+  .mat-calendar-table-header {
+    .mat-calendar-abbr {
+      color: $foreground-4;
+    }
+
+    .mat-calendar-table-header-divider {
+      display: none;
+    }
+  }
+
+  .mat-calendar-body {
+    .mat-calendar-body-label {
+      visibility: hidden;
+    }
+
+    .mat-calendar-body-cell-content {
+      color: $foreground;
+
+      &.mat-calendar-body-selected {
+        background-color: $active-surface;
+      }
+    }
+
+    .mat-calendar-body-cell:hover > .mat-calendar-body-cell-content:not(.mat-calendar-body-selected) {
+      background-color: $foreground-1 !important;
+    }
+  }
+}
+
+.cdk-keyboard-focused .mat-calendar-body-active > .mat-calendar-body-cell-content:not(.mat-calendar-body-selected):not(.mat-calendar-body-comparison-identical),
+.cdk-program-focused .mat-calendar-body-active > .mat-calendar-body-cell-content:not(.mat-calendar-body-selected):not(.mat-calendar-body-comparison-identical) {
+  background-color: unset !important;
+}

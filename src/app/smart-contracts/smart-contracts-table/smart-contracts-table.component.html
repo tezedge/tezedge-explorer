@@ -1,17 +1,53 @@
-<div fxFlex="440px" class="f-12 h-100 padding-right-10">
-  <div class="sm-row foreground-7">
-    <span>ID</span>
-    <span>CONTRACT</span>
-    <span>CALLS</span>
+<div class="h-100 flex-column">
+  <div fxFlex="50" class="padding-right-10 flex-column">
+    <div fxFlex="36px" class="row head f-12 foreground-7 padding-right-10">
+      <span>CONTRACT</span>
+      <span>ENTRYPOINT</span>
+      <span>TOTAL GAS</span>
+      <span>TRACE GAS</span>
+      <span>BLOCK STATUS / TRACE STATUS</span>
+      <span>SAME STORAGE</span>
+      <span>SAME BIG MAPS</span>
+    </div>
+    <div fxFlex="calc(100% - 36px)" class="f-14 overflow-auto border-top">
+      <cdk-virtual-scroll-viewport class="h-100 overflow-y-auto overflow-x-hidden"
+                                   itemSize="36">
+        <div *cdkVirtualFor="let contract of contracts"
+             (click)="selectContract(contract)"
+             [class.active]="activeContract?.id === contract.id"
+             class="action row pointer foreground">
+          <span class="p-relative truncate foreground-7">{{ contract.hash }}
+            <span matTooltip="Copy hash"
+                  class="copy-hash p-absolute border-rad-4"
+                  [cdkCopyToClipboard]="contract.hash"
+                  (click)="copyHashToClipboard(contract.hash, $event)">
+              <mat-icon svgIcon="copy" class="icon-foreground-7 icon-14"></mat-icon>
+            </span>
+          </span>
+          <span class="truncate">{{ contract.entrypoint }}</span>
+          <span>{{ contract.totalConsumedGas || '-' | spaceNumber }}</span>
+          <span>{{ contract.traceConsumedGas | spaceNumber }}</span>
+          <span [matTooltip]="contract.blockExecutionStatus + '/' + contract.traceExecutionStatus"
+                class="truncate">{{ contract.blockExecutionStatus }} / {{ contract.traceExecutionStatus }}</span>
+          <span>{{ contract.isSameStorage }}</span>
+          <span>{{ contract.isSameBigMaps }}</span>
+        </div>
+      </cdk-virtual-scroll-viewport>
+    </div>
   </div>
-  <div class="contracts-table overflow-auto">
-    <div *ngFor="let contract of contractList"
-         (click)="selectContract(contract)"
-         [class.active]="activeContract === contract"
-         class="action sm-row pointer">
-      <span class="foreground-6">{{ contract.id }}</span>
-      <span class="foreground">{{ contract.hash }}</span>
-      <span class="foreground">{{ contract.calls }}</span>
+  <div fxFlex="50" class="flex-row align-stretch padding-10">
+    <div fxFlex class="flex-column border h-100 border-rad-4 w-100" *ngIf="activeContract">
+      <div class="tabs padding-left-10 flex-row f-12" fxFlex="40px">
+        <div class="tab margin-right-10" (click)="changeDiff(storageDiff)" [class.selected]="diffToShow && diffToShow === storageDiff">OUTPUT STORAGE DIFF (BLOCK => TRACE)</div>
+        <div class="tab" (click)="changeDiff(bigMapsDiff)" [class.selected]="diffToShow && diffToShow === bigMapsDiff">OUTPUT LAZY STORAGE DIFF (BLOCK => TRACE)</div>
+      </div>
+      <ngx-object-diff *ngIf="diffToShow; else noDiffs"
+                       fxFlex="calc(100% - 40px)"
+                       [obj]="diffToShow"
+                       class="overflow-auto"></ngx-object-diff>
+      <ng-template #noDiffs>
+        <pre class="padding-left-10">No differences</pre>
+      </ng-template>
     </div>
   </div>
 </div>

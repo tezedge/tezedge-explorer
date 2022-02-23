@@ -1,6 +1,7 @@
 context('MEMPOOL OPERATION', () => {
   beforeEach(() => {
-    cy.intercept('GET', '/chains/main/mempool/pending_operations').as('getMempoolOperations')
+    cy.intercept('GET', '/chains/main/mempool/pending_operations')
+      .as('getMempoolOperations')
       .visit(Cypress.config().baseUrl + '/#/mempool/operations', { timeout: 30000 })
       .wait('@getMempoolOperations', { timeout: 100000 })
       .wait(500);
@@ -22,32 +23,6 @@ context('MEMPOOL OPERATION', () => {
     cy.get('cdk-virtual-scroll-viewport')
       .find('.row')
       .should('be.visible');
-  });
-
-  it('[MEMPOOL OPERATION] should change the value of the virtual scroll element when scrolling', () => {
-    cy.window()
-      .its('store')
-      .then(store => {
-        store.select('mempool').subscribe(() => {
-          let beforeScrollValue;
-          cy.get('cdk-virtual-scroll-viewport .row')
-            .last()
-            .find('span:first-child')
-            .then(span => {
-              beforeScrollValue = span.text().trim();
-            })
-            .wait(2000)
-            .get('cdk-virtual-scroll-viewport')
-            .scrollTo('bottom')
-            .wait(1000)
-            .get('cdk-virtual-scroll-viewport .row')
-            .last()
-            .find('span:first-child')
-            .should(span => {
-              expect(span.text().trim()).to.not.equal(beforeScrollValue);
-            });
-        });
-      });
   });
 
   it('[MEMPOOL OPERATION] should fill the last row of the table with the last value received', () => {

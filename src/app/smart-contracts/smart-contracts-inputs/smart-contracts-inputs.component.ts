@@ -10,12 +10,12 @@ import { selectSmartContractsActiveContract } from '@smart-contracts/smart-contr
 
 @UntilDestroy()
 @Component({
-  selector: 'app-smart-contracts-run',
-  templateUrl: './smart-contracts-run.component.html',
-  styleUrls: ['./smart-contracts-run.component.scss'],
+  selector: 'app-smart-contracts-inputs',
+  templateUrl: './smart-contracts-inputs.component.html',
+  styleUrls: ['./smart-contracts-inputs.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class SmartContractsRunComponent implements OnInit {
+export class SmartContractsInputsComponent implements OnInit {
 
   contract: SmartContract;
   formGroup: FormGroup;

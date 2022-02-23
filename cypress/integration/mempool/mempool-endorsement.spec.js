@@ -1,6 +1,7 @@
 context('MEMPOOL ENDORSEMENT', () => {
   beforeEach(() => {
     cy.intercept('GET', '/dev/shell/automaton/endorsing_rights*').as('getMempoolEndorsements')
+      .wait(1000)
       .visit(Cypress.config().baseUrl + '/#/mempool/endorsements', { timeout: 30000 })
       .wait('@getMempoolEndorsements', { timeout: 100000 })
       .wait(500);

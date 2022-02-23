@@ -21,6 +21,8 @@ export class SmartContractsState {
 
 export const selectSmartContracts = (state: State): SmartContract[] => state.smartContracts.contracts;
 export const selectSmartContractsActiveContract = (state: State): SmartContract => state.smartContracts.activeContract;
+export const selectSmartContractsTrace = (state: State): SmartContractTrace[] => state.smartContracts.trace;
+export const selectSmartContractsGasTrace = (state: State): number[] => state.smartContracts.gasTrace;
 export const selectSmartContractsResult = (state: State): SmartContractResult => state.smartContracts.result;
 export const selectSmartContractsDebugConfig = (state: State): SmartContractsDebugConfig => state.smartContracts.debugConfig;
 export const selectSmartContractsIsDebugging = (state: State): boolean => state.smartContracts.isDebugging;

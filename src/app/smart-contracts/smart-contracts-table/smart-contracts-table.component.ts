@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit, TemplateRef, ViewChild, ViewContainerRef } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { State } from '@app/app.reducers';
 import { SMART_CONTRACTS_SET_ACTIVE_CONTRACT } from '@smart-contracts/smart-contracts/smart-contracts.actions';
@@ -10,6 +10,8 @@ import { selectSmartContracts, selectSmartContractsActiveContract } from '@smart
 import { getMergedRoute } from '@shared/router/router-state.selectors';
 import { MergedRoute } from '@shared/router/merged-route';
 import { NgxObjectDiffService } from 'ngx-object-diff';
+import { Overlay, OverlayRef } from '@angular/cdk/overlay';
+import { TemplatePortal } from '@angular/cdk/portal';
 
 @UntilDestroy()
 @Component({
@@ -24,15 +26,20 @@ export class SmartContractsTableComponent implements OnInit {
   contracts: SmartContract[] = [];
   storageDiff: string;
   bigMapsDiff: string;
-  diffToShow: string;
+  activeTab: 'storage' | 'big-maps';
+  showDiff: boolean;
 
   private routedBlockHash: number;
   private routedContractHash: string;
+  private overlayRef: OverlayRef;
+  @ViewChild('tooltipTemplate') private tooltipTemplate: TemplateRef<any>;
 
   constructor(private store: Store<State>,
               private objectDiff: NgxObjectDiffService,
               private cdRef: ChangeDetectorRef,
-              private router: Router) { }
+              private router: Router,
+              private overlay: Overlay,
+              private viewContainerRef: ViewContainerRef) { }
 
   ngOnInit(): void {
     this.objectDiff.setOpenChar('');
@@ -51,7 +58,7 @@ export class SmartContractsTableComponent implements OnInit {
         if (this.activeContract) {
           this.storageDiff = this.getDifferences(this.activeContract.traceStorage, this.activeContract.blockStorage);
           this.bigMapsDiff = this.getDifferences(this.activeContract.traceBigMaps, this.activeContract.blockBigMaps);
-          this.diffToShow = this.storageDiff;
+          this.activeTab = 'storage';
         }
         this.cdRef.detectChanges();
       });
@@ -99,13 +106,51 @@ export class SmartContractsTableComponent implements OnInit {
     this.store.dispatch({ type: SMART_CONTRACTS_SET_ACTIVE_CONTRACT, payload: newContract });
   }
 
-  copyHashToClipboard(hash: string, event: MouseEvent) {
+  copyHashToClipboard(hash: string, event: MouseEvent): void {
     event.stopPropagation();
     this.store.dispatch<InfoAdd>({ type: ADD_INFO, payload: 'Copied to clipboard: ' + hash });
   }
 
-  changeDiff(newDiff: string): void {
-    this.diffToShow = newDiff;
+  toggleShowDiff(): void {
+    this.showDiff = !this.showDiff;
+  }
+
+  openDetailsOverlay(contract: SmartContract, event: MouseEvent): void {
+    if (this.overlayRef?.hasAttached()) {
+      this.overlayRef.detach();
+    }
+
+    this.overlayRef = this.overlay.create({
+      hasBackdrop: false,
+      scrollStrategy: this.overlay.scrollStrategies.close(),
+      positionStrategy: this.overlay.position()
+        .flexibleConnectedTo(event.target as HTMLElement)
+        .withPositions([{
+          originX: 'center',
+          originY: 'bottom',
+          overlayX: 'start',
+          overlayY: 'top',
+          offsetX: 0,
+          offsetY: 10
+        }])
+    });
+
+    event.stopPropagation();
+    const context = this.tooltipTemplate
+      .createEmbeddedView({
+        traceGas: contract.traceConsumedGas,
+        blockStatus: contract.blockExecutionStatus,
+        traceStatus: contract.traceExecutionStatus,
+        isSameStorage: contract.isSameStorage,
+        isSameBigMaps: contract.isSameBigMaps,
+      })
+      .context;
+    const portal = new TemplatePortal(this.tooltipTemplate, this.viewContainerRef, context);
+    this.overlayRef.attach(portal);
+  }
+
+  detachOverlay(): void {
+    this.overlayRef.detach();
   }
 
   private getDifferences(currentActionState: any, prevActionState: any): string {

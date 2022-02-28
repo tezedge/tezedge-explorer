@@ -131,9 +131,13 @@ context('LOADING SPINNER', () => {
         cy.window()
           .its('store')
           .then(store => {
-            zone.run(() => store.dispatch({ type: 'STATE_MACHINE_ACTION_STATISTICS_LOAD' }));
-            cy.wait(50)
-              .get('body app-root app-loading-spinner .spinner', { timeout: 100 }).should('exist')
+            cy.wait(1000)
+              .then(() => {
+                setTimeout(() => {
+                  zone.run(() => store.dispatch({ type: 'STATE_MACHINE_ACTION_STATISTICS_LOAD' }));
+                }, 1000);
+              });
+            cy.get('body app-root app-loading-spinner .spinner', { timeout: 10000 }).should('exist')
               .then(div => {
                 expect(div.text()).to.equal('Loading state machine action statistics...');
               })

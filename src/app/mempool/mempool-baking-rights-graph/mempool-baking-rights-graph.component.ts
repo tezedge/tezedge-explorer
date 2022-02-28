@@ -32,7 +32,7 @@ export class MempoolBakingRightsGraphComponent implements OnInit, OnDestroy {
 
   private xTicksValuesLength: number;
   private overlayRef: OverlayRef;
-  private rights: MempoolBakingRight[] = [];
+  private steps: number[] = MempoolBakingRightsGraphComponent.getSteps();
 
   constructor(private store: Store<State>,
               private cdRef: ChangeDetectorRef,
@@ -50,31 +50,28 @@ export class MempoolBakingRightsGraphComponent implements OnInit, OnDestroy {
       .pipe(
         untilDestroyed(this),
         filter(rights => rights.length > 0),
-        filter(rights => rights.some((curr, i) => curr.receivedTime !== this.rights[i]?.receivedTime)),
       )
       .subscribe((rights: MempoolBakingRight[]) => {
-        this.rights = rights;
         this.bakingRightsLength = rights.length;
-        this.chartColumns = this.generateChartLine(rights);
+        const times: number[] = rights.map(r => r.receivedTime).filter(t => t !== undefined && t !== null);
+        this.chartColumns = this.generateChartLine(times);
         this.xTicksValues = getFilteredXTicks(this.chartColumns, Math.min(this.chartColumns.length, this.xTicksValuesLength), 'name');
         this.cdRef.detectChanges();
       });
   }
 
-  private generateChartLine(rights: MempoolBakingRight[]): any[] {
-    const times: number[] = rights.map(r => r.receivedTime).filter(value => value !== undefined);
-    const steps: number[] = this.getSteps();
-    const seriesObj: { [p: number]: { value: number, range: string } } = steps.reduce((acc, curr: number, i: number) => ({
+  private generateChartLine(times: number[]): any[] {
+    const seriesObj: { [p: number]: { value: number, range: string } } = this.steps.reduce((acc, curr: number, i: number) => ({
       ...acc,
       [curr]: {
         value: 0,
-        range: i === steps.length - 1
+        range: i === this.steps.length - 1
           ? '> 5s'
           : `${curr / NANOSECOND_FACTOR}s - ${(curr + ONE_HUNDRED_MS) / NANOSECOND_FACTOR}s`
       }
     }), {});
     times.forEach(time => {
-      const stepKey = this.findClosestSmallerStep(steps, time);
+      const stepKey = MempoolBakingRightsGraphComponent.findClosestSmallerStep(this.steps, time);
       seriesObj[stepKey].value++;
     });
 
@@ -139,8 +136,7 @@ export class MempoolBakingRightsGraphComponent implements OnInit, OnDestroy {
       });
   }
 
-  @memo()
-  private getSteps(): number[] {
+  private static getSteps(): number[] {
     const res = [0];
     let i = ONE_HUNDRED_MS;
     while (i <= NANOSECOND_FACTOR * 5) {
@@ -150,7 +146,7 @@ export class MempoolBakingRightsGraphComponent implements OnInit, OnDestroy {
     return res;
   }
 
-  private findClosestSmallerStep(steps: number[], value: number): number {
+  private static findClosestSmallerStep(steps: number[], value: number): number {
     let closest = 0;
     for (const step of steps) {
       if (step <= value) {

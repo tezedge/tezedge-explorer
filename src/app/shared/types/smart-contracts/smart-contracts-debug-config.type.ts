@@ -4,6 +4,7 @@ export interface SmartContractsDebugConfig {
   previousStep: SmartContractTrace;
   currentStep: SmartContractTrace;
   nextStep: SmartContractTrace;
+  stepOver: SmartContractTrace;
   stepIn: SmartContractTrace;
   stepOut: SmartContractTrace;
 }

@@ -39,7 +39,7 @@ export class SmartContractsService {
                 switchMap((fullContract: SmartContract) => {
                   const getConsumedTraceGas = (trace): number => {
                     if (trace.length > 0) {
-                      return SmartContractsService.getConsumedGasForResult(trace, fullContract.gasLimit);
+                      return SmartContractsService.getConsumedGasForResult(trace);
                     }
                   };
                   const body = this.buildGetTraceRequestBody(fullContract);
@@ -89,24 +89,38 @@ export class SmartContractsService {
   private mapGetContracts(response: any): { contracts: Partial<SmartContract>[], previousBlockHash: string } {
     const contracts: Partial<SmartContract>[] = [];
     response.operations[3].forEach(operation => {
-      operation.contents.forEach(contract => {
-        if (contract.destination?.startsWith('KT1') && contract.kind === 'transaction') {
-          contracts.push({
-            hash: contract.destination,
-            id: contracts.length,
-            entrypoint: contract.parameters?.entrypoint,
-            chainId: operation.chain_id,
-            amount: contract.amount,
-            gasLimit: contract.gas_limit,
-            parameter: contract.parameters ? this.formatMichelsonCode(contract.parameters.value) : null,
-            parameterObj: contract.parameters?.value,
-            source: contract.source,
-            totalConsumedGas: Number(contract.metadata.operation_result.consumed_milligas),
-            blockExecutionStatus: contract.metadata.operation_result.status,
-            blockStorage: contract.metadata.operation_result.storage,
-            blockBigMaps: contract.metadata.operation_result.lazy_storage_diff,
-          });
+      const blockContracts: any[] = operation.contents.filter(
+        contract => contract.destination?.startsWith('KT1') && contract.kind === 'transaction'
+      );
+      blockContracts.forEach((contract, i: number) => {
+        let indexes = [];
+        for (let j = 0; j < blockContracts.length; j++) {
+          if (blockContracts[j].destination === contract.destination) {
+            indexes.push(j);
+          }
         }
+        indexes = indexes.filter(l => l < i);
+
+        const storageObj = indexes.length > 0
+          ? blockContracts[indexes[indexes.length - 1]].metadata.operation_result.storage
+          : null;
+        contracts.push({
+          hash: contract.destination,
+          id: contracts.length,
+          entrypoint: contract.parameters?.entrypoint,
+          chainId: operation.chain_id,
+          amount: contract.amount,
+          gasLimit: contract.gas_limit,
+          parameter: contract.parameters ? this.formatMichelsonCode(contract.parameters.value) : null,
+          parameterObj: contract.parameters?.value,
+          storageObj,
+          storage: storageObj ? this.formatMichelsonCode(storageObj) : null,
+          source: contract.source,
+          totalConsumedGas: Number(contract.metadata.operation_result.consumed_milligas),
+          blockExecutionStatus: contract.metadata.operation_result.status,
+          blockStorage: contract.metadata.operation_result.storage,
+          blockBigMaps: contract.metadata.operation_result.lazy_storage_diff,
+        });
       });
     });
     return { contracts, previousBlockHash: response.header.predecessor };
@@ -117,7 +131,8 @@ export class SmartContractsService {
       .pipe(
         map((script: { code: object, storage: object }) => ({
           codeObj: script.code,
-          storageObj: script.storage,
+          storageObj: contract.storageObj ?? script.storage,
+          storage: this.formatMichelsonCode(contract.storageObj ?? script.storage),
           id: contract.id,
           hash: contract.hash,
           entrypoint: contract.entrypoint,
@@ -138,14 +153,13 @@ export class SmartContractsService {
   }
 
   getContractCode(api: string, blockHash: string, contract: Partial<SmartContract>): Observable<SmartContract> {
-    // return of({} as any);
     return this.http.get<{ code: object, storage: object }>(`${api}/chains/main/blocks/${blockHash}/context/contracts/${contract.hash}/script`)
       .pipe(
         map((script: { code: object, storage: object }) => ({
           code: this.formatMichelsonCode(script.code),
           codeObj: script.code,
-          storageObj: script.storage,
-          storage: this.formatMichelsonCode(script.storage),
+          storageObj: contract.storageObj ?? script.storage,
+          storage: this.formatMichelsonCode(contract.storageObj ?? script.storage),
 
           id: contract.id,
           hash: contract.hash,
@@ -171,13 +185,7 @@ export class SmartContractsService {
   }
 
   getContractTrace(api: string, blockHash: string, contract: SmartContract): Observable<{ trace: SmartContractTrace[], gasTrace: number[], result: SmartContractResult }> {
-
     const body = this.buildGetTraceRequestBody(contract);
-    // console.log(this.jsonStringifyOrder(contract.blockStorage, 0));
-    // console.log(this.jsonStringifyOrder(contract.traceStorage, 0));
-    // console.log(this.jsonStringifyOrder(contract.blockStorage, 0) === this.jsonStringifyOrder(contract.storageObj, 0));
-
-    // return this.http.post<any>(`${api}/chains/main/blocks/BKv2urEM4eucDZBdoULrCG1CEE6gS77KzK8viHUUfMCx4jss48m/helpers/scripts/trace_code`, body).pipe(
     return this.http.post<any>(`${api}/chains/main/blocks/${blockHash}/helpers/scripts/trace_code`, body).pipe(
       map((response) => this.mapNewGetContractTrace(response, contract)),
       catchError(err => of(this.mapNewGetContractTrace(err.error, contract)))
@@ -205,7 +213,7 @@ export class SmartContractsService {
     const traceResponse = response.trace ?? response.reduce((acc, curr) => [...acc, ...(curr?.trace || [])], []);
     if (traceResponse.length > 0) {
       trace = this.getTrace(traceResponse, contract);
-      result.consumedGas = SmartContractsService.getConsumedGasForResult(traceResponse, contract.gasLimit);
+      result.consumedGas = SmartContractsService.getConsumedGasForResult(traceResponse);
       gasTrace = this.getGasTrace(contract, trace);
     }
 
@@ -225,7 +233,7 @@ export class SmartContractsService {
     return gasTrace;
   }
 
-  private static getConsumedGasForResult(trace: SmartContractTrace[], gasLimit: number | string): number {
+  private static getConsumedGasForResult(trace: SmartContractTrace[]): number {
     return (Number('8000000000') * 1000) - Number(trace[trace.length - 1].gas);
   }
 
@@ -255,9 +263,6 @@ export class SmartContractsService {
 
   private buildGetTraceRequestBody(contract: SmartContract): any {
     return {
-      // storage: 'test',
-      // input: 'Unit',
-      // script: this.formatMichelsonCode(contract.codeObj),
       script: contract.codeObj,
       storage: contract.storageObj,
       input: contract.parameterObj ?? {},
@@ -276,217 +281,3 @@ export class SmartContractsService {
     return emitMicheline(this.parser.parseJSON(code), { indent: '    ', newline: '\n', });
   }
 }
-
-const mockContracts: SmartContract[] = [
-  {
-    hash: 'KT18p94vjkkHYY3nPmernmgVR7HdZFzE7NAk',
-    code: 'parameter (or\n            (or (or (pair %approve (address %spender) (nat %value)) (unit %default))\n                (or\n                  (pair %getAllowance (pair (address %owner) (address %spender))\n                                      (contract nat))\n                  (pair %getBalance (address %owner) (contract nat))))\n            (or\n              (or (contract %getReserves (pair nat nat))\n                  (pair %getTotalSupply unit (contract nat)))\n              (or (pair %transfer (address %from) (address %to) (nat %value))\n                  (or %use\n                    (or\n                      (or\n                        (pair %divestLiquidity (pair (nat %min_tez) (nat %min_tokens))\n                                               (nat %shares))\n                        (nat %initializeExchange))\n                      (or (nat %investLiquidity)\n                          (pair %tezToTokenPayment (nat %min_out) (address %receiver))))\n                    (or\n                      (or\n                        (pair %tokenToTezPayment (pair (nat %amount) (nat %min_out))\n                                                 (address %receiver))\n                        (pair %veto (nat %value) (address %voter)))\n                      (or\n                        (pair %vote (pair (key_hash %candidate) (nat %value))\n                                    (address %voter))\n                        (address %withdrawProfit)))))));\nstorage (pair\n          (pair\n            (big_map %dex_lambdas nat\n                                  (lambda\n                                    (pair\n                                      (pair\n                                        (or\n                                          (or\n                                            (or\n                                              (pair %divestLiquidity\n                                                (pair (nat %min_tez) (nat %min_tokens))\n                                                (nat %shares))\n                                              (nat %initializeExchange))\n                                            (or (nat %investLiquidity)\n                                                (pair %tezToTokenPayment (nat %min_out)\n                                                                         (address %receiver))))\n                                          (or\n                                            (or\n                                              (pair %tokenToTezPayment\n                                                (pair (nat %amount) (nat %min_out))\n                                                (address %receiver))\n                                              (pair %veto (nat %value) (address %voter)))\n                                            (or\n                                              (pair %vote\n                                                (pair (key_hash %candidate) (nat %value))\n                                                (address %voter))\n                                              (address %withdrawProfit))))\n                                        (pair\n                                          (pair\n                                            (pair\n                                              (pair (address %baker_validator)\n                                                    (option %current_candidate key_hash))\n                                              (option %current_delegated key_hash)\n                                              (timestamp %last_update_time))\n                                            (pair (timestamp %last_veto)\n                                                  (big_map %ledger address\n                                                                   (pair\n                                                                     (pair\n                                                                       (map %allowances\n                                                                         address\n                                                                         nat)\n                                                                       (nat %balance))\n                                                                     (nat %frozen_balance))))\n                                            (timestamp %period_finish)\n                                            (nat %reward))\n                                          (pair\n                                            (pair (nat %reward_paid)\n                                                  (nat %reward_per_sec))\n                                            (nat %reward_per_share)\n                                            (nat %tez_pool))\n                                          (pair (address %token_address)\n                                                (nat %token_pool))\n                                          (nat %total_reward)\n                                          (nat %total_supply))\n                                        (pair\n                                          (pair (nat %total_votes)\n                                                (big_map %user_rewards address\n                                                                       (pair\n                                                                         (nat %reward)\n                                                                         (nat %reward_paid))))\n                                          (nat %veto)\n                                          (big_map %vetos key_hash timestamp))\n                                        (big_map %voters address\n                                                         (pair\n                                                           (pair\n                                                             (option %candidate key_hash)\n                                                             (timestamp %last_veto))\n                                                           (nat %veto)\n                                                           (nat %vote)))\n                                        (big_map %votes key_hash nat))\n                                      address)\n                                    (pair (list operation)\n                                          (pair\n                                            (pair\n                                              (pair\n                                                (pair (address %baker_validator)\n                                                      (option %current_candidate key_hash))\n                                                (option %current_delegated key_hash)\n                                                (timestamp %last_update_time))\n                                              (pair (timestamp %last_veto)\n                                                    (big_map %ledger address\n                                                                     (pair\n                                                                       (pair\n                                                                         (map %allowances\n                                                                           address\n                                                                           nat)\n                                                                         (nat %balance))\n                                                                       (nat %frozen_balance))))\n                                              (timestamp %period_finish)\n                                              (nat %reward))\n                                            (pair\n                                              (pair (nat %reward_paid)\n                                                    (nat %reward_per_sec))\n                                              (nat %reward_per_share)\n                                              (nat %tez_pool))\n                                            (pair (address %token_address)\n                                                  (nat %token_pool))\n                                            (nat %total_reward)\n                                            (nat %total_supply))\n                                          (pair\n                                            (pair (nat %total_votes)\n                                                  (big_map %user_rewards address\n                                                                         (pair\n                                                                           (nat %reward)\n                                                                           (nat %reward_paid))))\n                                            (nat %veto)\n                                            (big_map %vetos key_hash timestamp))\n                                          (big_map %voters address\n                                                           (pair\n                                                             (pair\n                                                               (option %candidate key_hash)\n                                                               (timestamp %last_veto))\n                                                             (nat %veto)\n                                                             (nat %vote)))\n                                          (big_map %votes key_hash nat))))\n            (big_map %metadata string bytes))\n          (pair %storage\n            (pair\n              (pair\n                (pair\n                  (pair (address %baker_validator) (option %current_candidate key_hash))\n                  (option %current_delegated key_hash)\n                  (timestamp %last_update_time))\n                (pair (timestamp %last_veto)\n                      (big_map %ledger address\n                                       (pair\n                                         (pair (map %allowances address nat)\n                                               (nat %balance))\n                                         (nat %frozen_balance))))\n                (timestamp %period_finish)\n                (nat %reward))\n              (pair (pair (nat %reward_paid) (nat %reward_per_sec))\n                    (nat %reward_per_share)\n                    (nat %tez_pool))\n              (pair (address %token_address) (nat %token_pool))\n              (nat %total_reward)\n              (nat %total_supply))\n            (pair\n              (pair (nat %total_votes)\n                    (big_map %user_rewards address\n                                           (pair (nat %reward) (nat %reward_paid))))\n              (nat %veto)\n              (big_map %vetos key_hash timestamp))\n            (big_map %voters address\n                             (pair\n                               (pair (option %candidate key_hash) (timestamp %last_veto))\n                               (nat %veto)\n                               (nat %vote)))\n            (big_map %votes key_hash nat))\n          (big_map %token_lambdas nat\n                                  (lambda\n                                    (pair\n                                      (pair\n                                        (or\n                                          (or\n                                            (or\n                                              (pair %iApprove (address %spender)\n                                                              (nat %value))\n                                              (pair %iGetAllowance\n                                                (pair (address %owner)\n                                                      (address %spender))\n                                                (contract nat)))\n                                            (or\n                                              (pair %iGetBalance (address %owner)\n                                                                 (contract nat))\n                                              (pair %iGetTotalSupply unit (contract nat))))\n                                          (pair %iTransfer (address %from) (address %to)\n                                                           (nat %value)))\n                                        (pair\n                                          (pair\n                                            (pair\n                                              (pair (address %baker_validator)\n                                                    (option %current_candidate key_hash))\n                                              (option %current_delegated key_hash)\n                                              (timestamp %last_update_time))\n                                            (pair (timestamp %last_veto)\n                                                  (big_map %ledger address\n                                                                   (pair\n                                                                     (pair\n                                                                       (map %allowances\n                                                                         address\n                                                                         nat)\n                                                                       (nat %balance))\n                                                                     (nat %frozen_balance))))\n                                            (timestamp %period_finish)\n                                            (nat %reward))\n                                          (pair\n                                            (pair (nat %reward_paid)\n                                                  (nat %reward_per_sec))\n                                            (nat %reward_per_share)\n                                            (nat %tez_pool))\n                                          (pair (address %token_address)\n                                                (nat %token_pool))\n                                          (nat %total_reward)\n                                          (nat %total_supply))\n                                        (pair\n                                          (pair (nat %total_votes)\n                                                (big_map %user_rewards address\n                                                                       (pair\n                                                                         (nat %reward)\n                                                                         (nat %reward_paid))))\n                                          (nat %veto)\n                                          (big_map %vetos key_hash timestamp))\n                                        (big_map %voters address\n                                                         (pair\n                                                           (pair\n                                                             (option %candidate key_hash)\n                                                             (timestamp %last_veto))\n                                                           (nat %veto)\n                                                           (nat %vote)))\n                                        (big_map %votes key_hash nat))\n                                      address)\n                                    (pair (list operation)\n                                          (pair\n                                            (pair\n                                              (pair\n                                                (pair (address %baker_validator)\n                                                      (option %current_candidate key_hash))\n                                                (option %current_delegated key_hash)\n                                                (timestamp %last_update_time))\n                                              (pair (timestamp %last_veto)\n                                                    (big_map %ledger address\n                                                                     (pair\n                                                                       (pair\n                                                                         (map %allowances\n                                                                           address\n                                                                           nat)\n                                                                         (nat %balance))\n                                                                       (nat %frozen_balance))))\n                                              (timestamp %period_finish)\n                                              (nat %reward))\n                                            (pair\n                                              (pair (nat %reward_paid)\n                                                    (nat %reward_per_sec))\n                                              (nat %reward_per_share)\n                                              (nat %tez_pool))\n                                            (pair (address %token_address)\n                                                  (nat %token_pool))\n                                            (nat %total_reward)\n                                            (nat %total_supply))\n                                          (pair\n                                            (pair (nat %total_votes)\n                                                  (big_map %user_rewards address\n                                                                         (pair\n                                                                           (nat %reward)\n                                                                           (nat %reward_paid))))\n                                            (nat %veto)\n                                            (big_map %vetos key_hash timestamp))\n                                          (big_map %voters address\n                                                           (pair\n                                                             (pair\n                                                               (option %candidate key_hash)\n                                                               (timestamp %last_veto))\n                                                             (nat %veto)\n                                                             (nat %vote)))\n                                          (big_map %votes key_hash nat)))));\ncode { DUP ;\n       CDR ;\n       SWAP ;\n       CAR ;\n       SELF ;\n       ADDRESS ;\n       SWAP ;\n       IF_LEFT\n         { IF_LEFT\n             { IF_LEFT\n                 { DIG 2 ;\n                   PUSH nat 1 ;\n                   PAIR ;\n                   DUG 2 ;\n                   LEFT (pair (pair address address) (contract nat)) ;\n                   LEFT (or (pair address (contract nat)) (pair unit (contract nat))) ;\n                   LEFT (pair address (pair address nat)) ;\n                   DIG 2 ;\n                   DUP ;\n                   CDR ;\n                   SWAP ;\n                   CAR ;\n                   SWAP ;\n                   DUP ;\n                   DUG 2 ;\n                   CDR ;\n                   CDR ;\n                   SWAP ;\n                   GET ;\n                   IF_NONE\n                     { SWAP ; DROP ; SWAP ; DROP ; PUSH string \\"Dex/function-not-set\\" ; FAILWITH }\n                     { DIG 3 ; DIG 2 ; DUP ; DUG 3 ; CDR ; CAR ; DIG 4 ; PAIR ; PAIR ; EXEC } ;\n                   SWAP ;\n                   DUP ;\n                   DUG 2 ;\n                   CDR ;\n                   CDR ;\n                   SWAP ;\n                   DUP ;\n                   DUG 2 ;\n                   CDR ;\n                   PAIR ;\n                   DIG 2 ;\n                   CAR ;\n                   PAIR ;\n                   SWAP ;\n                   CAR ;\n                   PAIR }\n                 { DROP 2 ;\n                   DUP ;\n                   CAR ;\n                   CAR ;\n                   PUSH nat 8 ;\n                   GET ;\n                   IF_NONE\n                     { PUSH string \\"Dex/function-not-set\\" ; FAILWITH }\n                     { SELF ;\n                       ADDRESS ;\n                       DIG 2 ;\n                       DUP ;\n                       DUG 3 ;\n                       CDR ;\n                       CAR ;\n                       PUSH nat 0 ;\n                       RIGHT (pair (pair nat nat) nat) ;\n                       LEFT (or nat (pair nat address)) ;\n                       LEFT (or (or (pair (pair nat nat) address) (pair nat address))\n                                (or (pair (pair key_hash nat) address) address)) ;\n                       PAIR ;\n                       PAIR ;\n                       EXEC } ;\n                   SWAP ;\n                   DUP ;\n                   DUG 2 ;\n                   CDR ;\n                   CDR ;\n                   SWAP ;\n                   DUP ;\n                   DUG 2 ;\n                   CDR ;\n                   PAIR ;\n                   DIG 2 ;\n                   CAR ;\n                   PAIR ;\n                   SWAP ;\n                   CAR ;\n                   PAIR } }\n             { IF_LEFT\n                 { DIG 2 ;\n                   PUSH nat 3 ;\n                   PAIR ;\n                   DUG 2 ;\n                   RIGHT (pair address nat) ;\n                   LEFT (or (pair address (contract nat)) (pair unit (contract nat))) ;\n                   LEFT (pair address (pair address nat)) ;\n                   DIG 2 ;\n                   DUP ;\n                   CDR ;\n                   SWAP ;\n                   CAR ;\n                   SWAP ;\n                   DUP ;\n                   DUG 2 ;\n                   CDR ;\n                   CDR ;\n                   SWAP ;\n                   GET ;\n                   IF_NONE\n                     { SWAP ; DROP ; SWAP ; DROP ; PUSH string \\"Dex/function-not-set\\" ; FAILWITH }\n                     { DIG 3 ; DIG 2 ; DUP ; DUG 3 ; CDR ; CAR ; DIG 4 ; PAIR ; PAIR ; EXEC } ;\n                   SWAP ;\n                   DUP ;\n                   DUG 2 ;\n                   CDR ;\n                   CDR ;\n                   SWAP ;\n                   DUP ;\n                   DUG 2 ;\n                   CDR ;\n                   PAIR ;\n                   DIG 2 ;\n                   CAR ;\n                   PAIR ;\n                   SWAP ;\n                   CAR ;\n                   PAIR }\n                 { DIG 2 ;\n                   PUSH nat 2 ;\n                   PAIR ;\n                   DUG 2 ;\n                   LEFT (pair unit (contract nat)) ;\n                   RIGHT (or (pair address nat)\n                             (pair (pair address address) (contract nat))) ;\n                   LEFT (pair address (pair address nat)) ;\n                   DIG 2 ;\n                   DUP ;\n                   CDR ;\n                   SWAP ;\n                   CAR ;\n                   SWAP ;\n                   DUP ;\n                   DUG 2 ;\n                   CDR ;\n                   CDR ;\n                   SWAP ;\n                   GET ;\n                   IF_NONE\n                     { SWAP ; DROP ; SWAP ; DROP ; PUSH string \\"Dex/function-not-set\\" ; FAILWITH }\n                     { DIG 3 ; DIG 2 ; DUP ; DUG 3 ; CDR ; CAR ; DIG 4 ; PAIR ; PAIR ; EXEC } ;\n                   SWAP ;\n                   DUP ;\n                   DUG 2 ;\n                   CDR ;\n                   CDR ;\n                   SWAP ;\n                   DUP ;\n                   DUG 2 ;\n                   CDR ;\n                   PAIR ;\n                   DIG 2 ;\n                   CAR ;\n                   PAIR ;\n                   SWAP ;\n                   CAR ;\n                   PAIR } } }\n         { IF_LEFT\n             { IF_LEFT\n                 { SWAP ;\n                   DROP ;\n                   SWAP ;\n                   DUP ;\n                   DUG 2 ;\n                   NIL operation ;\n                   DIG 2 ;\n                   PUSH mutez 0 ;\n                   DIG 4 ;\n                   DUP ;\n                   DUG 5 ;\n                   CDR ;\n                   CAR ;\n                   CAR ;\n                   CDR ;\n                   CDR ;\n                   CAR ;\n                   CDR ;\n                   DIG 5 ;\n                   CDR ;\n                   CAR ;\n                   CAR ;\n                   CDR ;\n                   CAR ;\n                   CDR ;\n                   CDR ;\n                   PAIR ;\n                   TRANSFER_TOKENS ;\n                   CONS ;\n                   PAIR }\n                 { DIG 2 ;\n                   PUSH nat 4 ;\n                   PAIR ;\n                   DUG 2 ;\n                   RIGHT (pair address (contract nat)) ;\n                   RIGHT (or (pair address nat)\n                             (pair (pair address address) (contract nat))) ;\n                   LEFT (pair address (pair address nat)) ;\n                   DIG 2 ;\n                   DUP ;\n                   CDR ;\n                   SWAP ;\n                   CAR ;\n                   SWAP ;\n                   DUP ;\n                   DUG 2 ;\n                   CDR ;\n                   CDR ;\n                   SWAP ;\n                   GET ;\n                   IF_NONE\n                     { SWAP ; DROP ; SWAP ; DROP ; PUSH string \\"Dex/function-not-set\\" ; FAILWITH }\n                     { DIG 3 ; DIG 2 ; DUP ; DUG 3 ; CDR ; CAR ; DIG 4 ; PAIR ; PAIR ; EXEC } ;\n                   SWAP ;\n                   DUP ;\n                   DUG 2 ;\n                   CDR ;\n                   CDR ;\n                   SWAP ;\n                   DUP ;\n                   DUG 2 ;\n                   CDR ;\n                   PAIR ;\n                   DIG 2 ;\n                   CAR ;\n                   PAIR ;\n                   SWAP ;\n                   CAR ;\n                   PAIR } }\n             { IF_LEFT\n                 { DIG 2 ;\n                   PUSH nat 0 ;\n                   PAIR ;\n                   DUG 2 ;\n                   RIGHT (or\n                           (or (pair address nat)\n                               (pair (pair address address) (contract nat)))\n                           (or (pair address (contract nat)) (pair unit (contract nat)))) ;\n                   DIG 2 ;\n                   DUP ;\n                   CDR ;\n                   SWAP ;\n                   CAR ;\n                   SWAP ;\n                   DUP ;\n                   DUG 2 ;\n                   CDR ;\n                   CDR ;\n                   SWAP ;\n                   GET ;\n                   IF_NONE\n                     { SWAP ; DROP ; SWAP ; DROP ; PUSH string \\"Dex/function-not-set\\" ; FAILWITH }\n                     { DIG 3 ; DIG 2 ; DUP ; DUG 3 ; CDR ; CAR ; DIG 4 ; PAIR ; PAIR ; EXEC } ;\n                   SWAP ;\n                   DUP ;\n                   DUG 2 ;\n                   CDR ;\n                   CDR ;\n                   SWAP ;\n                   DUP ;\n                   DUG 2 ;\n                   CDR ;\n                   PAIR ;\n                   DIG 2 ;\n                   CAR ;\n                   PAIR ;\n                   SWAP ;\n                   CAR ;\n                   PAIR }\n                 { DIG 2 ;\n                   DUP ;\n                   DUG 3 ;\n                   CAR ;\n                   CAR ;\n                   SWAP ;\n                   DUP ;\n                   DUG 2 ;\n                   IF_LEFT\n                     { IF_LEFT\n                         { IF_LEFT { DROP ; PUSH nat 5 } { DROP ; PUSH nat 0 } }\n                         { IF_LEFT { DROP ; PUSH nat 4 } { DROP ; PUSH nat 1 } } }\n                     { IF_LEFT\n                         { IF_LEFT { DROP ; PUSH nat 2 } { DROP ; PUSH nat 7 } }\n                         { IF_LEFT { DROP ; PUSH nat 6 } { DROP ; PUSH nat 3 } } } ;\n                   GET ;\n                   IF_NONE\n                     { DROP 2 ; PUSH string \\"Dex/function-not-set\\" ; FAILWITH }\n                     { DIG 2 ; DIG 3 ; DUP ; DUG 4 ; CDR ; CAR ; DIG 3 ; PAIR ; PAIR ; EXEC } ;\n                   SWAP ;\n                   DUP ;\n                   DUG 2 ;\n                   CDR ;\n                   CDR ;\n                   SWAP ;\n                   DUP ;\n                   DUG 2 ;\n                   CDR ;\n                   PAIR ;\n                   DIG 2 ;\n                   CAR ;\n                   PAIR ;\n                   SWAP ;\n                   CAR ;\n                   PAIR } } } }',
-    // code: 'parameter unit;\nstorage unit;\ncode { CAR;\n       NIL operation;\n       PAIR }',
-    parameter: 'Unit', storage: 'Unit'
-  },
-  {
-    hash: 'KT1Fd2SXtKhCp4NnNuvuWkPxvKxMXjmKSYHF',
-    code: 'parameter unit ;\nstorage string ;\ncode { DROP ;\n       PUSH string \"This is a smart contract!\" ;\n       NIL operation ;\n       PAIR }',
-    storage: '"test"',
-    parameter: 'Unit'
-  },
-  {
-    hash: 'KT1UGh3NcJMeepkViyWeGMjCA2ujMDADQ8xp',
-    code: 'parameter string;\nstorage string;\ncode { DUP; CAR; SWAP; CDR; CONCAT; NIL operation; PAIR }',
-    storage: '"Hello from "',
-    parameter: '"TezEdge"'
-  },
-  {
-    hash: 'KT1FGbXAJTAT8wsJz6sTmDLwuRwSbGuJioMk',
-    parameter: 'Unit', storage: 'Unit',
-    code: 'parameter unit;\nstorage unit;\ncode { DROP;\n       SOURCE;\n       CONTRACT unit;\n       ASSERT_SOME;\n       PUSH mutez 300;\n       UNIT;\n       TRANSFER_TOKENS;\n       DIP { NIL operation };\n       CONS;\n       DIP { UNIT };\n       PAIR;\n       }'
-  },
-  {
-    hash: 'tz1PduckPhxtmsuGV1VbgbqgBo3reAqzbsc3',
-    parameter: 'Unit', storage: 'Unit',
-    code: 'parameter unit;\nstorage unit;\ncode { CDR; NIL operation; PAIR}'
-  },
-  {
-    hash: 'tz1VYcWWnA5gAc7hVacD34F3443jmhMTDzg',
-    parameter: 'Unit', storage: 'Unit',
-    code: 'parameter unit;\nstorage unit;\ncode { CAR; NIL operation; PAIR }'
-  },
-  {
-    hash: 'KT1QuofAgnsWffHzLA7D78rxytJruGHDe7XG',
-    parameter: 'Unit', storage: 'Unit',
-    code: 'parameter unit ;\nstorage unit ;\ncode { CAR ;\n       PUSH int 3 ;\n       PUSH int 3 ;\n       DROP ;\n       PUSH int 3 ;\n       DROP ;\n       PUSH int 3 ;\n       DROP ;\n       PUSH int 3 ;\n       DROP ;\n       PUSH int 3 ;\n       DROP ;\n       PUSH int 3 ;\n       DROP ;\n       PUSH int 3 ;\n       DROP ;\n       PUSH int 3 ;\n       DROP ;\n       PUSH int 3 ;\n       DROP ;\n       PUSH int 3 ;\n       DROP ;\n       PUSH int 3 ;\n       DROP ;\n       PUSH int 3 ;\n       DROP ;\n       PUSH int 3 ;\n       DROP ;\n       PUSH int 3 ;\n       DROP ;\n       PUSH int 3 ;\n       DROP ;\n       PUSH int 3 ;\n       DROP ;\n       PUSH int 3 ;\n       DROP ;\n       PUSH int 3 ;\n       DROP ;\n       PUSH int 3 ;\n       DROP ;\n       PUSH int 3 ;\n       DROP ;\n       PUSH int 3 ;\n       DROP ;\n       PUSH int 3 ;\n       DROP ;\n       PUSH int 3 ;\n       DROP ;\n       PUSH int 3 ;\n       DROP ;\n       PUSH int 3 ;\n       DROP ;\n       PUSH int 3 ;\n       IFCMPEQ { DROP } { DROP } ;\n       UNIT;\n       NIL operation ;\n       PAIR }'
-  },
-  {
-    hash: 'tz1UXsFZ4ZexmdEGobShY8jKF7tcf4xCeXok',
-    code: 'parameter (or (map %setMap string int) (set %setSet string));\nstorage (pair (map %keyMap string int) (set %keySet string));\ncode { UNPAIR ;\n       IF_LEFT { SWAP ; CDR ; SWAP ; PAIR } { SWAP ; CAR ; PAIR } ;\n       NIL operation ;\n       PAIR }',
-    storage: '(Pair { Elt \"hello\" -0;  Elt \"hello2\" -0} { \"hello\";  \"hello2\"})',
-    parameter: '"TezEdge"'
-  },
-  {
-    hash: 'tz1ASxhdMEcAdzgRFMzR5TMPRexZC95sMXXa3',
-    code: 'parameter (or (map %setMap key_hash int) (set %setSet key_hash)) ;\nstorage (pair (map %keyMap key_hash int) (set %keySet key_hash)) ;\ncode { UNPAIR ;\n       IF_LEFT { SWAP ; CDR ; SWAP ; PAIR } { SWAP ; CAR ; PAIR } ;\n       NIL operation ;\n       PAIR }',
-    storage: '(Pair { Elt "tz1MSetqa3qdt3W7NTiqnrF8NY6ZhAPo5DAd" -0} { "tz1MSetqa3qdt3W7NTiqnrF8NY6ZhAPo5DAd" })',
-    parameter: 'Right { "tz1MSetqa3qdt3W7NTiqnrF8NY6ZhAPo5DAd" }'
-  },
-  {
-    hash: 'tz1MMkUljf292eacDSPTWXywujm45NuJJshS',
-    parameter: 'Unit', storage: 'Unit',
-    code: 'parameter unit;\nstorage unit;\ncode { CAR;\n       NIL operation;\n       PAIR }'
-  },
-  {
-    hash: 'tz1VFEW92djf292eacDSPTWXywujmASC382d',
-    parameter: 'Unit', storage: 'Unit',
-    code: 'parameter unit ;\nstorage unit ;\ncode { CAR ;\n       PUSH int 3 ;\n       PUSH int 3 ;\n       IFCMPEQ { DROP } { DROP } ;\n       UNIT;\n       NIL operation ;\n       PAIR }'
-  },
-  {
-    hash: 'tz1cxNunA5gAc7hVacDSPTWXywujmhMWEd81',
-    parameter: 'Unit', storage: 'Unit',
-    code: 'parameter unit;\nstorage unit;\ncode { DROP;\n       SOURCE;\n       CONTRACT unit;\n       ASSERT_SOME;\n       PUSH mutez 300;\n       UNIT;\n       TRANSFER_TOKENS;\n       DIP { NIL operation };\n       CONS;\n       DIP { UNIT };\n       PAIR;\n       }'
-  },
-  {
-    hash: 'KT1QuofAgnsWffHzLA7D78rxytJruGHDe7XG',
-    parameter: 'Unit', storage: 'Unit',
-    code: 'parameter unit;\nstorage unit;\ncode { CDR; NIL operation; PAIR }'
-  },
-  {
-    hash: 'tz1faswCTDciRzE4oJ9jn2Vm2dvjeyA9fUzU',
-    parameter: 'Unit', storage: 'Unit',
-    code: 'parameter unit;\nstorage unit;\ncode { CAR;\n       NIL operation;\n       PAIR }'
-  },
-  {
-    hash: 'LLojLSWEFWJfeuluGWR8ulgwrfejEfew9FJe',
-    storage: 'Pair (Pair { Pair (Pair \"kepler://zCT5htke43MjKGP7hwY1rpTLjfvXZMiamXRx45QnGQc36HoaEBAs/zb38S8iCDyGG4fKH6Yw7Hwipn7gXaoZWMRkmMgVAtQZDBFLej\" 0x2fb9dfa0eb302c1f7be2f74ec727e141a144fb3d4f5e47871d9e2585a4e862e8) \"VerifiableCredential\"; Pair (Pair \"kepler://zCT5htke43MjKGP7hwY1rpTLjfvXZMiamXRx45QnGQc36HoaEBAs/zb38SDRpkZYFZYcccaMmhoQjFVkB8An8hYPnDaHJamUdC3uig\" 0x7e6581d2675c580192d84a8be8032c562c4724cabf39cd901020c7bf2c163f4e) \"VerifiableCredential\"; Pair (Pair \"kepler://zCT5htke43MjKGP7hwY1rpTLjfvXZMiamXRx45QnGQc36HoaEBAs/zb38SDuT7PeNu1LpzbcAh4g1p7tLPz2jjG3HYMaMvGNjdEdWu\" 0x97dd54a4678477276ec654259287a34e572b327a19973cfd5a5044a98987ca2c) \"VerifiableCredential\"; Pair (Pair \"kepler://zCT5htke43MjKGP7hwY1rpTLjfvXZMiamXRx45QnGQc36HoaEBAs/zb38SHtVkmgZsLM1Gaq3T7JcADxvs8jCoDrnat3jS2Z8GS18L\" 0x13df04f64e25893659a601e52c7f9c34da7d1df4fa347b264a8c94e221f89317) \"VerifiableCredential\" } \"tzprofiles\") (Pair {} \"tz1QdAAAkvDLRYRF8r3SzbS5hEoR4qZ1syPC\")',
-    parameter: 'Pair { Pair (Pair "hello" 0xdeadc0de) "hello"; Pair (Pair "hello" 0xdeadc0de) "hello"} True',
-    code: 'parameter (pair (list (pair (pair string bytes) string)) bool);\n' +
-      'storage (pair\n' +
-      '          (pair (set %claims (pair (pair string bytes) string)) (string %contract_type))\n' +
-      '          (pair (big_map %metadata string bytes) (address %owner)));\n' +
-      'code { UNPAIR ;\n' +
-      '       SWAP ;\n' +
-      '       DUP ;\n' +
-      '       DUG 2 ;\n' +
-      '       CDR ;\n' +
-      '       CDR ;\n' +
-      '       SENDER ;\n' +
-      '       COMPARE ;\n' +
-      '       NEQ ;\n' +
-      '       IF { PUSH string "Unauthorized." ; FAILWITH } {} ;\n' +
-      '       PUSH mutez 0 ;\n' +
-      '       AMOUNT ;\n' +
-      '       COMPARE ;\n' +
-      '       GT ;\n' +
-      '       IF { PUSH string "Tez not accepted." ; FAILWITH } {} ;\n' +
-      '       UNPAIR ;\n' +
-      '       DUP 3 ;\n' +
-      '       CDR ;\n' +
-      '       CDR ;\n' +
-      '       DUP 4 ;\n' +
-      '       CDR ;\n' +
-      '       CAR ;\n' +
-      '       PAIR ;\n' +
-      '       DUP 4 ;\n' +
-      '       CAR ;\n' +
-      '       CDR ;\n' +
-      '       DIG 4 ;\n' +
-      '       CAR ;\n' +
-      '       CAR ;\n' +
-      '       DIG 3 ;\n' +
-      '       ITER { SWAP ; DUP 5 ; DIG 2 ; UPDATE } ;\n' +
-      '       DIG 3 ;\n' +
-      '       DROP ;\n' +
-      '       PAIR ;\n' +
-      '       PAIR ;\n' +
-      '       NIL operation ;\n' +
-      '       PAIR }'
-  },
-  {
-    hash: 'KT1QuofAgnsWffHzLA7D78rxytJruGHDe7XG',
-    parameter: 'Unit', storage: 'Unit',
-    code: 'parameter unit;\nstorage unit;\ncode { DROP;\n       SOURCE;\n       CONTRACT unit;\n       ASSERT_SOME;\n       PUSH mutez 300;\n       UNIT;\n       TRANSFER_TOKENS;\n       DIP { NIL operation };\n       CONS;\n       DIP { UNIT };\n       PAIR;\n       }'
-  },
-  {
-    hash: 'KT1QuofAgnsWffHzLA7D78rxytJruGHDe7XG',
-    parameter: 'Unit', storage: 'Unit',
-    code: 'parameter unit;\nstorage unit;\ncode { CDR; NIL operation; PAIR }'
-  },
-  {
-    hash: 'tz1faswCTDciRzE4oJ9jn2Vm2dvjeyA9fUzU',
-    parameter: 'Unit', storage: 'Unit',
-    code: 'parameter unit;\nstorage unit;\ncode { CAR;\n       NIL operation;\n       PAIR }'
-  },
-  {
-    hash: 'LLojLSWEFWJfeuluGWR8ulgwrfejEfew9FJEle',
-    parameter: 'Unit', storage: 'Unit',
-    code: 'parameter unit ;\nstorage unit ;\ncode { CAR ;\n       PUSH int 3 ;\n       PUSH int 3 ;\n       IFCMPEQ { DROP } { DROP } ;\n       UNIT;\n       NIL operation ;\n       PAIR }'
-  },
-  {
-    hash: 'KT1QuofAgnsWffHzLA7D78rxytJruGHDe7XG',
-    parameter: 'Unit', storage: 'Unit',
-    code: 'parameter unit;\nstorage unit;\ncode { DROP;\n       SOURCE;\n       CONTRACT unit;\n       ASSERT_SOME;\n       PUSH mutez 300;\n       UNIT;\n       TRANSFER_TOKENS;\n       DIP { NIL operation };\n       CONS;\n       DIP { UNIT };\n       PAIR;\n       }'
-  },
-  {
-    hash: 'KT1QuofAgnsWffHzLA7D78rxytJruGHDe7XG',
-    parameter: 'Unit', storage: 'Unit',
-    code: 'parameter unit;\nstorage unit;\ncode { CDR; NIL operation; PAIR }'
-  },
-  {
-    hash: 'tz1faswCTDciRzE4oJ9jn2Vm2dvjeyA9fUzU',
-    parameter: 'Unit', storage: 'Unit',
-    code: 'parameter unit;\nstorage unit;\ncode { CAR;\n       NIL operation;\n       PAIR }'
-  },
-  {
-    hash: 'LLojLSWEFWJfeuluGWR8ulgwrfejEfew9FJEle',
-    parameter: 'Unit', storage: 'Unit',
-    code: 'parameter unit ;\nstorage unit ;\ncode { CAR ;\n       PUSH int 3 ;\n       PUSH int 3 ;\n       IFCMPEQ { DROP } { DROP } ;\n       UNIT;\n       NIL operation ;\n       PAIR }'
-  },
-  {
-    hash: 'KT1QuofAgnsWffHzLA7D78rxytJruGHDe7XG',
-    parameter: 'Unit', storage: 'Unit',
-    code: 'parameter unit;\nstorage unit;\ncode { DROP;\n       SOURCE;\n       CONTRACT unit;\n       ASSERT_SOME;\n       PUSH mutez 300;\n       UNIT;\n       TRANSFER_TOKENS;\n       DIP { NIL operation };\n       CONS;\n       DIP { UNIT };\n       PAIR;\n       }'
-  },
-  {
-    hash: 'KT1QuofAgnsWffHzLA7D78rxytJruGHDe7XG',
-    parameter: 'Unit', storage: 'Unit',
-    code: 'parameter unit;\nstorage unit;\ncode { CDR; NIL operation; PAIR }'
-  },
-  {
-    hash: 'tz1faswCTDciRzE4oJ9jn2Vm2dvjeyA9fUzU',
-    parameter: 'Unit', storage: 'Unit',
-    code: 'parameter unit;\nstorage unit;\ncode { CAR;\n       NIL operation;\n       PAIR }'
-  },
-  {
-    hash: 'LLojLSWEFWJfeuluGWR8ulgwrfejEfew9FJEle',
-    parameter: 'Unit', storage: 'Unit',
-    code: 'parameter unit ;\nstorage unit ;\ncode { CAR ;\n       PUSH int 3 ;\n       PUSH int 3 ;\n       IFCMPEQ { DROP } { DROP } ;\n       UNIT;\n       NIL operation ;\n       PAIR }'
-  },
-  {
-    hash: 'KT1QuofAgnsWffHzLA7D78rxytJruGHDe7XG',
-    parameter: 'Unit', storage: 'Unit',
-    code: 'parameter unit;\nstorage unit;\ncode { DROP;\n       SOURCE;\n       CONTRACT unit;\n       ASSERT_SOME;\n       PUSH mutez 300;\n       UNIT;\n       TRANSFER_TOKENS;\n       DIP { NIL operation };\n       CONS;\n       DIP { UNIT };\n       PAIR;\n       }'
-  },
-  {
-    hash: 'KT1QuofAgnsWffHzLA7D78rxytJruGHDe7XG',
-    parameter: 'Unit', storage: 'Unit',
-    code: 'parameter unit;\nstorage unit;\ncode { CDR; NIL operation; PAIR }'
-  },
-  {
-    hash: 'tz1faswCTDciRzE4oJ9jn2Vm2dvjeyA9fUzU',
-    parameter: 'Unit', storage: 'Unit',
-    code: 'parameter unit;\nstorage unit;\ncode { CAR;\n       NIL operation;\n       PAIR }'
-  },
-  {
-    hash: 'LLojLSWEFWJfeuluGWR8ulgwrfejEfew9FJEle',
-    parameter: 'Unit', storage: 'Unit',
-    code: 'parameter unit ;\nstorage unit ;\ncode { CAR ;\n       PUSH int 3 ;\n       PUSH int 3 ;\n       IFCMPEQ { DROP } { DROP } ;\n       UNIT;\n       NIL operation ;\n       PAIR }'
-  },
-  {
-    hash: 'KT1QuofAgnsWffHzLA7D78rxytJruGHDe7XG',
-    parameter: 'Unit', storage: 'Unit',
-    code: 'parameter unit;\nstorage unit;\ncode { DROP;\n       SOURCE;\n       CONTRACT unit;\n       ASSERT_SOME;\n       PUSH mutez 300;\n       UNIT;\n       TRANSFER_TOKENS;\n       DIP { NIL operation };\n       CONS;\n       DIP { UNIT };\n       PAIR;\n       }'
-  },
-  {
-    hash: 'KT1QuofAgnsWffHzLA7D78rxytJruGHDe7XG',
-    parameter: 'Unit', storage: 'Unit',
-    code: 'parameter unit;\nstorage unit;\ncode { CDR; NIL operation; PAIR }'
-  },
-];

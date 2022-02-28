@@ -202,12 +202,12 @@ context('APP', () => {
         cy.window()
           .its('store')
           .then(store => {
-            const featureNames = ['smart-contracts'];
+            const featureNames = ['contracts'];
             disableFeatures(store, zone, featureNames);
 
             cy.wait(1000).then(() => {
               store.select('settingsNode').subscribe(() => {
-                cy.get('#smart-contracts-trigger').should('not.exist');
+                cy.get('#contracts-trigger').should('not.exist');
               });
             });
           });

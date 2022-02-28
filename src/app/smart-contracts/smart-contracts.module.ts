@@ -7,11 +7,12 @@ import { SmartContractsComponent } from './smart-contracts/smart-contracts.compo
 import { FormsModule } from '@angular/forms';
 import { MonacoEditorModule, NgxMonacoEditorConfig } from 'ngx-monaco-editor';
 import { SmartContractsTableComponent } from './smart-contracts-table/smart-contracts-table.component';
-import { SmartContractsRunComponent } from './smart-contracts-run/smart-contracts-run.component';
+import { SmartContractsInputsComponent } from './smart-contracts-inputs/smart-contracts-inputs.component';
 import { SmartContractsResultComponent } from './smart-contracts-result/smart-contracts-result.component';
 import { SmartContractsCodeComponent } from './smart-contracts-code/smart-contracts-code.component';
 import { SmartContractsFiltersComponent } from './smart-contracts-filters/smart-contracts-filters.component';
 import { NgxObjectDiffModule } from 'ngx-object-diff';
+import { SmartContractsDebugComponent } from './smart-contracts-debug/smart-contracts-debug.component';
 
 export const myMonacoLoad = () => {
   (window as any).monaco.languages.register({ id: 'michelson' });
@@ -38,12 +39,6 @@ export const myMonacoLoad = () => {
         [/[(\[]/, 'white'],
         [/[)\]]/, 'white'],
         [/[/*|*/]/, 'secondary'],
-        // [/[^[A-Z0-9_]*$/, 'primitive'],
-        // [/((@([^\s]+)\b)+)/, 'secondary'],
-        // [/(\%)(.*?)(?=(\A|([^A-Z|a-z|0-9|_])))/g, 'key-map-set'],
-        // [/(\%)(.*?)(?=\))/g, 'key-map-set'],
-        // [/(\%)(.*?)(?=\))/g, 'key-map-set'],
-        // [/(%keyMap|%keySet|%setMap|%setSet)/, 'key-map-set'],
       ]
     }
   });
@@ -56,17 +51,17 @@ export const myMonacoLoad = () => {
       { token: 'custom-error', foreground: '#ff0000', fontStyle: 'bold' },
       { token: 'custom-notice', foreground: '#ffa500' },
       { token: 'custom-date', foreground: '#008800' },
-      { token: 'bracket', foreground: '#ffffff' },
-      { token: 'brackets', foreground: '#ffffff' },
-      { token: 'number', foreground: '#dee8ff' },
-      { token: 'constant', foreground: '#ced7a6' },
-      { token: 'string', foreground: '#c28568' },
-      { token: 'primitive', foreground: '#ced7a6' },
-      { token: 'definition', foreground: '#4bc3a7' },
+      { token: 'bracket', foreground: '#dcdcdc' },
+      { token: 'brackets', foreground: '#dcdcdc' },
+      { token: 'number', foreground: '#b5cea8' },
+      { token: 'constant', foreground: '#d0d7b0' },
+      { token: 'string', foreground: '#ce9178' },
+      { token: 'primitive', foreground: '#d0d7b0' },
+      { token: 'definition', foreground: '#3dc9b0' },
       { token: 'typeitalic', foreground: '#689d6a', fontStyle: 'bold' },
-      { token: 'type', foreground: '#4391b3' },
-      { token: 'comment', foreground: '#5f8c4e' },
-      { token: 'white', foreground: '#ffffff' },
+      { token: 'type', foreground: '#569cd6' },
+      { token: 'comment', foreground: '#608b4e' },
+      { token: 'white', foreground: '#dcdcdc' },
       { token: 'secondary', foreground: '#37a2b6' },
       { token: 'percentValue', foreground: '#ced7a6' },
       { token: '', background: '#2a2a2e' },
@@ -74,14 +69,16 @@ export const myMonacoLoad = () => {
     colors: {
       'editor.brackets': '#928374',
       'editor.background': '#2a2a2e',
-      'editor.selectionBackground': '#b36539bf',
+      'editor.selectionBackground': '#394F76',
+      // 'editor.selectionHighlight': '#ffffff',
       'editor.lineHighlightBackground': '#4b4b4b',
-      'editorCursor.foreground': '#cccccc',
-      'editorWhitespace.foreground': '#777777',
-      'editor.foreground': '#3c3836',
+      // 'editorCursor.foreground': '#cccccc',
+      // 'editorWhitespace.foreground': '#777777',
+      'editor.foreground': '#ea9467',
       'minimapSlider.hoverBackground': '#e8e8e819',
       'minimapSlider.activeBackground': '#d0d0d04f',
       'scrollbarSlider.background': '#ffffff40',
+      "editor.renderLineHighlight": "gutter",
     }
   });
 
@@ -128,10 +125,11 @@ const monacoConfig: NgxMonacoEditorConfig = {
   declarations: [
     SmartContractsComponent,
     SmartContractsTableComponent,
-    SmartContractsRunComponent,
+    SmartContractsInputsComponent,
     SmartContractsResultComponent,
     SmartContractsCodeComponent,
-    SmartContractsFiltersComponent
+    SmartContractsFiltersComponent,
+    SmartContractsDebugComponent
   ],
   imports: [
     CommonModule,

@@ -40,10 +40,10 @@ export class MempoolBakingRightsService {
   private mapBakingRights(response: any[]): MempoolBakingRight[] {
     return response.map(right => ({
       ...right,
-      getOperationsRecvStartTime: right.getOperationsRecvStartTime - right.sentTime,
-      getOperationsRecvEndTime: right.getOperationsRecvEndTime - right.getOperationsRecvStartTime,
-      operationsSendStartTime: right.operationsSendStartTime - right.getOperationsRecvEndTime,
-      operationsSendEndTime: right.operationsSendEndTime - right.operationsSendStartTime,
+      getOperationsRecvStartTime: (right.getOperationsRecvStartTime && right.sentTime) ? right.getOperationsRecvStartTime - right.sentTime : undefined,
+      getOperationsRecvEndTime: (right.getOperationsRecvEndTime && right.getOperationsRecvStartTime) ? right.getOperationsRecvEndTime - right.getOperationsRecvStartTime : undefined,
+      operationsSendStartTime: (right.operationsSendStartTime && right.getOperationsRecvStartTime) ? right.operationsSendStartTime - right.getOperationsRecvStartTime : undefined,
+      operationsSendEndTime: (right.operationsSendEndTime && right.operationsSendStartTime) ? right.operationsSendEndTime - right.operationsSendStartTime : undefined,
       responseRate: (right.operationsSendNum ?? 0) + '/' + (right.getOperationsRecvNum ?? 0),
     }));
   }

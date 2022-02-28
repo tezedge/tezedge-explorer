@@ -1,6 +1,6 @@
 <div fxFlex="32px" class="state-toolbar d-flex flex-row f-12 align-center foreground padding-left-10"
      *ngIf="stateMachine$ | async as state">
-  <div fxFlex="77px" class="d-flex align-center pointer diagram-toggler"
+  <div fxFlex="90px" class="d-flex align-center pointer diagram-toggler"
        (click)="toggleDiagramCollapsing()">
     <mat-icon [svgIcon]="state.collapsedDiagram ? 'add-circle' : 'circle-minus'"
               class="icon-12 icon-foreground d-flex align-center margin-right-5"></mat-icon>

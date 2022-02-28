@@ -74,7 +74,9 @@ context('LOGS', () => {
             .wait(1000)
 
             .get('#virtualScrollTableDetails .non-json-container')
-            .should('contain', secondLastRecord.message);
+            .should((element) => {
+              expect(element.text().trim().includes(secondLastRecord.message)).to.be.true;
+            });
         });
       });
   });

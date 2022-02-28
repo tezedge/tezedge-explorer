@@ -20,9 +20,16 @@ context('MEMPOOL OPERATION', () => {
   });
 
   it('[MEMPOOL OPERATION] should create rows for the virtual scroll table', () => {
-    cy.get('cdk-virtual-scroll-viewport')
-      .find('.row')
-      .should('be.visible');
+    cy.window()
+      .its('store')
+      .then(store => {
+        store.select('mempool').subscribe(mempool => {
+          if (mempool.operationState.mempoolOperations.length) {
+            cy.get('app-mempool-operation cdk-virtual-scroll-viewport .row')
+              .should('be.visible');
+          }
+        });
+      });
   });
 
   it('[MEMPOOL OPERATION] should fill the last row of the table with the last value received', () => {
@@ -50,16 +57,18 @@ context('MEMPOOL OPERATION', () => {
     cy.window()
       .its('store')
       .then(store => {
-        store.select('mempool').subscribe(() => {
-          cy.get('cdk-virtual-scroll-viewport')
-            .scrollTo('bottom')
-            .wait(1000)
-            .find('.row')
-            .eq(-2)
-            .trigger('click')
-            .wait(1000)
-            .then(row => expect(row.hasClass('active')).to.be.true)
-            .get('.ngx-json-viewer').should('be.visible');
+        store.select('mempool').subscribe((mempool) => {
+          if (mempool.operationState.mempoolOperations.length) {
+            cy.get('cdk-virtual-scroll-viewport')
+              .scrollTo('bottom')
+              .wait(1000)
+              .find('.row')
+              .eq(-2)
+              .trigger('click')
+              .wait(1000)
+              .then(row => expect(row.hasClass('active')).to.be.true)
+              .get('.ngx-json-viewer').should('be.visible');
+          }
         });
       });
   });
@@ -68,15 +77,17 @@ context('MEMPOOL OPERATION', () => {
     cy.window()
       .its('store')
       .then(store => {
-        store.select('mempool').subscribe(() => {
-          cy.get('cdk-virtual-scroll-viewport')
-            .scrollTo('bottom')
-            .wait(1000)
-            .find('.row')
-            .eq(-2)
-            .trigger('mouseenter')
-            .wait(1000)
-            .get('.ngx-json-viewer').should('be.visible');
+        store.select('mempool').subscribe((mempool) => {
+          if (mempool.operationState.mempoolOperations.length) {
+            cy.get('cdk-virtual-scroll-viewport')
+              .scrollTo('bottom')
+              .wait(1000)
+              .find('.row')
+              .eq(-2)
+              .trigger('mouseenter')
+              .wait(1000)
+              .get('.ngx-json-viewer').should('be.visible');
+          }
         });
       });
   });
@@ -86,14 +97,16 @@ context('MEMPOOL OPERATION', () => {
       .its('store')
       .then(store => {
         store.select('mempool').subscribe(mempool => {
-          cy.get('cdk-virtual-scroll-viewport')
-            .find('.row')
-            .first()
-            .then(row => expect(row.hasClass('active')).to.be.true)
-            .get('cdk-virtual-scroll-viewport .row:first-child span:first-child')
-            .should(span => {
-              expect(span.text().trim()).to.equal(mempool.operationState.mempoolOperations[0].hash);
-            });
+          if (mempool.operationState.mempoolOperations.length) {
+            cy.get('cdk-virtual-scroll-viewport')
+              .find('.row')
+              .first()
+              .then(row => expect(row.hasClass('active')).to.be.true)
+              .get('cdk-virtual-scroll-viewport .row:first-child span:first-child')
+              .should(span => {
+                expect(span.text().trim()).to.equal(mempool.operationState.mempoolOperations[0].hash);
+              });
+          }
         });
       });
   });

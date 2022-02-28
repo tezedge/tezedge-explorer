@@ -15,7 +15,7 @@ export function reducer(state: SettingsNode = initialState, action): SettingsNod
   switch (action.type) {
     case 'SETTINGS_NODE_LOAD': {
       return {
-        activeNode: state.activeNode && state.activeNode.connected ? state.activeNode : null,
+        activeNode: (state.activeNode && state.activeNode.connected) ? state.activeNode : null,
         ids: environment.api.map(node => node.id),
         entities: environment.api.reduce((accumulator, node) => ({
           ...accumulator,
@@ -54,7 +54,7 @@ export function reducer(state: SettingsNode = initialState, action): SettingsNod
         activeNode: {
           ...state.activeNode,
           connected: (action.payload.activeNode && state.activeNode && action.payload.activeNode.id === state.activeNode.id)
-            ? false : state.activeNode.connected
+            ? false : state.activeNode?.connected
         },
         entities: {
           ...state.entities,

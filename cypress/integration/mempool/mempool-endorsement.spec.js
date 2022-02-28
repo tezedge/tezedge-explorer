@@ -1,10 +1,7 @@
 context('MEMPOOL ENDORSEMENT', () => {
   beforeEach(() => {
-    cy.intercept('GET', '/dev/shell/automaton/endorsing_rights*').as('getMempoolEndorsements')
-      .wait(1000)
-      .visit(Cypress.config().baseUrl + '/#/mempool/endorsements', { timeout: 30000 })
-      .wait('@getMempoolEndorsements', { timeout: 100000 })
-      .wait(1000);
+    cy.visit(Cypress.config().baseUrl + '/#/mempool/endorsements', { timeout: 30000 })
+      .wait(3000);
   });
 
   it('[MEMPOOL ENDORSEMENT] should have status code 200 for get mempool operations request', () => {
@@ -26,8 +23,16 @@ context('MEMPOOL ENDORSEMENT', () => {
   });
 
   it('[MEMPOOL ENDORSEMENT] should create rows for the virtual scroll table', () => {
-    cy.get('.row')
-      .should('be.visible');
+    cy.window()
+      .its('store')
+      .then(store => {
+        store.select('mempool').subscribe(mempool => {
+          if (mempool.endorsementState.endorsements.length) {
+            cy.get('app-mempool-endorsement .table-container .row')
+              .should('be.visible');
+          }
+        });
+      });
   });
 
   it('[MEMPOOL ENDORSEMENT] should display correct color based on status', () => {
@@ -36,14 +41,16 @@ context('MEMPOOL ENDORSEMENT', () => {
       .its('store')
       .then(store => {
         store.select('mempool').subscribe(mempool => {
-          if (!oneStrike) {
-            oneStrike = true;
-            const endorsements = mempool.endorsementState.endorsements;
-            endorsements.forEach((endorsement, index) => {
-              cy.get('.row:nth-child(' + (index + 1) + ')')
-                .find('.status')
-                .should('have.class', endorsement.status || 'missing', { timeout: 0 });
-            });
+          if (mempool.endorsementState.endorsements.length) {
+            if (!oneStrike) {
+              oneStrike = true;
+              const endorsements = mempool.endorsementState.endorsements;
+              endorsements.forEach((endorsement, index) => {
+                cy.get('.row:nth-child(' + (index + 1) + ')')
+                  .find('.status')
+                  .should('have.class', endorsement.status || 'missing', { timeout: 0 });
+              });
+            }
           }
         });
       });
@@ -88,21 +95,23 @@ context('MEMPOOL ENDORSEMENT', () => {
       .then(store => {
         store.select('mempool').subscribe(mempool => {
           const mempoolEndorsements = mempool.endorsementState.endorsements;
-          if (sorted && !checked) {
-            checked = true;
-            mempoolEndorsements.forEach((e, i) => {
-              if (mempoolEndorsements[i + 1]) {
-                expect((mempoolEndorsements[i].decodeTimeDelta ?? 0) >= (mempoolEndorsements[i + 1].decodeTimeDelta ?? 0)).to.be.true;
-              }
-            });
-          }
-          if (mempoolEndorsements.length && !sorted) {
-            cy.get('.row.head span:nth-child(7)')
-              .click()
-              .wait(500)
-              .get('.row.head span:nth-child(7) mat-icon.show')
-              .should('be.visible')
-              .then(() => sorted = true);
+          if (mempoolEndorsements) {
+            if (sorted && !checked) {
+              checked = true;
+              mempoolEndorsements.forEach((e, i) => {
+                if (mempoolEndorsements[i + 1]) {
+                  expect((mempoolEndorsements[i].decodeTimeDelta ?? 0) >= (mempoolEndorsements[i + 1].decodeTimeDelta ?? 0)).to.be.true;
+                }
+              });
+            }
+            if (!sorted) {
+              cy.get('.row.head span:nth-child(7)')
+                .click()
+                .wait(500)
+                .get('.row.head span:nth-child(7) mat-icon.show')
+                .should('be.visible')
+                .then(() => sorted = true);
+            }
           }
         });
       });
@@ -119,22 +128,24 @@ context('MEMPOOL ENDORSEMENT', () => {
       .then(store => {
         store.select('mempool').subscribe(mempool => {
           const mempoolEndorsements = mempool.endorsementState.endorsements;
-          if (sorted && !checked) {
-            checked = true;
-            mempoolEndorsements.forEach((e, i) => {
-              if (mempoolEndorsements[i + 1]) {
-                expect((mempoolEndorsements[i].decodeTime ?? 0) >= (mempoolEndorsements[i + 1].decodeTime ?? 0)).to.be.true;
-              }
-            });
-            return;
-          }
-          if (mempoolEndorsements.length && !sorted) {
-            cy.get('.row.head span:nth-child(7)')
-              .click()
-              .wait(500)
-              .get('.row.head span:nth-child(7) mat-icon.show')
-              .should('be.visible')
-              .then(() => sorted = true);
+          if (mempoolEndorsements) {
+            if (sorted && !checked) {
+              checked = true;
+              mempoolEndorsements.forEach((e, i) => {
+                if (mempoolEndorsements[i + 1]) {
+                  expect((mempoolEndorsements[i].decodeTime ?? 0) >= (mempoolEndorsements[i + 1].decodeTime ?? 0)).to.be.true;
+                }
+              });
+              return;
+            }
+            if (!sorted) {
+              cy.get('.row.head span:nth-child(7)')
+                .click()
+                .wait(500)
+                .get('.row.head span:nth-child(7) mat-icon.show')
+                .should('be.visible')
+                .then(() => sorted = true);
+            }
           }
         });
       });
@@ -146,25 +157,27 @@ context('MEMPOOL ENDORSEMENT', () => {
       .its('store')
       .then(store => {
         store.select('mempool').subscribe(mempool => {
-          const tenthEndorsement = mempool.endorsementState.endorsements[9];
-          if (!haveValue) {
-            haveValue = true;
-            cy.get('app-mempool-endorsement .table-container .row:nth-child(10) span:nth-child(2) span')
-              .should(span => {
-                expect(span.text().trim()).to.equal(tenthEndorsement.bakerName || tenthEndorsement.bakerHash);
-              })
-              .get('app-mempool-endorsement .table-container .row:nth-child(1) span:nth-child(2) span')
-              .should(span => {
-                expect(span.text().trim()).to.not.equal(tenthEndorsement.bakerName || tenthEndorsement.bakerHash);
-              })
-              .get('.table-footer input')
-              .type(tenthEndorsement.bakerHash, { force: true })
-              .wait(300)
-              .get('app-mempool-endorsement .table-container .row:nth-child(1) span:nth-child(2) span')
-              .should(span => {
-                expect(span.text().trim()).to.equal(tenthEndorsement.bakerName || tenthEndorsement.bakerHash);
-                expect(localStorage.getItem('activeBaker')).to.equal(tenthEndorsement.bakerHash);
-              });
+          if (mempool.endorsementState.endorsements.length > 9) {
+            const tenthEndorsement = mempool.endorsementState.endorsements[9];
+            if (!haveValue) {
+              haveValue = true;
+              cy.get('app-mempool-endorsement .table-container .row:nth-child(10) span:nth-child(2) span')
+                .should(span => {
+                  expect(span.text().trim()).to.equal(tenthEndorsement.bakerName || tenthEndorsement.bakerHash);
+                })
+                .get('app-mempool-endorsement .table-container .row:nth-child(1) span:nth-child(2) span')
+                .should(span => {
+                  expect(span.text().trim()).to.not.equal(tenthEndorsement.bakerName || tenthEndorsement.bakerHash);
+                })
+                .get('.table-footer input')
+                .type(tenthEndorsement.bakerHash, { force: true })
+                .wait(300)
+                .get('app-mempool-endorsement .table-container .row:nth-child(1) span:nth-child(2) span')
+                .should(span => {
+                  expect(span.text().trim()).to.equal(tenthEndorsement.bakerName || tenthEndorsement.bakerHash);
+                  expect(localStorage.getItem('activeBaker')).to.equal(tenthEndorsement.bakerHash);
+                });
+            }
           }
         });
       });
@@ -176,33 +189,35 @@ context('MEMPOOL ENDORSEMENT', () => {
       .its('store')
       .then(store => {
         store.select('mempool').subscribe(mempool => {
-          const stats = mempool.endorsementState.statistics;
-          if (!haveValue) {
-            haveValue = true;
-            cy.get('app-mempool-endorsement-statistics .mem-stats-row:nth-child(2) div:last-child')
-              .should(div => {
-                expect(div.text().trim()).to.equal(stats.endorsementTypes[0].value.toString());
-              })
-              .get('app-mempool-endorsement-statistics .mem-stats-row:nth-child(3) div:last-child')
-              .should(div => {
-                expect(div.text().trim()).to.equal(stats.endorsementTypes[1].value.toString());
-              })
-              .get('app-mempool-endorsement-statistics .mem-stats-row:nth-child(4) div:last-child')
-              .should(div => {
-                expect(div.text().trim()).to.equal(stats.endorsementTypes[2].value.toString());
-              })
-              .get('app-mempool-endorsement-statistics .mem-stats-row:nth-child(5) div:last-child')
-              .should(div => {
-                expect(div.text().trim()).to.equal(stats.endorsementTypes[3].value.toString());
-              })
-              .get('app-mempool-endorsement-statistics .mem-stats-row:nth-child(6) div:last-child')
-              .should(div => {
-                expect(div.text().trim()).to.equal(stats.endorsementTypes[4].value.toString());
-              })
-              .get('app-mempool-endorsement-statistics .mem-stats-row:nth-child(7) div:last-child')
-              .should(div => {
-                expect(div.text().trim()).to.equal(stats.endorsementTypes[5].value.toString());
-              });
+          if (mempool.endorsementState.endorsements.length) {
+            const stats = mempool.endorsementState.statistics;
+            if (!haveValue) {
+              haveValue = true;
+              cy.get('app-mempool-endorsement-statistics .mem-stats-row:nth-child(2) div:last-child')
+                .should(div => {
+                  expect(div.text().trim()).to.equal(stats.endorsementTypes[0].value.toString());
+                })
+                .get('app-mempool-endorsement-statistics .mem-stats-row:nth-child(3) div:last-child')
+                .should(div => {
+                  expect(div.text().trim()).to.equal(stats.endorsementTypes[1].value.toString());
+                })
+                .get('app-mempool-endorsement-statistics .mem-stats-row:nth-child(4) div:last-child')
+                .should(div => {
+                  expect(div.text().trim()).to.equal(stats.endorsementTypes[2].value.toString());
+                })
+                .get('app-mempool-endorsement-statistics .mem-stats-row:nth-child(5) div:last-child')
+                .should(div => {
+                  expect(div.text().trim()).to.equal(stats.endorsementTypes[3].value.toString());
+                })
+                .get('app-mempool-endorsement-statistics .mem-stats-row:nth-child(6) div:last-child')
+                .should(div => {
+                  expect(div.text().trim()).to.equal(stats.endorsementTypes[4].value.toString());
+                })
+                .get('app-mempool-endorsement-statistics .mem-stats-row:nth-child(7) div:last-child')
+                .should(div => {
+                  expect(div.text().trim()).to.equal(stats.endorsementTypes[5].value.toString());
+                });
+            }
           }
         });
       });

@@ -48,6 +48,42 @@ steps:
     depends_on:
       - build
 
+  - name: test-mempool-baking-rights
+    image: cypress/included:6.2.1
+    commands:
+      - cypress run --spec "cypress/integration/mempool/mempool-baking-rights.spec.js"
+    environment:
+      CYPRESS_baseUrl: http://frontend-server:80
+    depends_on:
+      - build
+
+  - name: test-mempool-block-application
+    image: cypress/included:6.2.1
+    commands:
+      - cypress run --spec "cypress/integration/mempool/mempool-block-application.spec.js"
+    environment:
+      CYPRESS_baseUrl: http://frontend-server:80
+    depends_on:
+      - build
+
+  - name: test-mempool-endorsements
+    image: cypress/included:6.2.1
+    commands:
+      - cypress run --spec "cypress/integration/mempool/mempool-endorsement.spec.js"
+    environment:
+      CYPRESS_baseUrl: http://frontend-server:80
+    depends_on:
+      - build
+
+  - name: test-mempool-statistics
+    image: cypress/included:6.2.1
+    commands:
+      - cypress run --spec "cypress/integration/mempool/mempool-statistics.spec.js"
+    environment:
+      CYPRESS_baseUrl: http://frontend-server:80
+    depends_on:
+      - build
+
   - name: test-github-version
     image: cypress/included:6.2.1
     commands:
@@ -209,6 +245,10 @@ steps:
       - test-app
       - test-logs
       - test-mempool-operations
+      - test-mempool-baking-rights
+      - test-mempool-block-application
+      - test-mempool-endorsements
+      - test-mempool-statistics
       - test-github-version
       - test-network
       - test-open-api
@@ -274,7 +314,7 @@ steps:
     detach: true
     privileged: true
     environment:
-      API: '[{"id":"tezedge","type":"tezedge","name":"drone-test-node","http":"http://develop.dev.tezedge.com:18732","p2p_port":"9732","features": [{ "name": "ws", "url": "ws://develop.dev.tezedge.com:4927" },{ "name": "debugger", "url": "http://develop.dev.tezedge.com:17732" },{ "name": "sandbox", "url": "http://develop.dev.tezedge.com:3030" },{ "name": "commit", "id": "develop" },{ "name": "monitoring" },{ "name": "resources/system", "monitoringUrl": "http://develop.dev.tezedge.com:38732/resources/tezedge" },{ "name": "resources/memory", "memoryProfilerUrl": "http://develop.dev.tezedge.com:17832" },{ "name": "resources/storage" },{ "name": "mempool" },{ "name": "storage" },{ "name": "network" },{ "name": "logs" },{ "name": "state" }]},{"id":"octez","name":"octez.develop.dev.tezedge.com","http":"http://develop.dev.tezedge.com:18733","p2p_port":"9733","type":"octez","features":[{"name":"debugger","url":"http://develop.dev.tezedge.com:17732"},{"name":"sandbox","url":"http://localhost:3030"},{"name":"monitoring"},{"name":"resources/system","monitoringUrl":"http://develop.dev.tezedge.com:38732/resources/ocaml"},{"name":"resources/memory","memoryProfilerUrl":"http://develop.dev.tezedge.com:17832"},{"name":"mempool"},{"name":"network"},{"name":"logs"},{"name":"contracts"}]}]'
+      API: '[{"id":"prechecker.mempool.tezedge.com","type":"tezedge","name":"drone-test-node","http":"http://prechecker.mempool.tezedge.com:18732","p2p_port":"9732","features": [{ "name": "ws", "url": "ws://prechecker.mempool.tezedge.com:4927" },{ "name": "debugger", "url": "http://prechecker.mempool.tezedge.com:17732" },{ "name": "sandbox", "url": "http://prechecker.mempool.tezedge.com:3030" },{ "name": "commit", "id": "develop" },{ "name": "monitoring" },{ "name": "resources/system", "monitoringUrl": "http://prechecker.mempool.tezedge.com:4444/resources/tezedge" },{ "name": "resources/storage" },{ "name": "mempool" },{ "name": "storage" },{ "name": "network" },{ "name": "logs" },{"name":"open-api"},{"name":"contracts"}]},{"id":"octez","name":"octez.develop.dev.tezedge.com","http":"http://develop.dev.tezedge.com:18733","p2p_port":"9733","type":"octez","features":[{"name":"debugger","url":"http://develop.dev.tezedge.com:17732"},{"name":"sandbox","url":"http://localhost:3030"},{"name":"monitoring"},{"name":"resources/system","monitoringUrl":"http://develop.dev.tezedge.com:38732/resources/ocaml"},{"name":"resources/memory","memoryProfilerUrl":"http://develop.dev.tezedge.com:17832"},{"name":"mempool"},{"name":"network"},{"name":"logs"}]}]'
     depends_on:
       - build
 
@@ -300,6 +340,42 @@ steps:
     image: cypress/included:6.2.1
     commands:
       - cypress run --spec "cypress/integration/mempool/mempool-operation.spec.js"
+    environment:
+      CYPRESS_baseUrl: http://frontend-server:80
+    depends_on:
+      - build
+
+  - name: test-mempool-baking-rights
+    image: cypress/included:6.2.1
+    commands:
+      - cypress run --spec "cypress/integration/mempool/mempool-baking-rights.spec.js"
+    environment:
+      CYPRESS_baseUrl: http://frontend-server:80
+    depends_on:
+      - build
+
+  - name: test-mempool-block-application
+    image: cypress/included:6.2.1
+    commands:
+      - cypress run --spec "cypress/integration/mempool/mempool-block-application.spec.js"
+    environment:
+      CYPRESS_baseUrl: http://frontend-server:80
+    depends_on:
+      - build
+
+  - name: test-mempool-endorsements
+    image: cypress/included:6.2.1
+    commands:
+      - cypress run --spec "cypress/integration/mempool/mempool-endorsement.spec.js"
+    environment:
+      CYPRESS_baseUrl: http://frontend-server:80
+    depends_on:
+      - build
+
+  - name: test-mempool-statistics
+    image: cypress/included:6.2.1
+    commands:
+      - cypress run --spec "cypress/integration/mempool/mempool-statistics.spec.js"
     environment:
       CYPRESS_baseUrl: http://frontend-server:80
     depends_on:
@@ -431,6 +507,15 @@ steps:
     depends_on:
       - build
 
+  - name: test-smart-contracts
+    image: cypress/included:6.2.1
+    commands:
+      - cypress run --spec "cypress/integration/smart-contracts/smart-contracts.spec.js"
+    environment:
+      CYPRESS_baseUrl: http://frontend-server:80
+    depends_on:
+      - build
+
   - name: save-test-screenshots
     image: meltwater/drone-cache
     pull: true
@@ -457,20 +542,25 @@ steps:
       - test-app
       - test-logs
       - test-mempool-operations
+      - test-mempool-baking-rights
+      - test-mempool-block-application
+      - test-mempool-endorsements
+      - test-mempool-statistics
       - test-github-version
-   #   - test-network
+      - test-network
       - test-open-api
       - test-system-resources
-  #    - test-storage-resources
-  #    - test-memory-resources
-  #    - test-routing
+      - test-storage-resources
+      - test-memory-resources
+      - test-routing
       - test-sandbox
       - test-settings-node
       - test-error-popup
       - test-loading-spinner
       - test-storage-action
       - test-storage-block
-  #    - test-state-machine
+      - test-state-machine
+      - test-smart-contracts
 
   - name: publish
     image: plugins/docker

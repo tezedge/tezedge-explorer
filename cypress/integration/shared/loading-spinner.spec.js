@@ -22,8 +22,7 @@ context('LOADING SPINNER', () => {
             zone.run(() => store.dispatch({
               type: 'NETWORK_ACTION_LOAD', payload: { filter: '' }
             }));
-            cy.wait(50)
-              .get('body app-root app-loading-spinner .spinner', { timeout: 100 }).should('exist')
+            cy.get('body app-root app-loading-spinner .spinner', { timeout: 100 }).should('exist')
               .then(div => {
                 expect(div.text()).to.equal('Loading network...');
               })
@@ -42,8 +41,7 @@ context('LOADING SPINNER', () => {
             zone.run(() => store.dispatch({
               type: 'LOGS_ACTION_LOAD', payload: { filter: '' }
             }));
-            cy.wait(50)
-              .get('body app-root app-loading-spinner .spinner', { timeout: 100 }).should('exist')
+            cy.get('body app-root app-loading-spinner .spinner', { timeout: 100 }).should('exist')
               .then(div => {
                 expect(div.text()).to.equal('Loading logs...');
               })
@@ -60,8 +58,7 @@ context('LOADING SPINNER', () => {
           .its('store')
           .then(store => {
             zone.run(() => store.dispatch({ type: 'STORAGE_BLOCK_START', payload: { limit: 400 } }));
-            cy.wait(50)
-              .get('body app-root app-loading-spinner .spinner', { timeout: 100 }).should('exist')
+            cy.get('body app-root app-loading-spinner .spinner', { timeout: 100 }).should('exist')
               .then(div => {
                 expect(div.text()).to.equal('Loading storage blocks...');
               })
@@ -78,8 +75,7 @@ context('LOADING SPINNER', () => {
           .its('store')
           .then(store => {
             zone.run(() => store.dispatch({ type: 'SYSTEM_RESOURCES_LOAD' }));
-            cy.wait(50)
-              .get('body app-root app-loading-spinner .spinner', { timeout: 100 }).should('exist')
+            cy.get('body app-root app-loading-spinner .spinner', { timeout: 100 }).should('exist')
               .then(div => {
                 expect(div.text()).to.equal('Loading system resources...');
               })
@@ -96,8 +92,7 @@ context('LOADING SPINNER', () => {
           .its('store')
           .then(store => {
             zone.run(() => store.dispatch({ type: 'STORAGE_RESOURCES_LOAD' }));
-            cy.wait(50)
-              .get('body app-root app-loading-spinner .spinner', { timeout: 100 }).should('exist')
+            cy.get('body app-root app-loading-spinner .spinner', { timeout: 100 }).should('exist')
               .then(div => {
                 expect(div.text()).to.equal('Loading storage resources...');
               })
@@ -114,8 +109,7 @@ context('LOADING SPINNER', () => {
           .its('store')
           .then(store => {
             zone.run(() => store.dispatch({ type: 'MEMORY_RESOURCES_LOAD' }));
-            cy.wait(50)
-              .get('body app-root app-loading-spinner .spinner', { timeout: 100 }).should('exist')
+            cy.get('body app-root app-loading-spinner .spinner', { timeout: 100 }).should('exist')
               .then(div => {
                 expect(div.text()).to.equal('Loading memory resources...');
               })
@@ -132,14 +126,11 @@ context('LOADING SPINNER', () => {
           .its('store')
           .then(store => {
             cy.wait(1000)
-              .then(() => {
-                setTimeout(() => {
-                  zone.run(() => store.dispatch({ type: 'STATE_MACHINE_ACTION_STATISTICS_LOAD' }));
-                }, 1000);
-              });
-            cy.get('body app-root app-loading-spinner .spinner', { timeout: 10000 }).should('exist')
+              .then(() => zone.run(() => store.dispatch({ type: 'STATE_MACHINE_ACTION_STATISTICS_LOAD' })))
+              .get('body app-root app-loading-spinner .spinner', { timeout: 10000 })
+              .should('exist')
               .then(div => {
-                expect(div.text()).to.equal('Loading state machine action statistics...');
+                expect(div.text().trim()).to.equal('Loading state machine action statistics...');
               })
               .get('app-loading-spinner div div mat-spinner').should('be.visible');
           });

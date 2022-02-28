@@ -4,7 +4,7 @@ context('MEMPOOL ENDORSEMENT', () => {
       .wait(1000)
       .visit(Cypress.config().baseUrl + '/#/mempool/endorsements', { timeout: 30000 })
       .wait('@getMempoolEndorsements', { timeout: 100000 })
-      .wait(500);
+      .wait(1000);
   });
 
   it('[MEMPOOL ENDORSEMENT] should have status code 200 for get mempool operations request', () => {

@@ -45,7 +45,7 @@ context('MEMPOOL BAKING RIGHTS', () => {
       .its('store')
       .then(store => {
         store.select('mempool').subscribe(mempool => {
-          if (mempool.bakingRightsState.bakingRights.length) {
+          if (mempool.bakingRightsState.bakingRights.length > 0) {
             cy.get('cdk-virtual-scroll-viewport .row')
               .should('be.visible');
           }
@@ -59,9 +59,9 @@ context('MEMPOOL BAKING RIGHTS', () => {
       .its('store')
       .then(store => {
         store.select('mempool').subscribe(mempool => {
-          if (mempool.bakingRightsState.bakingRights.length) {
+          if (mempool.bakingRightsState.bakingRights.length > 0) {
             if (mempool.bakingRightsState.bakingRights[0].receivedTime > 50000000) {
-              cy.get('cdk-virtual-scroll-viewport .row span span.text-red')
+              cy.get('cdk-virtual-scroll-viewport .row:first-child span span.text-red')
                 .should('be.visible');
             }
           }
@@ -75,7 +75,7 @@ context('MEMPOOL BAKING RIGHTS', () => {
       .its('store')
       .then(store => {
         store.select('mempool').subscribe(mempool => {
-          if (mempool.bakingRightsState.bakingRights.length) {
+          if (mempool.bakingRightsState.bakingRights.length > 0) {
             const index = mempool.bakingRightsState.bakingRights.findIndex(e => e.receivedTime > 20000000 && e.receivedTime < 50000000);
             if (index !== -1 && index <= 20) {
               cy.get('.row:not(.head):nth-child(' + (index + 1) + ') span:nth-child(4) span.text-yellow')

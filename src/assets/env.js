@@ -23,6 +23,7 @@
         { name: 'logs' },
         { name: 'state' },
         { name: 'open-api' },
+        { name: 'contracts' },
       ]
     },
     {

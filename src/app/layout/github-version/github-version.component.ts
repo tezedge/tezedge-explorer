@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, HostListener, OnInit, TemplateRef, ViewChild, ViewContainerRef } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, HostListener, OnInit, TemplateRef, ViewChild, ViewContainerRef } from '@angular/core';
 import { Observable } from 'rxjs';
 import { select, Store } from '@ngrx/store';
 import { GithubVersion } from '@shared/types/github-version/github-version.type';
@@ -51,6 +51,7 @@ export class GithubVersionComponent implements OnInit {
   }
 
   constructor(private store: Store<State>,
+              private cdRef: ChangeDetectorRef,
               private overlay: Overlay,
               private viewContainerRef: ViewContainerRef) { }
 
@@ -64,14 +65,16 @@ export class GithubVersionComponent implements OnInit {
       filter(node => node?.id !== this.currentNodeId)
     ).subscribe((activeNode: SettingsNodeApi) => {
       this.currentNodeId = activeNode.id;
-
-      const commit = activeNode.features.find(f => f.name === 'commit');
-      this.store.dispatch<GithubVersionExplorerLoad>({ type: GITHUB_VERSION_EXPLORER_LOAD, payload: commit ? commit.id : '' });
-      this.store.dispatch<GithubVersionNodeTagLoad>({ type: GITHUB_VERSION_NODE_TAG_LOAD });
-      this.store.dispatch<GithubVersionNodeLoad>({ type: GITHUB_VERSION_NODE_LOAD });
-      if (activeNode.features.some(f => f.name === 'debugger')) {
-        this.store.dispatch<GithubVersionDebuggerLoad>({ type: GITHUB_VERSION_DEBUGGER_LOAD });
+      if (activeNode.type === 'tezedge') {
+        const commit = activeNode.features.find(f => f.name === 'commit');
+        this.store.dispatch<GithubVersionExplorerLoad>({ type: GITHUB_VERSION_EXPLORER_LOAD, payload: commit ? commit.id : '' });
+        this.store.dispatch<GithubVersionNodeTagLoad>({ type: GITHUB_VERSION_NODE_TAG_LOAD });
+        this.store.dispatch<GithubVersionNodeLoad>({ type: GITHUB_VERSION_NODE_LOAD });
+        if (activeNode.features.some(f => f.name === 'debugger')) {
+          // this.store.dispatch<GithubVersionDebuggerLoad>({ type: GITHUB_VERSION_DEBUGGER_LOAD }); -- this is not working
+        }
       }
+      this.cdRef.detectChanges();
     });
 
     // TODO: commitNumber for octez is not the same, find a solution
@@ -79,6 +82,7 @@ export class GithubVersionComponent implements OnInit {
       .pipe(untilDestroyed(this))
       .subscribe(data => {
         this.hideComponent = data.activeNode.type === 'octez';
+        this.cdRef.detectChanges();
       });
   }
 

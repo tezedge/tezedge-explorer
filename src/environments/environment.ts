@@ -20,23 +20,26 @@ const DEVELOP = {
   ]
 };
 const MASTER = {
-  id: 'tezedge',
-  type: 'tezedge',
+  id: 'tezedge.master.dev.tezedge.com',
   name: 'tezedge.master.dev.tezedge.com',
-  http: 'http://master.dev.tezedge.com:18732',
-  p2p_port: 9732,
+  http: 'https://master.dev.tezedge.com:8752',
+  p2p_port: '9732',
+  type: 'tezedge',
   features: [
-    { name: 'ws', url: 'ws://master.dev.tezedge.com:4927' },
-    { name: 'debugger', url: 'http://master.dev.tezedge.com:17732' },
+    { name: 'ws', url: 'wss://master.dev.tezedge.com:443' },
+    { name: 'debugger', url: 'https://master.dev.tezedge.com:8753' },
+    { name: 'sandbox', url: 'http://localhost:3030' },
+    { name: 'commit', id: '' },
     { name: 'monitoring' },
-    { name: 'resources/system', monitoringUrl: 'http://master.dev.tezedge.com:38732/resources/tezedge' },
-    { name: 'resources/memory', memoryProfilerUrl: 'http://master.dev.tezedge.com:17832' },
+    { name: 'resources/system', monitoringUrl: 'https://master.dev.tezedge.com:8754/resources/tezedge' },
+    { name: 'resources/memory', memoryProfilerUrl: 'https://master.dev.tezedge.com:8764' },
     { name: 'resources/storage' },
     { name: 'mempool' },
     { name: 'storage' },
     { name: 'network' },
     { name: 'logs' },
     { name: 'state' },
+    { name: 'open-api' },
     { name: 'contracts' },
   ]
 };
@@ -155,7 +158,6 @@ const OCTEZ_MASTER = {
     { name: 'mempool' },
     { name: 'network' },
     { name: 'logs' },
-    { name: 'contracts' }
   ]
 };
 const OCTEZ_STORAGE = {
@@ -220,8 +222,8 @@ const MEMPOOL = {
 export const environment = {
   production: false,
   api: [
-    DEVELOP,
-    // MASTER,
+    // DEVELOP,
+    MASTER,
     // MEMPOOL,
     // TRACE,
     // PRECHECKER,
@@ -229,7 +231,7 @@ export const environment = {
     // PROD,
     // STORAGE,
     // OCTEZ_DEVELOP,
-    // OCTEZ_MASTER,
+    OCTEZ_MASTER,
     // OCTEZ_STORAGE
   ]
 };

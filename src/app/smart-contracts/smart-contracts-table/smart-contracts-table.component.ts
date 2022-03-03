@@ -1,7 +1,7 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit, TemplateRef, ViewChild, ViewContainerRef } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ComponentRef, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { State } from '@app/app.reducers';
-import { SMART_CONTRACTS_SET_ACTIVE_CONTRACT } from '@smart-contracts/smart-contracts/smart-contracts.actions';
+import { SMART_CONTRACTS_SET_ACTIVE_CONTRACT, SmartContractsSetActiveContractAction } from '@smart-contracts/smart-contracts/smart-contracts.actions';
 import { ADD_INFO, InfoAdd } from '@shared/components/error-popup/error-popup.actions';
 import { Router } from '@angular/router';
 import { SmartContract } from '@shared/types/smart-contracts/smart-contract.type';
@@ -11,7 +11,8 @@ import { getMergedRoute } from '@shared/router/router-state.selectors';
 import { MergedRoute } from '@shared/router/merged-route';
 import { NgxObjectDiffService } from 'ngx-object-diff';
 import { Overlay, OverlayRef } from '@angular/cdk/overlay';
-import { TemplatePortal } from '@angular/cdk/portal';
+import { ComponentPortal } from '@angular/cdk/portal';
+import { SmartContractsTableTooltipComponent } from '@smart-contracts/smart-contracts-table-tooltip/smart-contracts-table-tooltip.component';
 
 @UntilDestroy()
 @Component({
@@ -32,14 +33,14 @@ export class SmartContractsTableComponent implements OnInit {
   private routedBlockHash: number;
   private routedContractHash: string;
   private overlayRef: OverlayRef;
-  @ViewChild('tooltipTemplate') private tooltipTemplate: TemplateRef<any>;
+  private componentRef: ComponentRef<SmartContractsTableTooltipComponent>;
+  private activeTooltipContractId: number;
 
   constructor(private store: Store<State>,
               private objectDiff: NgxObjectDiffService,
               private cdRef: ChangeDetectorRef,
               private router: Router,
-              private overlay: Overlay,
-              private viewContainerRef: ViewContainerRef) { }
+              private overlay: Overlay) { }
 
   ngOnInit(): void {
     this.objectDiff.setOpenChar('');
@@ -50,9 +51,7 @@ export class SmartContractsTableComponent implements OnInit {
 
   private listenToSmartContractsChange(): void {
     this.store.select(selectSmartContractsActiveContract)
-      .pipe(
-        untilDestroyed(this)
-      )
+      .pipe(untilDestroyed(this))
       .subscribe(contract => {
         this.activeContract = contract;
         if (this.activeContract) {
@@ -64,12 +63,17 @@ export class SmartContractsTableComponent implements OnInit {
       });
 
     this.store.select(selectSmartContracts)
-      .pipe(
-        untilDestroyed(this),
-      )
+      .pipe(untilDestroyed(this))
       .subscribe((contracts: SmartContract[]) => {
+        if (
+          this.overlayRef?.hasAttached()
+          && this.contracts[this.activeTooltipContractId].traceExecutionStatus !== contracts[this.activeTooltipContractId].traceExecutionStatus
+        ) {
+          this.attachInputsToTooltipComponent(contracts[this.activeTooltipContractId]);
+        }
+
         this.contracts = contracts;
-        if (!this.activeContract && this.routedBlockHash) {
+        if (!this.activeContract && this.routedContractHash && this.contracts[this.routedContractHash].balance !== undefined) {
           this.selectContractFromRoute();
         }
         this.cdRef.detectChanges();
@@ -78,9 +82,7 @@ export class SmartContractsTableComponent implements OnInit {
 
   private listenToRouteChange(): void {
     this.store.select(getMergedRoute)
-      .pipe(
-        untilDestroyed(this),
-      )
+      .pipe(untilDestroyed(this))
       .subscribe((route: MergedRoute) => {
         this.routedBlockHash = route.params.blockHash;
         if (this.routedContractHash !== route.params.contractHash) {
@@ -96,14 +98,14 @@ export class SmartContractsTableComponent implements OnInit {
     }
     const index = this.contracts.findIndex(op => op.id.toString() === this.routedContractHash);
     if (index !== -1) {
-      this.store.dispatch({ type: SMART_CONTRACTS_SET_ACTIVE_CONTRACT, payload: this.contracts[index] });
+      this.store.dispatch<SmartContractsSetActiveContractAction>({ type: SMART_CONTRACTS_SET_ACTIVE_CONTRACT, payload: this.contracts[index] });
     }
   }
 
   selectContract(newContract: SmartContract): void {
     this.routedContractHash = newContract.hash;
     this.router.navigate(['contracts', this.routedBlockHash, newContract.id]);
-    this.store.dispatch({ type: SMART_CONTRACTS_SET_ACTIVE_CONTRACT, payload: newContract });
+    this.store.dispatch<SmartContractsSetActiveContractAction>({ type: SMART_CONTRACTS_SET_ACTIVE_CONTRACT, payload: newContract });
   }
 
   copyHashToClipboard(hash: string, event: MouseEvent): void {
@@ -116,6 +118,7 @@ export class SmartContractsTableComponent implements OnInit {
   }
 
   openDetailsOverlay(contract: SmartContract, event: MouseEvent): void {
+    this.activeTooltipContractId = contract.id;
     if (this.overlayRef?.hasAttached()) {
       this.overlayRef.detach();
     }
@@ -136,17 +139,19 @@ export class SmartContractsTableComponent implements OnInit {
     });
 
     event.stopPropagation();
-    const context = this.tooltipTemplate
-      .createEmbeddedView({
-        traceGas: contract.traceConsumedGas,
-        blockStatus: contract.blockExecutionStatus,
-        traceStatus: contract.traceExecutionStatus,
-        isSameStorage: contract.isSameStorage,
-        isSameBigMaps: contract.isSameBigMaps,
-      })
-      .context;
-    const portal = new TemplatePortal(this.tooltipTemplate, this.viewContainerRef, context);
-    this.overlayRef.attach(portal);
+
+    const portal = new ComponentPortal(SmartContractsTableTooltipComponent);
+    this.componentRef = this.overlayRef.attach<SmartContractsTableTooltipComponent>(portal);
+    this.attachInputsToTooltipComponent(contract);
+  }
+
+  private attachInputsToTooltipComponent(contract: SmartContract): void {
+    this.componentRef.instance.traceGas = contract.traceConsumedGas;
+    this.componentRef.instance.blockStatus = contract.blockExecutionStatus;
+    this.componentRef.instance.traceStatus = contract.traceExecutionStatus;
+    this.componentRef.instance.isSameStorage = contract.isSameStorage;
+    this.componentRef.instance.isSameBigMaps = contract.isSameBigMaps;
+    this.componentRef.instance.cdRef.detectChanges();
   }
 
   detachOverlay(): void {

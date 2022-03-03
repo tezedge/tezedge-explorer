@@ -4,9 +4,10 @@ import { State } from '@app/app.reducers';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { SmartContract } from '@shared/types/smart-contracts/smart-contract.type';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
-import { SMART_CONTRACTS_RUN } from '@smart-contracts/smart-contracts/smart-contracts.actions';
+import { SMART_CONTRACTS_EXECUTE_CONTRACT, SmartContractsExecuteContractAction } from '@smart-contracts/smart-contracts/smart-contracts.actions';
 import { filter } from 'rxjs/operators';
 import { selectSmartContractsActiveContract } from '@smart-contracts/smart-contracts/smart-contracts.index';
+import { Parser } from '@taquito/michel-codec';
 
 @UntilDestroy()
 @Component({
@@ -19,6 +20,8 @@ export class SmartContractsInputsComponent implements OnInit {
 
   contract: SmartContract;
   formGroup: FormGroup;
+
+  private readonly parser: Parser = new Parser();
 
   constructor(private store: Store<State>,
               private formBuilder: FormBuilder,
@@ -53,12 +56,9 @@ export class SmartContractsInputsComponent implements OnInit {
   }
 
   runContract(): void {
-    this.store.dispatch({
-      type: SMART_CONTRACTS_RUN,
-      payload: {
-        ...this.contract,
-        codeParameter: [this.formGroup.get('storage').value, this.formGroup.get('parameter').value]
-      }
+    this.store.dispatch<SmartContractsExecuteContractAction>({
+      type: SMART_CONTRACTS_EXECUTE_CONTRACT,
+      payload: { ...this.contract }
     });
   }
 }

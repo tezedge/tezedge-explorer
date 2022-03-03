@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
-import { flatMap, map, switchMap, tap, withLatestFrom } from 'rxjs/operators';
+import { map, switchMap, tap, withLatestFrom } from 'rxjs/operators';
 import { Router } from '@angular/router';
 import { empty, ObservedValueOf, of } from 'rxjs';
 import { State } from '@app/app.reducers';

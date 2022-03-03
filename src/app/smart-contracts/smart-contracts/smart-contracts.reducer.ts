@@ -1,13 +1,15 @@
 import {
+  SMART_CONTRACTS_TRACE_DIFFS_LOAD_SUCCESS,
   SMART_CONTRACTS_DEBUG_STEP,
-  SMART_CONTRACTS_GET_TRACE_SUCCESS,
+  SMART_CONTRACTS_EXECUTE_CONTRACT_SUCCESS,
   SMART_CONTRACTS_LOAD,
   SMART_CONTRACTS_LOAD_SUCCESS,
   SMART_CONTRACTS_RESET_BLOCKS,
-  SMART_CONTRACTS_RUN,
+  SMART_CONTRACTS_EXECUTE_CONTRACT,
   SMART_CONTRACTS_SET_ACTIVE_CONTRACT,
   SMART_CONTRACTS_SET_ACTIVE_CONTRACT_SUCCESS,
   SMART_CONTRACTS_START_DEBUGGING,
+  SMART_CONTRACTS_STOP,
   SMART_CONTRACTS_STOP_DEBUGGING,
   SmartContractAction
 } from '@smart-contracts/smart-contracts/smart-contracts.actions';
@@ -79,7 +81,15 @@ export function reducer(state: SmartContractsState = initialState, action: Smart
       };
     }
 
-    case SMART_CONTRACTS_RUN:
+    case SMART_CONTRACTS_TRACE_DIFFS_LOAD_SUCCESS: {
+      const contract = action.payload.contract;
+      return {
+        ...state,
+        contracts: state.contracts.map(c => c.id === contract.id ? contract : c)
+      };
+    }
+
+    case SMART_CONTRACTS_EXECUTE_CONTRACT:
     case SMART_CONTRACTS_SET_ACTIVE_CONTRACT: {
       return {
         ...state,
@@ -102,7 +112,7 @@ export function reducer(state: SmartContractsState = initialState, action: Smart
       };
     }
 
-    case SMART_CONTRACTS_GET_TRACE_SUCCESS: {
+    case SMART_CONTRACTS_EXECUTE_CONTRACT_SUCCESS: {
       return {
         ...state,
         trace: action.payload.trace,
@@ -134,27 +144,6 @@ export function reducer(state: SmartContractsState = initialState, action: Smart
     }
 
     case SMART_CONTRACTS_DEBUG_STEP: {
-      // const currentStep = action.payload;
-      // const currentStepIndexInTrace = state.trace.findIndex(t => t === currentStep);
-      // const previousStep = currentStepIndexInTrace !== -1 ? state.trace[currentStepIndexInTrace - 1] : undefined;
-      // const firstNextStepStartPoint = Math.min(...state.trace
-      //   .filter(t => t.start.point > currentStep.stop.point)
-      //   .map(t => t.start.point)
-      // );
-      // const nextStep = state.trace.find(t => t.start.point === firstNextStepStartPoint);
-      // const stepsInsideCurrentStep: SmartContractTrace[] = state.trace.filter(
-      //   t => t.start.point > currentStep.start.point
-      //     && t.stop.point < currentStep.stop.point
-      // );
-      // const pointOfFirstStepInsideCurrentStep = Math.min(...stepsInsideCurrentStep.map(t => t.start.point));
-      // const stepIn = stepsInsideCurrentStep.find(t => t.start.point === pointOfFirstStepInsideCurrentStep);
-      // const stepsOutsideCurrentStep: SmartContractTrace[] = state.trace.filter(
-      //   t => t.start.point < currentStep.start.point
-      //     && t.stop.point > currentStep.stop.point
-      // );
-      // const outsideStepStartPoint = Math.max(...stepsOutsideCurrentStep.map(t => t.start.point));
-      // const stepOut = stepsOutsideCurrentStep.find(t => t.start.point === outsideStepStartPoint);
-
       const currentStep = action.payload;
       const currentStepIndexInTrace = state.trace.findIndex(t => t === currentStep);
       const previousStep = currentStepIndexInTrace !== -1 ? state.trace[currentStepIndexInTrace - 1] : undefined;
@@ -193,6 +182,9 @@ export function reducer(state: SmartContractsState = initialState, action: Smart
     default:
       return state;
 
+    case SMART_CONTRACTS_STOP: {
+      return initialState;
+    }
   }
 
 }

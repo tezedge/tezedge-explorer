@@ -1,0 +1,26 @@
+<div class="custom-tooltip-template padding-left-remove">
+  <div class="foreground" fxLayout="column" fxLayoutGap="7px">
+    <div>
+      <span class="foreground-6 padding-left-10">Trace gas:</span>
+      {{ traceGas | spaceNumber }}
+    </div>
+    <div>
+      <span class="foreground-6 padding-left-10">Block status:</span>
+      {{ blockStatus }}
+    </div>
+    <div>
+      <span class="foreground-6 padding-left-10">Trace status:</span>
+      {{ traceStatus }}
+    </div>
+    <div class="flex-row align-center">
+      <span class="foreground-6 padding-left-10">Same storage</span>
+      <mat-icon [ngClass]="isSameStorage ? 'icon-green' : 'icon-red'" class="margin-left-5 icon-10 fill-opacity-1"
+                [svgIcon]="isSameStorage ? 'check' : 'close-blank'"></mat-icon>
+    </div>
+    <div class="flex-row align-center">
+      <span class="foreground-6 padding-left-10">Same big maps</span>
+      <mat-icon [ngClass]="isSameBigMaps ? 'icon-green' : 'icon-red'" class="margin-left-5 icon-10 fill-opacity-1"
+                [svgIcon]="isSameBigMaps ? 'check' : 'close-blank'"></mat-icon>
+    </div>
+  </div>
+</div>

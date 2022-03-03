@@ -2,11 +2,15 @@
 
 .row {
   display: grid;
-  grid-template-columns: 1fr 150px 100px;
+  grid-template-columns: 1fr 150px 140px;
 
   > span {
     line-height: 36px;
     padding-left: 10px;
+
+    mat-spinner {
+      margin-right: 23px;
+    }
   }
 
   &:hover {

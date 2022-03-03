@@ -1,18 +1,19 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
-import { filter, map, switchMap, withLatestFrom } from 'rxjs/operators';
+import { filter, map, mergeMap, switchMap, withLatestFrom } from 'rxjs/operators';
 import { State } from '@app/app.reducers';
 import { SmartContractsService } from '@smart-contracts/smart-contracts/smart-contracts.service';
 import {
-  SMART_CONTRACTS_GET_TRACE,
-  SMART_CONTRACTS_GET_TRACE_SUCCESS,
+  SMART_CONTRACTS_TRACE_DIFFS_LOAD_SUCCESS,
+  SMART_CONTRACTS_EXECUTE_CONTRACT_SUCCESS,
   SMART_CONTRACTS_LOAD,
   SMART_CONTRACTS_LOAD_SUCCESS,
   SMART_CONTRACTS_RESET_BLOCKS,
-  SMART_CONTRACTS_RUN,
+  SMART_CONTRACTS_EXECUTE_CONTRACT,
   SMART_CONTRACTS_SET_ACTIVE_CONTRACT,
-  SMART_CONTRACTS_SET_ACTIVE_CONTRACT_SUCCESS
+  SMART_CONTRACTS_SET_ACTIVE_CONTRACT_SUCCESS,
+  SmartContractsLoadSuccessAction, SmartContractsLoadAction, SmartContractsSetActiveContractAction, SmartContractsExecuteContractAction
 } from '@smart-contracts/smart-contracts/smart-contracts.actions';
 import { SmartContract } from '@shared/types/smart-contracts/smart-contract.type';
 import { ObservedValueOf } from 'rxjs';
@@ -33,7 +34,7 @@ export class SmartContractsEffects {
 
   smartContractsLoad$ = createEffect(() => this.actions$.pipe(
     ofType(SMART_CONTRACTS_LOAD),
-    withLatestFrom(this.store, (action: any, state: ObservedValueOf<Store<State>>) => ({ action, state })),
+    withLatestFrom(this.store, (action: SmartContractsLoadAction, state: ObservedValueOf<Store<State>>) => ({ action, state })),
     switchMap(({ action, state }) =>
       this.smartContractsService.getContracts(state.settingsNode.activeNode.http, action.payload.blockHash)
     ),
@@ -43,9 +44,25 @@ export class SmartContractsEffects {
     }))
   ));
 
+  smartContractsLoadSuccess$ = createEffect(() => this.actions$.pipe(
+    ofType(SMART_CONTRACTS_LOAD_SUCCESS),
+    withLatestFrom(this.store, (action: SmartContractsLoadSuccessAction, state: ObservedValueOf<Store<State>>) => ({ action, state })),
+    mergeMap(({ action, state }: { action: any, state: State }) =>
+      action.payload.contracts.map(contract => ({ contract, state }))
+    ),
+    mergeMap(({ contract, state }) => {
+      const previousBlockHash = state.smartContracts.blockHashContext.hashes[state.smartContracts.blockHashContext.activeIndex - 1];
+      return this.smartContractsService.getContractsDetails(state.settingsNode.activeNode.http, contract, previousBlockHash);
+    }),
+    map((contract: SmartContract) => ({
+      type: SMART_CONTRACTS_TRACE_DIFFS_LOAD_SUCCESS,
+      payload: { contract }
+    }))
+  ));
+
   smartContractsSetActiveContract$ = createEffect(() => this.actions$.pipe(
     ofType(SMART_CONTRACTS_SET_ACTIVE_CONTRACT),
-    withLatestFrom(this.store, (action: any, state: ObservedValueOf<Store<State>>) => ({ action, state })),
+    withLatestFrom(this.store, (action: SmartContractsSetActiveContractAction, state: ObservedValueOf<Store<State>>) => ({ action, state })),
     filter(({ action, state }) => state.networkStats.lastAppliedBlock.level > 0),
     switchMap(({ action, state }) => {
       const previousBlockHash = state.smartContracts.blockHashContext.hashes[state.smartContracts.blockHashContext.activeIndex - 1];
@@ -64,13 +81,13 @@ export class SmartContractsEffects {
   ));
 
   smartContractsGetTrace$ = createEffect(() => this.actions$.pipe(
-    ofType(SMART_CONTRACTS_GET_TRACE, SMART_CONTRACTS_RUN),
-    withLatestFrom(this.store, (action: any, state: ObservedValueOf<Store<State>>) => ({ action, state })),
+    ofType(SMART_CONTRACTS_EXECUTE_CONTRACT),
+    withLatestFrom(this.store, (action: SmartContractsExecuteContractAction, state: ObservedValueOf<Store<State>>) => ({ action, state })),
     switchMap(({ action, state }) => {
       const previousBlockHash = state.smartContracts.blockHashContext.hashes[state.smartContracts.blockHashContext.activeIndex - 1];
       return this.smartContractsService.getContractTrace(state.settingsNode.activeNode.http, previousBlockHash, action.payload);
     }),
-    map((payload: { trace: SmartContractTrace[], gasTrace: number[], result: SmartContractResult }) => ({ type: SMART_CONTRACTS_GET_TRACE_SUCCESS, payload }))
+    map((payload: { trace: SmartContractTrace[], gasTrace: number[], result: SmartContractResult }) => ({ type: SMART_CONTRACTS_EXECUTE_CONTRACT_SUCCESS, payload }))
   ));
 
   constructor(private actions$: Actions,

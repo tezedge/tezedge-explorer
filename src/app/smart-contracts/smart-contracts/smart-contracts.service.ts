@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { EMPTY, forkJoin, mergeMap, Observable, of, switchMap } from 'rxjs';
+import { EMPTY, Observable, of, switchMap } from 'rxjs';
 import { SmartContract } from '@shared/types/smart-contracts/smart-contract.type';
 import { catchError, map } from 'rxjs/operators';
 import { emitMicheline, Parser } from '@taquito/michel-codec';
@@ -8,6 +8,7 @@ import { SmartContractResult } from '@shared/types/smart-contracts/smart-contrac
 import { SmartContractTrace } from '@shared/types/smart-contracts/smart-contract-trace.type';
 import { collectScriptElements } from '@smart-contracts/smart-contracts/smart-contracts.factory';
 import { SmartContractDebugPoint } from '@shared/types/smart-contracts/smart-contract-debug-point.type';
+import { jsonStringifySortedProperties } from '@helpers/json.helper';
 
 
 @Injectable({
@@ -20,69 +21,58 @@ export class SmartContractsService {
   constructor(private http: HttpClient) { }
 
   getContracts(api: string, hash: string): Observable<{ contracts: Partial<SmartContract>[], previousBlockHash: string }> {
-    // return of({ contracts: mockContracts, previousBlockHash: 'asd' });
     return this.http.get<any>(`${api}/chains/main/blocks/${hash}`).pipe(
-      map((response) => this.mapGetContracts(response)),
-      mergeMap(({ contracts, previousBlockHash }: { contracts: Partial<SmartContract>[], previousBlockHash: string }) =>
-        forkJoin(
-          contracts.map((partialContract: Partial<SmartContract>) => {
-            // get CODE OBJ and STORAGE OBJ - script RPC
-            return this.getContractCodeForTable(api, previousBlockHash, partialContract)
-              .pipe(
-                // get BALANCE - /balance RPC
-                switchMap((fullContract: SmartContract) =>
-                  this.http.get(`${api}/chains/main/blocks/${previousBlockHash}/context/contracts/${fullContract.hash}/balance`).pipe(
-                    map((balance: string) => ({ ...fullContract, balance }))
-                  )
-                ),
-                // get TRACE CONSUMPTION - trace_code RPC
-                switchMap((fullContract: SmartContract) => {
-                  const getConsumedTraceGas = (trace): number => {
-                    if (trace.length > 0) {
-                      return SmartContractsService.getConsumedGasForResult(trace);
-                    }
-                  };
-                  const body = this.buildGetTraceRequestBody(fullContract);
-                  return this.http.post(`${api}/chains/main/blocks/${previousBlockHash}/helpers/scripts/trace_code`, body).pipe(
-                    map((traceCodeResponse: any) => {
-                      fullContract.isSameStorage =
-                        this.jsonStringifyOrder(fullContract.blockStorage, 0)
-                        === this.jsonStringifyOrder(traceCodeResponse.storage, 0);
+      map((response) => this.mapGetContracts(response))
+    );
+  }
 
-                      fullContract.isSameBigMaps =
-                        this.jsonStringifyOrder(fullContract.blockBigMaps, 0) === this.jsonStringifyOrder(traceCodeResponse.lazy_storage_diff, 0);
+  getContractsDetails(api: string, contract: SmartContract, previousBlockHash: string): Observable<SmartContract> {
+    return this.getContractCodeForTable(api, previousBlockHash, contract)
+      .pipe(
+        switchMap((fullContract: SmartContract) => this.addBalanceToContract(api, previousBlockHash, fullContract)),
+        switchMap((fullContract: SmartContract) => this.addTraceDifferencesToContract(api, previousBlockHash, fullContract))
+      );
+  }
 
-                      return {
-                        traceStorage: traceCodeResponse.storage,
-                        traceBigMaps: traceCodeResponse.lazy_storage_diff,
-                        traceConsumedGas: getConsumedTraceGas(traceCodeResponse.trace),
-                        status: traceCodeResponse.trace ? 'Success' : ''
-                      };
-                    }),
-                    catchError(err => {
-                      if (!err.error) { return EMPTY; }
-                      return of({
-                        traceStorage: null,
-                        traceBigMaps: null,
-                        traceConsumedGas: getConsumedTraceGas(err.error.reduce((acc, curr) => [...acc, ...(curr?.trace || [])], [])),
-                        status: JSON.stringify(err.error[err.error.length - 1]?.with) || 'Failed'
-                      });
-                    }),
-                    map((traceResponse: { traceConsumedGas: number, status: string, traceStorage: object, traceBigMaps: object }) => ({
-                      ...fullContract,
-                      traceStorage: traceResponse.traceStorage,
-                      traceBigMaps: traceResponse.traceBigMaps,
-                      traceConsumedGas: traceResponse.traceConsumedGas,
-                      traceExecutionStatus: traceResponse.status
-                    }))
-                  );
-                }),
-              );
-          })
-        ).pipe(
-          map((finalContracts: Partial<SmartContract>[]) => ({ contracts: finalContracts, previousBlockHash }))
-        )
-      )
+  private addTraceDifferencesToContract(api: string, previousBlockHash: string, contract: SmartContract) {
+    const body = SmartContractsService.buildGetTraceRequestBody(contract);
+    return this.http.post(`${api}/chains/main/blocks/${previousBlockHash}/helpers/scripts/trace_code`, body).pipe(
+      map((traceCodeResponse: any) => {
+        contract.isSameStorage =
+          jsonStringifySortedProperties(contract.blockStorage, 0) === jsonStringifySortedProperties(traceCodeResponse.storage, 0);
+
+        contract.isSameBigMaps =
+          jsonStringifySortedProperties(contract.blockBigMaps, 0) === jsonStringifySortedProperties(traceCodeResponse.lazy_storage_diff, 0);
+
+        return {
+          traceStorage: traceCodeResponse.storage,
+          traceBigMaps: traceCodeResponse.lazy_storage_diff,
+          traceConsumedGas: SmartContractsService.getConsumedGasForResult(traceCodeResponse.trace),
+          traceExecutionStatus: traceCodeResponse.trace ? 'Success' : ''
+        };
+      }),
+      catchError(err => {
+        if (!err.error) { return EMPTY; }
+        return of({
+          traceStorage: null,
+          traceBigMaps: null,
+          traceConsumedGas: SmartContractsService.getConsumedGasForResult(err.error.reduce((acc, curr) => [...acc, ...(curr?.trace || [])], [])),
+          traceExecutionStatus: JSON.stringify(err.error[err.error.length - 1]?.with) || 'Failed'
+        });
+      }),
+      map((traceResponse: { traceConsumedGas: number, traceExecutionStatus: string, traceStorage: object, traceBigMaps: object }) => ({
+        ...contract,
+        traceStorage: traceResponse.traceStorage,
+        traceBigMaps: traceResponse.traceBigMaps,
+        traceConsumedGas: traceResponse.traceConsumedGas,
+        traceExecutionStatus: traceResponse.traceExecutionStatus
+      }))
+    );
+  }
+
+  private addBalanceToContract(api: string, previousBlockHash: string, contract: SmartContract): Observable<SmartContract> {
+    return this.http.get(`${api}/chains/main/blocks/${previousBlockHash}/context/contracts/${contract.hash}/balance`).pipe(
+      map((balance: string) => ({ ...contract, balance }))
     );
   }
 
@@ -104,29 +94,32 @@ export class SmartContractsService {
         const storageObj = indexes.length > 0
           ? blockContracts[indexes[indexes.length - 1]].metadata.operation_result.storage
           : null;
-        contracts.push({
-          hash: contract.destination,
-          id: contracts.length,
-          entrypoint: contract.parameters?.entrypoint,
-          chainId: operation.chain_id,
-          amount: contract.amount,
-          gasLimit: contract.gas_limit,
-          parameter: contract.parameters ? this.formatMichelsonCode(contract.parameters.value) : null,
-          parameterObj: contract.parameters?.value,
-          storageObj,
-          storage: storageObj ? this.formatMichelsonCode(storageObj) : null,
-          source: contract.source,
-          totalConsumedGas: Number(contract.metadata.operation_result.consumed_milligas),
-          blockExecutionStatus: contract.metadata.operation_result.status,
-          blockStorage: contract.metadata.operation_result.storage,
-          blockBigMaps: contract.metadata.operation_result.lazy_storage_diff,
-        });
+        if (contracts.length <= 222) {
+          contracts.push({
+            hash: contract.destination,
+            id: contracts.length,
+            entrypoint: contract.parameters?.entrypoint,
+            chainId: operation.chain_id,
+            amount: contract.amount,
+            gasLimit: contract.gas_limit,
+            parameter: contract.parameters ? this.formatMichelsonCode(contract.parameters.value) : null,
+            parameterObj: contract.parameters?.value,
+            storageObj,
+            storage: storageObj ? this.formatMichelsonCode(storageObj) : null,
+            source: contract.source,
+            totalConsumedGas: Number(contract.metadata.operation_result.consumed_milligas),
+            blockExecutionStatus: contract.metadata.operation_result.status,
+            blockStorage: contract.metadata.operation_result.storage,
+            blockBigMaps: contract.metadata.operation_result.lazy_storage_diff,
+          });
+        }
       });
     });
     return { contracts, previousBlockHash: response.header.predecessor };
   }
 
   private getContractCodeForTable(api: string, blockHash: string, contract: Partial<SmartContract>): Observable<SmartContract> {
+    // get CODE OBJ and STORAGE OBJ - script RPC
     return this.http.get<{ code: object, storage: object }>(`${api}/chains/main/blocks/${blockHash}/context/contracts/${contract.hash}/script`)
       .pipe(
         map((script: { code: object, storage: object }) => ({
@@ -185,25 +178,11 @@ export class SmartContractsService {
   }
 
   getContractTrace(api: string, blockHash: string, contract: SmartContract): Observable<{ trace: SmartContractTrace[], gasTrace: number[], result: SmartContractResult }> {
-    const body = this.buildGetTraceRequestBody(contract);
+    const body = SmartContractsService.buildGetTraceRequestBody(contract);
     return this.http.post<any>(`${api}/chains/main/blocks/${blockHash}/helpers/scripts/trace_code`, body).pipe(
       map((response) => this.mapNewGetContractTrace(response, contract)),
       catchError(err => of(this.mapNewGetContractTrace(err.error, contract)))
     );
-  }
-
-  private jsonStringifyOrder(obj, space): string {
-    const allKeys = [];
-    const seen = {};
-    JSON.stringify(obj, (key, value) => {
-      if (!(key in seen)) {
-        allKeys.push(key);
-        seen[key] = null;
-      }
-      return value;
-    });
-    allKeys.sort();
-    return JSON.stringify(obj, allKeys, space);
   }
 
   private mapNewGetContractTrace(response: any, contract: SmartContract): { trace: SmartContractTrace[], gasTrace: number[], result: SmartContractResult } {
@@ -233,8 +212,8 @@ export class SmartContractsService {
     return gasTrace;
   }
 
-  private static getConsumedGasForResult(trace: SmartContractTrace[]): number {
-    return (Number('8000000000') * 1000) - Number(trace[trace.length - 1].gas);
+  private static getConsumedGasForResult(trace: SmartContractTrace[]): number | undefined {
+    return trace.length > 0 ? (Number('8000000000') * 1000) - Number(trace[trace.length - 1].gas) : undefined;
   }
 
   private getTrace(traceResponse: any[], contract: SmartContract): SmartContractTrace[] {
@@ -261,7 +240,7 @@ export class SmartContractsService {
     return output.map(entry => entry[Object.getOwnPropertySymbols(entry)[0]]);
   }
 
-  private buildGetTraceRequestBody(contract: SmartContract): any {
+  private static buildGetTraceRequestBody(contract: SmartContract): any {
     return {
       script: contract.codeObj,
       storage: contract.storageObj,

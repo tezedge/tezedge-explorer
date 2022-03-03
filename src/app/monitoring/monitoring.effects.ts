@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { BehaviorSubject, empty, interval, ObservedValueOf, of, Subject } from 'rxjs';
-import { catchError, filter, flatMap, map, startWith, switchMap, takeUntil, withLatestFrom } from 'rxjs/operators';
+import { catchError, filter, mergeMap, map, startWith, switchMap, takeUntil, withLatestFrom } from 'rxjs/operators';
 import { webSocket, WebSocketSubject } from 'rxjs/webSocket';
 import { HttpClient } from '@angular/common/http';
 import { State } from '@app/app.reducers';
@@ -64,7 +64,7 @@ export class MonitoringEffects {
   monitoringCloseEffect$ = createEffect(() => this.actions$.pipe(
     ofType(MonitoringActionTypes.MONITORING_CLOSE),
     withLatestFrom(this.store, (action: any, state: ObservedValueOf<Store<State>>) => ({ action, state })),
-    flatMap(({ action, state }) => {
+    mergeMap(({ action, state }) => {
       if (!state.settingsNode.activeNode.features.some(f => f.name === 'ws')) {
         this.networkInterval$.next(5);
         return empty();

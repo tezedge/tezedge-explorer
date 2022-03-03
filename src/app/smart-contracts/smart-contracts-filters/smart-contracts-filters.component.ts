@@ -3,7 +3,12 @@ import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import { State } from '@app/app.reducers';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { SMART_CONTRACTS_LOAD, SMART_CONTRACTS_RESET_BLOCKS } from '@smart-contracts/smart-contracts/smart-contracts.actions';
+import {
+  SMART_CONTRACTS_LOAD,
+  SMART_CONTRACTS_RESET_BLOCKS,
+  SmartContractsLoadAction,
+  SmartContractsResetBlocksAction
+} from '@smart-contracts/smart-contracts/smart-contracts.actions';
 import { Router } from '@angular/router';
 import { getMergedRoute } from '@shared/router/router-state.selectors';
 import { MergedRoute } from '@shared/router/merged-route';
@@ -50,7 +55,7 @@ export class SmartContractsFiltersComponent implements OnInit {
         if (!this.routedBlockHash) {
           this.routedBlockHash = header.hash;
           this.formGroup.get('blockHash').setValue(this.routedBlockHash);
-          this.store.dispatch({ type: SMART_CONTRACTS_RESET_BLOCKS, payload: { blocks: [header.predecessor, header.hash], activeIndex: 1 } });
+          this.store.dispatch<SmartContractsResetBlocksAction>({ type: SMART_CONTRACTS_RESET_BLOCKS, payload: { blocks: [header.predecessor, header.hash], activeIndex: 1 } });
           this.router.navigate(['contracts', header.hash]);
         }
       });
@@ -66,7 +71,7 @@ export class SmartContractsFiltersComponent implements OnInit {
         if (this.routedBlockHash !== route.params.blockHash) {
           this.routedBlockHash = route.params.blockHash;
           this.formGroup.get('blockHash').setValue(this.routedBlockHash);
-          this.store.dispatch({ type: SMART_CONTRACTS_RESET_BLOCKS, payload: { blocks: [this.routedBlockHash], activeIndex: 0 } });
+          this.store.dispatch<SmartContractsResetBlocksAction>({ type: SMART_CONTRACTS_RESET_BLOCKS, payload: { blocks: [this.routedBlockHash], activeIndex: 0 } });
         }
       });
   }
@@ -98,7 +103,7 @@ export class SmartContractsFiltersComponent implements OnInit {
     const value = this.formGroup.get('blockHash').value;
     if (this.routedBlockHash !== value) {
       this.routedBlockHash = value;
-      this.store.dispatch({ type: SMART_CONTRACTS_RESET_BLOCKS, payload: { blocks: [this.routedBlockHash], activeIndex: 0 } });
+      this.store.dispatch<SmartContractsResetBlocksAction>({ type: SMART_CONTRACTS_RESET_BLOCKS, payload: { blocks: [this.routedBlockHash], activeIndex: 0 } });
       this.router.navigate(['contracts', this.routedBlockHash]);
     }
   }
@@ -106,14 +111,14 @@ export class SmartContractsFiltersComponent implements OnInit {
   loadPreviousBlock(): void {
     this.routedBlockHash = this.blockHashContext.hashes[this.blockHashContext.activeIndex - 1];
     this.formGroup.get('blockHash').setValue(this.routedBlockHash);
-    this.store.dispatch({ type: SMART_CONTRACTS_LOAD, payload: { blockHash: this.routedBlockHash } });
+    this.store.dispatch<SmartContractsLoadAction>({ type: SMART_CONTRACTS_LOAD, payload: { blockHash: this.routedBlockHash } });
     this.router.navigate(['contracts', this.routedBlockHash]);
   }
 
   loadNextBlock(): void {
     this.routedBlockHash = this.blockHashContext.hashes[this.blockHashContext.activeIndex + 1];
     this.formGroup.get('blockHash').setValue(this.routedBlockHash);
-    this.store.dispatch({ type: SMART_CONTRACTS_LOAD, payload: { blockHash: this.routedBlockHash } });
+    this.store.dispatch<SmartContractsLoadAction>({ type: SMART_CONTRACTS_LOAD, payload: { blockHash: this.routedBlockHash } });
     this.router.navigate(['contracts', this.routedBlockHash]);
   }
 
@@ -121,7 +126,7 @@ export class SmartContractsFiltersComponent implements OnInit {
     if (this.routedBlockHash !== this.latestAppliedBlockHash) {
       this.routedBlockHash = this.latestAppliedBlockHash;
       this.formGroup.get('blockHash').setValue(this.routedBlockHash);
-      this.store.dispatch({ type: SMART_CONTRACTS_RESET_BLOCKS, payload: { blocks: [this.routedBlockHash], activeIndex: 0 } });
+      this.store.dispatch<SmartContractsResetBlocksAction>({ type: SMART_CONTRACTS_RESET_BLOCKS, payload: { blocks: [this.routedBlockHash], activeIndex: 0 } });
       this.router.navigate(['contracts', this.routedBlockHash]);
     }
   }

@@ -1,4 +1,4 @@
-<div fxFlexFill class="p-relative flex-column">
+<div fxFlexFill class="p-relative flex-column padding-left-5">
   <!--  POSTPONE FUNCTIONALITY - add `glyphMargin: true` in options to ensure breakpoint space -->
   <!--  <div class="breakpoint-list p-absolute">-->
   <!--    <div class="bullet"-->
@@ -8,7 +8,7 @@
   <!--  </div>-->
 
   <div fxFlex="34px" class="foreground-7 padding-10 f-12">
-    <span class="gas">GAS</span>
+    <span class="gas" [style.margin-left.px]="editorOptions.lineNumbersMinChars * 1.05">GAS</span>
     <span class="line">LINE</span>
     <span class="source">SOURCE CODE</span>
   </div>

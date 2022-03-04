@@ -31,7 +31,7 @@ export class SmartContractsTableComponent implements OnInit {
   showDiff: boolean;
 
   private routedBlockHash: number;
-  private routedContractHash: string;
+  private routedContractId: string;
   private overlayRef: OverlayRef;
   private componentRef: ComponentRef<SmartContractsTableTooltipComponent>;
   private activeTooltipContractId: number;
@@ -73,7 +73,7 @@ export class SmartContractsTableComponent implements OnInit {
         }
 
         this.contracts = contracts;
-        if (!this.activeContract && this.routedContractHash && this.contracts[this.routedContractHash].balance !== undefined) {
+        if (!this.activeContract && this.routedContractId && this.contracts[this.routedContractId].balance !== undefined) {
           this.selectContractFromRoute();
         }
         this.cdRef.detectChanges();
@@ -85,8 +85,12 @@ export class SmartContractsTableComponent implements OnInit {
       .pipe(untilDestroyed(this))
       .subscribe((route: MergedRoute) => {
         this.routedBlockHash = route.params.blockHash;
-        if (this.routedContractHash !== route.params.contractHash) {
-          this.routedContractHash = route.params.contractHash;
+        if (this.routedContractId !== route.params.contractHash) {
+          this.routedContractId = route.params.contractHash;
+          this.selectContractFromRoute();
+        } else if (!route.params.contractHash) {
+          this.routedContractId = route.params.contractHash || '0';
+          this.router.navigate(['contracts', this.routedBlockHash, this.routedContractId]);
           this.selectContractFromRoute();
         }
       });
@@ -96,14 +100,14 @@ export class SmartContractsTableComponent implements OnInit {
     if (this.contracts.length === 0) {
       return;
     }
-    const index = this.contracts.findIndex(op => op.id.toString() === this.routedContractHash);
+    const index = this.contracts.findIndex(op => op.id.toString() === this.routedContractId);
     if (index !== -1) {
       this.store.dispatch<SmartContractsSetActiveContractAction>({ type: SMART_CONTRACTS_SET_ACTIVE_CONTRACT, payload: this.contracts[index] });
     }
   }
 
   selectContract(newContract: SmartContract): void {
-    this.routedContractHash = newContract.hash;
+    this.routedContractId = newContract.hash;
     this.router.navigate(['contracts', this.routedBlockHash, newContract.id]);
     this.store.dispatch<SmartContractsSetActiveContractAction>({ type: SMART_CONTRACTS_SET_ACTIVE_CONTRACT, payload: newContract });
   }

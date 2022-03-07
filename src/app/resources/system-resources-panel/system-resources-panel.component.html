@@ -10,7 +10,8 @@
         <ng-container *ngIf="block.value !== undefined">
           <div [style.color]="colors[i]">{{ block.name }}</div>
           <div class="foreground">
-            {{ block.value | number: block.formattingType !== '%' && block.formattingType !== '' ? '1.2-2' : '1.0-2' }} {{ block.formattingType }}
+            {{ block.value}}
+<!--            {{ block.value | number: block.formattingType !== '%' && block.formattingType !== '' ? '1.2-2' : '1.0-2' }} {{ block.formattingType }}-->
           </div>
         </ng-container>
       </div>

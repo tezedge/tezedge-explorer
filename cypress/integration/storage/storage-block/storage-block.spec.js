@@ -16,8 +16,8 @@ context('STORAGE BLOCK', () => {
       .window()
       .its('store')
       .then((store) => {
-        store.select('storageBlock').subscribe(storageBlock => {
-          if (storageBlock.ids.length) {
+        store.select('storage').subscribe(storage => {
+          if (storage.blockState.ids.length) {
             cy.get('.virtual-scroll-container', { timeout: 10000 })
               .find('.virtualScrollRow');
           }
@@ -31,9 +31,9 @@ context('STORAGE BLOCK', () => {
       .window()
       .its('store')
       .then((store) => {
-        store.select('storageBlock').subscribe(storageBlock => {
-          if (storageBlock.ids.length) {
-            const lastRecord = storageBlock.entities[storageBlock.ids[storageBlock.ids.length - 1]];
+        store.select('storage').subscribe(storage => {
+          if (storage.blockState.ids.length) {
+            const lastRecord = storage.blockState.entities[storage.blockState.ids[storage.blockState.ids.length - 1]];
             cy.get('.virtual-scroll-container .virtualScrollRow.used', { timeout: 10000 })
               .last()
               .find('.cycle-position')
@@ -52,8 +52,8 @@ context('STORAGE BLOCK', () => {
       .window()
       .its('store')
       .then((store) => {
-        store.select('storageBlock').subscribe(storageBlock => {
-          if (storageBlock.ids.length) {
+        store.select('storage').subscribe(storage => {
+          if (storage.blockState.ids.length) {
 
             cy.get('.stop-stream')
               .click()
@@ -88,20 +88,20 @@ context('STORAGE BLOCK', () => {
       .window()
       .its('store')
       .then((store) => {
-        store.select('storageBlock').subscribe((storageBlock) => {
-          if (!storageBlock.stream && storageBlock.ids.length) {
+        store.select('storage').subscribe(storage => {
+          if (!storage.blockState.stream && storage.blockState.ids.length) {
             cy.get('.virtual-scroll-container .virtualScrollRow.used')
               .last()
               .trigger('mouseenter')
               .wait(5000);
-            if (storageBlock.selected.hash.length) {
+            if (storage.blockState.selected.hash.length) {
               cy.get('table.storage-details-table').should('be.visible')
                 .get('app-storage-block-details .storage-block-header .context').should('be.visible')
                 .get('app-storage-block-details .storage-block-header .context')
                 .then(element => {
-                  expect(element.text()).to.contain(storageBlock.availableContexts[0]);
+                  expect(element.text()).to.contain(storage.blockState.availableContexts[0]);
                 });
-              if (storageBlock.availableContexts.length === 2) {
+              if (storage.blockState.availableContexts.length === 2) {
                 cy.get('app-storage-block-details .storage-block-header .node-switcher').should('be.visible');
               }
             }

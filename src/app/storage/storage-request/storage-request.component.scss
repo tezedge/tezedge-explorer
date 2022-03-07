@@ -1,0 +1,8 @@
+.row {
+  grid-template-columns: 210px 150px 170px 120px 120px 200px;
+
+  > span {
+    line-height: 36px;
+    padding-left: 16px;
+  }
+}

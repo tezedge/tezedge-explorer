@@ -178,10 +178,12 @@ export class SmartContractsService {
   }
 
   getContractTrace(api: string, blockHash: string, contract: SmartContract): Observable<{ trace: SmartContractTrace[], gasTrace: number[], result: SmartContractResult }> {
-    const body = SmartContractsService.buildGetTraceRequestBody(contract);
-    return this.http.post<any>(`${api}/chains/main/blocks/${blockHash}/helpers/scripts/trace_code`, body).pipe(
-      map((response) => this.mapNewGetContractTrace(response, contract)),
-      catchError(err => of(this.mapNewGetContractTrace(err.error, contract)))
+    return (contract.balance ? of(contract) : this.addBalanceToContract(api, blockHash, contract)).pipe(
+      map(contractWithBalance => SmartContractsService.buildGetTraceRequestBody(contractWithBalance)),
+      switchMap(body => this.http.post<any>(`${api}/chains/main/blocks/${blockHash}/helpers/scripts/trace_code`, body).pipe(
+        map(response => this.mapNewGetContractTrace(response, contract)),
+        catchError(err => of(this.mapNewGetContractTrace(err.error, contract)))
+      ))
     );
   }
 

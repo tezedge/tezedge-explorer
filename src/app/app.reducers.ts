@@ -22,7 +22,7 @@ import * as fromChainWallets from './chain/chain-wallets/chain-wallets.reducer';
 import * as fromChainConfig from './chain/chain-config/chain-config.reducer';
 import * as fromChainFinish from './chain/chain-finish/chain-finish.reducer';
 import * as fromLogsAction from './logs/logs-action/logs-action.reducer';
-import * as fromStorageBlock from './storage/storage-block/storage-block.reducer';
+import * as fromStorage from './storage/storage.reducer';
 import * as fromStorageAction from './storage/storage-action/storage-action.reducer';
 import * as fromSandbox from './sandbox/sandbox.reducer';
 import * as fromWallets from './wallets/wallets.reducer';
@@ -44,11 +44,11 @@ import { NetworkAction } from '@shared/types/network/network-action.type';
 import { App } from '@shared/types/app/app.type';
 import { Monitoring } from '@shared/types/monitoring/monitoring.type';
 import { LogsAction } from '@shared/types/logs/logs-action.type';
-import { StorageBlock } from '@shared/types/storage/storage-block/storage-block.type';
 import { GithubVersion } from '@shared/types/github-version/github-version.type';
 import { StateMachine } from '@shared/types/state-machine/state-machine.type';
 import { SmartContractsState } from '@smart-contracts/smart-contracts/smart-contracts.index';
 import { LoadingSpinnerState } from '@shared/components/loading-spinner/loading-spinner.reducer';
+import { StorageState } from '@storage/storage.index';
 
 export interface State {
   app: App;
@@ -60,7 +60,7 @@ export interface State {
   networkHistory: NetworkHistory;
   endpointsAction: any;
   logsAction: LogsAction;
-  storageBlock: StorageBlock;
+  storage: StorageState;
   storageAction: any;
   chainServer: any;
   chainWallets: any;
@@ -88,7 +88,7 @@ export const reducers: ActionReducerMap<State> = {
   networkHistory: fromNetworkHistory.reducer,
   endpointsAction: fromEndpointsAction.reducer,
   logsAction: fromLogsAction.reducer,
-  storageBlock: fromStorageBlock.reducer,
+  storage: fromStorage.reducer,
   storageAction: fromStorageAction.reducer,
   chainServer: fromChainServer.reducer,
   chainWallets: fromChainWallets.reducer,
@@ -96,7 +96,6 @@ export const reducers: ActionReducerMap<State> = {
   chainFinish: fromChainFinish.reducer,
   sandbox: fromSandbox.reducer,
   settingsNode: fromSettingsNode.reducer,
-  // routerReducer: fromRouter.routerReducer,
   wallets: fromWallets.reducer,
   githubVersion: fromVersion.reducer,
   resources: fromResources.reducer,

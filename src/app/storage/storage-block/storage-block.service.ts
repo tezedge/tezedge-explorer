@@ -14,7 +14,7 @@ export class StorageBlockService {
 
   checkStorageBlockAvailableContexts(api: string, hash: string): Observable<string[]> {
     return this.http.get<string[]>(`${api}/stats/main/blocks/${hash}`)
-      .pipe(map(response => this.mapCheckContexts(response)));
+      .pipe(map(StorageBlockService.mapCheckContexts));
   }
 
   getStorageBlockContextDetails(api: string, hash: string, context: string): Observable<StorageBlockDetails> {
@@ -43,18 +43,18 @@ export class StorageBlockService {
     return block;
   }
 
-  private mapCheckContexts(response: any): string[] {
+  private static mapCheckContexts(response: any): string[] {
     const contexts = [];
-    if (!this.areAllEmpty('irmin', response)) {
+    if (!StorageBlockService.areAllEmpty('irmin', response)) {
       contexts.push('irmin');
     }
-    if (!this.areAllEmpty('tezedge', response)) {
+    if (!StorageBlockService.areAllEmpty('tezedge', response)) {
       contexts.push('tezedge');
     }
     return contexts;
   }
 
-  private areAllEmpty(context, response): boolean {
+  private static areAllEmpty(context, response): boolean {
     const operation = response.operationsContext[0];
     const values = [
       response[context + 'CheckoutContextTime'],

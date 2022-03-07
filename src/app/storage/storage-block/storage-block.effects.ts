@@ -70,8 +70,8 @@ export class StorageBlockEffects {
     ofType('STORAGE_BLOCK_NEIGHBOUR_BLOCK_DETAILS'),
     withLatestFrom(this.store, (action: any, state: ObservedValueOf<Store<State>>) => ({ action, state })),
     map(({ action, state }) => {
-      const currentHash = state.storageBlock.selected.hash;
-      const entities = Object.keys(state.storageBlock.entities).map(key => state.storageBlock.entities[key]);
+      const currentHash = state.storage.blockState.selected.hash;
+      const entities = Object.keys(state.storage.blockState.entities).map(key => state.storage.blockState.entities[key]);
       const currentBlockIndex = entities.findIndex(block => block.hash === currentHash);
       if (currentBlockIndex !== -1) {
         return {
@@ -90,7 +90,7 @@ export class StorageBlockEffects {
     ofType(STORAGE_BLOCK_CHECK_AVAILABLE_CONTEXTS),
     withLatestFrom(this.store, (action: any, state: ObservedValueOf<Store<State>>) => ({ action, state })),
     switchMap(({ action, state }) =>
-      this.storageBlockService.checkStorageBlockAvailableContexts(state.settingsNode.activeNode.http, state.storageBlock.entities[0].hash)
+      this.storageBlockService.checkStorageBlockAvailableContexts(state.settingsNode.activeNode.http, state.storage.blockState.entities[0].hash)
     ),
     map((contexts: string[]) => ({ type: STORAGE_BLOCK_MAP_AVAILABLE_CONTEXTS, payload: contexts })),
     catchError(error => of({ type: ADD_ERROR, payload: { title: 'Storage block details error', message: error.message } }))
@@ -99,8 +99,8 @@ export class StorageBlockEffects {
   storageBlockMapAvailableContextsEffect$ = createEffect(() => this.actions$.pipe(
     ofType(STORAGE_BLOCK_MAP_AVAILABLE_CONTEXTS),
     withLatestFrom(this.store, (action: any, state: ObservedValueOf<Store<State>>) => ({ action, state })),
-    filter(({ action, state }) => state.storageBlock.routedBlock),
-    map(({ action, state }) => ({ type: 'STORAGE_BLOCK_DETAILS_LOAD', payload: { hash: state.storageBlock.entities[state.storageBlock.ids.length - 1].hash } })),
+    // filter(({ action, state }) => state.storage.blockState.routedBlock),
+    map(({ action, state }) => ({ type: 'STORAGE_BLOCK_DETAILS_LOAD', payload: { hash: state.storage.blockState.entities[state.storage.blockState.ids.length - 1].hash } })),
     catchError(error => of({ type: ADD_ERROR, payload: { title: 'Storage block details error', message: error.message } }))
   ));
 
@@ -113,7 +113,7 @@ export class StorageBlockEffects {
         this.storageBlockService.getStorageBlockContextDetails(
           state.settingsNode.activeNode.http,
           action.payload.hash,
-          action.payload.context || state.storageBlock.availableContexts[0]
+          action.payload.context || state.storage.blockState.availableContexts[0]
         ),
       );
     }),

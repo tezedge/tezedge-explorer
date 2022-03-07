@@ -3,7 +3,7 @@ import { StorageBlockEntity } from './storage-block-entity.type';
 import { StorageBlockSelection } from './storage-block-selection.type';
 import { StorageBlockDetails } from './storage-block-details.type';
 
-export class StorageBlock {
+export class StorageBlockState {
   ids: number[];
   entities: { [id: string]: StorageBlockEntity };
   lastCursorId: number;

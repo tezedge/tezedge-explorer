@@ -1,0 +1,18 @@
+@import 'variables';
+
+.storage {
+  border-top-left-radius: 5px;
+
+  .tabs {
+    padding: 9px 10px 9px 15px;
+
+    .tab {
+      color: $foreground-6;
+
+      &:hover,
+      &.selected {
+        color: $foreground;
+      }
+    }
+  }
+}

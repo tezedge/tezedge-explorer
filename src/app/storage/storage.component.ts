@@ -6,4 +6,8 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
   styleUrls: ['./storage.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class StorageComponent {}
+export class StorageComponent {
+
+  readonly tabs = ['blocks', 'requests'];
+
+}

@@ -1,12 +1,12 @@
 import * as moment from 'moment-mini-ts';
 import { VirtualScrollActivePage } from '@shared/types/shared/virtual-scroll-active-page.type';
-import { StorageBlock } from '@shared/types/storage/storage-block/storage-block.type';
+import { StorageBlockState } from '@shared/types/storage/storage-block/storage-block-state.type';
 import { StorageBlockEntity } from '@shared/types/storage/storage-block/storage-block-entity.type';
 import { STORAGE_BLOCK_LOAD_ROUTED_BLOCK, STORAGE_BLOCK_MAP_AVAILABLE_CONTEXTS } from './storage-block.actions';
 import { State } from '@app/app.reducers';
 import { StorageBlockDetails } from '@shared/types/storage/storage-block/storage-block-details.type';
 
-const initialState: StorageBlock = {
+const initialState: StorageBlockState = {
   ids: [],
   entities: {},
   lastCursorId: 0,
@@ -26,7 +26,7 @@ const initialState: StorageBlock = {
   pages: []
 };
 
-export function reducer(state: StorageBlock = initialState, action): StorageBlock {
+export function reducer(state: StorageBlockState = initialState, action): StorageBlockState {
 
   switch (action.type) {
 
@@ -100,7 +100,7 @@ export function reducer(state: StorageBlock = initialState, action): StorageBloc
   }
 }
 
-export function setIds(action): number[] {
+function setIds(action): number[] {
   if (!action.payload.length) {
     return [];
   }
@@ -182,4 +182,5 @@ export function setPages(activePage, state): number[] {
 
 }
 
-export const selectStorageBlockDetails = (state: State): StorageBlockDetails => state.storageBlock.blockDetails;
+export const selectStorageBlockDetails = (state: State): StorageBlockDetails => state.storage.blockState.blockDetails;
+export const selectStorageBlockState = (state: State): StorageBlockState => state.storage.blockState;

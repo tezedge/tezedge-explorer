@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Inject, OnInit, Renderer2 } from '@angular/core';
 import { SmartContract } from '@shared/types/smart-contracts/smart-contract.type';
-import { Store } from '@ngrx/store';
+import { select, Store } from '@ngrx/store';
 import { State } from '@app/app.reducers';
 import { filter } from 'rxjs';
 import { DOCUMENT } from '@angular/common';
@@ -14,6 +14,8 @@ import {
   selectSmartContractsGasTrace,
   selectSmartContractsIsDebugging
 } from '@smart-contracts/smart-contracts/smart-contracts.index';
+import { appState } from '@app/app.reducer';
+import { delay, skip } from 'rxjs/operators';
 import IStandaloneCodeEditor = editor.IStandaloneCodeEditor;
 import IStandaloneEditorConstructionOptions = editor.IStandaloneEditorConstructionOptions;
 
@@ -42,7 +44,6 @@ export class SmartContractsCodeComponent implements OnInit {
   };
 
   activeContractCode: string;
-
   private gasTrace: number[];
 
   private parent: HTMLDivElement;
@@ -63,6 +64,7 @@ export class SmartContractsCodeComponent implements OnInit {
     this.listenToGasTraceChange();
     this.listenToDebugConfigChange();
     this.listenToIsDebuggingChange();
+    this.listenToAppChange();
   }
 
   private listenToDebugConfigChange() {
@@ -121,11 +123,9 @@ export class SmartContractsCodeComponent implements OnInit {
 
   onEditorInit(codeEditor: IStandaloneCodeEditor): void {
     this.editor = codeEditor;
+
     // TODO: Parent unused right now. Future feature.
-    this.parent = this.document.querySelector('.view-overlays') as HTMLDivElement;
-    this.editor.onDidChangeCursorPosition(e => {
-      // this.getStackAtCurrentPosition(e.position.lineNumber, e.position.column); // now we postpone this functionality
-    });
+    // this.parent = this.document.querySelector('.view-overlays') as HTMLDivElement;
   }
 
   private highlightCurrentDebuggingCode(newStep: SmartContractTrace): void {
@@ -136,6 +136,15 @@ export class SmartContractsCodeComponent implements OnInit {
     const newDecorations = [{ range, options }];
     this.monacoDeltaDecorations = this.editor.deltaDecorations(this.monacoDeltaDecorations, newDecorations);
     this.editor.revealLineInCenter(start.line);
+  }
+
+  private listenToAppChange(): void {
+    this.store.pipe(
+      untilDestroyed(this),
+      select(appState),
+      delay(300),
+      skip(1)
+    ).subscribe(() => this.editor.layout());
   }
 
   // private getStackAtCurrentPosition(line: number, column: number): void {

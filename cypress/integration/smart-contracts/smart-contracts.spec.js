@@ -174,4 +174,30 @@ context('SMART CONTRACTS', () => {
       });
   }));
 
+  it('[SMART CONTRACTS] should preselect a row on start', () => testForTezedge(() => {
+    cy.wait(1000)
+      .get('app-smart-contracts app-smart-contracts-table cdk-virtual-scroll-viewport .row.active', { timeout: 10000 })
+      .should('be.visible');
+  }));
+
+  it('[SMART CONTRACTS] should start debugging when pressing on start debug button', () => testForTezedge(() => {
+    let asserted = false;
+    cy.get('app-smart-contracts app-smart-contracts-table cdk-virtual-scroll-viewport .row.active', { timeout: 10000 })
+      .get('.debugger-inspect button:nth-child(1)', { timeout: 10000 })
+      .click()
+      .wait(1000)
+      .window()
+      .its('store')
+      .then(store => {
+        store.select('smartContracts').subscribe(smartContracts => {
+          if (!asserted) {
+            asserted = true;
+            expect(smartContracts.isDebugging).to.be.true;
+            expect(smartContracts.debugConfig.currentStep).not.to.be.undefined;
+            expect(smartContracts.debugConfig.previousStep).to.be.null;
+          }
+        });
+      });
+  }));
+
 });

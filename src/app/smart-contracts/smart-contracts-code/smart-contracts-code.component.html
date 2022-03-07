@@ -16,8 +16,8 @@
   <div fxFlex="calc(100% - 34px)" class="flex-row overflow-hidden">
     <div class="w-100 overflow-hidden">
       <ngx-monaco-editor [options]="editorOptions"
-                         (onInit)="onEditorInit($event)"
-                         [ngModel]="activeContractCode"></ngx-monaco-editor>
+                         [ngModel]="activeContractCode"
+                         (onInit)="onEditorInit($event)"></ngx-monaco-editor>
     </div>
   </div>
 </div>

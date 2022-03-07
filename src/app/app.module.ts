@@ -52,6 +52,7 @@ import { MempoolBlockApplicationEffects } from '@mempool/mempool-block-applicati
 import { MempoolBakingRightsEffects } from '@mempool/mempool-baking-rights/mempool-baking-rights.effects';
 import { MAT_FORM_FIELD_DEFAULT_OPTIONS } from '@angular/material/form-field';
 import { NgrxRouterStoreModule } from '@shared/router/ngrx-router.module';
+import { StorageRequestEffects } from '@storage/storage-request/storage-request.effects';
 
 registerLocaleData(localeFr, 'fr');
 registerLocaleData(localeEnGb, 'en');
@@ -79,6 +80,7 @@ const effects = [
   MempoolBakingRightsEffects,
   NetworkActionEffects,
   StorageBlockEffects,
+  StorageRequestEffects,
   StorageActionEffects,
   StorageSearchEffects,
   EndpointsActionEffects,

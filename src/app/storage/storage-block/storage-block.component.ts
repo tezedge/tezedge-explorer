@@ -2,11 +2,12 @@ import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, OnDe
 import { Store } from '@ngrx/store';
 import { Router } from '@angular/router';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { StorageBlock } from '@shared/types/storage/storage-block/storage-block.type';
+import { StorageBlockState } from '@shared/types/storage/storage-block/storage-block-state.type';
 import { selectActiveNode } from '@settings/settings-node.reducer';
 import { State } from '@app/app.reducers';
 import { debounce } from 'typescript-debounce-decorator';
 import { STORAGE_BLOCK_LOAD_ROUTED_BLOCK } from '@storage/storage-block/storage-block.actions';
+import { selectStorageBlockState } from '@storage/storage-block/storage-block.reducer';
 
 @UntilDestroy()
 @Component({
@@ -17,7 +18,7 @@ import { STORAGE_BLOCK_LOAD_ROUTED_BLOCK } from '@storage/storage-block/storage-
 })
 export class StorageBlockComponent implements OnInit, OnDestroy {
 
-  virtualScrollItems: StorageBlock;
+  virtualScrollItems: StorageBlockState;
   storageBlockShow: boolean;
   filtersState = {
     open: false
@@ -27,14 +28,13 @@ export class StorageBlockComponent implements OnInit, OnDestroy {
   @ViewChild('vsContainer') vsContainer: ElementRef<HTMLDivElement>;
 
   private isStorageActionFeatureEnabled: boolean;
-  hash;
 
   constructor(private store: Store<State>,
-              private changeDetector: ChangeDetectorRef,
+              private cdRef: ChangeDetectorRef,
               private router: Router) { }
 
   ngOnInit(): void {
-    const blockLevel = Number(this.router.url.replace('/storage/', ''));
+    const blockLevel = Number(this.router.url.replace('/storage/blocks/', ''));
     if (blockLevel) {
       this.store.dispatch({
         type: STORAGE_BLOCK_LOAD_ROUTED_BLOCK,
@@ -47,9 +47,9 @@ export class StorageBlockComponent implements OnInit, OnDestroy {
       this.scrollStart(null);
     }
 
-    this.store.select('storageBlock')
+    this.store.select(selectStorageBlockState)
       .pipe(untilDestroyed(this))
-      .subscribe((data: StorageBlock) => {
+      .subscribe((data: StorageBlockState) => {
         this.virtualScrollItems = data;
         this.storageBlockShow = data.ids.length > 0;
 
@@ -57,7 +57,7 @@ export class StorageBlockComponent implements OnInit, OnDestroy {
         //   this.getItemDetails(this.virtualScrollItems.entities[this.virtualScrollItems.ids[this.virtualScrollItems.ids.length - 1]]);
         // }
 
-        this.changeDetector.detectChanges();
+        this.cdRef.detectChanges();
       });
     this.listenToActiveNode();
   }
@@ -72,7 +72,7 @@ export class StorageBlockComponent implements OnInit, OnDestroy {
 
   @debounce(300)
   getItemDetails($event): void {
-    this.router.navigate(['storage', $event?.originalId]);
+    this.router.navigate(['storage', 'blocks', $event?.originalId]);
     this.store.dispatch({
       type: 'STORAGE_BLOCK_DETAILS_LOAD',
       payload: {

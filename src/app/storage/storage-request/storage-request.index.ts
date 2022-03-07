@@ -2,4 +2,8 @@ import { StorageRequest } from '@shared/types/storage/request/storage-request.ty
 
 export class StorageRequestState {
   requests: StorageRequest[];
+  errors: number;
+  success: number;
+  pending: number;
+  stream: boolean;
 }

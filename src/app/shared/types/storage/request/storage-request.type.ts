@@ -7,4 +7,5 @@ export interface StorageRequest {
   pendingFor: number;
   kind: string;
   requestor: string;
+  status?: 'Success' | 'Error';
 }

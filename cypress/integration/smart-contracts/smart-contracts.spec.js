@@ -80,34 +80,34 @@ context('SMART CONTRACTS', () => {
   }));
 
   it('[SMART CONTRACTS] should render 3 tabs', () => testForTezedge(() => {
-    cy.get('app-smart-contracts .overflow-hidden div.flex-column .tabs .tab', { timeout: 10000 })
+    cy.get('app-smart-contracts div .overflow-hidden.flex-column .tabs .tab', { timeout: 10000 })
       .should('have.length', 3);
   }));
 
   it('[SMART CONTRACTS] should preselect debug tab', () => testForTezedge(() => {
-    cy.get('app-smart-contracts .overflow-hidden div.flex-column .tabs .tab:first-child')
+    cy.get('app-smart-contracts div .overflow-hidden.flex-column .tabs .tab:first-child')
       .should('have.class', 'selected');
   }));
 
   it('[SMART CONTRACTS] should change to result tab', () => testForTezedge(() => {
-    cy.get('app-smart-contracts .overflow-hidden div.flex-column .tabs .tab:nth-child(1)')
+    cy.get('app-smart-contracts div .overflow-hidden.flex-column .tabs .tab:nth-child(1)')
       .should('have.class', 'selected')
-      .get('app-smart-contracts .overflow-hidden div.flex-column .tabs .tab:nth-child(2)')
+      .get('app-smart-contracts div .overflow-hidden.flex-column .tabs .tab:nth-child(2)')
       .click()
-      .get('app-smart-contracts .overflow-hidden div.flex-column .tabs .tab:nth-child(2)')
+      .get('app-smart-contracts div .overflow-hidden.flex-column .tabs .tab:nth-child(2)')
       .should('have.class', 'selected')
-      .get('app-smart-contracts .overflow-hidden div.flex-column .tabs .tab:nth-child(1)')
+      .get('app-smart-contracts div .overflow-hidden.flex-column .tabs .tab:nth-child(1)')
       .should('not.have.class', 'selected');
   }));
 
   it('[SMART CONTRACTS] should change to inputs tab', () => testForTezedge(() => {
-    cy.get('app-smart-contracts .overflow-hidden div.flex-column .tabs .tab:nth-child(1)')
+    cy.get('app-smart-contracts div .overflow-hidden.flex-column .tabs .tab:nth-child(1)')
       .should('have.class', 'selected')
-      .get('app-smart-contracts .overflow-hidden div.flex-column .tabs .tab:nth-child(3)')
+      .get('app-smart-contracts div .overflow-hidden.flex-column .tabs .tab:nth-child(3)')
       .click()
-      .get('app-smart-contracts .overflow-hidden div.flex-column .tabs .tab:nth-child(3)')
+      .get('app-smart-contracts div .overflow-hidden.flex-column .tabs .tab:nth-child(3)')
       .should('have.class', 'selected')
-      .get('app-smart-contracts .overflow-hidden div.flex-column .tabs .tab:nth-child(1)')
+      .get('app-smart-contracts div .overflow-hidden.flex-column .tabs .tab:nth-child(1)')
       .should('not.have.class', 'selected');
   }));
 
@@ -127,22 +127,34 @@ context('SMART CONTRACTS', () => {
   it('[SMART CONTRACTS] should select previous block when clicking on previous block button', () => testForTezedge(() => {
     let clicked;
     let asserted = false;
-    let expectedPrevBlock;
+    let expectedPrevBlock = undefined;
     cy.window()
       .its('store')
       .then(store => {
         store.select('smartContracts').subscribe(smartContracts => {
-          if (smartContracts.contracts.length > 0 && !clicked) {
+          if (smartContracts.contracts.length > 0 && !clicked && !expectedPrevBlock) {
             expectedPrevBlock = smartContracts.blockHashContext.hashes[smartContracts.blockHashContext.activeIndex - 1];
-            clicked = true;
-            cy.get('app-smart-contracts app-smart-contracts-filters form > button:nth-child(1)')
-              .should('not.be.disabled')
-              .click()
-              .wait(2000);
-          } else if (expectedPrevBlock && !asserted) {
-            asserted = true;
-            const newCurrentBlock = smartContracts.blockHashContext.hashes[smartContracts.blockHashContext.activeIndex];
-            expect(expectedPrevBlock).to.equal(newCurrentBlock);
+            if (expectedPrevBlock !== undefined) {
+              cy.get('app-smart-contracts app-smart-contracts-filters form > button:nth-child(1)', { timeout: 2000 })
+                .click()
+                .then(() => {
+                  clicked = true;
+                  if (!asserted) {
+                    cy.wait(1000)
+                      .window()
+                      .its('store')
+                      .then(store => {
+                        store.select('smartContracts').subscribe(smartContracts => {
+                          if (!asserted) {
+                            asserted = true;
+                            const actualPrevBlock = smartContracts.blockHashContext.hashes[smartContracts.blockHashContext.activeIndex];
+                            expect(expectedPrevBlock).to.equal(actualPrevBlock);
+                          }
+                        });
+                      });
+                  }
+                });
+            }
           }
         });
       });

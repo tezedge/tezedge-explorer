@@ -72,8 +72,8 @@ context('SMART CONTRACTS', () => {
               .eq(smallestGasContract.id)
               .click()
               .then(() => clicked = true)
-              .wait(5000)
-              .get('app-smart-contracts app-smart-contracts-code .monaco-editor .view-lines .view-line').should('have.length.above', 10);
+              .get('app-smart-contracts app-smart-contracts-code .monaco-editor .view-lines .view-line', { timeout: 40000 })
+              .should('have.length.above', 10);
           }
         });
       });
@@ -124,7 +124,7 @@ context('SMART CONTRACTS', () => {
       .should('not.be.disabled');
   }));
 
-  it('[SMART CONTRACTS] should activate previous block when clicking on previous block button', () => testForTezedge(() => {
+  it('[SMART CONTRACTS] should select previous block when clicking on previous block button', () => testForTezedge(() => {
     let clicked;
     let asserted = false;
     let expectedPrevBlock;
@@ -175,26 +175,42 @@ context('SMART CONTRACTS', () => {
   }));
 
   it('[SMART CONTRACTS] should preselect a row on start', () => testForTezedge(() => {
-    cy.wait(1000)
-      .get('app-smart-contracts app-smart-contracts-table cdk-virtual-scroll-viewport .row.active', { timeout: 10000 })
-      .should('be.visible');
-  }));
-
-  it('[SMART CONTRACTS] should start debugging when pressing on start debug button', () => testForTezedge(() => {
-    let asserted = false;
-    cy.get('app-smart-contracts app-smart-contracts-table cdk-virtual-scroll-viewport .row.active', { timeout: 10000 })
-      .get('.debugger-inspect button:nth-child(1)', { timeout: 10000 })
-      .click()
-      .wait(1000)
-      .window()
+    cy.window()
       .its('store')
       .then(store => {
         store.select('smartContracts').subscribe(smartContracts => {
-          if (!asserted) {
-            asserted = true;
-            expect(smartContracts.isDebugging).to.be.true;
-            expect(smartContracts.debugConfig.currentStep).not.to.be.undefined;
-            expect(smartContracts.debugConfig.previousStep).to.be.null;
+          if (smartContracts.contracts.length > 0) {
+            cy.get('app-smart-contracts app-smart-contracts-table cdk-virtual-scroll-viewport .row.active', { timeout: 40000 })
+              .should('be.visible');
+          }
+        });
+      });
+  }));
+
+  it('[SMART CONTRACTS] should start debugging when pressing on start debug button', () => testForTezedge(() => {
+    cy.window()
+      .its('store')
+      .then(store => {
+        let currentContract = undefined;
+        store.select('smartContracts').subscribe(smartContracts => {
+          if (smartContracts.contracts.length > 0 && currentContract !== smartContracts.activeContract) {
+            currentContract = smartContracts.activeContract;
+            cy.get('app-smart-contracts app-smart-contracts-table cdk-virtual-scroll-viewport .row.active', { timeout: 40000 })
+              .get('app-smart-contracts app-smart-contracts-code ngx-monaco-editor .view-lines .view-line:nth-child(4)', { timeout: 40000 })
+              .get('app-smart-contracts app-smart-contracts-debug .debugger-inspect button:nth-child(1)', { timeout: 10000 })
+              .wait(1000)
+              .click()
+              .then(() => {
+                cy.window()
+                  .its('store')
+                  .then(store => {
+                    store.select('smartContracts').subscribe(smartContracts => {
+                      expect(smartContracts.isDebugging).to.be.true;
+                      expect(smartContracts.debugConfig.currentStep).not.to.be.undefined;
+                      expect(smartContracts.debugConfig.previousStep).to.be.undefined;
+                    });
+                  });
+              });
           }
         });
       });

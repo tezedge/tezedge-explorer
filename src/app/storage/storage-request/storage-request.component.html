@@ -6,11 +6,12 @@
     <span>LOCATOR</span>
     <span>COUNTER</span>
     <span>KIND</span>
+    <span>STATUS</span>
   </div>
   <cdk-virtual-scroll-viewport class="border-bottom f-14 overflow-y-auto overflow-x-hidden"
-                               fxFlex="calc(100% - 36px)"
+                               fxFlex="calc(100% - 36px - 40px)"
                                itemSize="36">
-    <div *cdkVirtualFor="let request of requests; let i=index;"
+    <div *cdkVirtualFor="let request of state.requests; let i=index;"
          class="row">
       <span class="foreground-7">{{ request.pendingSince | dateTime }}</span>
       <span>{{ request.pendingFor | nanoTransform }}</span>
@@ -18,6 +19,50 @@
       <span>{{ request.reqId.locator }}</span>
       <span>{{ request.reqId.counter | spaceNumber }}</span>
       <span>{{ request.kind }}</span>
+      <span [class.text-green]="request.status === 'Success'"
+            [class.text-red]="request.status === 'Error'"
+            class="foreground-7">{{ request.status ?? 'Pending' }}</span>
     </div>
   </cdk-virtual-scroll-viewport>
+
+
+  <div class="table-virtual-scroll-footer"
+       fxFlex="40px"
+       fxLayout="row"
+       fxLayoutAlign="start center">
+    <button class="square-button d-flex flex-center align-center"
+            mat-icon-button
+            matTooltip="Scroll to bottom"
+            (click)="scrollToEnd()">
+      <mat-icon svgIcon="arrow-bottom"
+                class="icon-12 d-flex"></mat-icon>
+    </button>
+    <button class="rectangle-button start-stream d-flex flex-center align-center foreground border-remove"
+            mat-icon-button
+            matTooltip="Start Streaming"
+            (click)="live()"
+            [class.inactive]="!state.stream">
+      <mat-icon svgIcon="play-circle"
+                class="icon-14 margin-right-5"></mat-icon>
+      <span>LIVE</span>
+    </button>
+    <button class="rectangle-button stop-stream d-flex flex-center align-center"
+            mat-icon-button
+            matTooltip="Stop Streaming"
+            (click)="pause()"
+            [class.inactive]="state.stream">
+      <mat-icon svgIcon="pause-circle"
+                class="icon-14 margin-right-5"></mat-icon>
+      <span>PAUSED</span>
+    </button>
+    <span class="active-page-details">
+      <span>{{ state.requests.length }} records</span>
+      <span class="padding-horizontal-10">·</span>
+      <span>{{ state.success }} success</span>
+      <span class="padding-horizontal-10">·</span>
+      <span>{{ state.errors }} error</span>
+      <span class="padding-horizontal-10">·</span>
+      <span>{{ state.pending }} pending</span>
+    </span>
+  </div>
 </div>

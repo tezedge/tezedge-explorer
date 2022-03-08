@@ -13,7 +13,11 @@ import {
   SMART_CONTRACTS_EXECUTE_CONTRACT,
   SMART_CONTRACTS_SET_ACTIVE_CONTRACT,
   SMART_CONTRACTS_SET_ACTIVE_CONTRACT_SUCCESS,
-  SmartContractsLoadSuccessAction, SmartContractsLoadAction, SmartContractsSetActiveContractAction, SmartContractsExecuteContractAction
+  SmartContractsLoadSuccessAction,
+  SmartContractsLoadAction,
+  SmartContractsSetActiveContractAction,
+  SmartContractsExecuteContractAction,
+  SMART_CONTRACTS_START_DEBUGGING, SmartContractsStopDebuggingAction, SMART_CONTRACTS_DEBUG_STEP
 } from '@smart-contracts/smart-contracts/smart-contracts.actions';
 import { SmartContract } from '@shared/types/smart-contracts/smart-contract.type';
 import { ObservedValueOf } from 'rxjs';
@@ -88,6 +92,12 @@ export class SmartContractsEffects {
       return this.smartContractsService.getContractTrace(state.settingsNode.activeNode.http, previousBlockHash, action.payload);
     }),
     map((payload: { trace: SmartContractTrace[], gasTrace: number[], result: SmartContractResult }) => ({ type: SMART_CONTRACTS_EXECUTE_CONTRACT_SUCCESS, payload }))
+  ));
+
+  smartContractsStartDebugging$ = createEffect(() => this.actions$.pipe(
+    ofType(SMART_CONTRACTS_START_DEBUGGING),
+    withLatestFrom(this.store, (action: SmartContractsStopDebuggingAction, state: ObservedValueOf<Store<State>>) => state),
+    map((state: State) => ({ type: SMART_CONTRACTS_DEBUG_STEP, payload: state.smartContracts.trace[0] }))
   ));
 
   constructor(private actions$: Actions,

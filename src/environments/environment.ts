@@ -223,11 +223,11 @@ export const environment = {
   production: false,
   api: [
     // DEVELOP,
-    // MASTER,
+    MASTER,
     // MEMPOOL,
     // TRACE,
     // PRECHECKER,
-    DEBUG,
+    // DEBUG,
     // PROD,
     // STORAGE,
     // OCTEZ_DEVELOP,

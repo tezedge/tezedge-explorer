@@ -5,12 +5,14 @@ enum StorageRequestActionTypes {
   STORAGE_REQUESTS_INIT = 'STORAGE_REQUESTS_INIT',
   STORAGE_REQUESTS_LOAD = 'STORAGE_REQUESTS_LOAD',
   STORAGE_REQUESTS_LOAD_SUCCESS = 'STORAGE_REQUESTS_LOAD_SUCCESS',
+  STORAGE_REQUESTS_STREAM_CHANGE = 'STORAGE_REQUESTS_STREAM_CHANGE',
   STORAGE_REQUESTS_STOP = 'STORAGE_REQUESTS_STOP',
 }
 
 export const STORAGE_REQUESTS_INIT = StorageRequestActionTypes.STORAGE_REQUESTS_INIT;
 export const STORAGE_REQUESTS_LOAD = StorageRequestActionTypes.STORAGE_REQUESTS_LOAD;
 export const STORAGE_REQUESTS_LOAD_SUCCESS = StorageRequestActionTypes.STORAGE_REQUESTS_LOAD_SUCCESS;
+export const STORAGE_REQUESTS_STREAM_CHANGE = StorageRequestActionTypes.STORAGE_REQUESTS_STREAM_CHANGE;
 export const STORAGE_REQUESTS_STOP = StorageRequestActionTypes.STORAGE_REQUESTS_STOP;
 
 export class StorageRequestInitAction implements Action {
@@ -27,6 +29,12 @@ export class StorageRequestLoadSuccessAction implements Action {
   constructor(public payload: StorageRequest[]) { }
 }
 
+export class StorageRequestStreamChangeAction implements Action {
+  readonly type = STORAGE_REQUESTS_STREAM_CHANGE;
+
+  constructor(public payload: { stream: boolean }) { }
+}
+
 export class StorageRequestStopAction implements Action {
   readonly type = STORAGE_REQUESTS_STOP;
 }
@@ -34,5 +42,6 @@ export class StorageRequestStopAction implements Action {
 export type StorageRequestAction = StorageRequestInitAction
   | StorageRequestLoadAction
   | StorageRequestLoadSuccessAction
+  | StorageRequestStreamChangeAction
   | StorageRequestStopAction
   ;

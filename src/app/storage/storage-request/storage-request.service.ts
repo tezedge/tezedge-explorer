@@ -13,8 +13,32 @@ export class StorageRequestService {
   constructor(private http: HttpClient) { }
 
   getStorageRequests(api: string): Observable<StorageRequest[]> {
-    return this.http.get<StorageRequest[]>(`${api}/dev/shell/automaton/storage/requests`).pipe(
-      map(snakeCaseToCamelCase)
+    return this.http.get<GetStorageRequestsDto>(`${api}/dev/shell/automaton/storage/requests`).pipe(
+      map(snakeCaseToCamelCase),
+      map(response => [...response.finished, ...response.pending]),
+      map(response => response.map(r => typeof r.requestor === 'object' ? { ...r, requestor: r.requestor.Peer } : r))
     );
   }
+}
+
+interface GetStorageRequestsDto {
+  pending: GetStorageRequestsPending[];
+  finished: GetStorageRequestsFinished[];
+}
+
+interface GetStorageRequestsPending {
+  req_id: ReqId;
+  pending_since: string;
+  pending_for: number;
+  kind: string;
+  requestor: string;
+}
+
+interface GetStorageRequestsFinished extends GetStorageRequestsPending {
+  status: 'Success' | 'Error';
+}
+
+interface ReqId {
+  locator: number;
+  counter: number;
 }

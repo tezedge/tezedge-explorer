@@ -14,9 +14,9 @@ export class StorageRequestService {
 
   getStorageRequests(api: string): Observable<StorageRequest[]> {
     return this.http.get<GetStorageRequestsDto>(`${api}/dev/shell/automaton/storage/requests`).pipe(
+      map(response => [...response.finished.reverse(), ...response.pending.reverse()]),
+      map(response => response.map(r => typeof r.requestor === 'object' ? { ...r, requestor: r.requestor.Peer } : r)),
       map(snakeCaseToCamelCase),
-      map(response => [...response.finished, ...response.pending]),
-      map(response => response.map(r => typeof r.requestor === 'object' ? { ...r, requestor: r.requestor.Peer } : r))
     );
   }
 }
@@ -31,7 +31,7 @@ interface GetStorageRequestsPending {
   pending_since: string;
   pending_for: number;
   kind: string;
-  requestor: string;
+  requestor: string | { Peer: string };
 }
 
 interface GetStorageRequestsFinished extends GetStorageRequestsPending {

@@ -26,19 +26,16 @@
   </cdk-virtual-scroll-viewport>
 
 
-  <div class="table-virtual-scroll-footer"
-       fxFlex="40px"
-       fxLayout="row"
-       fxLayoutAlign="start center">
+  <div fxFlex="40px" class="table-virtual-scroll-footer flex-row align-center">
     <button class="square-button d-flex flex-center align-center"
-            mat-icon-button
+            mat-icon-button disableRipple
             matTooltip="Scroll to bottom"
             (click)="scrollToEnd()">
       <mat-icon svgIcon="arrow-bottom"
                 class="icon-12 d-flex"></mat-icon>
     </button>
-    <button class="rectangle-button start-stream d-flex flex-center align-center foreground border-remove"
-            mat-icon-button
+    <button class="rectangle-button start-stream d-flex flex-center align-center border-remove"
+            mat-icon-button disableRipple
             matTooltip="Start Streaming"
             (click)="live()"
             [class.inactive]="!state.stream">
@@ -47,7 +44,7 @@
       <span>LIVE</span>
     </button>
     <button class="rectangle-button stop-stream d-flex flex-center align-center"
-            mat-icon-button
+            mat-icon-button disableRipple
             matTooltip="Stop Streaming"
             (click)="pause()"
             [class.inactive]="state.stream">

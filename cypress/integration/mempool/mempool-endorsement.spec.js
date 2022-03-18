@@ -27,7 +27,7 @@ context('MEMPOOL ENDORSEMENT', () => {
       .its('store')
       .then(store => {
         store.select('mempool').subscribe(mempool => {
-          if (mempool.endorsementState.endorsements.length) {
+          if (mempool.endorsementState.endorsements.length > 0) {
             cy.get('app-mempool-endorsement .table-container .row')
               .should('be.visible');
           }
@@ -41,7 +41,8 @@ context('MEMPOOL ENDORSEMENT', () => {
       .its('store')
       .then(store => {
         store.select('mempool').subscribe(mempool => {
-          if (mempool.endorsementState.endorsements.length) {
+          if (mempool.endorsementState.endorsements.length > 0) {
+            console.log(mempool.endorsementState.endorsements.length);
             if (!oneStrike) {
               oneStrike = true;
               const endorsements = mempool.endorsementState.endorsements;
@@ -61,7 +62,7 @@ context('MEMPOOL ENDORSEMENT', () => {
       .its('store')
       .then(store => {
         store.select('mempool').subscribe(mempool => {
-          if (mempool.endorsementState.endorsements.length) {
+          if (mempool.endorsementState.endorsements.length > 0) {
             if (mempool.endorsementState.endorsements[0].delta > 50000000) {
               cy.get('.row:not(.head):first-child span:nth-child(4) span.text-red')
                 .should('be.visible');
@@ -76,7 +77,7 @@ context('MEMPOOL ENDORSEMENT', () => {
       .its('store')
       .then(store => {
         store.select('mempool').subscribe(mempool => {
-          if (mempool.endorsementState.endorsements.length) {
+          if (mempool.endorsementState.endorsements.length > 0) {
             const index = mempool.endorsementState.endorsements.findIndex(e => e.delta > 20000000 && e.delta < 50000000);
             if (index !== -1) {
               cy.get('.row:not(.head):nth-child(' + (index + 1) + ') span:nth-child(4) span.text-yellow')
@@ -95,7 +96,7 @@ context('MEMPOOL ENDORSEMENT', () => {
       .then(store => {
         store.select('mempool').subscribe(mempool => {
           const mempoolEndorsements = mempool.endorsementState.endorsements;
-          if (mempoolEndorsements) {
+          if (mempoolEndorsements.length > 0) {
             if (sorted && !checked) {
               checked = true;
               mempoolEndorsements.forEach((e, i) => {
@@ -128,7 +129,7 @@ context('MEMPOOL ENDORSEMENT', () => {
       .then(store => {
         store.select('mempool').subscribe(mempool => {
           const mempoolEndorsements = mempool.endorsementState.endorsements;
-          if (mempoolEndorsements) {
+          if (mempoolEndorsements.length > 0) {
             if (sorted && !checked) {
               checked = true;
               mempoolEndorsements.forEach((e, i) => {
@@ -189,7 +190,7 @@ context('MEMPOOL ENDORSEMENT', () => {
       .its('store')
       .then(store => {
         store.select('mempool').subscribe(mempool => {
-          if (mempool.endorsementState.endorsements.length) {
+          if (mempool.endorsementState.endorsements.length > 0) {
             const stats = mempool.endorsementState.statistics;
             if (!haveValue) {
               haveValue = true;

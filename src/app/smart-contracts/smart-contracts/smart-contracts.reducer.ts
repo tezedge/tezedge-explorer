@@ -31,7 +31,6 @@ const initialState: SmartContractsState = {
     previousStep: null
   },
   result: undefined,
-  blockLevel: 0,
   blockHashContext: {
     hashes: [],
     activeIndex: 0
@@ -45,7 +44,6 @@ export function reducer(state: SmartContractsState = initialState, action: Smart
     case SMART_CONTRACTS_LOAD: {
       return {
         ...state,
-        blockLevel: action.payload.blockLevel,
         blockHashContext: {
           ...state.blockHashContext,
           activeIndex: state.blockHashContext.hashes.indexOf(action.payload.blockHash)

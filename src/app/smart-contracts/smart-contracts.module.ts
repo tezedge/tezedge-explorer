@@ -26,16 +26,16 @@ export const myMonacoLoad = () => {
         [/\[notice.*/, 'custom-notice'],
         [/\[info.*/, 'custom-info'],
         [/\[[a-zA-Z 0-9:]+\]/, 'custom-date'],
-        [/[A-Z][A-Z]+/, 'primitive'],
         [/[0-9]+/, 'number'],
         [/(%[\w]+)/, 'percentValue'],
         [/"(.*?)"/g, 'string'],
         [/#.*$/, 'comment'],
         [/(code|storage|parameter)/, 'definition'],
-        [/[A-Z][a-z]+/, 'constant'],
-        [/(?<=\()(.*?)(?= +)/, 'typeitalic'],
-        [/[a-z]|[A-Z]+/, 'type'],
-        [/[_]+/, 'type'],
+        [/\b[A-Z][a-z]*\b/, 'number'],
+        [/[a-z]+(?:_[a-z]+)/gm, 'type'],
+        [/[a-z]+/, 'type'],
+        [/[A-Z]+(?:_[A-Z]+)/gm, 'primitive'],
+        [/[A-Z]+/, 'primitive'],
         [/({|}|;|:)/, 'white'],
         [/[(\[]/, 'white'],
         [/[)\]]/, 'white'],
@@ -54,7 +54,7 @@ export const myMonacoLoad = () => {
       { token: 'custom-date', foreground: '#008800' },
       { token: 'bracket', foreground: '#dcdcdc' },
       { token: 'brackets', foreground: '#dcdcdc' },
-      { token: 'number', foreground: '#b5cea8' },
+      { token: 'number', foreground: '#ffa313' },
       { token: 'constant', foreground: '#d0d7b0' },
       { token: 'string', foreground: '#ce9178' },
       { token: 'primitive', foreground: '#d0d7b0' },
@@ -79,40 +79,11 @@ export const myMonacoLoad = () => {
       'minimapSlider.hoverBackground': '#e8e8e819',
       'minimapSlider.activeBackground': '#d0d0d04f',
       'scrollbarSlider.background': '#ffffff40',
-      "editor.renderLineHighlight": "gutter",
     }
   });
 
   (window as any).monaco.languages.registerCompletionItemProvider('michelson', {
-    provideCompletionItems: () => {
-      const suggestions = [
-        {
-          label: 'simpleText',
-          kind: (window as any).monaco.languages.CompletionItemKind.Text
-        }, {
-          label: 'testing',
-          kind: (window as any).monaco.languages.CompletionItemKind.Keyword,
-          insertText: {
-            value: 'testing(${1:condition})'
-          }
-        },
-        {
-          label: 'ifelse',
-          kind: (window as any).monaco.languages.CompletionItemKind.Snippet,
-          insertText: {
-            value: [
-              'if (${1:condition}) {',
-              '\t$0',
-              '} else {',
-              '\t',
-              '}'
-            ].join('\n')
-          },
-          documentation: 'If-Else Statement'
-        }
-      ];
-      return { suggestions: primitives() };
-    }
+    provideCompletionItems: () => ({ suggestions: primitives() })
   });
 
 };

@@ -24,7 +24,7 @@
 
     .margin-view-overlays .line-numbers {
       display: grid;
-      grid-template-columns: 0.6fr 0.4fr;
+      grid-template-columns: 55% 45%;
 
       &.active-line-number span:first-child {
         color: $foreground;
@@ -32,7 +32,12 @@
 
       .line {
         color: $foreground-4;
+        padding-left: 4px;
       }
+    }
+
+    .inline-selected-text {
+      color: $foreground-9 !important;
     }
   }
 }

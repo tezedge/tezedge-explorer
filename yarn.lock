@@ -1240,10 +1240,10 @@
   "resolved" "https://registry.npmjs.org/@csstools/convert-colors/-/convert-colors-1.4.0.tgz"
   "version" "1.4.0"
 
-"@cypress/request@^2.88.6":
-  "integrity" "sha512-z0UxBE/+qaESAHY9p9sM2h8Y4XqtsbDCt0/DPOrqA/RZgKi4PkxdpXyK4wCCnSk1xHqWHZZAE+gV6aDAR6+caQ=="
-  "resolved" "https://registry.npmjs.org/@cypress/request/-/request-2.88.6.tgz"
-  "version" "2.88.6"
+"@cypress/request@^2.88.10":
+  "integrity" "sha512-Zp7F+R93N0yZyG34GutyTNr+okam7s/Fzc1+i3kcqOP8vk6OuajuE9qZJ6Rs+10/1JFtXFYMdyarnU1rZuJesg=="
+  "resolved" "https://registry.npmjs.org/@cypress/request/-/request-2.88.10.tgz"
+  "version" "2.88.10"
   dependencies:
     "aws-sign2" "~0.7.0"
     "aws4" "^1.8.0"
@@ -1252,8 +1252,7 @@
     "extend" "~3.0.2"
     "forever-agent" "~0.6.1"
     "form-data" "~2.3.2"
-    "har-validator" "~5.1.3"
-    "http-signature" "~1.2.0"
+    "http-signature" "~1.3.6"
     "is-typedarray" "~1.0.0"
     "isstream" "~0.1.2"
     "json-stringify-safe" "~5.0.1"
@@ -1950,10 +1949,10 @@
   "resolved" "https://registry.npmjs.org/@types/selenium-webdriver/-/selenium-webdriver-3.0.17.tgz"
   "version" "3.0.17"
 
-"@types/sinonjs__fake-timers@^6.0.2":
-  "integrity" "sha512-dIPoZ3g5gcx9zZEszaxLSVTvMReD3xxyyDnQUjA6IYDG9Ba2AV0otMPs+77sG9ojB4Qr2N2Vk5RnKeuA0X/0bg=="
-  "resolved" "https://registry.npmjs.org/@types/sinonjs__fake-timers/-/sinonjs__fake-timers-6.0.2.tgz"
-  "version" "6.0.2"
+"@types/sinonjs__fake-timers@8.1.1":
+  "integrity" "sha512-0kSuKjAS0TrGLJ0M/+8MaFkGsQhZpB6pxOmvS3K8FYI72K//YmdfoW9X2qPsAKh1mkwxGD5zib9s1FIFed6E8g=="
+  "resolved" "https://registry.npmjs.org/@types/sinonjs__fake-timers/-/sinonjs__fake-timers-8.1.1.tgz"
+  "version" "8.1.1"
 
 "@types/sizzle@^2.3.2":
   "integrity" "sha512-7EJYyKTL7tFR8+gDbB6Wwz/arpGa0Mywk1TJbNzKzHtzbwVmY4HR9WqS5VV7dsBUKQmPNr192jHr/VpBluj/hg=="
@@ -2886,7 +2885,7 @@
   "resolved" "https://registry.npmjs.org/buffer-indexof/-/buffer-indexof-1.1.1.tgz"
   "version" "1.1.1"
 
-"buffer@^5.5.0":
+"buffer@^5.5.0", "buffer@^5.6.0":
   "integrity" "sha512-EHcyIPBQ4BSGlvjB16k5KgAJ27CIsHY/2JBmCRReo48y9rQ3MaUzWX3KVlBa4U7MyX02HdVj0K7C3WaB3ju7FQ=="
   "resolved" "https://registry.npmjs.org/buffer/-/buffer-5.7.1.tgz"
   "version" "5.7.1"
@@ -3161,14 +3160,14 @@
   "resolved" "https://registry.npmjs.org/cli-spinners/-/cli-spinners-2.6.0.tgz"
   "version" "2.6.0"
 
-"cli-table3@~0.6.0":
-  "integrity" "sha512-gnB85c3MGC7Nm9I/FkiasNBOKjOiO1RNuXXarQms37q4QMpWdlbBgD/VnOStA2faG1dpXMv31RFApjX1/QdgWQ=="
-  "resolved" "https://registry.npmjs.org/cli-table3/-/cli-table3-0.6.0.tgz"
-  "version" "0.6.0"
+"cli-table3@~0.6.1":
+  "integrity" "sha512-w0q/enDHhPLq44ovMGdQeeDLvwxwavsJX7oQGYt/LrBlYsyaxyDnp6z3QzFut/6kLLKnlcUVJLrpB7KBfgG/RA=="
+  "resolved" "https://registry.npmjs.org/cli-table3/-/cli-table3-0.6.1.tgz"
+  "version" "0.6.1"
   dependencies:
-    "colors" "^1.1.2"
-    "object-assign" "^4.1.0"
     "string-width" "^4.2.0"
+  optionalDependencies:
+    "colors" "1.4.0"
 
 "cli-truncate@^2.1.0":
   "integrity" "sha512-n8fOixwDD6b/ObinzTrp1ZKFzbgvKZvuz/TvejnLn1aQfC6r52XEx85FmuC+3HI+JM7coBRXUvNqEU2PHVrHpg=="
@@ -3350,7 +3349,7 @@
   "resolved" "https://registry.npmjs.org/colorette/-/colorette-2.0.16.tgz"
   "version" "2.0.16"
 
-"colors@^1.1.2", "colors@^1.2.1", "colors@^1.4.0", "colors@1.4.0":
+"colors@^1.2.1", "colors@^1.4.0", "colors@1.4.0":
   "integrity" "sha512-a+UqTh4kgZg/SlGvfbzDHpgRu7AAQOmmqRHJnxhRZICKFUT91brVhNNt58CMWU9PsBbv3PDCZUHbVxuDiH2mtA=="
   "resolved" "https://registry.npmjs.org/colors/-/colors-1.4.0.tgz"
   "version" "1.4.0"
@@ -3876,24 +3875,25 @@
   "resolved" "https://registry.npmjs.org/custom-event/-/custom-event-1.0.1.tgz"
   "version" "1.0.1"
 
-"cypress@^8.7.0":
-  "integrity" "sha512-b1bMC3VQydC6sXzBMFnSqcvwc9dTZMgcaOzT0vpSD+Gq1yFc+72JDWi55sfUK5eIeNLAtWOGy1NNb6UlhMvB+Q=="
-  "resolved" "https://registry.npmjs.org/cypress/-/cypress-8.7.0.tgz"
-  "version" "8.7.0"
+"cypress@^9.5.2":
+  "integrity" "sha512-gYiQYvJozMzDOriUV1rCt6CeRM/pRK4nhwGJj3nJQyX2BoUdTCVwp30xDMKc771HiNVhBtgj5o5/iBdVDVXQUg=="
+  "resolved" "https://registry.npmjs.org/cypress/-/cypress-9.5.2.tgz"
+  "version" "9.5.2"
   dependencies:
-    "@cypress/request" "^2.88.6"
+    "@cypress/request" "^2.88.10"
     "@cypress/xvfb" "^1.2.4"
     "@types/node" "^14.14.31"
-    "@types/sinonjs__fake-timers" "^6.0.2"
+    "@types/sinonjs__fake-timers" "8.1.1"
     "@types/sizzle" "^2.3.2"
     "arch" "^2.2.0"
     "blob-util" "^2.0.2"
     "bluebird" "^3.7.2"
+    "buffer" "^5.6.0"
     "cachedir" "^2.3.0"
     "chalk" "^4.1.0"
     "check-more-types" "^2.24.0"
     "cli-cursor" "^3.1.0"
-    "cli-table3" "~0.6.0"
+    "cli-table3" "~0.6.1"
     "commander" "^5.1.0"
     "common-tags" "^1.8.0"
     "dayjs" "^1.10.4"
@@ -3916,12 +3916,11 @@
     "ospath" "^1.2.2"
     "pretty-bytes" "^5.6.0"
     "proxy-from-env" "1.0.0"
-    "ramda" "~0.27.1"
     "request-progress" "^3.0.0"
+    "semver" "^7.3.2"
     "supports-color" "^8.1.1"
     "tmp" "~0.2.1"
     "untildify" "^4.0.0"
-    "url" "^0.11.0"
     "yauzl" "^2.10.0"
 
 "d3-array@^1.1.1", "d3-array@^1.2.0", "d3-array@1":
@@ -5986,6 +5985,15 @@
     "jsprim" "^1.2.2"
     "sshpk" "^1.7.0"
 
+"http-signature@~1.3.6":
+  "integrity" "sha512-3adrsD6zqo4GsTqtO7FyrejHNv+NgiIfAfv68+jVlFmSr9OGy7zrxONceFRLKvnnZA5jbxQBX1u9PpB6Wi32Gw=="
+  "resolved" "https://registry.npmjs.org/http-signature/-/http-signature-1.3.6.tgz"
+  "version" "1.3.6"
+  dependencies:
+    "assert-plus" "^1.0.0"
+    "jsprim" "^2.0.2"
+    "sshpk" "^1.14.1"
+
 "https-proxy-agent@^2.2.1":
   "integrity" "sha512-OmvfoQ53WLjtA9HeYP9RNrWMJzzAz1JGaSFr1nijg0PVR1JaD/xbJq1mdEIIlxGpXp9eSe/O2LgU9DJmTPd0Eg=="
   "resolved" "https://registry.npmjs.org/https-proxy-agent/-/https-proxy-agent-2.2.4.tgz"
@@ -6810,6 +6818,11 @@
   "resolved" "https://registry.npmjs.org/json-schema/-/json-schema-0.2.3.tgz"
   "version" "0.2.3"
 
+"json-schema@0.4.0":
+  "integrity" "sha512-es94M3nTIfsEPisRafak+HDLfHXnKBhV3vU5eqPcS3flIWqcxJWgXHXiey3YrpaNsanY5ei1VoYEbOzijuq9BA=="
+  "resolved" "https://registry.npmjs.org/json-schema/-/json-schema-0.4.0.tgz"
+  "version" "0.4.0"
+
 "json-stringify-safe@~5.0.1":
   "integrity" "sha1-Epai1Y/UXxmg9s4B1lcB4sc1tus="
   "resolved" "https://registry.npmjs.org/json-stringify-safe/-/json-stringify-safe-5.0.1.tgz"
@@ -6875,6 +6888,16 @@
     "assert-plus" "1.0.0"
     "extsprintf" "1.3.0"
     "json-schema" "0.2.3"
+    "verror" "1.10.0"
+
+"jsprim@^2.0.2":
+  "integrity" "sha512-gqXddjPqQ6G40VdnI6T6yObEC+pDNvyP95wdQhkWkg7crHH3km5qP1FsOXEkzEQwnz6gz5qGTn1c2Y52wP3OyQ=="
+  "resolved" "https://registry.npmjs.org/jsprim/-/jsprim-2.0.2.tgz"
+  "version" "2.0.2"
+  dependencies:
+    "assert-plus" "1.0.0"
+    "extsprintf" "1.3.0"
+    "json-schema" "0.4.0"
     "verror" "1.10.0"
 
 "jszip@^3.1.3":
@@ -9234,11 +9257,6 @@
   "resolved" "https://registry.npmjs.org/querystringify/-/querystringify-2.2.0.tgz"
   "version" "2.2.0"
 
-"ramda@~0.27.1":
-  "integrity" "sha512-PgIdVpn5y5Yns8vqb8FzBUEYn98V3xcPgawAkkgj0YJ0qDsnHCiNmZYfOGMgOvoB0eWFLpYbhxUR3mxfDIMvpw=="
-  "resolved" "https://registry.npmjs.org/ramda/-/ramda-0.27.1.tgz"
-  "version" "0.27.1"
-
 "randombytes@^2.0.1", "randombytes@^2.1.0":
   "integrity" "sha512-vYl3iOX+4CKUWuxGi9Ukhie6fsqXqS9FE2Zaic4tNFD2N2QQaXOMFbuKK4QmDHC0JO6B1Zp41J0LpT0oR68amQ=="
   "resolved" "https://registry.npmjs.org/randombytes/-/randombytes-2.1.0.tgz"
@@ -10331,7 +10349,7 @@
   "resolved" "https://registry.npmjs.org/sprintf-js/-/sprintf-js-1.0.3.tgz"
   "version" "1.0.3"
 
-"sshpk@^1.7.0":
+"sshpk@^1.14.1", "sshpk@^1.7.0":
   "integrity" "sha512-HXXqVUq7+pcKeLqqZj6mHFUMvXtOJt1uoUx09pFW6011inTMxqI8BA8PM95myrIyyKwdnzjdFjLiE6KBPVtJIg=="
   "resolved" "https://registry.npmjs.org/sshpk/-/sshpk-1.16.1.tgz"
   "version" "1.16.1"

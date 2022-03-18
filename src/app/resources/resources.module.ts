@@ -1,16 +1,16 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
-import { ResourcesRoutingModule } from './resources.routing';
-import { ResourcesComponent } from './resources/resources.component';
+import { ResourcesRoutingModule } from '@resources/resources.routing';
 import { TezedgeSharedModule } from '@shared/tezedge-shared.module';
-import { SystemResourcesPanelComponent } from './system-resources-panel/system-resources-panel.component';
-import { SystemResourcesGraphComponent } from './system-resources-graph/system-resources-graph.component';
-import { StorageResourcesComponent } from './storage-resources/storage-resources.component';
-import { StorageResourcesMiniGraphComponent } from './storage-resources-mini-graph/storage-resources-mini-graph.component';
-import { MemoryResourcesComponent } from './memory-resources/memory-resources.component';
-import { SystemResourcesComponent } from './system-resources/system-resources.component';
-import { StorageResourcesOverviewComponent } from './storage-resources-overview/storage-resources-overview.component';
+import { ResourcesComponent } from '@resources/resources/resources.component';
+import { SystemResourcesPanelComponent } from '@resources/system-resources-panel/system-resources-panel.component';
+import { SystemResourcesGraphComponent } from '@resources/system-resources-graph/system-resources-graph.component';
+import { SystemResourcesComponent } from '@resources/system-resources/system-resources.component';
+import { StorageResourcesComponent } from '@resources/storage-resources/storage-resources.component';
+import { StorageResourcesMiniGraphComponent } from '@resources/storage-resources-mini-graph/storage-resources-mini-graph.component';
+import { StorageResourcesOverviewComponent } from '@resources/storage-resources-overview/storage-resources-overview.component';
+import { MemoryResourcesComponent } from '@resources/memory-resources/memory-resources.component';
 
 
 @NgModule({
@@ -18,11 +18,11 @@ import { StorageResourcesOverviewComponent } from './storage-resources-overview/
     ResourcesComponent,
     SystemResourcesPanelComponent,
     SystemResourcesGraphComponent,
+    SystemResourcesComponent,
     StorageResourcesComponent,
     StorageResourcesMiniGraphComponent,
-    MemoryResourcesComponent,
-    SystemResourcesComponent,
     StorageResourcesOverviewComponent,
+    MemoryResourcesComponent,
   ],
   imports: [
     CommonModule,

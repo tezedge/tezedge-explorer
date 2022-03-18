@@ -22,7 +22,7 @@ export class MempoolBakingRightsService {
     );
   }
 
-  getBakingRightDetails(http: string, level: number): Observable<[]> {
+  getBakingRightDetails(http: string, level: number): Observable<MempoolBlockDetails[]> {
     const url = `${http}/dev/shell/automaton/stats/current_head/application?level=${level}`;
     return this.http.get<MempoolBlockDetails[]>(url).pipe(
       tap(this.handleError),
@@ -48,62 +48,62 @@ export class MempoolBakingRightsService {
     }));
   }
 
-  private mapBakingRightsDetails(response: any[]): any {
+  private mapBakingRightsDetails(response: any[]): MempoolBlockDetails[] {
     const result: MempoolBlockDetails[] = [];
-    response.forEach((dr: any) => {
+    response.forEach((detail: any) => {
       const detailResult: MempoolBlockDetails = {
-        blockTimestamp: dr.blockTimestamp,
-        receiveTimestamp: dr.receiveTimestamp,
-        blockHash: dr.blockHash,
-        baker: dr.baker,
-        bakerPriority: dr.bakerPriority,
-        value: dr,
+        blockTimestamp: detail.blockTimestamp,
+        receiveTimestamp: detail.receiveTimestamp,
+        blockHash: detail.blockHash,
+        baker: detail.baker,
+        bakerPriority: detail.bakerPriority,
+        value: detail,
         delta: {
-          precheckStart: dr.precheckStart,
-          precheckEnd: dr.precheckEnd - dr.precheckStart,
+          precheckStart: detail.precheckStart,
+          precheckEnd: detail.precheckEnd - detail.precheckStart,
 
-          downloadBlockHeaderStart: dr.downloadBlockHeaderStart,
-          downloadBlockHeaderEnd: dr.downloadBlockHeaderEnd - dr.downloadBlockHeaderStart,
+          downloadBlockHeaderStart: detail.downloadBlockHeaderStart,
+          downloadBlockHeaderEnd: detail.downloadBlockHeaderEnd - detail.downloadBlockHeaderStart,
 
-          downloadBlockOperationsStart: dr.downloadBlockOperationsStart - dr.downloadBlockHeaderEnd,
-          downloadBlockOperationsEnd: dr.downloadBlockOperationsEnd - dr.downloadBlockOperationsStart,
+          downloadBlockOperationsStart: detail.downloadBlockOperationsStart - detail.downloadBlockHeaderEnd,
+          downloadBlockOperationsEnd: detail.downloadBlockOperationsEnd ? (detail.downloadBlockOperationsEnd - detail.downloadBlockOperationsStart) : 0,
 
-          loadDataStart: dr.loadDataStart - dr.downloadBlockOperationsEnd,
-          loadDataEnd: dr.loadDataEnd - dr.loadDataStart,
+          loadDataStart: detail.loadDataStart - detail.downloadBlockOperationsEnd,
+          loadDataEnd: detail.loadDataEnd - detail.loadDataStart,
 
-          applyBlockStart: dr.applyBlockStart - dr.loadDataEnd,
+          applyBlockStart: detail.applyBlockStart - detail.loadDataEnd,
 
-          protocolTimes: {
-            applyStart: dr.protocolTimes.applyStart - dr.applyBlockStart,
+          protocolTimes: !detail.protocolTimes ? null : {
+            applyStart: detail.protocolTimes.applyStart - detail.applyBlockStart,
 
-            operationsDecodingStart: dr.protocolTimes.operationsDecodingStart - dr.protocolTimes.applyStart,
-            operationsDecodingEnd: dr.protocolTimes.operationsDecodingEnd - dr.protocolTimes.operationsDecodingStart,
+            operationsDecodingStart: detail.protocolTimes.operationsDecodingStart - detail.protocolTimes.applyStart,
+            operationsDecodingEnd: detail.protocolTimes.operationsDecodingEnd - detail.protocolTimes.operationsDecodingStart,
 
-            beginApplicationStart: dr.protocolTimes.beginApplicationStart - dr.protocolTimes.operationsDecodingEnd,
-            beginApplicationEnd: dr.protocolTimes.beginApplicationEnd - dr.protocolTimes.beginApplicationStart,
+            beginApplicationStart: detail.protocolTimes.beginApplicationStart - detail.protocolTimes.operationsDecodingEnd,
+            beginApplicationEnd: detail.protocolTimes.beginApplicationEnd - detail.protocolTimes.beginApplicationStart,
 
-            finalizeBlockStart: dr.protocolTimes.finalizeBlockStart - dr.protocolTimes.beginApplicationEnd,
-            finalizeBlockEnd: dr.protocolTimes.finalizeBlockEnd - dr.protocolTimes.finalizeBlockStart,
+            finalizeBlockStart: detail.protocolTimes.finalizeBlockStart - detail.protocolTimes.beginApplicationEnd,
+            finalizeBlockEnd: detail.protocolTimes.finalizeBlockEnd - detail.protocolTimes.finalizeBlockStart,
 
-            operationsMetadataEncodingStart: dr.protocolTimes.operationsMetadataEncodingStart - dr.protocolTimes.finalizeBlockEnd,
-            operationsMetadataEncodingEnd: dr.protocolTimes.operationsMetadataEncodingEnd - dr.protocolTimes.operationsMetadataEncodingStart,
+            operationsMetadataEncodingStart: detail.protocolTimes.operationsMetadataEncodingStart - detail.protocolTimes.finalizeBlockEnd,
+            operationsMetadataEncodingEnd: detail.protocolTimes.operationsMetadataEncodingEnd - detail.protocolTimes.operationsMetadataEncodingStart,
 
-            collectNewRollsOwnerSnapshotsStart: dr.protocolTimes.collectNewRollsOwnerSnapshotsStart - dr.protocolTimes.operationsMetadataEncodingEnd,
-            collectNewRollsOwnerSnapshotsEnd: dr.protocolTimes.collectNewRollsOwnerSnapshotsEnd - dr.protocolTimes.collectNewRollsOwnerSnapshotsStart,
+            collectNewRollsOwnerSnapshotsStart: detail.protocolTimes.collectNewRollsOwnerSnapshotsStart - detail.protocolTimes.operationsMetadataEncodingEnd,
+            collectNewRollsOwnerSnapshotsEnd: detail.protocolTimes.collectNewRollsOwnerSnapshotsEnd - detail.protocolTimes.collectNewRollsOwnerSnapshotsStart,
 
-            commitStart: dr.protocolTimes.commitStart - dr.protocolTimes.collectNewRollsOwnerSnapshotsEnd,
-            commitEnd: dr.protocolTimes.commitEnd - dr.protocolTimes.commitStart,
+            commitStart: detail.protocolTimes.commitStart - detail.protocolTimes.collectNewRollsOwnerSnapshotsEnd,
+            commitEnd: detail.protocolTimes.commitEnd - detail.protocolTimes.commitStart,
 
-            applyEnd: dr.protocolTimes.applyEnd - dr.protocolTimes.commitEnd
+            applyEnd: detail.protocolTimes.applyEnd - detail.protocolTimes.commitEnd
           },
 
-          applyBlockEnd: dr.applyBlockEnd - dr.protocolTimes.applyEnd,
+          applyBlockEnd: detail.applyBlockEnd - (detail.protocolTimes?.applyEnd ?? null),
 
-          storeResultStart: dr.storeResultStart - dr.applyBlockEnd,
-          storeResultEnd: dr.storeResultEnd - dr.storeResultStart,
+          storeResultStart: detail.storeResultStart - detail.applyBlockEnd,
+          storeResultEnd: detail.storeResultEnd - detail.storeResultStart,
 
-          sendStart: dr.sendStart - dr.precheckEnd,
-          sendEnd: dr.sendEnd - dr.sendStart,
+          sendStart: detail.sendStart - detail.precheckEnd,
+          sendEnd: detail.sendEnd - detail.sendStart,
         }
       };
       result.push(detailResult);

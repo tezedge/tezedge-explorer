@@ -22,7 +22,7 @@ steps:
       - build
 
   - name: test-app
-    image: cypress/included:6.2.1
+    image: cypress/included:9.5.2
     commands:
       - cypress run --spec "cypress/integration/app/app.spec.js"
     environment:
@@ -31,7 +31,7 @@ steps:
       - build
 
   - name: test-logs
-    image: cypress/included:6.2.1
+    image: cypress/included:9.5.2
     commands:
       - cypress run --spec "cypress/integration/logs/logs.spec.js"
     environment:
@@ -40,7 +40,7 @@ steps:
       - build
 
   - name: test-mempool-operations
-    image: cypress/included:6.2.1
+    image: cypress/included:9.5.2
     commands:
       - cypress run --spec "cypress/integration/mempool/mempool-operation.spec.js"
     environment:
@@ -49,7 +49,7 @@ steps:
       - build
 
   - name: test-mempool-baking-rights
-    image: cypress/included:6.2.1
+    image: cypress/included:9.5.2
     commands:
       - cypress run --spec "cypress/integration/mempool/mempool-baking-rights.spec.js"
     environment:
@@ -58,7 +58,7 @@ steps:
       - build
 
   - name: test-mempool-block-application
-    image: cypress/included:6.2.1
+    image: cypress/included:9.5.2
     commands:
       - cypress run --spec "cypress/integration/mempool/mempool-block-application.spec.js"
     environment:
@@ -67,7 +67,7 @@ steps:
       - build
 
   - name: test-mempool-endorsements
-    image: cypress/included:6.2.1
+    image: cypress/included:9.5.2
     commands:
       - cypress run --spec "cypress/integration/mempool/mempool-endorsement.spec.js"
     environment:
@@ -76,7 +76,7 @@ steps:
       - build
 
   - name: test-mempool-statistics
-    image: cypress/included:6.2.1
+    image: cypress/included:9.5.2
     commands:
       - cypress run --spec "cypress/integration/mempool/mempool-statistics.spec.js"
     environment:
@@ -85,7 +85,7 @@ steps:
       - build
 
   - name: test-github-version
-    image: cypress/included:6.2.1
+    image: cypress/included:9.5.2
     commands:
       - cypress run --spec "cypress/integration/github-version/github-version.spec.js"
     environment:
@@ -94,7 +94,7 @@ steps:
       - build
 
   - name: test-network
-    image: cypress/included:6.2.1
+    image: cypress/included:9.5.2
     commands:
       - cypress run --spec "cypress/integration/network/network-action/network.spec.js"
     environment:
@@ -103,7 +103,7 @@ steps:
       - build
 
   - name: test-open-api
-    image: cypress/included:6.2.1
+    image: cypress/included:9.5.2
     commands:
       - cypress run --spec "cypress/integration/open-api/open-api.spec.js"
     environment:
@@ -112,7 +112,7 @@ steps:
       - build
 
   - name: test-system-resources
-    image: cypress/included:6.2.1
+    image: cypress/included:9.5.2
     commands:
       - cypress run --spec "cypress/integration/resources/system-resources.spec.js"
     environment:
@@ -121,7 +121,7 @@ steps:
       - build
 
   - name: test-storage-resources
-    image: cypress/included:6.2.1
+    image: cypress/included:9.5.2
     commands:
       - cypress run --spec "cypress/integration/resources/storage-resources.spec.js"
     environment:
@@ -130,7 +130,7 @@ steps:
       - build
 
   - name: test-memory-resources
-    image: cypress/included:6.2.1
+    image: cypress/included:9.5.2
     commands:
       - cypress run --spec "cypress/integration/resources/memory-resources.spec.js"
     environment:
@@ -139,7 +139,7 @@ steps:
       - build
 
   - name: test-routing
-    image: cypress/included:6.2.1
+    image: cypress/included:9.5.2
     commands:
       - cypress run --spec "cypress/integration/routing/routing.spec.js"
     environment:
@@ -148,7 +148,7 @@ steps:
       - build
 
   - name: test-sandbox
-    image: cypress/included:6.2.1
+    image: cypress/included:9.5.2
     commands:
       - cypress run --spec "cypress/integration/sandbox/sandbox.spec.js"
     environment:
@@ -157,7 +157,7 @@ steps:
       - build
 
   - name: test-settings-node
-    image: cypress/included:6.2.1
+    image: cypress/included:9.5.2
     commands:
       - cypress run --spec "cypress/integration/settings-node/settings-node.spec.js"
     environment:
@@ -166,7 +166,7 @@ steps:
       - build
 
   - name: test-error-popup
-    image: cypress/included:6.2.1
+    image: cypress/included:9.5.2
     commands:
       - cypress run --spec "cypress/integration/shared/error-popup.spec.js"
     environment:
@@ -175,7 +175,7 @@ steps:
       - build
 
   - name: test-loading-spinner
-    image: cypress/included:6.2.1
+    image: cypress/included:9.5.2
     commands:
       - cypress run --spec "cypress/integration/shared/loading-spinner.spec.js"
     environment:
@@ -184,7 +184,7 @@ steps:
       - build
 
   - name: test-storage-action
-    image: cypress/included:6.2.1
+    image: cypress/included:9.5.2
     commands:
       - cypress run --spec "cypress/integration/storage/storage-action/storage-action.spec.js"
     environment:
@@ -193,7 +193,7 @@ steps:
       - build
 
   - name: test-storage-block
-    image: cypress/included:6.2.1
+    image: cypress/included:9.5.2
     commands:
       - cypress run --spec "cypress/integration/storage/storage-block/storage-block.spec.js"
     environment:
@@ -202,7 +202,7 @@ steps:
       - build
 
   - name: test-state-machine
-    image: cypress/included:6.2.1
+    image: cypress/included:9.5.2
     commands:
       - cypress run --spec "cypress/integration/state-machine/state-machine.spec.js"
     environment:
@@ -211,7 +211,7 @@ steps:
       - build
 
   - name: test-smart-contracts
-    image: cypress/included:6.2.1
+    image: cypress/included:9.5.2
     commands:
       - cypress run --spec "cypress/integration/smart-contracts/smart-contracts.spec.js"
     environment:
@@ -319,7 +319,7 @@ steps:
       - build
 
   - name: test-app
-    image: cypress/included:6.2.1
+    image: cypress/included:9.5.2
     commands:
       - cypress run --spec "cypress/integration/app/app.spec.js"
     environment:
@@ -328,7 +328,7 @@ steps:
       - build
 
   - name: test-logs
-    image: cypress/included:6.2.1
+    image: cypress/included:9.5.2
     commands:
       - cypress run --spec "cypress/integration/logs/logs.spec.js"
     environment:
@@ -337,7 +337,7 @@ steps:
       - build
 
   - name: test-mempool-operations
-    image: cypress/included:6.2.1
+    image: cypress/included:9.5.2
     commands:
       - cypress run --spec "cypress/integration/mempool/mempool-operation.spec.js"
     environment:
@@ -346,7 +346,7 @@ steps:
       - build
 
   - name: test-mempool-baking-rights
-    image: cypress/included:6.2.1
+    image: cypress/included:9.5.2
     commands:
       - cypress run --spec "cypress/integration/mempool/mempool-baking-rights.spec.js"
     environment:
@@ -355,7 +355,7 @@ steps:
       - build
 
   - name: test-mempool-block-application
-    image: cypress/included:6.2.1
+    image: cypress/included:9.5.2
     commands:
       - cypress run --spec "cypress/integration/mempool/mempool-block-application.spec.js"
     environment:
@@ -364,7 +364,7 @@ steps:
       - build
 
   - name: test-mempool-endorsements
-    image: cypress/included:6.2.1
+    image: cypress/included:9.5.2
     commands:
       - cypress run --spec "cypress/integration/mempool/mempool-endorsement.spec.js"
     environment:
@@ -373,7 +373,7 @@ steps:
       - build
 
   - name: test-mempool-statistics
-    image: cypress/included:6.2.1
+    image: cypress/included:9.5.2
     commands:
       - cypress run --spec "cypress/integration/mempool/mempool-statistics.spec.js"
     environment:
@@ -382,7 +382,7 @@ steps:
       - build
 
   - name: test-github-version
-    image: cypress/included:6.2.1
+    image: cypress/included:9.5.2
     commands:
       - cypress run --spec "cypress/integration/github-version/github-version.spec.js"
     environment:
@@ -391,7 +391,7 @@ steps:
       - build
 
   - name: test-network
-    image: cypress/included:6.2.1
+    image: cypress/included:9.5.2
     commands:
       - cypress run --spec "cypress/integration/network/network-action/network.spec.js"
     environment:
@@ -400,7 +400,7 @@ steps:
       - build
 
   - name: test-open-api
-    image: cypress/included:6.2.1
+    image: cypress/included:9.5.2
     commands:
       - cypress run --spec "cypress/integration/open-api/open-api.spec.js"
     environment:
@@ -409,7 +409,7 @@ steps:
       - build
 
   - name: test-system-resources
-    image: cypress/included:6.2.1
+    image: cypress/included:9.5.2
     commands:
       - cypress run --spec "cypress/integration/resources/system-resources.spec.js"
     environment:
@@ -418,7 +418,7 @@ steps:
       - build
 
   - name: test-storage-resources
-    image: cypress/included:6.2.1
+    image: cypress/included:9.5.2
     commands:
       - cypress run --spec "cypress/integration/resources/storage-resources.spec.js"
     environment:
@@ -427,7 +427,7 @@ steps:
       - build
 
   - name: test-memory-resources
-    image: cypress/included:6.2.1
+    image: cypress/included:9.5.2
     commands:
       - cypress run --spec "cypress/integration/resources/memory-resources.spec.js"
     environment:
@@ -436,7 +436,7 @@ steps:
       - build
 
   - name: test-routing
-    image: cypress/included:6.2.1
+    image: cypress/included:9.5.2
     commands:
       - cypress run --spec "cypress/integration/routing/routing.spec.js"
     environment:
@@ -445,7 +445,7 @@ steps:
       - build
 
   - name: test-sandbox
-    image: cypress/included:6.2.1
+    image: cypress/included:9.5.2
     commands:
       - cypress run --spec "cypress/integration/sandbox/sandbox.spec.js"
     environment:
@@ -454,7 +454,7 @@ steps:
       - build
 
   - name: test-settings-node
-    image: cypress/included:6.2.1
+    image: cypress/included:9.5.2
     commands:
       - cypress run --spec "cypress/integration/settings-node/settings-node.spec.js"
     environment:
@@ -463,7 +463,7 @@ steps:
       - build
 
   - name: test-error-popup
-    image: cypress/included:6.2.1
+    image: cypress/included:9.5.2
     commands:
       - cypress run --spec "cypress/integration/shared/error-popup.spec.js"
     environment:
@@ -472,7 +472,7 @@ steps:
       - build
 
   - name: test-loading-spinner
-    image: cypress/included:6.2.1
+    image: cypress/included:9.5.2
     commands:
       - cypress run --spec "cypress/integration/shared/loading-spinner.spec.js"
     environment:
@@ -481,7 +481,7 @@ steps:
       - build
 
   - name: test-storage-action
-    image: cypress/included:6.2.1
+    image: cypress/included:9.5.2
     commands:
       - cypress run --spec "cypress/integration/storage/storage-action/storage-action.spec.js"
     environment:
@@ -490,7 +490,7 @@ steps:
       - build
 
   - name: test-storage-block
-    image: cypress/included:6.2.1
+    image: cypress/included:9.5.2
     commands:
       - cypress run --spec "cypress/integration/storage/storage-block/storage-block.spec.js"
     environment:
@@ -499,7 +499,7 @@ steps:
       - build
 
   - name: test-state-machine
-    image: cypress/included:6.2.1
+    image: cypress/included:9.5.2
     commands:
       - cypress run --spec "cypress/integration/state-machine/state-machine.spec.js"
     environment:
@@ -508,7 +508,7 @@ steps:
       - build
 
   - name: test-smart-contracts
-    image: cypress/included:6.2.1
+    image: cypress/included:9.5.2
     commands:
       - cypress run --spec "cypress/integration/smart-contracts/smart-contracts.spec.js"
     environment:

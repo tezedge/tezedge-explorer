@@ -3,6 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { StorageComponent } from './storage.component';
 import { StorageBlockComponent } from './storage-block/storage-block.component';
 import { StorageGuard } from './storage.guard';
+import { StorageRequestComponent } from '@storage/storage-request/storage-request.component';
 
 const routes: Routes = [
   {
@@ -11,7 +12,7 @@ const routes: Routes = [
     component: StorageComponent,
     children: [
       {
-        path: '',
+        path: 'blocks',
         component: StorageBlockComponent,
         children: [
           {
@@ -19,13 +20,22 @@ const routes: Routes = [
             component: StorageBlockComponent
           }
         ]
-      }
+      },
+      {
+        path: 'requests',
+        component: StorageRequestComponent
+      },
+      {
+        path: '',
+        pathMatch: 'full',
+        redirectTo: 'blocks'
+      },
     ]
   },
   {
     path: '**',
     pathMatch: 'full',
-    redirectTo: ''
+    redirectTo: 'blocks'
   }
 ];
 

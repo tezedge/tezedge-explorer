@@ -1,7 +1,7 @@
-import { Action } from '@ngrx/store';
 import { TableSort } from '@shared/types/shared/table-sort.type';
 import { MempoolBakingRight } from '@shared/types/mempool/baking-rights/mempool-baking-right.type';
 import { MempoolBlockDetails } from '@shared/types/mempool/common/mempool-block-details.type';
+import { FeatureAction } from '@shared/types/shared/store/feature-action.type';
 
 enum MempoolBakingRightsActionTypes {
   MEMPOOL_BAKING_RIGHTS_INIT = 'MEMPOOL_BAKING_RIGHTS_INIT',
@@ -24,41 +24,45 @@ export const MEMPOOL_BAKING_RIGHTS_SORT = MempoolBakingRightsActionTypes.MEMPOOL
 export const MEMPOOL_BAKING_RIGHTS_STOP = MempoolBakingRightsActionTypes.MEMPOOL_BAKING_RIGHTS_STOP;
 
 
-export class MempoolBakingRightsInit implements Action {
+interface MempoolBakingRightAction extends FeatureAction<MempoolBakingRightsActionTypes> {
+  readonly type: MempoolBakingRightsActionTypes;
+}
+
+export class MempoolBakingRightsInit implements MempoolBakingRightAction {
   readonly type = MEMPOOL_BAKING_RIGHTS_INIT;
 }
 
-export class MempoolBakingRightsLoad implements Action {
+export class MempoolBakingRightsLoad implements MempoolBakingRightAction {
   readonly type = MEMPOOL_BAKING_RIGHTS_LOAD;
 }
 
-export class MempoolBakingRightsLoadSuccess implements Action {
+export class MempoolBakingRightsLoadSuccess implements MempoolBakingRightAction {
   readonly type = MEMPOOL_BAKING_RIGHTS_LOAD_SUCCESS;
 
   constructor(public payload: { bakingRights: MempoolBakingRight[] }) { }
 }
 
-export class MempoolBakingRightsSort implements Action {
+export class MempoolBakingRightsSort implements MempoolBakingRightAction {
   readonly type = MEMPOOL_BAKING_RIGHTS_SORT;
 
   constructor(public payload: TableSort) { }
 }
 
-export class MempoolBakingRightsDetailsLoad implements Action {
+export class MempoolBakingRightsDetailsLoad implements MempoolBakingRightAction {
   readonly type = MEMPOOL_BAKING_RIGHTS_DETAILS_LOAD;
 }
 
-export class MempoolBakingRightsDeltaSwitch implements Action {
+export class MempoolBakingRightsDeltaSwitch implements MempoolBakingRightAction {
   readonly type = MEMPOOL_BAKING_RIGHTS_DELTA_SWITCH;
 }
 
-export class MempoolBakingRightsDetailsLoadSuccess implements Action {
+export class MempoolBakingRightsDetailsLoadSuccess implements MempoolBakingRightAction {
   readonly type = MEMPOOL_BAKING_RIGHTS_DETAILS_LOAD_SUCCESS;
 
   constructor(public payload: { details: MempoolBlockDetails[] }) { }
 }
 
-export class MempoolBakingRightsStop implements Action {
+export class MempoolBakingRightsStop implements MempoolBakingRightAction {
   readonly type = MEMPOOL_BAKING_RIGHTS_STOP;
 }
 

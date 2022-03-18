@@ -22,7 +22,7 @@ import { Overlay, OverlayRef } from '@angular/cdk/overlay';
 import { ComponentPortal } from '@angular/cdk/portal';
 import { Store } from '@ngrx/store';
 import { State } from '@app/app.reducers';
-import { SystemResourcesActionTypes, SystemResourcesDetailsUpdateAction } from '@resources/system-resources/system-resources.actions';
+import { SYSTEM_RESOURCES_DETAILS_UPDATE, SystemResourcesDetailsUpdateAction } from '@resources/system-resources/system-resources.actions';
 import { SystemResourcesResourceType } from '@shared/types/resources/system/system-resources-panel.type';
 import { fromEvent } from 'rxjs';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
@@ -167,7 +167,7 @@ export class TezedgeChartsTooltipAreaComponent extends TooltipArea implements On
     if (this.resourceType && this.anchorValues[0]) {
       setTimeout(() => {
         this.store.dispatch<SystemResourcesDetailsUpdateAction>({
-          type: SystemResourcesActionTypes.SYSTEM_RESOURCES_DETAILS_UPDATE,
+          type: SYSTEM_RESOURCES_DETAILS_UPDATE,
           payload: {
             type: 'runnerGroups',
             resourceType: this.resourceType,

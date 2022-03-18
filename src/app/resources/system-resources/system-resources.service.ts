@@ -90,11 +90,10 @@ export class SystemResourcesService {
 
       resource.storage = {};
       resource.storage.blockStorage = responseItem.disk.blockStorage / GB_DIVISOR;
-      resource.storage.contextIrmin = responseItem.disk.contextIrmin / GB_DIVISOR;
+      resource.storage.contextStorage = (responseItem.disk.contextIrmin || responseItem.disk.contextStorage) / GB_DIVISOR;
       resource.storage.mainDb = (responseItem.disk.mainDb !== undefined) ? responseItem.disk.mainDb / GB_DIVISOR : undefined;
       resource.storage.debugger = responseItem.disk.debugger / GB_DIVISOR;
-      resource.storage.contextActions = (responseItem.disk.contextActions !== undefined) ? responseItem.disk.contextActions / GB_DIVISOR : undefined;
-      resource.storage.contextMerkleRocksDb = (responseItem.disk.contextMerkleRocksdb !== undefined) ? responseItem.disk.contextMerkleRocksdb / GB_DIVISOR : undefined;
+      resource.storage.contextStats = (responseItem.disk.contextStats !== undefined) ? responseItem.disk.contextStats / GB_DIVISOR : undefined;
       resource.storage.total = Object.values(resource.storage).filter(Boolean).reduce((total: number, current: number) => total + current, 0);
 
       resource.network = {};
@@ -201,27 +200,20 @@ export class SystemResourcesService {
       series: this.getSeries(resources, 'storage.blockStorage')
     });
     chartData.storage.series.push({
-      name: 'CONTEXT IRMIN',
-      series: this.getSeries(resources, 'storage.contextIrmin')
+      name: 'CONTEXT STORAGE',
+      series: this.getSeries(resources, 'storage.contextStorage')
     });
     chartData.storage.series.push({
       name: 'DEBUGGER',
       series: this.getSeries(resources, 'storage.debugger')
     });
-    chartData.storage.labels = ['Total', 'Block Storage', 'Context Irmin', 'Debugger'];
-    if (resources[0].storage.contextActions !== undefined) {
+    chartData.storage.labels = ['Total', 'Block Storage', 'Context Storage', 'Debugger'];
+    if (resources[0].storage.contextStats !== undefined) {
       chartData.storage.series.push({
-        name: 'CONTEXT ACTIONS',
-        series: this.getSeries(resources, 'storage.contextActions')
+        name: 'CONTEXT STATS',
+        series: this.getSeries(resources, 'storage.contextStats')
       });
-      chartData.storage.labels.push('Context Actions');
-    }
-    if (resources[0].storage.contextMerkleRocksDb !== undefined) {
-      chartData.storage.series.push({
-        name: 'CONTEXT MERKLE ROCKS DB',
-        series: this.getSeries(resources, 'storage.contextMerkleRocksDb')
-      });
-      chartData.storage.labels.push('Context Merkle Rocks DB');
+      chartData.storage.labels.push('Context Stats');
     }
     if (resources[0].storage.mainDb !== undefined) {
       chartData.storage.series.push({

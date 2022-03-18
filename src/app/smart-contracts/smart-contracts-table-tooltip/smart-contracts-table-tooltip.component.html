@@ -1,4 +1,4 @@
-<div class="custom-tooltip-template padding-left-remove">
+<div *ngIf="traceStatus; else loading" class="custom-tooltip-template padding-left-remove">
   <div class="foreground" fxLayout="column" fxLayoutGap="7px">
     <div>
       <span class="foreground-6 padding-left-10">Trace gas:</span>
@@ -24,3 +24,8 @@
     </div>
   </div>
 </div>
+<ng-template #loading>
+  <div class="custom-tooltip-template padding-left-remove">
+    <div class="foreground-6 padding-horizontal-10">Loading...</div>
+  </div>
+</ng-template>

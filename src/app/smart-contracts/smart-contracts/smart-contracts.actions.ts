@@ -73,6 +73,13 @@ export class SmartContractsExecuteContractSuccessAction implements Action {
   constructor(public payload: { trace: SmartContractTrace[], gasTrace: number[], result: SmartContractResult }) { }
 }
 
+export class SmartContractsStartDebuggingAction implements Action {
+  readonly type = SMART_CONTRACTS_START_DEBUGGING;
+}
+export class SmartContractsStopDebuggingAction implements Action {
+  readonly type = SMART_CONTRACTS_STOP_DEBUGGING;
+}
+
 export class SmartContractsDebugStepAction implements Action {
   readonly type = SMART_CONTRACTS_DEBUG_STEP;
 
@@ -89,6 +96,8 @@ export type SmartContractAction = SmartContractsLoadAction
   | SmartContractsSetActiveContractSuccessAction
   | SmartContractsExecuteContractAction
   | SmartContractsExecuteContractSuccessAction
+  | SmartContractsStartDebuggingAction
+  | SmartContractsStopDebuggingAction
   | SmartContractsDebugStepAction
   | SmartContractsStopAction
   | any

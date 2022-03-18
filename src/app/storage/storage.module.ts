@@ -10,6 +10,7 @@ import { StorageActionComponent } from './storage-action/storage-action.componen
 import { StorageSearchComponent } from './storage-search/storage-search.component';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { FormsModule } from '@angular/forms';
+import { StorageRequestComponent } from './storage-request/storage-request.component';
 
 
 @NgModule({
@@ -19,6 +20,7 @@ import { FormsModule } from '@angular/forms';
     StorageBlockDetailsComponent,
     StorageActionComponent,
     StorageSearchComponent,
+    StorageRequestComponent,
   ],
   imports: [
     CommonModule,

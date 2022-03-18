@@ -6,7 +6,8 @@ import { State } from '@app/app.reducers';
 import { BreakpointObserver } from '@angular/cdk/layout';
 import { delay, filter, skip } from 'rxjs/operators';
 import {
-  SystemResourcesActionTypes,
+  SYSTEM_RESOURCES_CLOSE,
+  SYSTEM_RESOURCES_DETAILS_UPDATE, SYSTEM_RESOURCES_LOAD,
   SystemResourcesCloseAction,
   SystemResourcesDetailsUpdateAction,
   SystemResourcesLoadAction
@@ -112,7 +113,7 @@ export class SystemResourcesComponent implements OnInit, OnDestroy {
       .subscribe(payload => {
         this.zone.run(() =>
           this.store.dispatch<SystemResourcesDetailsUpdateAction>({
-            type: SystemResourcesActionTypes.SYSTEM_RESOURCES_DETAILS_UPDATE,
+            type: SYSTEM_RESOURCES_DETAILS_UPDATE,
             payload
           })
         );
@@ -131,12 +132,12 @@ export class SystemResourcesComponent implements OnInit, OnDestroy {
 
   private getResources(): void {
     this.store.dispatch<SystemResourcesLoadAction>({
-      type: SystemResourcesActionTypes.SYSTEM_RESOURCES_LOAD,
+      type: SYSTEM_RESOURCES_LOAD,
       payload: { isSmallDevice: this.isSmallDevice }
     });
   }
 
   ngOnDestroy(): void {
-    this.store.dispatch<SystemResourcesCloseAction>({ type: SystemResourcesActionTypes.SYSTEM_RESOURCES_CLOSE });
+    this.store.dispatch<SystemResourcesCloseAction>({ type: SYSTEM_RESOURCES_CLOSE });
   }
 }

@@ -39,10 +39,10 @@ steps:
     depends_on:
       - build
 
-  - name: test-mempool-operations
+  - name: test-mempool-pending
     image: cypress/included:9.5.2
     commands:
-      - cypress run --spec "cypress/integration/mempool/mempool-operation.spec.js"
+      - cypress run --spec "cypress/integration/mempool/mempool-pending.spec.js"
     environment:
       CYPRESS_baseUrl: http://frontend-server:80
     depends_on:
@@ -244,7 +244,7 @@ steps:
     depends_on:
       - test-app
       - test-logs
-      - test-mempool-operations
+      - test-mempool-pending
       - test-mempool-baking-rights
       - test-mempool-block-application
       - test-mempool-endorsements
@@ -336,10 +336,10 @@ steps:
     depends_on:
       - build
 
-  - name: test-mempool-operations
+  - name: test-mempool-pending
     image: cypress/included:9.5.2
     commands:
-      - cypress run --spec "cypress/integration/mempool/mempool-operation.spec.js"
+      - cypress run --spec "cypress/integration/mempool/mempool-pending.spec.js"
     environment:
       CYPRESS_baseUrl: http://frontend-server:80
     depends_on:
@@ -541,7 +541,7 @@ steps:
     depends_on:
       - test-app
       - test-logs
-      - test-mempool-operations
+      - test-mempool-pending
       - test-mempool-baking-rights
       - test-mempool-block-application
       - test-mempool-endorsements

@@ -1,10 +1,27 @@
-context('MEMPOOL ENDORSEMENT', () => {
-  beforeEach(() => {
-    cy.visit(Cypress.config().baseUrl + '/#/mempool/endorsements', { timeout: 30000 })
-      .wait(3000);
-  });
+import { testForTezedge } from '../../support';
 
-  it('[MEMPOOL ENDORSEMENT] should have status code 200 for get mempool operations request', () => {
+const beforeEndorsementTest = (test) => {
+  let tested = false;
+  cy.visit(Cypress.config().baseUrl + '/#/mempool/endorsements', { timeout: 100000 })
+    .window()
+    .its('store')
+    .then({ timeout: 6500 }, store => {
+      return new Cypress.Promise((resolve) => {
+        setTimeout(() => resolve(), 6000);
+        store.select('mempool').subscribe(mempool => {
+          if (!tested && mempool.endorsementState.endorsements.length > 0) {
+            tested = true;
+            testForTezedge(test);
+            resolve();
+          }
+        });
+      });
+    });
+};
+
+context('MEMPOOL ENDORSEMENT', () => {
+
+  it('[MEMPOOL ENDORSEMENT] should have status code 200 for get mempool operations request', () => beforeEndorsementTest(() => {
     cy.window()
       .its('store')
       .then(store => {
@@ -20,9 +37,9 @@ context('MEMPOOL ENDORSEMENT', () => {
           });
         });
       });
-  });
+  }));
 
-  it('[MEMPOOL ENDORSEMENT] should create rows for the virtual scroll table', () => {
+  it('[MEMPOOL ENDORSEMENT] should create rows for the virtual scroll table', () => beforeEndorsementTest(() => {
     cy.window()
       .its('store')
       .then(store => {
@@ -33,9 +50,9 @@ context('MEMPOOL ENDORSEMENT', () => {
           }
         });
       });
-  });
+  }));
 
-  it('[MEMPOOL ENDORSEMENT] should display correct color based on status', () => {
+  it('[MEMPOOL ENDORSEMENT] should display correct color based on status', () => beforeEndorsementTest(() => {
     let oneStrike = false;
     cy.window()
       .its('store')
@@ -55,9 +72,9 @@ context('MEMPOOL ENDORSEMENT', () => {
           }
         });
       });
-  });
+  }));
 
-  it('[MEMPOOL ENDORSEMENT] should show red text for big values for delta column', () => {
+  it('[MEMPOOL ENDORSEMENT] should show red text for big values for delta column', () => beforeEndorsementTest(() => {
     cy.window()
       .its('store')
       .then(store => {
@@ -70,9 +87,9 @@ context('MEMPOOL ENDORSEMENT', () => {
           }
         });
       });
-  });
+  }));
 
-  it('[MEMPOOL ENDORSEMENT] should show yellow text for big values for delta column', () => {
+  it('[MEMPOOL ENDORSEMENT] should show yellow text for big values for delta column', () => beforeEndorsementTest(() => {
     cy.window()
       .its('store')
       .then(store => {
@@ -86,9 +103,9 @@ context('MEMPOOL ENDORSEMENT', () => {
           }
         });
       });
-  });
+  }));
 
-  it('[MEMPOOL ENDORSEMENT] should sort column by decode delta', () => {
+  it('[MEMPOOL ENDORSEMENT] should sort column by decode delta', () => beforeEndorsementTest(() => {
     let sorted = false;
     let checked = false;
     cy.window()
@@ -116,9 +133,9 @@ context('MEMPOOL ENDORSEMENT', () => {
           }
         });
       });
-  });
+  }));
 
-  it('[MEMPOOL ENDORSEMENT] should sort column by decode', () => {
+  it('[MEMPOOL ENDORSEMENT] should sort column by decode', () => beforeEndorsementTest(() => {
     let sorted = false;
     let checked = false;
     cy.get('.row.head span:last-child mat-checkbox')
@@ -150,9 +167,9 @@ context('MEMPOOL ENDORSEMENT', () => {
           }
         });
       });
-  });
+  }));
 
-  it('[MEMPOOL ENDORSEMENT] should move searched baker at the top of the table', () => {
+  it('[MEMPOOL ENDORSEMENT] should move searched baker at the top of the table', () => beforeEndorsementTest(() => {
     let haveValue;
     cy.window()
       .its('store')
@@ -182,9 +199,9 @@ context('MEMPOOL ENDORSEMENT', () => {
           }
         });
       });
-  });
+  }));
 
-  it('[MEMPOOL ENDORSEMENT] should display statistics for all types of endorsements', () => {
+  it('[MEMPOOL ENDORSEMENT] should display statistics for all types of endorsements', () => beforeEndorsementTest(() => {
     let haveValue;
     cy.window()
       .its('store')
@@ -222,5 +239,5 @@ context('MEMPOOL ENDORSEMENT', () => {
           }
         });
       });
-  });
+  }));
 });

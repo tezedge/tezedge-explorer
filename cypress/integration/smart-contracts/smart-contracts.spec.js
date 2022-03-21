@@ -1,19 +1,22 @@
-const runInTezedge = (test) => {
-  if (localStorage.getItem('activeNode') === 'tezedge') {
-    test();
-  }
-};
+import { testForTezedge } from '../../support';
 
 const beforeSmartContractTest = (test) => {
+  let tested = false;
   cy.visit(Cypress.config().baseUrl + '/#/contracts', { timeout: 100000 })
-    .get('body')
-    .then(body => {
-      if (body.find('app-smart-contracts app-smart-contracts-table cdk-virtual-scroll-viewport .row.active', { timeout: 10000 }).length > 0) {
-        runInTezedge(test);
-      } else {
-        console.log('not available now');
-      }
-    });
+    .window()
+    .its('store')
+    .then(store => {
+      return new Cypress.Promise((resolve) => {
+        setTimeout(() => resolve(), 12000);
+        store.select('smartContracts').subscribe(smartContracts => {
+          if (!tested && smartContracts.contracts.length > 0) {
+            tested = true;
+            testForTezedge(test);
+            resolve();
+          }
+        });
+      });
+    })
 };
 
 context('SMART CONTRACTS', () => {

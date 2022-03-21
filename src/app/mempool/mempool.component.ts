@@ -12,7 +12,7 @@ export class MempoolComponent {
     { name: 'block application', link: 'block-application' },
     { name: 'baking', link: 'baking' },
     { name: 'endorsements', link: 'endorsements' },
-    { name: 'pending', link: 'operations' },
+    { name: 'pending', link: 'pending' },
     { name: 'statistics', link: 'statistics' },
   ];
 

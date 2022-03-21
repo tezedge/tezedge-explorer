@@ -1,21 +1,33 @@
-import { beforeEachForTezedge, testForTezedge } from '../../support';
+import { testForTezedge } from '../../support';
+
+const beforeStorageResourcesTest = (test) => {
+  let tested = false;
+  cy.visit(Cypress.config().baseUrl + '/#/resources/storage', { timeout: 100000 })
+    .wait(1000)
+    .window()
+    .its('store')
+    .then({ timeout: 10500 }, store => {
+      return new Cypress.Promise((resolve) => {
+        setTimeout(() => resolve(), 10000);
+        store.subscribe(state => {
+          if (!tested && state.storageResourcesState?.storageResources.contextSliceNames) {
+            tested = true;
+            testForTezedge(test);
+            resolve();
+          }
+        });
+      });
+    });
+};
 
 context('STORAGE RESOURCES', () => {
-  beforeEach(() => {
-    beforeEachForTezedge(() => {
-      cy.intercept('GET', '/stats/context*').as('getStorageResources')
-        .visit(Cypress.config().baseUrl + '/#/resources/storage', { timeout: 100000 })
-        .wait('@getStorageResources')
-        .wait(1000);
-    });
-  });
 
-  it('[STORAGE RESOURCES] should parse storage stats RPC response', () => testForTezedge(() => {
+  it('[STORAGE RESOURCES] should parse storage stats RPC response', () => beforeStorageResourcesTest(() => {
     cy.window()
       .its('store')
       .then((store) => {
-        store.select('resources').subscribe(store => {
-          const resources = store.storageResourcesState.storageResources;
+        store.select('resources').subscribe(state => {
+          const resources = state.storageResourcesState.storageResources;
           if (resources) {
             expect(resources).not.to.be.undefined;
             Object.keys(resources).forEach(key => {
@@ -65,7 +77,7 @@ context('STORAGE RESOURCES', () => {
       });
   }));
 
-  it('[STORAGE RESOURCES] should render storage statistics', () => testForTezedge(() => {
+  it('[STORAGE RESOURCES] should render storage statistics', () => beforeStorageResourcesTest(() => {
     cy.window()
       .its('store')
       .then((store) => {
@@ -87,7 +99,7 @@ context('STORAGE RESOURCES', () => {
       });
   }));
 
-  it('[STORAGE RESOURCES] should display switcher', () => testForTezedge(() => {
+  it('[STORAGE RESOURCES] should display switcher', () => beforeStorageResourcesTest(() => {
     cy.window()
       .its('store')
       .then((store) => {
@@ -111,7 +123,7 @@ context('STORAGE RESOURCES', () => {
       });
   }));
 
-  it('[STORAGE RESOURCES] should change context on switcher click', () => testForTezedge(() => {
+  it('[STORAGE RESOURCES] should change context on switcher click', () => beforeStorageResourcesTest(() => {
     cy.window()
       .its('store')
       .then((store) => {

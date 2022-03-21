@@ -5,7 +5,7 @@ const beforeSmartContractTest = (test) => {
   cy.visit(Cypress.config().baseUrl + '/#/contracts', { timeout: 100000 })
     .window()
     .its('store')
-    .then(store => {
+    .then({ timeout: 12500 }, store => {
       return new Cypress.Promise((resolve) => {
         setTimeout(() => resolve(), 12000);
         store.select('smartContracts').subscribe(smartContracts => {
@@ -16,7 +16,7 @@ const beforeSmartContractTest = (test) => {
           }
         });
       });
-    })
+    });
 };
 
 context('SMART CONTRACTS', () => {

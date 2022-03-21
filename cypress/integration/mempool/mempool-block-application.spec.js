@@ -92,11 +92,11 @@ context('MEMPOOL BLOCK APPLICATION', () => {
           if (!routed && store.mempool.blockApplicationState.chartLines.length) {
             routed = true;
             cy.get('app-mempool-block-application app-tezedge-line-chart svg .tooltip-area')
-              .click(300, 20)
+              .click(300, 20, { force: true })
               .wait(1000)
               .get('app-graph-redirection-overlay .redirection-overlay').should('be.visible')
               .get('app-graph-redirection-overlay .redirection-overlay .pointer')
-              .eq(0).click()
+              .eq(0).click({ force: true })
               .wait(1000)
               .get('@popup').should('be.called');
           }
@@ -113,11 +113,11 @@ context('MEMPOOL BLOCK APPLICATION', () => {
           if (!routed && store.mempool.blockApplicationState.chartLines.length) {
             routed = true;
             cy.get('app-mempool-block-application app-tezedge-line-chart svg .tooltip-area')
-              .click(300, 20)
+              .click(300, 20, { force: true })
               .wait(1000)
               .get('app-graph-redirection-overlay .redirection-overlay').should('be.visible')
               .get('app-graph-redirection-overlay .redirection-overlay .pointer')
-              .eq(1).click()
+              .eq(1).click({ force: true })
               .wait(1000)
               .url().should('include', '/resources');
           }
@@ -134,11 +134,11 @@ context('MEMPOOL BLOCK APPLICATION', () => {
           if (!routed && store.mempool.blockApplicationState.chartLines.length) {
             routed = true;
             cy.get('app-mempool-block-application app-tezedge-line-chart svg .tooltip-area')
-              .click(300, 20)
+              .click(300, 20, { force: true })
               .wait(1000)
               .get('app-graph-redirection-overlay .redirection-overlay').should('be.visible')
               .get('app-graph-redirection-overlay .redirection-overlay .pointer')
-              .eq(2).click()
+              .eq(2).click({ force: true })
               .wait(1000)
               .url().should('include', '/storage');
           }
@@ -155,11 +155,11 @@ context('MEMPOOL BLOCK APPLICATION', () => {
           if (!routed && store.mempool.blockApplicationState.chartLines.length) {
             routed = true;
             cy.get('app-mempool-block-application app-tezedge-line-chart svg .tooltip-area')
-              .click(300, 20)
+              .click(300, 20, { force: true })
               .wait(1000)
               .get('app-graph-redirection-overlay .redirection-overlay').should('be.visible')
               .get('app-graph-redirection-overlay .redirection-overlay .pointer')
-              .eq(3).click()
+              .eq(3).click({ force: true })
               .wait(1000)
               .url().should('include', '/network?timestamp=');
           }
@@ -176,11 +176,11 @@ context('MEMPOOL BLOCK APPLICATION', () => {
           if (!routed && store.mempool.blockApplicationState.chartLines.length) {
             routed = true;
             cy.get('app-mempool-block-application app-tezedge-line-chart svg g g g rect.tooltip-area')
-              .click(300, 20)
+              .click(300, 20, { force: true })
               .wait(1000)
               .get('app-graph-redirection-overlay .redirection-overlay').should('be.visible')
               .get('app-graph-redirection-overlay .redirection-overlay .pointer')
-              .last().click()
+              .last().click({ force: true })
               .wait(1000)
               .url().should('include', '/logs?timestamp=');
           }

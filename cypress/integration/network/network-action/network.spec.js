@@ -3,7 +3,7 @@ const beforeNetworkTest = (test) => {
   cy.visit(Cypress.config().baseUrl + '/#/network', { timeout: 100000 })
     .window()
     .its('store')
-    .then(store => {
+    .then({ timeout: 10500 }, store => {
       return new Cypress.Promise((resolve) => {
         setTimeout(() => resolve(), 10000);
         store.select('networkAction').subscribe(network => {
@@ -14,7 +14,7 @@ const beforeNetworkTest = (test) => {
           }
         });
       });
-    })
+    });
 };
 
 context('NETWORK', () => {

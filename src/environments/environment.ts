@@ -222,8 +222,8 @@ const MEMPOOL = {
 export const environment = {
   production: false,
   api: [
-    DEVELOP,
-    // MASTER,
+    // DEVELOP,
+    MASTER,
     // MEMPOOL,
     // TRACE,
     // PRECHECKER,

@@ -68,25 +68,25 @@ context('SMART CONTRACTS', () => {
       });
   }));
 
-  it('[SMART CONTRACTS] should show the code of the smart contract on click', () => beforeSmartContractTest(() => {
-    let clicked;
-    cy.window()
-      .its('store')
-      .then(store => {
-        store.select('smartContracts').subscribe(smartContracts => {
-          if (smartContracts.contracts.length > 0 && !clicked && smartContracts.contracts.every(c => c.totalConsumedGas)) {
-            const sorted = [...smartContracts.contracts].sort((c1, c2) => c1.totalConsumedGas - c2.totalConsumedGas);
-            const smallestGasContract = sorted[0];
-            cy.get('app-smart-contracts app-smart-contracts-table cdk-virtual-scroll-viewport .row', { timeout: 10000 })
-              .eq(smallestGasContract.id)
-              .click()
-              .then(() => clicked = true)
-              .get('app-smart-contracts app-smart-contracts-code .monaco-editor .view-lines .view-line', { timeout: 40000 })
-              .should('have.length.above', 5);
-          }
-        });
-      });
-  }));
+  // it('[SMART CONTRACTS] should show the code of the smart contract on click', () => beforeSmartContractTest(() => {
+  //   let clicked;
+  //   cy.window()
+  //     .its('store')
+  //     .then(store => {
+  //       store.select('smartContracts').subscribe(smartContracts => {
+  //         if (smartContracts.contracts.length > 0 && !clicked && smartContracts.contracts.every(c => c.totalConsumedGas)) {
+  //           const sorted = [...smartContracts.contracts].sort((c1, c2) => c1.totalConsumedGas - c2.totalConsumedGas);
+  //           const smallestGasContract = sorted[0];
+  //           cy.get('app-smart-contracts app-smart-contracts-table cdk-virtual-scroll-viewport .row', { timeout: 10000 })
+  //             .eq(smallestGasContract.id)
+  //             .click()
+  //             .then(() => clicked = true)
+  //             .get('app-smart-contracts app-smart-contracts-code .monaco-editor .view-lines .view-line', { timeout: 40000 })
+  //             .should('have.length.above', 5);
+  //         }
+  //       });
+  //     });
+  // }));
 
   it('[SMART CONTRACTS] should render 3 tabs', () => beforeSmartContractTest(() => {
     cy.get('app-smart-contracts div .overflow-hidden.flex-column .tabs .tab', { timeout: 10000 })

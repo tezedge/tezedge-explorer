@@ -6,13 +6,14 @@ export const environment = {
   production: true,
   api: window['env']['api'] || [],
   //   [
-  //   // {
-  //   //   id: 'localhost',
-  //   //   name: 'localhost',
-  //   //   http: 'http://127.0.0.1:8732',
-  //   //   debugger: false,
-  //   //   ws: 'ws://127.0.0.1:4927',
-  //   // },
+  //   {
+  //     id: 'localhost',
+  //     name: 'localhost',
+  //     http: 'http://127.0.0.1:8732',
+  //     debugger: false,
+  //     ws: 'ws://127.0.0.1:4927',
+  //   },
+  // ]
   //   {
   //     id: 'rust-carthage-tezedge',
   //     name: 'rust.carthage.tezedge.com',

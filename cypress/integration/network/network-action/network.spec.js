@@ -1,11 +1,19 @@
 const beforeNetworkTest = (test) => {
+  let tested = false;
   cy.visit(Cypress.config().baseUrl + '/#/network', { timeout: 100000 })
-    .get('body')
-    .then(body => {
-      const selector = 'app-network-action .table-virtual-scroll .table-virtual-scroll-body .virtual-scroll-container .virtualScrollRow.used';
-      if (body[0].querySelector(selector, { timeout: 100000 })) {
-        test();
-      }
+    .window()
+    .its('store')
+    .then({ timeout: 10500 }, store => {
+      return new Cypress.Promise((resolve) => {
+        setTimeout(() => resolve(), 10000);
+        store.select('networkAction').subscribe(network => {
+          if (!tested && network.ids.length > 0) {
+            tested = true;
+            test();
+            resolve();
+          }
+        });
+      });
     });
 };
 

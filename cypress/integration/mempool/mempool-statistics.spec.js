@@ -1,14 +1,16 @@
+import { testForTezedge } from '../../support';
+
 context('MEMPOOL STATISTICS', () => {
   beforeEach(() => {
     cy.visit(Cypress.config().baseUrl + '/#/mempool/statistics', { timeout: 30000 })
       .wait(1000);
   });
 
-  it('[MEMPOOL STATISTICS] should hava mempool statistics option available', () => {
+  it('[MEMPOOL STATISTICS] should hava mempool statistics option available', () => testForTezedge(() => {
     cy.get('app-mempool .tabs .tab:last-child')
       .should('be.visible')
       .should(tab => expect(tab.text().trim()).to.equal('statistics'));
-  });
+  }));
 
   // it('[MEMPOOL STATISTICS] should show yellow text for big values for delta column', () => {
   //   cy.wait(500)

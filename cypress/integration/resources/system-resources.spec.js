@@ -1,16 +1,28 @@
-import { beforeEachForTezedge, testForTezedge } from '../../support';
+import { testForTezedge } from '../../support';
+
+const beforeSystemResourcesTest = (test) => {
+  let tested = false;
+  cy.visit(Cypress.config().baseUrl + '/#/resources/system', { timeout: 100000 })
+    .wait(1000)
+    .window()
+    .its('store')
+    .then({ timeout: 15500 }, store => {
+      return new Cypress.Promise((resolve) => {
+        setTimeout(() => resolve(), 15000);
+        store.subscribe(state => {
+          if (!tested && state.resources.systemResources.xTicksValues) {
+            tested = true;
+            testForTezedge(test);
+            resolve();
+          }
+        });
+      });
+    });
+};
 
 context('SYSTEM RESOURCES', () => {
-  beforeEach(() => {
-    beforeEachForTezedge(() => {
-      cy.intercept('GET', '/resources/*').as('getResources')
-        .visit(Cypress.config().baseUrl + '/#/resources/system', { timeout: 100000 })
-        .wait('@getResources')
-        .wait(1000);
-    });
-  });
 
-  it('[SYSTEM RESOURCES] should have status code 200 for system resources request', () => testForTezedge(() => {
+  it('[SYSTEM RESOURCES] should have status code 200 for system resources request', () => beforeSystemResourcesTest(() => {
     cy.window()
       .its('store')
       .then(store => {
@@ -22,23 +34,25 @@ context('SYSTEM RESOURCES', () => {
       });
   }));
 
-  it('[SYSTEM RESOURCES] should parse tezedge RPC response successfully', () => testForTezedge(() => {
+  it('[SYSTEM RESOURCES] should parse tezedge RPC response successfully', () => beforeSystemResourcesTest(() => {
+    let tested = false;
     cy.window()
       .its('store')
       .then((store) => {
-        store.subscribe(store => {
-          const octez = store.settingsNode.activeNode.type === 'octez';
-          if (!octez) {
-            expect(store.resources.systemResources.colorScheme.domain).to.have.length(7);
+        store.subscribe(state => {
+          const octez = state.settingsNode.activeNode.type === 'octez';
+          if (!tested && !octez && state.resources.systemResources.cpu) {
+            tested = true;
+            expect(state.resources.systemResources.colorScheme.domain).to.have.length(7);
 
-            const cpu = store.resources.systemResources.cpu;
-            const memory = store.resources.systemResources.memory;
-            const storage = store.resources.systemResources.storage;
-            const io = store.resources.systemResources.io;
-            const network = store.resources.systemResources.network;
-            const panel = store.resources.systemResources.resourcesPanel;
-            expect(store.resources.systemResources.xTicksValues).to.have.length.above(0);
-            expect(store.resources.systemResources.colorScheme.domain).to.have.length(7);
+            const cpu = state.resources.systemResources.cpu;
+            const memory = state.resources.systemResources.memory;
+            const storage = state.resources.systemResources.storage;
+            const io = state.resources.systemResources.io;
+            const network = state.resources.systemResources.network;
+            const panel = state.resources.systemResources.resourcesPanel;
+            expect(state.resources.systemResources.xTicksValues).to.have.length.above(0);
+            expect(state.resources.systemResources.colorScheme.domain).to.have.length(7);
 
             expect(cpu.labels).to.have.length(3);
             expect(cpu.formattingType).to.equal('%');
@@ -53,7 +67,7 @@ context('SYSTEM RESOURCES', () => {
             expect(cpu.series.find(s => s.name === 'NODE').series[0].runnerGroups).to.not.be.undefined;
 
             expect(memory.labels).to.have.length(3);
-            expect(memory.formattingType).to.equal('MB');
+            expect(memory.formattingType).to.equal('GB');
             expect(memory.series).to.have.length(3);
             memory.series.forEach((s, i) => {
               expect(s.name.toLowerCase()).to.equal(memory.labels[i].toLowerCase());
@@ -64,9 +78,9 @@ context('SYSTEM RESOURCES', () => {
             });
             expect(memory.series.find(s => s.name === 'VALIDATORS').series[0].runnerGroups).to.not.be.undefined;
 
-            expect(storage.labels).to.have.length(7);
+            expect(storage.labels).to.have.length(6);
             expect(storage.formattingType).to.equal('GB');
-            expect(storage.series).to.have.length(7);
+            expect(storage.series).to.have.length(6);
             storage.series.forEach((s, i) => {
               expect(s.name.toLowerCase()).to.equal(storage.labels[i].toLowerCase());
               if (s.series.length) {
@@ -106,20 +120,20 @@ context('SYSTEM RESOURCES', () => {
       });
   }));
 
-  it('[SYSTEM RESOURCES] should sort threads by name', () => testForTezedge(() => {
+  it('[SYSTEM RESOURCES] should sort threads by name', () => beforeSystemResourcesTest(() => {
     cy.get('.thread-container .sort-option:first-child', { timeout: 20000 })
       .trigger('click')
       .wait(1000)
       .window()
       .its('store')
       .then(store => {
-        store.subscribe(store => {
-          expect(store.resources.systemResources.resourcesPanel.sortBy).to.equal('name');
+        store.subscribe(state => {
+          expect(state.resources.systemResources.resourcesPanel.sortBy).to.equal('name');
         });
       });
   }));
 
-  it('[SYSTEM RESOURCES] should display charts', () => testForTezedge(() => {
+  it('[SYSTEM RESOURCES] should display charts', () => beforeSystemResourcesTest(() => {
     cy.window()
       .its('store')
       .then(store => {
@@ -134,12 +148,12 @@ context('SYSTEM RESOURCES', () => {
       });
   }));
 
-  it('[SYSTEM RESOURCES] should display tooltip on chart when hovering on it', () => testForTezedge(() => {
+  it('[SYSTEM RESOURCES] should display tooltip on chart when hovering on it', () => beforeSystemResourcesTest(() => {
     cy.window()
       .its('store')
       .then((store) => {
-        store.subscribe(store => {
-          if (store.resources.systemResources) {
+        store.subscribe(state => {
+          if (state.resources.systemResources.xTicksValues) {
             cy.get('svg g g g rect.tooltip-area', { timeout: 20000 })
               .its(2)
               .trigger('mousemove')
@@ -150,13 +164,13 @@ context('SYSTEM RESOURCES', () => {
       });
   }));
 
-  it('[SYSTEM RESOURCES] should display redirection overlay on chart when clicking on it and navigate to network on click', () => testForTezedge(() => {
+  it('[SYSTEM RESOURCES] should display redirection overlay on chart when clicking on it and navigate to network on click', () => beforeSystemResourcesTest(() => {
     let routed;
     cy.window()
       .its('store')
       .then(store => {
-        store.subscribe(store => {
-          if (!routed && store.resources.systemResources) {
+        store.subscribe(state => {
+          if (!routed && state.resources.systemResources) {
             routed = true;
             cy.get('svg g g g rect.tooltip-area')
               .its(2)
@@ -172,13 +186,13 @@ context('SYSTEM RESOURCES', () => {
       });
   }));
 
-  it('[SYSTEM RESOURCES] should display redirection overlay on chart when clicking on it and navigate to logs on click', () => testForTezedge(() => {
+  it('[SYSTEM RESOURCES] should display redirection overlay on chart when clicking on it and navigate to logs on click', () => beforeSystemResourcesTest(() => {
     let routed;
     cy.window()
       .its('store')
       .then(store => {
-        store.subscribe(store => {
-          if (!routed && store.resources.systemResources) {
+        store.subscribe(state => {
+          if (!routed && state.resources.systemResources) {
             routed = true;
             cy.get('svg g g g rect.tooltip-area')
               .its(2)

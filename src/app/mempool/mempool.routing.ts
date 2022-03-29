@@ -25,7 +25,7 @@ const routes: Routes = [
         component: MempoolEndorsementComponent,
       },
       {
-        path: 'operations',
+        path: 'pending',
         component: MempoolOperationComponent,
       },
       {

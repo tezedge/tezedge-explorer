@@ -1,16 +1,26 @@
-import { beforeEachForTezedge, testForTezedge } from '../../../support';
+import { testForTezedge } from '../../../support';
+
+const beforeStorageBlockTest = (test) => {
+  let tested = false;
+  cy.visit(Cypress.config().baseUrl + '/#/storage', { timeout: 100000 })
+    .window()
+    .its('store')
+    .then({ timeout: 12500 }, store => {
+      return new Cypress.Promise((resolve) => {
+        setTimeout(() => resolve(), 12000);
+        store.select('smartContracts').subscribe(smartContracts => {
+          if (!tested && smartContracts.contracts.length > 0) {
+            tested = true;
+            testForTezedge(test);
+            resolve();
+          }
+        });
+      });
+    });
+};
 
 context('STORAGE BLOCK', () => {
-  beforeEach(() => {
-    beforeEachForTezedge(() => {
-      cy.intercept('GET', '/dev/chains/main/blocks/*').as('getStorageBlockRequest')
-        .visit(Cypress.config().baseUrl + '/#/storage', { timeout: 100000 })
-        .wait('@getStorageBlockRequest', { timeout: 200000 })
-        .wait(1000);
-    });
-  });
-
-  it('[STORAGE BLOCK] create rows for the virtual scroll table', () => testForTezedge(() => {
+  it('[STORAGE BLOCK] create rows for the virtual scroll table', () => beforeStorageBlockTest(() => {
     cy.get('.stop-stream').click()
       .wait(1000)
       .window()
@@ -25,7 +35,7 @@ context('STORAGE BLOCK', () => {
       });
   }));
 
-  it('[STORAGE BLOCK] fill the last row of the table with the last value received', () => testForTezedge(() => {
+  it('[STORAGE BLOCK] fill the last row of the table with the last value received', () => beforeStorageBlockTest(() => {
     cy.get('.stop-stream').click()
       .wait(1000)
       .window()
@@ -45,7 +55,7 @@ context('STORAGE BLOCK', () => {
       });
   }));
 
-  it('[STORAGE BLOCK] change the value of the virtual scroll element when scrolling', () => testForTezedge(() => {
+  it('[STORAGE BLOCK] change the value of the virtual scroll element when scrolling', () => beforeStorageBlockTest(() => {
     let beforeScrollValue;
     cy.get('.stop-stream').click()
       .wait(1000)
@@ -82,7 +92,7 @@ context('STORAGE BLOCK', () => {
       });
   }));
 
-  it('[STORAGE BLOCK] display block details on hover', () => testForTezedge(() => {
+  it('[STORAGE BLOCK] display block details on hover', () => beforeStorageBlockTest(() => {
     cy.get('.stop-stream').click()
       .wait(1000)
       .window()

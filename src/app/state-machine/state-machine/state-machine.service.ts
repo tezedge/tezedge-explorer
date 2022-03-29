@@ -24,7 +24,12 @@ export class StateMachineService {
   getStateMachineDiagram(http: string): Observable<StateMachineDiagramBlock[]> {
     const url = http + '/dev/shell/automaton/actions_graph';
     return this.http.get<StateMachineDiagramBlock[]>(url)
-      .pipe(map(actions => actions.filter(action => action.nextActions.length > 0)));
+      .pipe(
+        map(actions => {
+          const allNextActions: number[] = actions.reduce((acc: number[], curr: StateMachineDiagramBlock) => [...acc, ...curr.nextActions], []);
+          return actions.filter(action => action.nextActions.length > 0 || allNextActions.includes(action.actionId));
+        })
+      );
   }
 
   getStateMachineActions(http: string, filter: StateMachineActionsFilter): Observable<StateMachineAction[]> {

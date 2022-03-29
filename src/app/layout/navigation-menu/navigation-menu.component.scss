@@ -1,3 +1,5 @@
+@import 'material/material-icon';
+
 .menu-wrapper {
   .text-nowrap {
     opacity: 1;
@@ -123,6 +125,10 @@
 
     .menu-content .text-nowrap {
       color: white;
+    }
+
+    ::ng-deep mat-icon svg * {
+      fill: #ffffff;
     }
   }
 

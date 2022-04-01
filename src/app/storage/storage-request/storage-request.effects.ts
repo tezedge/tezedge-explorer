@@ -3,7 +3,7 @@ import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { filter, map, mergeMap, switchMap, takeUntil, tap, withLatestFrom } from 'rxjs/operators';
 import { ObservedValueOf, Subject, timer } from 'rxjs';
-import { State } from '@app/app.reducers';
+import { State } from '@app/app.index';
 import { StorageRequestService } from '@storage/storage-request/storage-request.service';
 import {
   STORAGE_REQUESTS_INIT,

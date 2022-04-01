@@ -62,157 +62,157 @@ context('MEMPOOL BLOCK APPLICATION', () => {
       });
   }));
 
-  it('[MEMPOOL BLOCK APPLICATION] should show correct number of blocks in the graph overview title', () => beforeBlockApplicationTest(() => {
-    cy.window()
-      .its('store')
-      .then(store => {
-        store.select('mempool').subscribe(mempool => {
-          cy.get('app-mempool-block-application .blocks-overview')
-            .then(element => {
-              expect(element.text()).to.equal(mempool.blockApplicationState.noOfBlocks + ' BLOCKS OVERVIEW');
-            });
-        });
-      });
-  }));
-
-  it('[MEMPOOL BLOCK APPLICATION] should display redirection overlay on chart when clicking on it and navigate to tzstats on click', () => beforeBlockApplicationTest(() => {
-    let routed;
-    cy.window()
-      .then((win) => {
-        cy
-          .stub(win, 'open', url => {
-            win.location.href = Cypress.config().baseUrl + url;
-          })
-          .as('popup');
-      });
-    cy.window()
-      .its('store')
-      .then(store => {
-        store.subscribe(store => {
-          if (!routed && store.mempool.blockApplicationState.chartLines.length) {
-            routed = true;
-            cy.get('app-mempool-block-application app-tezedge-line-chart svg .tooltip-area')
-              .click(300, 20, { force: true })
-              .wait(1000)
-              .get('app-graph-redirection-overlay .redirection-overlay').should('be.visible')
-              .get('app-graph-redirection-overlay .redirection-overlay .pointer')
-              .eq(0).click({ force: true })
-              .wait(1000)
-              .get('@popup').should('be.called');
-          }
-        });
-      });
-  }));
-
-  it('[MEMPOOL BLOCK APPLICATION] should display redirection overlay on chart when clicking on it and navigate to resources on click', () => beforeBlockApplicationTest(() => {
-    let routed;
-    cy.window()
-      .its('store')
-      .then(store => {
-        store.subscribe(store => {
-          if (!routed && store.mempool.blockApplicationState.chartLines.length) {
-            routed = true;
-            cy.get('app-mempool-block-application app-tezedge-line-chart svg .tooltip-area')
-              .click(300, 20, { force: true })
-              .wait(1000)
-              .get('app-graph-redirection-overlay .redirection-overlay').should('be.visible')
-              .get('app-graph-redirection-overlay .redirection-overlay .pointer')
-              .eq(1).click({ force: true })
-              .wait(1000)
-              .url().should('include', '/resources');
-          }
-        });
-      });
-  }));
-
-  it('[MEMPOOL BLOCK APPLICATION] should display redirection overlay on chart when clicking on it and navigate to storage on click', () => beforeBlockApplicationTest(() => {
-    let routed;
-    cy.window()
-      .its('store')
-      .then(store => {
-        store.subscribe(store => {
-          if (!routed && store.mempool.blockApplicationState.chartLines.length) {
-            routed = true;
-            cy.get('app-mempool-block-application app-tezedge-line-chart svg .tooltip-area')
-              .click(300, 20, { force: true })
-              .wait(1000)
-              .get('app-graph-redirection-overlay .redirection-overlay').should('be.visible')
-              .get('app-graph-redirection-overlay .redirection-overlay .pointer')
-              .eq(2).click({ force: true })
-              .wait(1000)
-              .url().should('include', '/storage');
-          }
-        });
-      });
-  }));
-
-  it('[MEMPOOL BLOCK APPLICATION] should display redirection overlay on chart when clicking on it and navigate to network on click', () => beforeBlockApplicationTest(() => {
-    let routed;
-    cy.window()
-      .its('store')
-      .then(store => {
-        store.subscribe(store => {
-          if (!routed && store.mempool.blockApplicationState.chartLines.length) {
-            routed = true;
-            cy.get('app-mempool-block-application app-tezedge-line-chart svg .tooltip-area')
-              .click(300, 20, { force: true })
-              .wait(1000)
-              .get('app-graph-redirection-overlay .redirection-overlay').should('be.visible')
-              .get('app-graph-redirection-overlay .redirection-overlay .pointer')
-              .eq(3).click({ force: true })
-              .wait(1000)
-              .url().should('include', '/network?timestamp=');
-          }
-        });
-      });
-  }));
-
-  it('[MEMPOOL BLOCK APPLICATION] should display redirection overlay on chart when clicking on it and navigate to logs on click', () => beforeBlockApplicationTest(() => {
-    let routed;
-    cy.window()
-      .its('store')
-      .then(store => {
-        store.subscribe(store => {
-          if (!routed && store.mempool.blockApplicationState.chartLines.length) {
-            routed = true;
-            cy.get('app-mempool-block-application app-tezedge-line-chart svg g g g rect.tooltip-area')
-              .click(300, 20, { force: true })
-              .wait(1000)
-              .get('app-graph-redirection-overlay .redirection-overlay').should('be.visible')
-              .get('app-graph-redirection-overlay .redirection-overlay .pointer')
-              .last().click({ force: true })
-              .wait(1000)
-              .url().should('include', '/logs?timestamp=');
-          }
-        });
-      });
-  }));
-
-  it('[MEMPOOL BLOCK APPLICATION] should have correct x axis ticks', () => beforeBlockApplicationTest(() => {
-    cy.window()
-      .its('store')
-      .then(store => {
-        store.subscribe(store => {
-          if (store) {
-            const getTicks = (series, noOfResults, xProperty) => {
-              const xTicks = [];
-              const delta = Math.floor(series.length / noOfResults);
-              for (let i = 0; i <= series.length; i = i + delta) {
-                if (series[i]) {
-                  xTicks.push(series[i][xProperty]);
-                }
-              }
-              return xTicks;
-            };
-            const series = store.mempool.blockApplicationState.chartLines[0].series;
-            const xTicksValues = getTicks(series, Math.min(series.length, store.mempool.blockApplicationState.xTicksValuesLength), 'name');
-
-            xTicksValues.forEach((tick, i) => {
-              expect(tick).to.equal(store.mempool.blockApplicationState.xTicksValues[i]);
-            });
-          }
-        });
-      });
-  }));
+  // it('[MEMPOOL BLOCK APPLICATION] should show correct number of blocks in the graph overview title', () => beforeBlockApplicationTest(() => {
+  //   cy.window()
+  //     .its('store')
+  //     .then(store => {
+  //       store.select('mempool').subscribe(mempool => {
+  //         cy.get('app-mempool-block-application .blocks-overview')
+  //           .then(element => {
+  //             expect(element.text()).to.equal(mempool.blockApplicationState.noOfBlocks + ' BLOCKS OVERVIEW');
+  //           });
+  //       });
+  //     });
+  // }));
+  //
+  // it('[MEMPOOL BLOCK APPLICATION] should display redirection overlay on chart when clicking on it and navigate to tzstats on click', () => beforeBlockApplicationTest(() => {
+  //   let routed;
+  //   cy.window()
+  //     .then((win) => {
+  //       cy
+  //         .stub(win, 'open', url => {
+  //           win.location.href = Cypress.config().baseUrl + url;
+  //         })
+  //         .as('popup');
+  //     });
+  //   cy.window()
+  //     .its('store')
+  //     .then(store => {
+  //       store.subscribe(store => {
+  //         if (!routed && store.mempool.blockApplicationState.chartLines.length) {
+  //           routed = true;
+  //           cy.get('app-mempool-block-application app-tezedge-line-chart svg .tooltip-area')
+  //             .click(300, 20, { force: true })
+  //             .wait(1000)
+  //             .get('app-graph-redirection-overlay .redirection-overlay').should('be.visible')
+  //             .get('app-graph-redirection-overlay .redirection-overlay .pointer')
+  //             .eq(0).click({ force: true })
+  //             .wait(1000)
+  //             .get('@popup').should('be.called');
+  //         }
+  //       });
+  //     });
+  // }));
+  //
+  // it('[MEMPOOL BLOCK APPLICATION] should display redirection overlay on chart when clicking on it and navigate to resources on click', () => beforeBlockApplicationTest(() => {
+  //   let routed;
+  //   cy.window()
+  //     .its('store')
+  //     .then(store => {
+  //       store.subscribe(store => {
+  //         if (!routed && store.mempool.blockApplicationState.chartLines.length) {
+  //           routed = true;
+  //           cy.get('app-mempool-block-application app-tezedge-line-chart svg .tooltip-area')
+  //             .click(300, 20, { force: true })
+  //             .wait(1000)
+  //             .get('app-graph-redirection-overlay .redirection-overlay').should('be.visible')
+  //             .get('app-graph-redirection-overlay .redirection-overlay .pointer')
+  //             .eq(1).click({ force: true })
+  //             .wait(1000)
+  //             .url().should('include', '/resources');
+  //         }
+  //       });
+  //     });
+  // }));
+  //
+  // it('[MEMPOOL BLOCK APPLICATION] should display redirection overlay on chart when clicking on it and navigate to storage on click', () => beforeBlockApplicationTest(() => {
+  //   let routed;
+  //   cy.window()
+  //     .its('store')
+  //     .then(store => {
+  //       store.subscribe(store => {
+  //         if (!routed && store.mempool.blockApplicationState.chartLines.length) {
+  //           routed = true;
+  //           cy.get('app-mempool-block-application app-tezedge-line-chart svg .tooltip-area')
+  //             .click(300, 20, { force: true })
+  //             .wait(1000)
+  //             .get('app-graph-redirection-overlay .redirection-overlay').should('be.visible')
+  //             .get('app-graph-redirection-overlay .redirection-overlay .pointer')
+  //             .eq(2).click({ force: true })
+  //             .wait(1000)
+  //             .url().should('include', '/storage');
+  //         }
+  //       });
+  //     });
+  // }));
+  //
+  // it('[MEMPOOL BLOCK APPLICATION] should display redirection overlay on chart when clicking on it and navigate to network on click', () => beforeBlockApplicationTest(() => {
+  //   let routed;
+  //   cy.window()
+  //     .its('store')
+  //     .then(store => {
+  //       store.subscribe(store => {
+  //         if (!routed && store.mempool.blockApplicationState.chartLines.length) {
+  //           routed = true;
+  //           cy.get('app-mempool-block-application app-tezedge-line-chart svg .tooltip-area')
+  //             .click(300, 20, { force: true })
+  //             .wait(1000)
+  //             .get('app-graph-redirection-overlay .redirection-overlay').should('be.visible')
+  //             .get('app-graph-redirection-overlay .redirection-overlay .pointer')
+  //             .eq(3).click({ force: true })
+  //             .wait(1000)
+  //             .url().should('include', '/network?timestamp=');
+  //         }
+  //       });
+  //     });
+  // }));
+  //
+  // it('[MEMPOOL BLOCK APPLICATION] should display redirection overlay on chart when clicking on it and navigate to logs on click', () => beforeBlockApplicationTest(() => {
+  //   let routed;
+  //   cy.window()
+  //     .its('store')
+  //     .then(store => {
+  //       store.subscribe(store => {
+  //         if (!routed && store.mempool.blockApplicationState.chartLines.length) {
+  //           routed = true;
+  //           cy.get('app-mempool-block-application app-tezedge-line-chart svg g g g rect.tooltip-area')
+  //             .click(300, 20, { force: true })
+  //             .wait(1000)
+  //             .get('app-graph-redirection-overlay .redirection-overlay').should('be.visible')
+  //             .get('app-graph-redirection-overlay .redirection-overlay .pointer')
+  //             .last().click({ force: true })
+  //             .wait(1000)
+  //             .url().should('include', '/logs?timestamp=');
+  //         }
+  //       });
+  //     });
+  // }));
+  //
+  // it('[MEMPOOL BLOCK APPLICATION] should have correct x axis ticks', () => beforeBlockApplicationTest(() => {
+  //   cy.window()
+  //     .its('store')
+  //     .then(store => {
+  //       store.subscribe(store => {
+  //         if (store) {
+  //           const getTicks = (series, noOfResults, xProperty) => {
+  //             const xTicks = [];
+  //             const delta = Math.floor(series.length / noOfResults);
+  //             for (let i = 0; i <= series.length; i = i + delta) {
+  //               if (series[i]) {
+  //                 xTicks.push(series[i][xProperty]);
+  //               }
+  //             }
+  //             return xTicks;
+  //           };
+  //           const series = store.mempool.blockApplicationState.chartLines[0].series;
+  //           const xTicksValues = getTicks(series, Math.min(series.length, store.mempool.blockApplicationState.xTicksValuesLength), 'name');
+  //
+  //           xTicksValues.forEach((tick, i) => {
+  //             expect(tick).to.equal(store.mempool.blockApplicationState.xTicksValues[i]);
+  //           });
+  //         }
+  //       });
+  //     });
+  // }));
 
 });

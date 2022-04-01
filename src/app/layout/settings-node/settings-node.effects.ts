@@ -5,7 +5,7 @@ import { Store } from '@ngrx/store';
 import { EMPTY, forkJoin, ObservedValueOf, of } from 'rxjs';
 import { catchError, map, mergeMap, withLatestFrom } from 'rxjs/operators';
 import { SettingsNodeService } from './settings-node.service';
-import { State } from '@app/app.reducers';
+import { State } from '@app/app.index';
 import { SettingsNodeEntity } from '@shared/types/settings-node/settings-node-entity.type';
 
 @Injectable({ providedIn: 'root' })

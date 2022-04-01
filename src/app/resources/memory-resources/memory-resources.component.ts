@@ -13,7 +13,7 @@ import {
 import { Inspector, Runtime } from '@observablehq/runtime';
 import { TreeMapFactory } from '@shared/factories/tree-map.factory';
 import { select, Store } from '@ngrx/store';
-import { State } from '@app/app.reducers';
+import { State } from '@app/app.index';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { MemoryResource } from '@shared/types/resources/memory/memory-resource.type';
 import { MemoryResourcesActionTypes, MemoryResourcesClose, MemoryResourcesLoad } from './memory-resources.actions';

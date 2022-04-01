@@ -1,3 +1,5 @@
+@import 'variables';
+
 .ngx-charts {
   float: left;
   overflow: visible;
@@ -78,6 +80,15 @@
 
   .routed-tooltip-anchor {
     fill: var(--foreground-7);
+  }
+
+  .red-mark {
+    fill: #ff453a;
+
+    &:hover {
+      stroke: $foreground;
+      stroke-width: 2px;
+    }
   }
 
   .gridline-path {

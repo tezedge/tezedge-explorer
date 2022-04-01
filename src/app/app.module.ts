@@ -8,7 +8,7 @@ import localeFr from '@angular/common/locales/fr';
 import localeEnGb from '@angular/common/locales/en-GB';
 
 import { environment } from '@environment/environment';
-import { metaReducers, reducers } from '@app/app.reducers';
+import { metaReducers, reducers } from '@app/app.index';
 import { AppComponent } from '@app/app.component';
 import { AppRouting } from '@app/app.routing';
 
@@ -29,13 +29,12 @@ import { WalletsEffects } from '@wallets/wallets.effects';
 import { SystemResourcesEffects } from '@resources/system-resources/system-resources.effects';
 import { StorageResourcesEffects } from '@resources/storage-resources/storage-resources.effects';
 import { MemoryResourcesEffects } from '@resources/memory-resources/memory-resources.effects';
-import { ErrorPopupEffects } from '@shared/components/error-popup/error-popup.effects';
+import { ErrorPopupEffects } from '@app/layout/error-popup/error-popup.effects';
 import { StateMachineEffects } from '@state-machine/state-machine/state-machine.effects';
 import { GithubVersionEffects } from '@app/layout/github-version/github-version.effects';
 import { SettingsNodeEffects } from '@settings/settings-node.effects';
 
 import { NgrxVirtualScrollDirective } from '@shared/ngrx-virtual-scroll.directive';
-import { TezedgeSharedModule } from '@shared/tezedge-shared.module';
 import { NavigationMenuComponent } from '@app/layout/navigation-menu/navigation-menu.component';
 import { IconRegisterService } from '@core/icon-register.service';
 import { ReplaceCharacterPipe } from '@shared/pipes/replace-character.pipe';
@@ -52,6 +51,9 @@ import { MempoolBakingRightsEffects } from '@mempool/mempool-baking-rights/mempo
 import { MAT_FORM_FIELD_DEFAULT_OPTIONS } from '@angular/material/form-field';
 import { NgrxRouterStoreModule } from '@shared/router/ngrx-router.module';
 import { StorageRequestEffects } from '@storage/storage-request/storage-request.effects';
+import { TezedgeAppSharedModule } from '@shared/tezedge-app-shared.module';
+import { ErrorPopupComponent } from '@app/layout/error-popup/error-popup.component';
+import { LoadingSpinnerComponent } from '@app/layout/loading-spinner/loading-spinner.component';
 
 registerLocaleData(localeFr, 'fr');
 registerLocaleData(localeEnGb, 'en');
@@ -102,6 +104,8 @@ const effects = [
     NgrxVirtualScrollDirective,
     NavigationMenuComponent,
     GithubVersionComponent,
+    ErrorPopupComponent,
+    LoadingSpinnerComponent,
   ],
   imports: [
     RouterModule.forRoot(AppRouting, {
@@ -131,7 +135,7 @@ const effects = [
     BrowserModule,
     BrowserAnimationsModule,
     HttpClientModule,
-    TezedgeSharedModule,
+    TezedgeAppSharedModule,
     // ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production }),
   ],
   providers: [

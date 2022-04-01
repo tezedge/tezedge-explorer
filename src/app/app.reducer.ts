@@ -1,6 +1,15 @@
 import { App } from '@shared/types/app/app.type';
-import { State } from '@app/app.reducers';
+import { State } from '@app/app.index';
 import { THEMES } from '@core/theme-switcher.service';
+import {
+  APP_INIT,
+  APP_INIT_DEFAULT,
+  APP_INIT_SUCCESS,
+  APP_MENU_SIZE_CHANGE,
+  APP_MENU_STATE_CHANGE,
+  APP_THEME_CHANGE,
+  APP_TOGGLE_SIDENAV
+} from '@app/app.actions';
 
 const initialState: App = {
   initialized: false,
@@ -42,7 +51,7 @@ export function reducer(state: App = initialState, action): App {
 
   switch (action.type) {
 
-    case 'APP_INIT_DEFAULT': {
+    case APP_INIT_DEFAULT: {
       return {
         ...state,
         menu: initialState.menu,
@@ -50,7 +59,7 @@ export function reducer(state: App = initialState, action): App {
       };
     }
 
-    case 'APP_INIT': {
+    case APP_INIT: {
 
       // TODO: refactor use app features
       let sandboxChain = false;
@@ -75,14 +84,14 @@ export function reducer(state: App = initialState, action): App {
       };
     }
 
-    case 'APP_INIT_SUCCESS': {
+    case APP_INIT_SUCCESS: {
       return {
         ...state,
         initialized: true
       };
     }
 
-    case 'APP_THEME_CHANGE': {
+    case APP_THEME_CHANGE: {
       return {
         ...state,
         theme: {
@@ -92,7 +101,7 @@ export function reducer(state: App = initialState, action): App {
       };
     }
 
-    case 'APP_MENU_STATE_CHANGE': {
+    case APP_MENU_STATE_CHANGE: {
       localStorage.setItem('sidenavCollapsed', JSON.stringify(false));
       return {
         ...state,
@@ -105,7 +114,7 @@ export function reducer(state: App = initialState, action): App {
       };
     }
 
-    case 'APP_MENU_SIZE_CHANGE': {
+    case APP_MENU_SIZE_CHANGE: {
       localStorage.setItem('sidenavCollapsed', action.payload.collapsed);
       return {
         ...state,
@@ -116,7 +125,7 @@ export function reducer(state: App = initialState, action): App {
       };
     }
 
-    case 'APP_TOGGLE_SIDENAV': {
+    case APP_TOGGLE_SIDENAV: {
       return {
         ...state,
         sidenav: {

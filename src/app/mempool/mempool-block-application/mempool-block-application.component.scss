@@ -1,6 +1,5 @@
 .block-application {
-  height: 820px;
-  max-height: 100%;
+  max-height: 820px;
 
   .graph-outer-container {
     opacity: 0;
@@ -18,10 +17,6 @@
     .rotated-label span {
       transform: rotate(-90deg);
       padding-left: 20px;
-    }
-
-    .blocks-overview {
-      margin-top: 30px;
     }
 
     .graph-label-list {
@@ -44,7 +39,7 @@
 
       .graph-super-inner-container {
         height: 540px;
-        max-height: 80vh;
+        //max-height: 80%;
       }
     }
   }

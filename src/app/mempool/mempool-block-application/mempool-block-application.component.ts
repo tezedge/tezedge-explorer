@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { select, Store } from '@ngrx/store';
-import { State } from '@app/app.reducers';
+import { State } from '@app/app.index';
 import {
   MEMPOOL_BLOCK_APPLICATION_LOAD,
   MEMPOOL_BLOCK_APPLICATION_STOP,
@@ -44,7 +44,7 @@ export class MempoolBlockApplicationComponent implements OnInit, OnDestroy {
               private breakpointObserver: BreakpointObserver) { }
 
   readonly yAxisTickFormatting = (value: number) => value === 0 ? 0 : this.nanoTransformPipe.transform(Math.round(Math.pow(10, value)), null, null, 0);
-  readonly xAxisTickFormatting = (value: number) => this.spaceNumber.transform(value);
+  readonly xAxisTickFormatting = (value: string) => this.spaceNumber.transform(value.substring(0, value.indexOf('r')));
 
   ngOnInit(): void {
     this.listenToResizeEvent();

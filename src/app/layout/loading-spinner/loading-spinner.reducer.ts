@@ -1,9 +1,9 @@
 import { LoadingSpinner } from '@shared/types/shared/loading-spinner/loading-spinner.type';
-import { State } from '@app/app.reducers';
+import { State } from '@app/app.index';
 import { StateMachineActionTypes } from '@state-machine/state-machine/state-machine.actions';
 import { StorageResourcesActionTypes } from '@resources/storage-resources/storage-resources.actions';
 import { MemoryResourcesActionTypes } from '@resources/memory-resources/memory-resources.actions';
-import { ADD_ERROR } from '@shared/components/error-popup/error-popup.actions';
+import { ADD_ERROR } from '@app/layout/error-popup/error-popup.actions';
 import { MEMPOOL_ENDORSEMENT_LOAD, MEMPOOL_ENDORSEMENT_LOAD_SUCCESS, MEMPOOL_ENDORSEMENT_STOP } from '@mempool/mempool-endorsement/mempool-endorsement.actions';
 import { MEMPOOL_OPERATION_LOAD, MEMPOOL_OPERATION_LOAD_SUCCESS, MEMPOOL_OPERATION_STOP } from '@mempool/mempool-operation/mempool-operation.actions';
 import { MEMPOOL_STATISTICS_LOAD, MEMPOOL_STATISTICS_LOAD_SUCCESS, MEMPOOL_STATISTICS_STOP } from '@mempool/mempool-statistics/mempool-statistics.actions';
@@ -12,7 +12,7 @@ import {
   MEMPOOL_BLOCK_APPLICATION_LOAD_SUCCESS,
   MEMPOOL_BLOCK_APPLICATION_STOP
 } from '@mempool/mempool-block-application/mempool-block-application.actions';
-import { SMART_CONTRACTS_LOAD, SMART_CONTRACTS_LOAD_SUCCESS } from '@smart-contracts/smart-contracts/smart-contracts.actions';
+import { SMART_CONTRACTS_LOAD, SMART_CONTRACTS_LOAD_SUCCESS, SMART_CONTRACTS_STOP } from '@smart-contracts/smart-contracts/smart-contracts.actions';
 import { SYSTEM_RESOURCES_CLOSE, SYSTEM_RESOURCES_LOAD, SYSTEM_RESOURCES_LOAD_SUCCESS } from '@resources/system-resources/system-resources.actions';
 
 export interface LoadingSpinnerState {
@@ -200,7 +200,8 @@ export function reducer(state: LoadingSpinnerState = initialState, action: any):
         pendingValues: [smartContractsLoad, ...state.pendingValues]
       };
     }
-    case SMART_CONTRACTS_LOAD_SUCCESS: {
+    case SMART_CONTRACTS_LOAD_SUCCESS:
+    case SMART_CONTRACTS_STOP: {
       return {
         pendingValues: state.pendingValues.filter(v => v.type !== SMART_CONTRACTS_LOAD)
       };

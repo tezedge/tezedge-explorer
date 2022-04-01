@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { State } from '@app/app.reducers';
+import { State } from '@app/app.index';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { SmartContract } from '@shared/types/smart-contracts/smart-contract.type';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';

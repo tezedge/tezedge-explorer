@@ -14,6 +14,8 @@ import { MempoolBakingRightsDetailsComponent } from './mempool-baking-rights-det
 import { MempoolBakingRightsGraphComponent } from './mempool-baking-rights-graph/mempool-baking-rights-graph.component';
 import { MempoolBlockApplicationDetailsComponent } from './mempool-block-application-details/mempool-block-application-details.component';
 import { MempoolBlockDetailsComponent } from './mempool-block-details/mempool-block-details.component';
+import { MempoolBakingRightFiltersComponent } from './mempool-baking-right-filters/mempool-baking-right-filters.component';
+import { MempoolEndorsementFiltersComponent } from './mempool-endorsement-filters/mempool-endorsement-filters.component';
 
 
 @NgModule({
@@ -30,6 +32,8 @@ import { MempoolBlockDetailsComponent } from './mempool-block-details/mempool-bl
     MempoolBakingRightsGraphComponent,
     MempoolBlockApplicationDetailsComponent,
     MempoolBlockDetailsComponent,
+    MempoolBakingRightFiltersComponent,
+    MempoolEndorsementFiltersComponent,
   ],
   imports: [
     CommonModule,

@@ -3,13 +3,14 @@
 
   <app-mempool-baking-rights-graph class="d-block"></app-mempool-baking-rights-graph>
 
-  <div *ngFor="let detail of details; trackBy: trackDetails"
-       class="border border-rad-4 margin-10">
+  <div class="border border-rad-4 margin-10"
+       *ngIf="details[activeRoundIndex]">
 
     <div class="hash padding-left-10 d-flex align-center flex-between border-bottom">
       <div class="d-flex align-center truncate">
-        <div class="truncate font-500">{{ detail.blockHash }}</div>
-        <div (click)="copyHashToClipboard(detail.blockHash)" [cdkCopyToClipboard]="detail.blockHash"
+        <div class="truncate font-500">{{ details[activeRoundIndex].blockHash }}</div>
+        <div (click)="copyHashToClipboard(details[activeRoundIndex].blockHash)"
+             [cdkCopyToClipboard]="details[activeRoundIndex].blockHash"
              class="copy-hash border-rad-4 margin-left-5 margin-right-5 pointer"
              fxFlex="26px" matTooltip="Copy hash">
           <mat-icon class="icon-foreground-7 icon-14" svgIcon="copy"></mat-icon>
@@ -24,6 +25,7 @@
         </mat-checkbox>
       </span>
     </div>
-    <app-mempool-block-details [detail]="detail" [delta]="delta"></app-mempool-block-details>
+    <app-mempool-block-details [detail]="details[activeRoundIndex]"
+                               [delta]="delta"></app-mempool-block-details>
   </div>
 </div>

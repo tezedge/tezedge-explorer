@@ -16,7 +16,7 @@ import { Overlay, OverlayRef } from '@angular/cdk/overlay';
 import { StorageBlockDetailsOperationContext } from '@shared/types/storage/storage-block/storage-block-details-operation-context.type';
 import { TemplatePortal } from '@angular/cdk/portal';
 import { Store } from '@ngrx/store';
-import { State } from '@app/app.reducers';
+import { State } from '@app/app.index';
 import { selectStorageBlockDetails } from '@storage/storage-block/storage-block.reducer';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 

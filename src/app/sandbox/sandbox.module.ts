@@ -7,7 +7,6 @@ import { SandboxStatusBarComponent } from '@sandbox/sandbox-status-bar/sandbox-s
 import { TezedgeSharedModule } from '@shared/tezedge-shared.module';
 import { MatStepperModule } from '@angular/material/stepper';
 import { ChainModule } from '@chain/chain.module';
-import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 
 @NgModule({

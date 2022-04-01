@@ -36,6 +36,7 @@ export class TezedgeLineChartComponent extends LineChartComponent {
   @Input() tooltipPlacement: 'top' | 'bottom' = 'bottom';
   @Input() disableRedirection: boolean;
   @Input() graphType: string;
+  @Input() markIndexes: number[] = [];
 
   chartXReady: boolean = false;
   chartYReady: boolean = false;
@@ -43,6 +44,7 @@ export class TezedgeLineChartComponent extends LineChartComponent {
   lineResults = []; // line results are now used for line painting and `results` just for XAxis values
 
   update(): void {
+    this.markIndexes = [...this.markIndexes];
     this.getExtraYAxisGridLine();
     super.update();
     this.removeExtraResultsOfTheLine();

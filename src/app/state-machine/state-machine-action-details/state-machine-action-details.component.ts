@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { State } from '@app/app.reducers';
+import { State } from '@app/app.index';
 import { Observable, tap } from 'rxjs';
 import { selectStateMachine } from '@state-machine/state-machine/state-machine.reducer';
 import { StateMachine } from '@shared/types/state-machine/state-machine.type';

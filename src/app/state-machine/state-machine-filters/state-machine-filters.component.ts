@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { StateMachineActionTypes, StateMachineFilterActions } from '@state-machine/state-machine/state-machine.actions';
 import { Store } from '@ngrx/store';
-import { State } from '@app/app.reducers';
+import { State } from '@app/app.index';
 import { selectStateMachineStatistics } from '@state-machine/state-machine/state-machine.reducer';
 import { MatExpansionPanel } from '@angular/material/expansion';
 import { StateMachineActionStatistics } from '@shared/types/state-machine/state-machine-action-statistics.type';

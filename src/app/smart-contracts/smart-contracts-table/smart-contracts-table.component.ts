@@ -1,8 +1,8 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ComponentRef, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { State } from '@app/app.reducers';
+import { State } from '@app/app.index';
 import { SMART_CONTRACTS_SET_ACTIVE_CONTRACT, SmartContractsSetActiveContractAction } from '@smart-contracts/smart-contracts/smart-contracts.actions';
-import { ADD_INFO, InfoAdd } from '@shared/components/error-popup/error-popup.actions';
+import { ADD_INFO, InfoAdd } from '@app/layout/error-popup/error-popup.actions';
 import { Router } from '@angular/router';
 import { SmartContract } from '@shared/types/smart-contracts/smart-contract.type';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';

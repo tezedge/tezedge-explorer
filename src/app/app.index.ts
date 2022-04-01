@@ -1,6 +1,4 @@
 import { ActionReducer, ActionReducerMap, MetaReducer, } from '@ngrx/store';
-// import { storeLogger } from 'ngrx-store-logger';
-import { environment } from '@environment/environment';
 
 // add remote error loging
 //   import * as LogRocket from 'logrocket';
@@ -28,14 +26,14 @@ import * as fromSandbox from './sandbox/sandbox.reducer';
 import * as fromWallets from './wallets/wallets.reducer';
 import * as fromVersion from './layout/github-version/github-version.reducer';
 import * as fromResources from './resources/resources.reducer';
-import * as fromError from './shared/components/error-popup/error-popup.reducer';
+import * as fromError from './layout/error-popup/error-popup.reducer';
 import * as fromStateMachine from './state-machine/state-machine/state-machine.reducer';
 import * as fromSmartContracts from './smart-contracts/smart-contracts/smart-contracts.reducer';
-import * as fromSpinner from './shared/components/loading-spinner/loading-spinner.reducer';
+import * as fromSpinner from './layout/loading-spinner/loading-spinner.reducer';
 
 import { MempoolState } from '@mempool/mempool.reducer';
 import { ResourcesState } from '@resources/resources.reducer';
-import { ErrorState } from '@shared/components/error-popup/error-popup.reducer';
+import { ErrorState } from '@app/layout/error-popup/error-popup.reducer';
 import { SettingsNode } from '@shared/types/settings-node/settings-node.type';
 import { NetworkStats } from '@shared/types/network/network-stats.type';
 import { NetworkPeers } from '@shared/types/network/network-peers.type';
@@ -47,7 +45,7 @@ import { LogsAction } from '@shared/types/logs/logs-action.type';
 import { GithubVersion } from '@shared/types/github-version/github-version.type';
 import { StateMachine } from '@shared/types/state-machine/state-machine.type';
 import { SmartContractsState } from '@smart-contracts/smart-contracts/smart-contracts.index';
-import { LoadingSpinnerState } from '@shared/components/loading-spinner/loading-spinner.reducer';
+import { LoadingSpinnerState } from '@app/layout/loading-spinner/loading-spinner.reducer';
 import { StorageState } from '@storage/storage.index';
 
 export interface State {
@@ -77,7 +75,6 @@ export interface State {
   spinner: LoadingSpinnerState;
 }
 
-// state
 export const reducers: ActionReducerMap<State> = {
   app: fromApp.reducer,
   monitoring: fromMonitoring.reducer,
@@ -105,18 +102,7 @@ export const reducers: ActionReducerMap<State> = {
   spinner: fromSpinner.reducer,
 };
 
-// // log all actions to console for production
-// export function logger(reducer: ActionReducer<State>): any {
-//     // default, no options
-//     return storeLogger()(reducer);
-// }
-
-// compose all reducers to map
-export const metaReducers: MetaReducer<State>[] = !environment.production
-  ? [fromNgrxForm.form, nodeSwitchStateMetaReducer]
-  : [fromNgrxForm.form, nodeSwitchStateMetaReducer
-    //    ,logger
-  ];
+export const metaReducers: MetaReducer<State>[] = [fromNgrxForm.form, nodeSwitchStateMetaReducer];
 
 export function nodeSwitchStateMetaReducer(reducer: ActionReducer<State>): ActionReducer<State> {
   return function clearStateFn(state: State, action: any) {

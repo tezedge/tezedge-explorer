@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { mergeMap, switchMap, tap, withLatestFrom } from 'rxjs/operators';
+import { mergeMap, tap, withLatestFrom } from 'rxjs/operators';
 import { delay, ObservedValueOf, of } from 'rxjs';
 import { ADD_ERROR, ADD_INFO, ErrorAdd, InfoAdd, REMOVE_ERROR, REMOVE_INFO } from './error-popup.actions';
 import { NotifierService } from 'angular-notifier';
-import { State } from '@app/app.reducers';
+import { State } from '@app/app.index';
 import { Store } from '@ngrx/store';
 
 @Injectable({ providedIn: 'root' })

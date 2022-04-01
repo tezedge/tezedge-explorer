@@ -3,8 +3,8 @@ import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { HttpClient } from '@angular/common/http';
 import { Store } from '@ngrx/store';
 import { catchError, map, switchMap, withLatestFrom } from 'rxjs/operators';
-import { State } from '@app/app.reducers';
-import { ADD_ERROR } from '@shared/components/error-popup/error-popup.actions';
+import { State } from '@app/app.index';
+import { ADD_ERROR } from '@app/layout/error-popup/error-popup.actions';
 import { ObservedValueOf } from 'rxjs';
 import {
   GITHUB_VERSION_DEBUGGER_LOAD,

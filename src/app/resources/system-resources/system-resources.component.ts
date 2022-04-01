@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, NgZo
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { fromEvent } from 'rxjs';
 import { select, Store } from '@ngrx/store';
-import { State } from '@app/app.reducers';
+import { State } from '@app/app.index';
 import { BreakpointObserver } from '@angular/cdk/layout';
 import { delay, filter, skip } from 'rxjs/operators';
 import {

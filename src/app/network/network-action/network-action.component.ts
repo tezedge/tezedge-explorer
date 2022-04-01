@@ -3,7 +3,7 @@ import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 
 import { Store } from '@ngrx/store';
 import { filter } from 'rxjs/operators';
-import { State } from '@app/app.reducers';
+import { State } from '@app/app.index';
 import { NetworkAction } from '@shared/types/network/network-action.type';
 import { NetworkActionEntity } from '@shared/types/network/network-action-entity.type';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';

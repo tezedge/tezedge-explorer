@@ -2,7 +2,7 @@ import * as moment from 'moment-mini-ts';
 import { environment } from '@environment/environment';
 import { SettingsNode } from '@shared/types/settings-node/settings-node.type';
 import { SettingsNodeEntityHeader } from '@shared/types/settings-node/settings-node-entity-header.type';
-import { State } from '@app/app.reducers';
+import { State } from '@app/app.index';
 import { SettingsNodeApi } from '@shared/types/settings-node/settings-node-api.type';
 
 const initialState: SettingsNode = {

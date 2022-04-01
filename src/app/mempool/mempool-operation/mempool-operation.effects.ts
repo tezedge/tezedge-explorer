@@ -3,8 +3,8 @@ import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { catchError, map, switchMap, withLatestFrom } from 'rxjs/operators';
 import { ObservedValueOf, of } from 'rxjs';
-import { State } from '@app/app.reducers';
-import { ADD_ERROR } from '@shared/components/error-popup/error-popup.actions';
+import { State } from '@app/app.index';
+import { ADD_ERROR } from '@app/layout/error-popup/error-popup.actions';
 import { MEMPOOL_OPERATION_LOAD, MEMPOOL_OPERATION_LOAD_SUCCESS, MempoolOperationLoad } from '@mempool/mempool-operation/mempool-operation.actions';
 import { MempoolOperationService } from '@mempool/mempool-operation/mempool-operation.service';
 

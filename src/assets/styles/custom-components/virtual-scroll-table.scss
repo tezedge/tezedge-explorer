@@ -261,54 +261,61 @@
     margin-left: 20px;
   }
 
-  button {
-    height: 24px;
-    margin-right: 8px;
-  }
-
-  .square-button {
-    width: 24px;
-    background: $foreground-1;
-    border-radius: 2px;
-    border: none;
-
-    &:not(:disabled) {
-      cursor: pointer;
-
-      &:hover {
-        background: $foreground-2;
-      }
-    }
-  }
-
-  .rectangle-button {
-    width: 90px;
-    border-radius: 2px;
-    font-weight: 300;
-    font-size: 14px;
-
-    &.start-stream {
-      background-color: #70BF53;
-      color: white;
-    }
-
-    &.stop-stream {
-      background-color: rgba(235, 83, 104, 1);
-      color: white;
-    }
-
-    &.inactive {
-      background-color: transparent;
-      opacity: .5;
-
-      &:hover {
-        background-color: $foreground-2;
-      }
-    }
-  }
+  //button {
+  //  height: 24px;
+  //  margin-right: 8px;
+  //}
 
   [disabled] {
     opacity: .3;
+  }
+}
+
+.square-button,
+.rectangle-button {
+  height: 24px !important;
+  border-radius: 2px !important;
+  line-height: unset !important;
+  margin-right: 8px !important;
+
+}
+
+.square-button {
+  width: 24px !important;
+  background: $foreground-1;
+  border: none;
+
+  &:not(:disabled) {
+    cursor: pointer;
+
+    &:hover {
+      background: $foreground-2;
+    }
+  }
+}
+
+.rectangle-button {
+  width: 90px !important;
+  font-weight: 400 !important;
+  font-size: 14px;
+
+  &.start-stream {
+    background-color: #70BF53;
+    color: white;
+  }
+
+  &.stop-stream {
+    background-color: rgba(235, 83, 104, 1);
+    color: white;
+  }
+
+  &.inactive {
+    background-color: transparent;
+    opacity: .5;
+
+    &:hover {
+      background-color: $foreground-2;
+    }
   }
 }
 

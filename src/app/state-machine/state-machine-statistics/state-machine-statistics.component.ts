@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, NgZone, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { State } from '@app/app.reducers';
+import { State } from '@app/app.index';
 import { selectStateMachine } from '@state-machine/state-machine/state-machine.reducer';
 import { Observable } from 'rxjs';
 import { StateMachine } from '@shared/types/state-machine/state-machine.type';

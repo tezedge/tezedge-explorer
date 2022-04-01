@@ -5,9 +5,9 @@ import { BehaviorSubject, empty, interval, ObservedValueOf, of, Subject } from '
 import { catchError, filter, mergeMap, map, startWith, switchMap, takeUntil, withLatestFrom } from 'rxjs/operators';
 import { webSocket, WebSocketSubject } from 'rxjs/webSocket';
 import { HttpClient } from '@angular/common/http';
-import { State } from '@app/app.reducers';
+import { State } from '@app/app.index';
 import { SettingsNodeEntityHeader } from '@shared/types/settings-node/settings-node-entity-header.type';
-import { ADD_ERROR } from '@shared/components/error-popup/error-popup.actions';
+import { ADD_ERROR } from '@app/layout/error-popup/error-popup.actions';
 import { Router } from '@angular/router';
 import { MonitoringActionTypes } from './monitoring.actions';
 import { SettingsNodeService } from '@settings/settings-node.service';

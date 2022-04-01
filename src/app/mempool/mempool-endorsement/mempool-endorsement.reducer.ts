@@ -1,5 +1,5 @@
 import { MempoolEndorsementState } from '@shared/types/mempool/mempool-endorsement/mempool-endorsement-state.type';
-import { State } from '@app/app.reducers';
+import { State } from '@app/app.index';
 import { MempoolEndorsement, MempoolEndorsementStatusTypes } from '@shared/types/mempool/mempool-endorsement/mempool-endorsement.type';
 import { MempoolEndorsementStatistics } from '@shared/types/mempool/mempool-endorsement/mempool-endorsement-statistics.type';
 import { MempoolEndorsementSort } from '@shared/types/mempool/mempool-endorsement/mempool-endorsement-sort.type';
@@ -181,7 +181,7 @@ function calculateStatistics(currentStatistics: MempoolEndorsementStatistics, ne
       { name: MempoolEndorsementStatusTypes.DECODED, value: valueObject[MempoolEndorsementStatusTypes.DECODED] },
       { name: MempoolEndorsementStatusTypes.RECEIVED, value: valueObject[MempoolEndorsementStatusTypes.RECEIVED] },
     ],
-    previousBlockMissedEndorsements: isNewBlock ? currentStatistics?.endorsementTypes[0].value : currentStatistics.previousBlockMissedEndorsements
+    previousBlockMissedEndorsements: isNewBlock ? currentStatistics?.endorsementTypes[0].value : currentStatistics?.previousBlockMissedEndorsements
   };
 }
 

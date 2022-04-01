@@ -1,6 +1,6 @@
 import * as moment from 'moment-mini-ts';
 import { NetworkStats } from '@shared/types/network/network-stats.type';
-import { State } from '@app/app.reducers';
+import { State } from '@app/app.index';
 
 const initialState: NetworkStats = {
   eta: '',
@@ -84,5 +84,5 @@ function numberOrSpace(value: number, mu: string, canBeZero?: boolean): string {
     : '';
 }
 
-export const selectNetworkCurrentBlockLevel = (state: State) => state.networkStats.lastAppliedBlock.level;
-export const selectNetworkCurrentBlockHash = (state: State) => state.networkStats.lastAppliedBlock.hash;
+export const selectNetworkLastAppliedBlockLevel = (state: State): number => state.networkStats.lastAppliedBlock.level;
+export const selectNetworkCurrentBlockHash = (state: State): string | undefined => state.networkStats.lastAppliedBlock.hash;

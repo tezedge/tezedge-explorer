@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, NgZone, OnInit, ViewChild } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { State } from '@app/app.reducers';
+import { State } from '@app/app.index';
 import { selectStateMachine, selectStateMachineDiagramHeight } from '@state-machine/state-machine/state-machine.reducer';
 import { StateMachineAction } from '@shared/types/state-machine/state-machine-action.type';
 import {

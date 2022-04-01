@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Inject, OnInit, Renderer2 } from '@angular/core';
 import { SmartContract } from '@shared/types/smart-contracts/smart-contract.type';
 import { select, Store } from '@ngrx/store';
-import { State } from '@app/app.reducers';
+import { State } from '@app/app.index';
 import { filter } from 'rxjs';
 import { DOCUMENT } from '@angular/common';
 import { editor, Range } from 'monaco-editor';

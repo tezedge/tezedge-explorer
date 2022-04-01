@@ -3,7 +3,7 @@ import { Observable } from 'rxjs';
 import { select, Store } from '@ngrx/store';
 import { GithubVersion } from '@shared/types/github-version/github-version.type';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { State } from '@app/app.reducers';
+import { State } from '@app/app.index';
 import { Overlay, OverlayRef } from '@angular/cdk/overlay';
 import { TemplatePortal } from '@angular/cdk/portal';
 import { selectActiveNode } from '@settings/settings-node.reducer';

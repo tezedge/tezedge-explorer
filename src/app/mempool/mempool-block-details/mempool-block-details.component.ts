@@ -1,8 +1,8 @@
 import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
-import { ADD_INFO, InfoAdd } from '@shared/components/error-popup/error-popup.actions';
+import { ADD_INFO, InfoAdd } from '@app/layout/error-popup/error-popup.actions';
 import { Store } from '@ngrx/store';
-import { State } from '@app/app.reducers';
-import { MempoolBlockDetails } from '@shared/types/mempool/common/mempool-block-details.type';
+import { State } from '@app/app.index';
+import { MempoolBlockRound } from '@shared/types/mempool/common/mempool-block-round.type';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { Router } from '@angular/router';
 import { mempoolBlockApplication } from '@mempool/mempool-block-application/mempool-block-application.reducer';
@@ -17,7 +17,7 @@ import { take } from 'rxjs/operators';
 })
 export class MempoolBlockDetailsComponent implements OnInit {
 
-  @Input() detail: MempoolBlockDetails;
+  @Input() detail: MempoolBlockRound;
   @Input() delta: boolean;
   @Input() isBlockApplication: boolean;
 

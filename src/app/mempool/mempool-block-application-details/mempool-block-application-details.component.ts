@@ -1,9 +1,9 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { State } from '@app/app.reducers';
+import { State } from '@app/app.index';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { Observable, tap } from 'rxjs';
-import { MempoolBlockDetails } from '@shared/types/mempool/common/mempool-block-details.type';
+import { MempoolBlockRound } from '@shared/types/mempool/common/mempool-block-round.type';
 import {
   mempoolBlockApplicationActiveBlockDetails,
   mempoolBlockApplicationActiveBlockLevel,
@@ -23,7 +23,7 @@ import {
 })
 export class MempoolBlockApplicationDetailsComponent implements OnInit {
 
-  details$: Observable<MempoolBlockDetails[]>;
+  details$: Observable<MempoolBlockRound[]>;
   blockLevel$: Observable<number>;
   delta: boolean;
 

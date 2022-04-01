@@ -1,5 +1,10 @@
 @import 'utilities/layout';
 
+:host {
+  height: 100%;
+  @include flexColumn();
+}
+
 .table-container {
   min-width: 1225px;
 

@@ -218,13 +218,33 @@ const MEMPOOL = {
     { name: 'contracts' }
   ]
 };
+const MEMPOOL2 = {
+  id: 'tezedge',
+  type: 'tezedge',
+  name: 'tezedge.mempool.tezedge.com',
+  http: 'http://mempool.tezedge.com:38732',
+  p2p_port: 29732,
+  features: [
+    { name: 'ws', url: 'ws://mempool.tezedge.com:24927' },
+    { name: 'debugger', url: 'http://mempool.tezedge.com:27732' },
+    { name: 'monitoring' },
+    { name: 'resources/system', monitoringUrl: 'http://mempool.tezedge.com:38739/resources/tezedge' },
+    { name: 'resources/storage' },
+    { name: 'mempool' },
+    { name: 'storage' },
+    { name: 'network' },
+    { name: 'logs' },
+    { name: 'state' }
+  ]
+};
 
 export const environment = {
   production: false,
   api: [
-    DEVELOP,
+    // DEVELOP,
     // MASTER,
     // MEMPOOL,
+    MEMPOOL2,
     // TRACE,
     // PRECHECKER,
     // DEBUG,

@@ -11,7 +11,7 @@ export class MempoolComponent {
   readonly tabs = [
     { name: 'block application', link: 'block-application' },
     { name: 'baking', link: 'baking' },
-    { name: 'endorsements', link: 'endorsements' },
+    // { name: 'endorsements', link: 'endorsements' },
     { name: 'pending', link: 'pending' },
     { name: 'statistics', link: 'statistics' },
   ];

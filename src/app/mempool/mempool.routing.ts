@@ -19,6 +19,12 @@ const routes: Routes = [
       {
         path: 'baking',
         component: MempoolBakingRightsComponent,
+        children: [
+          {
+            path: ':block',
+            component: MempoolBakingRightsComponent
+          }
+        ]
       },
       {
         path: 'endorsements',

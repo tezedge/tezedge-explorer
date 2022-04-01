@@ -1,7 +1,7 @@
 import { AfterViewInit, ChangeDetectionStrategy, Component, ElementRef, HostListener, NgZone, OnInit, ViewChild } from '@angular/core';
 import { StateMachineDiagramBlock } from '@shared/types/state-machine/state-machine-diagram-block.type';
 import { select, Store } from '@ngrx/store';
-import { State } from '@app/app.reducers';
+import { State } from '@app/app.index';
 import {
   selectStateMachine,
   selectStateMachineActiveAction,

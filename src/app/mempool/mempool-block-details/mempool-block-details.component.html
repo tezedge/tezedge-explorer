@@ -1,5 +1,8 @@
 <div class="details-container">
   <div class="general-details padding-top-5 padding-left-10 border-bottom">
+    <div>Round:
+      <span>{{ detail.round }}</span>
+    </div>
     <div>Block time:
       <span>{{ detail.blockTimestamp | dateTime }}</span>
     </div>
@@ -39,7 +42,7 @@
       <div [style.background-color]="colors[3]"></div>
     </div>
     <div><div>Precheck start: </div><span [innerHTML]="detail.precheckStart | nanoTransform: FIFTY_MS : TWENTY_MS"></span></div>
-    <div><div>Precheck end: </div><span [innerHTML]="detail.precheckEnd | nanoTransform: FIFTY_MS : TWENTY_MS"></span></div>
+    <div><div>Precheck end: </div><span [innerHTML]="(detail.precheckEnd < 0 ? '-' : detail.precheckEnd | nanoTransform: FIFTY_MS : TWENTY_MS)"></span></div>
     <div><div>Download block header start: </div><span [innerHTML]="detail.downloadBlockHeaderStart | nanoTransform: FIFTY_MS : TWENTY_MS"></span></div>
     <div><div>Download block header  end: </div><span [innerHTML]="detail.downloadBlockHeaderEnd | nanoTransform: FIFTY_MS : TWENTY_MS"></span></div>
     <div><div>Download block operations start: </div><span [innerHTML]="detail.downloadBlockOperationsStart | nanoTransform: FIFTY_MS : TWENTY_MS"></span></div>

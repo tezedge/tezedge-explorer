@@ -1,10 +1,14 @@
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { State } from '@app/app.reducers';
+import { State } from '@app/app.index';
 import { Observable } from 'rxjs';
-import { MempoolBlockDetails } from '@shared/types/mempool/common/mempool-block-details.type';
-import { mempoolBakingRightsDelta, mempoolBakingRightsDetails } from '@mempool/mempool-baking-rights/mempool-baking-rights.reducer';
-import { ADD_INFO, InfoAdd } from '@shared/components/error-popup/error-popup.actions';
+import { MempoolBlockRound } from '@shared/types/mempool/common/mempool-block-round.type';
+import {
+  mempoolBakingRightsActiveRoundIndex,
+  mempoolBakingRightsDelta,
+  mempoolBakingRightsDetails
+} from '@mempool/mempool-baking-rights/mempool-baking-rights.reducer';
+import { ADD_INFO, InfoAdd } from '@app/layout/error-popup/error-popup.actions';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { MEMPOOL_BAKING_RIGHTS_DELTA_SWITCH, MempoolBakingRightsDeltaSwitch } from '@mempool/mempool-baking-rights/mempool-baking-rights.actions';
 
@@ -17,12 +21,14 @@ import { MEMPOOL_BAKING_RIGHTS_DELTA_SWITCH, MempoolBakingRightsDeltaSwitch } fr
 })
 export class MempoolBakingRightsDetailsComponent implements OnInit {
 
-  details$: Observable<MempoolBlockDetails[]>;
+  details$: Observable<MempoolBlockRound[]>;
+  activeRoundIndex: number = 0;
   delta: boolean;
 
-  constructor(private store: Store<State>) { }
+  constructor(private store: Store<State>,
+              private cdRef: ChangeDetectorRef) { }
 
-  readonly trackDetails = (index: number, detail: MempoolBlockDetails) => detail.baker;
+  readonly trackDetails = (index: number, detail: MempoolBlockRound) => detail.baker;
 
   ngOnInit(): void {
     this.listenToDetailsChanges();
@@ -30,9 +36,17 @@ export class MempoolBakingRightsDetailsComponent implements OnInit {
 
   private listenToDetailsChanges(): void {
     this.details$ = this.store.select(mempoolBakingRightsDetails);
+
+    this.store.select(mempoolBakingRightsActiveRoundIndex)
+      .pipe(untilDestroyed(this))
+      .subscribe(index => {
+        this.activeRoundIndex = index;
+        this.cdRef.detectChanges();
+      });
+
     this.store.select(mempoolBakingRightsDelta)
       .pipe(untilDestroyed(this))
-      .subscribe(val => this.delta = val);
+      .subscribe(delta => this.delta = delta);
   }
 
   copyHashToClipboard(hash: string): void {

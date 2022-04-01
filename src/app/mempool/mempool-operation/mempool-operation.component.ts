@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { State } from '@app/app.reducers';
+import { State } from '@app/app.index';
 import { MempoolOperation } from '@shared/types/mempool/operation/mempool-operation.type';
 import { Observable, tap } from 'rxjs';
 import { selectMempoolOperations } from '@mempool/mempool-operation/mempool-operation.reducer';

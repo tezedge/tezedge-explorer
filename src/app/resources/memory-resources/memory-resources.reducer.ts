@@ -1,5 +1,5 @@
 import { MemoryResourcesActions, MemoryResourcesActionTypes } from '@resources/memory-resources/memory-resources.actions';
-import { State } from '@app/app.reducers';
+import { State } from '@app/app.index';
 import { MemoryResourcesState } from '@shared/types/resources/memory/memory-resources-state.type';
 
 

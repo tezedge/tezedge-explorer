@@ -1,6 +1,6 @@
 import { AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { State } from '@app/app.reducers';
+import { State } from '@app/app.index';
 import { Router } from '@angular/router';
 import { SettingsNode } from '@shared/types/settings-node/settings-node.type';
 import { filter } from 'rxjs';

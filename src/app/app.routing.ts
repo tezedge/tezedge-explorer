@@ -1,5 +1,4 @@
-import { Params, RouterStateSnapshot, Routes } from '@angular/router';
-import { RouterStateSerializer } from '@ngrx/router-store';
+import { Routes } from '@angular/router';
 
 export const AppRouting: Routes = [
   {
@@ -60,18 +59,3 @@ export const AppRouting: Routes = [
     pathMatch: 'full'
   },
 ];
-
-// router interface
-export interface RouterStateUrl {
-  url: string;
-  queryParams: Params;
-}
-
-// create custom router
-export class CustomRouterStateSerializer implements RouterStateSerializer<RouterStateUrl> {
-  serialize(routerState: RouterStateSnapshot): RouterStateUrl {
-    const { url } = routerState;
-    const queryParams = routerState.root.queryParams;
-    return { url, queryParams };
-  }
-}

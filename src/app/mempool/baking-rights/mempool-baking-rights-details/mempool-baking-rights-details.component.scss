@@ -1,0 +1,16 @@
+@import 'src/assets/styles/utilities/layout';
+@import 'src/assets/styles/utilities/variables';
+
+.hash {
+  line-height: 36px;
+}
+
+.copy-hash {
+  @include flexRowCenter();
+  background-color: $background-surface;
+  height: 26px;
+
+  &:hover {
+    background-color: $background-surface-fade-2;
+  }
+}

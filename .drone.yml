@@ -69,7 +69,7 @@ steps:
   - name: test-mempool-endorsements
     image: cypress/included:9.5.2
     commands:
-      - cypress run --spec "cypress/integration/mempool/mempool-endorsement.spec.js"
+      - cypress run --spec "cypress/integration/mempool/endorsement.spec.js"
     environment:
       CYPRESS_baseUrl: http://frontend-server:80
     depends_on:
@@ -366,7 +366,7 @@ steps:
   - name: test-mempool-endorsements
     image: cypress/included:9.5.2
     commands:
-      - cypress run --spec "cypress/integration/mempool/mempool-endorsement.spec.js"
+      - cypress run --spec "cypress/integration/mempool/endorsement.spec.js"
     environment:
       CYPRESS_baseUrl: http://frontend-server:80
     depends_on:

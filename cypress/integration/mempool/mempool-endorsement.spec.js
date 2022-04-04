@@ -45,7 +45,7 @@ context('MEMPOOL ENDORSEMENT', () => {
   //     .then(store => {
   //       store.select('mempool').subscribe(mempool => {
   //         if (mempool.endorsementState.endorsements.length > 0) {
-  //           cy.get('app-mempool-endorsement .table-container .row')
+  //           cy.get('app-endorsement .table-container .row')
   //             .should('be.visible');
   //         }
   //       });
@@ -179,18 +179,18 @@ context('MEMPOOL ENDORSEMENT', () => {
   //           const tenthEndorsement = mempool.endorsementState.endorsements[9];
   //           if (!haveValue) {
   //             haveValue = true;
-  //             cy.get('app-mempool-endorsement .table-container .row:nth-child(10) span:nth-child(2) span')
+  //             cy.get('app-endorsement .table-container .row:nth-child(10) span:nth-child(2) span')
   //               .should(span => {
   //                 expect(span.text().trim()).to.equal(tenthEndorsement.bakerName || tenthEndorsement.bakerHash);
   //               })
-  //               .get('app-mempool-endorsement .table-container .row:nth-child(1) span:nth-child(2) span')
+  //               .get('app-endorsement .table-container .row:nth-child(1) span:nth-child(2) span')
   //               .should(span => {
   //                 expect(span.text().trim()).to.not.equal(tenthEndorsement.bakerName || tenthEndorsement.bakerHash);
   //               })
   //               .get('.table-footer input')
   //               .type(tenthEndorsement.bakerHash, { force: true })
   //               .wait(300)
-  //               .get('app-mempool-endorsement .table-container .row:nth-child(1) span:nth-child(2) span')
+  //               .get('app-endorsement .table-container .row:nth-child(1) span:nth-child(2) span')
   //               .should(span => {
   //                 expect(span.text().trim()).to.equal(tenthEndorsement.bakerName || tenthEndorsement.bakerHash);
   //                 expect(localStorage.getItem('activeBaker')).to.equal(tenthEndorsement.bakerHash);
@@ -211,27 +211,27 @@ context('MEMPOOL ENDORSEMENT', () => {
   //           const stats = mempool.endorsementState.statistics;
   //           if (!haveValue) {
   //             haveValue = true;
-  //             cy.get('app-mempool-endorsement-statistics .mem-stats-row:nth-child(2) div:last-child')
+  //             cy.get('app-endorsement-statistics .mem-stats-row:nth-child(2) div:last-child')
   //               .should(div => {
   //                 expect(div.text().trim()).to.equal(stats.endorsementTypes[0].value.toString());
   //               })
-  //               .get('app-mempool-endorsement-statistics .mem-stats-row:nth-child(3) div:last-child')
+  //               .get('app-endorsement-statistics .mem-stats-row:nth-child(3) div:last-child')
   //               .should(div => {
   //                 expect(div.text().trim()).to.equal(stats.endorsementTypes[1].value.toString());
   //               })
-  //               .get('app-mempool-endorsement-statistics .mem-stats-row:nth-child(4) div:last-child')
+  //               .get('app-endorsement-statistics .mem-stats-row:nth-child(4) div:last-child')
   //               .should(div => {
   //                 expect(div.text().trim()).to.equal(stats.endorsementTypes[2].value.toString());
   //               })
-  //               .get('app-mempool-endorsement-statistics .mem-stats-row:nth-child(5) div:last-child')
+  //               .get('app-endorsement-statistics .mem-stats-row:nth-child(5) div:last-child')
   //               .should(div => {
   //                 expect(div.text().trim()).to.equal(stats.endorsementTypes[3].value.toString());
   //               })
-  //               .get('app-mempool-endorsement-statistics .mem-stats-row:nth-child(6) div:last-child')
+  //               .get('app-endorsement-statistics .mem-stats-row:nth-child(6) div:last-child')
   //               .should(div => {
   //                 expect(div.text().trim()).to.equal(stats.endorsementTypes[4].value.toString());
   //               })
-  //               .get('app-mempool-endorsement-statistics .mem-stats-row:nth-child(7) div:last-child')
+  //               .get('app-endorsement-statistics .mem-stats-row:nth-child(7) div:last-child')
   //               .should(div => {
   //                 expect(div.text().trim()).to.equal(stats.endorsementTypes[5].value.toString());
   //               });

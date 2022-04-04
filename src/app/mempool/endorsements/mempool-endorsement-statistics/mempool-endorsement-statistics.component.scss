@@ -1,0 +1,57 @@
+.block {
+  line-height: 16px;
+  margin-left: 8px;
+  margin-bottom: 2px;
+  border-radius: 5px;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+.mem-stats-row {
+  display: grid;
+  grid-template-columns: 82px 1fr 30px;
+
+  .progress-background {
+    height: 3px;
+    border-radius: 3px;
+    background-color: rgba(255, 255, 255, 0.1);
+    width: 100%;
+    display: block;
+
+    .progress-background {
+      min-width: 4px;
+
+      &.broadcast {
+        background-color: #32d74b;
+      }
+
+      &.applied {
+        background-color: #287e76;
+      }
+
+      &.prechecked {
+        background-color: #0a84ff;
+      }
+
+      &.decoded {
+        background-color: #bf5af2;
+      }
+
+      &.received {
+        background-color: #ff9f0a;
+      }
+
+      &.missing {
+        background-color: #fff;
+      }
+    }
+  }
+
+  &.missed {
+    color: #ff453a;
+
+    &.missed-0 {
+      color: #32d74b;
+    }
+  }
+}

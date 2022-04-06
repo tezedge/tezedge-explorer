@@ -43,17 +43,19 @@ import { SettingsNodeComponent } from '@settings/settings-node.component';
 import { ScriptLoaderService } from '@core/script-loader.service';
 import { SmartContractsEffects } from '@smart-contracts/smart-contracts/smart-contracts.effects';
 import { ThemeSwitcherService } from '@core/theme-switcher.service';
-import { MempoolEndorsementEffects } from '@mempool/mempool-endorsement/mempool-endorsement.effects';
-import { MempoolOperationEffects } from '@mempool/mempool-operation/mempool-operation.effects';
-import { MempoolStatisticsEffects } from '@mempool/mempool-statistics/mempool-statistics.effects';
-import { MempoolBlockApplicationEffects } from '@mempool/mempool-block-application/mempool-block-application.effects';
-import { MempoolBakingRightsEffects } from '@mempool/mempool-baking-rights/mempool-baking-rights.effects';
+import { MempoolEndorsementEffects } from '@mempool/endorsements/mempool-endorsement/mempool-endorsement.effects';
+import { MempoolOperationEffects } from '@mempool/operation/mempool-operation/mempool-operation.effects';
+import { MempoolStatisticsEffects } from '@mempool/statistics/mempool-statistics/mempool-statistics.effects';
+import { MempoolBlockApplicationEffects } from '@mempool/block-application/mempool-block-application/mempool-block-application.effects';
+import { MempoolBakingRightsEffects } from '@mempool/baking-rights/mempool-baking-rights/mempool-baking-rights.effects';
 import { MAT_FORM_FIELD_DEFAULT_OPTIONS } from '@angular/material/form-field';
 import { NgrxRouterStoreModule } from '@shared/router/ngrx-router.module';
 import { StorageRequestEffects } from '@storage/storage-request/storage-request.effects';
 import { TezedgeAppSharedModule } from '@shared/tezedge-app-shared.module';
 import { ErrorPopupComponent } from '@app/layout/error-popup/error-popup.component';
 import { LoadingSpinnerComponent } from '@app/layout/loading-spinner/loading-spinner.component';
+import { CUSTOM_JSON_PARSER_INTERCEPTOR } from '@core/custom-json-parser-interceptor.service';
+import { MempoolPreEndorsementEffects } from '@mempool/preendorsements/mempool-pre-endorsement/mempool-pre-endorsement.effects';
 
 registerLocaleData(localeFr, 'fr');
 registerLocaleData(localeEnGb, 'en');
@@ -74,6 +76,7 @@ const effects = [
   AppEffects,
   MonitoringEffects,
   MempoolEndorsementEffects,
+  MempoolPreEndorsementEffects,
   MempoolOperationEffects,
   MempoolStatisticsEffects,
   MempoolBlockApplicationEffects,
@@ -159,6 +162,7 @@ const effects = [
       deps: [ScriptLoaderService],
       multi: true
     },
+    CUSTOM_JSON_PARSER_INTERCEPTOR,
     { provide: LOCALE_ID, useValue: 'fr' },
     { provide: LOCALE_ID, useValue: 'en' },
     { provide: MAT_FORM_FIELD_DEFAULT_OPTIONS, useValue: 'outline' },

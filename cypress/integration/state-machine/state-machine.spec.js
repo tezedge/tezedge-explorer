@@ -597,15 +597,19 @@ context('STATE MACHINE', () => {
           .then(labels => {
             const labelTexts = Array.from(labels).map(l => l.textContent);
             labelTexts.pop();
-            labelTexts.forEach(label => {
-              expect(stats.some(action => action.startsWith(label))).to.be.true;
-            });
+            if (stats) {
+              labelTexts.forEach(label => {
+                expect(stats.some(action => action.startsWith(label))).to.be.true;
+              });
+            }
           })
           .get('.table-filters div div button').should('have.length', stats.length)
           .then(filters => {
-            Array.from(filters).map(f => f.textContent).forEach(text => {
-              expect(stats.some(action => ' ' + action + ' ' === text)).to.be.true;
-            });
+            if (stats) {
+              Array.from(filters).map(f => f.textContent).forEach(text => {
+                expect(stats.some(action => ' ' + action + ' ' === text)).to.be.true;
+              });
+            }
           });
       }
     });

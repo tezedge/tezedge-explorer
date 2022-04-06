@@ -225,7 +225,7 @@ const MEMPOOL2 = {
   http: 'http://mempool.tezedge.com:38732',
   p2p_port: 29732,
   features: [
-    { name: 'ws', url: 'ws://mempool.tezedge.com:24927' },
+    { name: 'ws', url: 'ws://mempool.tezedge.com:34927' },
     { name: 'debugger', url: 'http://mempool.tezedge.com:27732' },
     { name: 'monitoring' },
     { name: 'resources/system', monitoringUrl: 'http://mempool.tezedge.com:38739/resources/tezedge' },

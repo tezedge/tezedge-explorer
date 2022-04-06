@@ -2,7 +2,7 @@ import { testForTezedge } from '../../support';
 
 const beforeBakingRightsTest = (test) => {
   let tested = false;
-  cy.visit(Cypress.config().baseUrl + '/#/mempool/baking', { timeout: 100000 })
+  cy.visit(Cypress.config().baseUrl + '/#/mempool/proposal', { timeout: 100000 })
     .window()
     .its('store')
     .then({ timeout: 10500 }, store => {

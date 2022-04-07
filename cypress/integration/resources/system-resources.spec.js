@@ -174,7 +174,7 @@ context('SYSTEM RESOURCES', () => {
             routed = true;
             cy.get('svg g g g rect.tooltip-area')
               .its(2)
-              .click(300, 20)
+              .click(300, 20, { force: true })
               .wait(1000)
               .get('app-graph-redirection-overlay .redirection-overlay').should('be.visible')
               .get('app-graph-redirection-overlay .redirection-overlay .pointer')
@@ -196,7 +196,7 @@ context('SYSTEM RESOURCES', () => {
             routed = true;
             cy.get('svg g g g rect.tooltip-area')
               .its(2)
-              .click(300, 20)
+              .click(300, 20, { force: true })
               .wait(1000)
               .get('app-graph-redirection-overlay .redirection-overlay').should('be.visible')
               .get('app-graph-redirection-overlay .redirection-overlay .pointer')

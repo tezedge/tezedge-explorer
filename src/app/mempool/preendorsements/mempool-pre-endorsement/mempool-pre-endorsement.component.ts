@@ -28,12 +28,12 @@ import {
   MEMPOOL_PREENDORSEMENT_LOAD_ROUND,
   MEMPOOL_PREENDORSEMENT_SET_ACTIVE_BAKER,
   MEMPOOL_PREENDORSEMENT_SORT,
-  MEMPOOL_PREENDORSEMENT_STOP,
+  MEMPOOL_PREENDORSEMENT_STOP, MEMPOOL_PREENDORSEMENT_UPDATE_CURRENT_BLOCK,
   MempoolPreEndorsementLoadRound,
   MempoolPreEndorsementSetActiveBaker,
   MempoolPreEndorsementsInit,
   MempoolPreEndorsementSorting,
-  MempoolPreEndorsementStop
+  MempoolPreEndorsementStop, MempoolPreEndorsementUpdateCurrentBlock
 } from '@mempool/preendorsements/mempool-pre-endorsement/mempool-pre-endorsement.actions';
 import {
   selectMempoolPreEndorsementActiveBaker,
@@ -44,6 +44,10 @@ import {
 import { Overlay, OverlayRef } from '@angular/cdk/overlay';
 import { Router } from '@angular/router';
 import { TemplatePortal } from '@angular/cdk/portal';
+import {
+  MEMPOOL_ENDORSEMENT_UPDATE_CURRENT_BLOCK,
+  MempoolEndorsementUpdateCurrentBlock
+} from '@mempool/endorsements/mempool-endorsement/mempool-endorsement.actions';
 
 
 const translateFromRight = trigger('translateFromRight', [
@@ -171,7 +175,7 @@ export class MempoolPreEndorsementComponent implements OnInit, OnDestroy {
       filter(Boolean),
       distinctUntilChanged()
     ).subscribe((blockLevel: number) =>
-      this.store.dispatch<MempoolPreEndorsementLoadRound>({ type: MEMPOOL_PREENDORSEMENT_LOAD_ROUND, payload: { blockLevel } })
+      this.store.dispatch<MempoolPreEndorsementUpdateCurrentBlock>({ type: MEMPOOL_PREENDORSEMENT_UPDATE_CURRENT_BLOCK, payload: { blockLevel } })
     );
   }
 

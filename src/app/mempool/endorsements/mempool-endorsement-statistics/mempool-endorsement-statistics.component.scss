@@ -1,25 +1,38 @@
-.block {
+@import 'variables';
+
+.block,
+.round,
+.dash {
   line-height: 16px;
-  margin-left: 8px;
   margin-bottom: 2px;
   border-radius: 5px;
   padding-left: 4px;
   padding-right: 4px;
 }
 
+.block {
+  margin-left: 8px;
+}
+
+.time {
+  line-height: 16px;
+  margin-bottom: 2px;
+}
+
 .mem-stats-row {
   display: grid;
-  grid-template-columns: 82px 1fr 30px;
+  grid-template-columns: 96px 1fr 30px;
 
   .progress-background {
     height: 3px;
     border-radius: 3px;
-    background-color: rgba(255, 255, 255, 0.1);
+    background-color: $foreground-1;
     width: 100%;
     display: block;
 
     .progress-background {
       min-width: 4px;
+      transition: width 0.2s;
 
       &.broadcast {
         background-color: #32d74b;
@@ -42,7 +55,11 @@
       }
 
       &.missing {
-        background-color: #fff;
+        background-color: $foreground;
+      }
+
+      &.Branch.delayed {
+        background-color: #808080;
       }
     }
   }

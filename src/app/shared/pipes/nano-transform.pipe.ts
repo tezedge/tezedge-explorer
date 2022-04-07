@@ -9,6 +9,9 @@ export class NanoTransformPipe implements PipeTransform {
 
   transform(value: number, redThreshold?: number, yellowThreshold?: number, fractionalDigits: number = 2): string {
     if (isNaN(value) || value === null) {
+      if (value?.toString() === 'Not needed') {
+        return value.toString();
+      }
       return '-';
     } else if (value === 0) {
       return '0';

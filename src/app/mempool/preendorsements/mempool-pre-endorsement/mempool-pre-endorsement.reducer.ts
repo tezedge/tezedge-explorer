@@ -7,6 +7,7 @@ import {
   MEMPOOL_PREENDORSEMENT_SET_ACTIVE_BAKER,
   MEMPOOL_PREENDORSEMENT_SORT,
   MEMPOOL_PREENDORSEMENT_STOP,
+  MEMPOOL_PREENDORSEMENT_UPDATE_CURRENT_BLOCK,
   MEMPOOL_PREENDORSEMENT_UPDATE_STATUSES_SUCCESS,
   MempoolPreEndorsementActions
 } from '@mempool/preendorsements/mempool-pre-endorsement/mempool-pre-endorsement.actions';
@@ -14,6 +15,7 @@ import { MempoolPreEndorsementState } from '@shared/types/mempool/preendorsement
 import { MempoolPreEndorsement, MempoolPreEndorsementStatusTypes } from '@shared/types/mempool/preendorsement/mempool-preendorsement.type';
 import { MempoolPreEndorsementSort } from '@shared/types/mempool/preendorsement/mempool-preendorsement-sort.type';
 import { MempoolPreEndorsementStatistics } from '@shared/types/mempool/preendorsement/mempool-preendorsement-statistics.type';
+import { MempoolPartialRound } from '@shared/types/mempool/common/mempool-partial-round.type';
 
 const initialState: MempoolPreEndorsementState = {
   endorsements: [],
@@ -34,17 +36,10 @@ export function reducer(state: MempoolPreEndorsementState = initialState, action
 
   switch (action.type) {
 
-    case MEMPOOL_PREENDORSEMENT_LOAD_ROUND_SUCCESS: {
-      const rounds = action.payload.rounds.map(round => ({
-        round: round.round,
-        blockHash: round.blockHash,
-        blockLevel: round.blockLevel,
-        blockRecTimestamp: round.receiveTimestamp
-      }));
+    case MEMPOOL_PREENDORSEMENT_UPDATE_CURRENT_BLOCK: {
       return {
         ...state,
-        rounds,
-        currentRound: rounds[rounds.length - 1]
+        currentBlockLevel: action.payload.blockLevel
       };
     }
 
@@ -53,6 +48,21 @@ export function reducer(state: MempoolPreEndorsementState = initialState, action
         ...state,
         isLoadingNewBlock: true,
         currentBlockLevel: action.payload.level,
+      };
+    }
+
+    case MEMPOOL_PREENDORSEMENT_LOAD_ROUND_SUCCESS: {
+      const rounds = action.payload.rounds.map(round => ({
+        round: round.round,
+        blockHash: round.blockHash,
+        blockLevel: round.blockLevel,
+        blockRecTimestamp: round.receiveTimestamp
+      }));
+
+      return {
+        ...state,
+        rounds,
+        currentRound: rounds[rounds.length - 1]
       };
     }
 
@@ -203,18 +213,19 @@ function calculateStatistics(currentStatistics: MempoolPreEndorsementStatistics,
       { name: MempoolPreEndorsementStatusTypes.RECEIVED, value: valueObject[MempoolPreEndorsementStatusTypes.RECEIVED] },
       { name: 'Branch delayed', value: valueObject[MempoolPreEndorsementStatusTypes.BRANCH_DELAYED] },
     ],
-    totalSlots: newEndorsements.reduce((sum, curr) => sum + curr.slots.length,  0),
+    totalSlots: newEndorsements.reduce((sum, curr) => sum + curr.slots.length, 0),
     previousBlockMissedEndorsements: isNewBlock ? currentStatistics?.endorsementTypes[0].value : currentStatistics?.previousBlockMissedEndorsements
   };
 }
 
 function valOrUndefined<T = any>(value: T): T | undefined {
-  return value ? value : undefined;
+  return value ?? undefined;
 }
 
 export const selectMempoolPreEndorsements = (state: State): MempoolPreEndorsement[] => state.mempool.preendorsementState.endorsements;
 export const selectMempoolPreEndorsementTableAnimate = (state: State): boolean => state.mempool.preendorsementState.animateTable;
 export const selectMempoolPreEndorsementStatistics = (state: State): MempoolPreEndorsementStatistics => state.mempool.preendorsementState.statistics;
 export const selectMempoolPreEndorsementCurrentBlock = (state: State): number => state.mempool.preendorsementState.currentBlockLevel;
+export const selectMempoolPreEndorsementCurrentRound = (state: State): MempoolPartialRound => state.mempool.preendorsementState.currentRound;
 export const selectMempoolPreEndorsementSorting = (state: State): MempoolPreEndorsementSort => state.mempool.preendorsementState.sort;
 export const selectMempoolPreEndorsementActiveBaker = (state: State): string => state.mempool.preendorsementState.activeBaker;

@@ -5,6 +5,7 @@ import { MempoolPreEndorsement } from '@shared/types/mempool/preendorsement/memp
 
 enum MempoolPreEndorsementActionTypes {
   MEMPOOL_PREENDORSEMENT_INIT = 'MEMPOOL_PREENDORSEMENT_INIT',
+  MEMPOOL_PREENDORSEMENT_UPDATE_CURRENT_BLOCK = 'MEMPOOL_PREENDORSEMENT_UPDATE_CURRENT_BLOCK',
   MEMPOOL_PREENDORSEMENT_LOAD_ROUND = 'MEMPOOL_PREENDORSEMENT_LOAD_ROUND',
   MEMPOOL_PREENDORSEMENT_LOAD_ROUND_SUCCESS = 'MEMPOOL_PREENDORSEMENT_LOAD_ROUND_SUCCESS',
   MEMPOOL_PREENDORSEMENT_LOAD = 'MEMPOOL_PREENDORSEMENT_LOAD',
@@ -17,6 +18,7 @@ enum MempoolPreEndorsementActionTypes {
 }
 
 export const MEMPOOL_PREENDORSEMENT_INIT = MempoolPreEndorsementActionTypes.MEMPOOL_PREENDORSEMENT_INIT;
+export const MEMPOOL_PREENDORSEMENT_UPDATE_CURRENT_BLOCK = MempoolPreEndorsementActionTypes.MEMPOOL_PREENDORSEMENT_UPDATE_CURRENT_BLOCK;
 export const MEMPOOL_PREENDORSEMENT_LOAD_ROUND = MempoolPreEndorsementActionTypes.MEMPOOL_PREENDORSEMENT_LOAD_ROUND;
 export const MEMPOOL_PREENDORSEMENT_LOAD_ROUND_SUCCESS = MempoolPreEndorsementActionTypes.MEMPOOL_PREENDORSEMENT_LOAD_ROUND_SUCCESS;
 export const MEMPOOL_PREENDORSEMENT_LOAD = MempoolPreEndorsementActionTypes.MEMPOOL_PREENDORSEMENT_LOAD;
@@ -27,10 +29,16 @@ export const MEMPOOL_PREENDORSEMENT_SET_ACTIVE_BAKER = MempoolPreEndorsementActi
 export const MEMPOOL_PREENDORSEMENT_SORT = MempoolPreEndorsementActionTypes.MEMPOOL_PREENDORSEMENT_SORT;
 export const MEMPOOL_PREENDORSEMENT_STOP = MempoolPreEndorsementActionTypes.MEMPOOL_PREENDORSEMENT_STOP;
 
-interface MempoolPreEndorsementsAction extends FeatureAction<MempoolPreEndorsementActionTypes> { }
+interface MempoolPreEndorsementsAction extends FeatureAction<MempoolPreEndorsementActionTypes> {}
 
 export class MempoolPreEndorsementsInit implements MempoolPreEndorsementsAction {
   readonly type = MEMPOOL_PREENDORSEMENT_INIT;
+}
+
+export class MempoolPreEndorsementUpdateCurrentBlock implements MempoolPreEndorsementsAction {
+  readonly type = MEMPOOL_PREENDORSEMENT_UPDATE_CURRENT_BLOCK;
+
+  constructor(public payload: { blockLevel: number }) { }
 }
 
 export class MempoolPreEndorsementLoadRound implements MempoolPreEndorsementsAction {
@@ -42,7 +50,7 @@ export class MempoolPreEndorsementLoadRound implements MempoolPreEndorsementsAct
 export class MempoolPreEndorsementLoadRoundSuccess implements MempoolPreEndorsementsAction {
   readonly type = MEMPOOL_PREENDORSEMENT_LOAD_ROUND_SUCCESS;
 
-  constructor(public payload: { rounds: MempoolBlockRound[] }) { }
+  constructor(public payload: { rounds: MempoolBlockRound[], loadEndorsements: boolean }) { }
 }
 
 export class MempoolPreEndorsementLoad implements MempoolPreEndorsementsAction {
@@ -85,6 +93,7 @@ export class MempoolPreEndorsementStop implements MempoolPreEndorsementsAction {
 
 export type MempoolPreEndorsementActions =
   | MempoolPreEndorsementsInit
+  | MempoolPreEndorsementUpdateCurrentBlock
   | MempoolPreEndorsementLoadRound
   | MempoolPreEndorsementLoadRoundSuccess
   | MempoolPreEndorsementLoad

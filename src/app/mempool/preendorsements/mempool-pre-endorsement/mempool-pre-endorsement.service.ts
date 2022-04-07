@@ -45,7 +45,7 @@ export class MempoolPreEndorsementService {
               decodeTime: response[key].decoded_time,
               precheckTime: response[key].prechecked_time,
               applyTime: response[key].applied_time,
-              broadcastTime: response[key].broadcast_time,
+              broadcastTime: response[key].broadcast === 'not_needed' ? 'Not needed' : response[key].broadcast_time,
               delta: (response[key].received_hash_time && response[key].broadcast_time)
                 ? (response[key].broadcast_time - response[key].received_hash_time)
                 : undefined

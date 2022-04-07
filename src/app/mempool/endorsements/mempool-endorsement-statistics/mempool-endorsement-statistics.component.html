@@ -1,8 +1,17 @@
 <div class="padding-8 f-12 h-100 overflow-y-auto">
   <div *ngIf="currentBlock$ | async as currentBlock"
        class="d-flex flex-row flex-between margin-bottom-10 padding-top-5">
-    <div [@refreshBlock]="currentBlock" class="block">ENDORSING BLOCK {{ currentBlock | spaceNumber }}</div>
-    <div class="foreground-7">{{ elapsedTime$ | async | number: '1.1' }}s</div>
+    <div class="flex-row align-center">
+      <div [@refreshBlock]="currentBlock" class="block">
+        ENDORSING BLOCK {{ currentBlock | spaceNumber }}
+      </div>
+      <ng-container *ngIf="currentRound$ | async as currentRound">
+        <div class="dash">-</div>
+        <div [@refreshBlock]="currentRound.round"
+             class="round">ROUND {{ currentRound.round }}</div>
+      </ng-container>
+    </div>
+    <div class="foreground-7 time">{{ elapsedTime$ | async | number: '1.1' }}s</div>
   </div>
   <div *ngIf="statistics$ | async as statistics" class="overflow-auto">
     <div class="d-flex flex-column border-rad-2 border padding-10">
@@ -12,7 +21,7 @@
         <div class="text-capitalize">{{ type.name }}</div>
         <div class="padding-right-10 d-flex align-center">
           <div class="progress-background">
-            <div [ngClass]="type.name.toLowerCase()"
+            <div [ngClass]="type.name"
                  [style.width.%]="type.value / statistics.totalSlots * 100"
                  class="progress-background">
             </div>

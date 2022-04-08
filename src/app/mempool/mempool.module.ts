@@ -20,6 +20,9 @@ import { MempoolPreEndorsementComponent } from '@mempool/preendorsements/mempool
 import {
   MempoolPreEndorsementStatisticsComponent
 } from '@mempool/preendorsements/mempool-pre-endorsement-statistics/mempool-pre-endorsement-statistics.component';
+import { MempoolCountGraphComponent } from './_common/mempool-count-graph/mempool-count-graph.component';
+import { MempoolEndorsementsGraphComponent } from './endorsements/mempool-endorsements-graph/mempool-endorsements-graph.component';
+import { MempoolPreendorsementsGraphComponent } from './preendorsements/mempool-preendorsements-graph/mempool-preendorsements-graph.component';
 
 
 @NgModule({
@@ -40,6 +43,9 @@ import {
     MempoolEndorsementFiltersComponent,
     MempoolPreEndorsementComponent,
     MempoolPreEndorsementStatisticsComponent,
+    MempoolCountGraphComponent,
+    MempoolEndorsementsGraphComponent,
+    MempoolPreendorsementsGraphComponent,
   ],
   imports: [
     CommonModule,

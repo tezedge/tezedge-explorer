@@ -19,7 +19,7 @@ export class MempoolStatisticsService {
   }
 
   private mapOperationNodeStatsResponse(response: any): MempoolStatisticsOperation[] {
-    return Object.keys(response).slice(0, 100).map(opKey => {
+    return Object.keys(response).map(opKey => {
 
       const nodes: MempoolStatisticsOperationNode[] = Object.keys(response[opKey].nodes).map(key => {
         return {

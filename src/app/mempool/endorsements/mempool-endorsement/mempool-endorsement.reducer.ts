@@ -10,7 +10,6 @@ import {
   MEMPOOL_ENDORSEMENT_SET_ACTIVE_BAKER,
   MEMPOOL_ENDORSEMENT_SORT,
   MEMPOOL_ENDORSEMENT_STOP,
-  MEMPOOL_ENDORSEMENT_UPDATE_CURRENT_BLOCK,
   MEMPOOL_ENDORSEMENT_UPDATE_STATUSES_SUCCESS,
   MempoolEndorsementActions
 } from '@mempool/endorsements/mempool-endorsement/mempool-endorsement.actions';
@@ -22,7 +21,6 @@ const initialState: MempoolEndorsementState = {
   statistics: null,
   animateTable: false,
   isLoadingNewBlock: true,
-  currentBlockLevel: 0,
   currentRound: null,
   rounds: [],
   activeBaker: localStorage.getItem('activeBaker'),
@@ -36,18 +34,10 @@ export function reducer(state: MempoolEndorsementState = initialState, action: M
 
   switch (action.type) {
 
-    case MEMPOOL_ENDORSEMENT_UPDATE_CURRENT_BLOCK: {
-      return {
-        ...state,
-        currentBlockLevel: action.payload.blockLevel
-      };
-    }
-
     case MEMPOOL_ENDORSEMENT_LOAD: {
       return {
         ...state,
         isLoadingNewBlock: true,
-        currentBlockLevel: action.payload.level,
       };
     }
 
@@ -79,24 +69,24 @@ export function reducer(state: MempoolEndorsementState = initialState, action: M
     }
 
     case MEMPOOL_ENDORSEMENT_UPDATE_STATUSES_SUCCESS: {
-      const newEndorsements = state.endorsements.map(endorsement => {
-        const slotToUpdate = endorsement.slots.find(slot => action.payload[slot]);
+      const newEndorsements = state.endorsements.map(end => {
+        const slotToUpdate = end.slots.find(slot => action.payload[slot]);
         const operationHashes = Object.keys(action.payload)
-          .filter((slot: string) => endorsement.slots?.includes(Number(slot)))
+          .filter((slot: string) => end.slots?.includes(Number(slot)))
           .map(slot => action.payload[slot].operationHash);
-        return { ...endorsement, ...action.payload[slotToUpdate], ...{ operationHashes, operationHash: undefined } };
+        return { ...end, ...action.payload[slotToUpdate], ...{ operationHashes, operationHash: undefined } };
       });
-      newEndorsements.forEach(endorsement => {
-        const receiveContentsTimeDelta = endorsement.receiveContentsTime - endorsement.receiveHashTime;
-        const decodeTimeDelta = endorsement.decodeTime - endorsement.receiveContentsTime;
-        const precheckTimeDelta = endorsement.precheckTime - endorsement.decodeTime;
-        const applyTimeDelta = endorsement.applyTime - endorsement.decodeTime;
-        const broadcastTimeDelta = endorsement.broadcastTime - (endorsement.precheckTime ?? endorsement.applyTime);
-        endorsement.receiveContentsTimeDelta = valOrUndefined(receiveContentsTimeDelta);
-        endorsement.decodeTimeDelta = valOrUndefined(decodeTimeDelta);
-        endorsement.precheckTimeDelta = valOrUndefined(precheckTimeDelta);
-        endorsement.applyTimeDelta = valOrUndefined(applyTimeDelta);
-        endorsement.broadcastTimeDelta = valOrUndefined(broadcastTimeDelta);
+      newEndorsements.forEach(end => {
+        const receiveContentsTimeDelta = end.receiveContentsTime - end.receiveHashTime;
+        const decodeTimeDelta = end.decodeTime - end.receiveContentsTime;
+        const precheckTimeDelta = end.precheckTime - end.decodeTime;
+        const applyTimeDelta = end.applyTime - end.decodeTime;
+        const broadcastTimeDelta = (typeof end.broadcastTime === 'string') ? end.broadcastTime : (end.broadcastTime - (end.precheckTime ?? end.applyTime));
+        end.receiveContentsTimeDelta = valOrUndefined(receiveContentsTimeDelta);
+        end.decodeTimeDelta = valOrUndefined(decodeTimeDelta);
+        end.precheckTimeDelta = valOrUndefined(precheckTimeDelta);
+        end.applyTimeDelta = valOrUndefined(applyTimeDelta);
+        end.broadcastTimeDelta = valOrUndefined(broadcastTimeDelta);
       });
       const endorsements = sortEndorsements(newEndorsements, state.sort);
       const statistics = calculateStatistics(state.statistics, endorsements);
@@ -146,12 +136,12 @@ function bringItemToBeginning(endorsements: MempoolEndorsement[], baker: string)
 
 function sortEndorsements(endorsements: MempoolEndorsement[], sort: MempoolEndorsementSort): MempoolEndorsement[] {
   const sortProperty = sort.sortBy;
-  const includeMissingEndorsements = ['slotsLength', 'bakerName', 'status'].includes(sortProperty);
+  const includeMissingEndorsements = ['slotsLength', 'bakerName', 'status', 'branch'].includes(sortProperty);
   const updatedEndorsements = includeMissingEndorsements ? endorsements : endorsements.filter(e => e.status);
   const missedEndorsements = includeMissingEndorsements ? [] : endorsements.filter(e => !e.status);
 
   const sortFunction = (e1: MempoolEndorsement, e2: MempoolEndorsement): number => {
-    if (sortProperty === 'bakerName') {
+    if (['bakerName', 'branch'].includes(sortProperty)) {
       return sort.sortDirection === SortDirection.DSC
         ? e2[sortProperty].localeCompare(e1[sortProperty])
         : e1[sortProperty].localeCompare(e2[sortProperty]);
@@ -171,21 +161,24 @@ function getSortOrder(status: string, direction: SortDirection.ASC | SortDirecti
   const priority = direction === SortDirection.DSC ? 1 : -1;
   switch (status) {
     case MempoolEndorsementStatusTypes.BROADCAST: {
-      return 6 * priority;
+      return 7 * priority;
     }
     case MempoolEndorsementStatusTypes.APPLIED: {
-      return 5 * priority;
+      return 6 * priority;
     }
     case MempoolEndorsementStatusTypes.PRECHECKED: {
-      return 4 * priority;
+      return 5 * priority;
     }
     case MempoolEndorsementStatusTypes.DECODED: {
-      return 3 * priority;
+      return 4 * priority;
     }
     case MempoolEndorsementStatusTypes.RECEIVED: {
-      return 2 * priority;
+      return 3 * priority;
     }
     case MempoolEndorsementStatusTypes.BRANCH_DELAYED: {
+      return 2 * priority;
+    }
+    case MempoolEndorsementStatusTypes.OUTDATED: {
       return 1 * priority;
     }
     case undefined: {
@@ -206,12 +199,13 @@ function calculateStatistics(currentStatistics: MempoolEndorsementStatistics, ne
   return {
     endorsementTypes: [
       { name: MempoolEndorsementStatusTypes.MISSING, value: valueObject[MempoolEndorsementStatusTypes.MISSING] },
-      { name: MempoolEndorsementStatusTypes.BROADCAST, value: valueObject[MempoolEndorsementStatusTypes.BROADCAST] },
-      { name: MempoolEndorsementStatusTypes.APPLIED, value: valueObject[MempoolEndorsementStatusTypes.APPLIED] },
-      { name: MempoolEndorsementStatusTypes.PRECHECKED, value: valueObject[MempoolEndorsementStatusTypes.PRECHECKED] },
-      { name: MempoolEndorsementStatusTypes.DECODED, value: valueObject[MempoolEndorsementStatusTypes.DECODED] },
       { name: MempoolEndorsementStatusTypes.RECEIVED, value: valueObject[MempoolEndorsementStatusTypes.RECEIVED] },
+      { name: MempoolEndorsementStatusTypes.DECODED, value: valueObject[MempoolEndorsementStatusTypes.DECODED] },
+      { name: MempoolEndorsementStatusTypes.PRECHECKED, value: valueObject[MempoolEndorsementStatusTypes.PRECHECKED] },
+      { name: MempoolEndorsementStatusTypes.APPLIED, value: valueObject[MempoolEndorsementStatusTypes.APPLIED] },
+      { name: MempoolEndorsementStatusTypes.BROADCAST, value: valueObject[MempoolEndorsementStatusTypes.BROADCAST] },
       { name: 'Branch delayed', value: valueObject[MempoolEndorsementStatusTypes.BRANCH_DELAYED] },
+      { name: MempoolEndorsementStatusTypes.OUTDATED, value: valueObject[MempoolEndorsementStatusTypes.OUTDATED] },
     ],
     totalSlots: newEndorsements.reduce((sum, curr) => sum + curr.slots.length, 0),
     previousBlockMissedEndorsements: isNewBlock ? currentStatistics?.endorsementTypes[0].value : currentStatistics?.previousBlockMissedEndorsements
@@ -225,7 +219,6 @@ function valOrUndefined<T = any>(value: T): T | undefined {
 export const selectMempoolEndorsements = (state: State): MempoolEndorsement[] => state.mempool.endorsementState.endorsements;
 export const selectMempoolEndorsementTableAnimate = (state: State): boolean => state.mempool.endorsementState.animateTable;
 export const selectMempoolEndorsementStatistics = (state: State): MempoolEndorsementStatistics => state.mempool.endorsementState.statistics;
-export const selectMempoolEndorsementCurrentBlock = (state: State): number => state.mempool.endorsementState.currentBlockLevel;
 export const selectMempoolEndorsementCurrentRound = (state: State): MempoolPartialRound => state.mempool.endorsementState.currentRound;
 export const selectMempoolEndorsementSorting = (state: State): MempoolEndorsementSort => state.mempool.endorsementState.sort;
 export const selectMempoolEndorsementActiveBaker = (state: State): string => state.mempool.endorsementState.activeBaker;

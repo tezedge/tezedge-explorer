@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { catchError, filter, map, mergeMap, switchMap, takeUntil, tap, withLatestFrom } from 'rxjs/operators';
-import { EMPTY, empty, ObservedValueOf, of, Subject, timer } from 'rxjs';
+import { empty, ObservedValueOf, of, Subject, timer } from 'rxjs';
 import { State } from '@app/app.index';
 import { MempoolEndorsement } from '@shared/types/mempool/endorsement/mempool-endorsement.type';
 import { ADD_ERROR } from '@app/layout/error-popup/error-popup.actions';
@@ -17,7 +17,6 @@ import {
   MEMPOOL_ENDORSEMENTS_INIT,
   MempoolEndorsementLoad,
   MempoolEndorsementLoadRound,
-  MempoolEndorsementLoadRoundSuccess,
   MempoolEndorsementStop,
   MempoolEndorsementUpdateStatuses
 } from '@mempool/endorsements/mempool-endorsement/mempool-endorsement.actions';
@@ -51,44 +50,27 @@ export class MempoolEndorsementEffects {
   ));
 
   mempoolRoundsLoad$ = createEffect(() => this.actions$.pipe(
-    ofType(MEMPOOL_ENDORSEMENT_LOAD_ROUND),
+    ofType(MEMPOOL_ENDORSEMENT_LOAD_ROUND, MEMPOOL_ENDORSEMENT_LOAD_SUCCESS),
     withLatestFrom(this.store, (action: MempoolEndorsementLoadRound, state: ObservedValueOf<Store<State>>) => ({ action, state })),
-    filter(({ action, state }) => state.mempool.endorsementState.currentBlockLevel > 0),
-    switchMap(({ action, state }) => {
-      const endorsementState = state.mempool.endorsementState;
-      return this.mempoolService.getBlockRounds(state.settingsNode.activeNode.http, endorsementState.currentBlockLevel).pipe(
-        map((rounds: MempoolBlockRound[]) => ({
-          type: MEMPOOL_ENDORSEMENT_LOAD_ROUND_SUCCESS,
-          payload: { rounds, loadEndorsements: endorsementState.currentRound?.blockHash !== rounds[rounds.length - 1]?.blockHash }
-        }))
-      );
-    }),
+    filter(({ action, state }) => state.networkStats.lastAppliedBlock?.level > 0),
+    switchMap(({ action, state }) => this.mempoolService.getBlockRounds(state.settingsNode.activeNode.http, state.networkStats.lastAppliedBlock.level)),
+    map((rounds: MempoolBlockRound[]) => ({ type: MEMPOOL_ENDORSEMENT_LOAD_ROUND_SUCCESS, payload: { rounds } })),
     catchError(error => of({
       type: ADD_ERROR,
       payload: { title: 'Error when loading blocks rounds: ', message: error.message }
     }))
   ));
 
-  mempoolRoundsLoadSuccess$ = createEffect(() => this.actions$.pipe(
-    ofType(MEMPOOL_ENDORSEMENT_LOAD_ROUND_SUCCESS),
-    withLatestFrom(this.store, (action: MempoolEndorsementLoadRoundSuccess, state: ObservedValueOf<Store<State>>) => ({ action, state })),
-    switchMap(({ action, state }) => {
-      const currentRound = state.mempool.endorsementState.currentRound;
-      if (!currentRound || !action.payload.loadEndorsements) {
-        return EMPTY;
-      }
-      return of({ type: MEMPOOL_ENDORSEMENT_LOAD, payload: { hash: currentRound.blockHash, level: currentRound.blockLevel } });
-    }),
-  ));
-
   mempoolEndorsementLoad$ = createEffect(() => this.actions$.pipe(
     ofType(MEMPOOL_ENDORSEMENT_LOAD, MEMPOOL_ENDORSEMENT_STOP),
     withLatestFrom(this.store, (action: MempoolEndorsementLoad | MempoolEndorsementStop, state: ObservedValueOf<Store<State>>) => ({ action, state })),
+    filter(({ action, state }) => state.networkStats.lastAppliedBlock?.level > 0),
     switchMap(({ action, state }) => {
       if (action.type === MEMPOOL_ENDORSEMENT_STOP) {
         return empty();
       }
-      return this.mempoolEndorsementService.getEndorsingRights(state.settingsNode.activeNode.http, action.payload.hash, action.payload.level);
+      const lastAppliedBlock = state.networkStats.lastAppliedBlock;
+      return this.mempoolEndorsementService.getEndorsingRights(state.settingsNode.activeNode.http, lastAppliedBlock?.hash, lastAppliedBlock.level);
     }),
     map((endorsements: MempoolEndorsement[]) => ({ type: MEMPOOL_ENDORSEMENT_LOAD_SUCCESS, payload: { endorsements } })),
     catchError(error => of({
@@ -100,7 +82,7 @@ export class MempoolEndorsementEffects {
   mempoolEndorsementUpdateStatuses$ = createEffect(() => this.actions$.pipe(
     ofType(MEMPOOL_ENDORSEMENT_UPDATE_STATUSES),
     withLatestFrom(this.store, (action: MempoolEndorsementUpdateStatuses, state: ObservedValueOf<Store<State>>) => ({ action, state })),
-    filter(({ action, state }) => !state.mempool.endorsementState.isLoadingNewBlock),
+    filter(({ action, state }) => !state.mempool.endorsementState.isLoadingNewBlock && !!state.mempool.endorsementState.currentRound),
     mergeMap(({ action, state }) => {
       const currentRound = state.mempool.endorsementState.currentRound;
       return this.mempoolEndorsementService.getEndorsementStatusUpdates(state.settingsNode.activeNode.http, currentRound);

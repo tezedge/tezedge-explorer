@@ -3,6 +3,9 @@ export interface MempoolEndorsement {
   slotsLength?: number;
   operationHashes?: string[];
   status?: MempoolEndorsementStatusTypes;
+  branch?: string;
+  level?: number;
+  round?: number;
   bakerName?: string;
   bakerHash?: string;
   logo?: string;
@@ -27,5 +30,6 @@ export enum MempoolEndorsementStatusTypes {
   DECODED = 'decoded',
   RECEIVED = 'received',
   BRANCH_DELAYED = 'branch_delayed',
+  OUTDATED = 'outdated',
   MISSING = 'missing'
 }

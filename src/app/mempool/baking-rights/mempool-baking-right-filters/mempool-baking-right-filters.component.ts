@@ -36,7 +36,7 @@ export class MempoolBakingRightFiltersComponent implements OnInit {
   state: MempoolBakingRightsState;
   blockHashContext: { hashes: string[], activeIndex: number };
 
-  private routedBlockHash: string;
+  private routedBlockLevel: string;
   @ViewChild('remaining') private remainingView: ElementRef<HTMLSpanElement>;
 
   constructor(private router: Router,
@@ -48,7 +48,7 @@ export class MempoolBakingRightFiltersComponent implements OnInit {
   readonly trackRounds = (index: number) => index;
 
   remaining = 15;
-  private lastKnownDisplayedBlock: number = 0;
+  lastKnownDisplayedBlock: number = 0;
   private lastKnownNumberOfRounds: number = 0;
 
   ngOnInit(): void {
@@ -76,8 +76,8 @@ export class MempoolBakingRightFiltersComponent implements OnInit {
       map(block => block.toString())
     ).subscribe((currentBlock: string) => {
       this.formGroup.get('block').setValue(currentBlock);
-      if (this.routedBlockHash !== currentBlock) {
-        this.routedBlockHash = currentBlock;
+      if (this.routedBlockLevel !== currentBlock) {
+        this.routedBlockLevel = currentBlock;
         this.router.navigate(['mempool', 'proposal', currentBlock]);
       }
     });
@@ -87,9 +87,9 @@ export class MempoolBakingRightFiltersComponent implements OnInit {
     this.store.select(getMergedRoute)
       .pipe(untilDestroyed(this))
       .subscribe((route: MergedRoute) => {
-        if (route.params.block && this.routedBlockHash !== route.params.block) {
-          this.routedBlockHash = route.params.block;
-          this.formGroup.get('block').setValue(this.routedBlockHash);
+        if (route.params.block && this.routedBlockLevel !== route.params.block) {
+          this.routedBlockLevel = route.params.block;
+          this.formGroup.get('block').setValue(this.routedBlockLevel);
           this.search();
         }
       });
@@ -119,7 +119,7 @@ export class MempoolBakingRightFiltersComponent implements OnInit {
 
   onFormSubmit(): void {
     const value = this.formGroup.get('block').value;
-    if (this.routedBlockHash !== value) {
+    if (this.routedBlockLevel !== value) {
       this.router.navigate(['mempool', 'proposal', value]);
     }
   }
@@ -127,7 +127,7 @@ export class MempoolBakingRightFiltersComponent implements OnInit {
   private search(): void {
     const value = this.formGroup.get('block').value;
     this.pause();
-    this.routedBlockHash = value;
+    this.routedBlockLevel = value;
     this.store.dispatch<MempoolBakingRightsDisplayedBlockUpdate>({ type: MEMPOOL_BAKING_RIGHTS_DISPLAYED_BLOCK_UPDATE, payload: Number(value) });
     this.store.dispatch<MempoolBakingRightsLoad>({ type: MEMPOOL_BAKING_RIGHTS_LOAD });
   }

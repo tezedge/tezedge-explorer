@@ -8,7 +8,6 @@ export interface MempoolPreEndorsementState {
   endorsements: MempoolPreEndorsement[];
   animateTable: boolean;
   isLoadingNewBlock: boolean;
-  currentBlockLevel: number;
   currentRound: MempoolPartialRound;
   rounds: MempoolPartialRound[];
   activeBaker: string;

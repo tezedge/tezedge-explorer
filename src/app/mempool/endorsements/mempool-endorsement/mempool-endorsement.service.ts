@@ -19,13 +19,15 @@ export class MempoolEndorsementService {
     const url = `${api}/chains/main/blocks/${blockHash}/helpers/validators?level=${level}`;
     return this.http.get<any[]>(url).pipe(
       map((bakerList: any[]) => {
-        const endorsements: MempoolEndorsement[] = bakerList.map(baker => ({
-          bakerName: this.bakersDetails[baker.delegate]?.name || baker.delegate,
-          bakerHash: baker.delegate,
-          logo: this.bakersDetails[baker.delegate]?.logo,
-          slots: baker.slots,
-          slotsLength: baker.slots.length
-        }));
+        const endorsements: MempoolEndorsement[] = bakerList.map(baker => {
+          return ({
+            bakerName: this.bakersDetails[baker.delegate]?.name || baker.delegate,
+            bakerHash: baker.delegate,
+            logo: this.bakersDetails[baker.delegate]?.logo,
+            slots: baker.slots,
+            slotsLength: baker.slots.length
+          });
+        });
         return endorsements;
       })
     );

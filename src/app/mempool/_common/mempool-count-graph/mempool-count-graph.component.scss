@@ -5,7 +5,7 @@
 
   .rotated-label span {
     transform: rotate(-90deg) translate(0, -20px);
-    padding-left: 20px;
+    padding-left: 22px;
   }
 
   .inner-graph-container {
@@ -51,6 +51,11 @@
         border-top-left-radius: 2px;
         border-top-right-radius: 2px;
         background-color: #0083bb;
+        transition: height 600ms, opacity 300ms;
+
+        &.gray {
+          opacity: 0.6;
+        }
       }
     }
   }

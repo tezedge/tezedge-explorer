@@ -15,14 +15,12 @@ export const REMOVE_INFO = ErrorActionTypes.REMOVE_INFO;
 
 export class ErrorAdd implements Action {
   readonly type = ADD_ERROR;
-  initiator?: string;
 
-  constructor(public payload: HttpError) { }
+  constructor(public payload: { title: string, message: string, initiator?: string }) { }
 }
 
 export class InfoAdd implements Action {
   readonly type = ADD_INFO;
-  initiator?: string;
 
   constructor(public payload: string) { }
 }

@@ -8,7 +8,7 @@ import { filter, map } from 'rxjs/operators';
 import { State } from '@app/app.index';
 import { storageResources } from '@resources/storage-resources/storage-resources.reducer';
 
-const PROTOCOLS = [
+const PROTOCOLS: string[] = [
   'All protocols',
   'Genesis',
   'Bootstrap',
@@ -23,6 +23,7 @@ const PROTOCOLS = [
   'Florence',
   'Granada',
   'Hangzhou',
+  'Ithaca',
 ];
 
 @UntilDestroy()

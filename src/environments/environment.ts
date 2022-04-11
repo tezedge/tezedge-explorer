@@ -242,9 +242,9 @@ export const environment = {
   production: false,
   api: [
     // DEVELOP,
-    MASTER,
+    // MASTER,
     // MEMPOOL,
-    // MEMPOOL2,
+    MEMPOOL2,
     // TRACE,
     // PRECHECKER,
     // DEBUG,

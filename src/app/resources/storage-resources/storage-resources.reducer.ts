@@ -13,7 +13,7 @@ export function reducer(state: StorageResourcesState = initialState, action: Sto
     case StorageResourcesActionTypes.STORAGE_RESOURCES_LOAD_SUCCESS: {
       return {
         ...state,
-        storageResources: action.payload
+        storageResources: { ...action.payload }
       };
     }
 

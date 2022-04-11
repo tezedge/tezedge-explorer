@@ -3,7 +3,7 @@ import { State } from '@app/app.index';
 import { StateMachineActionTypes } from '@state-machine/state-machine/state-machine.actions';
 import { StorageResourcesActionTypes } from '@resources/storage-resources/storage-resources.actions';
 import { MemoryResourcesActionTypes } from '@resources/memory-resources/memory-resources.actions';
-import { ADD_ERROR } from '@app/layout/error-popup/error-popup.actions';
+import { ADD_ERROR, ErrorAdd } from '@app/layout/error-popup/error-popup.actions';
 import { MEMPOOL_ENDORSEMENT_LOAD, MEMPOOL_ENDORSEMENT_LOAD_SUCCESS, MEMPOOL_ENDORSEMENT_STOP } from '@mempool/endorsements/mempool-endorsement/mempool-endorsement.actions';
 import { MEMPOOL_OPERATION_LOAD, MEMPOOL_OPERATION_LOAD_SUCCESS, MEMPOOL_OPERATION_STOP } from '@mempool/operation/mempool-operation/mempool-operation.actions';
 import { MEMPOOL_STATISTICS_LOAD, MEMPOOL_STATISTICS_LOAD_SUCCESS, MEMPOOL_STATISTICS_STOP } from '@mempool/statistics/mempool-statistics/mempool-statistics.actions';
@@ -23,7 +23,7 @@ const initialState: LoadingSpinnerState = {
   pendingValues: []
 };
 
-export function reducer(state: LoadingSpinnerState = initialState, action: any): LoadingSpinnerState {
+export function reducer(state: LoadingSpinnerState = initialState, action: ErrorAdd | any): LoadingSpinnerState {
   switch (action.type) {
     case ADD_ERROR: {
       if (action.payload.initiator) {

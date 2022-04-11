@@ -2,15 +2,15 @@ import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { BehaviorSubject, empty, interval, ObservedValueOf, of, Subject } from 'rxjs';
-import { catchError, filter, mergeMap, map, startWith, switchMap, takeUntil, withLatestFrom } from 'rxjs/operators';
+import { catchError, filter, map, mergeMap, startWith, switchMap, takeUntil, withLatestFrom } from 'rxjs/operators';
 import { webSocket, WebSocketSubject } from 'rxjs/webSocket';
 import { HttpClient } from '@angular/common/http';
 import { State } from '@app/app.index';
 import { SettingsNodeEntityHeader } from '@shared/types/settings-node/settings-node-entity-header.type';
 import { ADD_ERROR } from '@app/layout/error-popup/error-popup.actions';
-import { Router } from '@angular/router';
-import { MonitoringActionTypes } from './monitoring.actions';
+import { MonitoringActionTypes, MonitoringCloseAction, MonitoringLoadAction } from './monitoring.actions';
 import { SettingsNodeService } from '@settings/settings-node.service';
+import { APP_INIT_SUCCESS, APP_REFRESH } from '@app/app.actions';
 
 let wsCounter = 0;
 
@@ -23,14 +23,13 @@ export class MonitoringEffects {
   private webSocketConnection$: WebSocketSubject<any>;
 
   monitoringLoadEffect$ = createEffect(() => this.actions$.pipe(
-    ofType(MonitoringActionTypes.MONITORING_LOAD, 'APP_REFRESH', 'APP_INIT_SUCCESS'),
-    withLatestFrom(this.store, (action: any, state: ObservedValueOf<Store<State>>) => ({ action, state })),
+    ofType(MonitoringActionTypes.MONITORING_LOAD, APP_REFRESH, APP_INIT_SUCCESS),
+    withLatestFrom(this.store, (action: MonitoringLoadAction | any, state: ObservedValueOf<Store<State>>) => ({ action, state })),
     filter(({ action, state }) => !!state.settingsNode.activeNode),
     switchMap(({ action, state }) => {
 
-      const isMonitoringPage = this.router.url.replace('/', '').split('/')[0] === 'monitoring';
-
-      if (isMonitoringPage && action.type === 'APP_INIT_SUCCESS') {
+      const isMonitoringPage = window.location.href.endsWith('/monitoring');
+      if (isMonitoringPage && action.type === APP_INIT_SUCCESS) {
         return empty();
       }
 
@@ -63,7 +62,7 @@ export class MonitoringEffects {
 
   monitoringCloseEffect$ = createEffect(() => this.actions$.pipe(
     ofType(MonitoringActionTypes.MONITORING_CLOSE),
-    withLatestFrom(this.store, (action: any, state: ObservedValueOf<Store<State>>) => ({ action, state })),
+    withLatestFrom(this.store, (action: MonitoringCloseAction, state: ObservedValueOf<Store<State>>) => ({ action, state })),
     mergeMap(({ action, state }) => {
       if (!state.settingsNode.activeNode.features.some(f => f.name === 'ws')) {
         this.networkInterval$.next(5);
@@ -130,6 +129,7 @@ export class MonitoringEffects {
       }
 
       wsCounter = 0;
+
       this.webSocketConnection$ = webSocket({
         url: state.settingsNode.activeNode.features.find(f => f.name === 'ws').url,
         WebSocketCtor: WebSocket,
@@ -181,7 +181,6 @@ export class MonitoringEffects {
   constructor(private http: HttpClient,
               private actions$: Actions,
               private store: Store<State>,
-              private router: Router,
               private settingsNodeService: SettingsNodeService) { }
 
 }

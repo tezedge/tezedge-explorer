@@ -91,7 +91,7 @@ context('LOADING SPINNER', () => {
         cy.window()
           .its('store')
           .then(store => {
-            zone.run(() => store.dispatch({ type: 'STORAGE_RESOURCES_LOAD' }));
+            zone.run(() => store.dispatch({ type: 'STORAGE_RESOURCES_LOAD', payload: { context: 'irmin' } }));
             cy.get('body app-root app-loading-spinner .spinner', { timeout: 100 }).should('exist')
               .then(div => {
                 expect(div.text()).to.equal('Loading storage resources...');

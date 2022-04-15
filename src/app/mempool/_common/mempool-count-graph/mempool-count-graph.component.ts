@@ -38,10 +38,14 @@ export class MempoolCountGraphComponent implements OnInit, AfterViewInit, OnChan
 
   @Input() times: number[];
   @Input() columnStep: number;
+  @Input() yAxisValues: number[] = [30, 25, 20, 15, 10, 5, 0];
+  @Input() xAxisMarker: number;
 
   chartColumns: ChartColumn[];
   xTicksValues: string[];
-  maxHeight: number = 0;
+  maxHeight: number;
+  xAxisMarkerPosition: number;
+  hideMarker: boolean = false;
 
   @ViewChild('tooltipTemplate') private tooltipTemplate: TemplateRef<{ count: number, range: string }>;
   @ViewChild('columnContainer') private columnContainer: ElementRef<HTMLDivElement>;
@@ -66,6 +70,13 @@ export class MempoolCountGraphComponent implements OnInit, AfterViewInit, OnChan
   }
 
   ngOnChanges(changes: SimpleChanges): void {
+    if (this.xAxisMarker && this.xAxisMarker <= this.steps[this.steps.length - 1]) {
+      this.xAxisMarkerPosition = 100 * this.xAxisMarker / this.steps[this.steps.length - 1];
+      this.hideMarker = false;
+    } else {
+      this.hideMarker = true;
+    }
+
     if (this.steps && changes.times?.currentValue !== changes.times?.previousValue) {
       this.update();
     }

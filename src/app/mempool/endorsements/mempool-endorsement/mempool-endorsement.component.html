@@ -14,68 +14,70 @@
                       class="icon-14 icon-foreground"></mat-icon>
           </span>
         </div>
-        <div #scrollableContainer class="f-14 overflow-y-auto overflow-x-hidden" fxFlex="calc(100% - 36px)">
-          <div *ngFor="let endorsement of endorsements$ | async; let i=index; trackBy: trackEndorsements"
-               [@translateFromLeft]="i % 2 === 0 ? animateRows : null"
-               [@translateFromRight]="i % 2 !== 0 ? animateRows : null"
-               [class.active]="activeBaker === endorsement.bakerHash"
-               (click)="attachOverlay(endorsement, $event)"
-               class="row">
-            <span [matTooltip]="'Slot numbers: ' + endorsement.slots?.join(', ')"
-                  matTooltipClass="endorsement"
-                  matTooltipPosition="below">{{ endorsement.slots?.length }}</span>
-            <span class="d-flex align-center">
-              <img *ngIf="endorsement.logo" [src]="endorsement.logo"
-                   alt="" class="margin-right-10"
-                   height="20px" width="20px">
-              <span class="truncate p-relative w-100">{{ endorsement.bakerName }}
-                <span (click)="copyHashToClipboard(endorsement.bakerHash)"
-                      [cdkCopyToClipboard]="endorsement.bakerHash"
-                      class="copy-hash p-absolute border-rad-4 pointer"
-                      matTooltip="Copy hash">
-                  <mat-icon class="icon-foreground-7 icon-14" svgIcon="copy"></mat-icon>
+        <div fxFlex="calc(100% - 36px)">
+          <cdk-virtual-scroll-viewport class="border-bottom f-14 h-100 overflow-y-auto overflow-x-hidden"
+                                       itemSize="36" [minBufferPx]="350" [maxBufferPx]="350">
+            <div *cdkVirtualFor="let endorsement of endorsements$ | async; let i=index; trackBy: trackEndorsements"
+                 [@translateFromLeft]="i % 2 === 0 ? animateRows : null"
+                 [@translateFromRight]="i % 2 !== 0 ? animateRows : null"
+                 [class.active]="activeBaker === endorsement.bakerHash"
+                 (click)="attachOverlay(endorsement, $event)"
+                 [class.row-even]="i % 2 === 0"
+                 class="row">
+              <span>{{ endorsement.slots?.length }}</span>
+              <span class="d-flex align-center">
+                <img *ngIf="endorsement.logo" [src]="endorsement.logo"
+                     class="margin-right-10"
+                     height="20px" width="20px">
+                <span class="truncate p-relative w-100">{{ endorsement.bakerName }}
+                  <span (click)="copyHashToClipboard(endorsement.bakerHash)"
+                        [cdkCopyToClipboard]="endorsement.bakerHash"
+                        class="copy-hash p-absolute border-rad-4 pointer"
+                        matTooltip="Copy hash">
+                    <mat-icon class="icon-foreground-7 icon-14" svgIcon="copy"></mat-icon>
+                  </span>
                 </span>
               </span>
-            </span>
-            <span class="moving-span">
-              <span [ngClass]="endorsement.status || 'missing'"
-                    class="status">{{ endorsement.status || 'missing' }}</span>
-            </span>
-            <ng-container *ngIf="endorsement.status; else missingTemplate">
-              <span [innerHTML]="endorsement.delta | nanoTransform: 50000000: 20000000"></span>
-              <span [innerHTML]="endorsement.receiveHashTime | nanoTransform: 50000000: 20000000"></span>
-              <span
-                [innerHTML]="(deltaEnabled ? endorsement.receiveContentsTimeDelta : endorsement.receiveContentsTime) | nanoTransform: 50000000: 20000000"></span>
-              <span
-                [innerHTML]="(deltaEnabled ? endorsement.decodeTimeDelta : endorsement.decodeTime) | nanoTransform: 50000000: 20000000"></span>
-              <span
-                [innerHTML]="(deltaEnabled ? endorsement.precheckTimeDelta : endorsement.precheckTime) | nanoTransform: 50000000: 20000000"></span>
-              <span
-                [innerHTML]="(deltaEnabled ? endorsement.applyTimeDelta : endorsement.applyTime) | nanoTransform: 50000000: 20000000"></span>
-              <span
-                [innerHTML]="(deltaEnabled ? endorsement.broadcastTimeDelta : endorsement.broadcastTime) | nanoTransform: 50000000: 20000000"></span>
-              <span>{{ endorsement.level }}</span>
-              <span>{{ endorsement.round }}</span>
-              <span class="truncate p-relative">{{ endorsement.branch }}
-                <span (click)="copyHashToClipboard(endorsement.branch)"
-                      [cdkCopyToClipboard]="endorsement.branch"
-                      class="copy-hash p-absolute border-rad-4 pointer"
-                      matTooltip="Copy hash">
-                  <mat-icon class="icon-foreground-7 icon-14" svgIcon="copy"></mat-icon>
-                </span>
+              <span class="moving-span">
+                <span [ngClass]="endorsement.status || 'missing'"
+                      class="status">{{ endorsement.status || 'missing' }}</span>
               </span>
-            </ng-container>
-            <ng-template #missingTemplate>
-              <span>-</span>
-              <span>-</span>
-              <span>-</span>
-              <span>-</span>
-              <span>-</span>
-              <span>-</span>
-              <span>-</span>
-              <span>-</span>
-            </ng-template>
-          </div>
+              <ng-container *ngIf="endorsement.status; else missingTemplate">
+                <span [innerHTML]="endorsement.delta | nanoTransform: 50000000: 20000000"></span>
+                <span [innerHTML]="endorsement.receiveHashTime | nanoTransform: 50000000: 20000000"></span>
+                <span
+                  [innerHTML]="(deltaEnabled ? endorsement.receiveContentsTimeDelta : endorsement.receiveContentsTime) | nanoTransform: 50000000: 20000000"></span>
+                <span
+                  [innerHTML]="(deltaEnabled ? endorsement.decodeTimeDelta : endorsement.decodeTime) | nanoTransform: 50000000: 20000000"></span>
+                <span
+                  [innerHTML]="(deltaEnabled ? endorsement.precheckTimeDelta : endorsement.precheckTime) | nanoTransform: 50000000: 20000000"></span>
+                <span
+                  [innerHTML]="(deltaEnabled ? endorsement.applyTimeDelta : endorsement.applyTime) | nanoTransform: 50000000: 20000000"></span>
+                <span
+                  [innerHTML]="(deltaEnabled ? endorsement.broadcastTimeDelta : endorsement.broadcastTime) | nanoTransform: 50000000: 20000000"></span>
+                <span>{{ endorsement.level }}</span>
+                <span>{{ endorsement.round }}</span>
+                <span class="truncate p-relative">{{ endorsement.branch }}
+                  <span (click)="copyHashToClipboard(endorsement.branch)"
+                        [cdkCopyToClipboard]="endorsement.branch"
+                        class="copy-hash p-absolute border-rad-4 pointer"
+                        matTooltip="Copy hash">
+                    <mat-icon class="icon-foreground-7 icon-14" svgIcon="copy"></mat-icon>
+                  </span>
+                </span>
+              </ng-container>
+              <ng-template #missingTemplate>
+                <span>-</span>
+                <span>-</span>
+                <span>-</span>
+                <span>-</span>
+                <span>-</span>
+                <span>-</span>
+                <span>-</span>
+                <span>-</span>
+              </ng-template>
+            </div>
+          </cdk-virtual-scroll-viewport>
         </div>
       </div>
     </div>
@@ -97,10 +99,10 @@
       </mat-checkbox>
     </div>
   </div>
-  <div class="d-flex flex-column" fxFlex="36" fxFlex.gt-md="25">
+  <div class="d-flex flex-column" fxFlex="40" fxFlex.gt-md="25">
     <div class="details border-bottom d-flex align-center foreground-7" fxFlex="36px">STATISTICS</div>
-    <div fxFlex="calc(100% - 36px)" class="d-flex flex-column border-left">
-      <app-mempool-endorsement-statistics></app-mempool-endorsement-statistics>
+    <div fxFlex="calc(100% - 36px)" class="border-left">
+      <app-mempool-endorsement-statistics class="h-100"></app-mempool-endorsement-statistics>
     </div>
   </div>
 </div>

@@ -1,0 +1,18 @@
+
+table {
+  border-collapse: collapse;
+
+  tr {
+    text-align: left;
+    height: 32px;
+
+    td:first-child {
+      width: 50%;
+      max-width: 1px;
+    }
+
+    td, th {
+      padding: 8px;
+    }
+  }
+}

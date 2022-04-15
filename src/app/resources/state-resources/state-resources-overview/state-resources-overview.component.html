@@ -1,0 +1,23 @@
+<div class="border border-rad-2">
+  <table>
+    <thead>
+      <tr class="border-bottom">
+        <th class="foreground-4 font-400">CATEGORY</th>
+        <th class="foreground-4 font-400">CALLS</th>
+        <th class="foreground-4 font-400">DURATION</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr class="border-bottom" *ngFor="let group of state.filteredGroups; let i=index">
+        <td class="text-capitalize foreground-7 truncate">{{ group.groupName }}</td>
+        <td class="foreground-7">{{ group.count | thousandTransform }}</td>
+        <td class="foreground-7">{{ group.totalTime | timeTransform: false }}</td>
+      </tr>
+      <tr>
+        <td class="foreground-4">Total time</td>
+        <td class="foreground-4">{{ filteredCount | thousandTransform }}</td>
+        <td class="foreground-4">{{ filteredTotalTime | timeTransform: false: false: true }}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>

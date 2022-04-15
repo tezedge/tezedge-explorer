@@ -1,4 +1,4 @@
-import { StorageResourcesActions, StorageResourcesActionTypes } from '@resources/storage-resources/storage-resources.actions';
+import { StorageResourcesActions, StorageResourcesActionTypes } from '@resources/storage-resource/storage-resources/storage-resources.actions';
 import { State } from '@app/app.index';
 import { StorageResourcesState } from '@shared/types/resources/storage/storage-resources-state.type';
 

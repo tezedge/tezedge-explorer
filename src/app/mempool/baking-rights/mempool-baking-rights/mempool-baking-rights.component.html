@@ -17,6 +17,7 @@
       <cdk-virtual-scroll-viewport class="border-bottom f-14 h-100 overflow-y-auto overflow-x-hidden"
                                    itemSize="36">
         <div *cdkVirtualFor="let right of state.filteredBakingRights; let i=index; trackBy: trackBakingRight"
+             [class.row-even]="i % 2 === 0"
              class="row">
           <span class="foreground-7 text-nowrap">{{ right.address }}</span>
           <span class="truncate p-relative">

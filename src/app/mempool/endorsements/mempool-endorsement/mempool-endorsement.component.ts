@@ -2,7 +2,6 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
-  ElementRef,
   HostListener,
   OnDestroy,
   OnInit,
@@ -45,6 +44,7 @@ import { Overlay, OverlayRef } from '@angular/cdk/overlay';
 import { TemplatePortal } from '@angular/cdk/portal';
 import { Router } from '@angular/router';
 import { NetworkStatsLastAppliedBlock } from '@shared/types/network/network-stats-last-applied-block.type';
+import { CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
 
 
 const translateFromRight = trigger('translateFromRight', [
@@ -93,7 +93,7 @@ export class MempoolEndorsementComponent implements OnInit, OnDestroy {
   formGroup: FormGroup;
   activeBaker: string;
 
-  @ViewChild('scrollableContainer') private scrollableContainer: ElementRef<HTMLDivElement>;
+  @ViewChild(CdkVirtualScrollViewport) private scrollableContainer: CdkVirtualScrollViewport;
   @ViewChild('tooltipTemplate') private tooltipTemplate: TemplateRef<any>;
 
   private overlayRef: OverlayRef;
@@ -185,7 +185,7 @@ export class MempoolEndorsementComponent implements OnInit, OnDestroy {
       delay(100),
       skip(2), /* no rows animation on first load */
     ).subscribe(() => {
-      this.scrollableContainer.nativeElement.scrollTo({ top: 0 });
+      this.scrollableContainer.scrollTo({ top: 0 });
       this.animateRows = 'animate';
       this.cdRef.detectChanges();
       setTimeout(() => this.animateRows = 'static', 500);

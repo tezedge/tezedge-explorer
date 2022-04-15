@@ -1,10 +1,11 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { ResourcesComponent } from './resources/resources.component';
-import { SystemResourcesComponent } from './system-resources/system-resources.component';
-import { StorageResourcesComponent } from './storage-resources/storage-resources.component';
+import { SystemResourcesComponent } from './system-resource/system-resources/system-resources.component';
+import { StorageResourcesComponent } from './storage-resource/storage-resources/storage-resources.component';
 import { MemoryResourcesComponent } from './memory-resources/memory-resources.component';
 import { ResourcesGuard } from './resources.guard';
+import { StateResourcesComponent } from '@resources/state-resources/state-resources/state-resources.component';
 
 const routes: Routes = [
   {
@@ -25,6 +26,11 @@ const routes: Routes = [
         path: 'memory',
         canActivate: [ResourcesGuard],
         component: MemoryResourcesComponent
+      },
+      {
+        path: 'state',
+        canActivate: [ResourcesGuard],
+        component: StateResourcesComponent
       },
       {
         path: '',

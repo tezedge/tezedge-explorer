@@ -22,6 +22,21 @@
     </xhtml:div>
   </ng-template>
 
+  <svg:g *ngIf="horizontalMarker" class="pointer-none">
+    <svg:rect class="horizontal-marker"
+              x="0"
+              [attr.y]="dims.height - (horizontalMarker / 100 * dims.height)"
+              [attr.height]="1"
+              [attr.width]="dims.width"/>
+  </svg:g>
+  <svg:g *ngIf="verticalMarkerIndex" class="pointer-none">
+    <svg:rect class="vertical-marker"
+              [attr.x]="verticalMarkerX"
+              y="0"
+              [attr.height]="dims.height"
+              [attr.width]="1"/>
+  </svg:g>
+
   <svg:g ngx-tooltip
          [tooltipDisabled]="tooltipDisabled"
          [tooltipPlacement]="tooltipPlacement"
@@ -53,6 +68,5 @@
          [style.pointer-events]="'all'">
     <svg:polygon points="-5 0, 5 0, 0 6"
                  class="red-mark pointer"/>
-<!--    <text fill="var(&#45;&#45;foreground)">!</text>-->
   </svg:g>
 </svg:g>

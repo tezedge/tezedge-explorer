@@ -40,6 +40,7 @@
       "@shared/*": ["src/app/shared/*"],
       "@helpers/*": ["src/app/shared/helpers/*"],
       "@environment/*": ["src/environments/*"],
+      "stream": ["./node_modules/readable-stream"]
     }
   },
   "angularCompilerOptions": {

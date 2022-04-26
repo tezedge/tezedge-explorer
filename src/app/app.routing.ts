@@ -1,6 +1,11 @@
 import { Routes } from '@angular/router';
+import { DemoComponent } from '@app/demo/demo.component';
 
 export const AppRouting: Routes = [
+  {
+    path: 'demo',
+    component: DemoComponent,
+  },
   {
     path: 'monitoring',
     loadChildren: () => import('./monitoring/monitoring.module').then(module => module.MonitoringModule)

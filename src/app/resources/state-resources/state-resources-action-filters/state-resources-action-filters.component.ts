@@ -5,9 +5,9 @@ import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { distinctUntilChanged, filter } from 'rxjs/operators';
 import {
-  STATE_RESOURCES_FILTER,
+  STATE_RESOURCES_GROUP_FILTER,
   STATE_RESOURCES_SORT,
-  StateResourcesFilter,
+  StateResourcesGroupFilter,
   StateResourcesSorting
 } from '@resources/state-resources/state-resources/state-resources.actions';
 import { debounceTime } from 'rxjs';
@@ -17,12 +17,12 @@ import { SortDirection } from '@shared/types/shared/table-sort.type';
 
 @UntilDestroy()
 @Component({
-  selector: 'app-state-resources-filters',
-  templateUrl: './state-resources-filters.component.html',
-  styleUrls: ['./state-resources-filters.component.scss'],
+  selector: 'app-state-resources-action-filters',
+  templateUrl: './state-resources-action-filters.component.html',
+  styleUrls: ['./state-resources-action-filters.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class StateResourcesFiltersComponent implements OnInit {
+export class StateResourcesActionFiltersComponent implements OnInit {
 
   readonly sortingOptions = [
     { name: 'Total', sort: 'totalTime' },
@@ -54,12 +54,12 @@ export class StateResourcesFiltersComponent implements OnInit {
         if (value.length > 1) {
           return true;
         } else {
-          this.store.dispatch<StateResourcesFilter>({ type: STATE_RESOURCES_FILTER, payload: null });
+          this.store.dispatch<StateResourcesGroupFilter>({ type: STATE_RESOURCES_GROUP_FILTER, payload: null });
           return false;
         }
       })
     ).subscribe((value: string) => {
-      this.store.dispatch<StateResourcesFilter>({ type: STATE_RESOURCES_FILTER, payload: value.toLowerCase() });
+      this.store.dispatch<StateResourcesGroupFilter>({ type: STATE_RESOURCES_GROUP_FILTER, payload: value.toLowerCase() });
     });
   }
 

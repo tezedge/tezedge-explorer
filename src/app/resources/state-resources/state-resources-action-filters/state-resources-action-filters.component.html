@@ -1,5 +1,5 @@
-<div class="flex-row padding-left-10 align-center h-100">
-  <form [formGroup]="formGroup">
+<div class="flex-row padding-left-10 align-center h-100 flex-wrap">
+  <form [formGroup]="formGroup" class="margin-top-5 margin-bottom-5 margin-right-10">
     <mat-form-field appearance="fill" class="custom-bottom-form-field p-relative margin-left-remove">
       <input autocomplete="off" formControlName="search" matInput placeholder="Search action groups" type="text">
       <mat-icon *ngIf="formGroup.get('search').value" (click)="formGroup.get('search').setValue('')"
@@ -7,7 +7,7 @@
                 svgIcon="close-blank"></mat-icon>
     </mat-form-field>
   </form>
-  <div class="flex-row align-center margin-left-10">
+  <div class="flex-row align-center margin-top-5 margin-bottom-5">
     <span class="foreground-4">Sort by:</span>
     <div class="sorting flex-row margin-left-10 pointer"
          (click)="sort(option.sort)"
@@ -16,7 +16,7 @@
       <mat-icon [class.flip]="currentSort.sortDirection === 'descending'"
                 [class.show]="currentSort.sortBy === option.sort"
                 [svgIcon]="'arrow-up'"
-                class="icon-14 icon-foreground"></mat-icon>
+                class="icon-10 icon-foreground"></mat-icon>
     </div>
   </div>
 </div>

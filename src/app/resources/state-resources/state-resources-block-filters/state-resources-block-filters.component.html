@@ -1,0 +1,51 @@
+<div fxFlexFill class="wrapper flex-row align-center padding-left-10 flex-wrap padding-bottom-5">
+  <button (click)="getNodeLifetimeStats()"
+          [class.active]="state?.activeType === 'node'"
+          matTooltip="Load node lifetime statistics"
+          class="primary-button round f-12 d-flex align-center foreground border-remove border-rad-2 pointer margin-right-5 text-nowrap">
+    <mat-icon svgIcon="check-circle"
+              class="icon-12 margin-right-5"></mat-icon>
+    <span [class.font-600]="state?.activeType === 'node'"
+          class="round-num">NODE LIFETIME</span>
+  </button>
+  <button class="primary-button border-rad-2 d-flex align-center pointer margin-right-5"
+          matTooltip="Load statistics for the latest block"
+          (click)="getMostRecentBlockStats()">
+    <mat-icon svgIcon="history" class="icon-12 icon-foreground"></mat-icon>
+  </button>
+  <button class="primary-button border-rad-2 d-flex align-center pointer margin-right-5"
+          matTooltip="Previous"
+          [disabled]="activeBlock === state.blocks[0] || !activeBlock"
+          (click)="loadPreviousBlock()">
+    <mat-icon svgIcon="less-than" class="icon-10 icon-foreground"></mat-icon>
+  </button>
+  <button class="primary-button border-rad-2 d-flex align-center pointer margin-right-5"
+          matTooltip="Next"
+          [disabled]="activeBlock === state.blocks[state.blocks.length - 1] || !activeBlock"
+          (click)="loadNextBlock()">
+    <mat-icon svgIcon="greater-than" class="icon-10 icon-foreground"></mat-icon>
+  </button>
+  <form [formGroup]="formGroup" class="margin-right-10">
+    <mat-form-field appearance="fill" autofocus
+                    (keydown.enter)="onFormSubmit()"
+                    class="custom-bottom-form-field p-relative">
+      <input (blur)="onFormSubmit()"
+             type="text" matInput autocomplete="off"
+             formControlName="block" placeholder="Search block level">
+      <mat-icon (click)="formGroup.get('block').setValue('')"
+                *ngIf="formGroup.get('block').value"
+                class="p-absolute icon-10 icon-foreground-7 fill-opacity-1 pointer"
+                svgIcon="close-blank"></mat-icon>
+    </mat-form-field>
+  </form>
+  <div class="rounds flex-row align-start text-nowrap overflow-x-auto">
+    <div *ngFor="let round of blocksWithSameLevel; let i=index"
+         (click)="changeActiveRound(round.blockLevel, round.blockRound)"
+         [class.active]="activeBlock.blockHash === round.blockHash"
+         class="round border-rad-2 pointer margin-right-8 flex-row align-center">
+      <mat-icon svgIcon="check-circle"
+                class="icon-12 margin-right-5"></mat-icon>
+      <span class="round-num">Round {{ round.blockRound }}</span>
+    </div>
+  </div>
+</div>

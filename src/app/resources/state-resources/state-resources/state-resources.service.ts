@@ -6,17 +6,39 @@ import { map } from 'rxjs/operators';
 import { StateResourcesAction } from '@shared/types/resources/state/state-resources-action.type';
 import { NANOSECOND_FACTOR } from '@shared/constants/unit-measurements';
 import { StateResourcesActionGroup } from '@shared/types/resources/state/state-resources-action-group.type';
+import { StateResourcesBlockData } from '@shared/types/resources/state/state-resources-block-data.type';
 
 @Injectable({ providedIn: 'root' })
 export class StateResourcesService {
 
   constructor(private http: HttpClient) { }
 
-  getStateResources(api: string): Observable<StateResourcesActionGroup[]> {
+  getNodeLifetimeStateResources(api: string): Observable<StateResourcesActionGroup[]> {
     return this.http.get<StateResourcesActionGroup[]>(`${api}/dev/shell/automaton/actions_stats`).pipe(
       map(snakeCaseToCamelCase),
       map(res => this.mapStateResources(res))
     );
+  }
+
+  getBlockStateResources(api: string, level: number): Observable<StateResourcesBlockData[]> {
+    const levels = this.getNeighbourLevels(level);
+    return this.http.get<StateResourcesBlockData[]>(`${api}/dev/shell/automaton/actions_stats_for_blocks?level=${levels}`).pipe(
+      map(snakeCaseToCamelCase),
+      map(res => this.mapBlocksStateResources(res))
+    );
+  }
+
+  private mapBlocksStateResources(response: any[]): StateResourcesBlockData[] {
+    return response.reverse().map(r => ({
+      time: r.time,
+      blockLevel: r.blockLevel,
+      blockHash: r.blockHash,
+      blockFitness: r.blockFitness,
+      blockRound: r.blockRound,
+      cpuIdle: r.cpuIdle,
+      cpuBusy: r.cpuBusy,
+      groups: this.mapStateResources(r.stats)
+    }));
   }
 
   private mapStateResources(response: any): StateResourcesActionGroup[] {
@@ -80,5 +102,13 @@ export class StateResourcesService {
         response[key][timeKey].maxDuration /= NANOSECOND_FACTOR;
       });
     });
+  }
+
+  private getNeighbourLevels(level: number): string {
+    return [
+      level - 1,
+      level,
+      level + 1,
+    ].join(',');
   }
 }

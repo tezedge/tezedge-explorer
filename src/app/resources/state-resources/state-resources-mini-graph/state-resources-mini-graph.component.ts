@@ -1,16 +1,6 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  Input,
-  OnDestroy,
-  TemplateRef,
-  ViewChild,
-  ViewContainerRef
-} from '@angular/core';
-import { ResourceStorageQuery } from '@shared/types/resources/storage/storage-resource-operation.type';
+import { ChangeDetectionStrategy, Component, Input, OnDestroy, TemplateRef, ViewChild, ViewContainerRef } from '@angular/core';
 import { Overlay, OverlayRef } from '@angular/cdk/overlay';
 import { TemplatePortal } from '@angular/cdk/portal';
-import { ResourceStorageQueryDetails } from '@shared/types/resources/storage/storage-resource-operation-usage-entry.type';
 import { StateResourcesAction } from '@shared/types/resources/state/state-resources-action.type';
 import { StateResourcesActionDetails } from '@shared/types/resources/state/state-resources-action-details.type';
 

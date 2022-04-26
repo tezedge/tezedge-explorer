@@ -2,6 +2,8 @@
 
 mat-tab-group {
   mat-tab-header {
+    border: none !important;
+
     .mat-tab-label-container {
       padding-left: 0;
     }

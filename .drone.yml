@@ -594,7 +594,7 @@ steps:
       - publish
 
   - name: publish-firebase
-    image: devillex/docker-firebase
+    image: andreysenov/firebase-tools
     pull: if-not-exists
     volumes:
       - name: static_page

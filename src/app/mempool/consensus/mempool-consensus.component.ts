@@ -17,17 +17,17 @@ import {
 } from '@mempool/consensus/mempool-consensus.actions';
 import { selectNetworkLastAppliedBlockLevel } from '@network/network-stats/network-stats.reducer';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { distinctUntilChanged, filter, take } from 'rxjs/operators';
+import { distinctUntilChanged, filter, map, take } from 'rxjs/operators';
 import {
   MempoolConsensusState,
   selectMempoolConsensusConstants,
-  selectMempoolConsensusLastBlock,
+  selectMempoolConsensusRounds,
   selectMempoolConsensusState
 } from '@mempool/consensus/mempool-consensus.index';
-import { MempoolConsensusBlock } from '@shared/types/mempool/consensus/mempool-consensus-block.type';
 import { BehaviorSubject } from 'rxjs';
 import { formatNumber } from '@angular/common';
 import { MICROSECOND_FACTOR } from '@shared/constants/unit-measurements';
+import { MempoolConsensusRound } from '@shared/types/mempool/consensus/mempool-consensus-round.type';
 import Timeout = NodeJS.Timeout;
 
 @UntilDestroy()
@@ -42,7 +42,6 @@ export class MempoolConsensusComponent implements OnInit {
   readonly elapsedTime$: BehaviorSubject<number> = new BehaviorSubject<number>(null);
 
   state: MempoolConsensusState;
-  activeBlockIndex: number;
   showRoundArrows: boolean;
 
   private horizontalScrollingContainer: ElementRef<HTMLDivElement>;
@@ -63,8 +62,8 @@ export class MempoolConsensusComponent implements OnInit {
   ngOnInit(): void {
     this.store.dispatch<MempoolConsensusConstantsLoad>({ type: MEMPOOL_CONSENSUS_CONSTANTS_LOAD });
     this.store.dispatch<MempoolConsensusInit>({ type: MEMPOOL_CONSENSUS_INIT });
-    this.listenToConsensusChange();
     this.listenToConstantsChange();
+    this.listenToConsensusChange();
   }
 
   private listenToConstantsChange(): void {
@@ -103,16 +102,16 @@ export class MempoolConsensusComponent implements OnInit {
       untilDestroyed(this)
     ).subscribe(state => {
       this.state = state;
-      this.activeBlockIndex = state.blocks.indexOf(state.activeBlock);
       this.cdRef.detectChanges();
       this.checkRoundArrowsShowing();
     });
 
-    this.store.select(selectMempoolConsensusLastBlock).pipe(
+    this.store.select(selectMempoolConsensusRounds).pipe(
       untilDestroyed(this),
-      filter(Boolean)
-    ).subscribe((lastBlock: MempoolConsensusBlock) => {
-      this.calculateTime(lastBlock);
+      filter(rounds => rounds.length > 0 && !rounds.every(r => r.blockLevel === rounds[0].blockLevel)),
+      map(rounds => rounds[rounds.length - 1])
+    ).subscribe((round: MempoolConsensusRound) => {
+      this.calculateTime(round);
     });
   }
 
@@ -131,17 +130,16 @@ export class MempoolConsensusComponent implements OnInit {
     }
   }
 
-  private calculateTime(lastBlock: MempoolConsensusBlock): void {
-    const lastRound = lastBlock.rounds[lastBlock.rounds.length - 1];
-    if (!lastRound) {
+  private calculateTime(round: MempoolConsensusRound): void {
+    if (!round) {
       return;
     }
-    const newValue = formatNumber((Date.now() - (Number(lastRound.blockTimestamp) / MICROSECOND_FACTOR)) / 1000, 'en-US', '1.0-0');
-    this.elapsedTime$.next(Math.min(Number(newValue), lastRound.maxTime));
+    const newValue = formatNumber((Date.now() - (Number(round.blockTimestamp) / MICROSECOND_FACTOR)) / 1000, 'en-US', '1.0-0');
+    this.elapsedTime$.next(Math.min(Number(newValue), round.maxTime));
 
     this.zone.runOutsideAngular(() => {
       clearInterval(this.interval);
-      this.startTimer(lastRound.maxTime);
+      this.startTimer(round.maxTime);
     });
   }
 
@@ -161,19 +159,9 @@ export class MempoolConsensusComponent implements OnInit {
     }, 1000);
   }
 
-  selectBlock(block: MempoolConsensusBlock): void {
-    if (this.state.activeBlock === block) {
-      return;
-    }
-    this.store.dispatch<MempoolConsensusSetBlock>({ type: MEMPOOL_CONSENSUS_SET_BLOCK, payload: block });
-  }
-
   selectRound(i: number): void {
-    // if (this.state.activeBlock.level === this.state.rounds[i].blockLevel) {
-    //   return;
-    // }
     const block = this.state.blocks.find(b => b.level === this.state.rounds[i].blockLevel);
-    console.log(block.level);
+
     this.store.dispatch<MempoolConsensusSetBlock>({ type: MEMPOOL_CONSENSUS_SET_BLOCK, payload: block });
     if (this.state.activeRoundIndex === i) {
       return;

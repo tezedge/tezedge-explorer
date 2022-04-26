@@ -20,6 +20,7 @@ export const selectMempoolConsensusLastBlock = (state: State): MempoolConsensusB
   const consensusState = state.mempool.consensusState;
   return consensusState.blocks.length === 2 ? consensusState.blocks[consensusState.blocks.length - 1] : null;
 };
+export const selectMempoolConsensusRounds = (state: State): MempoolConsensusRound[] => state.mempool.consensusState.rounds;
 export const selectMempoolConsensusActiveBlockLevel = (state: State): number => state.mempool.consensusState.activeBlock?.level;
 export const selectMempoolConsensusActiveBlockRound = (state: State): MempoolConsensusRound => {
   const activeBlock = state.mempool.consensusState.activeBlock;

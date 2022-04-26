@@ -45,22 +45,18 @@ export class StateResourcesService {
     this.convertTimesToSeconds(response);
 
     const groupNames = this.getGroupNames(response);
-
     return groupNames
       .map((groupName: string) => {
         const actions: StateResourcesAction[] = Object
           .keys(response)
-          .filter(actionName => actionName.startsWith(groupName))
+          .filter(actionName => actionName.startsWith(groupName) && actionName.charAt(groupName.length) === actionName.charAt(groupName.length).toUpperCase())
           .map(actionName => {
-            const columns = Object.keys(response[actionName]).map(range => {
-              return ({
-                count: response[actionName][range].totalCalls,
-                totalTime: response[actionName][range].totalDuration,
-                maxTime: response[actionName][range].maxDuration,
-                meanTime: (response[actionName][range].totalDuration / response[actionName][range].totalCalls) || 0,
-                squareCount: this.getSquareCount(response[actionName][range].totalCalls)
-              });
-            });
+            const columns = Object.keys(response[actionName]).map(range => ({
+              count: response[actionName][range].totalCalls,
+              totalTime: response[actionName][range].totalDuration,
+              maxTime: response[actionName][range].maxDuration,
+              squareCount: this.getSquareCount(response[actionName][range].totalCalls)
+            }));
             return {
               actionName,
               count: columns.reduce((acc, curr) => acc + curr.count, 0),

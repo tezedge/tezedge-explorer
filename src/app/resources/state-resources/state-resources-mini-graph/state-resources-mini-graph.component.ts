@@ -85,7 +85,7 @@ export class StateResourcesMiniGraphComponent implements OnDestroy {
         header: this.tooltipHeaders ? this.tooltipHeaders[index].toUpperCase() : RANGES[index],
         count: column.count,
         total: column.totalTime,
-        mean: column.meanTime,
+        mean: (column.totalTime / column.count) || 0,
         max: column.maxTime
       })
       .context;

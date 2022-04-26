@@ -43,18 +43,18 @@
                       class="status">{{ endorsement.status || 'missing' }}</span>
               </span>
               <ng-container *ngIf="endorsement.status; else missingTemplate">
-                <span [innerHTML]="endorsement.delta | nanoTransform: 50000000: 20000000"></span>
-                <span [innerHTML]="endorsement.receiveHashTime | nanoTransform: 50000000: 20000000"></span>
+                <span [innerHTML]="endorsement.delta | nanoTransform: FIFTY_MS: TWENTY_MS"></span>
+                <span [innerHTML]="endorsement.receiveHashTime | nanoTransform: FIFTY_MS: TWENTY_MS"></span>
                 <span
-                  [innerHTML]="(deltaEnabled ? endorsement.receiveContentsTimeDelta : endorsement.receiveContentsTime) | nanoTransform: 50000000: 20000000"></span>
+                  [innerHTML]="(deltaEnabled ? endorsement.receiveContentsTimeDelta : endorsement.receiveContentsTime) | nanoTransform: FIFTY_MS: TWENTY_MS"></span>
                 <span
-                  [innerHTML]="(deltaEnabled ? endorsement.decodeTimeDelta : endorsement.decodeTime) | nanoTransform: 50000000: 20000000"></span>
+                  [innerHTML]="(deltaEnabled ? endorsement.decodeTimeDelta : endorsement.decodeTime) | nanoTransform: FIFTY_MS: TWENTY_MS"></span>
                 <span
-                  [innerHTML]="(deltaEnabled ? endorsement.precheckTimeDelta : endorsement.precheckTime) | nanoTransform: 50000000: 20000000"></span>
+                  [innerHTML]="(deltaEnabled ? endorsement.precheckTimeDelta : endorsement.precheckTime) | nanoTransform: FIFTY_MS: TWENTY_MS"></span>
                 <span
-                  [innerHTML]="(deltaEnabled ? endorsement.applyTimeDelta : endorsement.applyTime) | nanoTransform: 50000000: 20000000"></span>
+                  [innerHTML]="(deltaEnabled ? endorsement.applyTimeDelta : endorsement.applyTime) | nanoTransform: FIFTY_MS: TWENTY_MS"></span>
                 <span
-                  [innerHTML]="(deltaEnabled ? endorsement.broadcastTimeDelta : endorsement.broadcastTime) | nanoTransform: 50000000: 20000000"></span>
+                  [innerHTML]="(deltaEnabled ? endorsement.broadcastTimeDelta : endorsement.broadcastTime) | nanoTransform: FIFTY_MS: TWENTY_MS"></span>
                 <span>{{ endorsement.level }}</span>
                 <span>{{ endorsement.round }}</span>
                 <span class="truncate p-relative">{{ endorsement.branch }}

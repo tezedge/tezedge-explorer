@@ -5,15 +5,18 @@ import { BehaviorSubject, Observable, tap } from 'rxjs';
 import { MempoolEndorsementStatistics } from '@shared/types/mempool/endorsement/mempool-endorsement-statistics.type';
 import {
   selectMempoolEndorsementCurrentRound,
+  selectMempoolEndorsementPageType,
   selectMempoolEndorsementStatistics
 } from '@mempool/consensus/endorsements/mempool-endorsement/mempool-endorsement.index';
 import { refreshBlock } from '@shared/constants/animations';
 import { MICROSECOND_FACTOR } from '@shared/constants/unit-measurements';
 import { formatNumber } from '@angular/common';
-import Timeout = NodeJS.Timeout;
 import { MempoolConsensusRound } from '@shared/types/mempool/consensus/mempool-consensus-round.type';
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
+import Timeout = NodeJS.Timeout;
 
 
+@UntilDestroy()
 @Component({
   selector: 'app-mempool-endorsement-statistics',
   templateUrl: './mempool-endorsement-statistics.component.html',
@@ -27,6 +30,7 @@ export class MempoolEndorsementStatisticsComponent implements OnInit {
 
   statistics$: Observable<MempoolEndorsementStatistics>;
   currentRound$: Observable<MempoolConsensusRound>;
+  pageType: string;
   previousBlockElapsedTime: number;
 
   private interval: Timeout;
@@ -42,6 +46,12 @@ export class MempoolEndorsementStatisticsComponent implements OnInit {
   }
 
   private listenToEndorsementStatisticsChanges(): void {
+    this.store.select(selectMempoolEndorsementPageType)
+      .pipe(untilDestroyed(this))
+      .subscribe(pageType => {
+        this.pageType = pageType;
+      });
+
     this.statistics$ = this.store.select(selectMempoolEndorsementStatistics);
     this.currentRound$ = this.store.select(selectMempoolEndorsementCurrentRound)
       .pipe(tap(round => {

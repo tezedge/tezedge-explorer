@@ -1,19 +1,19 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, NgZone, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, NgZone, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { State } from '@app/app.index';
 import {
   MEMPOOL_CONSENSUS_CONSTANTS_LOAD,
   MEMPOOL_CONSENSUS_GET_BLOCK_ROUNDS,
   MEMPOOL_CONSENSUS_INIT,
-  MEMPOOL_CONSENSUS_SET_BLOCK,
   MEMPOOL_CONSENSUS_SET_ROUND,
   MEMPOOL_CONSENSUS_START_SEARCHING_ROUNDS,
+  MEMPOOL_CONSENSUS_STOP,
   MempoolConsensusConstantsLoad,
   MempoolConsensusGetBlockRounds,
   MempoolConsensusInit,
-  MempoolConsensusSetBlock,
   MempoolConsensusSetRound,
-  MempoolConsensusStartSearchingRounds
+  MempoolConsensusStartSearchingRounds,
+  MempoolConsensusStop
 } from '@mempool/consensus/mempool-consensus.actions';
 import { selectNetworkLastAppliedBlockLevel } from '@network/network-stats/network-stats.reducer';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
@@ -37,7 +37,7 @@ import Timeout = NodeJS.Timeout;
   styleUrls: ['./mempool-consensus.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class MempoolConsensusComponent implements OnInit {
+export class MempoolConsensusComponent implements OnInit, OnDestroy {
 
   readonly elapsedTime$: BehaviorSubject<number> = new BehaviorSubject<number>(null);
 
@@ -83,7 +83,8 @@ export class MempoolConsensusComponent implements OnInit {
       distinctUntilChanged()
     ).subscribe((currentBlock: number) => {
       this.latestBlockLevel = currentBlock;
-      if (this.state?.blocks.length === 0) {
+      const isFirstBlock = this.state?.rounds.length === 0;
+      if (isFirstBlock) {
         this.getBlockRounds(currentBlock - 1);
       }
       this.getBlockRounds(currentBlock, true);
@@ -160,20 +161,17 @@ export class MempoolConsensusComponent implements OnInit {
   }
 
   selectRound(i: number): void {
-    const block = this.state.blocks.find(b => b.level === this.state.rounds[i].blockLevel);
-
-    this.store.dispatch<MempoolConsensusSetBlock>({ type: MEMPOOL_CONSENSUS_SET_BLOCK, payload: block });
     if (this.state.activeRoundIndex === i) {
       return;
     }
     this.store.dispatch<MempoolConsensusSetRound>({ type: MEMPOOL_CONSENSUS_SET_ROUND, payload: i });
   }
 
-  scrollLeft(): void {
-    this.horizontalScrollingContainer.nativeElement.scrollBy({ top: 0, left: -300, behavior: 'smooth' });
+  scrollBy(left: number): void {
+    this.horizontalScrollingContainer.nativeElement.scrollBy({ top: 0, left, behavior: 'smooth' });
   }
 
-  scrollRight(): void {
-    this.horizontalScrollingContainer.nativeElement.scrollBy({ top: 0, left: 300, behavior: 'smooth' });
+  ngOnDestroy(): void {
+    this.store.dispatch<MempoolConsensusStop>({ type: MEMPOOL_CONSENSUS_STOP });
   }
 }

@@ -31,19 +31,18 @@
   <ng-container *ngIf="showRoundArrows">
     <button fxFlex="32px"
             class="primary-button border-rad-4 d-flex align-center flex-center pointer margin-right-5 margin-left-10"
-            (click)="scrollLeft()">
+            (click)="scrollBy(-300)">
       <mat-icon svgIcon="less-than" class="icon-12 icon-foreground"></mat-icon>
     </button>
     <button fxFlex="32px" class="primary-button border-rad-4 d-flex align-center flex-center pointer"
-            (click)="scrollRight()">
+            (click)="scrollBy(300)">
       <mat-icon svgIcon="greater-than" class="icon-12 icon-foreground"></mat-icon>
     </button>
   </ng-container>
 </div>
 
 <div class="tabs border-bottom d-flex align-center font-500 text-uppercase f-12"
-     fxFlex="40px"
-     fxLayoutGap="16px">
+     fxFlex="40px" fxLayoutGap="16px">
   <div routerLink="/mempool/consensus/proposals" class="tab" routerLinkActive="selected">PROPOSALS</div>
   <div routerLink="/mempool/consensus/pre-endorsements" class="tab" routerLinkActive="selected">PRE-ENDORSEMENTS</div>
   <div routerLink="/mempool/consensus/endorsements" class="tab" routerLinkActive="selected">ENDORSEMENTS</div>

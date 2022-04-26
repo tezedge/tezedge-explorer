@@ -33,8 +33,8 @@ export class MempoolEndorsementService {
     );
   }
 
-  getEndorsementStatusUpdates(api: string, round: MempoolBlockRound): Observable<{ [p: string]: MempoolEndorsement }> {
-    const url = `${api}/dev/shell/automaton/endorsements_status?level=${round.blockLevel}&round=${round.round}&base_time=${round.receiveTimestamp}`;
+  getEndorsementStatusUpdates(api: string, round: MempoolBlockRound, type: string): Observable<{ [p: string]: MempoolEndorsement }> {
+    const url = `${api}/dev/shell/automaton/${type}_status?level=${round.blockLevel}&round=${round.round}&base_time=${round.receiveTimestamp}`;
     return this.http.get<any>(url).pipe(
       map(response => {
         const updates = Object.keys(response).map(key => {

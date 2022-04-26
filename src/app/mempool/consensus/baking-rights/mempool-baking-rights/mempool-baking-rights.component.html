@@ -1,4 +1,3 @@
-<!--<app-mempool-baking-right-filters fxFlex="72px"></app-mempool-baking-right-filters>-->
 <div fxLayout.lt-lg="column" fxLayout.gt-md="row" fxFlex="100">
 
   <div fxFlex.gt-md="70" fxFlex.lt-lg="50" class="table-container overflow-x-auto overflow-y-hidden d-flex flex-column">
@@ -44,9 +43,9 @@
   <div fxFlex.gt-md="30" fxFlex.lt-lg="50" fxLayout="column" class="baking-details">
     <div fxFlex="36px" class="tab border-bottom d-flex align-center flex-between padding-left-10">
       <span class="margin-left-10">DETAILS</span>
-      <div [class.hidden]="!state.currentDisplayedBlock" [@refreshBlock]="state.currentDisplayedBlock" class="block margin-right-10">
+      <div [class.hidden]="!state.rounds[state.activeRoundIndex]" [@refreshBlock]="state.rounds[state.activeRoundIndex]?.blockLevel" class="block margin-right-10">
         <span class="foreground-7">CURRENT BLOCK</span>
-        {{ state.currentDisplayedBlock ?? '' | spaceNumber }}
+        {{ state.rounds[state.activeRoundIndex]?.blockLevel ?? '' | spaceNumber }}
       </div>
     </div>
     <app-mempool-baking-rights-details fxFlex="calc(100% - 36px)"></app-mempool-baking-rights-details>

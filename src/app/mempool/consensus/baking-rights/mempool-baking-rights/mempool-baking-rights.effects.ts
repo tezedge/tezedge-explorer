@@ -55,12 +55,12 @@ export class MempoolBakingRightsEffects extends TezedgeBaseEffect<State, Mempool
     this.mempoolBakingRightsLoad$ = createEffect(() => this.actions$.pipe(
       ofType(MEMPOOL_BAKING_RIGHTS_LOAD),
       this.latestActionState<MempoolBakingRightsLoad>(),
-      filter(({ action, state }) => state.mempool.bakingRightsState.currentDisplayedBlock > 0),
+      filter(({ action, state }) => state.mempool.bakingRightsState.activeBlockLevel > 0),
       switchMap(({ action, state }) =>
-        forkJoin(
-          this.mempoolBakingRightsService.getBakingRights(this.http(state), state.mempool.bakingRightsState.currentDisplayedBlock),
-          this.mempoolService.getBlockRounds(this.http(state), state.mempool.bakingRightsState.currentDisplayedBlock)
-        )
+        forkJoin([
+          this.mempoolBakingRightsService.getBakingRights(this.http(state), state.mempool.bakingRightsState.activeBlockLevel),
+          this.mempoolService.getBlockRounds(this.http(state), state.mempool.bakingRightsState.activeBlockLevel)
+        ])
       ),
       map((response: [MempoolBakingRight[], MempoolBlockRound[]]) => ({
         type: MEMPOOL_BAKING_RIGHTS_LOAD_SUCCESS,

@@ -10,10 +10,7 @@ enum MempoolBakingRightsActionTypes {
   MEMPOOL_BAKING_RIGHTS_DELTA_SWITCH = 'MEMPOOL_BAKING_RIGHTS_DELTA_SWITCH',
   MEMPOOL_BAKING_RIGHTS_SORT = 'MEMPOOL_BAKING_RIGHTS_SORT',
   MEMPOOL_BAKING_RIGHTS_STOP = 'MEMPOOL_BAKING_RIGHTS_STOP',
-  // MEMPOOL_BAKING_RIGHTS_LIVE = 'MEMPOOL_BAKING_RIGHTS_LIVE',
-  // MEMPOOL_BAKING_RIGHTS_PAUSE = 'MEMPOOL_BAKING_RIGHTS_PAUSE',
   MEMPOOL_BAKING_RIGHTS_LAST_BLOCK_UPDATE = 'MEMPOOL_BAKING_RIGHTS_LAST_BLOCK_UPDATE',
-  // MEMPOOL_BAKING_RIGHTS_DISPLAYED_BLOCK_UPDATE = 'MEMPOOL_BAKING_RIGHTS_DISPLAYED_BLOCK_UPDATE',
   MEMPOOL_BAKING_RIGHTS_CHANGE_ROUND = 'MEMPOOL_BAKING_RIGHTS_CHANGE_ROUND',
 }
 
@@ -23,10 +20,7 @@ export const MEMPOOL_BAKING_RIGHTS_LOAD_SUCCESS = MempoolBakingRightsActionTypes
 export const MEMPOOL_BAKING_RIGHTS_DELTA_SWITCH = MempoolBakingRightsActionTypes.MEMPOOL_BAKING_RIGHTS_DELTA_SWITCH;
 export const MEMPOOL_BAKING_RIGHTS_SORT = MempoolBakingRightsActionTypes.MEMPOOL_BAKING_RIGHTS_SORT;
 export const MEMPOOL_BAKING_RIGHTS_STOP = MempoolBakingRightsActionTypes.MEMPOOL_BAKING_RIGHTS_STOP;
-// export const MEMPOOL_BAKING_RIGHTS_LIVE = MempoolBakingRightsActionTypes.MEMPOOL_BAKING_RIGHTS_LIVE;
-// export const MEMPOOL_BAKING_RIGHTS_PAUSE = MempoolBakingRightsActionTypes.MEMPOOL_BAKING_RIGHTS_PAUSE;
 export const MEMPOOL_BAKING_RIGHTS_LAST_BLOCK_UPDATE = MempoolBakingRightsActionTypes.MEMPOOL_BAKING_RIGHTS_LAST_BLOCK_UPDATE;
-// export const MEMPOOL_BAKING_RIGHTS_DISPLAYED_BLOCK_UPDATE = MempoolBakingRightsActionTypes.MEMPOOL_BAKING_RIGHTS_DISPLAYED_BLOCK_UPDATE;
 export const MEMPOOL_BAKING_RIGHTS_CHANGE_ROUND = MempoolBakingRightsActionTypes.MEMPOOL_BAKING_RIGHTS_CHANGE_ROUND;
 
 
@@ -62,25 +56,11 @@ export class MempoolBakingRightsStop implements MempoolBakingRightAction {
   readonly type = MEMPOOL_BAKING_RIGHTS_STOP;
 }
 
-// export class MempoolBakingRightsLive implements MempoolBakingRightAction {
-//   readonly type = MEMPOOL_BAKING_RIGHTS_LIVE;
-// }
-//
-// export class MempoolBakingRightsPause implements MempoolBakingRightAction {
-//   readonly type = MEMPOOL_BAKING_RIGHTS_PAUSE;
-// }
-
 export class MempoolBakingRightsLastBlockUpdate implements MempoolBakingRightAction {
   readonly type = MEMPOOL_BAKING_RIGHTS_LAST_BLOCK_UPDATE;
 
   constructor(public payload: number) { }
 }
-
-// export class MempoolBakingRightsDisplayedBlockUpdate implements MempoolBakingRightAction {
-//   readonly type = MEMPOOL_BAKING_RIGHTS_DISPLAYED_BLOCK_UPDATE;
-//
-//   constructor(public payload: number) { }
-// }
 
 export class MempoolBakingRightsChangeRound implements MempoolBakingRightAction {
   readonly type = MEMPOOL_BAKING_RIGHTS_CHANGE_ROUND;
@@ -94,9 +74,6 @@ export type MempoolBakingRightsActions = MempoolBakingRightsInit
   | MempoolBakingRightsDeltaSwitch
   | MempoolBakingRightsSort
   | MempoolBakingRightsStop
-  // | MempoolBakingRightsLive
-  // | MempoolBakingRightsPause
   | MempoolBakingRightsLastBlockUpdate
-  // | MempoolBakingRightsDisplayedBlockUpdate
   | MempoolBakingRightsChangeRound
   ;

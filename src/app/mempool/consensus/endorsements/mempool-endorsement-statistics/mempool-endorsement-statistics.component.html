@@ -3,7 +3,7 @@
        class="d-flex flex-row flex-between margin-bottom-10 padding-top-5">
     <div class="flex-row align-center">
       <div [@refreshBlock]="currentRound.blockLevel" class="block">
-        ENDORSING BLOCK {{ currentRound.blockLevel | spaceNumber }}
+        {{ pageType.toUpperCase() }}ENDORSING BLOCK {{ currentRound.blockLevel | spaceNumber }}
       </div>
       <div class="dash">-</div>
       <div [@refreshBlock]="currentRound.round"
@@ -28,7 +28,7 @@
           <div class="font-500">{{ statistics.quorum | number: '1.1-1' }}%</div>
         </div>
         <div class="foreground-4 margin-bottom-10 margin-top-10">
-          {{ statistics.totalSlots }} endorsements grouped by status
+          {{ statistics.totalSlots }} {{ pageType }}endorsements grouped by status
         </div>
         <div *ngFor="let type of statistics.endorsementTypes; let i=index; trackBy: trackStats"
              class="mem-stats-row margin-top-5 margin-bottom-5">
@@ -48,7 +48,7 @@
         <div class="foreground-4 margin-bottom-10">Previous block summary</div>
         <div [ngClass]="'missed-' + statistics.previousBlockMissedEndorsements"
              class="missed mem-stats-row margin-top-5 margin-bottom-5 d-flex flex-between">
-          <div>Missed Endorsements</div>
+          <div>Missed <span class="text-capitalize">{{ pageType }}</span>Endorsements</div>
           <div>{{ statistics.previousBlockMissedEndorsements }}</div>
         </div>
         <div class="mem-stats-row margin-top-5 margin-bottom-5 d-flex flex-between">

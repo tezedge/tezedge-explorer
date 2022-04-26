@@ -1,4 +1,5 @@
-@import '../../../../../assets/styles/utilities/layout';
+@import 'variables';
+@import 'layout';
 
 :host {
   height: 100%;
@@ -39,7 +40,7 @@
 
 
         &:hover, &.active {
-          color: var(--foreground);
+          color: $foreground;
 
           mat-icon:not(.show) {
             opacity: 0.5;
@@ -110,7 +111,7 @@
 }
 
 .table-footer {
-  background-color: var(--background-surface-fade-2);
+  background-color: $background-surface-fade-2;
 
   form {
     height: 24px;

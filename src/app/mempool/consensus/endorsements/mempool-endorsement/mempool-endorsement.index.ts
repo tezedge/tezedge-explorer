@@ -10,9 +10,9 @@ export interface MempoolEndorsementState {
   animateTable: boolean;
   isLoadingNewBlock: boolean;
   currentRound: MempoolConsensusRound;
-  // rounds: MempoolPartialRound[];
   activeBaker: string;
   sort: MempoolEndorsementSort;
+  pageType: 'pre-' | '';
 }
 
 export const selectMempoolEndorsementState = (state: State): MempoolEndorsementState => state.mempool.endorsementState;
@@ -22,3 +22,4 @@ export const selectMempoolEndorsementStatistics = (state: State): MempoolEndorse
 export const selectMempoolEndorsementCurrentRound = (state: State): MempoolConsensusRound => state.mempool.endorsementState.currentRound;
 export const selectMempoolEndorsementSorting = (state: State): MempoolEndorsementSort => state.mempool.endorsementState.sort;
 export const selectMempoolEndorsementActiveBaker = (state: State): string => state.mempool.endorsementState.activeBaker;
+export const selectMempoolEndorsementPageType = (state: State): string => state.mempool.endorsementState.pageType;

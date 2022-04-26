@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { catchError, map, switchMap, takeUntil, tap, withLatestFrom } from 'rxjs/operators';
-import { empty, ObservedValueOf, of, Subject, timer } from 'rxjs';
+import { EMPTY, ObservedValueOf, of, Subject, timer } from 'rxjs';
 import { Store } from '@ngrx/store';
 import { SYSTEM_RESOURCES_CLOSE, SYSTEM_RESOURCES_LOAD, SYSTEM_RESOURCES_LOAD_SUCCESS } from './system-resources.actions';
 import { SystemResourcesService } from './system-resources.service';
@@ -19,7 +19,7 @@ export class SystemResourcesEffects {
     withLatestFrom(this.store, (action: any, state: ObservedValueOf<Store<State>>) => ({ action, state })),
     switchMap(({ action, state }) => {
       if (action.type === SYSTEM_RESOURCES_CLOSE) {
-        return empty();
+        return EMPTY;
       }
       const url = state.settingsNode.activeNode.features
         .find(c => c.name === 'resources/system').monitoringUrl;

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { catchError, map, repeat, switchMap, withLatestFrom } from 'rxjs/operators';
-import { empty, forkJoin, Observable, ObservedValueOf, of, throwError } from 'rxjs';
+import { EMPTY, forkJoin, Observable, ObservedValueOf, of, throwError } from 'rxjs';
 import { Store } from '@ngrx/store';
 import { CloseStorageResources, LoadStorageResources, MapAvailableContexts, StorageResourcesActionTypes } from './storage-resources.actions';
 import { State } from '@app/app.index';
@@ -36,7 +36,7 @@ export class StorageResourcesEffects {
     withLatestFrom(this.store, (action: LoadStorageResources | CloseStorageResources, state: ObservedValueOf<Store<State>>) => ({ action, state })),
     switchMap(({ action, state }) => {
       return action.type === StorageResourcesActionTypes.STORAGE_RESOURCES_CLOSE
-        ? empty()
+        ? EMPTY
         : this.storageResourcesService.getStorageResources(state.settingsNode.activeNode.http, action.payload as any)
           .pipe(
             map((stats: StorageResourcesStats) => ({ type: StorageResourcesActionTypes.STORAGE_RESOURCES_LOAD_SUCCESS, payload: stats })),

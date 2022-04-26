@@ -3,7 +3,7 @@ import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { map, switchMap, tap, withLatestFrom } from 'rxjs/operators';
 import { Router } from '@angular/router';
-import { empty, ObservedValueOf, of } from 'rxjs';
+import { EMPTY, ObservedValueOf, of } from 'rxjs';
 import { State } from '@app/app.index';
 import { APP_INIT, APP_INIT_DEFAULT, APP_INIT_SUCCESS, APP_REFRESH } from '@app/app.actions';
 
@@ -19,7 +19,7 @@ export class AppEffects {
   appInitEffect$ = createEffect(() => this.actions$.pipe(
     ofType(APP_INIT),
     withLatestFrom(this.store, (action: any, state: ObservedValueOf<Store<State>>) => ({ action, state })),
-    switchMap(({ action, state }) => state.app.initialized ? empty() : of({ type: APP_INIT_SUCCESS }))
+    switchMap(({ action, state }) => state.app.initialized ? EMPTY : of({ type: APP_INIT_SUCCESS }))
   ));
 
   appNodeChangeEffect$ = createEffect(() => this.actions$.pipe(

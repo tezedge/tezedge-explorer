@@ -10,6 +10,8 @@ import { State } from '@app/app.index';
 import { MatDialog } from '@angular/material/dialog';
 import { BakingLedgerSignDialogComponent } from '@baking/baking-ledger-sign-dialog/baking-ledger-sign-dialog.component';
 import { Router } from '@angular/router';
+import { selectActiveNodeNetwork } from '@settings/settings-node.reducer';
+import { openInTzStats } from '@shared/constants/navigation';
 
 @UntilDestroy()
 @Component({
@@ -25,6 +27,8 @@ export class BakingBatchListComponent implements OnInit {
 
   transactionFee: number;
 
+  private nodeNetwork: string;
+
   constructor(private store: Store<State>,
               private matDialog: MatDialog,
               private router: Router,
@@ -34,6 +38,7 @@ export class BakingBatchListComponent implements OnInit {
 
   ngOnInit(): void {
     this.listenToTransactionFeeChange();
+    this.listenToNodeNetworkChange();
   }
 
   openLedgerSignDialog(batchIndex: number): void {
@@ -53,6 +58,16 @@ export class BakingBatchListComponent implements OnInit {
       .subscribe();
   }
 
+  viewInTzStats(batch: BakingBatch): void {
+    openInTzStats(this.nodeNetwork, batch.operationHash);
+  }
+
+  private listenToNodeNetworkChange(): void {
+    this.store.select(selectActiveNodeNetwork)
+      .pipe(untilDestroyed(this))
+      .subscribe((network: string) => this.nodeNetwork = network);
+  }
+
   private listenToTransactionFeeChange(): void {
     this.store.select(selectFees)
       .pipe(untilDestroyed(this))
@@ -60,17 +75,5 @@ export class BakingBatchListComponent implements OnInit {
         this.transactionFee = fees.transactionFee;
         this.cdRef.detectChanges();
       });
-  }
-
-  viewInExplorer(batch: BakingBatch): void {
-    if (batch.status === 1) {
-      this.router.navigate(['mempool', 'pending']);
-    } else {
-      this.router.navigate(['mempool', 'statistics', batch.operationHash], {
-        queryParams: {
-          operations: batch.operationHash
-        }
-      });
-    }
   }
 }

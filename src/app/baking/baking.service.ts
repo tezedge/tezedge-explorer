@@ -34,14 +34,9 @@ export class BakingService {
       //   const findIndex = res.findIndex(d => d.address === 'tz1cjyja1TU6fiyiFav3mFAdnDsCReJ12hPD');
       //   if (findIndex !== -1) {
       //     res[findIndex].address = 'tz1fm6a28VahUmoGkRV2RwuBMhtYNztkrtJy';
-      //     res[0].address = 'tz1irJKkXS2DBWkU1NnmFQx1c1L7pbGg4yhk';
-      //     if (res[1].delegator_rewards[1]) {
-      //       res[1].delegator_rewards[1].address = 'tz1irJKkXS2DBWkU1NnmFQx1c1L7pbGg4yhk';
-      //     }
       //   }
       //   return res;
       // }),
-
       map((response: GetBakersResponse[]) => this.mapGetBakersResponse(response)),
     );
   }

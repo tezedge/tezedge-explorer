@@ -47,6 +47,7 @@ export class BakingSummaryComponent implements OnInit {
   ngOnInit(): void {
     this.initForm();
     this.listenToChanges();
+    this.listenToChanges();
   }
 
   applyCommissionFee(): void {

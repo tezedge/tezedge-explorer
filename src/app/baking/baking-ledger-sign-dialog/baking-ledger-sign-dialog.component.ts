@@ -7,12 +7,12 @@ import { State } from '@app/app.index';
 import { ActiveBaker } from '@shared/types/bakings/active-baker.type';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { catchError, map, take } from 'rxjs/operators';
-import { initializeWallet, State as TezosWalletState, transaction, Transaction } from '../../../../lib';
 import { BakingDelegator } from '@shared/types/bakings/baking-delegator.type';
-import { selectActiveNode } from '@settings/settings-node.reducer';
-import { SettingsNodeApi } from '@shared/types/settings-node/settings-node-api.type';
+import { selectFullActiveNode } from '@settings/settings-node.reducer';
 import { BAKING_ADD_DISTRIBUTED_REWARD, BakingAddDistributedReward } from '@baking/baking.actions';
 import { BakingPaymentStatus } from '@shared/types/bakings/baking-payment-status.type';
+import { initializeWallet, State as TezosWalletState, Transaction, transaction } from '../../../../lib';
+import { SettingsNodeEntity } from '@shared/types/settings-node/settings-node-entity.type';
 
 @UntilDestroy()
 @Component({
@@ -27,7 +27,7 @@ export class BakingLedgerSignDialogComponent implements OnInit {
   operationHash: string;
   transactionTotalAmount = 0;
 
-  private activeNode: SettingsNodeApi;
+  private activeNode: SettingsNodeEntity;
   private transportHolder: { transport: any | undefined } = { transport: undefined };
   private transactions: Transaction[] = [];
 
@@ -47,15 +47,17 @@ export class BakingLedgerSignDialogComponent implements OnInit {
   signTransactions(): void {
     this.errorMessage = false;
     if (!this.isWaitingLedger) {
-      of([]).pipe(
+      const observable = of([]);
+      observable.pipe(
         tap(() => this.isWaitingLedger = true),
         initializeWallet(() => ({
           publicKey: this.dialogData.ledger.publicKey,
           publicKeyHash: this.dialogData.ledger.publicKeyHash,
           node: {
-            name: 'testnet',
-            display: 'Testnet',
+            name: this.activeNode.header.network,
+            display: this.activeNode.header.network,
             url: this.activeNode.http,
+            wsUrl: this.activeNode.features.find(f => f.name === 'ws').url + '/rpc',
             tzstats: {
               url: this.activeNode.http + '/account/'
             }
@@ -67,6 +69,10 @@ export class BakingLedgerSignDialogComponent implements OnInit {
           ledger: {
             ...state.ledger,
             transportHolder: this.transportHolder
+          },
+          ws: {
+            enabled: true,
+            browserWebSocketCtor: WebSocket
           }
         })),
         transaction(() => this.transactions),
@@ -106,10 +112,14 @@ export class BakingLedgerSignDialogComponent implements OnInit {
     this.dialogRef.close();
   }
 
+  viewInExplorer(): void {
+    window.open('/#/mempool/pending', '_blank');
+  }
+
   private listenToActiveNode(): void {
-    this.store.select(selectActiveNode)
+    this.store.select(selectFullActiveNode)
       .pipe(untilDestroyed(this))
-      .subscribe((node: SettingsNodeApi) => {
+      .subscribe((node: SettingsNodeEntity) => {
         this.activeNode = node;
         this.calculateTransactions();
         this.signTransactions();

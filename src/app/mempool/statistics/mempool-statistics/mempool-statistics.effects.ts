@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { catchError, map, switchMap, withLatestFrom } from 'rxjs/operators';
-import { empty, ObservedValueOf, of } from 'rxjs';
+import { EMPTY, ObservedValueOf, of } from 'rxjs';
 import { State } from '@app/app.index';
 import { ADD_ERROR } from '@app/layout/error-popup/error-popup.actions';
 import {
@@ -23,7 +23,7 @@ export class MempoolStatisticsEffects {
     withLatestFrom(this.store, (action: MempoolStatisticsLoad | MempoolStatisticsStop, state: ObservedValueOf<Store<State>>) => ({ action, state })),
     switchMap(({ action, state }) =>
       action.type === MEMPOOL_STATISTICS_STOP
-        ? empty()
+        ? EMPTY
         : this.mempoolStatisticsService.getOperationNodeStats(state.settingsNode.activeNode.http, action.payload.operationHash)
     ),
     map((operations: MempoolStatisticsOperation[]) => ({ type: MEMPOOL_STATISTICS_LOAD_SUCCESS, payload: operations })),

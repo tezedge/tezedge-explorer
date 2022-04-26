@@ -25,7 +25,7 @@
              fxLayout="column"
              fxLayoutAlign="start stretch">
           <div fxFlex="28px" class="slice-header">
-            <span class="text-uppercase">{{ group.groupName | replaceCharacter: '_': ' '}}</span>
+            <span class="header">{{ group.groupName | replaceCharacter: '_': ' '}}</span>
             <span class="total-time">
               {{ group.totalTime | timeTransform: false: false: true }}
               <span class="foreground-4"> total duration</span>

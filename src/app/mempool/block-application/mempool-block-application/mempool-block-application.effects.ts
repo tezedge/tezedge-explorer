@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { catchError, filter, map, repeat, switchMap, withLatestFrom } from 'rxjs/operators';
-import { empty, ObservedValueOf, of } from 'rxjs';
+import { EMPTY, ObservedValueOf, of } from 'rxjs';
 import { State } from '@app/app.index';
 import { ADD_ERROR } from '@app/layout/error-popup/error-popup.actions';
 import { MempoolBlockApplicationService } from '@mempool/block-application/mempool-block-application/mempool-block-application.service';
@@ -32,7 +32,7 @@ export class MempoolBlockApplicationEffects {
     })),
     switchMap(({ action, state }) =>
       action.type === MEMPOOL_BLOCK_APPLICATION_STOP
-        ? empty()
+        ? EMPTY
         : this.mempoolBlockApplicationService.getBlockApplication(state.settingsNode.activeNode.http)
     ),
     map((payload: { chartLines: MempoolBlockApplicationChartLine[], markIndexes: number[] }) => ({ type: MEMPOOL_BLOCK_APPLICATION_LOAD_SUCCESS, payload })),

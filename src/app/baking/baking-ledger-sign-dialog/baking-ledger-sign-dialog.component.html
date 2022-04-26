@@ -40,8 +40,8 @@
       distributed
       in {{ dialogData.activeBaker.batches[dialogData.batchIndex].transactions }} transactions
     </div>
-    <div class="link flex-row foreground-7 foreground-hover-9 margin-top-8 align-center pointer text-underline"
-         routerLink="/mempool/pending">
+    <div (click)="viewInExplorer()"
+         class="link flex-row foreground-7 foreground-hover-9 margin-top-8 align-center pointer text-underline">
       <mat-icon class="icon-16 icon-foreground-7 margin-right-5" svgIcon="external-link"></mat-icon>
       <div>View the transaction in the explorer</div>
     </div>

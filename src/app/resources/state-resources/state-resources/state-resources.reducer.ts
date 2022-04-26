@@ -121,6 +121,11 @@ function sortGroups(groups: StateResourcesActionGroup[], sort: TableSort): State
   const sortProperty = sort.sortBy;
 
   const sortFunction = (e1: StateResourcesActionGroup, e2: StateResourcesActionGroup): number => {
+    if (['groupName'].includes(sortProperty)) {
+      return sort.sortDirection === SortDirection.DSC
+        ? e2[sortProperty].localeCompare(e1[sortProperty])
+        : e1[sortProperty].localeCompare(e2[sortProperty]);
+    }
     return sort.sortDirection === SortDirection.DSC
       ? (e2[sortProperty]) - (e1[sortProperty])
       : (e1[sortProperty]) - (e2[sortProperty]);

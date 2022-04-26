@@ -13,7 +13,7 @@ import {
 import { debounceTime } from 'rxjs';
 import { MempoolEndorsementSort } from '@shared/types/mempool/endorsement/mempool-endorsement-sort.type';
 import { selectStateResourcesSort } from '@resources/state-resources/state-resources/state-resources.index';
-import { SortDirection } from '@shared/types/shared/table-sort.type';
+import { SortDirection, TableSort } from '@shared/types/shared/table-sort.type';
 
 @UntilDestroy()
 @Component({
@@ -25,13 +25,14 @@ import { SortDirection } from '@shared/types/shared/table-sort.type';
 export class StateResourcesActionFiltersComponent implements OnInit {
 
   readonly sortingOptions = [
+    { name: 'Name', sort: 'groupName' },
     { name: 'Total', sort: 'totalTime' },
     { name: 'Mean', sort: 'meanTime' },
     { name: 'Calls', sort: 'count' }
   ];
 
   formGroup: FormGroup;
-  currentSort: MempoolEndorsementSort;
+  currentSort: TableSort;
 
   constructor(private store: Store<State>,
               private cdRef: ChangeDetectorRef,
@@ -66,7 +67,7 @@ export class StateResourcesActionFiltersComponent implements OnInit {
   private listenToSorting(): void {
     this.store.select(selectStateResourcesSort)
       .pipe(untilDestroyed(this))
-      .subscribe(sort => {
+      .subscribe((sort: TableSort) => {
         this.currentSort = sort;
         this.cdRef.detectChanges();
       });

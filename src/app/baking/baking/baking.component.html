@@ -11,10 +11,10 @@
   </div>
   <div fxFlex="calc(100% - 40px)" fxLayout="column"
        fxLayout.gt-md="row">
-    <div class="border-right" [fxFlex.gt-md]="state?.activeBaker ? 'calc(100% - 344px)' : '100'"
-         [fxFlex]="state?.activeBaker ? '50' : '100'">
+    <div [fxFlex.gt-md]="state?.activeBaker ? 'calc(100% - 344px)' : '100'" [fxFlex]="state?.activeBaker ? '50' : '100'"
+         class="border-right">
       <router-outlet></router-outlet>
     </div>
-    <app-baking-summary *ngIf="state?.activeBaker" fxFlex.gt-md="344px" fxFlex="50"></app-baking-summary>
+    <app-baking-summary *ngIf="state?.activeBaker" fxFlex="50" fxFlex.gt-md="344px"></app-baking-summary>
   </div>
 </div>

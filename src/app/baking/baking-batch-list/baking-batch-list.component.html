@@ -1,0 +1,37 @@
+<cdk-virtual-scroll-viewport *ngIf="ledger"
+                             class="h-100 overflow-y-auto overflow-x-hidden"
+                             itemSize="150">
+  <div *cdkVirtualFor="let batch of activeBaker.batches; let i=index; trackBy: trackBatches"
+       class="batch border-top padding-top-10 padding-8 flex-column">
+    <div class="foreground-4">
+      #{{ i + 1 }} Batch {{ (batch.index + 1) + ' - ' + (batch.transactions + batch.index) }}
+    </div>
+    <div>{{ batch.transactions }} Transaction{{ batch.transactions !== 1 ? 's' : ''}}</div>
+    <div>
+      {{ batch.rewardAfterFee + (transactionFee * batch.transactions) | number: '1.0-6' }} ꜩ
+      rewards {{ batch.status === 2 ? 'were distributed' : 'to distribute' }}
+    </div>
+
+    <button (click)="openLedgerSignDialog(i)" *ngIf="batch.status === 0; else paidBatch"
+            class="blue-btn border-rad-2 foreground font-600 d-flex align-center flex-center f-12 pointer">
+      DISTRIBUTE REWARDS
+    </button>
+    <ng-template #paidBatch>
+      <div class="flex-row flex-between align-center">
+        <div class="link flex-row foreground-7 foreground-hover-9 align-center pointer text-underline"
+             (click)="viewInExplorer(batch)">
+          <mat-icon class="icon-16 icon-foreground-7 margin-right-5" svgIcon="external-link"></mat-icon>
+          <div>View in explorer</div>
+        </div>
+        <div class="flex-row foreground-4 text-capitalize">
+          <mat-icon *ngIf="batch.status === 2; else pending"
+                    class="icon-16 margin-right-5 icon-light-green" svgIcon="check-circle"></mat-icon>
+          <ng-template #pending>
+            <mat-icon class="spinner icon-16 margin-right-5 icon-foreground-7" svgIcon="spinner"></mat-icon>
+          </ng-template>
+          <span>{{ batch.status === 2 ? 'Distributed' : 'Pending' }}</span>
+        </div>
+      </div>
+    </ng-template>
+  </div>
+</cdk-virtual-scroll-viewport>

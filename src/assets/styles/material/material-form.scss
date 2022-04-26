@@ -33,6 +33,14 @@ mat-form-field .mat-select-value {
 mat-form-field.custom-bottom-form-field {
   height: 100%;
 
+  &.no-background-material-field .mat-form-field-flex {
+    background-color: unset !important;
+
+    .mat-form-field-infix input {
+      width: calc(100% - 7px - 16px) !important;
+    }
+  }
+
   &.mat-focused:not(.mat-form-field-invalid) .mat-form-field-wrapper .mat-form-field-flex,
   &:not(.mat-form-field-invalid) .mat-form-field-wrapper .mat-form-field-flex:hover {
     background-color: $foreground-2;
@@ -55,10 +63,7 @@ mat-form-field.custom-bottom-form-field {
           width: calc(100% - 7px);
           padding-left: 7px;
           caret-color: $foreground-7;
-        }
-
-        input {
-          color: #fff !important;
+          color: $foreground !important;
         }
 
         input::placeholder {

@@ -7,6 +7,7 @@ import { ActionReducer, ActionReducerMap, MetaReducer, } from '@ngrx/store';
 // meta reducer for dynamic forms
 import * as fromNgrxForm from './shared/ngrx-form.reducer';
 import * as fromApp from './app.reducer';
+import * as fromBaking from './baking/baking.reducer';
 import * as fromSettingsNode from './layout/settings-node/settings-node.reducer';
 import * as fromMonitoring from './monitoring/monitoring.reducer';
 import * as fromMempool from './mempool/mempool.reducer';
@@ -47,9 +48,11 @@ import { StateMachine } from '@shared/types/state-machine/state-machine.type';
 import { SmartContractsState } from '@smart-contracts/smart-contracts/smart-contracts.index';
 import { LoadingSpinnerState } from '@app/layout/loading-spinner/loading-spinner.reducer';
 import { StorageState } from '@storage/storage.index';
+import { BakingState } from '@baking/baking.index';
 
 export interface State {
   app: App;
+  baking: BakingState;
   monitoring: Monitoring;
   mempool: MempoolState;
   networkAction: NetworkAction;
@@ -77,6 +80,7 @@ export interface State {
 
 export const reducers: ActionReducerMap<State> = {
   app: fromApp.reducer,
+  baking: fromBaking.reducer,
   chainConfig: fromChainConfig.reducer,
   chainFinish: fromChainFinish.reducer,
   chainServer: fromChainServer.reducer,

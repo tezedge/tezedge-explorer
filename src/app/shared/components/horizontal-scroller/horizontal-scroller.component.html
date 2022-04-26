@@ -1,0 +1,9 @@
+<div (click)="scroll(offset * -1)" [class.hide-btn]="horizontalScroll === 0"
+     class="scroll-left p-absolute pointer">
+  <mat-icon class="icon-12 icon-foreground-7" svgIcon="chevron-right"></mat-icon>
+</div>
+<div (click)="scroll(offset)" [class.hide-btn]="hsc.scrollWidth - hsc.offsetWidth - this.horizontalScroll < 2"
+     class="scroll-right p-absolute pointer">
+  <mat-icon class="icon-12 icon-foreground-7" svgIcon="chevron-right"></mat-icon>
+</div>
+<ng-content></ng-content>

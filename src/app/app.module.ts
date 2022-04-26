@@ -55,6 +55,7 @@ import { LoadingSpinnerComponent } from '@app/layout/loading-spinner/loading-spi
 import { CUSTOM_JSON_PARSER_INTERCEPTOR } from '@core/custom-json-parser-interceptor.service';
 import { StateResourcesEffects } from '@resources/state-resources/state-resources/state-resources.effects';
 import { DemoComponent } from './demo/demo.component';
+import { JSON_LOADER } from '@core/json-loader.service';
 
 registerLocaleData(localeFr, 'fr');
 registerLocaleData(localeEnGb, 'en');
@@ -161,6 +162,7 @@ const EFFECTS = [
       multi: true
     },
     CUSTOM_JSON_PARSER_INTERCEPTOR,
+    JSON_LOADER,
     { provide: LOCALE_ID, useValue: 'fr' },
     { provide: LOCALE_ID, useValue: 'en' },
     { provide: MAT_FORM_FIELD_DEFAULT_OPTIONS, useValue: 'outline' },

@@ -12,7 +12,7 @@ import { State } from '@app/app.index';
 @Injectable({ providedIn: 'root' })
 export class WalletsEffects {
 
-  sandbox = (state: State) => state.settingsNode.activeNode.features.find(f => f.name === 'sandbox').url;
+  private readonly sandbox = (state: State) => state.settingsNode.activeNode.features.find(f => f.name === 'sandbox').url;
 
     WalletsListInit$ = createEffect(() => this.actions$.pipe(
         ofType('WALLETS_LIST_INIT'),
@@ -26,7 +26,7 @@ export class WalletsEffects {
 
         // dispatch action
         switchMap((payload) => [
-            { type: 'WALLET_LIST_INIT_SUCCESS', payload: payload },
+            { type: 'WALLET_LIST_INIT_SUCCESS', payload },
             { type: 'WALLET_LIST_LOAD' },
         ]),
         catchError((error, caught) => {
@@ -124,7 +124,7 @@ export class WalletsEffects {
                     },
                 },
                 // set wallet type: WEB, TREZOR_ONE, TREZOR_T
-                type: "web",
+                type: 'web',
                 // set HD path for HW wallet
                 path: undefined
             })),
@@ -154,7 +154,7 @@ export class WalletsEffects {
             },
         ]),
         catchError((error, caught) => {
-            console.error(error)
+            console.error(error);
             this.store.dispatch({
                 type: 'WALLET_TRANSACTION_ERROR',
                 payload: error.response,
@@ -184,11 +184,11 @@ export class WalletsEffects {
 
 export function enterZone(zone) {
     return function enterZoneImplementation(source) {
-      return Observable.create(observer => {
+      return new Observable((observer => {
         const onNext = (value) => zone.run(() => observer.next(value));
         const onError = (e) => zone.run(() => observer.error(e));
         const onComplete = () => zone.run(() => observer.complete());
         return source.subscribe(onNext, onError, onComplete);
-      });
+      }));
     };
   }

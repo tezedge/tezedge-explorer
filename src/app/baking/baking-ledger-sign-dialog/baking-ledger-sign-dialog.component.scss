@@ -1,0 +1,87 @@
+@import 'variables';
+
+.dialog {
+  padding: 40px;
+
+  .back-btn {
+    left: 0;
+    height: 28px;
+
+    &:hover {
+      filter: brightness(120%);
+    }
+  }
+
+  .title {
+    line-height: 28px;
+    font-size: 20px;
+  }
+
+  .ledger-icon {
+    width: 392px;
+    height: 45px;
+    margin: 50px auto 120px;
+  }
+
+
+  .error-box {
+    position: relative;
+    padding: 18px 24px 10px 20px;
+    overflow: hidden;
+
+    &::before {
+      content: '';
+      position: absolute;
+      z-index: 0;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      opacity: .5;
+      background: $red;
+    }
+
+    ul {
+      padding-left: 30px;
+      line-height: 24px;
+    }
+  }
+
+  .done-box {
+    width: 64px;
+    height: 64px;
+    margin-top: 30px;
+    margin-bottom: 90px;
+    border-radius: 50%;
+    border: 1px solid $light-green;
+
+    ::ng-deep mat-icon {
+      svg * {
+        fill: $light-green;
+      }
+    }
+  }
+
+  .blue-btn {
+    margin: 33px auto 0;
+    height: 36px;
+    padding-left: 20px;
+    padding-right: 20px;
+    transition: all 150ms;
+    background-color: $active-surface;
+
+    &:hover:not([disabled]) {
+      filter: brightness(90%);
+    }
+
+    &[disabled] {
+      pointer-events: none;
+      color: $foreground-4 !important;
+      background-color: $background-surface-fade-1;
+    }
+  }
+
+  .link:hover ::ng-deep mat-icon svg * {
+    fill: $foreground-9;
+  }
+}

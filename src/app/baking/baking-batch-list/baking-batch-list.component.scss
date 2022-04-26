@@ -1,0 +1,32 @@
+@import 'variables';
+
+.link {
+  height: 32px;
+
+  &:hover ::ng-deep mat-icon svg * {
+    fill: $foreground-9;
+  }
+}
+
+.spinner {
+  animation: rotateInfinite 1.5s linear infinite;
+}
+
+@keyframes rotateInfinite {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.blue-btn {
+  background-color: $active-surface;
+  height: 32px;
+
+  &:hover {
+    filter: brightness(110%);
+  }
+}
+
+.batch > *:not(:last-child) {
+  margin-bottom: 18px;
+}

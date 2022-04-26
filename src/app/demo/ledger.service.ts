@@ -70,13 +70,33 @@ export class LedgerService {
     return pk;
   }
 
+  async requestLedgerSignature(op): Promise<void> {
+    let signature;
+    if (op.length <= 2290) {
+      console.log('sign ledger operation');
+      signature = await this.signOperation('03' + op, '44\'/1729\'/0\'/0\'');
+    } else {
+      console.log('sign ledger operation HASH');
+      signature = await this.signHash(
+        this.operationService.ledgerPreHash('03' + op),
+        '44\'/1729\'/0\'/0\''
+      );
+    }
+    if (signature) {
+      const signedOp = op + signature;
+      console.log('signedOp: ' + signedOp);
+    } else {
+      console.log('error: signature is empty');
+    }
+  }
+
   async signOperation(op: string, path: string) {
     if (!['03', '05'].includes(op.slice(0, 2))) {
       throw new Error('Invalid prefix');
     }
     await this.transportCheck();
     const xtz = new Tezos(this.transport);
-    console.log('op', op);
+    console.log('operation:', op);
     const result = await xtz
       .signOperation(path, op)
       .then((res) => {

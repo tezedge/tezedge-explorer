@@ -1,0 +1,35 @@
+@import 'variables';
+@import 'layout';
+
+:host {
+  height: 100%;
+  @include flexColumn();
+}
+
+.table-container {
+  $col1: 380px;
+  $col2: 150px;
+  $col3: 160px;
+  $col4: 110px;
+  min-width: $col1 + $col2 + $col3 + $col4 + 30px;
+
+  .row {
+    grid-template-columns: $col1 $col2 $col3 $col4;
+    color: $foreground-7;
+
+    &:hover:not(.head) {
+      cursor: pointer;
+      color: $foreground;
+
+      > span:first-child {
+        text-decoration: underline;
+      }
+    }
+
+    > span {
+      line-height: 36px;
+      padding-left: 16px;
+    }
+  }
+}
+

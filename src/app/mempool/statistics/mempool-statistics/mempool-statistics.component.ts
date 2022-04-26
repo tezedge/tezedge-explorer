@@ -1,4 +1,4 @@
-import { AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { State } from '@app/app.index';
 import {
@@ -11,7 +11,7 @@ import {
   MempoolStatisticsSort,
   MempoolStatisticsStop
 } from '@mempool/statistics/mempool-statistics/mempool-statistics.actions';
-import { debounceTime, fromEvent, interval, Observable, Subscription, tap } from 'rxjs';
+import { debounceTime, interval, Observable, Subscription, tap } from 'rxjs';
 import { MempoolStatisticsOperation } from '@shared/types/mempool/statistics/mempool-statistics-operation.type';
 import {
   selectMempoolStatisticsActiveOperation,
@@ -36,7 +36,7 @@ import { MergedRoute } from '@shared/router/merged-route';
   styleUrls: ['./mempool-statistics.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class MempoolStatisticsComponent implements OnInit, OnDestroy, AfterViewInit {
+export class MempoolStatisticsComponent implements OnInit, OnDestroy {
 
   readonly tableHeads = [
     { name: 'dateTime' },
@@ -65,7 +65,6 @@ export class MempoolStatisticsComponent implements OnInit, OnDestroy, AfterViewI
   formGroup: FormGroup;
 
   @ViewChild(CdkVirtualScrollViewport) private cdkVirtualScrollViewport: CdkVirtualScrollViewport;
-  @ViewChild('hsc') private horizontalScrollingContainer: ElementRef<HTMLDivElement>;
   private scrollSubscription: Subscription;
   private scrolledOnTableInitialization: boolean;
   private operations: MempoolStatisticsOperation[];
@@ -87,16 +86,6 @@ export class MempoolStatisticsComponent implements OnInit, OnDestroy, AfterViewI
     this.listenToSortChange();
     this.listenToRouteChanges();
     this.initForm();
-  }
-
-  ngAfterViewInit(): void {
-    fromEvent(this.horizontalScrollingContainer.nativeElement, 'scroll').pipe(
-      untilDestroyed(this),
-      debounceTime(100)
-    ).subscribe(() => {
-      this.horizontalScroll = this.horizontalScrollingContainer.nativeElement.scrollLeft;
-      this.cdRef.detectChanges();
-    });
   }
 
   private listenToRouteChanges(): void {
@@ -127,7 +116,10 @@ export class MempoolStatisticsComponent implements OnInit, OnDestroy, AfterViewI
       relativeTo: this.route,
       queryParamsHandling: 'preserve'
     });
-    this.store.dispatch<MempoolStatisticsChangeActiveOperation>({ type: MEMPOOL_STATISTICS_CHANGE_ACTIVE_OPERATION, payload: operation });
+    this.store.dispatch<MempoolStatisticsChangeActiveOperation>({
+      type: MEMPOOL_STATISTICS_CHANGE_ACTIVE_OPERATION,
+      payload: operation
+    });
   }
 
   sortTable(sortBy: string): void {
@@ -153,14 +145,6 @@ export class MempoolStatisticsComponent implements OnInit, OnDestroy, AfterViewI
     if (tableHead) {
       this.sortTable(this.deltaEnabled ? this.currentSort.sortBy + 'Delta' : tableHead.sort);
     }
-  }
-
-  scrollLeft(): void {
-    this.horizontalScrollingContainer.nativeElement.scrollBy({ top: 0, left: -300, behavior: 'smooth' });
-  }
-
-  scrollRight(): void {
-    this.horizontalScrollingContainer.nativeElement.scrollBy({ top: 0, left: 300, behavior: 'smooth' });
   }
 
   private initForm(): void {

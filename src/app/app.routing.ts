@@ -11,6 +11,10 @@ export const AppRouting: Routes = [
     loadChildren: () => import('./monitoring/monitoring.module').then(module => module.MonitoringModule)
   },
   {
+    path: 'baking',
+    loadChildren: () => import('./baking/baking.module').then(module => module.BakingModule)
+  },
+  {
     path: 'resources',
     loadChildren: () => import('./resources/resources.module').then(module => module.ResourcesModule)
   },

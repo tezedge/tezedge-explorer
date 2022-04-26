@@ -1,3 +1,5 @@
+import { State } from '@app/app.index';
+
 function toCamelCase(snakeData: any | any[]): any | any[] {
   const performConversion = (snakeObj) => {
     if (snakeObj === null) {
@@ -27,3 +29,5 @@ function toCamelCase(snakeData: any | any[]): any | any[] {
 }
 
 export const snakeCaseToCamelCase = snakeObj => toCamelCase(snakeObj);
+
+export const http = (state: State) => state.settingsNode.activeNode.http;

@@ -11,10 +11,10 @@
                   class="icon-10 icon-foreground"></mat-icon>
       </span>
     </div>
-    <div *ngIf="activeBaker$ | async as activeBaker" fxFlex="calc(100% - 36px)">
+    <div *ngIf="delegators$ | async as delegators" fxFlex="calc(100% - 36px)">
       <cdk-virtual-scroll-viewport class="border-bottom f-14 h-100 overflow-y-auto overflow-x-hidden"
                                    itemSize="36">
-        <div *cdkVirtualFor="let delegator of activeBaker.sortedDelegators; let i=index; trackBy: trackDelegators"
+        <div *cdkVirtualFor="let delegator of delegators; let i=index; trackBy: trackDelegators"
              [class.row-even]="i % 2 === 0"
              class="row">
           <span class="d-flex align-center foreground">
@@ -30,10 +30,10 @@
               </span>
             </span>
           </span>
-          <span>{{ delegator.reward | spaceNumber: 6 }}</span>
-          <span>{{ delegator.rewardAfterFee | spaceNumber: 6 }}</span>
-          <span>{{ delegator.fee | spaceNumber: 6 }}</span>
-          <span>{{ delegator.balance | spaceNumber: 6 }}</span>
+          <span [innerHTML]="delegator.reward | spaceNumber: 6: true"></span>
+          <span [innerHTML]="delegator.rewardAfterFee | spaceNumber: 6: true"></span>
+          <span [innerHTML]="delegator.fee | spaceNumber: 6: true"></span>
+          <span [innerHTML]="delegator.balance | spaceNumber: 6: true"></span>
           <span class="flex-row align-center foreground-4">
             <mat-icon
               [class.spinner]="delegator.status === 1"

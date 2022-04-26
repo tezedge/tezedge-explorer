@@ -26,6 +26,7 @@ import { MempoolService } from '@mempool/mempool.service';
 import { MempoolConstants } from '@shared/types/mempool/common/mempool-constants.type';
 import { addError, createNonDispatchableEffect } from '@shared/constants/store-functions';
 import { MempoolConsensusRound } from '@shared/types/mempool/consensus/mempool-consensus-round.type';
+import { http } from '@helpers/object.helper';
 
 @Injectable({
   providedIn: 'root'
@@ -63,7 +64,7 @@ export class MempoolConsensusEffects extends TezedgeBaseEffect<State, MempoolCon
     this.constantsLoad$ = createEffect(() => this.actions$.pipe(
       ofType(MEMPOOL_CONSENSUS_CONSTANTS_LOAD),
       this.latestActionState<MempoolConsensusConstantsLoad>(),
-      switchMap(({ state }) => this.mempoolService.getMempoolConstants(this.http(state))),
+      switchMap(({ state }) => this.mempoolService.getMempoolConstants(http(state))),
       map((payload: MempoolConstants) => ({ type: MEMPOOL_CONSENSUS_CONSTANTS_LOAD_SUCCESS, payload })),
       catchError(error => addError('Error when loading protocol constants: ', error))
     ));
@@ -72,7 +73,7 @@ export class MempoolConsensusEffects extends TezedgeBaseEffect<State, MempoolCon
       ofType(MEMPOOL_CONSENSUS_GET_BLOCK_ROUNDS),
       this.latestActionState<MempoolConsensusGetBlockRounds>(),
       tap(() => this.checkRounds = false),
-      mergeMap(({ action, state }) => this.mempoolService.getBlockRounds(this.http(state), action.payload.blockLevel)),
+      mergeMap(({ action, state }) => this.mempoolService.getBlockRounds(http(state), action.payload.blockLevel)),
       map((rounds: MempoolConsensusRound[]) => ({ type: MEMPOOL_CONSENSUS_GET_BLOCK_ROUNDS_SUCCESS, payload: { rounds } }))
     ));
 
@@ -87,7 +88,7 @@ export class MempoolConsensusEffects extends TezedgeBaseEffect<State, MempoolCon
       filter(({ state, action }) => state.mempool.consensusState.blockToRecheck > 0),
       mergeMap(({ state, action }) => {
         const consensusState = state.mempool.consensusState;
-        return this.mempoolService.getBlockRounds(this.http(state), consensusState.blockToRecheck).pipe(
+        return this.mempoolService.getBlockRounds(http(state), consensusState.blockToRecheck).pipe(
           map((rounds: MempoolConsensusRound[]) => {
             const foundNewRound: boolean = consensusState.rounds.length === rounds.length;
             const blockChangedMeanwhile = consensusState.lastAppliedBlock !== consensusState.blockToRecheck;

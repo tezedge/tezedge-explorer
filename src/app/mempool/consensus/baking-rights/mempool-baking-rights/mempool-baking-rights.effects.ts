@@ -20,6 +20,7 @@ import { createNonDispatchableEffect } from '@shared/constants/store-functions';
 import { MempoolService } from '@mempool/mempool.service';
 import { TezedgeBaseEffect } from '@shared/types/shared/store/tezedge-base.effect';
 import { Effect, NonDispatchableEffect } from '@shared/types/shared/store/effect.type';
+import { http } from '@helpers/object.helper';
 
 
 @Injectable({
@@ -58,8 +59,8 @@ export class MempoolBakingRightsEffects extends TezedgeBaseEffect<State, Mempool
       filter(({ action, state }) => state.mempool.bakingRightsState.activeBlockLevel > 0),
       switchMap(({ action, state }) =>
         forkJoin([
-          this.mempoolBakingRightsService.getBakingRights(this.http(state), state.mempool.bakingRightsState.activeBlockLevel),
-          this.mempoolService.getBlockRounds(this.http(state), state.mempool.bakingRightsState.activeBlockLevel)
+          this.mempoolBakingRightsService.getBakingRights(http(state), state.mempool.bakingRightsState.activeBlockLevel),
+          this.mempoolService.getBlockRounds(http(state), state.mempool.bakingRightsState.activeBlockLevel)
         ])
       ),
       map((response: [MempoolBakingRight[], MempoolBlockRound[]]) => ({

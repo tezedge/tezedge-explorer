@@ -9,7 +9,11 @@ import {
   MEMPOOL_ENDORSEMENT_LOAD_SUCCESS,
   MEMPOOL_ENDORSEMENT_STOP
 } from '@mempool/consensus/endorsements/mempool-endorsement/mempool-endorsement.actions';
-import { MEMPOOL_OPERATION_LOAD, MEMPOOL_OPERATION_LOAD_SUCCESS, MEMPOOL_OPERATION_STOP } from '@mempool/operation/mempool-operation/mempool-operation.actions';
+import {
+  MEMPOOL_OPERATION_LOAD,
+  MEMPOOL_OPERATION_LOAD_SUCCESS,
+  MEMPOOL_OPERATION_STOP
+} from '@mempool/operation/mempool-operation/mempool-operation.actions';
 import {
   MEMPOOL_STATISTICS_LOAD,
   MEMPOOL_STATISTICS_LOAD_SUCCESS,
@@ -20,7 +24,11 @@ import {
   MEMPOOL_BLOCK_APPLICATION_LOAD_SUCCESS,
   MEMPOOL_BLOCK_APPLICATION_STOP
 } from '@mempool/block-application/mempool-block-application/mempool-block-application.actions';
-import { SMART_CONTRACTS_LOAD, SMART_CONTRACTS_LOAD_SUCCESS, SMART_CONTRACTS_STOP } from '@smart-contracts/smart-contracts/smart-contracts.actions';
+import {
+  SMART_CONTRACTS_LOAD,
+  SMART_CONTRACTS_LOAD_SUCCESS,
+  SMART_CONTRACTS_STOP
+} from '@smart-contracts/smart-contracts/smart-contracts.actions';
 import {
   SYSTEM_RESOURCES_CLOSE,
   SYSTEM_RESOURCES_LOAD,
@@ -33,7 +41,13 @@ import {
   STATE_RESOURCES_LOAD_BLOCKS_SUCCESS,
   STATE_RESOURCES_LOAD_SUCCESS
 } from '@resources/state-resources/state-resources/state-resources.actions';
-import { BAKING_GET_BAKERS, BAKING_GET_BAKERS_SUCCESS, BAKING_STOP } from '@baking/baking.actions';
+import {
+  BAKING_GET_BAKERS,
+  BAKING_GET_BAKERS_SUCCESS,
+  BAKING_GET_DELEGATORS,
+  BAKING_GET_DELEGATORS_SUCCESS,
+  BAKING_STOP
+} from '@baking/baking.actions';
 
 export interface LoadingSpinnerState {
   pendingValues: LoadingSpinner[];
@@ -254,13 +268,30 @@ export function reducer(state: LoadingSpinnerState = initialState, action: Error
     }
     case BAKING_GET_BAKERS: {
       return {
-        pendingValues: [bakingLoad, ...state.pendingValues]
+        pendingValues: [bakingBakersLoad, ...state.pendingValues]
       };
     }
-    case BAKING_GET_BAKERS_SUCCESS:
-    case BAKING_STOP: {
+    case BAKING_GET_BAKERS_SUCCESS: {
       return {
         pendingValues: state.pendingValues.filter(v => v.type !== BAKING_GET_BAKERS)
+      };
+    }
+    case BAKING_GET_DELEGATORS: {
+      return {
+        pendingValues: [bakingDelegatorsLoad, ...state.pendingValues]
+      };
+    }
+    case BAKING_GET_DELEGATORS_SUCCESS: {
+      return {
+        pendingValues: state.pendingValues.filter(v => v.type !== BAKING_GET_DELEGATORS)
+      };
+    }
+
+    case BAKING_STOP: {
+      return {
+        pendingValues: state.pendingValues
+          .filter(v => v.type !== BAKING_GET_DELEGATORS)
+          .filter(v => v.type !== BAKING_GET_BAKERS)
       };
     }
     default:
@@ -360,7 +391,12 @@ const smartContractsLoad: LoadingSpinner = {
   message: 'Loading smart contracts...'
 };
 
-const bakingLoad: LoadingSpinner = {
+const bakingBakersLoad: LoadingSpinner = {
   type: BAKING_GET_BAKERS,
-  message: 'Loading baking table...'
+  message: 'Loading bakers...'
+};
+
+const bakingDelegatorsLoad: LoadingSpinner = {
+  type: BAKING_GET_DELEGATORS,
+  message: 'Loading delegators...'
 };

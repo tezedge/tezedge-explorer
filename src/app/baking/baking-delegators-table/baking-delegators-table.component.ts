@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnIni
 import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { State } from '@app/app.index';
-import { selectBakingActiveBaker, selectBakingSort } from '@baking/baking.index';
+import { selectBakingActiveBaker, selectBakingSort, selectSortedDelegators } from '@baking/baking.index';
 import { ActiveBaker } from '@shared/types/bakings/active-baker.type';
 import { Observable } from 'rxjs';
 import { BakingDelegator } from '@shared/types/bakings/baking-delegator.type';
@@ -15,6 +15,7 @@ import {
 } from '@baking/baking.actions';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { ADD_INFO, InfoAdd } from '@app/layout/error-popup/error-popup.actions';
+import { addInfo } from '@shared/constants/store-functions';
 
 @UntilDestroy()
 @Component({
@@ -34,7 +35,7 @@ export class BakingDelegatorsTableComponent implements OnInit, OnDestroy {
     { name: 'PAID', sort: 'status' },
   ];
 
-  activeBaker$: Observable<ActiveBaker>;
+  delegators$: Observable<BakingDelegator[]>;
   currentSort: TableSort;
 
   constructor(private router: Router,
@@ -44,12 +45,12 @@ export class BakingDelegatorsTableComponent implements OnInit, OnDestroy {
   readonly trackDelegators = (index: number, baker: BakingDelegator) => baker.hash;
 
   ngOnInit(): void {
-    this.listenToBakersChanges();
+    this.listenToChanges();
   }
 
   copyHashToClipboard(hash: string, event: MouseEvent): void {
     event.stopPropagation();
-    this.store.dispatch<InfoAdd>({ type: ADD_INFO, payload: 'Copied to clipboard: ' + hash });
+    addInfo(this.store, hash);
   }
 
   sortTable(sortBy: string): void {
@@ -65,8 +66,8 @@ export class BakingDelegatorsTableComponent implements OnInit, OnDestroy {
     });
   }
 
-  private listenToBakersChanges(): void {
-    this.activeBaker$ = this.store.select(selectBakingActiveBaker);
+  private listenToChanges(): void {
+    this.delegators$ = this.store.select(selectSortedDelegators);
 
     this.store.select(selectBakingSort)
       .pipe(untilDestroyed(this))

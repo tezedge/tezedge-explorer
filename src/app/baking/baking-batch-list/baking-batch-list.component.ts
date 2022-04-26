@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnInit } from '@angular/core';
 import { BakingBatch } from '@shared/types/bakings/baking-batch.type';
-import { selectFees } from '@baking/baking.index';
+import { selectFees, selectInitialDelegators } from '@baking/baking.index';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { take } from 'rxjs/operators';
 import { BakingLedger } from '@shared/types/bakings/baking-ledger.type';
@@ -12,6 +12,7 @@ import { BakingLedgerSignDialogComponent } from '@baking/baking-ledger-sign-dial
 import { Router } from '@angular/router';
 import { selectActiveNodeNetwork } from '@settings/settings-node.reducer';
 import { openInTzStats } from '@shared/constants/navigation';
+import { BakingDelegator } from '@shared/types/bakings/baking-delegator.type';
 
 @UntilDestroy()
 @Component({
@@ -27,6 +28,7 @@ export class BakingBatchListComponent implements OnInit {
 
   transactionFee: number;
 
+  private delegators: BakingDelegator[];
   private nodeNetwork: string;
 
   constructor(private store: Store<State>,
@@ -38,6 +40,7 @@ export class BakingBatchListComponent implements OnInit {
 
   ngOnInit(): void {
     this.listenToTransactionFeeChange();
+    this.listenToDelegatorsChange();
     this.listenToNodeNetworkChange();
   }
 
@@ -49,6 +52,7 @@ export class BakingBatchListComponent implements OnInit {
         data: {
           batchIndex,
           activeBaker: this.activeBaker,
+          delegators: this.delegators,
           ledger: this.ledger,
           transactionFee: this.transactionFee
         }
@@ -66,6 +70,14 @@ export class BakingBatchListComponent implements OnInit {
     this.store.select(selectActiveNodeNetwork)
       .pipe(untilDestroyed(this))
       .subscribe((network: string) => this.nodeNetwork = network);
+  }
+
+  private listenToDelegatorsChange(): void {
+    this.store.select(selectInitialDelegators)
+      .pipe(untilDestroyed(this))
+      .subscribe(delegators => {
+        this.delegators = delegators;
+      });
   }
 
   private listenToTransactionFeeChange(): void {

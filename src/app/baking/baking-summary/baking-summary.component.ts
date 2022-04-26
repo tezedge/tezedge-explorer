@@ -14,9 +14,11 @@ import { Router } from '@angular/router';
 import {
   BAKING_APPLY_COMMISSION_FEE,
   BAKING_APPLY_TRANSACTION_FEE,
+  BAKING_LEDGER_CONNECTED,
   BAKING_STOP_GETTING_TRANSACTION_STATUSES,
   BakingApplyCommissionFee,
   BakingApplyTransactionFee,
+  BakingLedgerConnected,
   BakingStopGettingTransactionStatuses
 } from '@baking/baking.actions';
 import { BakingPaymentStatus } from '@shared/types/bakings/baking-payment-status.type';
@@ -83,6 +85,10 @@ export class BakingSummaryComponent implements OnInit {
       .pipe(take(1))
       .subscribe((ledger: BakingLedger) => {
         if (ledger) {
+          this.store.dispatch<BakingLedgerConnected>({
+            type: BAKING_LEDGER_CONNECTED,
+            payload: { ledger }
+          });
           this.router.navigate(['baking', ledger.publicKeyHash]);
         }
       });
@@ -97,14 +103,12 @@ export class BakingSummaryComponent implements OnInit {
 
   private listenToChanges(): void {
     this.store.select(selectBakingLedger)
-      .pipe(
-        untilDestroyed(this),
-        distinctUntilChanged()
-      )
+      .pipe(untilDestroyed(this))
       .subscribe(ledger => {
         this.ledger = ledger;
         this.cdRef.detectChanges();
       });
+
     this.store.select(selectFees)
       .pipe(untilDestroyed(this))
       .subscribe(fees => {
@@ -120,7 +124,8 @@ export class BakingSummaryComponent implements OnInit {
       )
       .subscribe(activeBaker => {
         this.activeBaker = activeBaker;
-        if (this.activeBaker.batches.every(b => b.status >= 0 && b.status !== BakingPaymentStatus.PENDING)) {
+        const noPending = this.activeBaker.batches.every(b => b.status === BakingPaymentStatus.UNPAID || b.status === BakingPaymentStatus.APPLIED);
+        if (noPending) {
           this.store.dispatch<BakingStopGettingTransactionStatuses>({ type: BAKING_STOP_GETTING_TRANSACTION_STATUSES });
         }
         this.cdRef.detectChanges();

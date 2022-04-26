@@ -1,20 +1,26 @@
 <div class="background-surface overflow-hidden f-12 foreground h-100 d-flex flex-column border-rad-4">
   <div class="border-bottom d-flex align-center font-500"
        fxFlex="40px">
-    <div class="foreground f-12 margin-left-10 padding-left-5 font-400 flex-row align-center w-100">
-      <span fxFlex="85px">
-        CYCLE
-        <span class="font-600 margin-right-10 margin-left-5">{{ state?.cycle }}</span>
-      </span>
-      <app-baking-filter fxFlex></app-baking-filter>
+    <div class="foreground f-12 margin-left-10 padding-left-5 font-400 flex-row flex-between align-center w-100">
+      <div fxFlex class="flex-row flex-start align-center">
+        <span fxFlex="85px">
+          CYCLE
+          <span class="font-600 margin-right-10 margin-left-5">{{ cycle }}</span>
+        </span>
+        <app-baking-filter fxFlex></app-baking-filter>
+      </div>
+      <button (click)="openLedgerConnectDialog()" *ngIf="showConnectButton"
+              class="blue-btn border-rad-2 foreground font-600 d-flex align-center flex-center f-12 pointer">
+        CONNECT ACCOUNT
+      </button>
     </div>
   </div>
   <div fxFlex="calc(100% - 40px)" fxLayout="column"
        fxLayout.gt-md="row">
-    <div [fxFlex.gt-md]="state?.activeBaker ? 'calc(100% - 344px)' : '100'" [fxFlex]="state?.activeBaker ? '50' : '100'"
+    <div [fxFlex.gt-md]="activeBaker ? 'calc(100% - 344px)' : '100'" [fxFlex]="activeBaker ? '50' : '100'"
          class="border-right">
       <router-outlet></router-outlet>
     </div>
-    <app-baking-summary *ngIf="state?.activeBaker" fxFlex="50" fxFlex.gt-md="344px"></app-baking-summary>
+    <app-baking-summary *ngIf="activeBaker" fxFlex="50" fxFlex.gt-md="344px"></app-baking-summary>
   </div>
 </div>

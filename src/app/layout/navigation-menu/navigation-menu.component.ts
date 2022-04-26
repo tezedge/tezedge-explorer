@@ -50,6 +50,7 @@ export class NavigationMenuComponent implements OnInit, AfterViewInit {
     this.store.select('settingsNode')
       .pipe(
         filter(node => !!node.activeNode),
+        filter(node => !!node.activeNode?.features),
       )
       .subscribe((node: SettingsNode) => {
         const features = {};

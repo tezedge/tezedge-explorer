@@ -77,29 +77,29 @@ export interface State {
 
 export const reducers: ActionReducerMap<State> = {
   app: fromApp.reducer,
-  monitoring: fromMonitoring.reducer,
-  mempool: fromMempool.reducer,
-  networkAction: fromNetworkAction.reducer,
-  networkPeers: fromNetworkPeers.reducer,
-  networkStats: fromNetworkStats.reducer,
-  networkHistory: fromNetworkHistory.reducer,
-  endpointsAction: fromEndpointsAction.reducer,
-  logsAction: fromLogsAction.reducer,
-  storage: fromStorage.reducer,
-  storageAction: fromStorageAction.reducer,
-  chainServer: fromChainServer.reducer,
-  chainWallets: fromChainWallets.reducer,
   chainConfig: fromChainConfig.reducer,
   chainFinish: fromChainFinish.reducer,
+  chainServer: fromChainServer.reducer,
+  chainWallets: fromChainWallets.reducer,
+  endpointsAction: fromEndpointsAction.reducer,
+  error: fromError.reducer,
+  githubVersion: fromVersion.reducer,
+  logsAction: fromLogsAction.reducer,
+  mempool: fromMempool.reducer,
+  monitoring: fromMonitoring.reducer,
+  networkAction: fromNetworkAction.reducer,
+  networkHistory: fromNetworkHistory.reducer,
+  networkPeers: fromNetworkPeers.reducer,
+  networkStats: fromNetworkStats.reducer,
+  resources: fromResources.reducer,
   sandbox: fromSandbox.reducer,
   settingsNode: fromSettingsNode.reducer,
-  wallets: fromWallets.reducer,
-  githubVersion: fromVersion.reducer,
-  resources: fromResources.reducer,
-  error: fromError.reducer,
-  stateMachine: fromStateMachine.reducer,
   smartContracts: fromSmartContracts.reducer,
   spinner: fromSpinner.reducer,
+  stateMachine: fromStateMachine.reducer,
+  storage: fromStorage.reducer,
+  storageAction: fromStorageAction.reducer,
+  wallets: fromWallets.reducer,
 };
 
 export const metaReducers: MetaReducer<State>[] = [fromNgrxForm.form, nodeSwitchStateMetaReducer];
@@ -122,3 +122,5 @@ export function nodeSwitchStateMetaReducer(reducer: ActionReducer<State>): Actio
     return reducer(state, action);
   };
 }
+
+export const selectTezedgeState = (state: State): State => state;

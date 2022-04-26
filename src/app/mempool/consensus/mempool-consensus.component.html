@@ -1,0 +1,54 @@
+<div fxFlex="53px" class="flex-row padding-10 border-bottom" *ngIf="state?.rounds.length">
+  <div #hsc fxFlex class="overflow-hidden">
+    <div class="flex-row">
+      <button *ngFor="let round of state.rounds; let i=index"
+              class="group-btn font-600 pointer f-12 text-uppercase flex-row align-center flex-center text-nowrap margin-right-5"
+              [class.active]="state.activeRoundIndex === i"
+              (click)="selectRound(i)">
+        <ng-container *ngIf="i !== state.rounds.length - 1; else lastRound">
+          <ng-container *ngTemplateOutlet="roundNum"></ng-container>
+          <span>
+            {{ round.maxTime }}s
+          </span>
+        </ng-container>
+        <ng-template #roundNum>
+          Lvl {{ round.blockLevel }}
+          <span class="margin-left-5 margin-right-5">·</span>
+          Round {{ round.round }}
+          <span class="margin-left-5 margin-right-5">·</span>
+        </ng-template>
+        <ng-template #lastRound>
+          <mat-icon svgIcon="spinner" class="spinner icon-16 margin-right-5"
+                    [ngClass]="state.activeRoundIndex === i ? 'icon-foreground' : 'icon-foreground-4'"></mat-icon>
+          <ng-container *ngTemplateOutlet="roundNum"></ng-container>
+          <span class="elapsed-time">
+            {{ elapsedTime$ | async | number: '1.0-0' }}s/{{ round.maxTime }}s
+          </span>
+        </ng-template>
+      </button>
+    </div>
+  </div>
+  <ng-container *ngIf="showRoundArrows">
+    <button fxFlex="32px"
+            class="primary-button border-rad-4 d-flex align-center flex-center pointer margin-right-5 margin-left-10"
+            (click)="scrollLeft()">
+      <mat-icon svgIcon="less-than" class="icon-12 icon-foreground"></mat-icon>
+    </button>
+    <button fxFlex="32px" class="primary-button border-rad-4 d-flex align-center flex-center pointer"
+            (click)="scrollRight()">
+      <mat-icon svgIcon="greater-than" class="icon-12 icon-foreground"></mat-icon>
+    </button>
+  </ng-container>
+</div>
+
+<div class="tabs border-bottom d-flex align-center font-500 text-uppercase f-12"
+     fxFlex="40px"
+     fxLayoutGap="16px">
+  <div routerLink="/mempool/consensus/proposals" class="tab" routerLinkActive="selected">PROPOSALS</div>
+  <div routerLink="/mempool/consensus/pre-endorsements" class="tab" routerLinkActive="selected">PRE-ENDORSEMENTS</div>
+  <div routerLink="/mempool/consensus/endorsements" class="tab" routerLinkActive="selected">ENDORSEMENTS</div>
+</div>
+
+<div class="flex-1 overflow-auto">
+  <router-outlet></router-outlet>
+</div>

@@ -1,0 +1,63 @@
+@import 'variables';
+@import 'layout';
+
+:host {
+  @include flexColumn();
+  height: 100%;
+}
+
+.spinner {
+  animation: rotateInfinite 1.5s linear infinite;
+}
+
+.elapsed-time {
+  min-width: 50px;
+  text-align: left;
+}
+
+.primary-button {
+  height: 32px;
+  width: 32px;
+}
+
+@keyframes rotateInfinite {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.tabs {
+  padding: 9px 10px 9px 15px;
+
+  .tab {
+    color: $foreground-6;
+    cursor: pointer;
+
+    &:hover,
+    &.selected {
+      color: $foreground;
+    }
+  }
+}
+
+.group-btn {
+  letter-spacing: -0.2px;
+  width: unset;
+  padding: 0 10px;
+  height: 32px;
+  border-radius: 4px;
+  border: 1px solid $background-surface-fade-2;
+  background-color: unset;
+  transition: color 50ms linear;
+  color: $foreground-4;
+
+  &:hover:not(.active) {
+    background-color: $background-surface-fade-2;
+    color: $foreground-7;
+  }
+
+  &.active {
+    background-color: $background-surface-fade-2;
+    color: $foreground;
+  }
+}

@@ -1,6 +1,10 @@
-<?xml version="1.0" encoding="utf-8"?>
-<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" style="margin: auto; background: none; display: block; shape-rendering: auto;" width="28px" height="28px" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid">
-<circle cx="50" cy="50" fill="none" stroke="#8c6141" stroke-width="10" r="35" stroke-dasharray="164.93361431346415 56.97787143782138">
-  <animateTransform attributeName="transform" type="rotate" repeatCount="indefinite" dur="1s" values="0 50 50;360 50 50" keyTimes="0;1"></animateTransform>
-</circle>
+<svg width="20" height="21" viewBox="0 0 20 21" xmlns="http://www.w3.org/2000/svg">
+  <g clip-path="url(#clip0_5242_78334)">
+    <path fill="inherit" d="M13.6827 4.12138L13.3071 4.77209C13.2071 4.94525 12.9896 5.00772 12.811 4.91781C10.9396 3.97603 8.69687 4.03209 6.87519 5.08613C5.05037 6.13741 3.8804 8.05163 3.76031 10.1432C3.74884 10.3429 3.58603 10.5 3.38606 10.5H2.63472C2.41897 10.5 2.24919 10.3185 2.26028 10.103C2.39484 7.49191 3.84978 5.09794 6.12519 3.78709C8.39694 2.47263 11.1976 2.40963 13.5262 3.59863C13.7183 3.69675 13.7906 3.93456 13.6827 4.12138Z"/>
+  </g>
+  <defs>
+    <clipPath id="clip0_5242_78334">
+      <rect width="16" height="16" fill="inherit" transform="translate(2 18.5) rotate(-90)"/>
+    </clipPath>
+  </defs>
 </svg>

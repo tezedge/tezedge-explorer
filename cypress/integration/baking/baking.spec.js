@@ -1,5 +1,4 @@
 import { testForTezedge } from '../../support';
-import { formatNumber } from "@angular/common";
 
 const beforeBakingTest = (test) => {
   let tested = false;
@@ -7,9 +6,9 @@ const beforeBakingTest = (test) => {
     .wait(1000)
     .window()
     .its('store')
-    .then({ timeout: 10500 }, store => {
+    .then({ timeout: 701000 }, store => {
       return new Cypress.Promise((resolve) => {
-        setTimeout(() => resolve(), 10000);
+        setTimeout(() => resolve(), 700000);
         store.select('baking').subscribe(baking => {
           if (!tested && baking.bakers.length) {
             tested = true;
@@ -22,25 +21,14 @@ const beforeBakingTest = (test) => {
 };
 
 context('BAKING', () => {
+
   it('[BAKING] should have status code 200 for get cycle request', () => beforeBakingTest(() => {
-    cy.window()
+    cy.wait(1000)
+      .window()
       .its('store')
       .then(store => {
         store.select('settingsNode').subscribe(settingsNode => {
           cy.request(settingsNode.activeNode.http + '/chains/main/blocks/head~2/metadata')
-            .its('status')
-            .should('eq', 200);
-        });
-      });
-  }));
-
-  it('[BAKING] should have status code 200 for get rewards request', () => beforeBakingTest(() => {
-    cy.window()
-      .its('store')
-      .then(store => {
-        store.select(state => state).subscribe(state => {
-          const cycle = state.baking.cycle;
-          cy.request(state.settingsNode.activeNode.http + `/dev/rewards/cycle/${cycle}`)
             .its('status')
             .should('eq', 200);
         });
@@ -82,7 +70,7 @@ context('BAKING', () => {
               .find('> span:nth-child(2)')
               .then(span => {
                 expect(span.text().trim()).to.equal(lastRecord.reward.toString());
-              })
+              });
 
           }
         });
@@ -132,7 +120,7 @@ context('BAKING', () => {
             }
             if (!sorted) {
               cy.get('.row.head span:nth-child(3)')
-                .click()
+                .click();
             }
           }
         });
@@ -159,7 +147,7 @@ context('BAKING', () => {
             }
             if (!sorted) {
               cy.get('.row.head span:nth-child(3)')
-                .click()
+                .click();
             }
           }
         });
@@ -213,7 +201,7 @@ context('BAKING', () => {
               .get('app-baking-summary .summary-box > div:nth-child(5) > div:nth-child(2)')
               .then(span => {
                 const toDistribute = Number(span.text().split(' ')[0].trim());
-                return bakersReward = formatNumber(toDistribute * 0.1, 'en-US', '1.0-6');
+                return bakersReward = (toDistribute * 0.1).toLocaleString('en-US', { maximumFractionDigits: 6 });
               })
               .get('app-baking-summary .summary-box .custom-bottom-form-field input')
               .eq(0)

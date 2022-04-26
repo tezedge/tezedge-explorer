@@ -1,5 +1,4 @@
 import { Action } from '@ngrx/store';
-import { HttpError } from '@shared/types/shared/error-popup/http-error.type';
 
 enum ErrorActionTypes {
   ADD_ERROR = 'ADD_ERROR',

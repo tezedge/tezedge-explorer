@@ -14,7 +14,8 @@ import { SystemResourcesComponent } from '@resources/system-resource/system-reso
 import { StorageResourcesComponent } from '@resources/storage-resource/storage-resources/storage-resources.component';
 import { StateResourcesMiniGraphComponent } from '@resources/state-resources/state-resources-mini-graph/state-resources-mini-graph.component';
 import { StateResourcesOverviewComponent } from './state-resources/state-resources-overview/state-resources-overview.component';
-import { StateResourcesFiltersComponent } from './state-resources/state-resources-filters/state-resources-filters.component';
+import { StateResourcesActionFiltersComponent } from './state-resources/state-resources-action-filters/state-resources-action-filters.component';
+import { StateResourcesBlockFiltersComponent } from '@resources/state-resources/state-resources-block-filters/state-resources-block-filters.component';
 
 
 @NgModule({
@@ -30,7 +31,8 @@ import { StateResourcesFiltersComponent } from './state-resources/state-resource
     StateResourcesComponent,
     StateResourcesMiniGraphComponent,
     StateResourcesOverviewComponent,
-    StateResourcesFiltersComponent,
+    StateResourcesActionFiltersComponent,
+    StateResourcesBlockFiltersComponent,
   ],
   imports: [
     CommonModule,

@@ -21,7 +21,7 @@ export class StateResourcesService {
   }
 
   getBlockStateResources(api: string, level: number): Observable<StateResourcesBlockData[]> {
-    const levels = this.getNeighbourLevels(level);
+    const levels = (level - 1) + ',' + level + ',' + (level + 1);
     return this.http.get<StateResourcesBlockData[]>(`${api}/dev/shell/automaton/actions_stats_for_blocks?level=${levels}`).pipe(
       map(snakeCaseToCamelCase),
       map(res => this.mapBlocksStateResources(res))
@@ -52,27 +52,30 @@ export class StateResourcesService {
           .keys(response)
           .filter(actionName => actionName.startsWith(groupName))
           .map(actionName => {
-            const columns = Object.keys(response[actionName]).map(range => ({
-              count: response[actionName][range].totalCalls,
-              totalTime: response[actionName][range].totalDuration,
-              maxTime: response[actionName][range].maxDuration,
-              meanTime: response[actionName][range].totalDuration / response[actionName][range].totalCalls || 0,
-              squareCount: this.getSquareCount(response[actionName][range].totalCalls)
-            }));
+            const columns = Object.keys(response[actionName]).map(range => {
+              return ({
+                count: response[actionName][range].totalCalls,
+                totalTime: response[actionName][range].totalDuration,
+                maxTime: response[actionName][range].maxDuration,
+                meanTime: (response[actionName][range].totalDuration / response[actionName][range].totalCalls) || 0,
+                squareCount: this.getSquareCount(response[actionName][range].totalCalls)
+              });
+            });
             return {
               actionName,
               count: columns.reduce((acc, curr) => acc + curr.count, 0),
               totalTime: columns.reduce((acc, curr) => acc + curr.totalTime, 0),
-              meanTime: columns.reduce((acc, curr) => acc + curr.meanTime, 0),
               columns
             };
           });
+        const count = actions.reduce((acc, curr) => acc + curr.count, 0);
+        const totalTime = actions.reduce((acc, curr) => acc + curr.totalTime, 0);
         return {
           groupName,
           actions,
-          count: actions.reduce((acc, curr) => acc + curr.count, 0),
-          totalTime: actions.reduce((acc, curr) => acc + curr.totalTime, 0),
-          meanTime: actions.reduce((acc, curr) => acc + curr.meanTime, 0)
+          count,
+          totalTime,
+          meanTime: totalTime / count
         };
       });
   }
@@ -102,13 +105,5 @@ export class StateResourcesService {
         response[key][timeKey].maxDuration /= NANOSECOND_FACTOR;
       });
     });
-  }
-
-  private getNeighbourLevels(level: number): string {
-    return [
-      level - 1,
-      level,
-      level + 1,
-    ].join(',');
   }
 }

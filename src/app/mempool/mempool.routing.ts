@@ -2,11 +2,9 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { MempoolComponent } from '@mempool/mempool.component';
 import { MempoolOperationComponent } from '@mempool/operation/mempool-operation/mempool-operation.component';
-import { MempoolEndorsementComponent } from '@mempool/endorsements/mempool-endorsement/mempool-endorsement.component';
 import { MempoolStatisticsComponent } from '@mempool/statistics/mempool-statistics/mempool-statistics.component';
 import { MempoolBlockApplicationComponent } from '@mempool/block-application/mempool-block-application/mempool-block-application.component';
-import { MempoolBakingRightsComponent } from '@mempool/baking-rights/mempool-baking-rights/mempool-baking-rights.component';
-import { MempoolPreEndorsementComponent } from '@mempool/preendorsements/mempool-pre-endorsement/mempool-pre-endorsement.component';
+import { MempoolBakingRightsComponent } from '@mempool/consensus/baking-rights/mempool-baking-rights/mempool-baking-rights.component';
 
 const routes: Routes = [
   {
@@ -16,24 +14,6 @@ const routes: Routes = [
       {
         path: 'block-application',
         component: MempoolBlockApplicationComponent,
-      },
-      {
-        path: 'proposal',
-        component: MempoolBakingRightsComponent,
-        children: [
-          {
-            path: ':block',
-            component: MempoolBakingRightsComponent
-          }
-        ]
-      },
-      {
-        path: 'endorsements',
-        component: MempoolEndorsementComponent,
-      },
-      {
-        path: 'preendorsements',
-        component: MempoolPreEndorsementComponent,
       },
       {
         path: 'pending',
@@ -50,6 +30,10 @@ const routes: Routes = [
         ]
       },
       {
+        path: 'consensus',
+        loadChildren: () => import('./consensus/mempool-consensus.module').then(m => m.MempoolConsensusModule)
+      },
+      {
         path: '',
         redirectTo: 'block-application'
       },
@@ -58,7 +42,7 @@ const routes: Routes = [
   {
     path: '**',
     pathMatch: 'full',
-    redirectTo: 'endorsements'
+    redirectTo: 'block-application'
   }
 ];
 

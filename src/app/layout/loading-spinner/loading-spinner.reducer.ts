@@ -8,7 +8,7 @@ import {
   MEMPOOL_ENDORSEMENT_LOAD,
   MEMPOOL_ENDORSEMENT_LOAD_SUCCESS,
   MEMPOOL_ENDORSEMENT_STOP
-} from '@mempool/endorsements/mempool-endorsement/mempool-endorsement.actions';
+} from '@mempool/consensus/endorsements/mempool-endorsement/mempool-endorsement.actions';
 import { MEMPOOL_OPERATION_LOAD, MEMPOOL_OPERATION_LOAD_SUCCESS, MEMPOOL_OPERATION_STOP } from '@mempool/operation/mempool-operation/mempool-operation.actions';
 import {
   MEMPOOL_STATISTICS_LOAD,

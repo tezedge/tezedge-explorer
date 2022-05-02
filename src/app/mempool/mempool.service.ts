@@ -4,6 +4,7 @@ import { MempoolBlockRound } from '@shared/types/mempool/common/mempool-block-ro
 import { map } from 'rxjs/operators';
 import { snakeCaseToCamelCase } from '@helpers/object.helper';
 import { HttpClient } from '@angular/common/http';
+import { MempoolConstants } from '@shared/types/mempool/common/mempool-constants.type';
 
 @Injectable({
   providedIn: 'root'
@@ -18,6 +19,16 @@ export class MempoolService {
       tap(MempoolService.handleError),
       map(snakeCaseToCamelCase),
       map(this.mapBlockRoundsResponse)
+    );
+  }
+
+  getMempoolConstants(http: string): Observable<MempoolConstants> {
+    return this.http.get<MempoolConstants>(`${http}/chains/main/blocks/head/context/constants`).pipe(
+      tap(MempoolService.handleError),
+      map(response => ({
+        minimalBlockDelay: Number(response.minimal_block_delay),
+        delayIncrementPerRound: Number(response.delay_increment_per_round)
+      }))
     );
   }
 

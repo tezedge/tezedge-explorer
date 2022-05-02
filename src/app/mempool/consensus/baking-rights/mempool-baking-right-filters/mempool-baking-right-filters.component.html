@@ -1,0 +1,64 @@
+<!--<div class="background-surface-fade-1 padding-top-8 padding-bottom-8">-->
+<!--  <div class="rounds flex-row align-start text-nowrap overflow-x-auto">-->
+<!--    <div *ngFor="let round of state.rounds; let i=index; trackBy: trackRounds"-->
+<!--         (click)="changeActiveRound(i)"-->
+<!--         [class.active]="state.activeRoundIndex === i"-->
+<!--         class="round border-rad-2 pointer margin-right-8 flex-row align-center">-->
+<!--      <mat-icon [style.width.px]="state.activeRoundIndex === i ? 12 : 0"-->
+<!--                svgIcon="check-circle"-->
+<!--                class="icon-12 margin-right-5"></mat-icon>-->
+<!--      <span class="round-num">Round {{ round.round }}</span>-->
+<!--    </div>-->
+<!--  </div>-->
+<!--  <form [formGroup]="formGroup" class="flex-row align-center margin-top-8">-->
+<!--    <button class="primary-button border-rad-2 d-flex align-center pointer margin-right-5"-->
+<!--            matTooltip="Previous block"-->
+<!--            (click)="loadPreviousBlock()">-->
+<!--      <mat-icon svgIcon="less-than" class="icon-10 icon-foreground"></mat-icon>-->
+<!--    </button>-->
+<!--    <button class="primary-button border-rad-2 d-flex align-center pointer margin-right-5"-->
+<!--            matTooltip="Next block"-->
+<!--            [disabled]="state.lastAppliedBlock.toString() === formGroup.get('block').value"-->
+<!--            (click)="loadNextBlock()">-->
+<!--      <mat-icon svgIcon="greater-than" class="icon-10 icon-foreground"></mat-icon>-->
+<!--    </button>-->
+<!--    <button class="primary-button border-rad-2 d-flex align-center pointer margin-right-8"-->
+<!--            matTooltip="Latest applied block"-->
+<!--            [disabled]="state.lastAppliedBlock.toString() === formGroup.get('block').value"-->
+<!--            (click)="loadLatestAppliedBlock()">-->
+<!--      <mat-icon svgIcon="history" class="icon-12 icon-foreground"></mat-icon>-->
+<!--    </button>-->
+<!--    <button class="rectangle-button start-stream d-flex flex-center align-center foreground border-remove"-->
+<!--            mat-icon-button-->
+<!--            matTooltip="Live update"-->
+<!--            (click)="live()"-->
+<!--            [class.inactive]="!state.stream">-->
+<!--      <mat-icon svgIcon="play-circle"-->
+<!--                class="icon-14 margin-right-5"></mat-icon>-->
+<!--      <span>LIVE</span>-->
+<!--    </button>-->
+<!--    <button class="rectangle-button stop-stream d-flex flex-center align-center"-->
+<!--            mat-icon-button-->
+<!--            matTooltip="Pause live update"-->
+<!--            (click)="pause()"-->
+<!--            [class.inactive]="state.stream">-->
+<!--      <mat-icon svgIcon="pause-circle"-->
+<!--                class="icon-14 margin-right-5"></mat-icon>-->
+<!--      <span>PAUSED</span>-->
+<!--    </button>-->
+<!--    <mat-form-field appearance="fill"-->
+<!--                    (keydown.enter)="onFormSubmit()"-->
+<!--                    class="custom-bottom-form-field p-relative margin-remove">-->
+<!--      <input matInput-->
+<!--             type="text"-->
+<!--             autocomplete="off"-->
+<!--             (blur)="onFormSubmit()"-->
+<!--             formControlName="block"-->
+<!--             placeholder="Search by block level">-->
+<!--      <mat-icon (click)="formGroup.get('block').setValue('')"-->
+<!--                *ngIf="formGroup.get('block').value"-->
+<!--                class="p-absolute icon-10 icon-foreground-7 fill-opacity-1 pointer"-->
+<!--                svgIcon="close-blank"></mat-icon>-->
+<!--    </mat-form-field>-->
+<!--  </form>-->
+<!--</div>-->

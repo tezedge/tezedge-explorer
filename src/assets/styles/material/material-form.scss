@@ -21,8 +21,8 @@ mat-form-field .mat-select-value {
     border-color: $foreground-1;
   }
 
-  .mat-ripple-element {
-    background: unset !important;
+  .mat-checkbox-ripple {
+    display: none;
   }
 
   &.reversed-checkbox .mat-checkbox-inner-container {

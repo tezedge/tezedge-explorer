@@ -14,12 +14,12 @@ import { State } from '@app/app.index';
 import { delay, Observable } from 'rxjs';
 import { MempoolEndorsement } from '@shared/types/mempool/endorsement/mempool-endorsement.type';
 import {
+  MEMPOOL_ENDORSEMENT_INIT,
   MEMPOOL_ENDORSEMENT_LOAD,
   MEMPOOL_ENDORSEMENT_SET_ACTIVE_BAKER,
   MEMPOOL_ENDORSEMENT_SET_ROUND,
   MEMPOOL_ENDORSEMENT_SORT,
   MEMPOOL_ENDORSEMENT_STOP,
-  MEMPOOL_ENDORSEMENTS_INIT,
   MempoolEndorsementLoad,
   MempoolEndorsementSetActiveBaker,
   MempoolEndorsementSetRound,
@@ -45,7 +45,7 @@ import { Overlay, OverlayRef } from '@angular/cdk/overlay';
 import { TemplatePortal } from '@angular/cdk/portal';
 import { Router } from '@angular/router';
 import { CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
-import { selectMempoolConsensusActiveBlockLevel, selectMempoolConsensusActiveBlockRound } from '@mempool/consensus/mempool-consensus.index';
+import { selectMempoolConsensusActiveRound } from '@mempool/consensus/mempool-consensus.index';
 import { MempoolConsensusRound } from '@shared/types/mempool/consensus/mempool-consensus-round.type';
 
 
@@ -88,6 +88,9 @@ export class MempoolEndorsementComponent implements OnInit, OnDestroy {
     { name: 'round' },
     { name: 'branch' },
   ];
+  readonly FIFTY_MS = 50000000;
+  readonly TWENTY_MS = 20000000;
+
   endorsements$: Observable<MempoolEndorsement[]>;
   currentSort: MempoolEndorsementSort;
   animateRows: 'static' | 'animate' = 'static';
@@ -115,7 +118,7 @@ export class MempoolEndorsementComponent implements OnInit, OnDestroy {
   readonly trackEndorsements = (index: number, endorsement: MempoolEndorsement) => endorsement.status;
 
   ngOnInit(): void {
-    this.store.dispatch<MempoolEndorsementsInit>({ type: MEMPOOL_ENDORSEMENTS_INIT });
+    this.store.dispatch<MempoolEndorsementsInit>({ type: MEMPOOL_ENDORSEMENT_INIT, payload: this.router.url.includes('pre-') ? 'pre-' : '' });
     this.listenToBlockChange();
     this.listenToNewEndorsements();
     this.listenToActiveBakerChange();
@@ -172,18 +175,12 @@ export class MempoolEndorsementComponent implements OnInit, OnDestroy {
   }
 
   private listenToBlockChange(): void {
-    this.store.select(selectMempoolConsensusActiveBlockLevel).pipe(
-      untilDestroyed(this),
-      filter(Boolean),
-      distinctUntilChanged()
-    ).subscribe((blockLevel: number) =>
-      this.store.dispatch<MempoolEndorsementLoad>({ type: MEMPOOL_ENDORSEMENT_LOAD, payload: { blockLevel } })
-    );
-    this.store.select(selectMempoolConsensusActiveBlockRound).pipe(
+    this.store.select(selectMempoolConsensusActiveRound).pipe(
       untilDestroyed(this),
       filter(Boolean),
       distinctUntilChanged()
     ).subscribe((round: MempoolConsensusRound) => {
+      this.store.dispatch<MempoolEndorsementLoad>({ type: MEMPOOL_ENDORSEMENT_LOAD, payload: { blockLevel: round.blockLevel } });
       this.store.dispatch<MempoolEndorsementSetRound>({ type: MEMPOOL_ENDORSEMENT_SET_ROUND, payload: { round } });
     });
   }

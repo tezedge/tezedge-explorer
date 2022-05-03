@@ -6,7 +6,8 @@ import {
   MEMPOOL_BAKING_RIGHTS_INIT,
   MEMPOOL_BAKING_RIGHTS_LAST_BLOCK_UPDATE,
   MEMPOOL_BAKING_RIGHTS_SORT,
-  MEMPOOL_BAKING_RIGHTS_STOP, MempoolBakingRightsChangeRound,
+  MEMPOOL_BAKING_RIGHTS_STOP,
+  MempoolBakingRightsChangeRound,
   MempoolBakingRightsInit,
   MempoolBakingRightsLastBlockUpdate,
   MempoolBakingRightsSort,
@@ -19,7 +20,7 @@ import { ADD_INFO, InfoAdd } from '@app/layout/error-popup/error-popup.actions';
 import { MempoolBakingRight } from '@shared/types/mempool/baking-rights/mempool-baking-right.type';
 import { refreshBlock } from '@shared/constants/animations';
 import { distinctUntilChanged, filter } from 'rxjs/operators';
-import { selectMempoolConsensusActiveBlockLevel, selectMempoolConsensusActiveBlockRound } from '@mempool/consensus/mempool-consensus.index';
+import { selectMempoolConsensusActiveRound } from '@mempool/consensus/mempool-consensus.index';
 import { MempoolConsensusRound } from '@shared/types/mempool/consensus/mempool-consensus-round.type';
 
 @UntilDestroy()
@@ -72,18 +73,12 @@ export class MempoolBakingRightsComponent implements OnInit, OnDestroy {
   }
 
   private listenToBlockChange(): void {
-    this.store.select(selectMempoolConsensusActiveBlockLevel).pipe(
-      untilDestroyed(this),
-      filter(Boolean),
-      distinctUntilChanged()
-    ).subscribe((currentBlock: number) => {
-      this.store.dispatch<MempoolBakingRightsLastBlockUpdate>({ type: MEMPOOL_BAKING_RIGHTS_LAST_BLOCK_UPDATE, payload: currentBlock });
-    });
-    this.store.select(selectMempoolConsensusActiveBlockRound).pipe(
+    this.store.select(selectMempoolConsensusActiveRound).pipe(
       untilDestroyed(this),
       filter(Boolean),
       distinctUntilChanged()
     ).subscribe((round: MempoolConsensusRound) => {
+      this.store.dispatch<MempoolBakingRightsLastBlockUpdate>({ type: MEMPOOL_BAKING_RIGHTS_LAST_BLOCK_UPDATE, payload: round.blockLevel });
       this.store.dispatch<MempoolBakingRightsChangeRound>({ type: MEMPOOL_BAKING_RIGHTS_CHANGE_ROUND, payload: round.round });
     });
   }

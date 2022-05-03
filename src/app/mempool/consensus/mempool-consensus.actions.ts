@@ -1,12 +1,12 @@
 import { FeatureAction } from '@shared/types/shared/store/feature-action.type';
 import { MempoolConsensusBlock } from '@shared/types/mempool/consensus/mempool-consensus-block.type';
 import { MempoolConstants } from '@shared/types/mempool/common/mempool-constants.type';
+import { MempoolConsensusRound } from '@shared/types/mempool/consensus/mempool-consensus-round.type';
 
 enum MempoolConsensusActionTypes {
   MEMPOOL_CONSENSUS_INIT = 'MEMPOOL_CONSENSUS_INIT',
   MEMPOOL_CONSENSUS_GET_BLOCK_ROUNDS = 'MEMPOOL_CONSENSUS_GET_BLOCK_ROUNDS',
   MEMPOOL_CONSENSUS_GET_BLOCKS_ROUNDS_SUCCESS = 'MEMPOOL_CONSENSUS_GET_BLOCK_ROUNDS_SUCCESS',
-  MEMPOOL_CONSENSUS_SET_BLOCK = 'MEMPOOL_CONSENSUS_SET_BLOCK',
   MEMPOOL_CONSENSUS_SET_ROUND = 'MEMPOOL_CONSENSUS_SET_ROUND',
   MEMPOOL_CONSENSUS_CONSTANTS_LOAD = 'MEMPOOL_CONSENSUS_CONSTANTS_LOAD',
   MEMPOOL_CONSENSUS_CONSTANTS_LOAD_SUCCESS = 'MEMPOOL_CONSENSUS_CONSTANTS_LOAD_SUCCESS',
@@ -19,7 +19,6 @@ enum MempoolConsensusActionTypes {
 export const MEMPOOL_CONSENSUS_INIT = MempoolConsensusActionTypes.MEMPOOL_CONSENSUS_INIT;
 export const MEMPOOL_CONSENSUS_GET_BLOCK_ROUNDS = MempoolConsensusActionTypes.MEMPOOL_CONSENSUS_GET_BLOCK_ROUNDS;
 export const MEMPOOL_CONSENSUS_GET_BLOCK_ROUNDS_SUCCESS = MempoolConsensusActionTypes.MEMPOOL_CONSENSUS_GET_BLOCKS_ROUNDS_SUCCESS;
-export const MEMPOOL_CONSENSUS_SET_BLOCK = MempoolConsensusActionTypes.MEMPOOL_CONSENSUS_SET_BLOCK;
 export const MEMPOOL_CONSENSUS_SET_ROUND = MempoolConsensusActionTypes.MEMPOOL_CONSENSUS_SET_ROUND;
 export const MEMPOOL_CONSENSUS_CONSTANTS_LOAD = MempoolConsensusActionTypes.MEMPOOL_CONSENSUS_CONSTANTS_LOAD;
 export const MEMPOOL_CONSENSUS_CONSTANTS_LOAD_SUCCESS = MempoolConsensusActionTypes.MEMPOOL_CONSENSUS_CONSTANTS_LOAD_SUCCESS;
@@ -43,13 +42,7 @@ export class MempoolConsensusGetBlockRounds implements MempoolConsensusAction {
 export class MempoolConsensusGetBlockRoundsSuccess implements MempoolConsensusAction {
   readonly type = MEMPOOL_CONSENSUS_GET_BLOCK_ROUNDS_SUCCESS;
 
-  constructor(public payload: MempoolConsensusBlock) { }
-}
-
-export class MempoolConsensusSetBlock implements MempoolConsensusAction {
-  readonly type = MEMPOOL_CONSENSUS_SET_BLOCK;
-
-  constructor(public payload: MempoolConsensusBlock) { }
+  constructor(public payload: { rounds: MempoolConsensusRound[] }) { }
 }
 
 export class MempoolConsensusSetRound implements MempoolConsensusAction {
@@ -92,7 +85,6 @@ export type MempoolConsensusActions =
   | MempoolConsensusInit
   | MempoolConsensusGetBlockRounds
   | MempoolConsensusGetBlockRoundsSuccess
-  | MempoolConsensusSetBlock
   | MempoolConsensusSetRound
   | MempoolConsensusConstantsLoad
   | MempoolConsensusConstantsLoadSuccess

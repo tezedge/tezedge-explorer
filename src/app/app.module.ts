@@ -1,6 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { APP_INITIALIZER, LOCALE_ID, NgModule } from '@angular/core';
-import { PreloadAllModules, RouterModule } from '@angular/router';
+import { RouterModule } from '@angular/router';
 import { DatePipe, registerLocaleData } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -43,11 +43,9 @@ import { SettingsNodeComponent } from '@settings/settings-node.component';
 import { ScriptLoaderService } from '@core/script-loader.service';
 import { SmartContractsEffects } from '@smart-contracts/smart-contracts/smart-contracts.effects';
 import { ThemeSwitcherService } from '@core/theme-switcher.service';
-import { MempoolEndorsementEffects } from '@mempool/consensus/endorsements/mempool-endorsement/mempool-endorsement.effects';
 import { MempoolOperationEffects } from '@mempool/operation/mempool-operation/mempool-operation.effects';
 import { MempoolStatisticsEffects } from '@mempool/statistics/mempool-statistics/mempool-statistics.effects';
 import { MempoolBlockApplicationEffects } from '@mempool/block-application/mempool-block-application/mempool-block-application.effects';
-import { MempoolBakingRightsEffects } from '@mempool/consensus/baking-rights/mempool-baking-rights/mempool-baking-rights.effects';
 import { MAT_FORM_FIELD_DEFAULT_OPTIONS } from '@angular/material/form-field';
 import { NgrxRouterStoreModule } from '@shared/router/ngrx-router.module';
 import { StorageRequestEffects } from '@storage/storage-request/storage-request.effects';
@@ -55,9 +53,7 @@ import { TezedgeAppSharedModule } from '@shared/tezedge-app-shared.module';
 import { ErrorPopupComponent } from '@app/layout/error-popup/error-popup.component';
 import { LoadingSpinnerComponent } from '@app/layout/loading-spinner/loading-spinner.component';
 import { CUSTOM_JSON_PARSER_INTERCEPTOR } from '@core/custom-json-parser-interceptor.service';
-import { MempoolPreEndorsementEffects } from '@mempool/consensus/preendorsements/mempool-pre-endorsement/mempool-pre-endorsement.effects';
 import { StateResourcesEffects } from '@resources/state-resources/state-resources/state-resources.effects';
-import { MempoolConsensusEffects } from '@mempool/consensus/mempool-consensus.effects';
 
 registerLocaleData(localeFr, 'fr');
 registerLocaleData(localeEnGb, 'en');
@@ -74,15 +70,12 @@ function loadThemes(themeService: ThemeSwitcherService): Function {
   return () => themeService.loadThemes();
 }
 
-const effects = [
+const EFFECTS = [
   AppEffects,
   MonitoringEffects,
-  MempoolEndorsementEffects,
-  MempoolPreEndorsementEffects,
   MempoolOperationEffects,
   MempoolStatisticsEffects,
   MempoolBlockApplicationEffects,
-  MempoolBakingRightsEffects,
   NetworkActionEffects,
   StorageBlockEffects,
   StorageRequestEffects,
@@ -101,7 +94,6 @@ const effects = [
   StateMachineEffects,
   SmartContractsEffects,
   StateResourcesEffects,
-  MempoolConsensusEffects,
 ];
 
 @NgModule({
@@ -117,7 +109,7 @@ const effects = [
   imports: [
     RouterModule.forRoot(AppRouting, {
       useHash: true,
-      preloadingStrategy: PreloadAllModules,
+      // preloadingStrategy: PreloadAllModules,
       scrollPositionRestoration: 'enabled',
       relativeLinkResolution: 'legacy',
       onSameUrlNavigation: 'ignore',
@@ -134,7 +126,7 @@ const effects = [
       }
     }),
 
-    EffectsModule.forRoot(effects),
+    EffectsModule.forRoot(EFFECTS),
 
     // https://github.com/zalmoxisus/redux-devtools-extension
     !environment.production ? StoreDevtoolsModule.instrument({ maxAge: 50 }) : [],

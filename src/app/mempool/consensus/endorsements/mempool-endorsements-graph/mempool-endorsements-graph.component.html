@@ -2,7 +2,7 @@
 <div class="graph border border-rad-2 margin-bottom-10 flex-column">
 
   <div class="padding-10 flex-row flex-between text-uppercase font-500 border-bottom" fxFlex="34px">
-    <div>ENDORSING COURSE</div>
+    <div>{{ pageType.toUpperCase() }}ENDORSING COURSE</div>
     <div>{{ chartLines[0].series[chartLines[0].series.length - 1].slots }} slots</div>
   </div>
   <div fxFlex="calc(100% - 34px)" class="graph-container">

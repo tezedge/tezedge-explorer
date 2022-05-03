@@ -22,7 +22,7 @@ const initialState: MempoolBakingRightsState = {
     sortDirection: SortDirection.DSC
   },
   stream: true,
-  currentDisplayedBlock: 0,
+  activeBlockLevel: 0,
 };
 
 export function reducer(state: MempoolBakingRightsState = initialState, action: MempoolBakingRightsActions): MempoolBakingRightsState {
@@ -50,7 +50,7 @@ export function reducer(state: MempoolBakingRightsState = initialState, action: 
 
     case MEMPOOL_BAKING_RIGHTS_CHANGE_ROUND: {
       const activeRoundIndex = action.payload;
-      const filteredBakingRights = state.bakingRights.filter(b => b.blockHash === state.rounds[activeRoundIndex].blockHash);
+      const filteredBakingRights = state.bakingRights.filter(b => b.blockHash === state.rounds[activeRoundIndex]?.blockHash);
       return {
         ...state,
         activeRoundIndex,
@@ -65,35 +65,12 @@ export function reducer(state: MempoolBakingRightsState = initialState, action: 
       };
     }
 
-    // case MEMPOOL_BAKING_RIGHTS_LIVE: {
-    //   return {
-    //     ...state,
-    //     stream: true,
-    //     currentDisplayedBlock: state.lastAppliedBlock
-    //   };
-    // }
-    //
-    // case MEMPOOL_BAKING_RIGHTS_PAUSE: {
-    //   return {
-    //     ...state,
-    //     stream: false
-    //   };
-    // }
-
     case MEMPOOL_BAKING_RIGHTS_LAST_BLOCK_UPDATE: {
       return {
         ...state,
-        currentDisplayedBlock: action.payload
+        activeBlockLevel: action.payload
       };
     }
-
-    // case MEMPOOL_BAKING_RIGHTS_DISPLAYED_BLOCK_UPDATE: {
-    //   return {
-    //     ...state,
-    //     currentDisplayedBlock: action.payload,
-    //     activeRoundIndex: 0
-    //   };
-    // }
 
     case MEMPOOL_BAKING_RIGHTS_STOP: {
       return initialState;

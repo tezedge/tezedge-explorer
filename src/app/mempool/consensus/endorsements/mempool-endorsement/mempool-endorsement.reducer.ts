@@ -2,10 +2,11 @@ import { MempoolEndorsement, MempoolEndorsementStatusTypes } from '@shared/types
 import { MempoolEndorsementStatistics } from '@shared/types/mempool/endorsement/mempool-endorsement-statistics.type';
 import { MempoolEndorsementSort } from '@shared/types/mempool/endorsement/mempool-endorsement-sort.type';
 import {
+  MEMPOOL_ENDORSEMENT_INIT,
   MEMPOOL_ENDORSEMENT_LOAD,
-  MEMPOOL_ENDORSEMENT_SET_ROUND,
   MEMPOOL_ENDORSEMENT_LOAD_SUCCESS,
   MEMPOOL_ENDORSEMENT_SET_ACTIVE_BAKER,
+  MEMPOOL_ENDORSEMENT_SET_ROUND,
   MEMPOOL_ENDORSEMENT_SORT,
   MEMPOOL_ENDORSEMENT_STOP,
   MEMPOOL_ENDORSEMENT_UPDATE_STATUSES_SUCCESS,
@@ -14,14 +15,18 @@ import {
 import { SortDirection } from '@shared/types/shared/table-sort.type';
 import { MempoolEndorsementState } from '@mempool/consensus/endorsements/mempool-endorsement/mempool-endorsement.index';
 
+function get() {
+  // debugger;
+  return localStorage.getItem('activeBaker')
+}
 const initialState: MempoolEndorsementState = {
   endorsements: [],
   statistics: null,
   animateTable: false,
   isLoadingNewBlock: true,
   currentRound: null,
-  // rounds: [],
-  activeBaker: localStorage.getItem('activeBaker'),
+  pageType: '',
+  activeBaker: get(),
   sort: {
     sortBy: 'delta',
     sortDirection: SortDirection.DSC
@@ -32,6 +37,13 @@ export function reducer(state: MempoolEndorsementState = initialState, action: M
 
   switch (action.type) {
 
+    case MEMPOOL_ENDORSEMENT_INIT: {
+      return {
+        ...initialState,
+        pageType: action.payload
+      };
+    }
+
     case MEMPOOL_ENDORSEMENT_LOAD: {
       return {
         ...state,
@@ -40,17 +52,8 @@ export function reducer(state: MempoolEndorsementState = initialState, action: M
     }
 
     case MEMPOOL_ENDORSEMENT_SET_ROUND: {
-      // const rounds = action.payload.rounds.map(round => ({
-      //   round: round.round,
-      //   blockHash: round.blockHash,
-      //   blockLevel: round.blockLevel,
-      //   blockRecTimestamp: round.receiveTimestamp,
-      //   blockTimestamp: round.blockTimestamp
-      // }));
-
       return {
         ...state,
-        // rounds,
         currentRound: action.payload.round
       };
     }

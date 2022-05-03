@@ -15,7 +15,7 @@ enum MempoolEndorsementActionTypes {
   MEMPOOL_ENDORSEMENT_STOP = 'MEMPOOL_ENDORSEMENT_STOP',
 }
 
-export const MEMPOOL_ENDORSEMENTS_INIT = MempoolEndorsementActionTypes.MEMPOOL_ENDORSEMENTS_INIT;
+export const MEMPOOL_ENDORSEMENT_INIT = MempoolEndorsementActionTypes.MEMPOOL_ENDORSEMENTS_INIT;
 export const MEMPOOL_ENDORSEMENT_SET_ROUND = MempoolEndorsementActionTypes.MEMPOOL_ENDORSEMENT_SET_ROUND;
 export const MEMPOOL_ENDORSEMENT_LOAD = MempoolEndorsementActionTypes.MEMPOOL_ENDORSEMENT_LOAD;
 export const MEMPOOL_ENDORSEMENT_LOAD_SUCCESS = MempoolEndorsementActionTypes.MEMPOOL_ENDORSEMENT_LOAD_SUCCESS;
@@ -28,7 +28,9 @@ export const MEMPOOL_ENDORSEMENT_STOP = MempoolEndorsementActionTypes.MEMPOOL_EN
 interface MempoolEndorsementsAction extends FeatureAction<MempoolEndorsementActionTypes> {}
 
 export class MempoolEndorsementsInit implements MempoolEndorsementsAction {
-  readonly type = MEMPOOL_ENDORSEMENTS_INIT;
+  readonly type = MEMPOOL_ENDORSEMENT_INIT;
+
+  constructor(public payload: 'pre-' | '') { }
 }
 
 export class MempoolEndorsementSetRound implements MempoolEndorsementsAction {

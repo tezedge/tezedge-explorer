@@ -11,7 +11,7 @@ export interface MempoolBakingRightsState {
   sort: TableSort;
   delta: boolean;
   stream: boolean;
-  currentDisplayedBlock: number;
+  activeBlockLevel: number;
 }
 
 export const mempoolBakingRightsState = (state: State): MempoolBakingRightsState => state.mempool.bakingRightsState;
@@ -19,4 +19,3 @@ export const mempoolBakingRights = (state: State): MempoolBakingRight[] => state
 export const mempoolBakingRightsDetails = (state: State): MempoolBlockRound[] => state.mempool.bakingRightsState.rounds;
 export const mempoolBakingRightsDelta = (state: State): boolean => state.mempool.bakingRightsState.delta;
 export const mempoolBakingRightsActiveRoundIndex = (state: State): number => state.mempool.bakingRightsState.activeRoundIndex;
-// export const mempoolBakingRightsCurrentDisplayedBlock = (state: State): number => state.mempool.bakingRightsState.currentDisplayedBlock;

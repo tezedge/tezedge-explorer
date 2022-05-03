@@ -35,6 +35,7 @@ export class MempoolEndorsementsGraphComponent implements OnInit {
   bakerTimes: number[] = [];
   indexOfQuorumEndorsement: number;
   chartLines: ChartLine[];
+  pageType: string;
   private steps: number[] = this.getSteps();
 
   constructor(private store: Store<State>,
@@ -57,6 +58,7 @@ export class MempoolEndorsementsGraphComponent implements OnInit {
       .pipe(untilDestroyed(this))
       .subscribe((state: MempoolEndorsementState) => {
         this.bakerTimes = state.endorsements.map(e => e.receiveHashTime).filter(t => t !== undefined && t !== null);
+        this.pageType = state.pageType;
         this.indexOfQuorumEndorsement = null;
 
         this.chartLines[0].series.forEach((entry, i) => {

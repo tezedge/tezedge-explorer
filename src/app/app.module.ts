@@ -1,6 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { APP_INITIALIZER, LOCALE_ID, NgModule } from '@angular/core';
-import { RouterModule } from '@angular/router';
+import { PreloadAllModules, RouterModule } from '@angular/router';
 import { DatePipe, registerLocaleData } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -54,6 +54,7 @@ import { ErrorPopupComponent } from '@app/layout/error-popup/error-popup.compone
 import { LoadingSpinnerComponent } from '@app/layout/loading-spinner/loading-spinner.component';
 import { CUSTOM_JSON_PARSER_INTERCEPTOR } from '@core/custom-json-parser-interceptor.service';
 import { StateResourcesEffects } from '@resources/state-resources/state-resources/state-resources.effects';
+import { DemoComponent } from './demo/demo.component';
 
 registerLocaleData(localeFr, 'fr');
 registerLocaleData(localeEnGb, 'en');
@@ -105,11 +106,12 @@ const EFFECTS = [
     GithubVersionComponent,
     ErrorPopupComponent,
     LoadingSpinnerComponent,
+    DemoComponent,
   ],
   imports: [
     RouterModule.forRoot(AppRouting, {
       useHash: true,
-      // preloadingStrategy: PreloadAllModules,
+      preloadingStrategy: PreloadAllModules,
       scrollPositionRestoration: 'enabled',
       relativeLinkResolution: 'legacy',
       onSameUrlNavigation: 'ignore',

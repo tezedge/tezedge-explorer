@@ -20,7 +20,6 @@
         { name: 'resources/storage' },
         { name: 'resources/state' },
         { name: 'mempool' },
-        { name: 'baking' },
         { name: 'storage' },
         { name: 'network' },
         { name: 'logs' },
@@ -46,27 +45,5 @@
         { name: 'logs' },
       ]
     },
-    {
-      id: 'tezedge',
-      type: 'tezedge',
-      name: 'tezedge-exposed-server',
-      http: 'http://116.202.128.230:18732',
-      p2p_port: 29732,
-      tzstats: 'https://api.ithaca.tzstats.com/',
-      features: [
-        { name: 'ws', url: 'ws://116.202.128.230:18732' },
-        { name: 'debugger', url: 'http://mempool.tezedge.com:27732' },
-        { name: 'monitoring' },
-        { name: 'resources/system', monitoringUrl: 'http://116.202.128.230:38739/resources/tezedge' },
-        { name: 'resources/storage' },
-        { name: 'resources/state' },
-        { name: 'mempool' },
-        { name: 'baking' },
-        { name: 'storage' },
-        { name: 'network' },
-        { name: 'logs' },
-        { name: 'state' },
-      ]
-    }
   ];
 })(this);

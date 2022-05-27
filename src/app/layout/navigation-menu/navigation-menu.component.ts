@@ -56,7 +56,7 @@ export class NavigationMenuComponent implements OnInit, AfterViewInit {
         const features = {};
         node.activeNode.features.forEach(feature => features[feature.name] = feature);
         this.settingsNode = node;
-        this.haveDebugger = node.activeNode?.features.some(f => f.name === 'debugger');
+        this.haveDebugger = node.activeNode?.features?.some(f => f.name === 'debugger');
         this.haveResources = features['resources/system'] || features['resources/storage'] || features['resources/memory'];
         this.haveExplorer = features['network'] || features['storage'] || features['mempool'] || features['logs'] || features['endpoints'];
         this.haveSandbox = features['chains'] || features['wallets'] || features['sandbox'];

@@ -1,0 +1,66 @@
+<div class="dialog background-base flex-column foreground" fxFlexFill>
+  <div class="flex-row flex-center p-relative">
+    <button (click)="back()"
+            class="back-btn p-absolute flex-row align-center background-surface-fade-1 border-rad-2 pointer">
+      <mat-icon class="icon-foreground icon-16 margin-right-5" svgIcon="arrow-left"></mat-icon>
+      <span class="foreground-6 f-12">BACK</span>
+    </button>
+    <div class="title foreground-7 font-300">Connect Account</div>
+  </div>
+  <mat-stepper class="baking-stepper flex-column d-flex" fxFlex>
+    <mat-step>
+      <ng-template let-index="index" matStepperIcon="edit">
+        {{ index + 1 }}
+      </ng-template>
+      <ng-template matStepLabel>
+        <span class="f-12">CONNECT</span>
+      </ng-template>
+      <div class="flex-column align-center flex-end h-100 f-12 font-500">
+        <mat-icon class="ledger-icon animated foreground" svgIcon="ledger"></mat-icon>
+        <div>Please make sure your Ledger is connected and Tezos Wallet application is open.</div>
+        <button #continueButton (click)="nextStep()"
+                class="blue-btn foreground pointer d-flex align-center flex-center border-rad-2 f-12 font-600">
+          <span>CONTINUE</span>
+          <mat-icon class="custom-icon-in-continue icon-foreground icon-16 margin-left-5"
+                    svgIcon="arrow-right"></mat-icon>
+        </button>
+      </div>
+    </mat-step>
+    <mat-step>
+      <ng-template matStepLabel>
+        <span class="f-12">PROVIDE ACCESS</span>
+      </ng-template>
+      <div class="flex-column h-100 align-center">
+        <div *ngIf="!ledger" class="d-flex flex-grow align-center foreground font-500 f-12">
+          <div *ngIf="!errorMessage" class="flex-column flex-center align-center">
+            <mat-icon class="ledger-icon foreground" svgIcon="ledger-accept"></mat-icon>
+            <div>Accept on Ledger to access the Public Key Hash</div>
+          </div>
+          <div *ngIf="errorMessage" class="error-box foreground border-rad-4">
+            <div class="p-relative z-1 font-500">
+              <div>There was a problem with the connection, check the following</div>
+              <ul class="margin-top-10 font-400">
+                <li>Ledger is connected</li>
+                <li>Tezos Wallet app on your Ledger is opened</li>
+                <li>Ledger device is not busy with another request</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div *ngIf="ledger" class="flex-column flex-grow flex-center align-center w-100 foreground f-12">
+          <div class="done-box flex-row align-center flex-center">
+            <mat-icon svgIcon="check"></mat-icon>
+          </div>
+
+          <div>Account Connected</div>
+          <div>{{ ledger.publicKeyHash }}</div>
+        </div>
+        <button (click)="ledger ? confirm() : getLedgerAddress()"
+                *ngIf="!isWaitingLedger"
+                class="blue-btn foreground pointer d-flex align-center flex-center border-rad-2 f-12 font-600">
+          <span>{{ ledger ? 'DONE' : 'RETRY' }}</span>
+        </button>
+      </div>
+    </mat-step>
+  </mat-stepper>
+</div>

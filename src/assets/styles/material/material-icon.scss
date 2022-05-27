@@ -69,6 +69,10 @@
     fill: #32d74b;
   }
 
+  &.icon-light-green svg * {
+    fill: $light-green;
+  }
+
   &.icon-red svg * {
     fill: #ff453a;
   }

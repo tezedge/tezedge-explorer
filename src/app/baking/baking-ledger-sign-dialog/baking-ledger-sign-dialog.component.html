@@ -1,0 +1,55 @@
+<div class="dialog background-base flex-column foreground" fxFlexFill>
+  <div class="flex-row flex-center p-relative">
+    <button (click)="close()"
+            *ngIf="!errorMessage && !operationHash"
+            class="back-btn p-absolute flex-row align-center background-surface-fade-1 border-rad-2 pointer">
+      <mat-icon class="icon-foreground icon-16 margin-right-5" svgIcon="arrow-left"></mat-icon>
+      <span class="foreground-6 f-12">BACK</span>
+    </button>
+    <div class="title foreground-7 font-300">Confirm Transactions</div>
+  </div>
+
+  <div class="flex-column flex-grow align-center foreground font-500 f-12 align-center flex-center">
+    <div *ngIf="!errorMessage && !operationHash" class="flex-column flex-center align-center">
+      <mat-icon class="ledger-icon foreground" svgIcon="ledger-accept"></mat-icon>
+      <p>Sign on Ledger to
+        distribute {{ dialogData.activeBaker.batches[dialogData.batchIndex].rewardAfterFee | number: '1.0-6' }} ꜩ
+        rewards
+        in {{ dialogData.activeBaker.batches[dialogData.batchIndex].transactions }} transactions
+      </p>
+      <p class="foreground-7">{{ dialogData.transactionFee }} ꜩ Transaction fee</p>
+      <p class="foreground">Total: {{ transactionTotalAmount | number: '1.0-6' }} ꜩ</p>
+    </div>
+    <div *ngIf="errorMessage" class="error-box foreground border-rad-4">
+      <div class="p-relative z-1 font-500">
+        <div>There was a problem with the connection, check the following</div>
+        <ul class="margin-top-10 font-400">
+          <li>Ledger is connected</li>
+          <li>Tezos Wallet app on your Ledger is opened</li>
+          <li>Ledger device is not busy with another request</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div *ngIf="operationHash" class="flex-column flex-grow flex-center align-center w-100 foreground f-12">
+    <div class="done-box flex-row align-center flex-center">
+      <mat-icon svgIcon="check"></mat-icon>
+    </div>
+
+    <div>{{ dialogData.activeBaker.batches[dialogData.batchIndex].rewardAfterFee | number: '1.0-6' }} ꜩ rewards were
+      distributed
+      in {{ dialogData.activeBaker.batches[dialogData.batchIndex].transactions }} transactions
+    </div>
+    <div class="link flex-row foreground-7 foreground-hover-9 margin-top-8 align-center pointer text-underline"
+         routerLink="/mempool/pending">
+      <mat-icon class="icon-16 icon-foreground-7 margin-right-5" svgIcon="external-link"></mat-icon>
+      <div>View the transaction in the explorer</div>
+    </div>
+  </div>
+  <button (click)="operationHash ? confirm() : signTransactions()"
+          *ngIf="!isWaitingLedger"
+          class="blue-btn foreground pointer d-flex align-center flex-center border-rad-2 f-12 font-600">
+    <span>{{ !errorMessage ? 'DONE' : 'RETRY' }}</span>
+  </button>
+
+</div>

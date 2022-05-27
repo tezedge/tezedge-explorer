@@ -9,11 +9,13 @@
 @import 'utilities/text';
 @import 'material/material-button';
 @import 'material/material-calendar';
+@import 'material/material-dialog';
 @import 'material/material-tooltip';
 @import 'material/material-form';
 @import 'material/material-icon';
 @import 'material/material-spinner';
 @import 'material/material-slider';
+@import 'material/material-stepper';
 @import 'material/material-tabs';
 @import 'custom-components/charts';
 @import 'custom-components/virtual-scroll-table';
@@ -426,46 +428,46 @@ input.mat-input-element {
 }
 
 /* Change color of mat-stepper (sandbox) */
-.mat-horizontal-stepper-header-container {
-  .mat-step-header {
-    pointer-events: none !important;
-
-    .mat-step-label {
-      color: $foreground;
-      opacity: 0.6;
-      font-size: 12px;
-      font-weight: 300;
-
-      &.mat-step-label-active {
-        color: $foreground;
-        opacity: 1;
-      }
-
-      &.mat-step-label-selected {
-        font-weight: 300;
-      }
-    }
-
-    .mat-step-icon {
-      background-color: $background-surface-fade-1;
-      color: $color;
-      opacity: 0.6;
-      height: 20px;
-      width: 20px;
-      font-size: 12px;
-
-      &.mat-step-icon-selected {
-        background: $color-content-attention;
-        color: #fff;
-        opacity: 1;
-      }
-    }
-  }
-
-  .mat-stepper-horizontal-line {
-    border-top-color: $background-surface-fade-1;
-  }
-}
+//.mat-horizontal-stepper-header-container {
+//  .mat-step-header {
+//    pointer-events: none !important;
+//
+//    .mat-step-label {
+//      color: $foreground;
+//      opacity: 0.6;
+//      font-size: 12px;
+//      font-weight: 300;
+//
+//      &.mat-step-label-active {
+//        color: $foreground;
+//        opacity: 1;
+//      }
+//
+//      &.mat-step-label-selected {
+//        font-weight: 300;
+//      }
+//    }
+//
+//    .mat-step-icon {
+//      background-color: $background-surface-fade-1;
+//      color: $color;
+//      opacity: 0.6;
+//      height: 20px;
+//      width: 20px;
+//      font-size: 12px;
+//
+//      &.mat-step-icon-selected {
+//        background: $color-content-attention;
+//        color: #fff;
+//        opacity: 1;
+//      }
+//    }
+//  }
+//
+//  .mat-stepper-horizontal-line {
+//    border-top-color: $background-surface-fade-1;
+//  }
+//}
 
 /* Style for mat-radio-button */
 .mat-radio-button {

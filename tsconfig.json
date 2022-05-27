@@ -22,6 +22,7 @@
     ],
     "paths": {
       "@app/*": ["src/app/*"],
+      "@baking/*": ["src/app/baking/*"],
       "@core/*": ["src/app/core/*"],
       "@chain/*": ["src/app/chain/*"],
       "@endpoints/*": ["src/app/endpoints/*"],

@@ -1,18 +1,14 @@
 @import 'variables';
 
-.mempool {
-  border-top-left-radius: 5px;
+.tabs {
+  padding: 9px 10px 9px 15px;
 
-  .tabs {
-    padding: 9px 10px 9px 15px;
+  .tab {
+    color: $foreground-6;
 
-    .tab {
-      color: $foreground-6;
-
-      &:hover,
-      &.selected {
-        color: $foreground;
-      }
+    &:hover,
+    &.selected {
+      color: $foreground;
     }
   }
 }

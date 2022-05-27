@@ -1,0 +1,11 @@
+@import 'variables';
+
+.mat-dialog-container {
+  border-radius: 0 !important;
+  padding: 0 !important;
+}
+
+body .cdk-overlay-backdrop.cdk-overlay-backdrop-showing {
+  background: #000000 !important;
+  opacity: 0.5 !important;
+}

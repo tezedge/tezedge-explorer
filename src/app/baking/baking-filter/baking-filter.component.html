@@ -1,0 +1,20 @@
+<div class="padding-5 d-flex">
+  <form [formGroup]="formGroup" class="flex-row w-100">
+    <button (click)="input.focus()"
+            class="primary-button d-flex align-center pointer">
+      <mat-icon class="icon-12 icon-foreground-4" svgIcon="magnifying-glass"></mat-icon>
+    </button>
+    <mat-form-field (keydown.enter)="search()"
+                    appearance="fill"
+                    class="custom-bottom-form-field p-relative margin-remove no-background-material-field">
+      <input #input (blur)="search()"
+             autocomplete="off" class="padding-left-remove truncate"
+             formControlName="search" matInput
+             placeholder="Enter address to search bakers" type="text">
+      <mat-icon (click)="formGroup.get('search').setValue(''); search()"
+                *ngIf="formGroup.get('search').value"
+                class="p-absolute icon-10 icon-foreground-7 fill-opacity-1 pointer"
+                svgIcon="close-blank"></mat-icon>
+    </mat-form-field>
+  </form>
+</div>

@@ -1,0 +1,49 @@
+<div class="d-flex flex-column overflow-auto" fxFlex="calc(100% - 36px)">
+  <div class="table-container w-100 h-100 d-flex flex-column">
+    <div class="row head foreground-7 border-bottom">
+      <span (click)="sortTable(tableHead.sort)"
+            *ngFor="let tableHead of tableHeads"
+            [class.active]="currentSort.sortBy === tableHead.sort"
+            class="pointer">{{ tableHead.name }}
+        <mat-icon [class.flip]="currentSort.sortDirection === 'descending'"
+                  [class.show]="currentSort.sortBy === tableHead.sort"
+                  [svgIcon]="'arrow-up'"
+                  class="icon-10 icon-foreground"></mat-icon>
+      </span>
+    </div>
+    <div *ngIf="activeBaker$ | async as activeBaker" fxFlex="calc(100% - 36px)">
+      <cdk-virtual-scroll-viewport class="border-bottom f-14 h-100 overflow-y-auto overflow-x-hidden"
+                                   itemSize="36">
+        <div *cdkVirtualFor="let delegator of activeBaker.sortedDelegators; let i=index; trackBy: trackDelegators"
+             [class.row-even]="i % 2 === 0"
+             class="row">
+          <span class="d-flex align-center foreground">
+            <img *ngIf="delegator.logo" [src]="delegator.logo"
+                 class="margin-right-10"
+                 height="20px" width="20px">
+            <span class="truncate p-relative w-100">{{ delegator.name }}
+              <span (click)="copyHashToClipboard(delegator.hash, $event)"
+                    [cdkCopyToClipboard]="delegator.hash"
+                    class="copy-hash p-absolute border-rad-4 pointer"
+                    matTooltip="Copy hash">
+                <mat-icon class="icon-foreground-7 icon-14" svgIcon="copy"></mat-icon>
+              </span>
+            </span>
+          </span>
+          <span>{{ delegator.reward | spaceNumber: 6 }}</span>
+          <span>{{ delegator.rewardAfterFee | spaceNumber: 6 }}</span>
+          <span>{{ delegator.fee | spaceNumber: 6 }}</span>
+          <span>{{ delegator.balance | spaceNumber: 6 }}</span>
+          <span class="flex-row align-center foreground-4">
+            <mat-icon
+              [class.spinner]="delegator.status === 1"
+              [ngClass]="delegator.status === 2 ? 'icon-light-green' : 'icon-foreground-4'"
+              [svgIcon]="delegator.status === 0 ? 'close-filled' : delegator.status === 2 ? 'check-circle' : 'spinner'" class="margin-right-8"></mat-icon>
+            Batch #{{ delegator.batch + 1 }}
+          </span>
+        </div>
+      </cdk-virtual-scroll-viewport>
+    </div>
+  </div>
+</div>
+

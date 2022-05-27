@@ -18,9 +18,11 @@ import { DateTimePipe } from '@shared/pipes/date-time.pipe';
 import { TezedgeChartsModule } from '@shared/components/custom-tezedge-components/tezedge-charts/tezedge-charts.module';
 import { TimePickerComponent } from '@shared/components/time-picker/time-picker.component';
 import { TezedgeAppSharedModule } from '@shared/tezedge-app-shared.module';
+import { HorizontalScrollerComponent } from './components/horizontal-scroller/horizontal-scroller.component';
 
 const COMPONENTS = [
   TimePickerComponent,
+  HorizontalScrollerComponent
 ];
 
 const PIPES = [
@@ -44,7 +46,7 @@ const DIRECTIVES = [
   declarations: [
     ...COMPONENTS,
     ...PIPES,
-    ...DIRECTIVES
+    ...DIRECTIVES,
   ],
   imports: [
     CommonModule,
@@ -52,6 +54,7 @@ const DIRECTIVES = [
     NgxJsonViewerModule,
     TezedgeChartsModule,
     ReactiveFormsModule,
+    TezedgeAppSharedModule,
   ],
   exports: [
     FlexLayoutModule,

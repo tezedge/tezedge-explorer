@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { MempoolEndorsement } from '@shared/types/mempool/endorsement/mempool-endorsement.type';
 import { map, Observable } from 'rxjs';
 import { MempoolBlockRound } from '@shared/types/mempool/common/mempool-block-round.type';
+import { JsonLoaderService } from '@core/json-loader.service';
 
 @Injectable({
   providedIn: 'root'
@@ -11,8 +12,9 @@ export class MempoolEndorsementService {
 
   private bakersDetails = {};
 
-  constructor(private http: HttpClient) {
-    this.http.get<any>('assets/json/mempool-bakers.json').subscribe(bakers => this.bakersDetails = bakers);
+  constructor(private http: HttpClient,
+              private jsonLoaderService: JsonLoaderService) {
+    this.bakersDetails = jsonLoaderService.bakers;
   }
 
   getEndorsingRights(api: string, level: number): Observable<MempoolEndorsement[]> {

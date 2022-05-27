@@ -75,6 +75,23 @@
         </span>
       </a>
 
+      <a *ngIf="features['baking']"
+         mat-list-item
+         class="menu-item"
+         id="baking-trigger"
+         routerLink="/baking"
+         routerLinkActive="active"
+         matTooltip="Baking"
+         matTooltipPosition="right"
+         [matTooltipDisabled]="!app.sidenav.collapsed"
+         (click)="closeMenu()">
+        <span class="menu-content">
+          <mat-icon svgIcon="baking"
+                    class="icon-18 icon-foreground"></mat-icon>
+          <span class="text-nowrap">Baking</span>
+        </span>
+      </a>
+
       <a *ngIf="features['storage']"
          mat-list-item
          class="menu-item"

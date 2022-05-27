@@ -1,0 +1,46 @@
+@import 'variables';
+
+.summary-box {
+  .ledger-connected span {
+    width: 10px;
+    height: 10px;
+    border-radius: 100%;
+    display: inline-block;
+    background: $light-green;
+  }
+
+  > *:not(:last-child) {
+    margin-bottom: 16px;
+  }
+}
+
+.blue-btn {
+  background-color: $active-surface;
+  height: 32px;
+
+  &:hover {
+    filter: brightness(110%);
+  }
+}
+
+form .custom-bottom-form-field {
+  height: 32px;
+
+  input {
+    text-align: right;
+    width: calc(100% - 40px);
+  }
+
+  .p-absolute {
+    top: calc(50% - 6px);
+  }
+
+  .commission-fee {
+    left: 8px;
+  }
+
+  .percentage {
+    right: 8px;
+
+  }
+}

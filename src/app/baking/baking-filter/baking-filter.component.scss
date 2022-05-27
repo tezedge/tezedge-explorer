@@ -1,0 +1,30 @@
+@import 'variables';
+
+.primary-button {
+  height: 24px;
+  background-color: unset;
+
+  &:hover {
+    background-color: unset;
+
+    ::ng-deep mat-icon svg * {
+      fill: $foreground;
+    }
+  }
+}
+
+form {
+  height: 24px;
+
+  .custom-bottom-form-field {
+    margin: 0 4px;
+    width: 280px;
+    max-width: 50%;
+
+    .p-absolute {
+      right: 6px;
+      height: 100%;
+      top: 0;
+    }
+  }
+}

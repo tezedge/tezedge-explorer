@@ -1,7 +1,4 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
-import { Config, initializeWallet, transaction } from 'tezos-wallet';
-import { of, tap, throwError } from 'rxjs';
-import { catchError } from 'rxjs/operators';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component } from '@angular/core';
 import TransportWebHID from '@ledgerhq/hw-transport-webhid';
 import TransportWebUSB from '@ledgerhq/hw-transport-webusb';
 import Tezos from '@obsidiansystems/hw-app-xtz';
@@ -11,6 +8,12 @@ import * as bs58check from 'bs58check';
 import { Buffer } from 'buffer';
 import { LedgerService } from '@app/demo/ledger.service';
 import { OperationService } from '@app/demo/operation.service';
+import { LedgerUtils } from '@app/demo/ledger';
+import { of, tap } from 'rxjs';
+// import { getLedgerWallet, signLedgerOperation } from '../../../lib';
+
+// import { Config, initializeWallet, transaction, getLedgerWallet } from '../../../lib';
+
 
 @Component({
   selector: 'app-demo',
@@ -18,7 +21,7 @@ import { OperationService } from '@app/demo/operation.service';
   styleUrls: ['./demo.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class DemoComponent implements OnInit {
+export class DemoComponent {
 
   prefix = {
     tz1: new Uint8Array([6, 161, 159]),
@@ -38,10 +41,11 @@ export class DemoComponent implements OnInit {
   };
   publicKey = '';
   publicKeyHash = '';
+  signature = '';
   browser = 'unknown';
   defaultPath = '44\'/1729\'/0\'/0\'';
   defaultText = 'Default derivation path';
-  path: string;
+  path: string = this.defaultText;
   pendingLedgerConfirmation = false;
   isHDDerivationPathCustom = false;
 
@@ -49,135 +53,159 @@ export class DemoComponent implements OnInit {
               private operationService: OperationService,
               private ledgerService: LedgerService) { }
 
-  ngOnInit(): void {
-    this.path = this.defaultText;
-    this.checkBrowser();
-  }
-
-  checkBrowser(): void {
-    try {
-      if (navigator.userAgent.toLowerCase().indexOf('firefox') > -1) {
-        this.browser = 'firefox';
-      } else if ((navigator as any)?.userAgentData?.brands?.some((b) => b.brand === 'Google Chrome' || 'Chromium')) {
-        this.browser = 'chromium';
-      } else if ((navigator as any)?.userAgent.toLowerCase().indexOf('safari') > -1 && navigator.platform.indexOf('Mac') === -1) {
-        this.browser = 'safari';
-      }
-    } catch (e) {
-      console.warn(e);
-    }
-  }
-
-  execute() {
-
-// wallet used to create transaction with small tez amount
-    const wallet: Config = {
-
-      // secretKey: 'edsk3hEtniBGLP2wqYnc1Lix1hhV74eEenRBTfxjHTRHP59R7BapMW',
-      // publicKey: 'edpkth42B7j7rvLeZWmufj28a7sEdbMBb9y16qgQmGHYGX4hPis9V4',
-      // publicKeyHash: 'tz1WCojrEZWrjenejUZmG8QNsMtKPELx2TFA',
-
-      secretKey: 'edsk48vvey4bjEQjmJ16iFun9tLKs3A5Qmx5iTida3fakpqSVw1qLQ',
-      publicKey: 'edpkvPepgUwmic1rNCnHqe4kht8R5mbMLDBRHVWP5d19nmUbYQv9gy',
-      publicKeyHash: 'tz1YqZPuie4xLmFakAYHKRwgQMLsA4BCRkpu',
-
-      node: {
-        name: 'testnet',
-        display: 'Testnet',
-        url: 'http://116.202.128.230:18732',
-        tzstats: {
-          url: 'http://116.202.128.230:18732/account/'
-        }
-      },
-      type: 'web',
-    };
-
-    const walletObservable = of([]);
-
-    walletObservable.pipe(
-      // wait for sodium to initialize
-      initializeWallet(stateWallet => ({
-        secretKey: wallet.secretKey,
-        publicKey: wallet.publicKey,
-        publicKeyHash: wallet.publicKeyHash,
-        // set Tezos node
-        node: wallet.node,
-        // set wallet type: WEB, TREZOR_ONE, TREZOR_T
-        type: wallet.type,
-      })),
-
-      // generate new tezos wallet with keys
-      // newWallet(),
-
-      // originate contract
-      transaction(stateWallet => ({
-        to: 'tz1fm6a28VahUmoGkRV2RwuBMhtYNztkrtJy',
-        // to: stateWallet.newWallet ? stateWallet.newWallet.publicKeyHash : 'tz1N4wqm7mqCFECjh8HUNHLyxfL73ay981LH',
-        amount: '10',
-        fee: '0.01'
-      })),
-
-
-      tap(data => console.log('[+] ok')),
-      catchError(err => {
-        console.error('[-] error', err);
-        return throwError(err);
-      })
-    ).subscribe();
-
-  }
-
+  mega: { transport: any } = { transport: undefined };
   transport: any;
 
   async start() {
-    const path: string = this.path.replace(this.defaultText, this.defaultPath);
-    if (this.derivationPath(path)) {
-      this.pendingLedgerConfirmation = true;
-      try {
-        const pk = await this.ledgerService.getPublicAddress(path);
-        console.log('getPK => ' + pk);
-        await this.importFromPk(pk, path);
-      } catch (e) {
-        throw e;
-      } finally {
-        this.pendingLedgerConfirmation = false;
-      }
-    } else {
-      console.warn('Invalid derivation path');
-    }
+    //
+    // console.log('[+] tezos-wallet client');
+    // const ledgerObservable = of({});
+    // console.log('sending transport:', JSON.stringify(this.transport));
+    // ledgerObservable.pipe(
+    //   getLedgerWallet(() => this.mega),
+    //   tap((state: any) => {
+    //     console.log('state');
+    //     console.log(state);
+    //     console.log('state');
+    //     // console.log(JSON.stringify(state.ledger.keys));
+    //     // console.log(JSON.stringify(state.ledger.transport));
+    //     // this.publicKey = state.ledger.keys[0].publicKey;
+    //     // this.publicKeyHash = state.ledger.keys[0].publicKeyHash;
+    //     // this.transport = state.ledger.transport;
+    //     this.cdRef.detectChanges();
+    //   })
+    // ).subscribe(
+    //   data => console.log('[+] ok'),
+    //   error => console.error('[-] error', error)
+    // );
+    // console.log(JSON.stringify(this.mega));
+    // try {
+    // } catch (e) {
+    // this.mega.transport = pk.transport;
+    // }
+    // const pk = await new LedgerUtils().getAddress(this.mega);
+    // console.log(pk);
+    // this.cdRef.detectChanges();
+
+    // // const path: string = this.defaultPath;
+    // // if (this.derivationPath(path)) {
+    // //   try {
+    //     const pk = await new LedgerUtils().getAddress(this.transport);
+    //     this.transport = pk.transport;
+    //     console.log('getPK => ' + pk);
+    //     // this.publicKey = pk;
+    //     // this.publicKeyHash = this.pk2pkh(this.publicKey);
+    //     this.cdRef.detectChanges();
+    //   // } catch (e) {
+    //   //   throw e;
+    //   // }
+    // // } else {
+    // //   console.warn('Invalid derivation path');
+    // // }
   }
 
-  async importFromPk(pk: string, path: string): Promise<void> {
-    console.log('derivationPath path:', path);
-    await this.addImplicitAccount(pk, path);
+  execute() {
+//
+// // wallet used to create transaction with small tez amount
+//     const wallet: Config = {
+//
+//       // secretKey: 'edsk48vvey4bjEQjmJ16iFun9tLKs3A5Qmx5iTida3fakpqSVw1qLQ',
+//       // publicKey: 'edpkvPepgUwmic1rNCnHqe4kht8R5mbMLDBRHVWP5d19nmUbYQv9gy',
+//       // publicKeyHash: 'tz1YqZPuie4xLmFakAYHKRwgQMLsA4BCRkpu',
+//
+//       secretKey: '',
+//       publicKey: 'edpkvZCHFVcXpBTVpD3ZANuZ7mPTfs62TUzcmpjTr1ZYhwaZdf3fer',
+//       publicKeyHash: 'tz1fm6a28VahUmoGkRV2RwuBMhtYNztkrtJy',
+//
+//       node: {
+//         name: 'testnet',
+//         display: 'Testnet',
+//         url: 'http://116.202.128.230:18732',
+//         tzstats: {
+//           url: 'http://116.202.128.230:18732/account/'
+//         }
+//       },
+//       type: 'LEDGER',
+//     };
+//
+//     const walletObservable = of([]);
+//
+//     walletObservable.pipe(
+//       // wait for sodium to initialize
+//       initializeWallet(stateWallet => ({
+//         secretKey: wallet.secretKey,
+//         publicKey: wallet.publicKey,
+//         publicKeyHash: wallet.publicKeyHash,
+//         // set Tezos node
+//         node: wallet.node,
+//         // set wallet type: WEB, TREZOR_ONE, TREZOR_T
+//         type: wallet.type,
+//       })),
+//
+//       // generate new tezos wallet with keys
+//       // newWallet(),
+//
+//       // originate contract
+//       transaction(stateWallet => [
+//         {
+//           to: 'tz1YqZPuie4xLmFakAYHKRwgQMLsA4BCRkpu',
+//           // to: stateWallet.newWallet ? stateWallet.newWallet.publicKeyHash : 'tz1N4wqm7mqCFECjh8HUNHLyxfL73ay981LH',
+//           amount: '0.9',
+//           fee: '0.02'
+//         },
+//         // {
+//         //   to: 'tz1YqZPuie4xLmFakAYHKRwgQMLsA4BCRkpu',
+//         //   // to: stateWallet.newWallet ? stateWallet.newWallet.publicKeyHash : 'tz1N4wqm7mqCFECjh8HUNHLyxfL73ay981LH',
+//         //   amount: '0.9',
+//         //   fee: '0.01'
+//         // },
+//         // {
+//         //   to: 'tz1ituzNz9MGaMSL9dVDN7jE5SArCEWNmZbS',
+//         //   // to: stateWallet.newWallet ? stateWallet.newWallet.publicKeyHash : 'tz1N4wqm7mqCFECjh8HUNHLyxfL73ay981LH',
+//         //   amount: '0.8',
+//         //   fee: '0.01'
+//         // },
+//       ]),
+//
+//
+//       tap(data => console.log('[+] ok')),
+//       catchError(err => {
+//         console.error('[-] error', err);
+//         return throwError(err);
+//       })
+//     ).subscribe();
+
   }
 
-  addImplicitAccount(pk: string, derivationPath?: string | number) {
-    let pkh;
-    console.log(123123123);
-    if (pk && pk.slice(0, 4) === 'sppk') {
-      pkh = this.operationService.pk2pkh(pk);
-    } else {
-      this.publicKey = pk;
-      this.publicKeyHash = this.pk2pkh(this.publicKey);
-      this.cdRef.detectChanges();
-      pkh = this.operationService.pk2pkh(pk);
-    }
-    if (pkh) {
-      console.log('pkh: ', pkh);
-      // this.wallet.implicitAccounts.push(new ImplicitAccount(pkh, pk, typeof derivationPath === 'number' ? `44'/1729'/${derivationPath}'/0'` : derivationPath));
-      // console.log('Adding new implicit account...');
-      // console.log(this.wallet.implicitAccounts[this.wallet.implicitAccounts.length - 1]);
-      // this.storeWallet();
-    }
+  async signTransaction() {
+    this.signature = '';
+    // const state = {
+    //   operation: '80e12752f5ee7e63c8c7c09e2e4088136b69dc638931c4221e376cc302eea76a6c0090c7d7304c93cbacecc7dbc06d233efc6b032ea0904e8ad3f904d08603810290a10f0000dcb8aa0d953c0a1a64f0e6b4bd9a670f8b4fa41c00',
+    //   ledger: {
+    //     transportHolder: {
+    //       transport: undefined
+    //     }
+    //   }
+    // } as any;
+    // signLedgerOperation(state).pipe(
+    //   tap((response: any) => {
+    //     console.log(JSON.stringify(response));
+    //     this.signature = response.signOperation.signature;
+    //     this.cdRef.detectChanges();
+    //   }),
+    // ).subscribe(
+    //   data => console.log('[+] ok'),
+    //   error => console.error('[-] error', error),
+    // );
+
+    // const operation = '80e12752f5ee7e63c8c7c09e2e4088136b69dc638931c4221e376cc302eea76a6c0090c7d7304c93cbacecc7dbc06d233efc6b032ea0904e8ad3f904d08603810290a10f0000dcb8aa0d953c0a1a64f0e6b4bd9a670f8b4fa41c00';
+    // this.signature = await new LedgerUtils().requestLedgerSignature('03' + operation, this.mega);
+    // this.cdRef.detectChanges();
   }
 
-  derivationPath(path: string): Boolean {
+  private derivationPath(path: string): boolean {
     const m = path.match(/^44\'\/1729(\'\/[0-9]+)+\'$/g);
-    if (m || path === '44\'/1729\'') {
-      return true;
-    }
-    return false;
+    return !!(m || path === '44\'/1729\'');
   }
 
   async connect(): Promise<void> {

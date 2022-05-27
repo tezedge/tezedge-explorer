@@ -20,6 +20,8 @@ const DARK_THEME: Theme = {
     '--foreground-9': 'rgba(255,255,255,0.9)',
     '--active-surface': '#204e8a',
     '--table-hovered-row-background': '#555558',
+    '--red': '#eb5368',
+    '--light-green': '#70bf53',
   }
 };
 
@@ -40,6 +42,9 @@ const LIGHT_THEME: Theme = {
     '--foreground-7': 'rgba(27,27,29,0.7)',
     '--foreground-9': 'rgba(27,27,29,0.9)',
     '--active-surface': '#204e8a',
+    '--table-hovered-row-background': '#555558',
+    '--red': '#eb5368',
+    '--light-green': '#70bf53',
   }
 };
 

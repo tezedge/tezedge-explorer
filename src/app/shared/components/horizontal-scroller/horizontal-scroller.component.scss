@@ -1,0 +1,42 @@
+@import 'variables';
+
+:host {
+  position: relative;
+}
+
+.scroll-left,
+.scroll-right {
+  z-index: 1;
+  opacity: 1;
+  transition: opacity 0.2s;
+  top: 0;
+  height: 35px;
+  width: 26px;
+  background-color: $background-surface-fade-1;
+  line-height: 36px;
+  text-align: center;
+
+  &:hover {
+    background-color: $background-surface-fade-2;
+  }
+
+  &.hide-btn {
+    opacity: 0;
+  }
+}
+
+.scroll-left {
+  left: 0;
+  border-right: 1px solid $background-surface-fade-1;
+  box-shadow: 15px 0 11px 0 $background-surface;
+
+  mat-icon {
+    transform: rotate(180deg);
+  }
+}
+
+.scroll-right {
+  right: -1px;
+  border-left: 1px solid $background-surface-fade-1;
+  box-shadow: -15px 0 11px 0 $background-surface;
+}

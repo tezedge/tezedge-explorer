@@ -4,6 +4,7 @@ import { SettingsNode } from '@shared/types/settings-node/settings-node.type';
 import { SettingsNodeEntityHeader } from '@shared/types/settings-node/settings-node-entity-header.type';
 import { State } from '@app/app.index';
 import { SettingsNodeApi } from '@shared/types/settings-node/settings-node-api.type';
+import { SettingsNodeEntity } from '@shared/types/settings-node/settings-node-entity.type';
 
 const initialState: SettingsNode = {
   activeNode: null,
@@ -131,6 +132,9 @@ export function reducer(state: SettingsNode = initialState, action): SettingsNod
 export const selectActiveNode = (state: State): SettingsNodeApi => state.settingsNode.activeNode;
 export const selectFeatures = (state: State) => state.settingsNode.activeNode.features;
 export const selectActiveNodeNetwork = (state: State): string => selectActiveNodeHeader(state).network;
+export const selectFullActiveNode = (state: State): SettingsNodeEntity => Object.keys(state.settingsNode.entities)
+  .map(key => state.settingsNode.entities[key])
+  .find(node => node.id === state.settingsNode.activeNode.id);
 export const selectActiveNodeHeader = (state: State): SettingsNodeEntityHeader => Object.keys(state.settingsNode.entities)
   .map(key => state.settingsNode.entities[key])
   .find(node => node.id === state.settingsNode.activeNode.id)

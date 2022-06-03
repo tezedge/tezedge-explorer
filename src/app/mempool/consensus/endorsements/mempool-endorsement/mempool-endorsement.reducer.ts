@@ -15,10 +15,6 @@ import {
 import { SortDirection } from '@shared/types/shared/table-sort.type';
 import { MempoolEndorsementState } from '@mempool/consensus/endorsements/mempool-endorsement/mempool-endorsement.index';
 
-function get() {
-  // debugger;
-  return localStorage.getItem('activeBaker')
-}
 const initialState: MempoolEndorsementState = {
   endorsements: [],
   statistics: null,
@@ -26,7 +22,7 @@ const initialState: MempoolEndorsementState = {
   isLoadingNewBlock: true,
   currentRound: null,
   pageType: '',
-  activeBaker: get(),
+  activeBaker: localStorage.getItem('activeBaker'),
   sort: {
     sortBy: 'delta',
     sortDirection: SortDirection.DSC

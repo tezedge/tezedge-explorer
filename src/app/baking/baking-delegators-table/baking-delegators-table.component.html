@@ -38,7 +38,8 @@
             <mat-icon
               [class.spinner]="delegator.status === 1"
               [ngClass]="delegator.status === 2 ? 'icon-light-green' : 'icon-foreground-4'"
-              [svgIcon]="delegator.status === 0 ? 'close-filled' : delegator.status === 2 ? 'check-circle' : 'spinner'" class="margin-right-8"></mat-icon>
+              [svgIcon]="delegator.status === 0 ? 'close-filled' : delegator.status === 2 ? 'check-circle' : 'spinner'"
+              class="margin-right-8"></mat-icon>
             Batch #{{ delegator.batch + 1 }}
           </span>
         </div>

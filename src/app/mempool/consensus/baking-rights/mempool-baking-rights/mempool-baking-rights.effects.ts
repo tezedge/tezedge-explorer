@@ -79,16 +79,5 @@ export class MempoolBakingRightsEffects extends TezedgeBaseEffect<State, Mempool
       ofType(MEMPOOL_BAKING_RIGHTS_STOP),
       tap(() => this.mempoolBakingRightsSubject.next(null))
     ));
-
-    // mempoolBakingRightsLive$ = createNonDispatchableEffect(() => this.actions$.pipe(
-    //   ofType(MEMPOOL_BAKING_RIGHTS_LIVE),
-    //   tap(() => this.stopUpdating = false)
-    // ));
-    //
-    // mempoolBakingRightsPause$ = createNonDispatchableEffect(() => this.actions$.pipe(
-    //   ofType(MEMPOOL_BAKING_RIGHTS_PAUSE),
-    //   tap(() => this.stopUpdating = true)
-    // ));
-
   }
 }

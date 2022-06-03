@@ -1,5 +1,6 @@
 import { Component, ElementRef, Input, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { openInTzStats } from '@shared/constants/navigation';
 
 @Component({
   selector: 'app-graph-redirection-overlay',
@@ -34,11 +35,6 @@ export class GraphRedirectionOverlayComponent implements OnInit {
   }
 
   navigateToExternalURL(): void {
-    if (this.network === 'mainnet') {
-      this.network = '';
-    } else {
-      this.network += '.';
-    }
-    window.open('https://' + this.network + 'tzstats.com/' + this.blockLevel, '_blank');
+    openInTzStats(this.network, this.blockLevel);
   }
 }

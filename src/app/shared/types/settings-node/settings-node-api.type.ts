@@ -4,7 +4,6 @@ export class SettingsNodeApi {
   name: string;
   http: string;
   debugger: string;
-  ws: boolean | string;
   monitoring: string;
   connected: boolean | string;
   tzstats: string;

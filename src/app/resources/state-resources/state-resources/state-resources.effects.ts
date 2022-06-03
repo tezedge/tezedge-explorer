@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { catchError, filter, map, repeat, switchMap, tap, withLatestFrom } from 'rxjs/operators';
-import { empty, Observable, ObservedValueOf, of, throwError } from 'rxjs';
+import { catchError, map, repeat, switchMap, withLatestFrom } from 'rxjs/operators';
+import { EMPTY, Observable, ObservedValueOf, of, throwError } from 'rxjs';
 import { Store } from '@ngrx/store';
 import { State } from '@app/app.index';
 import { ADD_ERROR, ErrorAdd } from '@app/layout/error-popup/error-popup.actions';
@@ -11,10 +11,9 @@ import {
   STATE_RESOURCES_LOAD_BLOCKS,
   STATE_RESOURCES_LOAD_BLOCKS_SUCCESS,
   STATE_RESOURCES_LOAD_SUCCESS,
-  StateResourcesLoadBlocks,
-  StateResourcesLoadBlocksSuccess,
   StateResourcesClose,
-  StateResourcesLoad
+  StateResourcesLoad,
+  StateResourcesLoadBlocks
 } from '@resources/state-resources/state-resources/state-resources.actions';
 import { StateResourcesService } from '@resources/state-resources/state-resources/state-resources.service';
 import { StateResourcesActionGroup } from '@shared/types/resources/state/state-resources-action-group.type';
@@ -30,7 +29,7 @@ export class StateResourcesEffects {
     withLatestFrom(this.store, (action: StateResourcesLoad | StateResourcesClose, state: ObservedValueOf<Store<State>>) => ({ action, state })),
     switchMap(({ action, state }) => {
       return action.type === STATE_RESOURCES_CLOSE
-        ? empty()
+        ? EMPTY
         : this.stateResourcesService.getNodeLifetimeStateResources(state.settingsNode.activeNode.http)
           .pipe(
             map((stats: StateResourcesActionGroup[]) => ({ type: STATE_RESOURCES_LOAD_SUCCESS, payload: stats })),
@@ -46,7 +45,7 @@ export class StateResourcesEffects {
     withLatestFrom(this.store, (action: StateResourcesLoadBlocks | StateResourcesClose, state: ObservedValueOf<Store<State>>) => ({ action, state })),
     switchMap(({ action, state }) => {
       return action.type === STATE_RESOURCES_CLOSE
-        ? empty()
+        ? EMPTY
         : this.stateResourcesService.getBlockStateResources(state.settingsNode.activeNode.http, action.payload.level)
           .pipe(
             map((blocks: StateResourcesBlockData[]) => ({

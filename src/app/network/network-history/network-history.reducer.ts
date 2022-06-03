@@ -9,7 +9,7 @@ const initialState: NetworkHistory = {
 export function reducer(state: NetworkHistory = initialState, action): NetworkHistory {
   switch (action.type) {
 
-    case 'WS_NETWORK_HISTORY_LOAD': {
+    case 'WS_NETWORK_HISTORY_LOAD_SUCCESS': {
       return {
         ids: [...action.payload.chain.map(cycle => cycle.id)],
         entities: action.payload.chain.reduce((accumulator, cycle) => ({

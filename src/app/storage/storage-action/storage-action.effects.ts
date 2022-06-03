@@ -4,7 +4,7 @@ import { HttpClient } from '@angular/common/http';
 import { Store } from '@ngrx/store';
 import { catchError, map, switchMap, withLatestFrom } from 'rxjs/operators';
 import { State } from '@app/app.index';
-import { empty, of } from 'rxjs';
+import { EMPTY, of } from 'rxjs';
 import { ADD_ERROR } from '@app/layout/error-popup/error-popup.actions';
 
 @Injectable({ providedIn: 'root' })
@@ -15,7 +15,7 @@ export class StorageActionEffects {
     withLatestFrom(this.store, (action: any, state) => ({ action, state })),
     switchMap(({ action, state }) =>
       action.type === 'STORAGE_BLOCK_ACTION_RESET'
-        ? empty()
+        ? EMPTY
         : this.http.get(setUrl(action, state))
     ),
     map((payload) => ({ type: 'STORAGE_BLOCK_ACTION_LOAD_SUCCESS', payload })),

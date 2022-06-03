@@ -65,13 +65,6 @@ export class BakingDelegatorsTableComponent implements OnInit, OnDestroy {
     });
   }
 
-  ngOnDestroy(): void {
-    this.store.dispatch<BakingSortDelegates>({
-      type: BAKING_SORT_DELEGATES,
-      payload: this.currentSort
-    });
-  }
-
   private listenToBakersChanges(): void {
     this.activeBaker$ = this.store.select(selectBakingActiveBaker);
 
@@ -81,5 +74,12 @@ export class BakingDelegatorsTableComponent implements OnInit, OnDestroy {
         this.currentSort = sort;
         this.cdRef.detectChanges();
       });
+  }
+
+  ngOnDestroy(): void {
+    this.store.dispatch<BakingSortDelegates>({
+      type: BAKING_SORT_DELEGATES,
+      payload: this.currentSort
+    });
   }
 }

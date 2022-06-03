@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { State } from '@app/app.index';
-import { MonitoringActionTypes, MonitoringCloseAction, MonitoringLoadAction } from './monitoring.actions';
+import { MONITORING_CLOSE, MONITORING_LOAD, MonitoringClose, MonitoringLoad } from './monitoring.actions';
 
 @Component({
   selector: 'app-monitoring',
@@ -18,11 +18,11 @@ export class MonitoringComponent implements OnInit, OnDestroy {
   }
 
   private initMonitoring(): void {
-    this.store.dispatch<MonitoringLoadAction>({ type: MonitoringActionTypes.MONITORING_LOAD });
+    this.store.dispatch<MonitoringLoad>({ type: MONITORING_LOAD });
   }
 
   ngOnDestroy(): void {
-    this.store.dispatch<MonitoringCloseAction>({ type: MonitoringActionTypes.MONITORING_CLOSE });
+    this.store.dispatch<MonitoringClose>({ type: MONITORING_CLOSE });
   }
 
 }

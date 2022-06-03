@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
-import { MonitoringRoutingModule } from './monitoring-routing.module';
+import { MonitoringRouting } from './monitoring.routing';
 import { MonitoringComponent } from '@monitoring/monitoring.component';
 import { NetworkModule } from '@network/network.module';
 
@@ -12,7 +12,7 @@ import { NetworkModule } from '@network/network.module';
   ],
   imports: [
     CommonModule,
-    MonitoringRoutingModule,
+    MonitoringRouting,
     NetworkModule,
   ]
 })

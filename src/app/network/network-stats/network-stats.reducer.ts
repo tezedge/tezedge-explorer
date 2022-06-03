@@ -19,7 +19,7 @@ const initialState: NetworkStats = {
 
 export function reducer(state: NetworkStats = initialState, action): NetworkStats {
   switch (action.type) {
-    case 'WS_NETWORK_STATS_LOAD': {
+    case 'WS_NETWORK_STATS_LOAD_SUCCESS': {
       const newBlockValues: boolean = action.payload.lastAppliedBlock
         && (action.payload.lastAppliedBlock.level !== state.lastAppliedBlock.level || action.payload.lastAppliedBlock.hash !== state.lastAppliedBlock.hash);
       const lastAppliedBlock = newBlockValues ? action.payload.lastAppliedBlock : state.lastAppliedBlock;

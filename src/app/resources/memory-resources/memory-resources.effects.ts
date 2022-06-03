@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { catchError, map, switchMap, withLatestFrom } from 'rxjs/operators';
-import { empty, ObservedValueOf, of } from 'rxjs';
+import { EMPTY, ObservedValueOf, of } from 'rxjs';
 import { Store } from '@ngrx/store';
 import { State } from '@app/app.index';
 import { MemoryResourcesActionTypes } from './memory-resources.actions';
@@ -17,7 +17,7 @@ export class MemoryResourcesEffects {
     withLatestFrom(this.store, (action: any, state: ObservedValueOf<Store<State>>) => ({ action, state })),
     switchMap(({ action, state }) =>
       action.type === MemoryResourcesActionTypes.MEMORY_RESOURCES_CLOSE
-        ? empty()
+        ? EMPTY
         : this.resourcesService.getStorageResources(
           state.settingsNode.activeNode.features.find(f => f.name === 'resources/memory').memoryProfilerUrl,
           action.payload.reversed

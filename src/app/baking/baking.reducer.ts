@@ -32,7 +32,7 @@ const initialState: BakingState = {
     sortDirection: SortDirection.DSC
   }
 };
-export const BATCH_SIZE = 75;
+export const BATCH_SIZE: number = 80;
 
 export function reducer(state: BakingState = initialState, action: BakingActions): BakingState {
 
@@ -175,7 +175,7 @@ export function reducer(state: BakingState = initialState, action: BakingActions
             const batchDelegators = delegators.slice(batch.index, batch.index + batch.transactions);
             return {
               ...batch,
-              operationHash: updates.find(op => op.destination === delegators[0].hash)?.operation,
+              operationHash: updates.find(up => up.destination === batchDelegators[0].hash && up.source === state.activeBaker.hash)?.operation || batch.operationHash,
               status: getBatchStatus(batchDelegators)
             };
           })

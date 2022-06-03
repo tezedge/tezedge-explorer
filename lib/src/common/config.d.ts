@@ -11,6 +11,7 @@ export interface TezosNode {
     name: string;
     url: string;
     tzstats: TZStatsNode;
+    wsUrl?: string;
 }
 export interface TZStatsNode {
     url: string;

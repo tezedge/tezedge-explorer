@@ -26,8 +26,8 @@
             class="margin-right-8">{{ activeBaker.rewardToDistribute - activeBaker.rewardAfterFee | number: '1.0-6' }} ꜩ
           </div>
         </div>
-        <mat-form-field *ngIf="activeBaker"
-                        (keydown.enter)="applyCommissionFee()"
+        <mat-form-field (keydown.enter)="applyCommissionFee()"
+                        *ngIf="activeBaker"
                         appearance="fill"
                         class="custom-bottom-form-field p-relative w-100 margin-bottom-5">
           <input (blur)="applyCommissionFee()"
@@ -36,8 +36,8 @@
           <span class="p-absolute commission-fee">Commission fee</span>
           <span class="p-absolute percentage foreground-7"><span class="foreground">%</span>&nbsp;&nbsp;ꜩ</span>
         </mat-form-field>
-        <mat-form-field *ngIf="activeBaker"
-                        (keydown.enter)="applyTransactionFee()"
+        <mat-form-field (keydown.enter)="applyTransactionFee()"
+                        *ngIf="activeBaker"
                         appearance="fill"
                         class="custom-bottom-form-field p-relative w-100">
           <input (blur)="applyTransactionFee()"

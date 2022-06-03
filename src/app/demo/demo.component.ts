@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import TransportWebHID from '@ledgerhq/hw-transport-webhid';
 import TransportWebUSB from '@ledgerhq/hw-transport-webusb';
 import Tezos from '@obsidiansystems/hw-app-xtz';
@@ -8,8 +8,7 @@ import * as bs58check from 'bs58check';
 import { Buffer } from 'buffer';
 import { LedgerService } from '@app/demo/ledger.service';
 import { OperationService } from '@app/demo/operation.service';
-import { LedgerUtils } from '@app/demo/ledger';
-import { of, tap } from 'rxjs';
+import { webSocket } from 'rxjs/webSocket';
 // import { getLedgerWallet, signLedgerOperation } from '../../../lib';
 
 // import { Config, initializeWallet, transaction, getLedgerWallet } from '../../../lib';
@@ -21,7 +20,7 @@ import { of, tap } from 'rxjs';
   styleUrls: ['./demo.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class DemoComponent {
+export class DemoComponent implements OnInit {
 
   prefix = {
     tz1: new Uint8Array([6, 161, 159]),
@@ -55,6 +54,34 @@ export class DemoComponent {
 
   mega: { transport: any } = { transport: undefined };
   transport: any;
+
+  ngOnInit(): void {
+    const subject = webSocket({
+      url: 'ws://116.202.128.230:4444/rpc',
+      WebSocketCtor: WebSocket,
+    });
+
+    // subject.subscribe((data) => {
+    //   console.log(data);
+    // });
+
+    subject.subscribe();
+// Note that at least one consumer has to subscribe to the created subject - otherwise "nexted" values will be just buffered and not sent,
+// since no connection was established!
+
+    subject.next({
+      jsonrpc: '2.0',
+      method: 'getBlock',
+      params: {
+        chain_id: 'main',
+        block_id: 'head'
+      },
+      id: 1,
+    });
+
+    // subject.complete(); // Closes the connection.
+//     subject.error({ code: 4000, reason: 'I think our app just broke!' });
+  }
 
   async start() {
     //

@@ -23,6 +23,7 @@
         { name: 'storage' },
         { name: 'network' },
         { name: 'logs' },
+        { name: 'baking' },
         { name: 'state' },
         { name: 'open-api' },
         { name: 'contracts' },

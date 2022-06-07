@@ -13,7 +13,7 @@ ARG node_explorer_git="https://github.com/tezedge/tezedge-explorer"
 RUN git clone ${node_explorer_git} && \
     cd tezedge-explorer && \
     git checkout ${branch} && \
-    npm install && \
+    npm install --save --legacy-peer-deps && \
     node path.js
 
 # change dir to angular app
@@ -23,7 +23,7 @@ WORKDIR /app/tezedge-explorer
 RUN ng build --configuration production --output-path=/dist
 
 # remove development dependencies
-RUN npm prune --production
+RUN npm prune --production --legacy-peer-deps
 
 ################
 # Run in NGINX #

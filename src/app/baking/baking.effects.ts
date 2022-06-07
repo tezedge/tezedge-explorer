@@ -59,7 +59,7 @@ export class BakingEffects extends TezedgeBaseEffect<State, BakingActions> {
     this.init$ = createEffect(() => this.actions$.pipe(
       ofType(BAKING_INIT),
       switchMap(() =>
-        timer(0, 5000).pipe(
+        timer(0, 10000).pipe(
           takeUntil(this.destroy$),
           map(() => ({ type: BAKING_GET_CYCLE }))
         )
@@ -69,7 +69,7 @@ export class BakingEffects extends TezedgeBaseEffect<State, BakingActions> {
     this.init2$ = createEffect(() => this.actions$.pipe(
       ofType(BAKING_INIT),
       switchMap(() =>
-        timer(0, 5000).pipe(
+        timer(0, 7500).pipe(
           takeUntil(this.destroy$),
           filter(() => this.updateTransactions),
           map(() => ({ type: BAKING_GET_TRANSACTION_STATUSES }))

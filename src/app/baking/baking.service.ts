@@ -31,7 +31,10 @@ export class BakingService {
     const url = `${api}/dev/rewards/cycle/${cycle}`;
     return this.http.get<GetBakersResponse[]>(url).pipe(
       // map(res => { // todo: remove
-      //   const findIndex = res.findIndex(d => d.address === 'tz1cjyja1TU6fiyiFav3mFAdnDsCReJ12hPD');
+      //   let maxLength = 0;
+      //   res.forEach(d => maxLength = maxLength < d.delegator_rewards.length ? d.delegator_rewards.length : maxLength);
+      //   const findIndex = res.findIndex(d => d.delegator_rewards.length === maxLength);
+      //   // const findIndex = res.findIndex(d => d.address === 'tz1irJKkXS2DBWkU1NnmFQx1c1L7pbGg4yhk');
       //   if (findIndex !== -1) {
       //     res[findIndex].address = 'tz1fm6a28VahUmoGkRV2RwuBMhtYNztkrtJy';
       //   }

@@ -4,6 +4,7 @@ const DEVELOP = {
   name: 'develop.dev.tezedge.com',
   http: 'http://develop.dev.tezedge.com:18732',
   p2p_port: 9732,
+  tzstats: 'https://api.tzstats.com/',
   features: [
     { name: 'ws', url: 'ws://develop.dev.tezedge.com:4927' },
     { name: 'debugger', url: 'http://develop.dev.tezedge.com:17732' },
@@ -27,6 +28,7 @@ const MASTER = {
   http: 'https://master.dev.tezedge.com:8752',
   p2p_port: '9732',
   type: 'tezedge',
+  tzstats: 'https://api.tzstats.com/',
   features: [
     { name: 'ws', url: 'wss://master.dev.tezedge.com:443' },
     { name: 'debugger', url: 'https://master.dev.tezedge.com:8753' },
@@ -263,7 +265,7 @@ const EXPOSED_SERVER = {
   p2p_port: 29732,
   tzstats: 'https://api.ithaca.tzstats.com/',
   features: [
-    { name: 'ws', url: 'ws://116.202.128.230:4444' },
+    { name: 'ws', url: 'ws://116.202.128.230:4927' },
     { name: 'debugger', url: 'http://116.202.128.230:27732' },
     { name: 'monitoring' },
     { name: 'resources/system', monitoringUrl: 'http://116.202.128.230:38739/resources/tezedge' },

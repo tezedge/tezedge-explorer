@@ -1,150 +1,150 @@
-import { Injectable } from '@angular/core';
-import 'babel-polyfill';
-import TransportU2F from '@ledgerhq/hw-transport-u2f';
-import TransportWebHID from '@ledgerhq/hw-transport-webhid';
-import Tezos from '@obsidiansystems/hw-app-xtz';
-import { OperationService } from '@app/demo/operation.service';
-import TransportWebUSB from '@ledgerhq/hw-transport-webusb';
-
-@Injectable({ providedIn: 'root' })
-export class LedgerService {
-  transport: any;
-
-  constructor(private operationService: OperationService) {}
-
-  async setTransport() {
-    if (!this.transport) {
-      console.log('Trying to use WebHID for transport...');
-      try {
-        this.transport = await TransportWebHID.create();
-        console.log('Transport is now set to use WebHID!');
-      } catch (e) {
-        this.transport = null;
-        console.warn('Couldn\'t set WebHID as transport!');
-        console.error(e);
-      }
-    }
-    if (!this.transport) {
-      try {
-        this.transport = await TransportU2F.create();
-        console.warn('Transport is now set to use U2F!');
-      } catch (e) {
-        this.transport = null;
-        console.log('Couldn\'t set U2F as transport!');
-        console.error(e);
-      }
-    }
-    if (!this.transport) {
-      try {
-        this.transport = await TransportWebUSB.create();
-        console.warn('Transport is now set to use USB!');
-      } catch (e) {
-        this.transport = null;
-        console.log('Couldn\'t set USB as transport!');
-        console.error(e);
-      }
-    }
-  }
-
-  async transportCheck() {
-    if (!this.transport) {
-      await this.setTransport();
-    }
-    if (!this.transport) {
-      throw new Error('NO_TRANSPORT_FOUND');
-    }
-  }
-
-  async getPublicAddress(path: string) {
-    await this.transportCheck();
-    const xtz = new Tezos(this.transport);
-    const result = await xtz
-      .getAddress(path, true)
-      .then((res) => {
-        return this.sanitize(res, true);
-      })
-      .catch((e) => {
-        throw e;
-      });
-    const pk = this.operationService.hex2pk(result.publicKey);
-    return pk;
-  }
-
-  async requestLedgerSignature(op): Promise<void> {
-    let signature;
-    if (op.length <= 2290) {
-      console.log('sign ledger operation');
-      signature = await this.signOperation('03' + op, '44\'/1729\'/0\'/0\'');
-    } else {
-      console.log('sign ledger operation HASH');
-      signature = await this.signHash(
-        this.operationService.ledgerPreHash('03' + op),
-        '44\'/1729\'/0\'/0\''
-      );
-    }
-    if (signature) {
-      const signedOp = op + signature;
-      console.log('signedOp: ' + signedOp);
-    } else {
-      console.log('error: signature is empty');
-    }
-  }
-
-  async signOperation(op: string, path: string) {
-    if (!['03', '05'].includes(op.slice(0, 2))) {
-      throw new Error('Invalid prefix');
-    }
-    await this.transportCheck();
-    const xtz = new Tezos(this.transport);
-    console.log('operation:', op);
-    const result = await xtz
-      .signOperation(path, op)
-      .then((res) => {
-        return this.sanitize(res, false);
-      })
-      .catch((e) => {
-        console.warn(e);
-        return null;
-      });
-    console.log(JSON.stringify(result));
-    if (result?.signature) {
-      return result.signature;
-    } else {
-      return null;
-    }
-  }
-
-  async signHash(hash: string, path: string) {
-    if (hash.length !== 64) {
-      throw new Error('Invalid hash!');
-    }
-    await this.transportCheck();
-    const xtz = new Tezos(this.transport);
-    const result = await xtz
-      .signHash(path, hash)
-      .then((res) => {
-        return this.sanitize(res, false);
-      })
-      .catch((e) => {
-        console.warn(e);
-        return null;
-      });
-    console.log(JSON.stringify(result));
-    if (result?.signature) {
-      return result.signature;
-    } else {
-      return null;
-    }
-  }
-
-  private sanitize(res: any, getPk: boolean) {
-    res = JSON.parse(JSON.stringify(res));
-    if (getPk && typeof res?.publicKey !== 'string') {
-      throw Error('Invalid pk');
-    }
-    if (!getPk && typeof res?.signature !== 'string') {
-      throw Error('Invalid signature');
-    }
-    return res;
-  }
-}
+// import { Injectable } from '@angular/core';
+// import 'babel-polyfill';
+// import TransportU2F from '@ledgerhq/hw-transport-u2f';
+// import TransportWebHID from '@ledgerhq/hw-transport-webhid';
+// import Tezos from '@obsidiansystems/hw-app-xtz';
+// import { OperationService } from '@app/demo/operation.service';
+// import TransportWebUSB from '@ledgerhq/hw-transport-webusb';
+//
+// @Injectable({ providedIn: 'root' })
+// export class LedgerService {
+//   transport: any;
+//
+//   constructor(private operationService: OperationService) {}
+//
+//   async setTransport() {
+//     if (!this.transport) {
+//       console.log('Trying to use WebHID for transport...');
+//       try {
+//         this.transport = await TransportWebHID.create();
+//         console.log('Transport is now set to use WebHID!');
+//       } catch (e) {
+//         this.transport = null;
+//         console.warn('Couldn\'t set WebHID as transport!');
+//         console.error(e);
+//       }
+//     }
+//     if (!this.transport) {
+//       try {
+//         this.transport = await TransportU2F.create();
+//         console.warn('Transport is now set to use U2F!');
+//       } catch (e) {
+//         this.transport = null;
+//         console.log('Couldn\'t set U2F as transport!');
+//         console.error(e);
+//       }
+//     }
+//     if (!this.transport) {
+//       try {
+//         this.transport = await TransportWebUSB.create();
+//         console.warn('Transport is now set to use USB!');
+//       } catch (e) {
+//         this.transport = null;
+//         console.log('Couldn\'t set USB as transport!');
+//         console.error(e);
+//       }
+//     }
+//   }
+//
+//   async transportCheck() {
+//     if (!this.transport) {
+//       await this.setTransport();
+//     }
+//     if (!this.transport) {
+//       throw new Error('NO_TRANSPORT_FOUND');
+//     }
+//   }
+//
+//   async getPublicAddress(path: string) {
+//     await this.transportCheck();
+//     const xtz = new Tezos(this.transport);
+//     const result = await xtz
+//       .getAddress(path, true)
+//       .then((res) => {
+//         return this.sanitize(res, true);
+//       })
+//       .catch((e) => {
+//         throw e;
+//       });
+//     const pk = this.operationService.hex2pk(result.publicKey);
+//     return pk;
+//   }
+//
+//   async requestLedgerSignature(op): Promise<void> {
+//     let signature;
+//     if (op.length <= 2290) {
+//       console.log('sign ledger operation');
+//       signature = await this.signOperation('03' + op, '44\'/1729\'/0\'/0\'');
+//     } else {
+//       console.log('sign ledger operation HASH');
+//       signature = await this.signHash(
+//         this.operationService.ledgerPreHash('03' + op),
+//         '44\'/1729\'/0\'/0\''
+//       );
+//     }
+//     if (signature) {
+//       const signedOp = op + signature;
+//       console.log('signedOp: ' + signedOp);
+//     } else {
+//       console.log('error: signature is empty');
+//     }
+//   }
+//
+//   async signOperation(op: string, path: string) {
+//     if (!['03', '05'].includes(op.slice(0, 2))) {
+//       throw new Error('Invalid prefix');
+//     }
+//     await this.transportCheck();
+//     const xtz = new Tezos(this.transport);
+//     console.log('operation:', op);
+//     const result = await xtz
+//       .signOperation(path, op)
+//       .then((res) => {
+//         return this.sanitize(res, false);
+//       })
+//       .catch((e) => {
+//         console.warn(e);
+//         return null;
+//       });
+//     console.log(JSON.stringify(result));
+//     if (result?.signature) {
+//       return result.signature;
+//     } else {
+//       return null;
+//     }
+//   }
+//
+//   async signHash(hash: string, path: string) {
+//     if (hash.length !== 64) {
+//       throw new Error('Invalid hash!');
+//     }
+//     await this.transportCheck();
+//     const xtz = new Tezos(this.transport);
+//     const result = await xtz
+//       .signHash(path, hash)
+//       .then((res) => {
+//         return this.sanitize(res, false);
+//       })
+//       .catch((e) => {
+//         console.warn(e);
+//         return null;
+//       });
+//     console.log(JSON.stringify(result));
+//     if (result?.signature) {
+//       return result.signature;
+//     } else {
+//       return null;
+//     }
+//   }
+//
+//   private sanitize(res: any, getPk: boolean) {
+//     res = JSON.parse(JSON.stringify(res));
+//     if (getPk && typeof res?.publicKey !== 'string') {
+//       throw Error('Invalid pk');
+//     }
+//     if (!getPk && typeof res?.signature !== 'string') {
+//       throw Error('Invalid signature');
+//     }
+//     return res;
+//   }
+// }

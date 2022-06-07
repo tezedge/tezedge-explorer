@@ -8,7 +8,7 @@
       http: 'https://master.dev.tezedge.com:8752',
       p2p_port: '9732',
       type: 'tezedge',
-      tzstats: 'https://api.tzstats.com',
+      tzstats: 'https://api.tzstats.com/',
       features: [
         { name: 'ws', url: 'wss://master.dev.tezedge.com:443' },
         { name: 'debugger', url: 'https://master.dev.tezedge.com:8753' },

@@ -33,6 +33,7 @@ import {
   STATE_RESOURCES_LOAD_BLOCKS_SUCCESS,
   STATE_RESOURCES_LOAD_SUCCESS
 } from '@resources/state-resources/state-resources/state-resources.actions';
+import { BAKING_GET_BAKERS, BAKING_GET_BAKERS_SUCCESS, BAKING_STOP } from '@baking/baking.actions';
 
 export interface LoadingSpinnerState {
   pendingValues: LoadingSpinner[];
@@ -126,6 +127,7 @@ export function reducer(state: LoadingSpinnerState = initialState, action: Error
         pendingValues: [storageBlocksLoad, ...state.pendingValues]
       };
     }
+    case 'STORAGE_BLOCK_RESET':
     case 'STORAGE_BLOCK_START_SUCCESS': {
       return {
         pendingValues: state.pendingValues.filter(v => v.type !== 'STORAGE_BLOCK_START')
@@ -250,6 +252,17 @@ export function reducer(state: LoadingSpinnerState = initialState, action: Error
         pendingValues: state.pendingValues.filter(v => v.type !== SMART_CONTRACTS_LOAD)
       };
     }
+    case BAKING_GET_BAKERS: {
+      return {
+        pendingValues: [bakingLoad, ...state.pendingValues]
+      };
+    }
+    case BAKING_GET_BAKERS_SUCCESS:
+    case BAKING_STOP: {
+      return {
+        pendingValues: state.pendingValues.filter(v => v.type !== BAKING_GET_BAKERS)
+      };
+    }
     default:
       return state;
   }
@@ -345,4 +358,9 @@ const mempoolBlockApplicationLoad: LoadingSpinner = {
 const smartContractsLoad: LoadingSpinner = {
   type: SMART_CONTRACTS_LOAD,
   message: 'Loading smart contracts...'
+};
+
+const bakingLoad: LoadingSpinner = {
+  type: BAKING_GET_BAKERS,
+  message: 'Loading baking table...'
 };

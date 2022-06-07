@@ -283,9 +283,9 @@ const EXPOSED_SERVER = {
 export const environment = {
   production: false,
   api: [
-    DEVELOP,
+    // DEVELOP,
     // MASTER,
-    // EXPOSED_SERVER,
+    EXPOSED_SERVER,
     // MEMPOOL,
     // MEMPOOL2,
     // TRACE,

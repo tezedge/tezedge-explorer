@@ -31,9 +31,9 @@
               </span>
             </span>
           </span>
-          <span>{{ baker.reward | spaceNumber: 6 }}</span>
-          <span>{{ baker.balance | spaceNumber: 6 }}</span>
-          <span>{{ baker.delegators.length }}</span>
+          <span [innerHTML]="baker.reward | spaceNumber: 6: true"></span>
+          <span [innerHTML]="baker.balance | spaceNumber: 6: true"></span>
+          <span>{{ baker.delegatorsLength }}</span>
         </div>
       </cdk-virtual-scroll-viewport>
     </div>

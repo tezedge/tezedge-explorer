@@ -19,6 +19,7 @@ import {
 } from '@mempool/consensus/endorsements/mempool-endorsement/mempool-endorsement.actions';
 import { MempoolEndorsementService } from '@mempool/consensus/endorsements/mempool-endorsement/mempool-endorsement.service';
 import { MempoolService } from '@mempool/mempool.service';
+import { http } from '@helpers/object.helper';
 
 const mempoolEndorsementsDestroy$ = new Subject<void>();
 
@@ -43,7 +44,7 @@ export class MempoolEndorsementEffects {
       if (action.type === MEMPOOL_ENDORSEMENT_STOP || !blockLevel) {
         return EMPTY;
       }
-      return this.mempoolEndorsementService.getEndorsingRights(state.settingsNode.activeNode.http, blockLevel);
+      return this.mempoolEndorsementService.getEndorsingRights(http(state), blockLevel);
     }),
     map((endorsements: MempoolEndorsement[]) => ({ type: MEMPOOL_ENDORSEMENT_LOAD_SUCCESS, payload: { endorsements } })),
     catchError(error => of({
@@ -59,7 +60,7 @@ export class MempoolEndorsementEffects {
     mergeMap(({ action, state }) => {
       const currentRound = state.mempool.endorsementState.currentRound;
       const pageType = state.mempool.endorsementState.pageType === '' ? 'endorsements' : 'preendorsements';
-      return this.mempoolEndorsementService.getEndorsementStatusUpdates(state.settingsNode.activeNode.http, currentRound, pageType);
+      return this.mempoolEndorsementService.getEndorsementStatusUpdates(http(state), currentRound, pageType);
     }),
     map((payload: { [slot: number]: MempoolEndorsement }) => ({ type: MEMPOOL_ENDORSEMENT_UPDATE_STATUSES_SUCCESS, payload })),
   ));

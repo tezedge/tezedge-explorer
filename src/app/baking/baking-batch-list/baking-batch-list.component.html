@@ -1,4 +1,4 @@
-<cdk-virtual-scroll-viewport *ngIf="ledger"
+<cdk-virtual-scroll-viewport *ngIf="ledger && activeBaker"
                              class="h-100 overflow-y-auto overflow-x-hidden"
                              itemSize="150">
   <div *cdkVirtualFor="let batch of activeBaker.batches; let i=index; trackBy: trackBatches"

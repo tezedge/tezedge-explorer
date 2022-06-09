@@ -7,6 +7,8 @@ import { getMergedRoute } from '@shared/router/router-state.selectors';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { MergedRoute } from '@shared/router/merged-route';
 import { BAKING_SET_ACTIVE_BAKER, BakingSetActiveBaker } from '@baking/baking.actions';
+import { selectBakingBakers } from '@baking/baking.index';
+import { BakingBaker } from '@shared/types/bakings/baking-baker.type';
 
 @UntilDestroy()
 @Component({
@@ -19,6 +21,7 @@ export class BakingFilterComponent implements OnInit {
 
   formGroup: FormGroup;
 
+  private bakers: BakingBaker[];
   private routedHash: string;
 
   constructor(private router: Router,
@@ -28,13 +31,19 @@ export class BakingFilterComponent implements OnInit {
   ngOnInit(): void {
     this.initForm();
     this.listenToRouteChange();
+    this.listenToBakerList();
   }
 
   search(): void {
     const value = this.formGroup.get('search').value;
     if (this.routedHash !== value) {
+      if (value && !this.bakers.find(b => b.hash === value)) {
+        return;
+      }
       this.routedHash = value;
-      this.dispatchSetActiveBaker();
+      if (value) {
+        this.dispatchSetActiveBaker();
+      }
       const commands = ['baking'];
       if (this.routedHash) {
         commands.push(this.routedHash);
@@ -59,6 +68,12 @@ export class BakingFilterComponent implements OnInit {
           this.dispatchSetActiveBaker();
         }
       });
+  }
+
+  private listenToBakerList(): void {
+    this.store.select(selectBakingBakers)
+      .pipe(untilDestroyed(this))
+      .subscribe((bakers: BakingBaker[]) => this.bakers = bakers);
   }
 
   private dispatchSetActiveBaker(): void {

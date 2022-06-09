@@ -35,6 +35,19 @@ context('BAKING', () => {
       });
   }));
 
+  it('[BAKING] should have status code 200 for get bakers rewards request', () => beforeBakingTest(() => {
+    cy.window()
+      .its('store')
+      .then(store => {
+        store.select(state => state).subscribe(state => {
+          const cycle = state.baking.cycle;
+          cy.request(state.settingsNode.activeNode.http + `/dev/rewards/cycle/${cycle}`, { timeout: 700000 })
+            .its('status')
+            .should('eq', 200);
+        });
+      });
+  }));
+
   it('[BAKING] should create rows for the virtual scroll table', () => beforeBakingTest(() => {
     cy.window()
       .its('store')
@@ -48,13 +61,37 @@ context('BAKING', () => {
       });
   }));
 
+  it('[BAKING] should create rows for the virtual scroll table delegators', () => beforeBakingTest(() => {
+    cy.get('app-baking-delegates-table cdk-virtual-scroll-viewport .row')
+      .eq(0)
+      .trigger('click')
+      .get('app-baking-delegators-table cdk-virtual-scroll-viewport .row', { timeout: 100000 })
+      .window()
+      .its('store')
+      .then(store => {
+        store.select('baking').subscribe(baking => {
+          if (baking.bakers.length && baking.sortedDelegators.length > 1) {
+
+            cy.url()
+              .should('include', '/baking/' + baking.bakers[0].hash)
+              .get('app-baking-delegators-table cdk-virtual-scroll-viewport .row', { timeout: 3000 })
+              .eq(0)
+              .find('> span:first-child')
+              .then(span => {
+                expect(span.text().trim()).to.equal(baking.sortedDelegators[0].name);
+              })
+          }
+        });
+      });
+  }));
+
   it('[BAKING] should fill the last row of the table with the last value received', () => beforeBakingTest(() => {
     cy.window()
       .its('store')
       .then(store => {
         store.select('baking').subscribe(baking => {
           if (baking.bakers.length) {
-            const lastRecord = baking.bakers[baking.bakers.length - 1];
+            const baker = baking.bakers[baking.bakers.length - 1];
             cy.get('app-baking-delegates-table cdk-virtual-scroll-viewport')
               .scrollTo('bottom')
               .wait(1000)
@@ -62,16 +99,15 @@ context('BAKING', () => {
               .last()
               .find('> span:first-child')
               .then(span => {
-                expect(span.text().trim()).to.equal(lastRecord.bakerName);
+                expect(span.text().trim()).to.equal(baker.bakerName);
               })
               .get('app-baking-delegates-table cdk-virtual-scroll-viewport')
               .find('.row')
               .last()
               .find('> span:nth-child(2)')
               .then(span => {
-                expect(span.text().trim()).to.equal(lastRecord.reward.toString());
+                expect(span.text().trim().replaceAll(' ', '')).to.equal(baker.reward.toString());
               });
-
           }
         });
       });
@@ -162,20 +198,17 @@ context('BAKING', () => {
         store.select('baking').subscribe(baking => {
           if (baking.bakers.length && !tested) {
             tested = true;
-            const baker = baking.bakers[baking.bakers.length - 2];
+            const baker = baking.bakers[1];
             cy.get('app-baking-delegates-table cdk-virtual-scroll-viewport')
-              .scrollTo('bottom')
-              .wait(1000)
               .find('.row')
-              .eq(-2)
+              .eq(1)
               .trigger('click')
-              .wait(1000)
               .get('app-baking-summary .summary-box > div:nth-child(2)')
               .then(html => expect(html.text()).to.equals(baker.hash))
               .get('app-baking-summary .summary-box > div:nth-child(3) > div:nth-child(2)')
-              .then(html => expect(html.text()).to.equals(baker.delegators.length.toString()))
+              .then(html => expect(html.text()).to.equals(baker.delegatorsLength.toString()))
               .get('app-baking-summary .summary-box > div:nth-child(4) > div:nth-child(2)')
-              .then(html => expect(html.text()).to.include(baker.reward.toString()));
+              .then(html => expect(html.text().replaceAll(' ', '')).to.include(baker.reward.toString()));
           }
         });
       });
@@ -183,7 +216,6 @@ context('BAKING', () => {
 
   it('[BAKING] should calculate baker\'s reward', () => beforeBakingTest(() => {
     let tested = false;
-    let changed = false;
     cy.window()
       .its('store')
       .then(store => {

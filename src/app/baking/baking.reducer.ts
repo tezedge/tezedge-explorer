@@ -5,6 +5,7 @@ import {
   BAKING_APPLY_TRANSACTION_FEE,
   BAKING_GET_BAKERS_SUCCESS,
   BAKING_GET_CYCLE_SUCCESS,
+  BAKING_GET_DELEGATORS_SUCCESS,
   BAKING_LEDGER_CONNECTED,
   BAKING_SET_ACTIVE_BAKER,
   BAKING_SORT_DELEGATES,
@@ -25,14 +26,17 @@ const initialState: BakingState = {
   ledger: null,
   activeBaker: null,
   activeBakerHash: null,
+  delegators: [],
+  sortedDelegators: [],
   commissionFee: 0,
   transactionFee: 0.01,
   sort: {
-    sortBy: 'reward',
+    sortBy: 'delegatorsLength',
     sortDirection: SortDirection.DSC
   }
 };
-export const BATCH_SIZE: number = 80;
+
+const BATCH_SIZE: number = 80;
 
 export function reducer(state: BakingState = initialState, action: BakingActions): BakingState {
 
@@ -47,18 +51,33 @@ export function reducer(state: BakingState = initialState, action: BakingActions
 
     case BAKING_GET_BAKERS_SUCCESS: {
       const activeBaker = action.payload.bakers.find(b => b.hash === state.activeBakerHash);
-      const { batches, delegators } = getBatchesAndDelegators(activeBaker);
 
-      const rewardToDistribute = batches.reduce((sum, curr) => sum + curr.reward, 0);
       return {
         ...state,
         bakers: sortDelegatesOrDelegators(action.payload.bakers, state.sort),
         activeBaker: !activeBaker ? null : {
           ...activeBaker,
-          sortedDelegators: sortDelegatesOrDelegators(delegators, state.sort),
+          batches: []
+        }
+      };
+    }
+
+    case BAKING_GET_DELEGATORS_SUCCESS: {
+      const { batches, delegators } = getBatchesAndDelegators([...action.payload]);
+      const rewardToDistribute = batches.reduce((sum, curr) => sum + curr.reward, 0);
+      if (!state.activeBakerHash) {
+        return {
+          ...state
+        };
+      }
+      return {
+        ...state,
+        delegators,
+        sortedDelegators: sortDelegatesOrDelegators(delegators, state.sort),
+        activeBaker: {
+          ...state.activeBaker,
           rewardToDistribute,
           rewardAfterFee: rewardToDistribute,
-          delegators,
           batches,
         }
       };
@@ -73,26 +92,24 @@ export function reducer(state: BakingState = initialState, action: BakingActions
 
     case BAKING_SET_ACTIVE_BAKER: {
       const activeBaker = state.bakers.find(b => b.hash === action.payload.hash);
-      const { batches, delegators } = getBatchesAndDelegators(activeBaker);
-      const rewardToDistribute = batches.reduce((sum, curr) => sum + curr.reward, 0);
 
       let sort = state.sort;
-
-      if (sort.sortBy === 'delegators' || !activeBaker && ['status', 'fee', 'rewardAfterFee'].includes(sort.sortBy)) {
+      if (activeBaker && ['delegatorsLength', 'bakerName'].includes(sort.sortBy)) {
         sort = { ...sort, sortBy: 'balance' };
+      } else if (!activeBaker) {
+        sort = { sortDirection: SortDirection.DSC, sortBy: 'delegatorsLength' };
       }
+
       return {
         ...state,
         sort,
+        delegators: [],
+        sortedDelegators: [],
         ledger: state.ledger?.publicKeyHash === activeBaker?.hash ? state.ledger : null,
         activeBakerHash: action.payload.hash,
         activeBaker: !activeBaker ? null : {
           ...activeBaker,
-          sortedDelegators: sortDelegatesOrDelegators(delegators, sort),
-          rewardToDistribute,
-          rewardAfterFee: rewardToDistribute,
-          delegators,
-          batches,
+          batches: []
         }
       };
     }
@@ -100,15 +117,17 @@ export function reducer(state: BakingState = initialState, action: BakingActions
     case BAKING_ADD_DISTRIBUTED_REWARD: {
       const newBatch = action.payload.batch;
       const delegators = [
-        ...state.activeBaker.delegators.slice(0, newBatch.index),
-        ...state.activeBaker.delegators.slice(newBatch.index, newBatch.index + newBatch.transactions).map(d => ({
+        ...state.delegators.slice(0, newBatch.index),
+        ...state.delegators.slice(newBatch.index, newBatch.index + newBatch.transactions).map(d => ({
           ...d,
           status: newBatch.status
         })),
-        ...state.activeBaker.delegators.slice(newBatch.index + newBatch.transactions),
+        ...state.delegators.slice(newBatch.index + newBatch.transactions),
       ];
       return {
         ...state,
+        delegators,
+        sortedDelegators: sortDelegatesOrDelegators(delegators, state.sort),
         activeBaker: {
           ...state.activeBaker,
           batches: state.activeBaker.batches.map(b => {
@@ -117,8 +136,6 @@ export function reducer(state: BakingState = initialState, action: BakingActions
             }
             return b;
           }),
-          delegators,
-          sortedDelegators: sortDelegatesOrDelegators(delegators, state.sort)
         }
       };
     }
@@ -135,21 +152,18 @@ export function reducer(state: BakingState = initialState, action: BakingActions
       return {
         ...state,
         sort: { ...action.payload },
-        activeBaker: {
-          ...state.activeBaker,
-          sortedDelegators: sortDelegatesOrDelegators(state.activeBaker.delegators, action.payload)
-        }
+        sortedDelegators: sortDelegatesOrDelegators(state.delegators, action.payload)
       };
     }
 
     case BAKING_UPDATE_TRANSACTION_STATUSES: {
       const updates = action.payload;
       let delegators: BakingDelegator[];
-      let sortedDelegators = state.activeBaker.sortedDelegators;
+      let sortedDelegators = state.sortedDelegators;
       if (!updates.some(up => up.source === state.activeBaker.hash)) {
-        delegators = state.activeBaker.delegators;
+        delegators = state.delegators;
       } else {
-        delegators = state.activeBaker.delegators.map(delegator => {
+        delegators = state.delegators.map(delegator => {
           const index = updates.findIndex(up => up.destination === delegator.hash);
           if (index !== -1) {
             return {
@@ -167,10 +181,10 @@ export function reducer(state: BakingState = initialState, action: BakingActions
       }
       return {
         ...state,
+        delegators,
+        sortedDelegators,
         activeBaker: {
           ...state.activeBaker,
-          delegators,
-          sortedDelegators,
           batches: state.activeBaker.batches.map(batch => {
             const batchDelegators = delegators.slice(batch.index, batch.index + batch.transactions);
             return {
@@ -185,7 +199,7 @@ export function reducer(state: BakingState = initialState, action: BakingActions
 
     case BAKING_APPLY_COMMISSION_FEE: {
       const feePercentage = action.payload / 100;
-      const delegators = state.activeBaker.delegators.map(delegator => {
+      const delegators = state.delegators.map(delegator => {
         const rewardAfterFee = delegator.reward - (delegator.reward * feePercentage);
         return ({
           ...delegator,
@@ -201,12 +215,12 @@ export function reducer(state: BakingState = initialState, action: BakingActions
       return {
         ...state,
         commissionFee: action.payload,
+        delegators,
+        sortedDelegators: sortDelegatesOrDelegators(delegators, state.sort),
         activeBaker: {
           ...state.activeBaker,
           rewardAfterFee: state.activeBaker.rewardToDistribute - state.activeBaker.rewardToDistribute * feePercentage,
           batches,
-          delegators,
-          sortedDelegators: sortDelegatesOrDelegators(delegators, state.sort)
         }
       };
     }
@@ -227,9 +241,8 @@ export function reducer(state: BakingState = initialState, action: BakingActions
   }
 }
 
-function getBatchesAndDelegators(activeBaker: BakingBaker): { batches: BakingBatch[], delegators: BakingDelegator[] } {
-  const batches = getBatches(activeBaker?.delegators);
-  let delegators = activeBaker?.delegators;
+function getBatchesAndDelegators(delegators: BakingDelegator[]): { batches: BakingBatch[], delegators: BakingDelegator[] } {
+  const batches = getBatches(delegators);
   batches.forEach((batch: BakingBatch, batchCount: number) => {
     delegators = [
       ...delegators.slice(0, batch.index),
@@ -254,7 +267,7 @@ function getBatchStatus(batchDelegators: BakingDelegator[]): BakingPaymentStatus
   }
 }
 
-function getBatches(delegators: BakingDelegator[] | undefined): BakingBatch[] {
+function getBatches(delegators: BakingDelegator[]): BakingBatch[] {
   if (!delegators) {
     return [];
   }
@@ -282,12 +295,7 @@ function sortDelegatesOrDelegators<T = BakingDelegator | BakingBaker>(array: T[]
   const sortProperty = sort.sortBy;
 
   const sortFunction = (e1: T, e2: T): number => {
-    if (['delegators'].includes(sortProperty)) {
-      return sort.sortDirection === SortDirection.DSC
-        ? (e2[sortProperty].length - e1[sortProperty].length)
-        : (e1[sortProperty].length - e2[sortProperty].length);
-    }
-    if (['hash'].includes(sortProperty)) {
+    if (['hash', 'bakerName'].includes(sortProperty)) {
       return sort.sortDirection === SortDirection.DSC
         ? e2[sortProperty].localeCompare(e1[sortProperty])
         : e1[sortProperty].localeCompare(e2[sortProperty]);

@@ -32,8 +32,8 @@ export class BakingService {
     return this.http.get<GetBakersResponse[]>(url).pipe(
       // map(res => { // todo: remove
       //   let maxLength = 0;
-      //   res.forEach(d => maxLength = maxLength < d.delegator_rewards.length ? d.delegator_rewards.length : maxLength);
-      //   const findIndex = res.findIndex(d => d.delegator_rewards.length === maxLength);
+      //   res.forEach(d => maxLength = maxLength < d.delegator_count ? d.delegator_count : maxLength);
+      //   const findIndex = res.findIndex(d => d.delegator_count === maxLength);
       //   // const findIndex = res.findIndex(d => d.address === 'tz1irJKkXS2DBWkU1NnmFQx1c1L7pbGg4yhk');
       //   if (findIndex !== -1) {
       //     res[findIndex].address = 'tz1fm6a28VahUmoGkRV2RwuBMhtYNztkrtJy';
@@ -41,6 +41,14 @@ export class BakingService {
       //   return res;
       // }),
       map((response: GetBakersResponse[]) => this.mapGetBakersResponse(response)),
+    );
+  }
+
+  getDelegators(api: string, cycle: number, baker: string): Observable<BakingDelegator[]> {
+    baker = baker === 'tz1fm6a28VahUmoGkRV2RwuBMhtYNztkrtJy' ? 'tz1cjyja1TU6fiyiFav3mFAdnDsCReJ12hPD' : baker;
+    const url = `${api}/dev/rewards/cycle/${cycle}/${baker}`;
+    return this.http.get<GetDelegatorsResponse>(url).pipe(
+      map((response: GetDelegatorsResponse) => this.mapGetDelegatorsResponse(response)),
     );
   }
 
@@ -57,32 +65,45 @@ export class BakingService {
       reward: Number(baker.total_rewards) / ONE_MILLION,
       rewardAfterFee: 0,
       balance: Number(baker.staking_balance) / ONE_MILLION,
-      delegators: baker.delegator_rewards.map(delegator => {
-        const reward = Number(delegator.reward) / ONE_MILLION;
-        return {
-          hash: delegator.address,
-          name: this.bakersDetails[delegator.address]?.name || delegator.address,
-          logo: this.bakersDetails[delegator.address]?.logo,
-          reward,
-          rewardAfterFee: reward,
-          fee: 0,
-          balance: Number(delegator.balance) / ONE_MILLION,
-          status: BakingPaymentStatus.UNPAID
-        } as BakingDelegator;
-      })
+      delegatorsLength: baker.delegator_count
     } as BakingBaker));
+  }
+
+  private mapGetDelegatorsResponse(baker: GetDelegatorsResponse): BakingDelegator[] {
+    return baker.delegator_rewards.map(delegator => {
+      const reward = Number(delegator.reward) / ONE_MILLION;
+      return {
+        hash: delegator.address,
+        name: this.bakersDetails[delegator.address]?.name || delegator.address,
+        logo: this.bakersDetails[delegator.address]?.logo,
+        reward,
+        rewardAfterFee: reward,
+        fee: 0,
+        balance: Number(delegator.balance) / ONE_MILLION,
+        status: BakingPaymentStatus.UNPAID
+      } as BakingDelegator;
+    });
   }
 }
 
-export interface GetBakersResponse {
+interface GetBakersResponse {
   address: string;
   total_rewards: string;
   staking_balance: string;
-  delegator_rewards: {
-    address: string;
-    balance: string;
-    reward: string;
-  }[];
+  delegator_count: number;
+}
+
+interface GetDelegatorsResponse {
+  address: string;
+  total_rewards: string;
+  staking_balance: string;
+  delegator_rewards: DelegatorReward[];
+}
+
+interface DelegatorReward {
+  address: string;
+  balance: string;
+  reward: string;
 }
 
 interface GetBlockMetadataResponse {

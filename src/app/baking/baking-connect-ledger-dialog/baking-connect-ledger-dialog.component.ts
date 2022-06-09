@@ -12,11 +12,8 @@ import { CdkStepper } from '@angular/cdk/stepper';
 import { of, Subscription, tap } from 'rxjs';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { BakingLedger } from '@shared/types/bakings/baking-ledger.type';
-import { Store } from '@ngrx/store';
-import { State } from '@app/app.index';
-import { BAKING_LEDGER_CONNECTED, BakingLedgerConnected } from '@baking/baking.actions';
 import { take } from 'rxjs/operators';
-import { getLedgerWallet } from '../../../../lib';
+import { getLedgerWallet } from 'tezos-wallet';
 
 @UntilDestroy()
 @Component({
@@ -37,8 +34,7 @@ export class BakingConnectLedgerDialogComponent implements AfterViewInit {
   private ledgerSub: Subscription;
 
   constructor(private dialogRef: MatDialogRef<BakingConnectLedgerDialogComponent>,
-              private cdRef: ChangeDetectorRef,
-              private store: Store<State>) { }
+              private cdRef: ChangeDetectorRef) { }
 
   ngAfterViewInit(): void {
     this.continueButton.nativeElement.focus();
@@ -65,7 +61,7 @@ export class BakingConnectLedgerDialogComponent implements AfterViewInit {
     if (!this.isWaitingLedger) {
       this.ledgerSub = of(void 0).pipe(
         tap(() => this.isWaitingLedger = true),
-        getLedgerWallet(() => this.transportHolder),
+        getLedgerWallet(() => this.transportHolder) as any,
         untilDestroyed(this),
         take(1),
       ).subscribe((data: any) => {
@@ -82,7 +78,6 @@ export class BakingConnectLedgerDialogComponent implements AfterViewInit {
   }
 
   confirm(): void {
-    this.store.dispatch<BakingLedgerConnected>({ type: BAKING_LEDGER_CONNECTED, payload: { ledger: this.ledger } });
     this.dialogRef.close(this.ledger);
   }
 }

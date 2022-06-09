@@ -1,5 +1,3 @@
-import { BakingDelegator } from '@shared/types/bakings/baking-delegator.type';
-
 export interface BakingBaker {
   hash: string;
   logo: string;
@@ -8,6 +6,5 @@ export interface BakingBaker {
   rewardAfterFee: number;
   rewardToDistribute: number;
   balance: number;
-  delegators: BakingDelegator[];
-  sortedDelegators: BakingDelegator[];
+  delegatorsLength: number;
 }

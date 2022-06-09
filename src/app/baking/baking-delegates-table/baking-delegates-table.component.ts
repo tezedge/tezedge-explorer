@@ -8,6 +8,7 @@ import { Router } from '@angular/router';
 import { SortDirection, TableSort } from '@shared/types/shared/table-sort.type';
 import { BAKING_SORT_DELEGATES, BakingSortDelegates } from '@baking/baking.actions';
 import { ADD_INFO, InfoAdd } from '@app/layout/error-popup/error-popup.actions';
+import { addInfo } from '@shared/constants/store-functions';
 
 
 @UntilDestroy()
@@ -20,10 +21,10 @@ import { ADD_INFO, InfoAdd } from '@app/layout/error-popup/error-popup.actions';
 export class BakingDelegatesTableComponent implements OnInit {
 
   readonly tableHeads = [
-    { name: 'BAKER ADDRESS', sort: 'hash' },
+    { name: 'BAKER', sort: 'bakerName' },
     { name: 'REWARDS (ꜩ)', sort: 'reward' },
     { name: 'BALANCE (ꜩ)', sort: 'balance' },
-    { name: 'DELEGATORS', sort: 'delegators' },
+    { name: 'DELEGATORS', sort: 'delegatorsLength' },
   ];
 
   bakers: BakingBaker[] = [];
@@ -41,7 +42,7 @@ export class BakingDelegatesTableComponent implements OnInit {
 
   copyHashToClipboard(hash: string, event: MouseEvent): void {
     event.stopPropagation();
-    this.store.dispatch<InfoAdd>({ type: ADD_INFO, payload: 'Copied to clipboard: ' + hash });
+    addInfo(this.store, hash);
   }
 
   sortTable(sortBy: string): void {
@@ -62,12 +63,12 @@ export class BakingDelegatesTableComponent implements OnInit {
   }
 
   private listenToBakersChanges(): void {
-    this.store.select(selectBakingBakers).pipe(
-      untilDestroyed(this),
-    ).subscribe(bakers => {
-      this.bakers = bakers;
-      this.cdRef.detectChanges();
-    });
+    this.store.select(selectBakingBakers)
+      .pipe(untilDestroyed(this))
+      .subscribe(bakers => {
+        this.bakers = bakers;
+        this.cdRef.detectChanges();
+      });
 
     this.store.select(selectBakingSort)
       .pipe(untilDestroyed(this))

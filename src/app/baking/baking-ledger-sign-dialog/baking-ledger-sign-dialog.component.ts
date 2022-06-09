@@ -11,8 +11,16 @@ import { BakingDelegator } from '@shared/types/bakings/baking-delegator.type';
 import { selectFullActiveNode } from '@settings/settings-node.reducer';
 import { BAKING_ADD_DISTRIBUTED_REWARD, BakingAddDistributedReward } from '@baking/baking.actions';
 import { BakingPaymentStatus } from '@shared/types/bakings/baking-payment-status.type';
-import { initializeWallet, State as TezosWalletState, Transaction, transaction } from '../../../../lib';
+import { initializeWallet, State as TezosWalletState, Transaction, transaction } from 'tezos-wallet';
 import { SettingsNodeEntity } from '@shared/types/settings-node/settings-node-entity.type';
+
+type BakingLedgerSignDialogData = {
+  batchIndex: number,
+  activeBaker: ActiveBaker,
+  delegators: BakingDelegator[],
+  ledger: BakingLedger,
+  transactionFee: number
+};
 
 @UntilDestroy()
 @Component({
@@ -31,7 +39,7 @@ export class BakingLedgerSignDialogComponent implements OnInit {
   private transportHolder: { transport: any | undefined } = { transport: undefined };
   private transactions: Transaction[] = [];
 
-  constructor(@Inject(MAT_DIALOG_DATA) public dialogData: { batchIndex: number, activeBaker: ActiveBaker, ledger: BakingLedger, transactionFee: number },
+  constructor(@Inject(MAT_DIALOG_DATA) public dialogData: BakingLedgerSignDialogData,
               private dialogRef: MatDialogRef<BakingLedgerSignDialogComponent>,
               private cdRef: ChangeDetectorRef,
               private store: Store<State>) { }
@@ -63,7 +71,7 @@ export class BakingLedgerSignDialogComponent implements OnInit {
             }
           },
           type: 'LEDGER',
-        })),
+        })) as any,
         map((state: any) => ({
           ...state,
           ledger: {
@@ -75,7 +83,7 @@ export class BakingLedgerSignDialogComponent implements OnInit {
             browserWebSocketCtor: WebSocket
           }
         })),
-        transaction(() => this.transactions),
+        transaction(() => this.transactions) as any,
         untilDestroyed(this),
         take(1),
         catchError((err) => {
@@ -128,7 +136,7 @@ export class BakingLedgerSignDialogComponent implements OnInit {
 
   private calculateTransactions(): void {
     const batchToPay = this.dialogData.activeBaker.batches[this.dialogData.batchIndex];
-    const delegators = this.dialogData.activeBaker.delegators;
+    const delegators = this.dialogData.delegators;
 
     this.transactions = delegators
       .slice(batchToPay.index, batchToPay.index + batchToPay.transactions)

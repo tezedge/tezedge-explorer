@@ -73,16 +73,16 @@ export class WalletsEffects {
 
         mergeMap((state: any) => of([]).pipe(
             // initialize
-            initializeWallet(stateWallet => ({
-                publicKeyHash: state.detail.publicKeyHash,
-                node: state.node
-            })),
-
-            // get wallet info
-            getWallet(),
-
-            // enter back into zone.js so change detection works
-            enterZone(this.zone),
+            // initializeWallet(stateWallet => ({
+            //     publicKeyHash: state.detail.publicKeyHash,
+            //     node: state.node
+            // })),
+            //
+            // // get wallet info
+            // getWallet(),
+            //
+            // // enter back into zone.js so change detection works
+            // enterZone(this.zone),
         )),
 
         map(action => ({ type: 'WALLET_LIST_LOAD_SUCCESS', payload: action })),
@@ -107,37 +107,37 @@ export class WalletsEffects {
         mergeMap(({ action, state }) => of([]).pipe(
 
             // wait until sodium is ready
-            initializeWallet(stateWallet => ({
-                secretKey: state.wallets.entities[state.wallets.selectedWalletId].secretKey,
-                publicKey: state.wallets.entities[state.wallets.selectedWalletId].publicKey,
-                // for smart contract use manager address
-                publicKeyHash: state.wallets.entities[state.wallets.selectedWalletId].publicKeyHash,
-                // set tezos node
-                node: {
-                    display: 'Sandbox',
-                    name: 'sandbox',
-                    //url: 'http://sandbox.dev.tezedge.com:18732',
-                    url: state.settingsNode.activeNode.http,
-                    tzstats: {
-                        url: 'https://tzstats.com/',
-                        api: 'https://api.tzstats.com/',
-                    },
-                },
-                // set wallet type: WEB, TREZOR_ONE, TREZOR_T
-                type: 'web',
-                // set HD path for HW wallet
-                path: undefined
-            })),
-
-            // send xtz
-            transaction(stateWallet => ({
-                to: state.wallets.form.to,
-                amount: state.wallets.form.amount,
-                fee: state.wallets.form.fee,
-            })),
-
-            // enter back into zone.js so change detection works
-            enterZone(this.zone),
+            // initializeWallet(stateWallet => ({
+            //     secretKey: state.wallets.entities[state.wallets.selectedWalletId].secretKey,
+            //     publicKey: state.wallets.entities[state.wallets.selectedWalletId].publicKey,
+            //     // for smart contract use manager address
+            //     publicKeyHash: state.wallets.entities[state.wallets.selectedWalletId].publicKeyHash,
+            //     // set tezos node
+            //     node: {
+            //         display: 'Sandbox',
+            //         name: 'sandbox',
+            //         //url: 'http://sandbox.dev.tezedge.com:18732',
+            //         url: state.settingsNode.activeNode.http,
+            //         tzstats: {
+            //             url: 'https://tzstats.com/',
+            //             api: 'https://api.tzstats.com/',
+            //         },
+            //     },
+            //     // set wallet type: WEB, TREZOR_ONE, TREZOR_T, LEDGER
+            //     type: 'web',
+            //     // set HD path for HW wallet
+            //     path: undefined
+            // })),
+            //
+            // // send xtz
+            // transaction(stateWallet => ([{
+            //     to: state.wallets.form.to,
+            //     amount: state.wallets.form.amount,
+            //     fee: state.wallets.form.fee,
+            // }])),
+            //
+            // // enter back into zone.js so change detection works
+            // enterZone(this.zone),
 
         )),
 

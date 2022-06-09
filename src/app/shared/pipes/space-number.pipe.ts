@@ -6,12 +6,19 @@ import { Pipe, PipeTransform } from '@angular/core';
 })
 export class SpaceNumberPipe implements PipeTransform {
 
-  transform(value: string | number, decimals?: number): string {
+  transform(value: string | number, decimals?: number, duoTone: boolean = false): string {
     // return value?.toString().replace(/(?!^)(?=(?:\d{3})+$)/g, ' ');
     const parts = (value ?? '').toString().split('.');
     parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
     parts[1] = parts[1]?.slice(0, decimals);
-    return parts[1] ? parts.join('.') : parts[0];
+    if (duoTone) {
+      parts[0] = '<span class="foreground">' + parts[0] + '</span>';
+    }
+    if (parts[1]) {
+      return parts.join('.');
+    } else {
+      return parts[0];
+    }
   }
 
 }

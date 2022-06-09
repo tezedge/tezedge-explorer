@@ -10,20 +10,24 @@
         <div class="foreground-4">{{ activeBaker.hash }}</div>
         <div class="flex-row flex-between">
           <div>Number of delegators</div>
-          <div class="margin-right-8">{{ activeBaker.delegators.length }}</div>
+          <div class="margin-right-8">{{ activeBaker.delegatorsLength }}</div>
         </div>
         <div class="flex-row flex-between">
           <div>Total reward</div>
-          <div class="margin-right-8">{{ activeBaker.reward | number: '1.0-6' }} ꜩ</div>
+          <div class="margin-right-8 foreground-7"
+               [innerHTML]="(activeBaker.reward || 0 | spaceNumber: 6: true) + ' ꜩ'">
+          </div>
         </div>
         <div class="flex-row flex-between">
           <div>Total rewards to distribute</div>
-          <div class="margin-right-8">{{ activeBaker.rewardAfterFee | number: '1.0-6' }} ꜩ</div>
+          <div class="margin-right-8 foreground-7"
+               [innerHTML]="(activeBaker.rewardAfterFee || 0 | spaceNumber: 6: true) + ' ꜩ'">
+          </div>
         </div>
         <div class="flex-row flex-between font-600">
           <div>Baker's reward</div>
-          <div
-            class="margin-right-8">{{ activeBaker.rewardToDistribute - activeBaker.rewardAfterFee | number: '1.0-6' }} ꜩ
+          <div class="margin-right-8 foreground-7"
+               [innerHTML]="((activeBaker.rewardToDistribute - activeBaker.rewardAfterFee) || 0 | spaceNumber: 6: true) + ' ꜩ'">
           </div>
         </div>
         <mat-form-field (keydown.enter)="applyCommissionFee()"

@@ -1,5 +1,4 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
 
 import { MempoolBakingRightsRouting } from './mempool-baking-rights.routing';
 import { MempoolBakingRightsComponent } from '@mempool/consensus/baking-rights/mempool-baking-rights/mempool-baking-rights.component';
@@ -18,7 +17,6 @@ import { MempoolBakingRightsEffects } from '@mempool/consensus/baking-rights/mem
     MempoolBakingRightsGraphComponent,
   ],
   imports: [
-    CommonModule,
     MempoolBakingRightsRouting,
     TezedgeSharedModule,
     MempoolSharedModule,

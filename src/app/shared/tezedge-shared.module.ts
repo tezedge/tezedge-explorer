@@ -57,6 +57,7 @@ const DIRECTIVES = [
     TezedgeAppSharedModule,
   ],
   exports: [
+    CommonModule,
     FlexLayoutModule,
     MaterialModule,
     NgxJsonViewerModule,

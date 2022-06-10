@@ -15,7 +15,6 @@ import {
   MempoolConsensusStartSearchingRounds,
   MempoolConsensusStop
 } from '@mempool/consensus/mempool-consensus.actions';
-import { selectNetworkLastAppliedBlockLevel } from '@network/network-stats/network-stats.reducer';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { distinctUntilChanged, filter, map, take } from 'rxjs/operators';
 import {
@@ -29,6 +28,7 @@ import { formatNumber } from '@angular/common';
 import { MICROSECOND_FACTOR } from '@shared/constants/unit-measurements';
 import { MempoolConsensusRound } from '@shared/types/mempool/consensus/mempool-consensus-round.type';
 import Timeout = NodeJS.Timeout;
+import { selectNetworkLastAppliedBlockLevel } from '@monitoring/network-stats/network-stats.reducer';
 
 @UntilDestroy()
 @Component({

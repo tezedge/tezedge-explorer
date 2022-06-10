@@ -1,5 +1,4 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
 
 import { SandboxRoutingModule } from './sandbox-routing.module';
 import { SandboxComponent } from '@sandbox/sandbox.component';
@@ -15,7 +14,6 @@ import { ChainModule } from '@chain/chain.module';
     SandboxStatusBarComponent,
   ],
   imports: [
-    CommonModule,
     SandboxRoutingModule,
     TezedgeSharedModule,
     MatStepperModule,

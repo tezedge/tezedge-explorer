@@ -1,5 +1,4 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
 import { MempoolRoutingModule } from './mempool.routing';
 import { MempoolComponent } from '@mempool/mempool.component';
 import { MempoolOperationComponent } from '@mempool/operation/mempool-operation/mempool-operation.component';
@@ -21,7 +20,6 @@ import { MempoolSharedModule } from '@mempool/_common/mempool-shared.module';
     MempoolBlockApplicationComponent,
   ],
   imports: [
-    CommonModule,
     MempoolRoutingModule,
     TezedgeSharedModule,
     MempoolSharedModule,

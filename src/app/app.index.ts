@@ -12,9 +12,9 @@ import * as fromSettingsNode from './layout/settings-node/settings-node.reducer'
 import * as fromMonitoring from './monitoring/monitoring.reducer';
 import * as fromMempool from './mempool/mempool.reducer';
 import * as fromNetworkAction from './network/network-action/network-action.reducer';
-import * as fromNetworkPeers from './network/network-peers/network-peers.reducer';
-import * as fromNetworkStats from './network/network-stats/network-stats.reducer';
-import * as fromNetworkHistory from './network/network-history/network-history.reducer';
+import * as fromNetworkPeers from './monitoring/network-peers/network-peers.reducer';
+import * as fromNetworkStats from './monitoring/network-stats/network-stats.reducer';
+import * as fromNetworkHistory from './monitoring/network-history/network-history.reducer';
 import * as fromEndpointsAction from './endpoints/endpoints-action/endpoints-action.reducer';
 import * as fromChainServer from './chain/chain-server/chain-server.reducer';
 import * as fromChainWallets from './chain/chain-wallets/chain-wallets.reducer';
@@ -41,7 +41,6 @@ import { NetworkPeers } from '@shared/types/network/network-peers.type';
 import { NetworkHistory } from '@shared/types/network/network-history.type';
 import { NetworkAction } from '@shared/types/network/network-action.type';
 import { App } from '@shared/types/app/app.type';
-import { Monitoring } from '@shared/types/monitoring/monitoring.type';
 import { LogsAction } from '@shared/types/logs/logs-action.type';
 import { GithubVersion } from '@shared/types/github-version/github-version.type';
 import { StateMachine } from '@shared/types/state-machine/state-machine.type';
@@ -49,11 +48,12 @@ import { SmartContractsState } from '@smart-contracts/smart-contracts/smart-cont
 import { LoadingSpinnerState } from '@app/layout/loading-spinner/loading-spinner.reducer';
 import { StorageState } from '@storage/storage.index';
 import { BakingState } from '@baking/baking.index';
+import { MonitoringState } from '@monitoring/monitoring.index';
 
 export interface State {
   app: App;
   baking: BakingState;
-  monitoring: Monitoring;
+  monitoring: MonitoringState;
   mempool: MempoolState;
   networkAction: NetworkAction;
   networkPeers: NetworkPeers;

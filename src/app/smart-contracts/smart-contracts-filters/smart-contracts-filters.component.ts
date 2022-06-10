@@ -15,7 +15,7 @@ import { MergedRoute } from '@shared/router/merged-route';
 import { selectActiveNodeHeader } from '@settings/settings-node.reducer';
 import { SettingsNodeEntityHeader } from '@shared/types/settings-node/settings-node-entity-header.type';
 import { selectSmartContractsBlockHashContext } from '@smart-contracts/smart-contracts/smart-contracts.index';
-import { selectNetworkCurrentBlockHash } from '@network/network-stats/network-stats.reducer';
+import { selectNetworkCurrentBlockHash } from '@monitoring/network-stats/network-stats.reducer';
 
 @UntilDestroy()
 @Component({

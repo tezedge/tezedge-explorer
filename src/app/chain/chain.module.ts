@@ -1,5 +1,4 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
 import { ChainRoutingModule } from './chain-routing.module';
 import { ChainComponent } from '@chain/chain.component';
 import { ChainServerComponent } from '@chain/chain-server/chain-server.component';
@@ -27,7 +26,6 @@ import { TezedgeSharedModule } from '@shared/tezedge-shared.module';
     ChainConfigComponent
   ],
   imports: [
-    CommonModule,
     ChainRoutingModule,
     TezedgeSharedModule,
   ]

@@ -1,19 +1,25 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
 
 import { MonitoringRouting } from './monitoring.routing';
 import { MonitoringComponent } from '@monitoring/monitoring.component';
-import { NetworkModule } from '@network/network.module';
+import { NetworkHistoryComponent } from '@monitoring/network-history/network-history.component';
+import { NetworkPeersComponent } from '@monitoring/network-peers/network-peers.component';
+import { NetworkStatsComponent } from '@monitoring/network-stats/network-stats.component';
+import { BandwidthPipe } from '@shared/pipes/bandwidth.pipe';
+import { TezedgeSharedModule } from '@shared/tezedge-shared.module';
 
 
 @NgModule({
   declarations: [
     MonitoringComponent,
+    NetworkHistoryComponent,
+    NetworkPeersComponent,
+    NetworkStatsComponent,
+    BandwidthPipe,
   ],
   imports: [
-    CommonModule,
     MonitoringRouting,
-    NetworkModule,
+    TezedgeSharedModule,
   ]
 })
 export class MonitoringModule {}

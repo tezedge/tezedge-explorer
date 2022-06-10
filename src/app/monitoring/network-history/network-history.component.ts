@@ -6,6 +6,7 @@ import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { State } from '@app/app.index';
 import { NetworkHistoryEntity } from '@shared/types/network/network-history-entity.type';
 import { NetworkHistory } from '@shared/types/network/network-history.type';
+import { selectNetworkHistory } from '@monitoring/monitoring.index';
 
 
 @UntilDestroy()
@@ -18,13 +19,18 @@ import { NetworkHistory } from '@shared/types/network/network-history.type';
 export class NetworkHistoryComponent implements OnInit {
 
   formattedNetworkHistory: Array<FormattedNetworkHistory>;
+
   private networkHistoryEntities: Array<NetworkHistoryEntity>;
 
   constructor(private cdRef: ChangeDetectorRef,
               private store: Store<State>) { }
 
+  readonly trackByRowPosition = (index: number, row: FormattedNetworkHistory) => row.id;
+  readonly trackByRowPeriod = (index: number, period: VotingPeriodRow) => period.id;
+  readonly trackByCycle = (index: number, cycle: VotingCycle) => cycle.id;
+
   ngOnInit(): void {
-    this.store.select('networkHistory')
+    this.store.select(selectNetworkHistory)
       .pipe(
         debounceTime(200),
         untilDestroyed(this)
@@ -69,9 +75,5 @@ export class NetworkHistoryComponent implements OnInit {
     }
     this.cdRef.markForCheck();
   }
-
-  readonly trackByRowPosition = (index: number, row: FormattedNetworkHistory) => row.id;
-  readonly trackByRowPeriod = (index: number, period: VotingPeriodRow) => period.id;
-  readonly trackByCycle = (index: number, cycle: VotingCycle) => cycle.id;
 }
 

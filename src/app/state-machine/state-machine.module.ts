@@ -1,5 +1,4 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
 import { StateMachineRoutingModule } from './state-machine.routing';
 import { StateMachineComponent } from './state-machine/state-machine.component';
 import { TezedgeSharedModule } from '@shared/tezedge-shared.module';
@@ -23,7 +22,6 @@ import { StateMachineStatisticsComponent } from './state-machine-statistics/stat
     StateMachineStatisticsComponent,
   ],
   imports: [
-    CommonModule,
     StateMachineRoutingModule,
     TezedgeSharedModule,
     NgxObjectDiffModule,

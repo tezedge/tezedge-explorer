@@ -6,7 +6,10 @@ import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { Router } from '@angular/router';
 import { getMergedRoute } from '@shared/router/router-state.selectors';
 import { MergedRoute } from '@shared/router/merged-route';
-import { selectStateResources, StateResourcesState } from '@resources/state-resources/state-resources/state-resources.index';
+import {
+  selectStateResources,
+  StateResourcesState
+} from '@resources/state-resources/state-resources/state-resources.index';
 import {
   STATE_RESOURCES_CHANGE_ACTIVE_ROUND,
   STATE_RESOURCES_LOAD_BLOCKS,
@@ -16,8 +19,8 @@ import {
   StateResourcesNodeLifetimeData
 } from '@resources/state-resources/state-resources/state-resources.actions';
 import { StateResourcesBlockData } from '@shared/types/resources/state/state-resources-block-data.type';
-import { selectNetworkLastAppliedBlockLevel } from '@network/network-stats/network-stats.reducer';
 import { distinctUntilChanged, filter } from 'rxjs/operators';
+import { selectNetworkLastAppliedBlockLevel } from '@monitoring/network-stats/network-stats.reducer';
 
 @UntilDestroy()
 @Component({
@@ -121,7 +124,10 @@ export class StateResourcesBlockFiltersComponent implements OnInit {
     if (this.routedBlockRound !== round) {
       this.formGroup.get('block').patchValue(level);
       this.router.navigate(['resources', 'state', level, round]);
-      this.store.dispatch<StateResourcesChangeActiveRound>({ type: STATE_RESOURCES_CHANGE_ACTIVE_ROUND, payload: { level, round } });
+      this.store.dispatch<StateResourcesChangeActiveRound>({
+        type: STATE_RESOURCES_CHANGE_ACTIVE_ROUND,
+        payload: { level, round }
+      });
     }
   }
 

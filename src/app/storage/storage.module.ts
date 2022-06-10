@@ -1,5 +1,4 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
 
 import { StorageRoutingModule } from './storage.routing';
 import { TezedgeSharedModule } from '@shared/tezedge-shared.module';
@@ -23,7 +22,6 @@ import { StorageRequestComponent } from './storage-request/storage-request.compo
     StorageRequestComponent,
   ],
   imports: [
-    CommonModule,
     StorageRoutingModule,
     TezedgeSharedModule,
     MatFormFieldModule,

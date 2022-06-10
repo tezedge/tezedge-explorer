@@ -1,5 +1,4 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
 
 import { BakingRouting } from './baking.routing';
 import { BakingComponent } from './baking/baking.component';
@@ -27,7 +26,6 @@ import { BakingBatchListComponent } from './baking-batch-list/baking-batch-list.
     BakingBatchListComponent,
   ],
   imports: [
-    CommonModule,
     BakingRouting,
     TezedgeSharedModule,
     MatDialogModule,

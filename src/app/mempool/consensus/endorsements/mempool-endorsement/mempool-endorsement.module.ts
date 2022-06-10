@@ -1,5 +1,4 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
 
 import { MempoolEndorsementRouting } from './mempool-endorsement.routing';
 import { MempoolEndorsementComponent } from '@mempool/consensus/endorsements/mempool-endorsement/mempool-endorsement.component';
@@ -18,7 +17,6 @@ import { MempoolEndorsementEffects } from '@mempool/consensus/endorsements/mempo
     MempoolEndorsementsGraphComponent,
   ],
   imports: [
-    CommonModule,
     MempoolEndorsementRouting,
     TezedgeSharedModule,
     MempoolSharedModule,

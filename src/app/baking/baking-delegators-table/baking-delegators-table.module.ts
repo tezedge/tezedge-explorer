@@ -1,5 +1,4 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
 import { TezedgeSharedModule } from '@shared/tezedge-shared.module';
 import { RouterModule, Routes } from '@angular/router';
 import { BakingDelegatorsTableComponent } from '@baking/baking-delegators-table/baking-delegators-table.component';
@@ -23,7 +22,6 @@ export class BakingDelegatorsTableRouting {}
     BakingDelegatorsTableComponent,
   ],
   imports: [
-    CommonModule,
     TezedgeSharedModule,
     BakingDelegatorsTableRouting,
   ]

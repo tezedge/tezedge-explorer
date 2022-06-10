@@ -1,5 +1,4 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
 
 import { ResourcesRoutingModule } from '@resources/resources.routing';
 import { TezedgeSharedModule } from '@shared/tezedge-shared.module';
@@ -35,7 +34,6 @@ import { StateResourcesBlockFiltersComponent } from '@resources/state-resources/
     StateResourcesBlockFiltersComponent,
   ],
   imports: [
-    CommonModule,
     ResourcesRoutingModule,
     TezedgeSharedModule,
   ],

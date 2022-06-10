@@ -1,5 +1,4 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
 
 import { EndpointsRoutingModule } from './endpoints-routing.module';
 import { EndpointsActionComponent } from '@endpoints/endpoints-action/endpoints-action.component';
@@ -15,7 +14,6 @@ import { TezedgeSharedModule } from '@shared/tezedge-shared.module';
     EndpointsComponent,
   ],
   imports: [
-    CommonModule,
     EndpointsRoutingModule,
     TezedgeSharedModule,
   ]

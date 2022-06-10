@@ -1,5 +1,4 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
 
 import { SmartContractsRoutingModule } from '@app/smart-contracts/smart-contracts.routing';
 import { TezedgeSharedModule } from '@shared/tezedge-shared.module';
@@ -15,7 +14,7 @@ import { NgxObjectDiffModule } from 'ngx-object-diff';
 import { SmartContractsDebugComponent } from './smart-contracts-debug/smart-contracts-debug.component';
 import { SmartContractsTableTooltipComponent } from './smart-contracts-table-tooltip/smart-contracts-table-tooltip.component';
 
-export const myMonacoLoad = () => {
+const myMonacoLoad = () => {
   (window as any).monaco.languages.register({ id: 'michelson' });
 
   // Register a tokens provider for the language
@@ -105,7 +104,6 @@ const monacoConfig: NgxMonacoEditorConfig = {
     SmartContractsTableTooltipComponent
   ],
   imports: [
-    CommonModule,
     SmartContractsRoutingModule,
     TezedgeSharedModule,
     MonacoEditorModule.forRoot(monacoConfig),
@@ -115,8 +113,7 @@ const monacoConfig: NgxMonacoEditorConfig = {
 })
 export class SmartContractsModule {}
 
-
-export function primitives(): any[] {
+function primitives(): any[] {
   return [
     {
       label: 'FAILWITH',

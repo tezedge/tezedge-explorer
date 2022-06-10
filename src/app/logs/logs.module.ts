@@ -1,5 +1,4 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
 
 import { LogsRoutingModule } from './logs.routing';
 import { LogsActionComponent } from './logs-action/logs-action.component';
@@ -15,7 +14,6 @@ import { ReactiveFormsModule } from '@angular/forms';
     LogsActionComponent,
   ],
   imports: [
-    CommonModule,
     LogsRoutingModule,
     TezedgeSharedModule,
     MatDatepickerModule,

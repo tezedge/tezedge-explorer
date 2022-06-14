@@ -25,7 +25,7 @@ context('MEMPOOL BAKING RIGHTS', () => {
       .its('store')
       .then(store => {
         store.select('settingsNode').subscribe(settingsNode => {
-          store.select('networkStats').subscribe(networkStats => {
+          store.select(state => state.monitoring.networkStats).subscribe(networkStats => {
             const currentBlock = networkStats.lastAppliedBlock.hash;
             const level = networkStats.lastAppliedBlock.level;
             if (currentBlock && level) {
@@ -43,7 +43,7 @@ context('MEMPOOL BAKING RIGHTS', () => {
       .its('store')
       .then(store => {
         store.select('settingsNode').subscribe(settingsNode => {
-          store.select('networkStats').subscribe(networkStats => {
+          store.select(state => state.monitoring.networkStats).subscribe(networkStats => {
             const currentBlock = networkStats.lastAppliedBlock.hash;
             const level = networkStats.lastAppliedBlock.level;
             if (currentBlock && level) {

@@ -70,7 +70,7 @@ export class AppComponent implements OnInit {
   }
 
   private getNetworkStatsData(): void {
-    this.networkStats$ = this.store.select('networkStats').pipe(debounceTime(200));
+    this.networkStats$ = this.store.select(state => state.monitoring.networkStats).pipe(debounceTime(200));
   }
 
   private initAppData(): void {

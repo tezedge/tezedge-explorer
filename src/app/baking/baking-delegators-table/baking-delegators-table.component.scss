@@ -14,7 +14,7 @@
   $col5: 160px;
   $col6: 150px;
   min-width: $col1 + $col2 + $col3 + $col4 + $col5 + $col6 + 30px;
-  color: $foreground-7;
+  color: $foreground-4;
 
   .row {
     grid-template-columns: $col1 $col2 $col3 $col4 $col5 $col6;

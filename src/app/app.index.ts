@@ -12,9 +12,7 @@ import * as fromSettingsNode from './layout/settings-node/settings-node.reducer'
 import * as fromMonitoring from './monitoring/monitoring.reducer';
 import * as fromMempool from './mempool/mempool.reducer';
 import * as fromNetworkAction from './network/network-action/network-action.reducer';
-import * as fromNetworkPeers from './monitoring/network-peers/network-peers.reducer';
-import * as fromNetworkStats from './monitoring/network-stats/network-stats.reducer';
-import * as fromNetworkHistory from './monitoring/network-history/network-history.reducer';
+import * as fromEmbedded from './embedded/embedded.reducer';
 import * as fromEndpointsAction from './endpoints/endpoints-action/endpoints-action.reducer';
 import * as fromChainServer from './chain/chain-server/chain-server.reducer';
 import * as fromChainWallets from './chain/chain-wallets/chain-wallets.reducer';
@@ -36,9 +34,6 @@ import { MempoolState } from '@mempool/mempool.reducer';
 import { ResourcesState } from '@resources/resources.reducer';
 import { ErrorState } from '@app/layout/error-popup/error-popup.reducer';
 import { SettingsNode } from '@shared/types/settings-node/settings-node.type';
-import { NetworkStats } from '@shared/types/network/network-stats.type';
-import { NetworkPeers } from '@shared/types/network/network-peers.type';
-import { NetworkHistory } from '@shared/types/network/network-history.type';
 import { NetworkAction } from '@shared/types/network/network-action.type';
 import { App } from '@shared/types/app/app.type';
 import { LogsAction } from '@shared/types/logs/logs-action.type';
@@ -49,6 +44,7 @@ import { LoadingSpinnerState } from '@app/layout/loading-spinner/loading-spinner
 import { StorageState } from '@storage/storage.index';
 import { BakingState } from '@baking/baking.index';
 import { MonitoringState } from '@monitoring/monitoring.index';
+import { EmbeddedState } from '@app/embedded/embedded.index';
 
 export interface State {
   app: App;
@@ -56,9 +52,7 @@ export interface State {
   monitoring: MonitoringState;
   mempool: MempoolState;
   networkAction: NetworkAction;
-  networkPeers: NetworkPeers;
-  networkStats: NetworkStats;
-  networkHistory: NetworkHistory;
+  embedded: EmbeddedState;
   endpointsAction: any;
   logsAction: LogsAction;
   storage: StorageState;
@@ -85,6 +79,7 @@ export const reducers: ActionReducerMap<State> = {
   chainFinish: fromChainFinish.reducer,
   chainServer: fromChainServer.reducer,
   chainWallets: fromChainWallets.reducer,
+  embedded: fromEmbedded.reducer,
   endpointsAction: fromEndpointsAction.reducer,
   error: fromError.reducer,
   githubVersion: fromVersion.reducer,
@@ -92,9 +87,6 @@ export const reducers: ActionReducerMap<State> = {
   mempool: fromMempool.reducer,
   monitoring: fromMonitoring.reducer,
   networkAction: fromNetworkAction.reducer,
-  networkHistory: fromNetworkHistory.reducer,
-  networkPeers: fromNetworkPeers.reducer,
-  networkStats: fromNetworkStats.reducer,
   resources: fromResources.reducer,
   sandbox: fromSandbox.reducer,
   settingsNode: fromSettingsNode.reducer,

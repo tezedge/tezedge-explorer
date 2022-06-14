@@ -33,19 +33,32 @@ export class BakingService {
       // map(res => { // todo: remove
       //   let maxLength = 0;
       //   res.forEach(d => maxLength = maxLength < d.delegator_count ? d.delegator_count : maxLength);
-      //   const findIndex = res.findIndex(d => d.delegator_count === maxLength);
-      //   // const findIndex = res.findIndex(d => d.address === 'tz1irJKkXS2DBWkU1NnmFQx1c1L7pbGg4yhk');
+      //   // const findIndex = res.findIndex(d => d.delegator_count === maxLength);
+      //   const findIndex = res.findIndex(d => d.address === 'tz1cjyja1TU6fiyiFav3mFAdnDsCReJ12hPD');
       //   if (findIndex !== -1) {
       //     res[findIndex].address = 'tz1fm6a28VahUmoGkRV2RwuBMhtYNztkrtJy';
       //   }
       //   return res;
+      // }),
+
+      // tap((bakers: GetBakersResponse[]) => {
+      //   bakers
+      //     .filter(b => !this.bakersDetails[b.address])
+      //     .map(baker => baker.address)
+      //     .forEach(address => {
+      //       this.http.get('https://cdn.tzstats.com/' + address + '.png').pipe(
+      //         map((response: any) => response.status),
+      //         catchError((error) => of(error.status || 404)),
+      //         filter(statusCode => statusCode === 200)
+      //       ).subscribe((x) => console.log(address));
+      //     });
       // }),
       map((response: GetBakersResponse[]) => this.mapGetBakersResponse(response)),
     );
   }
 
   getDelegators(api: string, cycle: number, baker: string): Observable<BakingDelegator[]> {
-    baker = baker === 'tz1fm6a28VahUmoGkRV2RwuBMhtYNztkrtJy' ? 'tz1cjyja1TU6fiyiFav3mFAdnDsCReJ12hPD' : baker;
+    // baker = baker === 'tz1fm6a28VahUmoGkRV2RwuBMhtYNztkrtJy' ? 'tz1cjyja1TU6fiyiFav3mFAdnDsCReJ12hPD' : baker;
     const url = `${api}/dev/rewards/cycle/${cycle}/${baker}`;
     return this.http.get<GetDelegatorsResponse>(url).pipe(
       map((response: GetDelegatorsResponse) => this.mapGetDelegatorsResponse(response)),

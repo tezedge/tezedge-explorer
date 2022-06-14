@@ -15,6 +15,10 @@ export const AppRouting: Routes = [
     loadChildren: () => import('./baking/baking.module').then(module => module.BakingModule)
   },
   {
+    path: 'embedded-bakers',
+    loadChildren: () => import('./embedded/embedded.module').then(module => module.EmbeddedModule)
+  },
+  {
     path: 'resources',
     loadChildren: () => import('./resources/resources.module').then(module => module.ResourcesModule)
   },

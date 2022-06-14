@@ -1,0 +1,29 @@
+<div class="d-flex align-center">
+  <button class="rectangle-button start-stream d-flex flex-center align-center foreground border-remove"
+          mat-icon-button matTooltip="Start Streaming"
+          [class.inactive]="!state.stream"
+          (click)="startStream()">
+    <mat-icon svgIcon="play-circle" class="icon-14 margin-right-5"></mat-icon>
+    <span>LIVE</span>
+  </button>
+  <button class="rectangle-button stop-stream d-flex flex-center align-center"
+          mat-icon-button matTooltip="Stop Streaming"
+          [class.inactive]="state.stream"
+          (click)="stopStream()">
+    <mat-icon svgIcon="pause-circle" class="icon-14 margin-right-5"></mat-icon>
+    <span>PAUSED</span>
+  </button>
+  <button class="square-button d-flex align-center flex-center"
+          id="previousPage" matTooltip="Previous results"
+          (click)="loadPreviousPage()"
+          [disabled]="state.activePageIndex === 0">
+    <mat-icon svgIcon="less-than" class="icon-12 d-flex icon-foreground-7"></mat-icon>
+  </button>
+  <button class="square-button d-flex align-center flex-center"
+          id="nextPage" matTooltip="Next results"
+          (click)="loadNextPage()"
+          [disabled]="state.activePageIndex === state.pages.length - 1">
+    <mat-icon svgIcon="greater-than" class="icon-12 d-flex icon-foreground-7"></mat-icon>
+  </button>
+  <p class="margin-remove f-12">Active results: {{ state.activePageIndex + 1 }}/{{ state.pages.length }}</p>
+</div>

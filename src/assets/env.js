@@ -20,6 +20,7 @@
         { name: 'resources/storage' },
         { name: 'resources/state' },
         { name: 'mempool' },
+        { name: 'embedded' },
         { name: 'storage' },
         { name: 'network' },
         { name: 'logs' },

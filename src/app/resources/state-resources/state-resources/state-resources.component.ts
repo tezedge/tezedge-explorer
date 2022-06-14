@@ -14,7 +14,7 @@ import { distinctUntilChanged, filter } from 'rxjs/operators';
 import { selectStateResources, StateResourcesState } from '@resources/state-resources/state-resources/state-resources.index';
 import { StateResourcesActionGroup } from '@shared/types/resources/state/state-resources-action-group.type';
 import { Router } from '@angular/router';
-import { selectNetworkLastAppliedBlockLevel } from '@monitoring/network-stats/network-stats.reducer';
+import { selectNetworkLastAppliedBlockLevel } from '@monitoring/monitoring.index';
 
 @UntilDestroy()
 @Component({

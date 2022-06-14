@@ -54,6 +54,16 @@ export class BakingLedgerSignDialogComponent implements OnInit {
 
   signTransactions(): void {
     this.errorMessage = false;
+    if ((window as any).Cypress) {
+      this.isWaitingLedger = true;
+      setTimeout(() => {
+        this.operationHash = 'mock_operation';
+        this.errorMessage = false;
+        this.isWaitingLedger = false;
+        this.cdRef.detectChanges();
+      }, 3000);
+      return;
+    }
     if (!this.isWaitingLedger) {
       const observable = of([]);
       observable.pipe(

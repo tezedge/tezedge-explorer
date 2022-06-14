@@ -87,7 +87,7 @@ export class BakingSummaryComponent implements OnInit {
         if (ledger) {
           this.store.dispatch<BakingLedgerConnected>({
             type: BAKING_LEDGER_CONNECTED,
-            payload: { ledger }
+            payload: { ledger: { ...ledger } }
           });
           this.router.navigate(['baking', ledger.publicKeyHash]);
         }

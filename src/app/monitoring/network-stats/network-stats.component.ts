@@ -4,6 +4,7 @@ import { debounceTime } from 'rxjs/operators';
 import { State } from '@app/app.index';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { NetworkStats } from '@shared/types/network/network-stats.type';
+import { selectNetworkStats } from '@monitoring/monitoring.index';
 
 @UntilDestroy()
 @Component({
@@ -20,7 +21,7 @@ export class NetworkStatsComponent implements OnInit {
               private cdRef: ChangeDetectorRef) {}
 
   ngOnInit(): void {
-    this.store.select('networkStats')
+    this.store.select(selectNetworkStats)
       .pipe(
         debounceTime(200),
         untilDestroyed(this)

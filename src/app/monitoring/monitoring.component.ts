@@ -14,10 +14,6 @@ export class MonitoringComponent implements OnInit, OnDestroy {
   constructor(private store: Store<State>) { }
 
   ngOnInit(): void {
-    this.initMonitoring();
-  }
-
-  private initMonitoring(): void {
     this.store.dispatch<MonitoringLoad>({ type: MONITORING_LOAD });
   }
 

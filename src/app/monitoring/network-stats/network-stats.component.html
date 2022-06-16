@@ -1,18 +1,16 @@
 <div class="network-stats foreground-4">
 
-  <div fxLayout="row"
-       fxLayout.lt-md="column"
-       class="network-stats-row">
+  <div fxLayout="row" fxLayout.lt-md="column" class="network-stats-row">
 
     <div class="network-stats-card">
       <div class="network-stats-card-title">Syncing headers and operations</div>
       <div class="network-stats-card-content">
         <div class="network-stats-card-left">
-          <span class="network-stats-card-number foreground-6" *ngIf="networkStats?.downloadedBlocks">
+          <span *ngIf="networkStats?.downloadedBlocks" class="network-stats-card-number foreground-6">
             {{ (networkStats.downloadedBlocks / (networkStats.currentBlockCount * 0.01)) | number:'1.1-1'}}%
           </span>
         </div>
-        <div class="network-stats-card-right" *ngIf="networkStats?.downloadedBlocks > 0">
+        <div *ngIf="networkStats?.downloadedBlocks > 0" class="network-stats-card-right">
           <span class="network-stats-card-right-content font-400"
                 [class.hidden]="!networkStats.eta.trim()">{{ networkStats.eta }} ETA</span>
           <span class="network-stats-card-right-content">{{ networkStats.downloadedBlocks }} level</span>
@@ -32,7 +30,7 @@
             {{ networkStats.lastAppliedBlock?.level / (networkStats.currentBlockCount * 0.01) | number:'1.1-1'}}%
           </span>
         </div>
-        <div class="network-stats-card-right" *ngIf="networkStats?.lastAppliedBlock?.level > 0 ">
+        <div *ngIf="networkStats?.lastAppliedBlock?.level > 0 " class="network-stats-card-right">
           <span *ngIf="networkStats.etaApplications"
                 class="network-stats-card-right-content font-400"
                 [class.hidden]="!networkStats.etaApplications?.trim()">{{ networkStats.etaApplications + ' ETA' }}</span>

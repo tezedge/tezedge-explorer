@@ -73,7 +73,7 @@ export class SmartContractsEffects {
   smartContractsSetActiveContract$ = createEffect(() => this.actions$.pipe(
     ofType(SMART_CONTRACTS_SET_ACTIVE_CONTRACT),
     withLatestFrom(this.store, (action: SmartContractsSetActiveContractAction, state: ObservedValueOf<Store<State>>) => ({ action, state })),
-    filter(({ action, state }) => state.networkStats.lastAppliedBlock.level > 0),
+    filter(({ action, state }) => state.monitoring.networkStats.lastAppliedBlock.level > 0),
     switchMap(({ action, state }) => {
       const previousBlockHash = state.smartContracts.blockHashContext.hashes[state.smartContracts.blockHashContext.activeIndex - 1];
       return this.smartContractsService.getContractCode(state.settingsNode.activeNode.http, previousBlockHash, action.payload).pipe(

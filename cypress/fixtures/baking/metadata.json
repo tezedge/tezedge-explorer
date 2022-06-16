@@ -1,0 +1,119 @@
+{
+  "deactivated": [],
+  "max_operation_data_length": 1,
+  "max_operation_list_length": [
+    {
+      "max_op": 2048,
+      "max_size": 4194304
+    },
+    {
+      "max_size": 32768
+    },
+    {
+      "max_op": 132,
+      "max_size": 135168
+    },
+    {
+      "max_size": 524288
+    }
+  ],
+  "consumed_gas": "10937000",
+  "protocol": "Psithaca2MLRFYargivpo7YvUr7wUDqyxrdhC5CQq78mRvimz6A",
+  "max_operations_ttl": 120,
+  "baker": "tz1RuHDSj9P7mNNhfKxsyLGRDahTX5QD1DdP",
+  "balance_updates": [
+    {
+      "category": "block fees",
+      "change": "-2545",
+      "kind": "accumulator",
+      "origin": "block"
+    },
+    {
+      "category": "baking rewards",
+      "change": "-5000000",
+      "kind": "minted",
+      "origin": "block"
+    },
+    {
+      "change": "5002545",
+      "contract": "tz1RuHDSj9P7mNNhfKxsyLGRDahTX5QD1DdP",
+      "kind": "contract",
+      "origin": "block"
+    },
+    {
+      "category": "baking bonuses",
+      "change": "-3752393",
+      "kind": "minted",
+      "origin": "block"
+    },
+    {
+      "change": "3752393",
+      "contract": "tz1RuHDSj9P7mNNhfKxsyLGRDahTX5QD1DdP",
+      "kind": "contract",
+      "origin": "block"
+    }
+  ],
+  "liquidity_baking_escape_ema": 40045,
+  "next_protocol": "Psithaca2MLRFYargivpo7YvUr7wUDqyxrdhC5CQq78mRvimz6A",
+  "proposer": "tz1RuHDSj9P7mNNhfKxsyLGRDahTX5QD1DdP",
+  "voting_period_info": {
+    "position": 1740,
+    "remaining": 18739,
+    "voting_period": {
+      "index": 34,
+      "kind": "proposal",
+      "start_position": 696320
+    }
+  },
+  "level_info": {
+    "cycle": 170,
+    "cycle_position": 1740,
+    "expected_commitment": false,
+    "level": 698061,
+    "level_position": 698060
+  },
+  "test_chain_status": {
+    "status": "not_running"
+  },
+  "max_block_header_length": 289,
+  "implicit_operations_results": [
+    {
+      "balance_updates": [
+        {
+          "category": "subsidy",
+          "change": "-2500000",
+          "kind": "minted",
+          "origin": "subsidy"
+        },
+        {
+          "change": "2500000",
+          "contract": "KT1TxqZ8QtKvLu3V3JH7Gx58n7Co8pgtpQU5",
+          "kind": "contract",
+          "origin": "subsidy"
+        }
+      ],
+      "consumed_gas": "225",
+      "consumed_milligas": "224048",
+      "kind": "transaction",
+      "storage": [
+        {
+          "int": "1"
+        },
+        {
+          "int": "1745150000356"
+        },
+        {
+          "int": "100"
+        },
+        {
+          "bytes": "01e927f00ef734dfc85919635e9afc9166c83ef9fc00"
+        },
+        {
+          "bytes": "0115eb0104481a6d7921160bc982c5e0a561cd8a3a00"
+        }
+      ],
+      "storage_size": "4632"
+    }
+  ],
+  "nonce_hash": null
+}

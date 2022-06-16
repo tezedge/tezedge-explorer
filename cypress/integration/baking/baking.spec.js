@@ -36,14 +36,18 @@ context('BAKING', () => {
   }));
 
   it('[BAKING] should have status code 200 for get bakers rewards request', () => beforeBakingTest(() => {
+    let tested = false;
     cy.window()
       .its('store')
       .then(store => {
         store.select(state => state).subscribe(state => {
-          const cycle = state.baking.cycle;
-          cy.request(state.settingsNode.activeNode.http + `/dev/rewards/cycle/${cycle}`, { timeout: 700000 })
-            .its('status')
-            .should('eq', 200);
+          if (!tested) {
+            tested = true;
+            const cycle = state.baking.cycle;
+            cy.request(state.settingsNode.activeNode.http + `/dev/rewards/cycle/${cycle}`, { timeout: 700000 })
+              .its('status')
+              .should('eq', 200);
+          }
         });
       });
   }));
@@ -62,24 +66,35 @@ context('BAKING', () => {
   }));
 
   it('[BAKING] should create rows for the virtual scroll table delegators', () => beforeBakingTest(() => {
-    cy.get('app-baking-delegates-table cdk-virtual-scroll-viewport .row')
-      .eq(0)
-      .trigger('click')
-      .get('app-baking-delegators-table cdk-virtual-scroll-viewport .row', { timeout: 100000 })
-      .window()
+    let clicked = false;
+    cy.window()
       .its('store')
       .then(store => {
         store.select('baking').subscribe(baking => {
-          if (baking.bakers.length && baking.sortedDelegators.length > 1) {
+          const bakerIndex = 20;
+          if (!clicked && baking.bakers.length && baking.bakers[bakerIndex] && baking.bakers[bakerIndex].delegatorsLength > 0) {
+            clicked = true;
+            cy.get('app-baking-delegates-table cdk-virtual-scroll-viewport .row')
+              .eq(bakerIndex)
+              .trigger('click')
+              .get('app-baking-delegators-table cdk-virtual-scroll-viewport .row', { timeout: 200000 })
+              .window()
+              .its('store')
+              .then(store => {
+                store.select('baking').subscribe(baking => {
+                  if (baking.bakers.length && baking.sortedDelegators.length > 1) {
 
-            cy.url()
-              .should('include', '/baking/' + baking.bakers[0].hash)
-              .get('app-baking-delegators-table cdk-virtual-scroll-viewport .row', { timeout: 3000 })
-              .eq(0)
-              .find('> span:first-child')
-              .then(span => {
-                expect(span.text().trim()).to.equal(baking.sortedDelegators[0].name);
-              })
+                    cy.url()
+                      .should('include', '/baking/' + baking.bakers[bakerIndex].hash)
+                      .get('app-baking-delegators-table cdk-virtual-scroll-viewport .row', { timeout: 3000 })
+                      .eq(0)
+                      .find('> span:first-child')
+                      .then(span => {
+                        expect(span.text().trim()).to.equal(baking.sortedDelegators[0].name);
+                      });
+                  }
+                });
+              });
           }
         });
       });

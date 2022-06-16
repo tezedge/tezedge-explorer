@@ -28,7 +28,7 @@ import { formatNumber } from '@angular/common';
 import { MICROSECOND_FACTOR } from '@shared/constants/unit-measurements';
 import { MempoolConsensusRound } from '@shared/types/mempool/consensus/mempool-consensus-round.type';
 import Timeout = NodeJS.Timeout;
-import { selectNetworkLastAppliedBlockLevel } from '@monitoring/network-stats/network-stats.reducer';
+import { selectNetworkLastAppliedBlockLevel } from '@monitoring/monitoring.index';
 
 @UntilDestroy()
 @Component({

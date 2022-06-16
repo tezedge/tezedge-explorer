@@ -7,6 +7,7 @@ import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { State } from '@app/app.index';
 import { NetworkPeers } from '@shared/types/network/network-peers.type';
 import { NetworkPeersEntity } from '@shared/types/network/network-peers-entity.type';
+import { selectNetworkPeers } from '@monitoring/monitoring.index';
 
 @UntilDestroy()
 @Component({
@@ -23,16 +24,16 @@ export class NetworkPeersComponent implements OnInit {
 
   constructor(private store: Store<State>) { }
 
+  readonly trackByPeerId = (index: number, peer: any) => peer.id;
+
   ngOnInit(): void {
     this.tableDataSource = new MatTableDataSource<NetworkPeersEntity>();
 
-    this.store.select('networkPeers')
+    this.store.select(selectNetworkPeers)
       .pipe(untilDestroyed(this))
       .subscribe((data: NetworkPeers) => {
         this.tableDataSource.data = data.ids.map((id: string) => ({ id, ...data.entities[id] }));
         this.tableDataSource.paginator = this.paginator;
       });
   }
-
-  readonly trackByPeerId = (index: number, peer: any) => peer.id;
 }

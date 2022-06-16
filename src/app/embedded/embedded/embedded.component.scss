@@ -1,0 +1,9 @@
+@import 'layout';
+@import 'variables';
+
+:host {
+  @include flexColumn();
+  background-color: $background-surface;
+  border-top-left-radius: 4px;
+  height: 100%;
+}

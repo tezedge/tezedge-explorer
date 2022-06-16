@@ -14,19 +14,19 @@
         </div>
         <div class="flex-row flex-between">
           <div>Total reward</div>
-          <div class="margin-right-8 foreground-7"
+          <div class="margin-right-8 foreground-4"
                [innerHTML]="(activeBaker.reward || 0 | spaceNumber: 6: true) + ' ꜩ'">
           </div>
         </div>
         <div class="flex-row flex-between">
           <div>Total rewards to distribute</div>
-          <div class="margin-right-8 foreground-7"
+          <div class="margin-right-8 foreground-4"
                [innerHTML]="(activeBaker.rewardAfterFee || 0 | spaceNumber: 6: true) + ' ꜩ'">
           </div>
         </div>
         <div class="flex-row flex-between font-600">
           <div>Baker's reward</div>
-          <div class="margin-right-8 foreground-7"
+          <div class="margin-right-8 foreground-4"
                [innerHTML]="((activeBaker.rewardToDistribute - activeBaker.rewardAfterFee) || 0 | spaceNumber: 6: true) + ' ꜩ'">
           </div>
         </div>

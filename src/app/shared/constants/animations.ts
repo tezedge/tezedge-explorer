@@ -6,4 +6,3 @@ export const refreshBlock = trigger('refreshBlock', [
     animate(250, style({ backgroundColor: 'transparent' })),
   ]),
 ]);
-

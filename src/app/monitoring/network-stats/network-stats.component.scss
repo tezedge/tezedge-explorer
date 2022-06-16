@@ -1,12 +1,8 @@
-.network-stats-panel {
-  display: flex;
-  justify-content: space-between;
-  padding: 20px 0 0 0;
-}
+@import 'variables';
 
 .network-stats-card {
-  background-color: var(--background-surface);
-  border: 1px solid var(--background-surface-fade-1);
+  background-color: $background-surface;
+  border: 1px solid $background-surface-fade-1;
   box-sizing: border-box;
   border-radius: 4px;
   width: 340px;
@@ -18,7 +14,7 @@
   line-height: 24px;
   mix-blend-mode: normal;
   padding: 7px 0 7px 15px;
-  border-bottom: 1px solid var(--background-surface-fade-1);
+  border-bottom: 1px solid $background-surface-fade-1;
 }
 
 .network-stats-left {
@@ -54,7 +50,6 @@
 .network-stats-card-right {
   display: flex;
   align-self: center;
-  /* align-items: flex-end; */
   justify-content: center;
   flex-direction: column;
   width: 126px;
@@ -68,10 +63,8 @@
 
 .network-stats-row {
   display: flex;
-  /* justify-content: space-between; */
   flex-direction: row;
   padding-top: 35px;
-  /* height: 300px; */
 }
 
 @media (max-width: 600px) {

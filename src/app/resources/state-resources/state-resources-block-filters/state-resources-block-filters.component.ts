@@ -20,7 +20,7 @@ import {
 } from '@resources/state-resources/state-resources/state-resources.actions';
 import { StateResourcesBlockData } from '@shared/types/resources/state/state-resources-block-data.type';
 import { distinctUntilChanged, filter } from 'rxjs/operators';
-import { selectNetworkLastAppliedBlockLevel } from '@monitoring/network-stats/network-stats.reducer';
+import { selectNetworkLastAppliedBlockLevel } from '@monitoring/monitoring.index';
 
 @UntilDestroy()
 @Component({

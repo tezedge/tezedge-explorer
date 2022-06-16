@@ -1,0 +1,51 @@
+{
+  "applied": [
+    {
+      "branch": "BLwuEQe9tXMd1dQQUwYiXjmEyituJ2JVpoFr3fkZKAmhqGXKYpk",
+      "contents": [
+        {
+          "block_payload_hash": "vh2bmtab7wkm65U9sU1eD5U2BB88q9jwbS8Gobi75Kq2RTsNA7Q2",
+          "kind": "endorsement",
+          "level": 698873,
+          "round": 0,
+          "slot": 43
+        }
+      ],
+      "hash": "oocyePQK2EMN4ienwNUzK8fo1XKCNkcdCEi9Zk2XSNZxAmaF1j3",
+      "signature": "sigcuTFZq99KXXm9zkXvLonaC8PmVqpE9LXayBuqcVLmizNdsddMv3BDiG8s1RJkwY593ba7CvSXmYswWqqQpRVDx6Usa1hF"
+    },
+    {
+      "branch": "BLwuEQe9tXMd1dQQUwYiXjmEyituJ2JVpoFr3fkZKAmhqGXKYpk",
+      "contents": [
+        {
+          "block_payload_hash": "vh2bmtab7wkm65U9sU1eD5U2BB88q9jwbS8Gobi75Kq2RTsNA7Q2",
+          "kind": "endorsement",
+          "level": 698873,
+          "round": 0,
+          "slot": 48
+        }
+      ],
+      "hash": "opATcYzqjvivVgdkGAdDAAJN4n5Mwbhkv5X5DcsJcQ55Mow3Gvy",
+      "signature": "sighFYGMiugSB9czE3UXddERKEebMTNEXM6gVTbY7BNHPYfn52Vi6yNS4LepHoYs3EojZiDt8g3bAfodECXdzA11118MUe1Q"
+    },
+    {
+      "branch": "BLwuEQe9tXMd1dQQUwYiXjmEyituJ2JVpoFr3fkZKAmhqGXKYpk",
+      "contents": [
+        {
+          "block_payload_hash": "vh2bmtab7wkm65U9sU1eD5U2BB88q9jwbS8Gobi75Kq2RTsNA7Q2",
+          "kind": "endorsement",
+          "level": 698873,
+          "round": 0,
+          "slot": 205
+        }
+      ],
+      "hash": "opNt5dyhLtxmMSdxynLRspGSiYBbyHZgv3vYH31GQYg1tJ26vdq",
+      "signature": "signMM6JufCgp1GhN3uTJVQGCXiWTukyho5uVyiF3f6EazBZmaUBAFsh6iPhH5ZcBtLSUCb9CN1NYq2kQ1VeXqFpgaz5BCis"
+    }
+  ],
+  "branch_delayed": [],
+  "branch_refused": [],
+  "outdated": [],
+  "refused": [],
+  "unprocessed": []
+}

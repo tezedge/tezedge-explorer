@@ -9,6 +9,7 @@ const TRACKING_URLS: string[] = [
   '/dev/shell/automaton/storage/requests',
   '/dev/shell/automaton/stats/current_head/application',
   '/dev/shell/automaton/endorsements_status',
+  '/dev/shell/automaton/baking_state',
 ];
 
 @Injectable({

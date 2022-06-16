@@ -9,11 +9,18 @@ import { State } from '@app/app.index';
 import { SettingsNodeEntityHeader } from '@shared/types/settings-node/settings-node-entity-header.type';
 import { ADD_ERROR } from '@app/layout/error-popup/error-popup.actions';
 import {
-  MONITORING_CLOSE, MONITORING_LOAD, MONITORING_OCTEZ_PEERS_LOAD, MONITORING_OCTEZ_STATS_LOAD,
-  MONITORING_WEBSOCKET_INIT, MONITORING_WEBSOCKET_LOAD,
-  MonitoringActionTypes,
+  MONITORING_CLOSE,
+  MONITORING_LOAD,
+  MONITORING_OCTEZ_PEERS_LOAD,
+  MONITORING_OCTEZ_PEERS_LOAD_SUCCESS,
+  MONITORING_OCTEZ_STATS_LOAD,
+  MONITORING_OCTEZ_STATS_LOAD_SUCCESS,
+  MONITORING_WEBSOCKET_HISTORY_LOAD_SUCCESS,
+  MONITORING_WEBSOCKET_INIT,
+  MONITORING_WEBSOCKET_LOAD,
   MonitoringClose,
-  MonitoringLoad, MonitoringWebsocketInit
+  MonitoringLoad,
+  MonitoringWebsocketInit
 } from './monitoring.actions';
 import { SettingsNodeService } from '@settings/settings-node.service';
 import { APP_INIT_SUCCESS, APP_REFRESH } from '@app/app.actions';
@@ -63,7 +70,7 @@ export class MonitoringEffects {
         actions.push({ type: MONITORING_WEBSOCKET_INIT });
       }
       if (ws) {
-        this.websocketInterval$.next(lazyCalls ? 5000 : 1000);
+        this.websocketInterval$.next(lazyCalls ? 5000 : 2000);
       } else {
         this.networkDestroy$ = new Subject<void>();
         this.networkInterval$.next(lazyCalls ? 5 : 1);
@@ -119,8 +126,14 @@ export class MonitoringEffects {
     switchMap(({ action, state }) => {
       const headerData$ = this.settingsNodeService.getSettingsHeader(state.settingsNode.activeNode.http)
         .pipe(
-          map((response: SettingsNodeEntityHeader) => ({ type: 'NETWORK_STATS_LOAD_SUCCESS', payload: response })),
-          catchError(error => of({ type: 'NETWORK_STATS_LOAD_ERROR', payload: error })),
+          map((response: SettingsNodeEntityHeader) => ({
+            type: MONITORING_OCTEZ_STATS_LOAD_SUCCESS,
+            payload: response
+          })),
+          catchError(error => of({
+            type: ADD_ERROR,
+            payload: { title: 'Network stats loading error', message: error.message }
+          })),
         );
 
       return this.networkInterval$.pipe(
@@ -142,8 +155,11 @@ export class MonitoringEffects {
     switchMap(({ action, state }) => {
 
       const peersData$ = this.http.get(state.settingsNode.activeNode.http + '/network/peers').pipe(
-        map(response => ({ type: 'NETWORK_PEERS_LOAD_SUCCESS', payload: response })),
-        catchError(error => of({ type: 'NETWORK_PEERS_LOAD_ERROR', payload: error })),
+        map(response => ({ type: MONITORING_OCTEZ_PEERS_LOAD_SUCCESS, payload: response })),
+        catchError(error => of({
+          type: ADD_ERROR,
+          payload: { title: 'Network peers loading error', message: error.message }
+        })),
       );
 
       return this.networkInterval$.pipe(
@@ -167,7 +183,7 @@ export class MonitoringEffects {
         map(response => response.result.messages)
       )
     ),
-    switchMap((wsArrayMessage: { type: string, payload: any }[]) => {
+    map((wsArrayMessage: { type: string, payload: any }[]) => {
       const historyPayload = {
         blocks: wsArrayMessage.find(m => m.type === 'blockStatus').payload,
         chain: wsArrayMessage.find(m => m.type === 'chainStatus').payload.chain
@@ -177,11 +193,14 @@ export class MonitoringEffects {
         ...wsArrayMessage.find(m => m.type === 'blockApplicationStatus').payload
       };
       const peersPayload = wsArrayMessage.find(m => m.type === 'peersMetrics').payload;
-      return [
-        { type: 'WS_NETWORK_HISTORY_LOAD_SUCCESS', payload: historyPayload },
-        { type: 'WS_NETWORK_STATS_LOAD_SUCCESS', payload: statsPayload },
-        { type: 'WS_NETWORK_PEERS_LOAD_SUCCESS', payload: peersPayload },
-      ];
+      return {
+        type: MONITORING_WEBSOCKET_HISTORY_LOAD_SUCCESS,
+        payload: {
+          history: historyPayload,
+          stats: statsPayload,
+          peers: peersPayload,
+        }
+      };
     }),
     catchError((error, caught) => {
       console.error(error);

@@ -1,0 +1,41 @@
+<ng-container *ngIf="state">
+  <div class="flex-column overflow-x-hidden flex-grow padding-10">
+    <div class="flex-row border-rad-4 margin-bottom-10 border f-12">
+      <div fxFlex="50" class="flex-column">
+        <div fxFlex="40px" class="flex-row foreground font-600 padding-left-10 align-center border-bottom">
+          <div>PREQUORUM:</div>
+          <div class="margin-left-10">{{ state.prequorum.total }}/{{ state.prequorum.threshold }}</div>
+          <mat-icon class="margin-left-8 fill-opacity-1 icon-16"
+                    [ngClass]="state.prequorum.total < state.prequorum.threshold ? 'icon-red' : 'icon-light-green'"
+                    [svgIcon]="state.prequorum.total < state.prequorum.threshold ? 'close-filled' : 'check-circle'"></mat-icon>
+        </div>
+        <tezedge-ngx-json-viewer class="padding-10"
+                                 [expanded]="false" [json]="state.prequorum"></tezedge-ngx-json-viewer>
+      </div>
+      <div fxFlex="50" class="flex-column">
+        <div fxFlex="40px" class="flex-row foreground font-600 padding-left-10 align-center border-bottom">
+          <div>QUORUM:</div>
+          <div class="margin-left-10">{{ state.quorum.total }}/{{ state.quorum.threshold }}</div>
+          <mat-icon class="margin-left-8 fill-opacity-1 icon-16"
+                    [ngClass]="state.quorum.total < state.quorum.threshold ? 'icon-red' : 'icon-light-green'"
+                    [svgIcon]="state.quorum.total < state.quorum.threshold ? 'close-filled' : 'check-circle'"></mat-icon>
+        </div>
+        <tezedge-ngx-json-viewer class="padding-10"
+                                 [expanded]="false" [json]="state.quorum"></tezedge-ngx-json-viewer>
+      </div>
+    </div>
+    <div class="flex-grow flex-column margin-top-10 padding-top-10">
+      <div class="foreground font-600 padding-bottom-5 f-12 padding-left-10">BAKERS:</div>
+      <div class="flex-column f-12">
+        <div *ngFor="let baker of bakersList"
+             class="flex-column border border-rad-4 margin-bottom-10 padding-10">
+          <span class="foreground padding-bottom-10 font-500">{{ baker.name }}</span>
+          <tezedge-ngx-json-viewer [expanded]="false" [json]="baker.value"></tezedge-ngx-json-viewer>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div fxFlex="40px" class="background-surface-fade-2 padding-left-10 align-center flex-row">
+    <app-embedded-filters></app-embedded-filters>
+  </div>
+</ng-container>

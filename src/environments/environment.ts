@@ -67,7 +67,7 @@ const PRECHECKER = {
     { name: 'network' },
     { name: 'logs' },
     { name: 'open-api' },
-    // { name: 'state' },
+    { name: 'state' },
     { name: 'contracts' },
   ]
 };
@@ -108,6 +108,7 @@ const PROD = {
     { name: 'resources/storage' },
     { name: 'mempool' },
     { name: 'baking' },
+    { name: 'embedded' },
     { name: 'storage' },
     { name: 'network' },
     { name: 'logs' },
@@ -283,9 +284,9 @@ const EXPOSED_SERVER = {
 export const environment = {
   production: false,
   api: [
-    // DEVELOP,
+    DEVELOP,
     // MASTER,
-    EXPOSED_SERVER,
+    // EXPOSED_SERVER,
     // MEMPOOL,
     // MEMPOOL2,
     // TRACE,

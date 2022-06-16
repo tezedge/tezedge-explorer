@@ -9,6 +9,7 @@ import { SmartContractTrace } from '@shared/types/smart-contracts/smart-contract
 import { collectScriptElements } from '@smart-contracts/smart-contracts/smart-contracts.factory';
 import { SmartContractDebugPoint } from '@shared/types/smart-contracts/smart-contract-debug-point.type';
 import { jsonStringifySortedProperties } from '@helpers/json.helper';
+import { environment } from '@environment/environment';
 
 
 @Injectable({
@@ -36,7 +37,7 @@ export class SmartContractsService {
 
   private addTraceDifferencesToContract(api: string, previousBlockHash: string, contract: SmartContract) {
     const body = SmartContractsService.buildGetTraceRequestBody(contract);
-    return this.http.post(`${api}/chains/main/blocks/${previousBlockHash}/helpers/scripts/trace_code`, body).pipe(
+    return this.performTraceHttpCall(api, previousBlockHash, body).pipe(
       map((traceCodeResponse: any) => {
         contract.isSameStorage =
           jsonStringifySortedProperties(contract.blockStorage, 0) === jsonStringifySortedProperties(traceCodeResponse.storage, 0);
@@ -72,7 +73,7 @@ export class SmartContractsService {
 
   private addBalanceToContract(api: string, previousBlockHash: string, contract: SmartContract): Observable<SmartContract> {
     return this.http.get(`${api}/chains/main/blocks/${previousBlockHash}/context/contracts/${contract.hash}/balance`).pipe(
-      map((balance: string) => ({ ...contract, balance }))
+      map((balance: string | [string]) => ({ ...contract, balance: Array.isArray(balance) ? balance[0] : balance }))
     );
   }
 
@@ -180,11 +181,18 @@ export class SmartContractsService {
   getContractTrace(api: string, blockHash: string, contract: SmartContract): Observable<{ trace: SmartContractTrace[], gasTrace: number[], result: SmartContractResult }> {
     return (contract.balance ? of(contract) : this.addBalanceToContract(api, blockHash, contract)).pipe(
       map(contractWithBalance => SmartContractsService.buildGetTraceRequestBody(contractWithBalance)),
-      switchMap(body => this.http.post<any>(`${api}/chains/main/blocks/${blockHash}/helpers/scripts/trace_code`, body).pipe(
-        map(response => this.mapNewGetContractTrace(response, contract)),
-        catchError(err => of(this.mapNewGetContractTrace(err.error, contract)))
-      ))
+      switchMap(body => {
+        return this.performTraceHttpCall(api, blockHash, body).pipe(
+          map(response => this.mapNewGetContractTrace(response, contract)),
+          catchError(err => of(this.mapNewGetContractTrace(err.error, contract)))
+        );
+      })
     );
+  }
+
+  private performTraceHttpCall(api: string, blockHash: string, body: any): Observable<any> {
+    const url = `${api}/chains/main/blocks/${blockHash}/helpers/scripts/trace_code`;
+    return environment.api[0].name.includes('mocked') ? this.http.get(url) : this.http.post<any>(url, body);
   }
 
   private mapNewGetContractTrace(response: any, contract: SmartContract): { trace: SmartContractTrace[], gasTrace: number[], result: SmartContractResult } {

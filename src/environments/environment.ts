@@ -308,7 +308,7 @@ const EXPOSED_SERVER = {
 export const environment = {
   production: false,
   api: [
-    // MOCK,
+    MOCK,
     // DEVELOP,
     // MASTER,
     // EXPOSED_SERVER,
@@ -317,7 +317,7 @@ export const environment = {
     // TRACE,
     // PRECHECKER,
     // DEBUG,
-    PROD,
+    // PROD,
     // STORAGE,
     // OCTEZ_DEVELOP,
     // OCTEZ_MASTER,

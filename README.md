@@ -161,7 +161,7 @@ Additionally, if you want to see the real time progress of the tests use the fol
 
 To run the test make sure the application is running and in a separate terminal.
 To run the baking rewards transaction test run the following:
-`npx cypress run --spec "cypress/integration/baking/baking-rewards.spec.js" --headed`
+`npx cypress run --spec "cypress/integration/rewards/ledger-transaction.spec.js" --headed`
 
 
 ## Using Icons Inside TezEdge Explorer

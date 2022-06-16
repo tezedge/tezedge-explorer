@@ -1,26 +1,41 @@
-<div class="background-surface overflow-hidden f-12 foreground h-100 d-flex flex-column border-rad-4">
-  <div class="border-bottom d-flex align-center font-500"
-       fxFlex="40px">
-    <div class="foreground f-12 margin-left-10 padding-left-5 font-400 flex-row flex-between align-center w-100">
-      <div fxFlex class="flex-row flex-start align-center">
-        <span fxFlex="85px">
-          CYCLE
-          <span class="font-600 margin-right-10 margin-left-5">{{ cycle }}</span>
-        </span>
-        <app-baking-filter fxFlex></app-baking-filter>
+<ng-container *ngIf="state">
+  <div class="flex-column overflow-x-hidden flex-grow padding-10">
+    <div class="flex-row border-rad-4 margin-bottom-10 border f-12">
+      <div fxFlex="50" class="flex-column">
+        <div fxFlex="40px" class="flex-row foreground font-600 padding-left-10 align-center border-bottom">
+          <div>PREQUORUM:</div>
+          <div class="margin-left-10">{{ state.prequorum.total }}/{{ state.prequorum.threshold }}</div>
+          <mat-icon class="margin-left-8 fill-opacity-1 icon-16"
+                    [ngClass]="state.prequorum.total < state.prequorum.threshold ? 'icon-red' : 'icon-light-green'"
+                    [svgIcon]="state.prequorum.total < state.prequorum.threshold ? 'close-filled' : 'check-circle'"></mat-icon>
+        </div>
+        <tezedge-ngx-json-viewer class="padding-10"
+                                 [expanded]="false" [json]="prequorum"></tezedge-ngx-json-viewer>
       </div>
-      <button (click)="openLedgerConnectDialog()" *ngIf="showConnectButton"
-              class="blue-btn border-rad-2 foreground font-600 d-flex align-center flex-center f-12 pointer">
-        CONNECT ACCOUNT
-      </button>
+      <div fxFlex="50" class="flex-column">
+        <div fxFlex="40px" class="flex-row foreground font-600 padding-left-10 align-center border-bottom">
+          <div>QUORUM:</div>
+          <div class="margin-left-10">{{ state.quorum.total }}/{{ state.quorum.threshold }}</div>
+          <mat-icon class="margin-left-8 fill-opacity-1 icon-16"
+                    [ngClass]="state.quorum.total < state.quorum.threshold ? 'icon-red' : 'icon-light-green'"
+                    [svgIcon]="state.quorum.total < state.quorum.threshold ? 'close-filled' : 'check-circle'"></mat-icon>
+        </div>
+        <tezedge-ngx-json-viewer class="padding-10"
+                                 [expanded]="false" [json]="quorum"></tezedge-ngx-json-viewer>
+      </div>
+    </div>
+    <div class="flex-grow flex-column margin-top-10 padding-top-10">
+      <div class="foreground font-600 padding-bottom-5 f-12 padding-left-10">BAKERS:</div>
+      <div class="flex-column f-12">
+        <div *ngFor="let baker of bakersList"
+             class="flex-column border border-rad-4 margin-bottom-10 padding-10">
+          <span class="foreground padding-bottom-10 font-500">{{ baker.name }}</span>
+          <tezedge-ngx-json-viewer [expanded]="false" [json]="baker.value"></tezedge-ngx-json-viewer>
+        </div>
+      </div>
     </div>
   </div>
-  <div fxFlex="calc(100% - 40px)" fxLayout="column"
-       fxLayout.gt-md="row">
-    <div [fxFlex.gt-md]="activeBaker ? 'calc(100% - 344px)' : '100'" [fxFlex]="activeBaker ? '50' : '100'"
-         class="border-right">
-      <router-outlet></router-outlet>
-    </div>
-    <app-baking-summary *ngIf="activeBaker" fxFlex="50" fxFlex.gt-md="344px"></app-baking-summary>
+  <div fxFlex="40px" class="background-surface-fade-2 padding-left-10 align-center flex-row">
+    <app-baking-filters></app-baking-filters>
   </div>
-</div>
+</ng-container>

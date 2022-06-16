@@ -3,33 +3,23 @@ import { NgModule } from '@angular/core';
 import { BakingRouting } from './baking.routing';
 import { BakingComponent } from './baking/baking.component';
 import { TezedgeSharedModule } from '@shared/tezedge-shared.module';
+import {
+  TezedgeNgxJsonViewerModule
+} from '@shared/components/custom-tezedge-components/tezedge-ngx-json-viewer/tezedge-ngx-json-viewer.module';
 import { EffectsModule } from '@ngrx/effects';
 import { BakingEffects } from '@app/baking/baking.effects';
-import { BakingSummaryComponent } from './baking-summary/baking-summary.component';
-import {
-  BakingConnectLedgerDialogComponent
-} from './baking-connect-ledger-dialog/baking-connect-ledger-dialog.component';
-import { MatDialogModule } from '@angular/material/dialog';
-import { MatStepperModule } from '@angular/material/stepper';
-import { BakingFilterComponent } from './baking-filter/baking-filter.component';
-import { BakingLedgerSignDialogComponent } from './baking-ledger-sign-dialog/baking-ledger-sign-dialog.component';
-import { BakingBatchListComponent } from './baking-batch-list/baking-batch-list.component';
+import { BakingFiltersComponent } from './baking-filters/baking-filters.component';
 
 
 @NgModule({
   declarations: [
     BakingComponent,
-    BakingSummaryComponent,
-    BakingConnectLedgerDialogComponent,
-    BakingFilterComponent,
-    BakingLedgerSignDialogComponent,
-    BakingBatchListComponent,
+    BakingFiltersComponent
   ],
   imports: [
     BakingRouting,
     TezedgeSharedModule,
-    MatDialogModule,
-    MatStepperModule,
+    TezedgeNgxJsonViewerModule,
     EffectsModule.forFeature([BakingEffects])
   ]
 })

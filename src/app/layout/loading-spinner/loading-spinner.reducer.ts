@@ -42,12 +42,12 @@ import {
   STATE_RESOURCES_LOAD_SUCCESS
 } from '@resources/state-resources/state-resources/state-resources.actions';
 import {
-  BAKING_GET_BAKERS,
-  BAKING_GET_BAKERS_SUCCESS,
-  BAKING_GET_DELEGATORS,
-  BAKING_GET_DELEGATORS_SUCCESS,
-  BAKING_STOP
-} from '@baking/baking.actions';
+  REWARDS_GET_BAKERS,
+  REWARDS_GET_BAKERS_SUCCESS,
+  REWARDS_GET_DELEGATORS,
+  REWARDS_GET_DELEGATORS_SUCCESS,
+  REWARDS_STOP
+} from '@rewards/rewards.actions';
 
 export interface LoadingSpinnerState {
   pendingValues: LoadingSpinner[];
@@ -266,32 +266,32 @@ export function reducer(state: LoadingSpinnerState = initialState, action: Error
         pendingValues: state.pendingValues.filter(v => v.type !== SMART_CONTRACTS_LOAD)
       };
     }
-    case BAKING_GET_BAKERS: {
+    case REWARDS_GET_BAKERS: {
       return {
         pendingValues: [bakingBakersLoad, ...state.pendingValues]
       };
     }
-    case BAKING_GET_BAKERS_SUCCESS: {
+    case REWARDS_GET_BAKERS_SUCCESS: {
       return {
-        pendingValues: state.pendingValues.filter(v => v.type !== BAKING_GET_BAKERS)
+        pendingValues: state.pendingValues.filter(v => v.type !== REWARDS_GET_BAKERS)
       };
     }
-    case BAKING_GET_DELEGATORS: {
+    case REWARDS_GET_DELEGATORS: {
       return {
         pendingValues: [bakingDelegatorsLoad, ...state.pendingValues]
       };
     }
-    case BAKING_GET_DELEGATORS_SUCCESS: {
+    case REWARDS_GET_DELEGATORS_SUCCESS: {
       return {
-        pendingValues: state.pendingValues.filter(v => v.type !== BAKING_GET_DELEGATORS)
+        pendingValues: state.pendingValues.filter(v => v.type !== REWARDS_GET_DELEGATORS)
       };
     }
 
-    case BAKING_STOP: {
+    case REWARDS_STOP: {
       return {
         pendingValues: state.pendingValues
-          .filter(v => v.type !== BAKING_GET_DELEGATORS)
-          .filter(v => v.type !== BAKING_GET_BAKERS)
+          .filter(v => v.type !== REWARDS_GET_DELEGATORS)
+          .filter(v => v.type !== REWARDS_GET_BAKERS)
       };
     }
     default:
@@ -392,11 +392,11 @@ const smartContractsLoad: LoadingSpinner = {
 };
 
 const bakingBakersLoad: LoadingSpinner = {
-  type: BAKING_GET_BAKERS,
+  type: REWARDS_GET_BAKERS,
   message: 'Loading bakers...'
 };
 
 const bakingDelegatorsLoad: LoadingSpinner = {
-  type: BAKING_GET_DELEGATORS,
+  type: REWARDS_GET_DELEGATORS,
   message: 'Loading delegators...'
 };

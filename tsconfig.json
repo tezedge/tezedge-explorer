@@ -32,6 +32,7 @@
       "@network/*": ["src/app/network/*"],
       "@open-api/*": ["src/app/open-api/*"],
       "@resources/*": ["src/app/resources/*"],
+      "@rewards/*": ["src/app/rewards/*"],
       "@sandbox/*": ["src/app/sandbox/*"],
       "@settings/*": ["src/app/layout/settings-node/*"],
       "@smart-contracts/*": ["src/app/smart-contracts/*"],

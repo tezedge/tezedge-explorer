@@ -9,17 +9,15 @@
     <div fxFlex="50" class="flex-column">
       <span fxFlex="20px">Parameter</span>
       <div fxFlex="calc(100% - 20px)">
-        <mat-form-field class="tezedge-form-field margin-top-5 w-100 h-100 textarea overflow-auto">
-          <textarea matInput name="param" readonly [matTextareaAutosize]="true" class="no-resize" formControlName="parameter"></textarea>
-        </mat-form-field>
+        <textarea class="no-resize padding-5 border-rad-4 w-100 h-100 background-surface-fade-2 border-remove foreground"
+                  readonly formControlName="parameter"></textarea>
       </div>
     </div>
     <div fxFlex="50" class="flex-column">
       <span fxFlex="20px">Storage</span>
       <div fxFlex="calc(100% - 20px)">
-        <mat-form-field class="tezedge-form-field margin-top-5 w-100 h-100 textarea overflow-auto">
-          <textarea matInput name="param" readonly [matTextareaAutosize]="true" class="no-resize" formControlName="storage"></textarea>
-        </mat-form-field>
+        <textarea class="no-resize padding-5 border-rad-4 w-100 h-100 background-surface-fade-2 border-remove foreground"
+                  readonly formControlName="storage"></textarea>
       </div>
     </div>
   </form>

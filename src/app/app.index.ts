@@ -7,12 +7,12 @@ import { ActionReducer, ActionReducerMap, MetaReducer, } from '@ngrx/store';
 // meta reducer for dynamic forms
 import * as fromNgrxForm from './shared/ngrx-form.reducer';
 import * as fromApp from './app.reducer';
-import * as fromBaking from './baking/baking.reducer';
+import * as fromRewards from './rewards/rewards.reducer';
 import * as fromSettingsNode from './layout/settings-node/settings-node.reducer';
 import * as fromMonitoring from './monitoring/monitoring.reducer';
 import * as fromMempool from './mempool/mempool.reducer';
 import * as fromNetworkAction from './network/network-action/network-action.reducer';
-import * as fromEmbedded from './embedded/embedded.reducer';
+import * as fromBaking from './baking/baking.reducer';
 import * as fromEndpointsAction from './endpoints/endpoints-action/endpoints-action.reducer';
 import * as fromChainServer from './chain/chain-server/chain-server.reducer';
 import * as fromChainWallets from './chain/chain-wallets/chain-wallets.reducer';
@@ -42,17 +42,16 @@ import { StateMachine } from '@shared/types/state-machine/state-machine.type';
 import { SmartContractsState } from '@smart-contracts/smart-contracts/smart-contracts.index';
 import { LoadingSpinnerState } from '@app/layout/loading-spinner/loading-spinner.reducer';
 import { StorageState } from '@storage/storage.index';
-import { BakingState } from '@baking/baking.index';
+import { RewardsState } from '@rewards/rewards.index';
 import { MonitoringState } from '@monitoring/monitoring.index';
-import { EmbeddedState } from '@app/embedded/embedded.index';
+import { BakingState } from '@baking/baking.index';
 
 export interface State {
   app: App;
-  baking: BakingState;
   monitoring: MonitoringState;
   mempool: MempoolState;
   networkAction: NetworkAction;
-  embedded: EmbeddedState;
+  baking: BakingState;
   endpointsAction: any;
   logsAction: LogsAction;
   storage: StorageState;
@@ -67,6 +66,7 @@ export interface State {
   error: ErrorState;
   githubVersion: GithubVersion;
   resources: ResourcesState;
+  rewards: RewardsState;
   stateMachine: StateMachine;
   smartContracts: SmartContractsState;
   spinner: LoadingSpinnerState;
@@ -79,7 +79,6 @@ export const reducers: ActionReducerMap<State> = {
   chainFinish: fromChainFinish.reducer,
   chainServer: fromChainServer.reducer,
   chainWallets: fromChainWallets.reducer,
-  embedded: fromEmbedded.reducer,
   endpointsAction: fromEndpointsAction.reducer,
   error: fromError.reducer,
   githubVersion: fromVersion.reducer,
@@ -88,6 +87,7 @@ export const reducers: ActionReducerMap<State> = {
   monitoring: fromMonitoring.reducer,
   networkAction: fromNetworkAction.reducer,
   resources: fromResources.reducer,
+  rewards: fromRewards.reducer,
   sandbox: fromSandbox.reducer,
   settingsNode: fromSettingsNode.reducer,
   smartContracts: fromSmartContracts.reducer,

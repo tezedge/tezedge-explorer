@@ -1,26 +1,12 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { State } from '@app/app.index';
-import {
-  BAKING_INIT,
-  BAKING_LEDGER_CONNECTED,
-  BAKING_STOP,
-  BakingInit,
-  BakingLedgerConnected,
-  BakingStop
-} from '@baking/baking.actions';
+import { BAKING_INIT, BakingInit } from '@app/baking/baking.actions';
+import { selectBakingStateActivePage } from '@baking/baking.index';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { selectBakingActiveBaker, selectBakingBakers, selectBakingCycle } from '@baking/baking.index';
-import { ActiveBaker } from '@shared/types/bakings/active-baker.type';
-import {
-  BakingConnectLedgerDialogComponent
-} from '@baking/baking-connect-ledger-dialog/baking-connect-ledger-dialog.component';
-import { filter, take } from 'rxjs/operators';
-import { BakingLedger } from '@shared/types/bakings/baking-ledger.type';
-import { MatDialog } from '@angular/material/dialog';
-import { Router } from '@angular/router';
-import { getMergedRoute } from '@shared/router/router-state.selectors';
-import { BakingBaker } from '@shared/types/bakings/baking-baker.type';
+import { BakingPage } from '@shared/types/baking/baking-page.type';
+import { distinctUntilChanged, filter } from 'rxjs/operators';
+import { BakingQuorum } from '@shared/types/baking/baking-quorum.type';
 
 @UntilDestroy()
 @Component({
@@ -29,78 +15,34 @@ import { BakingBaker } from '@shared/types/bakings/baking-baker.type';
   styleUrls: ['./baking.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class BakingComponent implements OnInit, OnDestroy {
+export class BakingComponent implements OnInit {
 
-  cycle: number;
-  activeBaker: ActiveBaker;
-  showConnectButton: boolean = false;
+  state: BakingPage;
+  bakersList: { name: string, value: any }[] = [];
+  prequorum: Partial<BakingQuorum>;
+  quorum: Partial<BakingQuorum>;
 
-  private bakers: BakingBaker[] = [];
-
-  constructor(private router: Router,
-              private store: Store<State>,
-              private matDialog: MatDialog,
+  constructor(private store: Store<State>,
               private cdRef: ChangeDetectorRef) { }
 
   ngOnInit(): void {
     this.store.dispatch<BakingInit>({ type: BAKING_INIT });
-    this.listenToBakingChanges();
+    this.listenToBakingStateChanges();
   }
 
-  private listenToBakingChanges(): void {
-    this.store.select(selectBakingCycle)
+  private listenToBakingStateChanges(): void {
+    this.store.select(selectBakingStateActivePage)
       .pipe(
         untilDestroyed(this),
+        distinctUntilChanged(),
         filter(Boolean)
       )
-      .subscribe(cycle => {
-        this.cycle = cycle;
+      .subscribe((state: BakingPage) => {
+        this.state = state;
+        this.bakersList = Object.keys(state.bakers).map(key => ({ name: key, value: state.bakers[key] }));
+        this.prequorum = { notified: state.prequorum.notified, delegates: state.prequorum.delegates };
+        this.quorum = { notified: state.quorum.notified, delegates: state.quorum.delegates };
         this.cdRef.detectChanges();
       });
-    this.store.select(selectBakingActiveBaker)
-      .pipe(untilDestroyed(this))
-      .subscribe(baker => {
-        this.activeBaker = baker;
-        this.cdRef.detectChanges();
-      });
-    this.store.select(selectBakingBakers)
-      .pipe(
-        untilDestroyed(this),
-        filter(Boolean)
-      )
-      .subscribe(bakers => {
-        this.bakers = bakers;
-      });
-    this.store.select(getMergedRoute)
-      .pipe(untilDestroyed(this))
-      .subscribe(route => {
-        this.showConnectButton = !route.params.hash;
-        this.cdRef.detectChanges();
-      });
-  }
-
-  openLedgerConnectDialog(): void {
-    this.matDialog
-      .open(BakingConnectLedgerDialogComponent, {
-        width: '675px',
-        height: '495px',
-        autoFocus: false
-      })
-      .afterClosed()
-      .pipe(take(1))
-      .subscribe((ledger: BakingLedger) => {
-        if (ledger && this.bakers.find(b => b.hash === ledger.publicKeyHash)) {
-          this.store.dispatch<BakingLedgerConnected>({
-            type: BAKING_LEDGER_CONNECTED,
-            payload: { ledger }
-          });
-
-          this.router.navigate(['baking', ledger.publicKeyHash]);
-        }
-      });
-  }
-
-  ngOnDestroy(): void {
-    this.store.dispatch<BakingStop>({ type: BAKING_STOP });
   }
 }

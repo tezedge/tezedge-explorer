@@ -1,12 +1,9 @@
+@import 'layout';
 @import 'variables';
 
-.blue-btn {
-  background-color: $active-surface;
-  margin-right: 7px;
-  height: 28px;
-  width: 160px;
-
-  &:hover {
-    filter: brightness(110%);
-  }
+:host {
+  @include flexColumn();
+  background-color: $background-surface;
+  border-top-left-radius: 4px;
+  height: 100%;
 }

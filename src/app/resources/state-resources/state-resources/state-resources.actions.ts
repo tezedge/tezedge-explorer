@@ -48,7 +48,7 @@ export class StateResourcesLoadBlocks implements StateResourcesAction {
 export class StateResourcesLoadBlocksSuccess implements StateResourcesAction {
   readonly type = STATE_RESOURCES_LOAD_BLOCKS_SUCCESS;
 
-  constructor(public payload: { blocks: StateResourcesBlockData[] }) { }
+  constructor(public payload: { activeBlock: StateResourcesBlockData, blocks: StateResourcesBlockData[] }) { }
 }
 
 export class StateResourcesChangeActiveRound implements StateResourcesAction {

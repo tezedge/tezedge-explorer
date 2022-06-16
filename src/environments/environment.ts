@@ -1,3 +1,27 @@
+const MOCK = {
+  id: 'tezedge',
+  type: 'tezedge',
+  name: 'mocked-server.tezedge.com',
+  http: 'http://localhost:3001',
+  p2p_port: 9732,
+  tzstats: 'http://localhost:3001/',
+  features: [
+    { name: 'ws', url: 'ws://develop.dev.tezedge.com:4927' },
+    { name: 'debugger', url: 'http://localhost:3002' },
+    { name: 'monitoring' },
+    { name: 'resources/system', monitoringUrl: 'http://localhost:3001/resources/tezedge' },
+    { name: 'resources/memory', memoryProfilerUrl: 'http://localhost:3001' },
+    { name: 'resources/storage' },
+    { name: 'resources/state' },
+    { name: 'mempool' },
+    { name: 'rewards' },
+    { name: 'storage' },
+    { name: 'network' },
+    { name: 'logs' },
+    { name: 'state' },
+    { name: 'contracts' }
+  ]
+};
 const DEVELOP = {
   id: 'tezedge',
   type: 'tezedge',
@@ -93,27 +117,27 @@ const DEBUG = {
     { name: 'state' }
   ]
 };
+
 const PROD = {
   id: 'tezedge',
   type: 'tezedge',
-  name: 'prod.tezedge.com',
-  http: 'http://prod.tezedge.com:18732',
-  p2p_port: 9732,
+  name: 'tezedge.prod.tezedge.com',
+  http: 'http://prod.tezedge.com:28732',
+  p2p_port: 29734,
   features: [
-    { name: 'ws', url: 'ws://prod.tezedge.com:4927' },
-    { name: 'debugger', url: 'http://prod.tezedge.com:17732' },
+    { name: 'ws', url: 'ws://prod.tezedge.com:24928' },
+    { name: 'debugger', url: 'http://prod.tezedge.com:27733' },
     { name: 'monitoring' },
-    { name: 'resources/system', monitoringUrl: 'http://prod.tezedge.com:38732/resources/tezedge' },
-    { name: 'resources/memory', memoryProfilerUrl: 'http://prod.tezedge.com:17832' },
-    { name: 'resources/storage' },
-    { name: 'mempool' },
     { name: 'rewards' },
+    { name: 'resources/system', monitoringUrl: 'http://prod.tezedge.com:38740/resources/tezedge' },
+    { name: 'resources/storage' },
+    { name: 'resources/state' },
     { name: 'baking' },
+    { name: 'mempool' },
     { name: 'storage' },
     { name: 'network' },
     { name: 'logs' },
-    { name: 'state' },
-    { name: 'contracts' }
+    { name: 'state' }
   ]
 };
 const TRACE = {
@@ -284,7 +308,8 @@ const EXPOSED_SERVER = {
 export const environment = {
   production: false,
   api: [
-    DEVELOP,
+    // MOCK,
+    // DEVELOP,
     // MASTER,
     // EXPOSED_SERVER,
     // MEMPOOL,
@@ -292,7 +317,7 @@ export const environment = {
     // TRACE,
     // PRECHECKER,
     // DEBUG,
-    // PROD,
+    PROD,
     // STORAGE,
     // OCTEZ_DEVELOP,
     // OCTEZ_MASTER,

@@ -163,49 +163,4 @@ context('SYSTEM RESOURCES', () => {
         });
       });
   }));
-
-  it('[SYSTEM RESOURCES] should display redirection overlay on chart when clicking on it and navigate to network on click', () => beforeSystemResourcesTest(() => {
-    let routed;
-    cy.window()
-      .its('store')
-      .then(store => {
-        store.subscribe(state => {
-          if (!routed && state.resources.systemResources) {
-            routed = true;
-            cy.get('svg g g g rect.tooltip-area')
-              .its(2)
-              .click(300, 20, { force: true })
-              .wait(1000)
-              .get('app-graph-redirection-overlay .redirection-overlay').should('be.visible')
-              .get('app-graph-redirection-overlay .redirection-overlay .pointer')
-              .first().click()
-              .wait(1000)
-              .url().should('include', '/network?timestamp=');
-          }
-        });
-      });
-  }));
-
-  it('[SYSTEM RESOURCES] should display redirection overlay on chart when clicking on it and navigate to logs on click', () => beforeSystemResourcesTest(() => {
-    let routed;
-    cy.window()
-      .its('store')
-      .then(store => {
-        store.subscribe(state => {
-          if (!routed && state.resources.systemResources) {
-            routed = true;
-            cy.get('svg g g g rect.tooltip-area')
-              .its(2)
-              .click(300, 20, { force: true })
-              .wait(1000)
-              .get('app-graph-redirection-overlay .redirection-overlay').should('be.visible')
-              .get('app-graph-redirection-overlay .redirection-overlay .pointer')
-              .last().click()
-              .wait(1000)
-              .url().should('include', '/logs?timestamp=');
-          }
-        });
-      });
-  }));
-
 });

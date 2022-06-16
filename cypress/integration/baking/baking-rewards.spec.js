@@ -1,4 +1,3 @@
-
 context('BAKING REWARDS', () => {
 
   it('[BAKING REWARDS] should send batch transactions', () => {
@@ -75,7 +74,8 @@ context('BAKING REWARDS', () => {
               .get('app-baking-batch-list cdk-virtual-scroll-viewport .batch:nth-child(1) .link')
               .then(el => expect(el.text()).to.includes('View in TzStats'))
               .get('app-baking-batch-list cdk-virtual-scroll-viewport .batch:nth-child(1) div.flex-row div.flex-row:nth-child(2)')
-              .then(el => expect(el.text()).to.includes('Distributed'));
+              .then(el => expect(el.text()).to.includes('Distributed'))
+              .wait(2000);
           }
         });
       });

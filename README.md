@@ -12,18 +12,18 @@ This tool is of particular use for developers and security researchers as it all
 
 If Node.js is not already on our machine, Install Node.js from the following site [https://nodejs.org/en](https://nodejs.org/en).
 
-Note that you need node v13.0 or above.
+Note that you need node v16.
 
 NPM comes along with Node, so installing node will install Node and NPM at once.
 
-You can check the version of Node and NPM by entering the following commads in terminal: `node -v` and `npm -v`.
+If the installation was successful you can see the versions of Node and NPM by entering the following commands in terminal: `node -v` and `npm -v`.
 
 ### 2. Install Angular CLI
 
 To install `angular-cli` enter the following command in terminal:
 
 ```
-npm i -g angular-cli
+npm install -g @angular/cli@12.2.2
 ```
 
 ## Quick start
@@ -38,13 +38,12 @@ cd tezedge-explorer
 Install the `npm` packages described in the `package.json` and verify that it works:
 
 ```
-npm install
+npm install --legacy-peer-deps
 npm run start
 ```
 By running `npm run start` you will start a development server. Navigate to `http://localhost:4200/`.
 
 You can shut it down with `Ctrl-C`.
-
 
 ### 3. Configure the environment
 
@@ -156,6 +155,13 @@ To run the tests make sure the application is running and in a separate terminal
 Additionally, if you want to see the real time progress of the tests use the following command instead:
 
 `npx cypress run --headed`
+
+
+## Running Baking rewards transaction test
+
+To run the test make sure the application is running and in a separate terminal.
+To run the baking rewards transaction test run the following:
+`npx cypress run --spec "cypress/integration/baking/baking-rewards.spec.js" --headed`
 
 
 ## Using Icons Inside TezEdge Explorer

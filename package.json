@@ -16,8 +16,7 @@
     "mock:debugger": "json-server --watch mock/debugger/db.json --port 3002 --routes mock/debugger/routes.json",
     "test": "npx cypress run --headless",
     "test:open": "npx cypress open",
-    "deploy": "firebase deploy",
-    "postinstall": "node ./path.js"
+    "deploy": "firebase deploy"
   },
   "private": true,
   "dependencies": {

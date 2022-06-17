@@ -11,11 +11,11 @@ export const AppRouting: Routes = [
     loadChildren: () => import('./monitoring/monitoring.module').then(module => module.MonitoringModule)
   },
   {
-    path: 'baking',
+    path: 'rewards',
     loadChildren: () => import('./baking/baking.module').then(module => module.BakingModule)
   },
   {
-    path: 'embedded-bakers',
+    path: 'baking',
     loadChildren: () => import('./embedded/embedded.module').then(module => module.EmbeddedModule)
   },
   {

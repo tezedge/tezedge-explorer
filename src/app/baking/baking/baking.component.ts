@@ -95,7 +95,7 @@ export class BakingComponent implements OnInit, OnDestroy {
             payload: { ledger }
           });
 
-          this.router.navigate(['baking', ledger.publicKeyHash]);
+          this.router.navigate(['rewards', ledger.publicKeyHash]);
         }
       });
   }

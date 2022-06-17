@@ -59,7 +59,7 @@ export class BakingDelegatesTableComponent implements OnInit {
   }
 
   selectBaker(baker: BakingBaker): void {
-    this.router.navigate(['baking', baker.hash]);
+    this.router.navigate(['rewards', baker.hash]);
   }
 
   private listenToBakersChanges(): void {

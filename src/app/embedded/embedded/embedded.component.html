@@ -10,7 +10,7 @@
                     [svgIcon]="state.prequorum.total < state.prequorum.threshold ? 'close-filled' : 'check-circle'"></mat-icon>
         </div>
         <tezedge-ngx-json-viewer class="padding-10"
-                                 [expanded]="false" [json]="state.prequorum"></tezedge-ngx-json-viewer>
+                                 [expanded]="false" [json]="prequorum"></tezedge-ngx-json-viewer>
       </div>
       <div fxFlex="50" class="flex-column">
         <div fxFlex="40px" class="flex-row foreground font-600 padding-left-10 align-center border-bottom">
@@ -21,7 +21,7 @@
                     [svgIcon]="state.quorum.total < state.quorum.threshold ? 'close-filled' : 'check-circle'"></mat-icon>
         </div>
         <tezedge-ngx-json-viewer class="padding-10"
-                                 [expanded]="false" [json]="state.quorum"></tezedge-ngx-json-viewer>
+                                 [expanded]="false" [json]="quorum"></tezedge-ngx-json-viewer>
       </div>
     </div>
     <div class="flex-grow flex-column margin-top-10 padding-top-10">

@@ -6,6 +6,7 @@ import { selectEmbeddedStateActivePage } from '@app/embedded/embedded.index';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { EmbeddedPage } from '@shared/types/embedded/embedded-page.type';
 import { distinctUntilChanged, filter } from 'rxjs/operators';
+import { EmbeddedQuorum } from '@shared/types/embedded/embedded-quorum.type';
 
 @UntilDestroy()
 @Component({
@@ -18,6 +19,8 @@ export class EmbeddedComponent implements OnInit {
 
   state: EmbeddedPage;
   bakersList: { name: string, value: any }[] = [];
+  prequorum: Partial<EmbeddedQuorum>;
+  quorum: Partial<EmbeddedQuorum>;
 
   constructor(private store: Store<State>,
               private cdRef: ChangeDetectorRef) { }
@@ -37,6 +40,8 @@ export class EmbeddedComponent implements OnInit {
       .subscribe((state: EmbeddedPage) => {
         this.state = state;
         this.bakersList = Object.keys(state.bakers).map(key => ({ name: key, value: state.bakers[key] }));
+        this.prequorum = { notified: state.prequorum.notified, delegates: state.prequorum.delegates };
+        this.quorum = { notified: state.quorum.notified, delegates: state.quorum.delegates };
         this.cdRef.detectChanges();
       });
   }

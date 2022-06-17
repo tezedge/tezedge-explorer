@@ -44,7 +44,7 @@ export class BakingFilterComponent implements OnInit {
       if (value) {
         this.dispatchSetActiveBaker();
       }
-      const commands = ['baking'];
+      const commands = ['rewards'];
       if (this.routedHash) {
         commands.push(this.routedHash);
       }

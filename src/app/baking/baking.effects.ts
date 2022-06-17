@@ -209,7 +209,7 @@ export class BakingEffects extends TezedgeBaseEffect<State, BakingActions> {
       ofType(BAKING_LEDGER_CONNECTED),
       this.latestActionState<BakingLedgerConnected>(),
       tap(({ state }) => this.updateTransactions = !!state.baking.activeBaker),
-      tap(({ action, state }) => this.router.navigate(['baking', action.payload.ledger.publicKeyHash]))
+      tap(({ action, state }) => this.router.navigate(['rewards', action.payload.ledger.publicKeyHash]))
     ));
 
     this.paymentComplete$ = createNonDispatchableEffect(() => this.actions$.pipe(

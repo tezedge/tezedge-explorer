@@ -89,7 +89,7 @@ export class BakingSummaryComponent implements OnInit {
             type: BAKING_LEDGER_CONNECTED,
             payload: { ledger: { ...ledger } }
           });
-          this.router.navigate(['baking', ledger.publicKeyHash]);
+          this.router.navigate(['rewards', ledger.publicKeyHash]);
         }
       });
   }

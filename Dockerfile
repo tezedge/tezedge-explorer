@@ -5,7 +5,7 @@ FROM node:16 AS BUILD_IMAGE
 WORKDIR /app
 
 # install angular cli
-RUN npm install -g @angular/cli@12.2.2
+RUN npm install -g @angular/cli
 
 # clone & install deps for repo
 ARG branch=develop
@@ -13,8 +13,7 @@ ARG node_explorer_git="https://github.com/tezedge/tezedge-explorer"
 RUN git clone ${node_explorer_git} && \
     cd tezedge-explorer && \
     git checkout ${branch} && \
-    npm install --save --legacy-peer-deps && \
-    node path.js
+    npm install --save --legacy-peer-deps
 
 # change dir to angular app
 WORKDIR /app/tezedge-explorer

@@ -75,6 +75,23 @@
         </span>
       </a>
 
+      <a *ngIf="features['rewards']"
+         mat-list-item
+         class="menu-item"
+         id="rewards-trigger"
+         routerLink="/rewards"
+         routerLinkActive="active"
+         matTooltip="Rewards"
+         matTooltipPosition="right"
+         [matTooltipDisabled]="!app.sidenav.collapsed"
+         (click)="closeMenu()">
+        <span class="menu-content">
+          <mat-icon svgIcon="rewards"
+                    class="icon-18 icon-foreground"></mat-icon>
+          <span class="text-nowrap">Rewards</span>
+        </span>
+      </a>
+
       <a *ngIf="features['baking']"
          mat-list-item
          class="menu-item"
@@ -89,23 +106,6 @@
           <mat-icon svgIcon="baking"
                     class="icon-18 icon-foreground"></mat-icon>
           <span class="text-nowrap">Baking</span>
-        </span>
-      </a>
-
-      <a *ngIf="features['embedded']"
-         mat-list-item
-         class="menu-item"
-         id="embedded-trigger"
-         routerLink="/embedded-bakers"
-         routerLinkActive="active"
-         matTooltip="Embedded Bakers"
-         matTooltipPosition="right"
-         [matTooltipDisabled]="!app.sidenav.collapsed"
-         (click)="closeMenu()">
-        <span class="menu-content">
-          <mat-icon svgIcon="baking"
-                    class="icon-18 icon-foreground"></mat-icon>
-          <span class="text-nowrap">Embedded</span>
         </span>
       </a>
 

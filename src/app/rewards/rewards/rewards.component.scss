@@ -1,0 +1,12 @@
+@import 'variables';
+
+.blue-btn {
+  background-color: $active-surface;
+  margin-right: 7px;
+  height: 28px;
+  width: 160px;
+
+  &:hover {
+    filter: brightness(110%);
+  }
+}

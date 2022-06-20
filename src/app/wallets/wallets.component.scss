@@ -32,7 +32,7 @@
       flex: 0 0 35%;
       overflow: auto;
 
-      .sidebar-wrap {      
+      .sidebar-wrap {
         padding: 0 0;
         padding-bottom: 36px;
 
@@ -61,14 +61,14 @@
 
         .details-box{
           margin-bottom: 8px;
-          
+
           .details-section{
             padding: 8px 16px;;
 
             &:first-child{
               padding-bottom: 16px;
             }
-            
+
             &.button{
               padding: 0;
 
@@ -79,7 +79,7 @@
                 background: none;
               }
             }
-  
+
             .box-content {
               .half-size {
                 width: 50%;
@@ -134,7 +134,6 @@
               }
 
               .mat-button{
-                // align-self: start;
                 background: none;
                 padding: 8px;
               }
@@ -146,7 +145,7 @@
             }
           }
         }
-      } 
+      }
     }
   }
 }

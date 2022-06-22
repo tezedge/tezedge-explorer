@@ -30,7 +30,7 @@ export class RewardsService {
   getBakersRewards(api: string, cycle: number): Observable<RewardsBaker[]> {
     const url = `${api}/dev/rewards/cycle/${cycle}`;
     return this.http.get<GetBakersResponse[]>(url).pipe(
-      // map(res => { // todo: remove
+      // map(res => { // todo: remove this, it was for testing
       //   let maxLength = 0;
       //   res.forEach(d => maxLength = maxLength < d.delegator_count ? d.delegator_count : maxLength);
       //   // const findIndex = res.findIndex(d => d.delegator_count === maxLength);
@@ -41,6 +41,7 @@ export class RewardsService {
       //   return res;
       // }),
 
+      // with this, you can find new bakers that have logo (and name). Add them to mempool-bakers.json
       // tap((bakers: GetBakersResponse[]) => {
       //   bakers
       //     .filter(b => !this.bakersDetails[b.address])
@@ -58,6 +59,7 @@ export class RewardsService {
   }
 
   getDelegatorsRewards(api: string, cycle: number, baker: string): Observable<RewardsDelegator[]> {
+    // todo: remove this, it was for testing
     // baker = baker === 'tz1fm6a28VahUmoGkRV2RwuBMhtYNztkrtJy' ? 'tz1cjyja1TU6fiyiFav3mFAdnDsCReJ12hPD' : baker;
     const url = `${api}/dev/rewards/cycle/${cycle}/${baker}`;
     return this.http.get<GetDelegatorsResponse>(url).pipe(

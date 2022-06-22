@@ -3,5 +3,14 @@
   "/chains/main/mempool/pending_operations": "/chains-main-mempool-pending_operations",
   "/dev/chains/main/blocks?limit=:l": "/dev-chains-main-blocks?_limit=:l",
   "/dev/chains/main/actions/blocks/:h": "/dev-chains-main-blocks?hash=:h",
-  "/network/peers": "/network-peers"
+  "/dev/version/": "/dev-version",
+  "/monitor/commit_hash/": "/monitor-commit-hash",
+  "/network/peers": "/network-peers",
+  "/resources/tezedge": "/resources-tezedge",
+  "/stats/context?context_name=:x": "/resources-storage",
+  "/v1/tree?threshold=x&reverse=:y": "/resources-memory",
+  "/dev/shell/automaton/actions_stats": "/resources-state",
+  "/dev/shell/automaton/block_stats/graph?limit=:x": "/mempool-block-application",
+  "/dev/shell/automaton/stats/current_head/application?level=:x": "/mempool-block-details",
+  "/dev/shell/automaton/mempool/operation_stats": "/mempool-statistics"
 }

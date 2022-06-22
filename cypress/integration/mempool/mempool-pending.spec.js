@@ -67,17 +67,16 @@ context('MEMPOOL PENDING', () => {
       });
   }));
 
-  it('[MEMPOOL PENDING] should fill the right details part with the message of the clicked row - the second last record in our case', () => beforePendingTest(() => {
+  it('[MEMPOOL PENDING] should fill the right details part with the message of the clicked row', () => beforePendingTest(() => {
     cy.window()
       .its('store')
       .then(store => {
         store.select('mempool').subscribe((mempool) => {
-          if (mempool.operationState.mempoolOperations.length) {
+          if (mempool.operationState.mempoolOperations.length > 1) {
             cy.get('cdk-virtual-scroll-viewport')
-              .scrollTo('bottom')
               .wait(1000)
               .find('.row')
-              .eq(-2)
+              .eq(1)
               .trigger('click')
               .wait(1000)
               .then(row => expect(row.hasClass('active')).to.be.true)

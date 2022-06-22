@@ -41,7 +41,7 @@ export function reducer(state: StateResourcesState = initialState, action: State
     }
 
     case STATE_RESOURCES_LOAD_BLOCKS_SUCCESS: {
-      const activeBlock = action.payload.blocks.find(b => b.blockLevel === state.blockLevelFilter && b.blockRound === state.blockRoundFilter);
+      const activeBlock = action.payload.activeBlock;
 
       if (!activeBlock) {
         console.log('block not found');

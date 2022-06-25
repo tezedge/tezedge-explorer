@@ -1,4 +1,3 @@
-import { Action } from '@ngrx/store';
 import { SmartContractTrace } from '@shared/types/smart-contracts/smart-contract-trace.type';
 import { SmartContractResult } from '@shared/types/smart-contracts/smart-contract-result.type';
 import { SmartContract } from '@shared/types/smart-contracts/smart-contract.type';
